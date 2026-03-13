@@ -282,13 +282,26 @@ body {
 .unlock-panel {
   max-width: 620px;
   margin: 0 auto;
+  text-align: center;
 }
 
 .unlock-form {
   margin-top: 12px;
   display: grid;
   gap: 10px;
-  max-width: 420px;
+  width: min(100%, 960px);
+  margin-left: auto;
+  margin-right: auto;
+  justify-items: center;
+}
+
+.unlock-form > * {
+  width: 100%;
+}
+
+.unlock-form > label,
+.unlock-form > .status-text {
+  text-align: center;
 }
 
 .unlock-input {
