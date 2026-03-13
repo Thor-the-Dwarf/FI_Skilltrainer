@@ -653,8 +653,14 @@
               entry.targetCorrect || defaultTargetCorrect
             );
           }
+          const progressValueText = `${Math.round(progressPercent)}%`;
           const progressHtml = showProgress
-            ? renderProgressMeter("home-list-progress", progressPercent, `${text}: ${Math.round(progressPercent)} Prozent`)
+            ? (
+              "<span class='home-list-progress-wrap'>" +
+              renderProgressMeter("home-list-progress", progressPercent, `${text}: ${Math.round(progressPercent)} Prozent`) +
+              `<span class='home-list-progress-value' aria-hidden='true'>${progressValueText}</span>` +
+              "</span>"
+            )
             : "";
           return (
             "<li class='home-list-item'>" +
