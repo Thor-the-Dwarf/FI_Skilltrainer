@@ -55,11 +55,44 @@
 
   <div class="submit-bar hidden">
     <button id="btnSubmit" class="btn-primary">Abgeben und Auswertung anzeigen</button>
+    <button
+      id="btnTaskDrawerToggle"
+      type="button"
+      class="icon-button submit-bar-icon"
+      aria-label="Aufgaben Navigation oeffnen"
+      title="Aufgaben Navigation"
+      aria-haspopup="dialog"
+      aria-expanded="false">
+      <svg class="icon-svg" viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M5 6h14"></path>
+        <path d="M5 12h14"></path>
+        <path d="M5 18h14"></path>
+      </svg>
+    </button>
   </div>
+
+  <button id="taskNavBackdrop" type="button" class="task-nav-backdrop hidden" aria-label="Aufgaben Navigation schliessen"></button>
+  <aside id="taskNavDrawer" class="task-nav-drawer hidden" aria-hidden="true" aria-label="Aufgaben Navigation">
+    <div class="task-nav-drawer-head">
+      <h3>Aufgaben</h3>
+      <button id="btnTaskDrawerClose" type="button" class="icon-button" aria-label="Aufgaben Navigation schliessen" title="Schliessen">
+        <svg class="icon-svg" viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M6 6l12 12"></path>
+          <path d="M18 6L6 18"></path>
+        </svg>
+      </button>
+    </div>
+    <div id="taskNavDrawerList" class="task-nav-drawer-list"></div>
+  </aside>
 
   <script>
     const workspaceLeft = document.getElementById("workspaceLeft");
     const submitBar = document.querySelector(".submit-bar");
+    const taskNavDrawer = document.getElementById("taskNavDrawer");
+    const taskNavDrawerList = document.getElementById("taskNavDrawerList");
+    const taskNavDrawerToggleBtn = document.getElementById("btnTaskDrawerToggle");
+    const taskNavDrawerCloseBtn = document.getElementById("btnTaskDrawerClose");
+    const taskNavBackdrop = document.getElementById("taskNavBackdrop");
     const scenarioMenuButton = document.getElementById("btnScenarioMenu");
     const homeButton = document.getElementById("btnHome");
     const accessManagerButton = document.getElementById("btnAccessManager");
@@ -428,6 +461,71 @@
 
     function setSubmitBarVisible(visible) {
       submitBar.classList.toggle("hidden", !visible);
+      if (!visible) toggleTaskNavDrawer(false);
+    }
+
+    function buildTaskNavigationItems(data) {
+      const questions = Array.isArray(data?.questions) ? data.questions : [];
+      const items = [];
+      let visibleIndex = 0;
+      for (const q of questions) {
+        const qid = String(q?.id || "").trim();
+        const title = String(q?.title || "").trim();
+        if (!qid || !title) continue;
+        const isDivider = isFollowupDivider(q);
+        const label = isDivider ? title : `${visibleIndex + 1}. ${title}`;
+        if (!isDivider) visibleIndex += 1;
+        items.push({ qid, label });
+      }
+      return items;
+    }
+
+    function scrollToQuestionById(questionId) {
+      const qid = String(questionId || "").trim();
+      if (!qid) return;
+      const target = [...workspaceLeft.querySelectorAll(".question[data-qid]")]
+        .find((el) => String(el.dataset.qid || "") === qid);
+      if (!target) return;
+      target.scrollIntoView({ behavior: "smooth", block: "start" });
+      target.classList.add("task-nav-target");
+      setTimeout(() => {
+        target.classList.remove("task-nav-target");
+      }, 1300);
+    }
+
+    function renderTaskNavDrawer(data) {
+      if (!taskNavDrawerList) return;
+      taskNavDrawerList.innerHTML = "";
+      const items = buildTaskNavigationItems(data);
+      if (!items.length) {
+        taskNavDrawerList.innerHTML = "<p class='status-text'>Keine Aufgaben vorhanden.</p>";
+        return;
+      }
+      for (const item of items) {
+        const button = document.createElement("button");
+        button.type = "button";
+        button.className = "task-nav-item";
+        button.textContent = item.label;
+        button.addEventListener("click", () => {
+          scrollToQuestionById(item.qid);
+          toggleTaskNavDrawer(false);
+        });
+        taskNavDrawerList.appendChild(button);
+      }
+    }
+
+    function toggleTaskNavDrawer(forceOpen) {
+      if (!taskNavDrawer || !taskNavDrawerToggleBtn || !taskNavBackdrop) return;
+      const currentlyOpen = !taskNavDrawer.classList.contains("hidden");
+      const nextOpen = typeof forceOpen === "boolean" ? forceOpen : !currentlyOpen;
+      taskNavDrawer.classList.toggle("hidden", !nextOpen);
+      taskNavBackdrop.classList.toggle("hidden", !nextOpen);
+      taskNavDrawer.setAttribute("aria-hidden", String(!nextOpen));
+      taskNavDrawerToggleBtn.setAttribute("aria-expanded", String(nextOpen));
+      taskNavDrawerToggleBtn.setAttribute(
+        "aria-label",
+        nextOpen ? "Aufgaben Navigation schliessen" : "Aufgaben Navigation oeffnen"
+      );
     }
 
     async function validateScenarioFolder(folder) {
@@ -1456,12 +1554,33 @@
         ev.stopPropagation();
       });
 
+      taskNavDrawerToggleBtn.addEventListener("click", (ev) => {
+        ev.stopPropagation();
+        if (!scenarioData) return;
+        toggleTaskNavDrawer();
+      });
+
+      taskNavDrawerCloseBtn.addEventListener("click", () => {
+        toggleTaskNavDrawer(false);
+      });
+
+      taskNavBackdrop.addEventListener("click", () => {
+        toggleTaskNavDrawer(false);
+      });
+
+      taskNavDrawer.addEventListener("click", (ev) => {
+        ev.stopPropagation();
+      });
+
       document.addEventListener("click", () => {
         toggleScenarioMenu(false);
       });
 
       document.addEventListener("keydown", (ev) => {
-        if (ev.key === "Escape") toggleScenarioMenu(false);
+        if (ev.key === "Escape") {
+          toggleScenarioMenu(false);
+          toggleTaskNavDrawer(false);
+        }
       });
     }
 
@@ -2470,6 +2589,7 @@
 
     function buildPage(data) {
       workspaceLeft.innerHTML = "";
+      toggleTaskNavDrawer(false);
       workspaceLeft.appendChild(createScenarioPanel(data));
       const qPanel = document.createElement("section");
       qPanel.className = "panel";
@@ -2481,6 +2601,7 @@
         qPanel.appendChild(renderQuestion(q, displayIdx));
       });
       workspaceLeft.appendChild(qPanel);
+      renderTaskNavDrawer(data);
     }
 
     initAppBar();
