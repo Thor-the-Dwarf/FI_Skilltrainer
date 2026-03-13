@@ -1,0 +1,160 @@
+{
+  "scenario": {
+    "company": "Nordhafen Verpackungstechnik GmbH",
+    "scale": "Produktionsnaher Mittelstand, 2 Hallen, 280 Mitarbeitende",
+    "context": "Station 05 des Tageslaufs: Erweiterungsvorhaben mit Auftraggeber abstimmen und als kleines CPS-Projekt planen.",
+    "mission": "Sie grenzen den Umfang realistisch ein, formulieren Anforderungen und bereiten die Projektplanung vor.",
+    "station": {
+      "id": "LF07-ST-05",
+      "department": "Projektplanung",
+      "profile": "Abstimmung, Umfang und Planung",
+      "constraints": [
+        "Umfang realistisch halten",
+        "Abstimmung mit dem Fachbereich nicht auslassen",
+        "Risiken und Testfenster frueh benennen"
+      ]
+    },
+    "customerRequest": {
+      "from": "projektleitung@nordhafen-verpackungstechnik.example",
+      "to": "cps.team@ausbildungsbetrieb.example",
+      "subject": "Station 05: CPS-Projektplanung",
+      "date": "2026-03-13",
+      "body": "Bitte bereiten Sie die Projektplanung fuer den ersten Ausbauschritt der Linienueberwachung vor."
+    }
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "type": "short_text",
+      "title": "Abstimmungsnotiz formulieren",
+      "prompt": "Schreiben Sie in 4-6 Saetzen eine kurze Abstimmungsnotiz mit Ziel, Muss-Anforderung und Abnahmekriterium fuer den ersten Ausbauschritt.",
+      "minChars": 170,
+      "requiredKeywords": [
+        "ziel",
+        "muss",
+        "abnahme"
+      ],
+      "expectedOutline": "Kurze Projektabstimmung mit Ziel, Muss-Anforderung und pruefbarem Abnahmekriterium.",
+      "feedback": {
+        "correct": "Richtig: Die Abstimmungsnotiz ist projektfaehig formuliert.",
+        "wrong": "Bitte Ziel, Muss-Anforderung und Abnahmebezug klarer verbinden."
+      },
+      "progressLinks": [
+        "lf07_erweiterung_planen",
+        "lf07_dokumentation_teamkommunikation"
+      ]
+    },
+    {
+      "id": "q2",
+      "type": "single_choice",
+      "title": "Projektumfang eingrenzen",
+      "prompt": "Welche Formulierung grenzt den ersten Ausbauschritt sinnvoll ab?",
+      "options": [
+        {
+          "text": "Wir modernisieren sofort die gesamte Produktionshalle inklusive aller Linien",
+          "rationale": "Das ist fuer einen ersten Schritt zu umfangreich."
+        },
+        {
+          "text": "Wir warten erst mehrere Monate ab und beginnen dann vielleicht",
+          "rationale": "Das waere keine belastbare Planung."
+        },
+        {
+          "text": "Wir erweitern zunaechst die Motorueberwachung einer Linie mit Alarmierung und Broker-Anbindung",
+          "rationale": "Das ist klar, ueberschaubar und pruefbar."
+        }
+      ],
+      "correctIndex": 2,
+      "feedback": {
+        "correct": "Richtig: Der Umfang ist realistisch und gut steuerbar abgegrenzt.",
+        "wrong": "Nicht passend: Ein erster Ausbauschritt braucht einen klaren und begrenzten Umfang."
+      },
+      "progressLinks": [
+        "lf07_erweiterung_planen"
+      ]
+    },
+    {
+      "id": "q3",
+      "type": "multi_select",
+      "title": "Projektplan absichern",
+      "prompt": "Welche Elemente gehoeren in eine brauchbare Projektplanung? (Mehrfachauswahl)",
+      "options": [
+        {
+          "text": "Arbeitspakete fuer Sensorik, Software und Test",
+          "correct": true,
+          "rationale": "So wird der Umfang steuerbar."
+        },
+        {
+          "text": "Abstimmung mit Produktion und IT/OT-Verantwortlichen",
+          "correct": true,
+          "rationale": "Verhindert Fehlplanung im Betrieb."
+        },
+        {
+          "text": "Risiken und Abbruchkriterien fuer Testfenster",
+          "correct": true,
+          "rationale": "Hilft bei sicherer Durchfuehrung."
+        },
+        {
+          "text": "Bewusst keine Zeitfenster einplanen",
+          "correct": false,
+          "rationale": "Das waere fuer eine Produktionsumgebung problematisch."
+        },
+        {
+          "text": "Nur darauf hoffen, dass alles spontan klappt",
+          "correct": false,
+          "rationale": "Das ersetzt keine Projektplanung."
+        }
+      ],
+      "feedback": {
+        "correct": "Richtig: Der Projektplan ist umsetzbar und betriebsnah aufgebaut.",
+        "wrong": "Teilweise falsch: Bitte Arbeitspakete, Abstimmung und Risiken staerker beruecksichtigen."
+      },
+      "progressLinks": [
+        "lf07_erweiterung_planen"
+      ]
+    },
+    {
+      "id": "q4",
+      "type": "number",
+      "title": "Planungsaufwand berechnen",
+      "prompt": "Es sind 5 Arbeitspakete mit je 55 Minuten und 2 Abstimmungspunkte mit je 25 Minuten vorgesehen. Wie viele Minuten Gesamtaufwand ergeben sich?",
+      "expected": 325,
+      "toleranceAbs": 1,
+      "showExpectedFormula": "(5 * 55) + (2 * 25) = 325",
+      "feedback": {
+        "correct": "Richtig gerechnet.",
+        "wrong": "Bitte Arbeitspakete und Abstimmungszeiten korrekt summieren."
+      },
+      "progressLinks": [
+        "lf07_erweiterung_planen"
+      ]
+    },
+    {
+      "id": "q5",
+      "type": "ordering",
+      "title": "Vom Auftrag zur Projektfreigabe",
+      "prompt": "Ordnen Sie die Schritte zu einer kleinen, belastbaren Projektplanung.",
+      "items": [
+        "Bedarf mit dem Auftraggeber abstimmen",
+        "Umfang und Muss-Anforderungen festlegen",
+        "Arbeitspakete und Zeitfenster planen",
+        "Risiken und Testfenster bewerten",
+        "Projektplan zur Freigabe vorlegen"
+      ],
+      "correctOrder": [
+        "Bedarf mit dem Auftraggeber abstimmen",
+        "Umfang und Muss-Anforderungen festlegen",
+        "Arbeitspakete und Zeitfenster planen",
+        "Risiken und Testfenster bewerten",
+        "Projektplan zur Freigabe vorlegen"
+      ],
+      "feedback": {
+        "correct": "Richtig: Die Projektplanung fuehrt sauber von der Abstimmung zur Freigabe.",
+        "wrong": "Nicht optimal: Bitte erst Bedarf klaeren und dann Umfang, Planung und Risiken aufbauen."
+      },
+      "progressLinks": [
+        "lf07_erweiterung_planen",
+        "lf07_dokumentation_teamkommunikation"
+      ]
+    }
+  ]
+}

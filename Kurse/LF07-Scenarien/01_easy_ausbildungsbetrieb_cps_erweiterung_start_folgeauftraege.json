@@ -1,0 +1,723 @@
+{
+  "scenario": {
+    "company": "Nordhafen Verpackungstechnik GmbH",
+    "scale": "Produktionsnaher Mittelstand, 2 Hallen, 280 Mitarbeitende",
+    "context": "Station 01: Eine bestehende Abfuelllinie soll um Zustandsueberwachung, Alarmierung und eine auswertbare Broker-Anbindung erweitert werden.",
+    "mission": "Sie bearbeiten den Startauftrag und mehrere Folgeauftraege von der Systemanalyse bis zu Review und Optimierung.",
+    "station": {
+      "id": "LF07-ST-01",
+      "department": "IT/OT Schnittstelle",
+      "profile": "Bestandssystem analysieren, Erweiterung planen, Prototyp anbinden, Risiken bewerten",
+      "constraints": [
+        "Produktionsbetrieb nicht unnoetig stoeren",
+        "Schnittstellen und Rollen klar dokumentieren",
+        "Sicherheit, Test und Uebergabe frueh mitdenken"
+      ]
+    },
+    "customerRequest": {
+      "from": "produktion.leitung@nordhafen-verpackungstechnik.example",
+      "to": "cps.team@ausbildungsbetrieb.example",
+      "subject": "Station 01: CPS-Erweiterung fuer Abfuelllinie",
+      "date": "2026-03-13",
+      "body": "Bitte erweitern Sie die bestehende Abfuelllinie um eine zusaetzliche Zustandsueberwachung fuer Motoren und einen Alarmkanal fuer ungewoehnliche Schwingungen.\n\nFokus: CPS-Aufbau verstehen, Protokolle bewerten, Datenfluesse analysieren, Projektumfang abstimmen, MQTT-Anbindung vorbereiten und das Vorgehen fuer Test, Review und Optimierung festhalten."
+    }
+  },
+  "questions": [
+    {
+      "id": "q01",
+      "type": "single_choice",
+      "title": "CPS-Kern richtig einordnen",
+      "prompt": "Welche Kombination beschreibt den Kern eines cyber-physischen Systems am treffendsten?",
+      "options": [
+        {
+          "text": "Sensorik, Aktorik, Steuerungslogik, Kommunikationsanbindung und physischer Prozess",
+          "rationale": "Das bildet die wesentlichen CPS-Bestandteile fachlich korrekt ab."
+        },
+        {
+          "text": "Nur ein Browser-Dashboard mit Office-PC",
+          "rationale": "Ohne physische Anlage und Feldbezug fehlt der CPS-Charakter."
+        },
+        {
+          "text": "Ausschliesslich eine Datenbank fuer Produktionsberichte",
+          "rationale": "Das ist ein IT-System, aber kein CPS im engeren Sinne."
+        }
+      ],
+      "correctIndex": 0,
+      "feedback": {
+        "correct": "Richtig: Aufbau und Kopplung des CPS sind korrekt erkannt.",
+        "wrong": "Nicht passend: Ein CPS verbindet IT-Komponenten mit einem physischen Prozess."
+      },
+      "progressLinks": [
+        "lf07_cps_iot_grundlagen"
+      ]
+    },
+    {
+      "id": "q02",
+      "type": "multi_select",
+      "title": "Einflussfaktoren auf CPS-Entwicklung",
+      "prompt": "Welche Faktoren treiben die Entwicklung cyber-physischer Systeme typischerweise? (Mehrfachauswahl)",
+      "options": [
+        {
+          "text": "Guenstigere Sensorik und hoehere Verfuegbarkeit vernetzbarer Komponenten",
+          "correct": true,
+          "rationale": "Das erleichtert den praktischen Einsatz im Betrieb."
+        },
+        {
+          "text": "Leistungsfaehigere Edge- und Steuerungskomponenten",
+          "correct": true,
+          "rationale": "Steigert lokale Verarbeitungsmoeglichkeiten im System."
+        },
+        {
+          "text": "Die Farbe der Hallenbeleuchtung",
+          "correct": false,
+          "rationale": "Ist fuer technologische Entwicklung kein relevanter Faktor."
+        },
+        {
+          "text": "Bessere Kommunikationsnetze und standardisierte Protokolle",
+          "correct": true,
+          "rationale": "Ermoeglicht Integration und Datenaustausch ueber Systemgrenzen."
+        },
+        {
+          "text": "Zufaelliges Umstellen der Produktionspausen",
+          "correct": false,
+          "rationale": "Hat mit technologischer CPS-Entwicklung nichts zu tun."
+        }
+      ],
+      "feedback": {
+        "correct": "Richtig: Die Treiber sind praxisnah und technisch plausibel benannt.",
+        "wrong": "Teilweise falsch: Bitte Sensorik, Rechenleistung und Kommunikation staerker gewichten."
+      },
+      "progressLinks": [
+        "lf07_cps_iot_grundlagen"
+      ]
+    },
+    {
+      "id": "q03",
+      "type": "ordering",
+      "title": "Bestandssystem zuerst verstehen",
+      "prompt": "Ordnen Sie die Schritte fuer eine strukturierte Erstaufnahme der Abfuelllinie.",
+      "items": [
+        "Beteiligte Sensoren, Aktoren und Steuerungskomponenten erfassen",
+        "Kommunikationswege und Schnittstellen nachvollziehen",
+        "Daten- und Informationsfluss entlang des Prozesses beschreiben",
+        "kritische Abhaengigkeiten und Engpaesse markieren",
+        "Ergebnis als Ausgangsbild fuer die Erweiterung dokumentieren"
+      ],
+      "correctOrder": [
+        "Beteiligte Sensoren, Aktoren und Steuerungskomponenten erfassen",
+        "Kommunikationswege und Schnittstellen nachvollziehen",
+        "Daten- und Informationsfluss entlang des Prozesses beschreiben",
+        "kritische Abhaengigkeiten und Engpaesse markieren",
+        "Ergebnis als Ausgangsbild fuer die Erweiterung dokumentieren"
+      ],
+      "feedback": {
+        "correct": "Richtig: Die Analyse fuehrt sauber vom Bestand zur dokumentierten Ausgangslage.",
+        "wrong": "Nicht optimal: Bitte erst Bestand und Fluesse verstehen und dann Engpaesse dokumentieren."
+      },
+      "progressLinks": [
+        "lf07_fluesse_analysieren",
+        "lf07_dokumentation_teamkommunikation"
+      ]
+    },
+    {
+      "id": "q04",
+      "type": "single_choice",
+      "title": "Anwendungsfeld einordnen",
+      "prompt": "Welcher Nutzen der geplanten CPS-Erweiterung passt am besten zum beschriebenen Produktionsumfeld?",
+      "options": [
+        {
+          "text": "Ausschliesslich Marketingdaten fuer den Vertrieb erzeugen",
+          "rationale": "Das trifft den Kern der Produktionsnahe nicht."
+        },
+        {
+          "text": "Zustandsdaten fuer fruehere Stoerungserkennung und besser planbare Wartung bereitstellen",
+          "rationale": "Genau das ist ein typischer Mehrwert einer CPS-Erweiterung in der Produktion."
+        },
+        {
+          "text": "Die Halle durch Musikbeschallung angenehmer machen",
+          "rationale": "Hat keinen Bezug zur geplanten Erweiterung."
+        }
+      ],
+      "correctIndex": 1,
+      "feedback": {
+        "correct": "Richtig: Die Erweiterung dient einem plausiblen CPS-Nutzen im Betrieb.",
+        "wrong": "Nicht passend: Hier geht es um Betriebsdaten und Wartungsnutzen."
+      },
+      "progressLinks": [
+        "lf07_cps_iot_grundlagen",
+        "lf07_erweiterung_planen"
+      ]
+    },
+    {
+      "id": "q05",
+      "type": "number",
+      "title": "Nachrichtenmenge abschaetzen",
+      "prompt": "12 Schwingungssensoren senden alle 5 Sekunden einen Wert. Wie viele Nachrichten entstehen insgesamt in 15 Minuten?",
+      "expected": 2160,
+      "toleranceAbs": 1,
+      "showExpectedFormula": "15 min = 900 s, je Sensor 900 / 5 = 180, gesamt 12 * 180 = 2160",
+      "feedback": {
+        "correct": "Richtig gerechnet.",
+        "wrong": "Bitte Sendetakt, Zeitfenster und Sensoranzahl korrekt kombinieren."
+      },
+      "progressLinks": [
+        "lf07_fluesse_analysieren"
+      ]
+    },
+    {
+      "id": "q06",
+      "type": "short_text",
+      "title": "Bestandssystem knapp erklaeren",
+      "prompt": "Beschreiben Sie in 4-6 Saetzen, wie der Aufbau der Abfuelllinie als CPS verstanden werden kann und welche Rolle Sensorik, Steuerung und Kommunikation dabei spielen.",
+      "minChars": 180,
+      "requiredKeywords": [
+        "sensor",
+        "steuerung",
+        "kommunikation"
+      ],
+      "expectedOutline": "Kurze Systemerklaerung mit Feldkomponenten, Steuerung und Datenkopplung.",
+      "feedback": {
+        "correct": "Richtig: Der CPS-Aufbau ist verstaendlich und fachlich sauber beschrieben.",
+        "wrong": "Bitte Sensorik, Steuerung und Kommunikationsbezug klarer zusammenfuehren."
+      },
+      "progressLinks": [
+        "lf07_cps_iot_grundlagen",
+        "lf07_dokumentation_teamkommunikation"
+      ]
+    },
+    {
+      "id": "q07",
+      "type": "multi_select",
+      "title": "IoT-Anwendungsfeld abgrenzen",
+      "prompt": "Welche Aussagen passen zum geplanten Einsatzfeld der CPS-Erweiterung? (Mehrfachauswahl)",
+      "options": [
+        {
+          "text": "Die Erweiterung gehoert in den Bereich Produktionsueberwachung und vorausschauende Wartung",
+          "correct": true,
+          "rationale": "Das entspricht dem beschriebenen Nutzenziel."
+        },
+        {
+          "text": "Daten sollten auch mit Blick auf betriebliche Alarmierung betrachtet werden",
+          "correct": true,
+          "rationale": "Zustandsdaten haben hier einen direkten Betriebsbezug."
+        },
+        {
+          "text": "Die physische Anlage spielt fuer das System keine Rolle",
+          "correct": false,
+          "rationale": "Gerade die Anlage ist der Kernbezug des CPS."
+        },
+        {
+          "text": "Das Feldgeraeteverhalten beeinflusst das IT-seitige Datenbild",
+          "correct": true,
+          "rationale": "Genau diese Kopplung ist typisch fuer CPS."
+        },
+        {
+          "text": "Die Erweiterung ist eigentlich nur ein Office-Workflow",
+          "correct": false,
+          "rationale": "Das wuerde den Produktionskontext verkennen."
+        }
+      ],
+      "feedback": {
+        "correct": "Richtig: Das Anwendungsfeld ist passend und praxisnah eingeordnet.",
+        "wrong": "Teilweise falsch: Bitte Produktionsbezug und Anlagenkopplung staerker beachten."
+      },
+      "progressLinks": [
+        "lf07_cps_iot_grundlagen"
+      ]
+    },
+    {
+      "id": "f01",
+      "type": "followup_divider",
+      "title": "Folgeauftrag 1",
+      "prompt": "Nach der Erstaufnahme soll die Kommunikationsseite geklaert werden. Die Produktionsleitung erwartet eine begruendete Empfehlung fuer MQTT, OPC UA und die jeweilige Rolle im System."
+    },
+    {
+      "id": "q08",
+      "type": "single_choice",
+      "title": "MQTT-Grundprinzip verstehen",
+      "prompt": "Welche Aussage beschreibt MQTT im Grundsatz am besten?",
+      "options": [
+        {
+          "text": "Jeder Teilnehmer muss jeden anderen Teilnehmer direkt kennen",
+          "rationale": "Das passt nicht zum Broker-Prinzip."
+        },
+        {
+          "text": "Ein Broker vermittelt Nachrichten zwischen publizierenden und abonnierenden Clients",
+          "rationale": "Das beschreibt MQTT fachlich korrekt."
+        },
+        {
+          "text": "MQTT dient nur zum Speichern lokaler Dateien",
+          "rationale": "Das ist nicht die Aufgabe des Protokolls."
+        }
+      ],
+      "correctIndex": 1,
+      "feedback": {
+        "correct": "Richtig: Broker, Topics und Publish-Subscribe sind korrekt erkannt.",
+        "wrong": "Nicht passend: Bitte das Broker-Prinzip von MQTT beachten."
+      },
+      "progressLinks": [
+        "lf07_protokolle_unterscheiden"
+      ]
+    },
+    {
+      "id": "q09",
+      "type": "multi_select",
+      "title": "Protokollwahl begruenden",
+      "prompt": "Welche Kriterien helfen bei der Protokollentscheidung fuer die CPS-Erweiterung? (Mehrfachauswahl)",
+      "options": [
+        {
+          "text": "Kommunikationsmuster und Datenhaeufigkeit passen zum Anwendungsfall",
+          "correct": true,
+          "rationale": "Das ist zentral fuer die Protokollwahl."
+        },
+        {
+          "text": "Bestehende Integrationsfaehigkeit der Steuerung und des Auswertesystems",
+          "correct": true,
+          "rationale": "Verringert Umsetzungsrisiken erheblich."
+        },
+        {
+          "text": "Nur das optisch schoenste Marketingblatt des Herstellers",
+          "correct": false,
+          "rationale": "Das ist kein tragfaehiges Technik-Kriterium."
+        },
+        {
+          "text": "Sicherheits- und Betriebsanforderungen des Produktionsumfelds",
+          "correct": true,
+          "rationale": "Ohne diesen Bezug waere die Auswahl lueckenhaft."
+        },
+        {
+          "text": "Die Entscheidung moeglichst gar nicht dokumentieren",
+          "correct": false,
+          "rationale": "Gerade bei IT/OT-Projekten ist Nachvollziehbarkeit wichtig."
+        }
+      ],
+      "feedback": {
+        "correct": "Richtig: Die Protokollwahl ist fachlich und betrieblich sauber begruendet.",
+        "wrong": "Teilweise falsch: Bitte Anwendungsbezug, Integration und Sicherheit staerker gewichten."
+      },
+      "progressLinks": [
+        "lf07_protokolle_unterscheiden",
+        "lf07_dokumentation_teamkommunikation"
+      ]
+    },
+    {
+      "id": "q10",
+      "type": "ordering",
+      "title": "Broker-Anbindung vorbereiten",
+      "prompt": "Ordnen Sie die Schritte fuer eine saubere MQTT-Anbindung.",
+      "items": [
+        "Topics und Nachrichteninhalt festlegen",
+        "Broker und Client-Rollen definieren",
+        "Verbindungsdaten und Sicherheitsparameter abstimmen",
+        "Testpublishing und Testsubscription durchfuehren",
+        "Ergebnis im Schnittstellendokument festhalten"
+      ],
+      "correctOrder": [
+        "Broker und Client-Rollen definieren",
+        "Topics und Nachrichteninhalt festlegen",
+        "Verbindungsdaten und Sicherheitsparameter abstimmen",
+        "Testpublishing und Testsubscription durchfuehren",
+        "Ergebnis im Schnittstellendokument festhalten"
+      ],
+      "feedback": {
+        "correct": "Richtig: Die Anbindung ist technisch und dokumentatorisch sauber aufgebaut.",
+        "wrong": "Nicht optimal: Bitte erst Rollen und Topics klaeren und dann testen sowie dokumentieren."
+      },
+      "progressLinks": [
+        "lf07_protokolle_unterscheiden",
+        "lf07_prototyp_inbetriebnahme"
+      ]
+    },
+    {
+      "id": "q11",
+      "type": "short_text",
+      "title": "MQTT oder OPC UA einordnen",
+      "prompt": "Erlauetern Sie in 4-6 Saetzen, wann fuer diese Erweiterung MQTT passend ist und wann OPC UA im Umfeld trotzdem eine sinnvolle Rolle spielen kann.",
+      "minChars": 190,
+      "requiredKeywords": [
+        "mqtt",
+        "opc",
+        "rolle"
+      ],
+      "expectedOutline": "Abgrenzung von leichtgewichtiger Ereigniskommunikation und strukturierter M2M-Integration.",
+      "feedback": {
+        "correct": "Richtig: Die Rollen der beiden Protokolle sind nachvollziehbar abgegrenzt.",
+        "wrong": "Bitte den Einsatzkontext von MQTT und OPC UA klarer unterscheiden."
+      },
+      "progressLinks": [
+        "lf07_protokolle_unterscheiden"
+      ]
+    },
+    {
+      "id": "f02",
+      "type": "followup_divider",
+      "title": "Folgeauftrag 2",
+      "prompt": "Die Technik steht grob fest. Jetzt soll genauer beschrieben werden, wie Daten, Energie und Informationen durch das bestehende System laufen und wo Engpaesse entstehen koennen."
+    },
+    {
+      "id": "q12",
+      "type": "multi_select",
+      "title": "Fluesse unterscheiden",
+      "prompt": "Welche Aussagen helfen dabei, Daten-, Energie- und Informationsfluss sauber zu unterscheiden? (Mehrfachauswahl)",
+      "options": [
+        {
+          "text": "Datenfluss beschreibt transportierte Werte und Nachrichten zwischen Komponenten",
+          "correct": true,
+          "rationale": "Das ist fuer CPS-Analysen zentral."
+        },
+        {
+          "text": "Energiefluss beschreibt Versorgung und Leistungsaufnahme physischer Komponenten",
+          "correct": true,
+          "rationale": "Gerade im Produktionsumfeld ist das relevant."
+        },
+        {
+          "text": "Informationsfluss kann Entscheidungen, Meldungen und Alarme ueber Prozesszustand umfassen",
+          "correct": true,
+          "rationale": "Er geht ueber reine Rohdaten hinaus."
+        },
+        {
+          "text": "Alle drei Fluesse sind immer identisch und muessen nicht getrennt betrachtet werden",
+          "correct": false,
+          "rationale": "Die Trennung ist fuer Analyse und Optimierung wichtig."
+        },
+        {
+          "text": "Nur der Energiefluss ist fuer ein CPS relevant",
+          "correct": false,
+          "rationale": "Ein CPS lebt gerade vom Zusammenspiel aller Fluesse."
+        }
+      ],
+      "feedback": {
+        "correct": "Richtig: Die Fluesse sind fachlich korrekt voneinander abgegrenzt.",
+        "wrong": "Teilweise falsch: Bitte Daten-, Energie- und Informationssicht klarer unterscheiden."
+      },
+      "progressLinks": [
+        "lf07_fluesse_analysieren"
+      ]
+    },
+    {
+      "id": "q13",
+      "type": "number",
+      "title": "Telemetrievolumen abschaetzen",
+      "prompt": "8 Knoten senden jeweils 18 Meldungen pro Minute. Wie viele Meldungen entstehen insgesamt in 25 Minuten?",
+      "expected": 3600,
+      "toleranceAbs": 1,
+      "showExpectedFormula": "8 * 18 * 25 = 3600",
+      "feedback": {
+        "correct": "Richtig gerechnet.",
+        "wrong": "Bitte Knotenanzahl, Meldungsrate und Zeitfenster korrekt kombinieren."
+      },
+      "progressLinks": [
+        "lf07_fluesse_analysieren"
+      ]
+    },
+    {
+      "id": "q14",
+      "type": "single_choice",
+      "title": "Engpass erkennen",
+      "prompt": "Welcher Befund spricht am ehesten fuer einen Engpass im Datenfluss?",
+      "options": [
+        {
+          "text": "Die Anzahl der Topics ist dokumentiert",
+          "rationale": "Dokumentation allein ist noch kein Engpasshinweis."
+        },
+        {
+          "text": "Mehrere Sensorwerte kommen zeitversetzt an, obwohl der Sendetakt gleich ist und die Auswerteschlange anwachsen sieht",
+          "rationale": "Das deutet plausibel auf Verzoegerung oder Pufferproblem hin."
+        },
+        {
+          "text": "Die Teamsitzung beginnt puenktlich",
+          "rationale": "Das hat keinen Bezug zum Datenfluss des Systems."
+        }
+      ],
+      "correctIndex": 1,
+      "feedback": {
+        "correct": "Richtig: Verzoegerte Zustellung bei wachsender Schlange ist ein belastbarer Engpasshinweis.",
+        "wrong": "Nicht passend: Fuer einen Engpass braucht es einen technischen Befund im Flussverhalten."
+      },
+      "progressLinks": [
+        "lf07_fluesse_analysieren",
+        "lf07_review_sicherheit_optimierung"
+      ]
+    },
+    {
+      "id": "q15",
+      "type": "ordering",
+      "title": "Bestandsanalyse verdichten",
+      "prompt": "Ordnen Sie den Weg von der Flussanalyse zur entscheidungsfaehigen Zusammenfassung.",
+      "items": [
+        "Schnittstellen und Kommunikationswege erfassen",
+        "Daten-, Energie- und Informationsfluss beschreiben",
+        "Engpaesse und Stoerstellen priorisieren",
+        "Folgen fuer die Erweiterung ableiten",
+        "Ergebnisse fuer Projekt und Auftraggeber verdichten"
+      ],
+      "correctOrder": [
+        "Schnittstellen und Kommunikationswege erfassen",
+        "Daten-, Energie- und Informationsfluss beschreiben",
+        "Engpaesse und Stoerstellen priorisieren",
+        "Folgen fuer die Erweiterung ableiten",
+        "Ergebnisse fuer Projekt und Auftraggeber verdichten"
+      ],
+      "feedback": {
+        "correct": "Richtig: Die Analyse fuehrt sauber in eine entscheidbare Zusammenfassung.",
+        "wrong": "Nicht optimal: Bitte von der Schnittstelle ueber die Fluesse zur Ableitung und Verdichtung arbeiten."
+      },
+      "progressLinks": [
+        "lf07_fluesse_analysieren",
+        "lf07_dokumentation_teamkommunikation"
+      ]
+    },
+    {
+      "id": "q16",
+      "type": "short_text",
+      "title": "Analyseergebnis zusammenfassen",
+      "prompt": "Beschreiben Sie in 4-6 Saetzen, welches Bild der Flussanalyse fuer die geplante Erweiterung besonders wichtig ist und warum.",
+      "minChars": 170,
+      "requiredKeywords": [
+        "datenfluss",
+        "engpass",
+        "erweiterung"
+      ],
+      "expectedOutline": "Kurze Verdichtung von Datenflussbefund, Engpass und Bedeutung fuer die Erweiterung.",
+      "feedback": {
+        "correct": "Richtig: Der Analysebefund ist sinnvoll auf die Erweiterung bezogen.",
+        "wrong": "Bitte Datenfluss, Engpass und Bedeutung fuer die Erweiterung klarer zusammenbringen."
+      },
+      "progressLinks": [
+        "lf07_fluesse_analysieren",
+        "lf07_dokumentation_teamkommunikation"
+      ]
+    },
+    {
+      "id": "f03",
+      "type": "followup_divider",
+      "title": "Folgeauftrag 3",
+      "prompt": "Im naechsten Schritt erwartet die Produktionsleitung eine abgestimmte Projektplanung fuer die eigentliche CPS-Erweiterung inklusive Umfang, Risiken und Testfenster."
+    },
+    {
+      "id": "q17",
+      "type": "multi_select",
+      "title": "Projektplanung fuer die Erweiterung",
+      "prompt": "Welche Punkte sollten in die Projektplanung aufgenommen werden? (Mehrfachauswahl)",
+      "options": [
+        {
+          "text": "Klar abgegrenzter Umfang fuer Sensorik, Broker-Anbindung und Alarmierung",
+          "correct": true,
+          "rationale": "Verhindert ausufernde Projekterwartungen."
+        },
+        {
+          "text": "Zeitfenster fuer Tests und Inbetriebnahme im Produktionsumfeld",
+          "correct": true,
+          "rationale": "Wichtig fuer stoerungsarme Umsetzung."
+        },
+        {
+          "text": "Risiken fuer Betrieb und Sicherheit frueh erfassen",
+          "correct": true,
+          "rationale": "Gerade an der IT/OT-Schnittstelle entscheidend."
+        },
+        {
+          "text": "Umfang bewusst unklar lassen, damit alles offen bleibt",
+          "correct": false,
+          "rationale": "Das erschwert Steuerung und Abnahme."
+        },
+        {
+          "text": "Mit dem Fachbereich gar keine Abstimmung einplanen",
+          "correct": false,
+          "rationale": "Wuerde am realen Bedarf vorbeifuehren."
+        }
+      ],
+      "feedback": {
+        "correct": "Richtig: Die Planung ist abgestimmt und steuerbar angelegt.",
+        "wrong": "Teilweise falsch: Bitte Umfang, Risiko und Produktionsbezug staerker absichern."
+      },
+      "progressLinks": [
+        "lf07_erweiterung_planen"
+      ]
+    },
+    {
+      "id": "q18",
+      "type": "single_choice",
+      "title": "Projektumfang realistisch abgrenzen",
+      "prompt": "Welche Formulierung grenzt den ersten Ausbauschritt sinnvoll ab?",
+      "options": [
+        {
+          "text": "Wir modernisieren die komplette Anlage inklusive aller Steuerungen und aller Hallennetze sofort",
+          "rationale": "Das waere fuer einen ersten Ausbauschritt unnoetig gross."
+        },
+        {
+          "text": "Wir pruefen spaeter, ob es ueberhaupt einen ersten Schritt geben soll",
+          "rationale": "Das waere keine belastbare Projektabgrenzung."
+        },
+        {
+          "text": "Wir erweitern zunaechst nur die Motorueberwachung der Abfuelllinie samt Broker-Anbindung und Alarmkanal",
+          "rationale": "Das ist klar, pruefbar und fuer einen ersten Schritt realistisch."
+        }
+      ],
+      "correctIndex": 2,
+      "feedback": {
+        "correct": "Richtig: Die Abgrenzung ist realistisch und gut steuerbar.",
+        "wrong": "Nicht passend: Ein erster Ausbauschritt braucht einen ueberschaubaren, klaren Umfang."
+      },
+      "progressLinks": [
+        "lf07_erweiterung_planen"
+      ]
+    },
+    {
+      "id": "q19",
+      "type": "number",
+      "title": "Projektaufwand abschaetzen",
+      "prompt": "Fuer den ersten Ausbauschritt sind 4 Arbeitspakete mit je 75 Minuten und 3 Abstimmungspunkte mit je 20 Minuten vorgesehen. Wie viele Minuten Gesamtaufwand ergeben sich?",
+      "expected": 360,
+      "toleranceAbs": 1,
+      "showExpectedFormula": "(4 * 75) + (3 * 20) = 360 Minuten",
+      "feedback": {
+        "correct": "Richtig gerechnet.",
+        "wrong": "Bitte Arbeitspakete und Abstimmungszeiten korrekt summieren."
+      },
+      "progressLinks": [
+        "lf07_erweiterung_planen",
+        "lf07_dokumentation_teamkommunikation"
+      ]
+    },
+    {
+      "id": "f04",
+      "type": "followup_divider",
+      "title": "Folgeauftrag 4",
+      "prompt": "Die Projektplanung ist freigegeben. Jetzt soll die Erstinbetriebnahme vorbereitet, das Review strukturiert und ein erster Optimierungsausblick mit Sicherheitsbezug formuliert werden."
+    },
+    {
+      "id": "q20",
+      "type": "multi_select",
+      "title": "Sichere Erstinbetriebnahme",
+      "prompt": "Welche Schritte sind fuer eine kontrollierte Inbetriebnahme sinnvoll? (Mehrfachauswahl)",
+      "options": [
+        {
+          "text": "Konfigurationsstand und Testumgebung vor Start dokumentieren",
+          "correct": true,
+          "rationale": "Ermoeglicht nachvollziehbare Rueckverfolgung."
+        },
+        {
+          "text": "Verbindungs- und Funktionstest je Kernkomponente durchfuehren",
+          "correct": true,
+          "rationale": "Sichert die technische Basisfunktion vor Produktionseinsatz."
+        },
+        {
+          "text": "Fehlerprotokollierung abschalten, damit alles ruhiger wirkt",
+          "correct": false,
+          "rationale": "Ohne Protokollierung sinkt die Diagnosefaehigkeit stark."
+        },
+        {
+          "text": "Abbruchkriterien fuer kritische Fehler festlegen",
+          "correct": true,
+          "rationale": "Reduziert Betriebsrisiken im Startfenster."
+        },
+        {
+          "text": "Das Team erst nach erfolgreichem Abschluss informieren",
+          "correct": false,
+          "rationale": "Gefaehrdet abgestimmtes Vorgehen und Supportfaehigkeit."
+        }
+      ],
+      "feedback": {
+        "correct": "Richtig: Das Vorgehen ist kontrolliert und produktionsnah abgesichert.",
+        "wrong": "Teilweise falsch: Bitte Nachvollziehbarkeit, Tests und Abbruchregeln staerker beachten."
+      },
+      "progressLinks": [
+        "lf07_prototyp_inbetriebnahme"
+      ]
+    },
+    {
+      "id": "q21",
+      "type": "ordering",
+      "title": "Review nach den ersten Tests",
+      "prompt": "Ordnen Sie einen sinnvollen Review-Ablauf.",
+      "items": [
+        "Testergebnisse und Abweichungen sammeln",
+        "Ursachen fuer die wichtigsten Auffaelligkeiten untersuchen",
+        "Risiken fuer Betrieb und Daten bewerten",
+        "Verbesserungsmassnahmen priorisieren",
+        "Beschluesse und naechste Schritte dokumentieren"
+      ],
+      "correctOrder": [
+        "Testergebnisse und Abweichungen sammeln",
+        "Ursachen fuer die wichtigsten Auffaelligkeiten untersuchen",
+        "Risiken fuer Betrieb und Daten bewerten",
+        "Verbesserungsmassnahmen priorisieren",
+        "Beschluesse und naechste Schritte dokumentieren"
+      ],
+      "feedback": {
+        "correct": "Richtig: Das Review verbindet Befund, Risiko und Verbesserungsweg sinnvoll.",
+        "wrong": "Nicht optimal: Bitte erst Befunde sichern und dann Ursachen, Risiken und Massnahmen behandeln."
+      },
+      "progressLinks": [
+        "lf07_review_sicherheit_optimierung",
+        "lf07_dokumentation_teamkommunikation"
+      ]
+    },
+    {
+      "id": "q22",
+      "type": "single_choice",
+      "title": "Sicherheitsrisiko richtig behandeln",
+      "prompt": "Welche Reaktion auf ein erkanntes Betriebs- oder Datensicherheitsrisiko ist am sinnvollsten?",
+      "options": [
+        {
+          "text": "Das Risiko ignorieren, solange die Linie noch laeuft",
+          "rationale": "Das waere fuer ein produktionsnahes CPS fahrlaessig."
+        },
+        {
+          "text": "Das Risiko bewerten, Gegenmassnahmen ableiten und im Review mit Verantwortlichen abstimmen",
+          "rationale": "So wird aus dem Befund eine steuerbare Verbesserung."
+        },
+        {
+          "text": "Nur auf eine spaetere Jahresbesprechung vertagen",
+          "rationale": "Das ist fuer aktuelle Projektentscheidungen zu spaet."
+        }
+      ],
+      "correctIndex": 1,
+      "feedback": {
+        "correct": "Richtig: Risikoarbeit braucht Bewertung, Massnahme und Abstimmung.",
+        "wrong": "Nicht passend: Ein Sicherheitsbefund muss systematisch bearbeitet werden."
+      },
+      "progressLinks": [
+        "lf07_review_sicherheit_optimierung"
+      ]
+    },
+    {
+      "id": "q23",
+      "type": "short_text",
+      "title": "Verbesserungsvorschlag formulieren",
+      "prompt": "Beschreiben Sie in 4-6 Saetzen einen sinnvollen Verbesserungsvorschlag fuer die naechste Ausbaustufe und begruenden Sie ihn mit einem Risiko- oder Betriebsbezug.",
+      "minChars": 180,
+      "requiredKeywords": [
+        "verbesserung",
+        "risiko",
+        "betrieb"
+      ],
+      "expectedOutline": "Begruendeter Vorschlag mit Risiko- oder Betriebsnutzen fuer die naechste Ausbaustufe.",
+      "feedback": {
+        "correct": "Richtig: Der Verbesserungsvorschlag ist nachvollziehbar und betriebsnah begruendet.",
+        "wrong": "Bitte Verbesserung, Risiko und Betriebsnutzen enger miteinander verbinden."
+      },
+      "progressLinks": [
+        "lf07_review_sicherheit_optimierung",
+        "lf07_dokumentation_teamkommunikation"
+      ]
+    },
+    {
+      "id": "q24",
+      "type": "number",
+      "title": "Testquote der Erstinbetriebnahme",
+      "prompt": "Von 36 geplanten Testfaellen wurden 33 erfolgreich bestanden. Wie hoch ist die Erfolgsquote in Prozent, gerundet?",
+      "expected": 92,
+      "toleranceAbs": 1,
+      "showExpectedFormula": "33 / 36 * 100 = 91,67 % -> 92 %",
+      "feedback": {
+        "correct": "Richtig gerechnet.",
+        "wrong": "Bitte bestandene und geplante Testfaelle korrekt ins Verhaeltnis setzen."
+      },
+      "progressLinks": [
+        "lf07_prototyp_inbetriebnahme",
+        "lf07_review_sicherheit_optimierung"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,160 @@
+{
+  "scenario": {
+    "company": "Nordhafen Verpackungstechnik GmbH",
+    "scale": "Produktionsnaher Mittelstand, 2 Hallen, 280 Mitarbeitende",
+    "context": "Station 06 des Tageslaufs: CPS-Prototyp aufbauen, Software anpassen und die Inbetriebnahme vorbereiten.",
+    "mission": "Sie planen die ersten Umsetzungsschritte fuer einen kleinen Prototyp und verbinden Broker, Client und Testansatz.",
+    "station": {
+      "id": "LF07-ST-06",
+      "department": "Umsetzung",
+      "profile": "Prototyp, Software und Inbetriebnahme",
+      "constraints": [
+        "Schnittstellen sauber definieren",
+        "Testbarkeit frueh absichern",
+        "Produktionsbezug im Umsetzungstempo beachten"
+      ]
+    },
+    "customerRequest": {
+      "from": "technik@nordhafen-verpackungstechnik.example",
+      "to": "cps.team@ausbildungsbetrieb.example",
+      "subject": "Station 06: Prototyp und Inbetriebnahme",
+      "date": "2026-03-13",
+      "body": "Bitte bereiten Sie die Erstumsetzung des Prototyps fuer Sensorwertaufnahme, Broker-Anbindung und Alarmausgabe vor."
+    }
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "type": "single_choice",
+      "title": "Erstaufbau des Prototyps",
+      "prompt": "Welcher Start ist fuer einen CPS-Prototyp am sinnvollsten?",
+      "options": [
+        {
+          "text": "Die benoetigten Feldkomponenten, Kommunikationsrollen und Testumgebung zuerst sauber festlegen",
+          "rationale": "So bleibt der Aufbau beherrschbar und testbar."
+        },
+        {
+          "text": "Direkt alles produktiv in der Linie aendern",
+          "rationale": "Das waere fuer einen ersten Prototyp zu riskant."
+        },
+        {
+          "text": "Erst am Ende ueber die Schnittstellen nachdenken",
+          "rationale": "Das erschwert Umsetzung und Test."
+        }
+      ],
+      "correctIndex": 0,
+      "feedback": {
+        "correct": "Richtig: Ein sauberer Prototyp startet mit klaren Komponenten und Rollen.",
+        "wrong": "Nicht passend: Der Prototyp braucht zuerst Struktur und Testbezug."
+      },
+      "progressLinks": [
+        "lf07_prototyp_inbetriebnahme"
+      ]
+    },
+    {
+      "id": "q2",
+      "type": "ordering",
+      "title": "Inbetriebnahme vorbereiten",
+      "prompt": "Ordnen Sie die Schritte fuer eine kontrollierte Erstinbetriebnahme.",
+      "items": [
+        "Komponenten und Rollen definieren",
+        "Verbindungsparameter und Topics konfigurieren",
+        "Testpublishing und Empfang pruefen",
+        "Alarm- oder Reaktionslogik validieren",
+        "Ergebnis protokollieren"
+      ],
+      "correctOrder": [
+        "Komponenten und Rollen definieren",
+        "Verbindungsparameter und Topics konfigurieren",
+        "Testpublishing und Empfang pruefen",
+        "Alarm- oder Reaktionslogik validieren",
+        "Ergebnis protokollieren"
+      ],
+      "feedback": {
+        "correct": "Richtig: Die Inbetriebnahme ist methodisch sauber vorbereitet.",
+        "wrong": "Nicht optimal: Bitte erst Struktur und Kommunikation pruefen, dann Logik und Protokollierung."
+      },
+      "progressLinks": [
+        "lf07_prototyp_inbetriebnahme"
+      ]
+    },
+    {
+      "id": "q3",
+      "type": "multi_select",
+      "title": "Software- und Testaspekte",
+      "prompt": "Welche Punkte sollten bei der kleinen CPS-Softwareerweiterung mitgedacht werden? (Mehrfachauswahl)",
+      "options": [
+        {
+          "text": "Saubere Trennung zwischen Datenaufnahme, Verarbeitung und Meldungsausgabe",
+          "correct": true,
+          "rationale": "Erleichtert Wartung und Testbarkeit."
+        },
+        {
+          "text": "Fehler- und Ausnahmefaelle sichtbar behandeln",
+          "correct": true,
+          "rationale": "Erhoeht Robustheit der Erweiterung."
+        },
+        {
+          "text": "Schnittstellenparameter nur im Kopf behalten",
+          "correct": false,
+          "rationale": "Das erschwert Teamarbeit und Diagnose."
+        },
+        {
+          "text": "Testmeldungen und Sollverhalten dokumentieren",
+          "correct": true,
+          "rationale": "Wichtig fuer nachvollziehbare Inbetriebnahme."
+        },
+        {
+          "text": "Logs konsequent vermeiden",
+          "correct": false,
+          "rationale": "Nimmt dem Team Diagnosemoeglichkeiten."
+        }
+      ],
+      "feedback": {
+        "correct": "Richtig: Die Erweiterung ist strukturiert und testbar gedacht.",
+        "wrong": "Teilweise falsch: Bitte Trennung, Fehlersicht und Dokumentation staerker beachten."
+      },
+      "progressLinks": [
+        "lf07_prototyp_inbetriebnahme",
+        "lf07_dokumentation_teamkommunikation"
+      ]
+    },
+    {
+      "id": "q4",
+      "type": "number",
+      "title": "Broker-Last abschaetzen",
+      "prompt": "10 Sensoren liefern jeweils 24 Meldungen pro Minute. Wie viele Meldungen verarbeitet der Broker in 12 Minuten insgesamt?",
+      "expected": 2880,
+      "toleranceAbs": 1,
+      "showExpectedFormula": "10 * 24 * 12 = 2880",
+      "feedback": {
+        "correct": "Richtig gerechnet.",
+        "wrong": "Bitte Sensoren, Meldungsrate und Zeitfenster korrekt kombinieren."
+      },
+      "progressLinks": [
+        "lf07_prototyp_inbetriebnahme"
+      ]
+    },
+    {
+      "id": "q5",
+      "type": "short_text",
+      "title": "Inbetriebnahmestatus festhalten",
+      "prompt": "Beschreiben Sie in 4-6 Saetzen, wie Sie den Status einer ersten Inbetriebnahme so dokumentieren, dass Team und Fachbereich den Stand realistisch einschaetzen koennen.",
+      "minChars": 170,
+      "requiredKeywords": [
+        "status",
+        "test",
+        "restpunkt"
+      ],
+      "expectedOutline": "Statusbeschreibung mit Teststand, Restpunkten und naechsten Schritten.",
+      "feedback": {
+        "correct": "Richtig: Der Inbetriebnahmestatus ist nachvollziehbar und teamfaehig beschrieben.",
+        "wrong": "Bitte Teststand, Restpunkte und naechste Schritte klarer benennen."
+      },
+      "progressLinks": [
+        "lf07_prototyp_inbetriebnahme",
+        "lf07_dokumentation_teamkommunikation"
+      ]
+    }
+  ]
+}
