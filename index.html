@@ -55,8 +55,6 @@
 
   <div class="submit-bar hidden">
     <button id="btnSubmit" class="btn-primary">Abgeben und Auswertung anzeigen</button>
-    <button id="btnDemo">Demo-Antworten laden und Auswertung testen</button>
-    <button id="btnReset">Antworten zuruecksetzen</button>
   </div>
 
   <script>
@@ -2375,17 +2373,6 @@
       });
     }
 
-    function runDemoSubmit() {
-      if (!scenarioData) return;
-      applyDemoAnswers(scenarioData);
-      onSubmit();
-    }
-
-    function resetAll() {
-      if (!confirm("Wirklich alle Antworten zuruecksetzen?")) return;
-      location.reload();
-    }
-
     function buildPage(data) {
       workspaceLeft.innerHTML = "";
       workspaceLeft.appendChild(createScenarioPanel(data));
@@ -2403,8 +2390,6 @@
 
     initAppBar();
     document.getElementById("btnSubmit").addEventListener("click", onSubmit);
-    document.getElementById("btnDemo").addEventListener("click", runDemoSubmit);
-    document.getElementById("btnReset").addEventListener("click", resetAll);
     window.addEventListener("resize", () => {
       if (lastResults) renderInlineReview(lastResults);
     });
