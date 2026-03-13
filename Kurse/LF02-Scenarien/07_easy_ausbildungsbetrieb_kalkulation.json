@@ -1,0 +1,143 @@
+{
+  "scenario": {
+    "company": "Ausbildungsbetrieb IT-Service",
+    "scale": "Regional, 120 Mitarbeitende",
+    "context": "Station 7 des Tageslaufs: Kalkulation und Wirtschaftlichkeit.",
+    "mission": "Sie kalkulieren ein kleines Arbeitsplatzpaket und pruefen die Preislogik.",
+    "station": {
+      "id": "NS-ST-07",
+      "department": "Einkauf/Kalkulation",
+      "profile": "Kleine Beschaffung mit Serviceanteil",
+      "constraints": [
+        "Rechenweg nachvollziehbar",
+        "Kostenarten sauber trennen",
+        "Ergebnis kurz einordnen"
+      ]
+    },
+    "customerRequest": {
+      "from": "controlling@ausbildungsbetrieb.example",
+      "to": "rollout.team@systemhaus.example",
+      "subject": "Kalkulationscheck Station NS-ST-07",
+      "date": "2026-03-13",
+      "body": "Bitte kalkulieren Sie ein kleines Arbeitsplatzpaket inklusive Dienstleistungsanteil und geben Sie eine kurze Einordnung zur Preispla usibilitaet."
+    }
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "type": "number",
+      "title": "Paketpreis berechnen",
+      "prompt": "4 Arbeitsplaetze: pro Platz PC 610 EUR, 2 Monitore je 165 EUR, Tastatur/Maus 30 EUR, Einrichtung 0,8 h bei 62 EUR/h. Wie hoch ist die Gesamtsumme (ohne Steuer)?",
+      "expected": 4078.4,
+      "toleranceAbs": 1,
+      "showExpectedFormula": "4 * (610 + 2*165 + 30 + 0.8*62) = 4.078,40 EUR",
+      "feedback": {
+        "correct": "Richtig gerechnet.",
+        "wrong": "Bitte Material- und Zeitanteil pro Platz zusammenfassen und dann multiplizieren."
+      }
+    },
+    {
+      "id": "q2",
+      "type": "single_choice",
+      "title": "Wirtschaftlich sinnvoll bewerten",
+      "prompt": "Welche Aussage beschreibt eine wirtschaftlich sinnvolle Entscheidung am besten?",
+      "options": [
+        {
+          "text": "Immer das billigste Angebot waehlen",
+          "rationale": "Kann Folgekosten und Ausfallrisiken erzeugen."
+        },
+        {
+          "text": "Preis, Eignung, Wartbarkeit und Support gemeinsam bewerten",
+          "rationale": "Ganzheitliche Bewertung reduziert Fehlentscheidungen."
+        },
+        {
+          "text": "Nur auf Markenname achten",
+          "rationale": "Ohne Kriterien nicht ausreichend."
+        }
+      ],
+      "correctIndex": 1,
+      "feedback": {
+        "correct": "Richtig: Wirtschaftlichkeit ist mehr als Anschaffungspreis.",
+        "wrong": "Bitte technische Eignung und Betriebskosten mitdenken."
+      }
+    },
+    {
+      "id": "q3",
+      "type": "multi_select",
+      "title": "Kostenbestandteile",
+      "prompt": "Welche Positionen gehoeren typischerweise in eine Arbeitsplatzkalkulation? (Mehrfachauswahl)",
+      "options": [
+        {
+          "text": "Hardwarekosten",
+          "correct": true,
+          "rationale": "Basis jeder Beschaffung."
+        },
+        {
+          "text": "Einrichtungs- und Servicezeit",
+          "correct": true,
+          "rationale": "Dienstleistungsanteil gehoert zur Gesamtkalkulation."
+        },
+        {
+          "text": "Zufallswert ohne Bezug",
+          "correct": false,
+          "rationale": "Nicht kalkulationsfaehig."
+        },
+        {
+          "text": "Optional: Support-/Wartungsposten",
+          "correct": true,
+          "rationale": "Kann fuer realistische Gesamtsicht relevant sein."
+        },
+        {
+          "text": "Nur Verpackungsdesign",
+          "correct": false,
+          "rationale": "Kein fachlicher Kostenblock."
+        }
+      ],
+      "feedback": {
+        "correct": "Richtig: Sie trennen fachliche Kosten sauber.",
+        "wrong": "Teilweise unpassend: Bitte kalkulationsrelevante Positionen klarer abgrenzen."
+      }
+    },
+    {
+      "id": "q4",
+      "type": "ordering",
+      "title": "Kalkulationsablauf",
+      "prompt": "Bringen Sie die Schritte in eine sinnvolle Reihenfolge.",
+      "items": [
+        "Ergebnis auf Plausibilitaet pruefen",
+        "Mengen und Einzelpreise erfassen",
+        "Material- und Zeitkosten je Platz bilden",
+        "Gesamtsumme fuer alle Plaetze berechnen",
+        "Kurzbegruendung fuer Entscheidung notieren"
+      ],
+      "correctOrder": [
+        "Mengen und Einzelpreise erfassen",
+        "Material- und Zeitkosten je Platz bilden",
+        "Gesamtsumme fuer alle Plaetze berechnen",
+        "Ergebnis auf Plausibilitaet pruefen",
+        "Kurzbegruendung fuer Entscheidung notieren"
+      ],
+      "feedback": {
+        "correct": "Richtig: Rechenweg und Bewertung sind sauber aufgebaut.",
+        "wrong": "Nicht optimal: Erst Datengrundlage, dann Rechnung und Plausibilitaet."
+      }
+    },
+    {
+      "id": "q5",
+      "type": "short_text",
+      "title": "Preis-Einordnung",
+      "prompt": "Formulieren Sie eine kurze Einordnung (4-6 Saetze), warum der berechnete Preis plausibel oder unplausibel ist.",
+      "minChars": 130,
+      "requiredKeywords": [
+        "plausibel",
+        "kosten",
+        "begruendung"
+      ],
+      "expectedOutline": "Kurzurteil mit Kostenbezug, technischem Nutzen und begruendeter Einschaetzung.",
+      "feedback": {
+        "correct": "Richtig: Die Einordnung ist nachvollziehbar.",
+        "wrong": "Bitte Preisurteil staerker mit Kosten und Nutzen begruenden."
+      }
+    }
+  ]
+}

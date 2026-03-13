@@ -1,0 +1,143 @@
+{
+  "scenario": {
+    "company": "Ausbildungsbetrieb IT-Service",
+    "scale": "Regional, 120 Mitarbeitende",
+    "context": "Station 5 des Tageslaufs: Bedarfs- und Anforderungsanalyse.",
+    "mission": "Sie erfassen Kundenanforderungen und leiten eine passende Arbeitsplatzempfehlung ab.",
+    "station": {
+      "id": "NS-ST-05",
+      "department": "PreSales",
+      "profile": "Anforderungsaufnahme fuer Office-Arbeitsplaetze",
+      "constraints": [
+        "Fragen strukturiert erfassen",
+        "Anforderungen von Wuenschen trennen",
+        "Kurzprofil schriftlich festhalten"
+      ]
+    },
+    "customerRequest": {
+      "from": "vertrieb@ausbildungsbetrieb.example",
+      "to": "rollout.team@systemhaus.example",
+      "subject": "Bedarfsanalyse fuer neue Arbeitsplaetze",
+      "date": "2026-03-13",
+      "body": "Bitte fuehren Sie fuer eine kleine Vertriebsgruppe eine strukturierte Bedarfsanalyse durch.\n\nWir benoetigen ein kurzes Anforderungsprofil als Grundlage fuer die Auswahlentscheidung."
+    }
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "type": "multi_select",
+      "title": "Gute Fragen im Erstgespraech",
+      "prompt": "Welche Fragen sind fuer die Bedarfsanalyse fachlich sinnvoll? (Mehrfachauswahl)",
+      "options": [
+        {
+          "text": "Welche Anwendungen werden taeglich genutzt?",
+          "correct": true,
+          "rationale": "Direkter Einfluss auf Leistungsbedarf."
+        },
+        {
+          "text": "Wie viele Monitore und welche Anschluesse werden benoetigt?",
+          "correct": true,
+          "rationale": "Wichtig fuer Kompatibilitaet und Ausstattung."
+        },
+        {
+          "text": "Welche Antwortfarbe soll das Geraet haben?",
+          "correct": false,
+          "rationale": "Kein fachlicher Kernpunkt fuer den Einsatz."
+        },
+        {
+          "text": "Gibt es Vorgaben zu Budget oder Standardisierung?",
+          "correct": true,
+          "rationale": "Wirtschaftlichkeit und Betriebsvorgaben sind zentral."
+        },
+        {
+          "text": "Sollen private Apps des Nutzers automatisch installiert werden?",
+          "correct": false,
+          "rationale": "Nicht standardisiert und oft nicht zulaessig."
+        }
+      ],
+      "feedback": {
+        "correct": "Richtig: Sie erfassen technische und wirtschaftliche Kernanforderungen.",
+        "wrong": "Teilweise unpassend: Bitte fachliche Kriterien staerker priorisieren."
+      }
+    },
+    {
+      "id": "q2",
+      "type": "single_choice",
+      "title": "Anforderung oder Wunsch",
+      "prompt": "Welche Aussage ist eine echte technische Anforderung?",
+      "options": [
+        {
+          "text": "Der PC soll moeglichst cool aussehen",
+          "rationale": "Unscharfer Wunsch, kein belastbares Kriterium."
+        },
+        {
+          "text": "Der Arbeitsplatz braucht 2 Monitore mit nativer Full-HD-Ausgabe",
+          "rationale": "Messbare, pruefbare technische Anforderung."
+        },
+        {
+          "text": "Das Geraet soll einfach das beste sein",
+          "rationale": "Ohne Kriterien nicht nutzbar."
+        }
+      ],
+      "correctIndex": 1,
+      "feedback": {
+        "correct": "Richtig: Die Aussage ist konkret und pruefbar.",
+        "wrong": "Nicht ausreichend konkret fuer eine technische Auswahl."
+      }
+    },
+    {
+      "id": "q3",
+      "type": "ordering",
+      "title": "Vom Bedarf zur Empfehlung",
+      "prompt": "Ordnen Sie den Ablauf sinnvoll.",
+      "items": [
+        "Empfehlung mit Begruendung erstellen",
+        "Anforderungen sammeln",
+        "Mindestkriterien festlegen",
+        "Passende Optionen vergleichen",
+        "Anforderungen mit Kunde rueckvalidieren"
+      ],
+      "correctOrder": [
+        "Anforderungen sammeln",
+        "Anforderungen mit Kunde rueckvalidieren",
+        "Mindestkriterien festlegen",
+        "Passende Optionen vergleichen",
+        "Empfehlung mit Begruendung erstellen"
+      ],
+      "feedback": {
+        "correct": "Richtig: So entsteht eine belastbare Empfehlung.",
+        "wrong": "Nicht optimal: Bitte erst valide Anforderungen sichern, dann vergleichen."
+      }
+    },
+    {
+      "id": "q4",
+      "type": "number",
+      "title": "Dual-Monitor-Bedarf",
+      "prompt": "Eine Gruppe hat 18 Mitarbeitende, davon brauchen 70 % zwei Monitore. Fuer wie viele Arbeitsplaetze sollten Sie Dual-Monitor-Ausstattung planen (auf ganze Plaetze aufrunden)?",
+      "expected": 13,
+      "toleranceAbs": 0,
+      "showExpectedFormula": "18 * 0.70 = 12.6 -> aufrunden auf 13",
+      "feedback": {
+        "correct": "Richtig geplant.",
+        "wrong": "Bitte Prozentwert berechnen und auf volle Arbeitsplaetze aufrunden."
+      }
+    },
+    {
+      "id": "q5",
+      "type": "short_text",
+      "title": "Mini-Anforderungsprofil",
+      "prompt": "Formulieren Sie ein kurzes Anforderungsprofil (4-6 Saetze) mit Nutzung, Muss-Kriterien und Budgetrahmen.",
+      "minChars": 140,
+      "requiredKeywords": [
+        "nutzung",
+        "muss",
+        "budget"
+      ],
+      "expectedOutline": "Kompakt: Einsatzprofil, technische Muss-Punkte, wirtschaftlicher Rahmen.",
+      "feedback": {
+        "correct": "Richtig: Das Profil ist direkt als Arbeitsgrundlage nutzbar.",
+        "wrong": "Bitte Nutzung, Muss-Kriterien und Budgetrahmen klarer formulieren."
+      }
+    }
+  ]
+}

@@ -1,0 +1,1055 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Stations-Prototyp</title>
+  <link rel="icon" href="data:," />
+  <link rel="stylesheet" href="./neon-glass.css" />
+</head>
+<body>
+  <main id="app">
+    <section id="workspaceLeft"></section>
+  </main>
+
+  <div class="submit-bar">
+    <button id="btnSubmit" class="btn-primary">Abgeben und Auswertung anzeigen</button>
+    <button id="btnDemo">Demo-Antworten laden und Auswertung testen</button>
+    <button id="btnReset">Antworten zuruecksetzen</button>
+  </div>
+
+  <script id="embeddedScenario" type="application/json">
+{}
+</script>
+
+  <script>
+    const app = document.getElementById("app");
+    const workspaceLeft = document.getElementById("workspaceLeft");
+    const answers = {};
+    let scenarioData = null;
+    let inlineSummary = null;
+    let lastResults = null;
+
+    function normalize(s) {
+      return String(s || "").toLowerCase().trim().replace(/\s+/g, " ");
+    }
+
+    function esc(s) {
+      return String(s || "")
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;");
+    }
+
+    function loadEmbeddedScenario() {
+      const script = document.getElementById("embeddedScenario");
+      if (!script) return null;
+      const raw = (script.textContent || "").trim();
+      if (!raw || raw === "{}") return null;
+      try {
+        return JSON.parse(raw);
+      } catch {
+        return null;
+      }
+    }
+
+    async function loadScenario() {
+      const embedded = loadEmbeddedScenario();
+      if (embedded) return embedded;
+      const res = await fetch("./Kurse/LF02-Scenarien/01_easy_ausbildungsbetrieb_hardwareprofil.json");
+      if (!res.ok) throw new Error("HTTP " + res.status);
+      return await res.json();
+    }
+
+    function createScenarioPanel(data) {
+      const panel = document.createElement("section");
+      panel.className = "panel";
+      const s = data.scenario || {};
+      const st = s.station || {};
+      const req = s.customerRequest || {};
+      panel.innerHTML =
+        `<div class="meta-grid">` +
+        `<div class="meta-card"><strong>Kunde</strong>${esc(s.company || "")}</div>` +
+        `<div class="meta-card"><strong>Groesse</strong>${esc(s.scale || "")}</div>` +
+        `<div class="meta-card"><strong>Einsatzkontext</strong>${esc(s.context || "")}</div>` +
+        `<div class="meta-card"><strong>Auftrag</strong>${esc(s.mission || "")}</div>` +
+        `</div>` +
+        `<div class="meta-grid meta-grid-spaced">` +
+        `<div class="meta-card"><strong>Station-ID</strong>${esc(st.id || "")}</div>` +
+        `<div class="meta-card"><strong>Bereich</strong>${esc(st.department || "")}</div>` +
+        `<div class="meta-card"><strong>Profil</strong>${esc(st.profile || "")}</div>` +
+        `<div class="meta-card"><strong>Randbedingungen</strong><ul class="constraint-list">${(st.constraints || []).map((c) => `<li>${esc(c)}</li>`).join("")}</ul></div>` +
+        `</div>` +
+        `<div class="request-letter">` +
+        `<h3>Kundenanfrage (Originaltext)</h3>` +
+        `<div class="request-meta">` +
+        `<div><strong>Von:</strong> ${esc(req.from || "-")}</div>` +
+        `<div><strong>An:</strong> ${esc(req.to || "-")}</div>` +
+        `<div><strong>Betreff:</strong> ${esc(req.subject || "-")}</div>` +
+        `<div><strong>Datum:</strong> ${esc(req.date || "-")}</div>` +
+        `</div>` +
+        `<div class="request-body">${esc(req.body || "Keine Kundenanfrage hinterlegt.")}</div>` +
+        `</div>`;
+      return panel;
+    }
+
+    function renderSingleChoice(q) {
+      const wrap = document.createElement("div");
+      (q.options || []).forEach((o, idx) => {
+        const row = document.createElement("label");
+        row.className = "choice-row";
+        const radio = document.createElement("input");
+        radio.type = "radio";
+        radio.name = q.id;
+        radio.value = String(idx);
+        radio.dataset.qid = q.id;
+        radio.dataset.optionIndex = String(idx);
+        radio.addEventListener("change", () => {
+          answers[q.id] = Number(radio.value);
+        });
+        row.appendChild(radio);
+        row.appendChild(document.createTextNode(o.text));
+        wrap.appendChild(row);
+      });
+      return wrap;
+    }
+
+    function renderMultiSelect(q) {
+      const wrap = document.createElement("div");
+      const selected = new Set();
+      answers[q.id] = selected;
+      (q.options || []).forEach((o, idx) => {
+        const row = document.createElement("label");
+        row.className = "choice-row";
+        const cb = document.createElement("input");
+        cb.type = "checkbox";
+        cb.value = String(idx);
+        cb.dataset.qid = q.id;
+        cb.dataset.optionIndex = String(idx);
+        cb.addEventListener("change", () => {
+          if (cb.checked) selected.add(idx);
+          else selected.delete(idx);
+        });
+        row.appendChild(cb);
+        row.appendChild(document.createTextNode(o.text));
+        wrap.appendChild(row);
+      });
+      return wrap;
+    }
+
+    function renderOrdering(q) {
+      const wrap = document.createElement("div");
+      const order = [...(q.items || [])];
+      answers[q.id] = order;
+      function draw() {
+        wrap.innerHTML = "";
+        order.forEach((item, idx) => {
+          const row = document.createElement("div");
+          row.className = "ordering-row";
+          const txt = document.createElement("div");
+          txt.textContent = `${idx + 1}. ${item}`;
+          const up = document.createElement("button");
+          up.textContent = "hoch";
+          up.disabled = idx === 0;
+          const down = document.createElement("button");
+          down.textContent = "runter";
+          down.disabled = idx === order.length - 1;
+          up.addEventListener("click", () => {
+            [order[idx - 1], order[idx]] = [order[idx], order[idx - 1]];
+            draw();
+          });
+          down.addEventListener("click", () => {
+            [order[idx + 1], order[idx]] = [order[idx], order[idx + 1]];
+            draw();
+          });
+          row.append(txt, up, down);
+          wrap.appendChild(row);
+        });
+      }
+      draw();
+      return wrap;
+    }
+
+    function renderNumber(q) {
+      const inp = document.createElement("input");
+      inp.type = "number";
+      inp.step = "any";
+      inp.placeholder = "Zahl eingeben";
+      inp.dataset.qid = q.id;
+      inp.addEventListener("input", () => {
+        answers[q.id] = inp.value;
+      });
+      return inp;
+    }
+
+    function renderShortText(q) {
+      const ta = document.createElement("textarea");
+      ta.placeholder = "Praxisnah und konkret antworten ...";
+      ta.dataset.qid = q.id;
+      ta.addEventListener("input", () => {
+        answers[q.id] = ta.value;
+      });
+      return ta;
+    }
+
+    function isFollowupDivider(q) {
+      return q && q.type === "followup_divider";
+    }
+
+    function renderQuestion(q, idx) {
+      const card = document.createElement("section");
+      card.className = "question";
+      card.dataset.qid = q.id;
+      const main = document.createElement("div");
+      main.className = "question-main";
+      if (isFollowupDivider(q)) {
+        card.classList.add("question-divider");
+        main.innerHTML =
+          "<div class='request-letter'>" +
+          `<h3>${esc(q.title || "Folgeauftrag")}</h3>` +
+          "<div class='request-meta'>" +
+          `<div><strong>Von:</strong> ${esc(q.from || "-")}</div>` +
+          `<div><strong>An:</strong> ${esc(q.to || "-")}</div>` +
+          `<div><strong>Betreff:</strong> ${esc(q.subject || "-")}</div>` +
+          `<div><strong>Datum:</strong> ${esc(q.date || "-")}</div>` +
+          "</div>" +
+          `<div class='request-body'>${esc(q.body || q.prompt || "")}</div>` +
+          "</div>";
+        card.appendChild(main);
+        return card;
+      }
+      const titlePrefix = Number.isInteger(idx) ? `${idx + 1}. ` : "";
+      main.innerHTML =
+        `<h3>${titlePrefix}${esc(q.title)}</h3>` +
+        (q.prompt ? `<p>${esc(q.prompt)}</p>` : "");
+
+      let body = null;
+      if (q.type === "single_choice") body = renderSingleChoice(q);
+      if (q.type === "multi_select") body = renderMultiSelect(q);
+      if (q.type === "ordering") body = renderOrdering(q);
+      if (q.type === "number") body = renderNumber(q);
+      if (q.type === "short_text") body = renderShortText(q);
+      if (!body) {
+        body = document.createElement("div");
+        body.textContent = "Aufgabentyp noch nicht implementiert.";
+      }
+      main.appendChild(body);
+      card.appendChild(main);
+      const reviewSlot = document.createElement("div");
+      reviewSlot.className = "review-slot hidden";
+      reviewSlot.dataset.reviewFor = q.id;
+      card.appendChild(reviewSlot);
+      return card;
+    }
+
+    function toArraySet(setLike) {
+      if (setLike instanceof Set) return [...setLike];
+      return [];
+    }
+
+    function evaluateSingleChoice(q, user) {
+      const chosen = Number.isInteger(user) ? user : null;
+      const correct = q.correctIndex;
+      const ok = chosen === correct;
+      const selectedText = chosen === null ? "(keine Auswahl)" : q.options[chosen]?.text || "(ungueltig)";
+      const expectedText = q.options[correct]?.text || "";
+      let why = "";
+      if (ok) {
+        why = q.feedback?.correct || "Richtig.";
+      } else if (chosen === null) {
+        why = "Nicht beantwortet. " + (q.feedback?.wrong || "");
+      } else {
+        const rationale = q.options[chosen]?.rationale || "";
+        why = `${q.feedback?.wrong || "Falsch."} Gewaehlt: ${selectedText}. Grund: ${rationale}`;
+      }
+      return {
+        status: ok ? "ok" : (chosen === null ? "bad" : "bad"),
+        userDisplay: selectedText,
+        expectedDisplay: expectedText,
+        explanation: why
+      };
+    }
+
+    function evaluateMultiSelect(q, userSet) {
+      const user = new Set(toArraySet(userSet));
+      const correctSet = new Set();
+      (q.options || []).forEach((o, i) => { if (o.correct) correctSet.add(i); });
+
+      const misses = [...correctSet].filter((i) => !user.has(i));
+      const falsePos = [...user].filter((i) => !correctSet.has(i));
+      const exact = misses.length === 0 && falsePos.length === 0;
+      const unanswered = user.size === 0;
+      const partial = !exact && !unanswered;
+
+      const userLabels = [...user].map((i) => q.options[i]?.text).filter(Boolean);
+      const expectedLabels = [...correctSet].map((i) => q.options[i]?.text).filter(Boolean);
+
+      const details = [];
+      if (misses.length) {
+        for (const i of misses) {
+          details.push(`Fehlt: ${q.options[i].text} -> ${q.options[i].rationale}`);
+        }
+      }
+      if (falsePos.length) {
+        for (const i of falsePos) {
+          details.push(`Unpassend gewaehlt: ${q.options[i].text} -> ${q.options[i].rationale}`);
+        }
+      }
+      let why = "";
+      if (exact) why = q.feedback?.correct || "Richtig.";
+      else if (unanswered) why = "Nicht beantwortet. " + (q.feedback?.wrong || "");
+      else why = (q.feedback?.wrong || "Teilweise falsch.") + " " + details.join(" | ");
+
+      return {
+        status: exact ? "ok" : (partial ? "partial" : "bad"),
+        userDisplay: userLabels.length ? userLabels.join(" | ") : "(keine Auswahl)",
+        expectedDisplay: expectedLabels.join(" | "),
+        explanation: why
+      };
+    }
+
+    function evaluateOrdering(q, orderArr) {
+      const user = Array.isArray(orderArr) ? orderArr : [];
+      const expected = q.correctOrder || [];
+      const maxLen = Math.max(user.length, expected.length);
+      let same = 0;
+      const diffs = [];
+      for (let i = 0; i < maxLen; i++) {
+        const u = user[i] || "(leer)";
+        const e = expected[i] || "(leer)";
+        if (normalize(u) === normalize(e)) same++;
+        else diffs.push(`Pos ${i + 1}: ist "${u}", sollte "${e}"`);
+      }
+      const exact = diffs.length === 0;
+      const partial = !exact && same >= Math.ceil(expected.length / 2);
+      let why = "";
+      if (exact) why = q.feedback?.correct || "Richtige Reihenfolge.";
+      else why = (q.feedback?.wrong || "Reihenfolge fehlerhaft.") + " " + diffs.slice(0, 4).join(" | ");
+
+      return {
+        status: exact ? "ok" : (partial ? "partial" : "bad"),
+        userDisplay: user.join(" -> "),
+        expectedDisplay: expected.join(" -> "),
+        explanation: why
+      };
+    }
+
+    function evaluateNumber(q, userRaw) {
+      const n = Number(String(userRaw || "").replace(",", "."));
+      const expected = Number(q.expected);
+      const tol = Number(q.toleranceAbs || 0);
+      const has = Number.isFinite(n);
+      const ok = has && Math.abs(n - expected) <= tol;
+      let why = "";
+      if (ok) why = (q.feedback?.correct || "Richtig.") + ` Formel: ${q.showExpectedFormula || ""}`;
+      else if (!has) why = "Keine gueltige Zahl eingegeben. " + (q.feedback?.wrong || "");
+      else why = `${q.feedback?.wrong || "Falsch."} Erwartungswert: ${expected}. Formel: ${q.showExpectedFormula || ""}`;
+      return {
+        status: ok ? "ok" : "bad",
+        userDisplay: has ? String(n) : "(keine gueltige Zahl)",
+        expectedDisplay: String(expected),
+        explanation: why
+      };
+    }
+
+    function evaluateShortText(q, userRaw) {
+      const txt = String(userRaw || "");
+      const norm = normalize(txt);
+      const minChars = Number(q.minChars || 0);
+      const required = q.requiredKeywords || [];
+      const hits = required.filter((k) => norm.includes(normalize(k)));
+      const missing = required.filter((k) => !norm.includes(normalize(k)));
+      const enoughLen = txt.trim().length >= minChars;
+      const ratio = required.length ? hits.length / required.length : 1;
+      let status = "bad";
+      if (enoughLen && ratio >= 1) status = "ok";
+      else if (enoughLen && ratio >= 0.5) status = "partial";
+      else if (!txt.trim()) status = "bad";
+
+      let why = "";
+      if (status === "ok") {
+        why = (q.feedback?.correct || "Richtig.") + ` Enthaltene Kernbegriffe: ${hits.join(", ")}.`;
+      } else {
+        const missInfo = missing.length ? ` Fehlende Kernbegriffe: ${missing.join(", ")}.` : "";
+        const lenInfo = enoughLen ? "" : ` Mindestlaenge ${minChars} Zeichen nicht erreicht.`;
+        why = (q.feedback?.wrong || "Unvollstaendig.") + missInfo + lenInfo + ` Referenzstruktur: ${q.expectedOutline || ""}`;
+      }
+      return {
+        status,
+        userDisplay: txt.trim() ? txt.trim() : "(keine Antwort)",
+        expectedDisplay: q.expectedOutline || "Freitext mit Kernaspekten",
+        explanation: why
+      };
+    }
+
+    function evaluateQuestion(q) {
+      const user = answers[q.id];
+      if (q.type === "single_choice") return evaluateSingleChoice(q, user);
+      if (q.type === "multi_select") return evaluateMultiSelect(q, user);
+      if (q.type === "ordering") return evaluateOrdering(q, user);
+      if (q.type === "number") return evaluateNumber(q, user);
+      if (q.type === "short_text") return evaluateShortText(q, user);
+      return {
+        status: "bad",
+        userDisplay: "(nicht ausgewertet)",
+        expectedDisplay: "(kein Evaluator)",
+        explanation: "Aufgabentyp noch nicht auswertbar."
+      };
+    }
+
+    function markClassFromStatus(status) {
+      if (status === "ok") return "mark-ok";
+      if (status === "miss") return "mark-miss";
+      if (status === "partial") return "mark-partial";
+      if (status === "neutral") return "mark-neutral";
+      return "mark-bad";
+    }
+
+    function explainClassFromStatus(status) {
+      if (status === "ok") return "good";
+      if (status === "miss") return "miss";
+      if (status === "partial") return "partial";
+      if (status === "neutral") return "neutral";
+      return "bad";
+    }
+
+    function tooltipTextFromStatus(status) {
+      if (status === "ok") return "richtig";
+      if (status === "bad") return "falsch";
+      if (status === "miss") return "wäre richtig gewesen";
+      if (status === "neutral") return "wäre falsch gewesen";
+      if (status === "partial") return "teilweise richtig";
+      return "Auswertung";
+    }
+
+    function clearInputMarkers(card) {
+      card.querySelectorAll(".choice-row, .ordering-row").forEach((el) => {
+        el.classList.remove("mark-ok", "mark-partial", "mark-bad", "mark-miss", "mark-neutral");
+      });
+      card.querySelectorAll('input[type="number"], textarea').forEach((el) => {
+        el.classList.remove("mark-ok", "mark-partial", "mark-bad", "mark-neutral");
+      });
+      card.querySelectorAll('[data-eval-tooltip="1"]').forEach((el) => {
+        el.removeAttribute("title");
+        el.removeAttribute("data-eval-tooltip");
+        el.removeAttribute("data-eval-tooltip-text");
+      });
+    }
+
+    function buildSourceAssessments(card, q, result) {
+      const out = [];
+      if (!card || !q) return out;
+
+      if (q.type === "single_choice") {
+        const chosen = Number.isInteger(answers[q.id]) ? answers[q.id] : null;
+        const rows = [...card.querySelectorAll(".choice-row")];
+        rows.forEach((row, idx) => {
+          const opt = q.options?.[idx] || {};
+          let status = "neutral";
+          let explain = opt.rationale || "Option ohne Zusatzhinweis.";
+          if (idx === q.correctIndex && chosen === idx) {
+            status = "ok";
+            explain = `Treffer. ${opt.rationale || ""}`.trim();
+          } else if (idx === q.correctIndex) {
+            status = "miss";
+            explain = `Das waere die optimale Wahl. ${opt.rationale || ""}`.trim();
+          } else if (chosen === idx) {
+            status = "bad";
+            explain = `Ausgewaehlt, aber unpassend. ${opt.rationale || ""}`.trim();
+          }
+          out.push({
+            sourceEl: row,
+            anchorEl: row,
+            status,
+            title: opt.text || `Option ${idx + 1}`,
+            detail: "",
+            explain
+          });
+        });
+        return out;
+      }
+
+      if (q.type === "multi_select") {
+        const selected = answers[q.id] instanceof Set ? answers[q.id] : new Set();
+        const rows = [...card.querySelectorAll(".choice-row")];
+        rows.forEach((row, idx) => {
+          const opt = q.options?.[idx] || {};
+          const isSelected = selected.has(idx);
+          let status = "neutral";
+          let explain = opt.rationale || "Option ohne Zusatzhinweis.";
+          if (opt.correct && isSelected) {
+            status = "ok";
+            explain = `Erforderlich und korrekt gesetzt. ${opt.rationale || ""}`.trim();
+          } else if (opt.correct && !isSelected) {
+            status = "miss";
+            explain = `Erforderlich, aber fehlt. ${opt.rationale || ""}`.trim();
+          } else if (!opt.correct && isSelected) {
+            status = "bad";
+            explain = `Unnoetig gesetzt. ${opt.rationale || ""}`.trim();
+          } else {
+            status = "neutral";
+            explain = `Ausgelassen, das ist vertretbar. ${opt.rationale || ""}`.trim();
+          }
+          out.push({
+            sourceEl: row,
+            anchorEl: row,
+            status,
+            title: opt.text || `Option ${idx + 1}`,
+            detail: "",
+            explain
+          });
+        });
+        return out;
+      }
+
+      if (q.type === "ordering") {
+        const rows = [...card.querySelectorAll(".ordering-row")];
+        const user = Array.isArray(answers[q.id]) ? answers[q.id] : [];
+        const expected = q.correctOrder || [];
+        rows.forEach((row, idx) => {
+          const current = user[idx] || "(leer)";
+          const should = expected[idx] || "(leer)";
+          const ok = normalize(current) === normalize(should);
+          out.push({
+            sourceEl: row,
+            anchorEl: row,
+            status: ok ? "ok" : "bad",
+            title: current,
+            detail: "",
+            explain: ok ? `Position ${idx + 1} passt.` : `Soll an Position ${idx + 1}: ${should}`
+          });
+        });
+        return out;
+      }
+
+      if (q.type === "number") {
+        const input = card.querySelector('input[type="number"]');
+        out.push({
+          sourceEl: input,
+          anchorEl: input,
+          status: result.status,
+          title: "Rechenpruefung",
+          detail: `Referenz: ${result.expectedDisplay}`,
+          explain: result.explanation
+        });
+        return out;
+      }
+
+      if (q.type === "short_text") {
+        const ta = card.querySelector("textarea");
+        out.push({
+          sourceEl: ta,
+          anchorEl: ta,
+          status: result.status,
+          title: "Freitext-Feedback",
+          detail: `Erwartung: ${result.expectedDisplay}`,
+          explain: result.explanation
+        });
+        return out;
+      }
+
+      out.push({
+        sourceEl: card.querySelector(".question-main"),
+        anchorEl: card.querySelector(".question-main"),
+        status: result.status,
+        title: "Auswertung",
+        detail: `Erwartung: ${result.expectedDisplay}`,
+        explain: result.explanation
+      });
+      return out;
+    }
+
+    function getAnchorPointInCard(cardRect, sourceEl, anchorEl) {
+      const el = anchorEl || sourceEl;
+      const rect = (el || sourceEl)?.getBoundingClientRect?.();
+      if (!rect) {
+        return { x: 0, y: 0 };
+      }
+
+      const tag = (el?.tagName || "").toUpperCase();
+      const type = (el?.type || "").toLowerCase();
+      let x = rect.right - cardRect.left;
+      let y = rect.top + (rect.height / 2) - cardRect.top;
+
+      if (type === "radio" || type === "checkbox") {
+        x = rect.left + (rect.width / 2) - cardRect.left;
+      } else if (tag === "TEXTAREA" || tag === "INPUT" || tag === "SELECT") {
+        x = rect.right - cardRect.left;
+      }
+
+      return { x, y };
+    }
+
+    function applyInputBubbles(assessments) {
+      for (const item of assessments) {
+        const cls = markClassFromStatus(item.status);
+        const tooltip = tooltipTextFromStatus(item.status);
+        if (!item.sourceEl) continue;
+        if (item.sourceEl.matches(".choice-row, .ordering-row")) {
+          item.sourceEl.classList.add(cls);
+          item.sourceEl.title = tooltip;
+          item.sourceEl.setAttribute("data-eval-tooltip", "1");
+          item.sourceEl.setAttribute("data-eval-tooltip-text", tooltip);
+        } else if (item.sourceEl.matches('input[type="number"], textarea')) {
+          item.sourceEl.classList.add(cls);
+          item.sourceEl.title = tooltip;
+          item.sourceEl.setAttribute("data-eval-tooltip", "1");
+          item.sourceEl.setAttribute("data-eval-tooltip-text", tooltip);
+        }
+      }
+    }
+
+    function layoutReviewGraph(card, slot, assessments) {
+      slot.innerHTML = `<svg class="review-canvas" aria-hidden="true"></svg><div class="review-list"></div>`;
+      const svg = slot.querySelector(".review-canvas");
+      const list = slot.querySelector(".review-list");
+      const cardRect = card.getBoundingClientRect();
+      const slotRect = slot.getBoundingClientRect();
+      const slotTopInCard = slotRect.top - cardRect.top;
+      const slotLeftInCard = slotRect.left - cardRect.left;
+      const mainHeight = Math.ceil(card.querySelector(".question-main")?.getBoundingClientRect().height || 0);
+      const slotWidth = Math.max(320, Math.ceil(slot.getBoundingClientRect().width));
+      const preferredNodeWidth = Math.min(420, Math.max(220, Math.floor(slotWidth * 0.78)));
+
+      const nodes = assessments.map((a) => {
+        const node = document.createElement("article");
+        node.className = `review-node ${a.status}`;
+        node.title = tooltipTextFromStatus(a.status);
+        node.setAttribute("data-eval-tooltip", "1");
+        node.setAttribute("data-eval-tooltip-text", tooltipTextFromStatus(a.status));
+        node.innerHTML =
+          `<p class="review-node-title">${esc(a.title || "")}</p>` +
+          (a.detail ? `<div class="review-content">${esc(a.detail)}</div>` : "") +
+          `<div class="review-node-explain ${explainClassFromStatus(a.status)}">${esc(a.explain || "")}</div>`;
+        node.style.width = `${preferredNodeWidth}px`;
+        list.appendChild(node);
+        const fallbackSource = a.sourceEl || card.querySelector(".question-main") || card;
+        const anchor = getAnchorPointInCard(cardRect, fallbackSource, a.anchorEl || fallbackSource);
+        return {
+          ...a,
+          node,
+          sourceX: anchor.x,
+          sourceY: anchor.y,
+          anchorY: anchor.y - slotTopInCard
+        };
+      });
+
+      for (const n of nodes) {
+        n.height = Math.max(70, Math.ceil(n.node.getBoundingClientRect().height));
+        n.width = preferredNodeWidth;
+      }
+
+      const gap = 18;
+      const sourceYs = nodes.map((n) => n.anchorY);
+      const sourceSpread = sourceYs.length ? (Math.max(...sourceYs) - Math.min(...sourceYs)) : 0;
+      const sumHeights = nodes.reduce((s, n) => s + n.height, 0);
+      const slotHeight = Math.max(mainHeight, sourceSpread + 120, sumHeights + (gap * (nodes.length + 1)));
+      slot.style.minHeight = `${Math.ceil(slotHeight)}px`;
+      list.style.height = `${Math.ceil(slotHeight)}px`;
+
+      const leftInset = Math.min(64, Math.max(18, Math.floor((slotWidth - preferredNodeWidth) * 0.62)));
+      let minX = preferredNodeWidth / 2 + leftInset;
+      let maxX = slotWidth - preferredNodeWidth / 2 - 8;
+      if (minX > maxX) {
+        const centerX = (minX + maxX) / 2;
+        minX = centerX;
+        maxX = centerX;
+      }
+      const minY = 6;
+      const maxY = slotHeight - 6;
+      const baseTargetX = minX + Math.max(10, Math.min(48, (maxX - minX) * 0.38));
+
+      for (let i = 0; i < nodes.length; i++) {
+        const n = nodes[i];
+        n.anchorY = Math.max(n.height / 2 + minY, Math.min(maxY - n.height / 2, n.anchorY));
+        n.targetX = Math.max(minX, Math.min(maxX, baseTargetX + Math.max(0, (n.sourceX - slotLeftInCard) * 0.04)));
+        n.x = Math.max(minX, Math.min(maxX, n.targetX + ((i % 3) - 1) * 16));
+        n.y = Math.max(n.height / 2 + minY, Math.min(maxY - n.height / 2, n.anchorY + ((i % 2) ? 10 : -10)));
+        n.vx = 0;
+        n.vy = 0;
+      }
+
+      for (let iter = 0; iter < 180; iter++) {
+        for (const n of nodes) {
+          const fx = (n.targetX - n.x) * 0.06;
+          const fy = (n.anchorY - n.y) * 0.12;
+          n.vx += fx;
+          n.vy += fy;
+        }
+
+        for (let i = 0; i < nodes.length; i++) {
+          for (let j = i + 1; j < nodes.length; j++) {
+            const a = nodes[i];
+            const b = nodes[j];
+            let dx = b.x - a.x;
+            let dy = b.y - a.y;
+            const dist = Math.hypot(dx, dy) || 0.0001;
+            const overlapX = (a.width + b.width) / 2 + 14 - Math.abs(dx);
+            const overlapY = (a.height + b.height) / 2 + gap - Math.abs(dy);
+
+            if (overlapX > 0 && overlapY > 0) {
+              if (overlapX < overlapY) {
+                const push = (overlapX / 2) * (dx >= 0 ? 1 : -1);
+                a.vx -= push * 0.11;
+                b.vx += push * 0.11;
+              } else {
+                const push = (overlapY / 2) * (dy >= 0 ? 1 : -1);
+                a.vy -= push * 0.16;
+                b.vy += push * 0.16;
+              }
+            }
+
+            const repel = Math.max(0, 170 - dist) * 0.0028;
+            dx /= dist;
+            dy /= dist;
+            a.vx -= dx * repel;
+            a.vy -= dy * repel;
+            b.vx += dx * repel;
+            b.vy += dy * repel;
+          }
+        }
+
+        for (const n of nodes) {
+          n.vx *= 0.72;
+          n.vy *= 0.72;
+          n.x += n.vx;
+          n.y += n.vy;
+          n.x = Math.max(minX, Math.min(maxX, n.x));
+          n.y = Math.max(n.height / 2 + minY, Math.min(maxY - n.height / 2, n.y));
+        }
+      }
+
+      // Final vertical packing pass: guarantee visible spacing between nodes.
+      const sortedByY = [...nodes].sort((a, b) => a.y - b.y);
+      if (sortedByY.length) {
+        sortedByY[0].y = Math.max(sortedByY[0].y, sortedByY[0].height / 2 + minY);
+        for (let i = 1; i < sortedByY.length; i++) {
+          const prev = sortedByY[i - 1];
+          const cur = sortedByY[i];
+          const minCenter = prev.y + (prev.height / 2) + gap + (cur.height / 2);
+          if (cur.y < minCenter) cur.y = minCenter;
+        }
+
+        const last = sortedByY[sortedByY.length - 1];
+        const bottomLimit = maxY - (last.height / 2);
+        if (last.y > bottomLimit) {
+          const overflow = last.y - bottomLimit;
+          for (const n of sortedByY) n.y -= overflow;
+        }
+
+        const first = sortedByY[0];
+        const topLimit = first.height / 2 + minY;
+        if (first.y < topLimit) {
+          const underflow = topLimit - first.y;
+          for (const n of sortedByY) n.y += underflow;
+        }
+
+        for (let i = 1; i < sortedByY.length; i++) {
+          const prev = sortedByY[i - 1];
+          const cur = sortedByY[i];
+          const minCenter = prev.y + (prev.height / 2) + gap + (cur.height / 2);
+          if (cur.y < minCenter) cur.y = minCenter;
+          cur.y = Math.min(cur.y, maxY - cur.height / 2);
+        }
+      }
+
+      const bySourceY = [...nodes].sort((a, b) => a.sourceY - b.sourceY);
+      const midLane = (bySourceY.length - 1) / 2;
+      bySourceY.forEach((n, i) => {
+        n.routeLane = i - midLane;
+      });
+
+      for (const n of nodes) {
+        n.node.style.left = `${Math.round(n.x - n.width / 2)}px`;
+        n.node.style.top = `${Math.round(n.y - n.height / 2)}px`;
+      }
+
+      const cardWidth = Math.ceil(card.getBoundingClientRect().width);
+      const cardHeight = Math.ceil(Math.max(card.getBoundingClientRect().height, slotTopInCard + slotHeight + 8));
+      svg.style.left = `${-slotLeftInCard}px`;
+      svg.style.top = `${-slotTopInCard}px`;
+      svg.style.width = `${cardWidth}px`;
+      svg.style.height = `${cardHeight}px`;
+      svg.setAttribute("viewBox", `0 0 ${cardWidth} ${cardHeight}`);
+      svg.setAttribute("preserveAspectRatio", "none");
+      svg.innerHTML = "";
+
+      for (const n of nodes) {
+        const x1 = n.sourceX;
+        const y1 = n.sourceY;
+        const x2 = slotLeftInCard + (n.x - n.width / 2);
+        const y2 = slotTopInCard + n.y;
+        const laneOffset = (n.routeLane || 0) * 6;
+        const available = Math.max(14, x2 - x1 - 8);
+        const bend = Math.min(available - 2, Math.max(20, available * 0.74));
+        const c1x = Math.max(x1 + 8, Math.min(x2 - 12, x1 + (bend * 0.52) + laneOffset));
+        const c2x = Math.max(x1 + 10, Math.min(x2 - 7, x1 + bend + laneOffset));
+        const ySkew = (n.routeLane || 0) * 2.4;
+        const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
+        path.setAttribute("d", `M ${x1} ${y1} C ${c1x} ${y1 + ySkew}, ${c2x} ${y2 - ySkew}, ${x2} ${y2}`);
+        path.setAttribute("class", `review-edge ${n.status}`);
+        svg.appendChild(path);
+      }
+    }
+
+    function clearInlineReview() {
+      for (const card of document.querySelectorAll(".question")) {
+        card.classList.remove("evaluated");
+        clearInputMarkers(card);
+        const slot = card.querySelector(".review-slot");
+        if (!slot) continue;
+        slot.style.minHeight = "";
+        slot.innerHTML = "";
+        slot.classList.add("hidden");
+      }
+      if (inlineSummary) {
+        inlineSummary.innerHTML = "";
+        inlineSummary.classList.add("hidden");
+      }
+    }
+
+    function renderInlineReview(results) {
+      clearInlineReview();
+      const cOk = results.filter((r) => r.status === "ok").length;
+      const cPartial = results.filter((r) => r.status === "partial").length;
+      const cBad = results.filter((r) => r.status === "bad").length;
+      const name = answers._meta_participant || "(ohne Name)";
+      const group = answers._meta_group || "(ohne Gruppe)";
+      const station = answers._meta_stationId || "(ohne Station)";
+      const hasMeta = Boolean(answers._meta_participant || answers._meta_group || answers._meta_stationId);
+
+      if (inlineSummary) {
+        inlineSummary.innerHTML = "";
+        if (hasMeta) {
+          inlineSummary.innerHTML += `<strong>Abgabe:</strong> ${esc(name)} | Gruppe ${esc(group)} | Station ${esc(station)}<br>`;
+        }
+        inlineSummary.innerHTML +=
+          `<strong>Ergebnisprofil:</strong> richtig ${cOk}, teilweise ${cPartial}, falsch/fehlend ${cBad}, gesamt ${results.length}.<br>` +
+          `<span class="muted">Graph-Ansicht: Jede Eingabe ist mit einer Auswertungs-Node verbunden.</span>`;
+        inlineSummary.classList.remove("hidden");
+      }
+
+      for (const r of results) {
+        const card = document.querySelector(`.question[data-qid="${r.id}"]`);
+        if (!card) continue;
+        const slot = card.querySelector(".review-slot");
+        if (!slot) continue;
+        const q = (scenarioData?.questions || []).find((x) => x.id === r.id);
+        const assessments = buildSourceAssessments(card, q, r);
+        if (!assessments.length) continue;
+        applyInputBubbles(assessments);
+        card.classList.add("evaluated");
+        slot.classList.remove("hidden");
+        layoutReviewGraph(card, slot, assessments);
+        requestAnimationFrame(() => {
+          if (!slot.classList.contains("hidden")) {
+            layoutReviewGraph(card, slot, assessments);
+          }
+        });
+      }
+    }
+
+    function validateBeforeSubmit(data) {
+      if (!document.querySelector('input[data-field-id]')) {
+        return true;
+      }
+      const missingMeta = [];
+      for (const f of data.submission?.participantFields || []) {
+        if (f.required && !String(answers["_meta_" + f.id] || "").trim()) {
+          missingMeta.push(f.label);
+        }
+      }
+      if (missingMeta.length) {
+        alert("Bitte zuerst Pflichtfelder ausfuellen: " + missingMeta.join(", "));
+        return false;
+      }
+      return true;
+    }
+
+    function onSubmit() {
+      if (!scenarioData) return;
+      if (!validateBeforeSubmit(scenarioData)) return;
+      const results = [];
+      for (const q of scenarioData.questions || []) {
+        if (isFollowupDivider(q)) continue;
+        const ev = evaluateQuestion(q);
+        results.push({
+          id: q.id,
+          title: q.title,
+          ...ev
+        });
+      }
+      lastResults = results;
+      renderInlineReview(results);
+    }
+
+    function setMetaField(fieldId, value) {
+      answers["_meta_" + fieldId] = value;
+      const input = document.querySelector(`input[data-field-id="${fieldId}"]`);
+      if (input) {
+        input.value = value;
+        input.dispatchEvent(new Event("input", { bubbles: true }));
+      }
+    }
+
+    function findInputsByQid(selector, qid) {
+      return [...document.querySelectorAll(selector)].filter((el) => el.dataset.qid === qid);
+    }
+
+    function setSingleChoiceAnswer(qid, index) {
+      const radios = findInputsByQid("input[type='radio'][data-qid]", qid);
+      let matched = false;
+      for (const radio of radios) {
+        const hit = Number(radio.dataset.optionIndex) === Number(index);
+        radio.checked = hit;
+        if (hit) {
+          matched = true;
+          radio.dispatchEvent(new Event("change", { bubbles: true }));
+        }
+      }
+      if (!matched) answers[qid] = Number(index);
+    }
+
+    function setMultiSelectAnswer(qid, indices) {
+      const target = new Set((indices || []).map((n) => Number(n)));
+      const boxes = findInputsByQid("input[type='checkbox'][data-qid]", qid);
+      if (!boxes.length) {
+        answers[qid] = target;
+        return;
+      }
+      for (const cb of boxes) {
+        const idx = Number(cb.dataset.optionIndex);
+        cb.checked = target.has(idx);
+        cb.dispatchEvent(new Event("change", { bubbles: true }));
+      }
+    }
+
+    function setNumberAnswer(qid, value) {
+      answers[qid] = String(value);
+      const input = document.querySelector(`input[type="number"][data-qid="${qid}"]`);
+      if (input) {
+        input.value = String(value);
+        input.dispatchEvent(new Event("input", { bubbles: true }));
+      }
+    }
+
+    function setShortTextAnswer(qid, value) {
+      answers[qid] = String(value);
+      const ta = document.querySelector(`textarea[data-qid="${qid}"]`);
+      if (ta) {
+        ta.value = String(value);
+        ta.dispatchEvent(new Event("input", { bubbles: true }));
+      }
+    }
+
+    function firstWrongIndex(options, correctIndex) {
+      if (!Array.isArray(options) || !options.length) return null;
+      for (let i = 0; i < options.length; i++) {
+        if (i !== correctIndex) return i;
+      }
+      return null;
+    }
+
+    function applyDemoAnswers(data) {
+      if (!data) return;
+      setMetaField("participant", "Demo-Teilnehmer");
+      setMetaField("group", "Demo-Gruppe");
+      setMetaField("stationId", data.scenario?.station?.id || "SR-E7-WS-17");
+
+      (data.questions || []).forEach((q, idx) => {
+        if (q.type === "single_choice") {
+          const useCorrect = idx % 2 === 0;
+          const chosen = useCorrect ? q.correctIndex : firstWrongIndex(q.options || [], q.correctIndex);
+          setSingleChoiceAnswer(q.id, Number.isInteger(chosen) ? chosen : 0);
+          return;
+        }
+
+        if (q.type === "multi_select") {
+          const correctIndices = [];
+          const wrongIndices = [];
+          (q.options || []).forEach((opt, i) => {
+            if (opt.correct) correctIndices.push(i);
+            else wrongIndices.push(i);
+          });
+          let selected = [...correctIndices];
+          if (idx % 2 === 1 && selected.length) selected = selected.slice(0, selected.length - 1);
+          if (idx % 3 === 2 && wrongIndices.length) selected.push(wrongIndices[0]);
+          setMultiSelectAnswer(q.id, selected);
+          return;
+        }
+
+        if (q.type === "ordering") {
+          const order = [...(q.correctOrder || q.items || [])];
+          if (idx % 2 === 1 && order.length > 1) {
+            [order[0], order[1]] = [order[1], order[0]];
+          }
+          answers[q.id] = order;
+          return;
+        }
+
+        if (q.type === "number") {
+          const expected = Number(q.expected);
+          const tol = Number(q.toleranceAbs || 0);
+          if (Number.isFinite(expected)) {
+            const v = idx % 2 === 0 ? expected : expected + tol + 1;
+            setNumberAnswer(q.id, v);
+          }
+          return;
+        }
+
+        if (q.type === "short_text") {
+          const required = q.requiredKeywords || [];
+          const full = required.length
+            ? `Status: Umsetzung erfolgt planmaessig. Risiko: Restunsicherheit bei Lieferzeit. Naechster Schritt: Funktionstest und Abnahme vorbereiten. Blocker: derzeit keiner, nur Monitoring aktiv. Kernpunkte: ${required.join(", ")}.`
+            : "Status ist stabil, Risiko wird ueberwacht, naechster Schritt ist dokumentiert.";
+          const partial = "Kurzes Update ohne alle geforderten Kernbegriffe und ohne klare Struktur.";
+          setShortTextAnswer(q.id, idx % 2 === 0 ? full : partial);
+        }
+      });
+    }
+
+    function runDemoSubmit() {
+      if (!scenarioData) return;
+      applyDemoAnswers(scenarioData);
+      onSubmit();
+    }
+
+    function resetAll() {
+      if (!confirm("Wirklich alle Antworten zuruecksetzen?")) return;
+      location.reload();
+    }
+
+    function buildPage(data) {
+      workspaceLeft.innerHTML = "";
+      workspaceLeft.appendChild(createScenarioPanel(data));
+      const qPanel = document.createElement("section");
+      qPanel.className = "panel";
+      qPanel.innerHTML = "<div id='inlineSummary' class='summary inline-summary hidden'></div>";
+      inlineSummary = qPanel.querySelector("#inlineSummary");
+      let visibleQuestionIndex = 0;
+      (data.questions || []).forEach((q, idx) => {
+        const displayIdx = isFollowupDivider(q) ? null : visibleQuestionIndex++;
+        qPanel.appendChild(renderQuestion(q, displayIdx));
+      });
+      workspaceLeft.appendChild(qPanel);
+    }
+
+    document.getElementById("btnSubmit").addEventListener("click", onSubmit);
+    document.getElementById("btnDemo").addEventListener("click", runDemoSubmit);
+    document.getElementById("btnReset").addEventListener("click", resetAll);
+    window.addEventListener("resize", () => {
+      if (lastResults) renderInlineReview(lastResults);
+    });
+
+    (async () => {
+      try {
+        scenarioData = await loadScenario();
+        buildPage(scenarioData);
+      } catch (err) {
+        app.innerHTML = `<section class="panel"><h2>Fehler beim Laden</h2><p>${esc(err.message)}</p></section>`;
+      }
+    })();
+  </script>
+</body>
+</html>

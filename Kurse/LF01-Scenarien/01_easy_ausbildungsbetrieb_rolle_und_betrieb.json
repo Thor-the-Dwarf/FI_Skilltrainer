@@ -1,0 +1,259 @@
+{
+  "scenario": {
+    "company": "Ausbildungsbetrieb IT-Service",
+    "scale": "Mittelstand, 85 Mitarbeitende",
+    "context": "Neue Auszubildende starten im IT-Service und sollen ihre Rolle im Betrieb verstehen.",
+    "mission": "Sie bearbeiten Station 01 zum Lernfeld 1 mit Fokus auf Rolle, Beteiligte im dualen System und Verhalten im Betrieb.",
+    "station": {
+      "id": "LF01-ST-01",
+      "department": "IT-Service",
+      "profile": "Onboarding, Teamarbeit, Kommunikation, Grundverstaendnis Betrieb",
+      "constraints": [
+        "Fachlich korrekt und praxisnah argumentieren",
+        "Rolle als Auszubildende/r klar abgrenzen",
+        "Ergebnisse kurz und nachvollziehbar dokumentieren"
+      ]
+    },
+    "customerRequest": {
+      "from": "ausbildung@ausbildungsbetrieb.example",
+      "to": "klasse.fiae@berufsschule.example",
+      "subject": "Station 01: Rolle im Betrieb und duales System",
+      "date": "2026-03-13",
+      "body": "Willkommen im Ausbildungsbetrieb IT-Service.\n\nIn dieser Station sollen die Teilnehmenden zeigen, dass sie die Beteiligten im dualen System einordnen koennen, die eigene Rolle im Betrieb reflektieren und typische Alltagssituationen angemessen bearbeiten.\n\nBitte auf klare Begruendungen und professionelle Kommunikation achten."
+    }
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "type": "single_choice",
+      "title": "Beteiligte im dualen System",
+      "prompt": "Welche Kombination beschreibt die zentralen Lernorte im dualen System am treffendsten?",
+      "options": [
+        {
+          "text": "Nur Ausbildungsbetrieb und Selbststudium",
+          "rationale": "Die Berufsschule als Lernort fehlt."
+        },
+        {
+          "text": "Nur Berufsschule und Pruefungsausschuss",
+          "rationale": "Der Betrieb als zentraler Lernort fehlt."
+        },
+        {
+          "text": "Ausbildungsbetrieb und Berufsschule, begleitet durch zustaendige Stellen",
+          "rationale": "Das bildet die duale Struktur korrekt ab."
+        }
+      ],
+      "correctIndex": 2,
+      "feedback": {
+        "correct": "Richtig: Betrieb und Berufsschule sind die beiden Hauptlernorte.",
+        "wrong": "Nicht vollstaendig: Bitte die duale Struktur korrekt einordnen."
+      }
+    },
+    {
+      "id": "q2",
+      "type": "multi_select",
+      "title": "Aufgaben der Ausbilderrolle",
+      "prompt": "Welche Aufgaben passen typischerweise zur Rolle der Ausbilderin bzw. des Ausbilders? (Mehrfachauswahl)",
+      "options": [
+        {
+          "text": "Lernfortschritt begleiten und Feedback geben",
+          "correct": true,
+          "rationale": "Foerderung und Rueckmeldung gehoeren zur Kernaufgabe."
+        },
+        {
+          "text": "Arbeitsauftraege passend zum Ausbildungsstand zuteilen",
+          "correct": true,
+          "rationale": "Aufgaben sollen fordern, aber nicht ueberfordern."
+        },
+        {
+          "text": "Alle Entscheidungen ohne Erklaerung durchsetzen",
+          "correct": false,
+          "rationale": "Ausbildung braucht Anleitung und Transparenz."
+        },
+        {
+          "text": "Einhaltung von Ausbildungszielen sicherstellen",
+          "correct": true,
+          "rationale": "Zielorientierung ist zentral in der Ausbildung."
+        },
+        {
+          "text": "Private Probleme der Azubis im Team verbreiten",
+          "correct": false,
+          "rationale": "Nicht professionell und nicht zulassig."
+        }
+      ],
+      "feedback": {
+        "correct": "Richtig: Die ausgewaehlten Punkte spiegeln die Ausbildungsfunktion.",
+        "wrong": "Teilweise unpassend: Bitte Rolle der Ausbildenden fachlich sauber einordnen."
+      }
+    },
+    {
+      "id": "q3",
+      "type": "ordering",
+      "title": "Erster Arbeitstag strukturiert",
+      "prompt": "Ordnen Sie die Schritte fuer einen professionellen Start im Betrieb in eine sinnvolle Reihenfolge.",
+      "items": [
+        "Kurz reflektieren und offene Fragen notieren",
+        "Beim Team vorstellen und Zustaendigkeiten klaeren",
+        "Arbeitsplatz und Sicherheitsregeln kennenlernen",
+        "Erste Aufgaben mit Erwartungsklaerung aufnehmen",
+        "Dokumentation der Tagesergebnisse erstellen"
+      ],
+      "correctOrder": [
+        "Beim Team vorstellen und Zustaendigkeiten klaeren",
+        "Arbeitsplatz und Sicherheitsregeln kennenlernen",
+        "Erste Aufgaben mit Erwartungsklaerung aufnehmen",
+        "Dokumentation der Tagesergebnisse erstellen",
+        "Kurz reflektieren und offene Fragen notieren"
+      ],
+      "feedback": {
+        "correct": "Richtig: So entsteht ein strukturierter und sicherer Start.",
+        "wrong": "Nicht optimal: Reihenfolge sollte Orientierung, Arbeit und Reflexion sauber verbinden."
+      }
+    },
+    {
+      "id": "q4",
+      "type": "short_text",
+      "title": "Eigene Rolle beschreiben",
+      "prompt": "Beschreiben Sie Ihre Rolle als Auszubildende/r im IT-Team in 5-7 Saetzen.",
+      "minChars": 150,
+      "requiredKeywords": [
+        "lernen",
+        "verantwortung",
+        "rueckfrage"
+      ],
+      "expectedOutline": "Rolle zwischen Lernen und Mitwirkung, klare Verantwortungsgrenzen, aktive Kommunikation bei Unsicherheit.",
+      "feedback": {
+        "correct": "Richtig: Die Rollenbeschreibung ist reflektiert und praxisnah.",
+        "wrong": "Bitte Lernauftrag, Verantwortung und Kommunikationsverhalten klarer ausarbeiten."
+      }
+    },
+    {
+      "id": "q5",
+      "type": "number",
+      "title": "Zeitplanung im Onboarding",
+      "prompt": "Ein Azubi bearbeitet 4 Einfuehrungsaufgaben zu je 25 Minuten und hat zusaetzlich 35 Minuten Einweisung. Wie viele Minuten sind insgesamt eingeplant?",
+      "expected": 135,
+      "toleranceAbs": 1,
+      "showExpectedFormula": "4 * 25 + 35 = 135 Minuten",
+      "feedback": {
+        "correct": "Richtig gerechnet.",
+        "wrong": "Bitte Anzahl Aufgaben und Einweisungszeit sauber addieren."
+      }
+    },
+    {
+      "id": "q6",
+      "type": "single_choice",
+      "title": "Verhalten bei Unsicherheit",
+      "prompt": "Sie erhalten einen Auftrag, den Sie fachlich noch nicht sicher beherrschen. Was ist die beste Reaktion?",
+      "options": [
+        {
+          "text": "Rueckfrage stellen, Ziel klaeren und dann strukturiert starten",
+          "rationale": "Professionell und lernorientiert."
+        },
+        {
+          "text": "Einfach irgendetwas umsetzen, Hauptsache schnell",
+          "rationale": "Erhoeht Fehler- und Risikowahrscheinlichkeit."
+        },
+        {
+          "text": "Auftrag ablehnen und nichts dokumentieren",
+          "rationale": "Unprofessionell ohne Abstimmung."
+        }
+      ],
+      "correctIndex": 0,
+      "feedback": {
+        "correct": "Richtig: Rueckfrage und Zielklaerung zeigen professionelles Arbeiten.",
+        "wrong": "Nicht geeignet: Bei Unsicherheit sind Abstimmung und Struktur entscheidend."
+      }
+    },
+    {
+      "id": "q7",
+      "type": "multi_select",
+      "title": "Rechte und Pflichten im Ausbildungsalltag",
+      "prompt": "Welche Aussagen passen zu einem professionellen Ausbildungsalltag? (Mehrfachauswahl)",
+      "options": [
+        {
+          "text": "Arbeitsauftraege sorgfaeltig bearbeiten und Ergebnisse dokumentieren",
+          "correct": true,
+          "rationale": "Sorgfalt und Nachvollziehbarkeit sind Pflicht."
+        },
+        {
+          "text": "Bei Problemen rechtzeitig Rueckmeldung geben",
+          "correct": true,
+          "rationale": "Transparenz reduziert Folgerisiken."
+        },
+        {
+          "text": "Sicherheitsregeln nur bei Zeit beachten",
+          "correct": false,
+          "rationale": "Sicherheit gilt durchgaengig."
+        },
+        {
+          "text": "Lernangebote im Betrieb aktiv nutzen",
+          "correct": true,
+          "rationale": "Eigeninitiative ist Teil der Ausbildung."
+        },
+        {
+          "text": "Dokumentation weglassen, wenn es stressig wird",
+          "correct": false,
+          "rationale": "Dokumentation bleibt wichtig, gerade bei Belastung."
+        }
+      ],
+      "feedback": {
+        "correct": "Richtig: Die Auswahl zeigt ein professionelles Rollenverstaendnis.",
+        "wrong": "Teilweise unpassend: Bitte Pflichten und professionelles Verhalten klarer trennen."
+      }
+    },
+    {
+      "id": "q8",
+      "type": "ordering",
+      "title": "Mini-Praesentation vorbereiten",
+      "prompt": "Ordnen Sie die Schritte fuer eine kurze Team-Praesentation ueber den Ausbildungsbetrieb.",
+      "items": [
+        "Kernbotschaften kurz zusammenfassen",
+        "Thema und Zielgruppe klaeren",
+        "Inhalte sammeln und strukturieren",
+        "Probevortrag im Team durchfuehren",
+        "Feedback einarbeiten"
+      ],
+      "correctOrder": [
+        "Thema und Zielgruppe klaeren",
+        "Inhalte sammeln und strukturieren",
+        "Kernbotschaften kurz zusammenfassen",
+        "Probevortrag im Team durchfuehren",
+        "Feedback einarbeiten"
+      ],
+      "feedback": {
+        "correct": "Richtig: Vorbereitung und Qualitaetssicherung sind sinnvoll verzahnt.",
+        "wrong": "Nicht optimal: Gute Praesentationen brauchen Zielklaerung, Struktur und Feedback."
+      }
+    },
+    {
+      "id": "q9",
+      "type": "number",
+      "title": "Praesentationszeit planen",
+      "prompt": "Eine Team-Praesentation hat 6 Folien. Pro Folie sind 2,5 Minuten vorgesehen, plus 7 Minuten Fragenrunde. Wie lange dauert der Slot insgesamt?",
+      "expected": 22,
+      "toleranceAbs": 1,
+      "showExpectedFormula": "6 * 2,5 + 7 = 22 Minuten",
+      "feedback": {
+        "correct": "Richtig gerechnet.",
+        "wrong": "Bitte Folienzeit und Fragerunde gemeinsam kalkulieren."
+      }
+    },
+    {
+      "id": "q10",
+      "type": "short_text",
+      "title": "Reflexion zum Betriebsumfeld",
+      "prompt": "Formulieren Sie eine kurze Reflexion (5-7 Saetze), was Sie ueber den Ausbildungsbetrieb und Ihre Entwicklung gelernt haben.",
+      "minChars": 160,
+      "requiredKeywords": [
+        "betrieb",
+        "entwicklung",
+        "naechster schritt"
+      ],
+      "expectedOutline": "Betriebsverstaendnis, eigenes Lernbild, konkreter naechster Entwicklungsschritt.",
+      "feedback": {
+        "correct": "Richtig: Die Reflexion ist konkret und entwicklungsorientiert.",
+        "wrong": "Bitte Betriebsbezug, Entwicklung und naechsten Schritt klarer benennen."
+      }
+    }
+  ]
+}
