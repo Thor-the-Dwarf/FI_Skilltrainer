@@ -74,12 +74,20 @@
     const ACCESS_ACTIVE_FOLDER_STORAGE_KEY = "sr_active_folder";
     const ACCESS_KEY_STORAGE_KEY = "sr_access_key";
     const ACCESS_FOLDER_STORAGE_KEY = "sr_access_folder";
+    const ACCESS_KEYS_CONFIG_PATH = "./access-keys.json";
     const HOME_SKILLS_FOLDER_STORAGE_KEY = "sr_home_skills_folder";
     const SKILL_PROGRESS_STORAGE_KEY_PREFIX = "sr_skill_progress_v1";
     const DEFAULT_SKILL_TARGET_CORRECT = 8;
-    const ACCESS_KEY_TO_FOLDER = Object.freeze({
+    const FALLBACK_ACCESS_KEY_TO_FOLDER = Object.freeze({
       LF01_03_26: "LF01-Scenarien",
-      LF02_03_26: "LF02-Scenarien"
+      LF02_03_26: "LF02-Scenarien",
+      LF03_03_26: "LF03-Scenarien",
+      LF04_03_26: "LF04-Scenarien",
+      LF05_03_26: "LF05-Scenarien",
+      LF06_03_26: "LF06-Scenarien",
+      LF07_03_26: "LF07-Scenarien",
+      LF08_03_26: "LF08-Scenarien",
+      LF09_03_26: "LF09-Scenarien"
     });
     const SCENARIO_FILENAME_CONVENTION = /^\d{2}_(easy|medium|hard)_[a-z0-9_]+\.json$/i;
     const THEME_ORDER = ["light", "dark", "system"];
@@ -112,6 +120,8 @@
     let activeScenarioFolder = "";
     let activeScenarioFile = "";
     let activeHomeSkillsFolder = "";
+    let accessKeyToFolder = { ...FALLBACK_ACCESS_KEY_TO_FOLDER };
+    let accessKeyConfigLoaded = false;
 
     function normalize(s) {
       return String(s || "").toLowerCase().trim().replace(/\s+/g, " ");
@@ -125,10 +135,48 @@
         .replaceAll('"', "&quot;");
     }
 
-    function resolveFolderFromAccessKey(rawKey) {
-      const key = String(rawKey || "").trim();
+    function normalizeAccessKey(rawKey) {
+      let key = String(rawKey || "").trim().toUpperCase();
       if (!key) return "";
-      return ACCESS_KEY_TO_FOLDER[key] || "";
+      key = key.replace(/\s+/g, "");
+      key = key.replace(/-/g, "_");
+      key = key.replace(/^LF_(\d{2}_\d{2}_\d{2})$/, "LF$1");
+      return key;
+    }
+
+    function normalizeAccessKeyConfig(payload) {
+      const source = payload && typeof payload === "object"
+        ? (payload.keys && typeof payload.keys === "object" ? payload.keys : payload)
+        : {};
+      const normalized = {};
+      for (const [rawKey, rawFolder] of Object.entries(source || {})) {
+        const key = normalizeAccessKey(rawKey);
+        const folder = sanitizeFolderName(rawFolder);
+        if (!key || !folder) continue;
+        normalized[key] = folder;
+      }
+      return normalized;
+    }
+
+    async function ensureAccessKeyConfigLoaded() {
+      if (accessKeyConfigLoaded) return;
+      accessKeyConfigLoaded = true;
+      try {
+        const res = await fetch(ACCESS_KEYS_CONFIG_PATH, { cache: "no-store" });
+        if (!res.ok) return;
+        const payload = await res.json();
+        const normalized = normalizeAccessKeyConfig(payload);
+        if (Object.keys(normalized).length > 0) {
+          accessKeyToFolder = { ...FALLBACK_ACCESS_KEY_TO_FOLDER, ...normalized };
+        }
+      } catch {
+      }
+    }
+
+    function resolveFolderFromAccessKey(rawKey) {
+      const key = normalizeAccessKey(rawKey);
+      if (!key) return "";
+      return accessKeyToFolder[key] || "";
     }
 
     function sanitizeFolderName(folder) {
@@ -139,7 +187,7 @@
 
     function normalizeAccessEntry(rawEntry) {
       if (!rawEntry || typeof rawEntry !== "object") return null;
-      const key = String(rawEntry.key || "").trim();
+      const key = normalizeAccessKey(rawEntry.key || "");
       if (!key) return null;
       const resolvedFolder = resolveFolderFromAccessKey(key);
       const folder = sanitizeFolderName(rawEntry.folder || resolvedFolder);
@@ -266,7 +314,7 @@
           }
         }
 
-        const storedKey = String(localStorage.getItem(ACCESS_KEY_STORAGE_KEY) || "").trim();
+        const storedKey = normalizeAccessKey(localStorage.getItem(ACCESS_KEY_STORAGE_KEY) || "");
         if (!storedKey) return null;
         const storedFolder = String(localStorage.getItem(ACCESS_FOLDER_STORAGE_KEY) || "").trim();
         const resolvedFolder = resolveFolderFromAccessKey(storedKey);
@@ -375,11 +423,12 @@
     }
 
     async function unlockWithKey(rawKey) {
-      const key = String(rawKey || "").trim();
+      const key = normalizeAccessKey(rawKey);
       if (!key) {
         throw new Error("Bitte einen Key eingeben.");
       }
 
+      await ensureAccessKeyConfigLoaded();
       const mappedFolder = resolveFolderFromAccessKey(key);
       if (!mappedFolder) {
         throw new Error("Key ungueltig. Bitte erneut pruefen.");
@@ -2158,6 +2207,7 @@
       if (lastResults) renderInlineReview(lastResults);
     });
     (async () => {
+      await ensureAccessKeyConfigLoaded();
       const storedAccess = loadStoredAccess();
       activeHomeSkillsFolder = loadStoredHomeSkillsFolder();
       if (!storedAccess) {
