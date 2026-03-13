@@ -561,6 +561,56 @@
       return Math.max(0, Math.min(100, Number(value) || 0));
     }
 
+    function resolveProgressTone(percent) {
+      const pct = clampPercent(percent);
+      if (pct < 10) {
+        return {
+          name: "gray",
+          start: "hsl(218 9% 56%)",
+          end: "hsl(218 10% 67%)",
+          glow: "hsl(218 12% 72% / 0.45)"
+        };
+      }
+      if (pct < 20) {
+        return {
+          name: "red",
+          start: "hsl(0 86% 60%)",
+          end: "hsl(8 92% 57%)",
+          glow: "hsl(0 100% 67% / 0.55)"
+        };
+      }
+      if (pct < 50) {
+        return {
+          name: "orange",
+          start: "hsl(26 96% 57%)",
+          end: "hsl(36 100% 56%)",
+          glow: "hsl(30 100% 60% / 0.55)"
+        };
+      }
+      if (pct < 70) {
+        return {
+          name: "yellow",
+          start: "hsl(49 100% 56%)",
+          end: "hsl(58 100% 63%)",
+          glow: "hsl(55 100% 63% / 0.58)"
+        };
+      }
+      if (pct < 90) {
+        return {
+          name: "green",
+          start: "hsl(132 78% 50%)",
+          end: "hsl(150 84% 48%)",
+          glow: "hsl(142 86% 56% / 0.58)"
+        };
+      }
+      return {
+        name: "violet",
+        start: "hsl(274 96% 66%)",
+        end: "hsl(292 92% 69%)",
+        glow: "hsl(282 100% 71% / 0.58)"
+      };
+    }
+
     function getSkillProgressPercent(state, progressId, targetCorrect = DEFAULT_SKILL_TARGET_CORRECT) {
       const target = toPositiveNumberOrNull(targetCorrect) || DEFAULT_SKILL_TARGET_CORRECT;
       const points = getSkillProgressPoints(state, progressId);
@@ -625,8 +675,9 @@
     function renderProgressMeter(baseClass, percent, ariaLabel) {
       const pct = clampPercent(percent);
       const label = String(ariaLabel || `Fortschritt ${Math.round(pct)} Prozent`);
+      const tone = resolveProgressTone(pct);
       return (
-        `<span class="${baseClass}" role="img" aria-label="${esc(label)}">` +
+        `<span class="${baseClass}" role="img" aria-label="${esc(label)}" data-progress-tone="${tone.name}" style="--progress-color-start:${tone.start};--progress-color-end:${tone.end};--progress-glow:${tone.glow};">` +
         `<span class="${baseClass}-fill" style="--progress-pct:${pct.toFixed(2)}%;"></span>` +
         "</span>"
       );
