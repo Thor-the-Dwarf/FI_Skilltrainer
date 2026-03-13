@@ -73,6 +73,7 @@
     const ACCESS_ACTIVE_FOLDER_STORAGE_KEY = "sr_active_folder";
     const ACCESS_KEY_STORAGE_KEY = "sr_access_key";
     const ACCESS_FOLDER_STORAGE_KEY = "sr_access_folder";
+    const HOME_SKILLS_FOLDER_STORAGE_KEY = "sr_home_skills_folder";
     const SKILL_PROGRESS_STORAGE_KEY_PREFIX = "sr_skill_progress_v1";
     const DEFAULT_SKILL_TARGET_CORRECT = 8;
     const ACCESS_KEY_TO_FOLDER = Object.freeze({
@@ -105,10 +106,11 @@
     let inlineSummary = null;
     let lastResults = null;
     let availableScenarios = [];
-    let homeSkillsCache = null;
+    let homeSkillsCache = Object.create(null);
     let unlockedAccessEntries = [];
     let activeScenarioFolder = "";
     let activeScenarioFile = "";
+    let activeHomeSkillsFolder = "";
 
     function normalize(s) {
       return String(s || "").toLowerCase().trim().replace(/\s+/g, " ");
@@ -194,13 +196,23 @@
         activeScenarioFolder = folders[0];
       }
 
-      homeSkillsCache = null;
+      const preferredHomeFolder = sanitizeFolderName(activeHomeSkillsFolder);
+      if (preferredHomeFolder && folders.includes(preferredHomeFolder)) {
+        activeHomeSkillsFolder = preferredHomeFolder;
+      } else if (folders.includes(activeScenarioFolder)) {
+        activeHomeSkillsFolder = activeScenarioFolder;
+      } else {
+        activeHomeSkillsFolder = folders[0];
+      }
+
+      homeSkillsCache = Object.create(null);
       availableScenarios = [];
       scenarioData = null;
       activeScenarioFile = "";
       try {
         localStorage.setItem(ACCESS_ENTRIES_STORAGE_KEY, JSON.stringify(unlockedAccessEntries));
         localStorage.setItem(ACCESS_ACTIVE_FOLDER_STORAGE_KEY, activeScenarioFolder);
+        localStorage.setItem(HOME_SKILLS_FOLDER_STORAGE_KEY, activeHomeSkillsFolder);
         const activeEntry = unlockedAccessEntries.find((entry) => entry.folder === activeScenarioFolder) || unlockedAccessEntries[0];
         if (activeEntry) {
           localStorage.setItem(ACCESS_KEY_STORAGE_KEY, activeEntry.key);
@@ -225,14 +237,16 @@
       unlockedAccessEntries = [];
       activeScenarioFolder = "";
       activeScenarioFile = "";
+      activeHomeSkillsFolder = "";
       scenarioData = null;
-      homeSkillsCache = null;
+      homeSkillsCache = Object.create(null);
       availableScenarios = [];
       try {
         localStorage.removeItem(ACCESS_ENTRIES_STORAGE_KEY);
         localStorage.removeItem(ACCESS_ACTIVE_FOLDER_STORAGE_KEY);
         localStorage.removeItem(ACCESS_KEY_STORAGE_KEY);
         localStorage.removeItem(ACCESS_FOLDER_STORAGE_KEY);
+        localStorage.removeItem(HOME_SKILLS_FOLDER_STORAGE_KEY);
       } catch {
       }
     }
@@ -264,6 +278,14 @@
       return null;
     }
 
+    function loadStoredHomeSkillsFolder() {
+      try {
+        return sanitizeFolderName(localStorage.getItem(HOME_SKILLS_FOLDER_STORAGE_KEY) || "");
+      } catch {
+      }
+      return "";
+    }
+
     function getScenarioBasePath(folder = "") {
       const resolvedFolder = sanitizeFolderName(folder || activeScenarioFolder);
       if (!resolvedFolder) {
@@ -278,6 +300,14 @@
 
     function getHomeSkillsPath(folder = "") {
       return `${getScenarioBasePath(folder)}/possible_skills.json`;
+    }
+
+    function getFolderShortcutLabel(folder) {
+      const safe = sanitizeFolderName(folder);
+      if (!safe) return "";
+      const shortcutMatch = safe.match(/^([A-Za-z]{2}\d{2})/);
+      if (shortcutMatch && shortcutMatch[1]) return shortcutMatch[1].toUpperCase();
+      return safe.replace(/-?Scenarien$/i, "");
     }
 
     function loadThemeMode() {
@@ -765,10 +795,49 @@
       );
     }
 
-    function renderHomeContent(data) {
+    function renderHomeFolderSubAppBar(folders, activeFolder) {
+      const availableFolders = Array.isArray(folders) ? folders : [];
+      if (!availableFolders.length) return "";
+      const options = availableFolders
+        .map((folder) => {
+          const safeFolder = sanitizeFolderName(folder);
+          const isActive = safeFolder === activeFolder;
+          const label = getFolderShortcutLabel(safeFolder) || safeFolder;
+          return (
+            `<button type="button" class="home-subappbar-button${isActive ? " is-active" : ""}"` +
+            ` data-home-folder="${esc(safeFolder)}" title="${esc(safeFolder)}"` +
+            ` aria-label="Skillset ${esc(label)} anzeigen"` +
+            ` aria-pressed="${isActive ? "true" : "false"}">${esc(label)}</button>`
+          );
+        })
+        .join("");
+
+      return (
+        "<section class='panel home-subappbar'>" +
+        "<div class='home-subappbar-row' role='tablist' aria-label='possible_skills Auswahl'>" +
+        options +
+        "</div>" +
+        "</section>"
+      );
+    }
+
+    function bindHomeFolderSubAppBar() {
+      const buttons = workspaceLeft.querySelectorAll(".home-subappbar-button[data-home-folder]");
+      for (const button of buttons) {
+        button.addEventListener("click", () => {
+          const nextFolder = sanitizeFolderName(button.dataset.homeFolder || "");
+          if (!nextFolder || nextFolder === activeHomeSkillsFolder) return;
+          showHomeContent(nextFolder);
+        });
+      }
+    }
+
+    function renderHomeContent(data, context = {}) {
       const payload = data && typeof data === "object" ? data : {};
+      const selectedFolder = sanitizeFolderName(context.homeFolder || activeHomeSkillsFolder || activeScenarioFolder);
+      const availableFolders = Array.isArray(context.availableFolders) ? context.availableFolders : getUnlockedFolders();
       const sections = normalizeHomeSections(payload);
-      const progressState = loadSkillProgressState(activeScenarioFolder);
+      const progressState = loadSkillProgressState(selectedFolder);
       const drawerPercents = [];
       const sectionsHtml = sections
         .map((section) => renderHomeSection(section, { payload, progressState, drawerPercents }))
@@ -777,40 +846,69 @@
         ? drawerPercents.reduce((sum, val) => sum + val, 0) / drawerPercents.length
         : 0;
       const overallText = `${Math.round(overallProgress)}%`;
+      const shortLabel = getFolderShortcutLabel(selectedFolder) || selectedFolder;
 
       workspaceLeft.innerHTML =
+        renderHomeFolderSubAppBar(availableFolders, selectedFolder) +
         "<section class='panel home-skillset-banner'>" +
-        "<h2>DeinSkillset</h2>" +
+        `<h2>Skillset ${esc(shortLabel)}</h2>` +
         `<p class='status-text'>Gesamtfortschritt: ${overallText}</p>` +
         `<div class='home-banner-progress-line'>${renderProgressMeter("home-drawer-progress", overallProgress, `Gesamtfortschritt ${overallText}`)}</div>` +
         "</section>" +
         `<section class="home-layout">${sectionsHtml}</section>`;
+
+      bindHomeFolderSubAppBar();
     }
 
-    async function loadHomeSkillsData() {
-      if (homeSkillsCache !== null) return homeSkillsCache;
-      const res = await fetch(getHomeSkillsPath());
-      if (!res.ok) throw new Error(`possible_skills.json konnte nicht geladen werden (HTTP ${res.status})`);
+    async function loadHomeSkillsData(folder = "") {
+      const safeFolder = sanitizeFolderName(folder || activeHomeSkillsFolder || activeScenarioFolder);
+      if (!safeFolder) {
+        throw new Error("Kein Skillset-Ordner ausgewaehlt.");
+      }
+      if (homeSkillsCache[safeFolder] !== undefined) return homeSkillsCache[safeFolder];
+      const res = await fetch(getHomeSkillsPath(safeFolder));
+      if (!res.ok) throw new Error(`${safeFolder}/possible_skills.json konnte nicht geladen werden (HTTP ${res.status})`);
       const data = await res.json();
       if (!data || typeof data !== "object") {
-        throw new Error("possible_skills.json hat kein gueltiges JSON-Objekt.");
+        throw new Error(`${safeFolder}/possible_skills.json hat kein gueltiges JSON-Objekt.`);
       }
-      homeSkillsCache = data;
-      return homeSkillsCache;
+      homeSkillsCache[safeFolder] = data;
+      return homeSkillsCache[safeFolder];
     }
 
-    async function showHomeContent() {
+    async function showHomeContent(folderHint = "") {
       if (!hasUnlockedAccess()) {
         renderUnlockScreen("Bitte zuerst gueltigen Key eingeben.");
         return;
       }
+      const folders = getUnlockedFolders();
+      const hint = sanitizeFolderName(folderHint);
+      if (hint && folders.includes(hint)) {
+        activeHomeSkillsFolder = hint;
+      } else if (!folders.includes(activeHomeSkillsFolder)) {
+        if (folders.includes(activeScenarioFolder)) {
+          activeHomeSkillsFolder = activeScenarioFolder;
+        } else {
+          activeHomeSkillsFolder = folders[0] || "";
+        }
+      }
+      try {
+        localStorage.setItem(HOME_SKILLS_FOLDER_STORAGE_KEY, activeHomeSkillsFolder);
+      } catch {
+      }
       toggleScenarioMenu(false);
       setSubmitBarVisible(false);
       resetRuntimeState();
-      workspaceLeft.innerHTML = "<section class='panel'><h2>FI Skilltrainer</h2><p class='status-text'>Skills werden geladen ...</p></section>";
+      const loadingLabel = getFolderShortcutLabel(activeHomeSkillsFolder);
+      workspaceLeft.innerHTML =
+        "<section class='panel'><h2>FI Skilltrainer</h2>" +
+        `<p class='status-text'>Skills werden geladen${loadingLabel ? ` (${esc(loadingLabel)})` : ""} ...</p></section>`;
       try {
-        const data = await loadHomeSkillsData();
-        renderHomeContent(data);
+        const data = await loadHomeSkillsData(activeHomeSkillsFolder);
+        renderHomeContent(data, {
+          homeFolder: activeHomeSkillsFolder,
+          availableFolders: folders
+        });
       } catch (err) {
         workspaceLeft.innerHTML =
           "<section class='panel'>" +
@@ -882,7 +980,7 @@
         const nextFolder = sanitizeFolderName(item.folder || "");
         if (nextFolder && nextFolder !== activeScenarioFolder) {
           activeScenarioFolder = nextFolder;
-          homeSkillsCache = null;
+          homeSkillsCache = Object.create(null);
           try {
             localStorage.setItem(ACCESS_ACTIVE_FOLDER_STORAGE_KEY, activeScenarioFolder);
             localStorage.setItem(ACCESS_FOLDER_STORAGE_KEY, activeScenarioFolder);
@@ -2003,6 +2101,7 @@
     });
     (async () => {
       const storedAccess = loadStoredAccess();
+      activeHomeSkillsFolder = loadStoredHomeSkillsFolder();
       if (!storedAccess) {
         renderUnlockScreen();
         return;
