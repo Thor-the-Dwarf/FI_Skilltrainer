@@ -125,6 +125,8 @@
       LF11FIAE_03_26: "LF11FIAE-Scenarien",
       LF12FIAE_03_26: "LF12FIAE-Scenarien"
     });
+    const GITHUB_REPO_OWNER_FALLBACK = "Thor-the-Dwarf";
+    const GITHUB_REPO_NAME_FALLBACK = "FI_Skilltrainer";
     const SCENARIO_FILENAME_CONVENTION = /^\d{2}_(easy|medium|hard)_[a-z0-9_]+\.json$/i;
     const THEME_ORDER = ["light", "dark", "system"];
     const THEME_ICONS = {
@@ -404,6 +406,48 @@
       return `${getScenarioBasePath(folder)}/possible_skills.json`;
     }
 
+    function isHostedOnGithubPages() {
+      return /\.github\.io$/i.test(String(location.hostname || "").trim());
+    }
+
+    function resolveGithubRepoContext() {
+      if (isHostedOnGithubPages()) {
+        const owner = String(location.hostname || "").split(".")[0] || GITHUB_REPO_OWNER_FALLBACK;
+        const repo = String(location.pathname || "")
+          .split("/")
+          .filter(Boolean)[0] || GITHUB_REPO_NAME_FALLBACK;
+        return { owner, repo };
+      }
+      return {
+        owner: GITHUB_REPO_OWNER_FALLBACK,
+        repo: GITHUB_REPO_NAME_FALLBACK
+      };
+    }
+
+    function buildGithubRepoContentsUrl(folder) {
+      const safeFolder = sanitizeFolderName(folder);
+      if (!safeFolder) return "";
+      const { owner, repo } = resolveGithubRepoContext();
+      const path = ["Kurse", safeFolder]
+        .map((part) => encodeURIComponent(part))
+        .join("/");
+      return `https://api.github.com/repos/${encodeURIComponent(owner)}/${encodeURIComponent(repo)}/contents/${path}`;
+    }
+
+    function buildScenarioLabelFromFilename(fileName) {
+      const raw = String(fileName || "").trim().replace(/\.json$/i, "");
+      if (!raw) return "Station";
+      const parts = raw.split("_");
+      const stationPart = parts[0] || "";
+      const words = parts.slice(2).map((part) => {
+        const lower = String(part || "").toLowerCase();
+        if (!lower) return "";
+        return lower.charAt(0).toUpperCase() + lower.slice(1);
+      }).filter(Boolean);
+      const stationPrefix = /^\d{2}$/.test(stationPart) ? `Station ${stationPart}` : "Station";
+      return words.length ? `${stationPrefix} - ${words.join(" ")}` : stationPrefix;
+    }
+
     function getFolderShortcutLabel(folder) {
       const safe = sanitizeFolderName(folder);
       if (!safe) return "";
@@ -529,14 +573,18 @@
     }
 
     async function validateScenarioFolder(folder) {
-      const res = await fetch(getScenarioManifestPath(folder));
-      if (!res.ok) {
-        throw new Error(`Ordner "${folder}" konnte nicht geladen werden (HTTP ${res.status}).`);
-      }
-      const payload = await res.json();
-      const source = Array.isArray(payload) ? payload : payload.scenarios;
-      if (!Array.isArray(source)) {
-        throw new Error(`Ordner "${folder}" hat kein gueltiges scenario-manifest.json.`);
+      const safeFolder = sanitizeFolderName(folder);
+      if (!safeFolder) throw new Error("Ungueltiger Ordnername.");
+      const liveRepoItems = await fetchScenarioRepoItems(safeFolder);
+      if (liveRepoItems.length) return;
+      try {
+        const manifestItems = await fetchScenarioManifestItems(safeFolder);
+        if (manifestItems.length) return;
+        throw new Error(`Ordner "${safeFolder}" enthaelt keine gueltigen Szenarien.`);
+      } catch (err) {
+        throw new Error(
+          err?.message || `Ordner "${safeFolder}" konnte nicht geladen werden.`
+        );
       }
     }
 
@@ -1319,7 +1367,7 @@
         throw new Error("Kein Skillset-Ordner ausgewaehlt.");
       }
       if (homeSkillsCache[safeFolder] !== undefined) return homeSkillsCache[safeFolder];
-      const res = await fetch(getHomeSkillsPath(safeFolder));
+      const res = await fetch(getHomeSkillsPath(safeFolder), { cache: "no-store" });
       if (!res.ok) throw new Error(`${safeFolder}/possible_skills.json konnte nicht geladen werden (HTTP ${res.status})`);
       const data = await res.json();
       if (!data || typeof data !== "object") {
@@ -1386,6 +1434,74 @@
       return { file: String(raw.file), label: String(raw.label || raw.file).replace(/\.json$/i, "") };
     }
 
+    function normalizeScenarioManifestItems(payload, folder) {
+      const safeFolder = sanitizeFolderName(folder);
+      const source = Array.isArray(payload) ? payload : payload?.scenarios;
+      if (!Array.isArray(source)) throw new Error("Manifest-Format ungueltig");
+      return source
+        .map(normalizeScenarioItem)
+        .filter((entry) => entry && entry.file.toLowerCase().endsWith(".json"))
+        .filter((entry) => matchesScenarioNamingConvention(entry.file))
+        .map((entry) => ({
+          file: assertScenarioFilename(entry.file),
+          label: entry.label || buildScenarioLabelFromFilename(entry.file),
+          folder: safeFolder
+        }));
+    }
+
+    async function fetchScenarioManifestItems(folder) {
+      const safeFolder = sanitizeFolderName(folder);
+      if (!safeFolder) throw new Error("Ungueltiger Ordnername.");
+      const res = await fetch(getScenarioManifestPath(safeFolder), { cache: "no-store" });
+      if (!res.ok) throw new Error("Manifest konnte nicht geladen werden (HTTP " + res.status + ")");
+      const payload = await res.json();
+      return normalizeScenarioManifestItems(payload, safeFolder);
+    }
+
+    async function fetchScenarioRepoItems(folder) {
+      const safeFolder = sanitizeFolderName(folder);
+      if (!safeFolder || !isHostedOnGithubPages()) return [];
+      try {
+        const res = await fetch(buildGithubRepoContentsUrl(safeFolder), {
+          cache: "no-store",
+          headers: {
+            Accept: "application/vnd.github+json"
+          }
+        });
+        if (!res.ok) return [];
+        const payload = await res.json();
+        if (!Array.isArray(payload)) return [];
+        return payload
+          .filter((entry) => entry && entry.type === "file" && matchesScenarioNamingConvention(entry.name))
+          .map((entry) => {
+            const file = assertScenarioFilename(entry.name);
+            return {
+              file,
+              label: buildScenarioLabelFromFilename(file),
+              folder: safeFolder
+            };
+          })
+          .sort((a, b) => a.file.localeCompare(b.file, "de", { numeric: true, sensitivity: "base" }));
+      } catch {
+        return [];
+      }
+    }
+
+    function mergeScenarioItems(liveItems, manifestItems) {
+      const fallbackItems = Array.isArray(manifestItems) ? manifestItems : [];
+      const primaryItems = Array.isArray(liveItems) ? liveItems : [];
+      if (!primaryItems.length) return fallbackItems;
+      const manifestByFile = new Map(
+        fallbackItems.map((entry) => [String(entry.file || "").trim(), entry])
+      );
+      return primaryItems.map((entry) => {
+        const manifestMatch = manifestByFile.get(String(entry.file || "").trim());
+        return manifestMatch
+          ? { ...entry, label: manifestMatch.label || entry.label }
+          : entry;
+      });
+    }
+
     function assertScenarioFilename(name) {
       const val = String(name || "").trim();
       if (!/^[a-z0-9._-]+\.json$/i.test(val)) {
@@ -1401,22 +1517,24 @@
     async function loadScenarioManifestForFolder(folder) {
       const safeFolder = sanitizeFolderName(folder);
       if (!safeFolder) throw new Error("Ungueltiger Ordnername.");
-      const res = await fetch(getScenarioManifestPath(safeFolder));
-      if (!res.ok) throw new Error("Manifest konnte nicht geladen werden (HTTP " + res.status + ")");
-      const payload = await res.json();
-      const source = Array.isArray(payload) ? payload : payload.scenarios;
-      if (!Array.isArray(source)) throw new Error("Manifest-Format ungueltig");
-      return source
-        .map(normalizeScenarioItem)
-        .filter((x) => x && x.file.toLowerCase().endsWith(".json"))
-        .filter((x) => matchesScenarioNamingConvention(x.file))
-        .map((x) => ({ file: assertScenarioFilename(x.file), label: x.label, folder: safeFolder }));
+      let manifestItems = [];
+      let manifestError = null;
+      try {
+        manifestItems = await fetchScenarioManifestItems(safeFolder);
+      } catch (err) {
+        manifestError = err;
+      }
+      const liveRepoItems = await fetchScenarioRepoItems(safeFolder);
+      const mergedItems = mergeScenarioItems(liveRepoItems, manifestItems);
+      if (mergedItems.length) return mergedItems;
+      if (manifestItems.length) return manifestItems;
+      throw manifestError || new Error("Keine gueltigen Szenarien gefunden.");
     }
 
     async function loadScenarioByFilename(fileName, folder = "") {
       const safeFile = assertScenarioFilename(fileName);
       const safeFolder = sanitizeFolderName(folder || activeScenarioFolder);
-      const res = await fetch(`${getScenarioBasePath(safeFolder)}/${safeFile}`);
+      const res = await fetch(`${getScenarioBasePath(safeFolder)}/${safeFile}`, { cache: "no-store" });
       if (!res.ok) throw new Error(`${safeFile} (HTTP ${res.status})`);
       const data = await res.json();
       if (!Array.isArray(data.questions)) {
