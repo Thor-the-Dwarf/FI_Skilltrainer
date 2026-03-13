@@ -1,0 +1,158 @@
+{
+  "scenario": {
+    "company": "Ausbildungsbetrieb IT-Service",
+    "scale": "Mittelstand, 240 Mitarbeitende",
+    "context": "Station 02 des Tageslaufs: Modulare Komponenten planen.",
+    "mission": "Sie vertiefen Modularisierung, UML und Clean-Code-Prinzipien fuer ein neues Komponentenpaket.",
+    "station": {
+      "id": "LF11FIAE-ST-02",
+      "department": "Anwendungsentwicklung",
+      "profile": "Modularisierung und UML",
+      "constraints": [
+        "klare Modulgrenzen",
+        "UML nachvollziehbar halten",
+        "Clean Code konsequent anwenden"
+      ]
+    },
+    "customerRequest": {
+      "from": "architektur@ausbildungsbetrieb.example",
+      "to": "dev.team@ausbildungsbetrieb.example",
+      "subject": "Station 02: Moduldesign verfeinern",
+      "date": "2026-03-13",
+      "body": "Bitte verfeinern Sie den Komponentenentwurf inkl. UML und begruendeter Strukturentscheidungen."
+    }
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "type": "single_choice",
+      "title": "Modulgrenze definieren",
+      "prompt": "Woran sollte eine Modulgrenze primaer ausgerichtet sein?",
+      "options": [
+        {
+          "text": "An klarer fachlicher Verantwortung",
+          "rationale": "Foerdert Wartbarkeit und Teamarbeit."
+        },
+        {
+          "text": "Nur an Dateigroesse",
+          "rationale": "Fachlogik bleibt unklar."
+        },
+        {
+          "text": "An persoenlichen Vorlieben",
+          "rationale": "Nicht belastbar."
+        }
+      ],
+      "correctIndex": 0,
+      "feedback": {
+        "correct": "Richtig: Fachliche Verantwortung ist der Kern.",
+        "wrong": "Nicht passend: Modulgrenzen brauchen fachlichen Bezug."
+      },
+      "progressLinks": [
+        "lf11fiae_modularisierung_uml_clean_code"
+      ]
+    },
+    {
+      "id": "q2",
+      "type": "multi_select",
+      "title": "UML-Qualitaet",
+      "prompt": "Welche Punkte verbessern ein UML-Komponentendiagramm? (Mehrfachauswahl)",
+      "options": [
+        {
+          "text": "Schnittstellen mit Richtung und Zweck benennen",
+          "correct": true,
+          "rationale": "Erhoeht Verstaendlichkeit."
+        },
+        {
+          "text": "Abhaengigkeiten nur implizit lassen",
+          "correct": false,
+          "rationale": "Weniger Transparenz."
+        },
+        {
+          "text": "Komponentenverantwortung kurz notieren",
+          "correct": true,
+          "rationale": "Hilft bei Wartung."
+        },
+        {
+          "text": "Externe Abhaengigkeiten markieren",
+          "correct": true,
+          "rationale": "Wichtig fuer Risikoanalyse."
+        },
+        {
+          "text": "Diagramm ohne Legende bei Sondernotation",
+          "correct": false,
+          "rationale": "Kann missverstaendlich sein."
+        }
+      ],
+      "feedback": {
+        "correct": "Richtig: Das Diagramm wird damit belastbarer.",
+        "wrong": "Teilweise falsch: Bitte Schnittstellen- und Abhaengigkeitstransparenz staerker absichern."
+      },
+      "progressLinks": [
+        "lf11fiae_modularisierung_uml_clean_code"
+      ]
+    },
+    {
+      "id": "q3",
+      "type": "ordering",
+      "title": "Entwurfsschritte",
+      "prompt": "Ordnen Sie die Schritte fuer ein sauberes Moduldesign.",
+      "items": [
+        "Fachliche Verantwortung je Modul festlegen",
+        "Schnittstellen skizzieren",
+        "Abhaengigkeiten pruefen",
+        "Codekonventionen definieren",
+        "Entwurf im Team reviewen"
+      ],
+      "correctOrder": [
+        "Fachliche Verantwortung je Modul festlegen",
+        "Schnittstellen skizzieren",
+        "Abhaengigkeiten pruefen",
+        "Codekonventionen definieren",
+        "Entwurf im Team reviewen"
+      ],
+      "feedback": {
+        "correct": "Richtig: Das Moduldesign ist methodisch aufgebaut.",
+        "wrong": "Nicht optimal: Erst Verantwortung/Schnittstellen, dann Abhaengigkeiten und Review."
+      },
+      "progressLinks": [
+        "lf11fiae_modularisierung_uml_clean_code"
+      ]
+    },
+    {
+      "id": "q4",
+      "type": "number",
+      "title": "Reviewaufwand",
+      "prompt": "Drei Module werden je 22 Minuten reviewed. Dazu kommen 18 Minuten Abschlussrunde. Wie hoch ist der Gesamtaufwand?",
+      "expected": 84,
+      "toleranceAbs": 1,
+      "showExpectedFormula": "3*22 + 18 = 84 Minuten",
+      "feedback": {
+        "correct": "Richtig gerechnet.",
+        "wrong": "Bitte Reviewzeiten korrekt addieren."
+      },
+      "progressLinks": [
+        "lf11fiae_modularisierung_uml_clean_code"
+      ]
+    },
+    {
+      "id": "q5",
+      "type": "short_text",
+      "title": "Moduldesign begruenden",
+      "prompt": "Begruenden Sie in 4-6 Saetzen, warum die Modulaufteilung wartbar ist.",
+      "minChars": 150,
+      "requiredKeywords": [
+        "verantwortung",
+        "schnittstelle",
+        "wartung"
+      ],
+      "expectedOutline": "Wartungsbezug ueber Verantwortung und Schnittstellenklarheit.",
+      "feedback": {
+        "correct": "Richtig: Die Begruendung ist nachvollziehbar.",
+        "wrong": "Bitte Verantwortung, Schnittstelle und Wartungsbezug klarer ausfuehren."
+      },
+      "progressLinks": [
+        "lf11fiae_modularisierung_uml_clean_code"
+      ]
+    }
+  ]
+}

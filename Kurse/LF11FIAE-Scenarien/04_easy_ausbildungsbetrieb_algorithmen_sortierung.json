@@ -1,0 +1,159 @@
+{
+  "scenario": {
+    "company": "Ausbildungsbetrieb IT-Service",
+    "scale": "Mittelstand, 240 Mitarbeitende",
+    "context": "Station 04 des Tageslaufs: Algorithmen, Rekursion und Sortierung vertiefen.",
+    "mission": "Sie entwerfen robuste Algorithmen, pruefen Rekursion und waehlen passende Sortierverfahren.",
+    "station": {
+      "id": "LF11FIAE-ST-04",
+      "department": "Algorithmik",
+      "profile": "Entwurf, Rekursion, Sortierung",
+      "constraints": [
+        "Randfaelle sichern",
+        "Laufzeitwirkung beachten",
+        "Verfahren kontextbezogen waehlen"
+      ]
+    },
+    "customerRequest": {
+      "from": "tech.arch@ausbildungsbetrieb.example",
+      "to": "dev.team@ausbildungsbetrieb.example",
+      "subject": "Station 04: Algorithmik absichern",
+      "date": "2026-03-13",
+      "body": "Bitte validieren Sie den Algorithmusaufbau fuer Lastfaelle und dokumentieren Sie die Verfahrenswahl."
+    }
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "type": "single_choice",
+      "title": "Algorithmusstart",
+      "prompt": "Was kommt zuerst bei einem stabilen Algorithmusentwurf?",
+      "options": [
+        {
+          "text": "Direkt Code schreiben",
+          "rationale": "Hohe Umbaukosten wahrscheinlich."
+        },
+        {
+          "text": "Problem, Eingaben und Randfaelle klaeren",
+          "rationale": "Saubere Grundlage fuer Entwurf."
+        },
+        {
+          "text": "Nur Laufzeitwerte schaetzen",
+          "rationale": "Ohne Problemklaerung unvollstaendig."
+        }
+      ],
+      "correctIndex": 1,
+      "feedback": {
+        "correct": "Richtig: Problem- und Randfallklarheit zuerst.",
+        "wrong": "Nicht passend: Ohne Problemklarheit wird der Entwurf unsauber."
+      },
+      "progressLinks": [
+        "lf11fiae_algorithmen_sortierung"
+      ]
+    },
+    {
+      "id": "q2",
+      "type": "multi_select",
+      "title": "Rekursion robust machen",
+      "prompt": "Welche Punkte sind bei Rekursion besonders wichtig? (Mehrfachauswahl)",
+      "options": [
+        {
+          "text": "Abbruchbedingungen explizit definieren",
+          "correct": true,
+          "rationale": "Verhindert Endlosrekursion."
+        },
+        {
+          "text": "Teilprobleme klar verkleinern",
+          "correct": true,
+          "rationale": "Sichert Fortschritt."
+        },
+        {
+          "text": "Rueckgabewerte ignorieren",
+          "correct": false,
+          "rationale": "Fuehrt zu Fehlern."
+        },
+        {
+          "text": "Testfaelle fuer Grenzwerte einplanen",
+          "correct": true,
+          "rationale": "Erhoeht Robustheit."
+        },
+        {
+          "text": "Rekursion ohne Monitoring laufen lassen",
+          "correct": false,
+          "rationale": "Schwieriger Fehlernachweis."
+        }
+      ],
+      "feedback": {
+        "correct": "Richtig: Das macht Rekursion belastbar.",
+        "wrong": "Teilweise falsch: Bitte Abbruch, Verkleinerung und Grenztests staerker beachten."
+      },
+      "progressLinks": [
+        "lf11fiae_algorithmen_sortierung"
+      ]
+    },
+    {
+      "id": "q3",
+      "type": "ordering",
+      "title": "Sortierverfahren begruenden",
+      "prompt": "Ordnen Sie die Schritte zur Sortierentscheidung.",
+      "items": [
+        "Datenprofil analysieren",
+        "Verfahrensoptionen vergleichen",
+        "Laufzeitwirkung abschaetzen",
+        "Implementierung und Test",
+        "Entscheidung dokumentieren"
+      ],
+      "correctOrder": [
+        "Datenprofil analysieren",
+        "Verfahrensoptionen vergleichen",
+        "Laufzeitwirkung abschaetzen",
+        "Implementierung und Test",
+        "Entscheidung dokumentieren"
+      ],
+      "feedback": {
+        "correct": "Richtig: Die Verfahrenswahl ist sauber begruendet.",
+        "wrong": "Nicht optimal: Bitte Datenprofil vor Implementierung auswerten."
+      },
+      "progressLinks": [
+        "lf11fiae_algorithmen_sortierung"
+      ]
+    },
+    {
+      "id": "q4",
+      "type": "number",
+      "title": "Durchlaufzeit addieren",
+      "prompt": "Drei Algorithmusdurchlaeufe dauern 18 ms, 21 ms und 24 ms. Wie hoch ist die Gesamtzeit?",
+      "expected": 63,
+      "toleranceAbs": 1,
+      "showExpectedFormula": "18 + 21 + 24 = 63 ms",
+      "feedback": {
+        "correct": "Richtig gerechnet.",
+        "wrong": "Bitte alle Durchlaeufe korrekt summieren."
+      },
+      "progressLinks": [
+        "lf11fiae_algorithmen_sortierung"
+      ]
+    },
+    {
+      "id": "q5",
+      "type": "short_text",
+      "title": "Verfahrenswahl erklaeren",
+      "prompt": "Erklaeren Sie in 4-6 Saetzen die Sortierverfahrenswahl fuer ein reales Lastprofil.",
+      "minChars": 160,
+      "requiredKeywords": [
+        "datenprofil",
+        "laufzeit",
+        "verfahren"
+      ],
+      "expectedOutline": "Klarer Bezug zu Datenprofil und Laufzeitwirkung.",
+      "feedback": {
+        "correct": "Richtig: Die Wahl ist fachlich nachvollziehbar.",
+        "wrong": "Bitte Datenprofil, Laufzeit und Verfahren enger verknuepfen."
+      },
+      "progressLinks": [
+        "lf11fiae_algorithmen_sortierung",
+        "lf11fiae_schnittstellen_dokumentation"
+      ]
+    }
+  ]
+}

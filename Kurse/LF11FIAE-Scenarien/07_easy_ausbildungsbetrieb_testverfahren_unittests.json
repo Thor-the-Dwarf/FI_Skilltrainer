@@ -1,0 +1,159 @@
+{
+  "scenario": {
+    "company": "Ausbildungsbetrieb IT-Service",
+    "scale": "Mittelstand, 240 Mitarbeitende",
+    "context": "Station 07 des Tageslaufs: Funktionalitaet testen und UnitTests ausbauen.",
+    "mission": "Sie waehlen Testverfahren, formulieren Testfaelle und sichern Kernfunktionen ueber UnitTests ab.",
+    "station": {
+      "id": "LF11FIAE-ST-07",
+      "department": "Qualitaetssicherung",
+      "profile": "Testverfahren, Testfaelle, UnitTests",
+      "constraints": [
+        "Tests an Anforderungen ausrichten",
+        "Befunde reproduzierbar halten",
+        "Automatisierung sinnvoll einsetzen"
+      ]
+    },
+    "customerRequest": {
+      "from": "qa.lead@ausbildungsbetrieb.example",
+      "to": "dev.team@ausbildungsbetrieb.example",
+      "subject": "Station 07: Testausbau",
+      "date": "2026-03-13",
+      "body": "Bitte erweitern Sie das Testset fuer Kernfunktionen und liefern Sie verwertbare Testnachweise."
+    }
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "type": "multi_select",
+      "title": "Testverfahren passend waehlen",
+      "prompt": "Welche Aussagen sind fuer die Teststrategie sinnvoll? (Mehrfachauswahl)",
+      "options": [
+        {
+          "text": "Risikoreiche Kernfunktionen priorisieren",
+          "correct": true,
+          "rationale": "Erhoeht Testwirkung."
+        },
+        {
+          "text": "Testziel je Komponente dokumentieren",
+          "correct": true,
+          "rationale": "Macht Pruefzweck transparent."
+        },
+        {
+          "text": "Nur manuelle Einmaltests ohne Nachweis",
+          "correct": false,
+          "rationale": "Zu wenig reproduzierbar."
+        },
+        {
+          "text": "Positive und negative Testfaelle planen",
+          "correct": true,
+          "rationale": "Erhoeht Fehlersicherheit."
+        },
+        {
+          "text": "Fehlschlaege nicht analysieren",
+          "correct": false,
+          "rationale": "Lernchance geht verloren."
+        }
+      ],
+      "feedback": {
+        "correct": "Richtig: Strategie und Risikobezug sind stimmig.",
+        "wrong": "Teilweise falsch: Bitte Testziel und Reproduzierbarkeit staerker absichern."
+      },
+      "progressLinks": [
+        "lf11fiae_testverfahren_unittests"
+      ]
+    },
+    {
+      "id": "q2",
+      "type": "single_choice",
+      "title": "UnitTest-Fokus",
+      "prompt": "Worauf sollten UnitTests vor allem abzielen?",
+      "options": [
+        {
+          "text": "Auf klar abgegrenzte Funktionen mit eindeutigen Erwartungen",
+          "rationale": "Damit bleiben Tests stabil und aussagekraeftig."
+        },
+        {
+          "text": "Auf komplette End-to-End-Szenarien",
+          "rationale": "Das ist nicht der Hauptfokus von UnitTests."
+        },
+        {
+          "text": "Nur auf optische Aspekte",
+          "rationale": "Kein Kernziel von UnitTests."
+        }
+      ],
+      "correctIndex": 0,
+      "feedback": {
+        "correct": "Richtig: UnitTests sollen klar abgegrenzte Logik pruefen.",
+        "wrong": "Nicht passend: UnitTests brauchen klaren Funktionsfokus."
+      },
+      "progressLinks": [
+        "lf11fiae_testverfahren_unittests"
+      ]
+    },
+    {
+      "id": "q3",
+      "type": "ordering",
+      "title": "Testkette bis Befund",
+      "prompt": "Ordnen Sie den Ablauf von Testfall bis Befund.",
+      "items": [
+        "Testfall aus Anforderung ableiten",
+        "Eingabedaten und Erwartung definieren",
+        "Test automatisiert ausfuehren",
+        "Befund dokumentieren",
+        "Fehlerursaache analysieren"
+      ],
+      "correctOrder": [
+        "Testfall aus Anforderung ableiten",
+        "Eingabedaten und Erwartung definieren",
+        "Test automatisiert ausfuehren",
+        "Befund dokumentieren",
+        "Fehlerursaache analysieren"
+      ],
+      "feedback": {
+        "correct": "Richtig: Die Testkette ist nachvollziehbar.",
+        "wrong": "Nicht optimal: Bitte Ableitung und Erwartung vor der Ausfuehrung sichern."
+      },
+      "progressLinks": [
+        "lf11fiae_testverfahren_unittests"
+      ]
+    },
+    {
+      "id": "q4",
+      "type": "number",
+      "title": "Fehleranteil im Testlauf",
+      "prompt": "Von 52 Testfaellen schlagen 7 fehl. Wie hoch ist der Fehleranteil in Prozent (gerundet)?",
+      "expected": 13,
+      "toleranceAbs": 1,
+      "showExpectedFormula": "7/52*100 = 13,46 % ~ 13 %",
+      "feedback": {
+        "correct": "Richtig gerechnet.",
+        "wrong": "Bitte Anteil fehlerhafter Tests korrekt berechnen."
+      },
+      "progressLinks": [
+        "lf11fiae_testverfahren_unittests"
+      ]
+    },
+    {
+      "id": "q5",
+      "type": "short_text",
+      "title": "Testnachweis formulieren",
+      "prompt": "Formulieren Sie in 4-6 Saetzen einen Testnachweis mit Ziel, Befund und naechster Aktion.",
+      "minChars": 160,
+      "requiredKeywords": [
+        "ziel",
+        "befund",
+        "naechste aktion"
+      ],
+      "expectedOutline": "Klarer Testzweck, Ergebnisbezug und Folgeaktion.",
+      "feedback": {
+        "correct": "Richtig: Der Nachweis ist fuer Team und Abnahme geeignet.",
+        "wrong": "Bitte Ziel, Befund und naechste Aktion klarer strukturieren."
+      },
+      "progressLinks": [
+        "lf11fiae_testverfahren_unittests",
+        "lf11fiae_schnittstellen_dokumentation"
+      ]
+    }
+  ]
+}
