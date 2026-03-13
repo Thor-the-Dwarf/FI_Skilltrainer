@@ -1,0 +1,159 @@
+{
+  "scenario": {
+    "company": "Ausbildungsbetrieb IT-Service",
+    "scale": "Mittelstand, 220 Mitarbeitende",
+    "context": "Station 06 des Tageslaufs: Benutzerschnittstellen testen und UX bewerten.",
+    "mission": "Sie waehlen Testverfahren, formulieren UX-Testfaelle und sichern Verbesserungen per Nachtest.",
+    "station": {
+      "id": "LF10FIAE-ST-06",
+      "department": "UX Quality",
+      "profile": "Testverfahren und UX-Bewertung",
+      "constraints": [
+        "Testfallbezug zu Anforderungen",
+        "Befunde priorisieren",
+        "Nachtest wirksam dokumentieren"
+      ]
+    },
+    "customerRequest": {
+      "from": "qa.ux@ausbildungsbetrieb.example",
+      "to": "dev.team@ausbildungsbetrieb.example",
+      "subject": "Station 06: UX-Test und Nachtest",
+      "date": "2026-03-13",
+      "body": "Bitte fuehren Sie strukturierte UX-Tests durch und dokumentieren Sie Befunde mit Nachtest."
+    }
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "type": "single_choice",
+      "title": "Testziel festlegen",
+      "prompt": "Womit sollte ein UX-Testprozess starten?",
+      "options": [
+        {
+          "text": "Mit zufaelligen Klickpfaden",
+          "rationale": "Zu wenig reproduzierbar."
+        },
+        {
+          "text": "Mit Abschlussbericht ohne Testlauf",
+          "rationale": "Unlogisch."
+        },
+        {
+          "text": "Mit klaren Testzielen und Kernszenarien",
+          "rationale": "Sichert Fokus und Aussagekraft."
+        }
+      ],
+      "correctIndex": 2,
+      "feedback": {
+        "correct": "Richtig: Zielklarheit ist der Startpunkt.",
+        "wrong": "Nicht passend: Ohne Testziele bleibt die Bewertung unscharf."
+      },
+      "progressLinks": [
+        "lf10fiae_ui_tests_ux"
+      ]
+    },
+    {
+      "id": "q2",
+      "type": "multi_select",
+      "title": "Befunddoku im UX-Test",
+      "prompt": "Welche Angaben braucht ein UX-Befund? (Mehrfachauswahl)",
+      "options": [
+        {
+          "text": "Szenario und Schritt, in dem der Fehler auftritt",
+          "correct": true,
+          "rationale": "Ermoeglicht Reproduktion."
+        },
+        {
+          "text": "Auswirkung auf Nutzeraufgabe",
+          "correct": true,
+          "rationale": "Wichtig fuer Priorisierung."
+        },
+        {
+          "text": "Nur subjektives Gefuehl ohne Kontext",
+          "correct": false,
+          "rationale": "Nicht belastbar."
+        },
+        {
+          "text": "Prioritaet und naechste Aktion",
+          "correct": true,
+          "rationale": "Steuert Behebung."
+        },
+        {
+          "text": "Keine Nachtestmarkierung",
+          "correct": false,
+          "rationale": "Wirksamkeit bleibt offen."
+        }
+      ],
+      "feedback": {
+        "correct": "Richtig: Die Befunddoku ist steuerbar aufgebaut.",
+        "wrong": "Teilweise falsch: Bitte Kontext, Auswirkung und Priorisierung staerker sichern."
+      },
+      "progressLinks": [
+        "lf10fiae_ui_tests_ux"
+      ]
+    },
+    {
+      "id": "q3",
+      "type": "ordering",
+      "title": "UX-Verbesserungskreislauf",
+      "prompt": "Ordnen Sie den Ablauf von Test bis Wirksamkeitspruefung.",
+      "items": [
+        "Testfall ausfuehren",
+        "Befund erfassen und priorisieren",
+        "Korrektur umsetzen",
+        "Nachtest fahren",
+        "Ergebnisstand dokumentieren"
+      ],
+      "correctOrder": [
+        "Testfall ausfuehren",
+        "Befund erfassen und priorisieren",
+        "Korrektur umsetzen",
+        "Nachtest fahren",
+        "Ergebnisstand dokumentieren"
+      ],
+      "feedback": {
+        "correct": "Richtig: Der Kreislauf ist sauber aufgebaut.",
+        "wrong": "Nicht optimal: Bitte Befund/Priorisierung vor Korrektur und Nachtest setzen."
+      },
+      "progressLinks": [
+        "lf10fiae_ui_tests_ux"
+      ]
+    },
+    {
+      "id": "q4",
+      "type": "number",
+      "title": "Nachtestquote",
+      "prompt": "Von 19 priorisierten UX-Befunden wurden 15 im Nachtest als behoben bestaetigt. Wie hoch ist die Quote in Prozent (gerundet)?",
+      "expected": 79,
+      "toleranceAbs": 1,
+      "showExpectedFormula": "15/19*100 = 78,95 % ~ 79 %",
+      "feedback": {
+        "correct": "Richtig gerechnet.",
+        "wrong": "Bitte den bestaetigten Anteil korrekt berechnen."
+      },
+      "progressLinks": [
+        "lf10fiae_ui_tests_ux"
+      ]
+    },
+    {
+      "id": "q5",
+      "type": "short_text",
+      "title": "UX-Bewertung zusammenfassen",
+      "prompt": "Formulieren Sie in 4-6 Saetzen eine UX-Bewertung mit Staerke, Hauptproblem und naechstem Schritt.",
+      "minChars": 160,
+      "requiredKeywords": [
+        "staerke",
+        "hauptproblem",
+        "naechster schritt"
+      ],
+      "expectedOutline": "Ausgewogene Bewertung mit klarer Folgeaktion.",
+      "feedback": {
+        "correct": "Richtig: Die Bewertung ist fuer das Team direkt nutzbar.",
+        "wrong": "Bitte Staerke, Hauptproblem und naechsten Schritt klarer strukturieren."
+      },
+      "progressLinks": [
+        "lf10fiae_ui_tests_ux",
+        "lf10fiae_ui_dokumentation"
+      ]
+    }
+  ]
+}

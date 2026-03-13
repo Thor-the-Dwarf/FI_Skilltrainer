@@ -1,0 +1,159 @@
+{
+  "scenario": {
+    "company": "Ausbildungsbetrieb IT-Service",
+    "scale": "Mittelstand, 220 Mitarbeitende",
+    "context": "Station 03 des Tageslaufs: Softwareprodukt designen und in Architektur einordnen.",
+    "mission": "Sie entwickeln ein tragfaehiges UI-Konzept mit Architekturbezug und begruendeten Entwurfsentscheidungen.",
+    "station": {
+      "id": "LF10FIAE-ST-03",
+      "department": "Solution Design",
+      "profile": "Produktdesign und Architektur",
+      "constraints": [
+        "UI/Fachlogik sauber trennen",
+        "Designentscheidungen begruenden",
+        "Schnittstellen frueh klarmachen"
+      ]
+    },
+    "customerRequest": {
+      "from": "architektur@ausbildungsbetrieb.example",
+      "to": "dev.team@ausbildungsbetrieb.example",
+      "subject": "Station 03: Produktdesign",
+      "date": "2026-03-13",
+      "body": "Bitte erstellen Sie einen UI-Entwurf im Kontext der Gesamtarchitektur."
+    }
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "type": "multi_select",
+      "title": "Architekturbezug herstellen",
+      "prompt": "Welche Punkte sind fuer die Einordnung der UI in die Architektur wichtig? (Mehrfachauswahl)",
+      "options": [
+        {
+          "text": "Schnittstellen zwischen UI und Fachlogik beschreiben",
+          "correct": true,
+          "rationale": "Verhindert Koppelungsprobleme."
+        },
+        {
+          "text": "Datenfluss zwischen Komponenten skizzieren",
+          "correct": true,
+          "rationale": "Hilft beim Entwurf."
+        },
+        {
+          "text": "Architektur erst nach Go-Live betrachten",
+          "correct": false,
+          "rationale": "Zu spaet fuer stabile Entscheidungen."
+        },
+        {
+          "text": "Verantwortungen pro Schicht festhalten",
+          "correct": true,
+          "rationale": "Steigert Wartbarkeit."
+        },
+        {
+          "text": "Abhaengigkeiten bewusst unklar lassen",
+          "correct": false,
+          "rationale": "Erschwert Pflege."
+        }
+      ],
+      "feedback": {
+        "correct": "Richtig: Der Architekturbezug ist fundiert aufgebaut.",
+        "wrong": "Teilweise falsch: Bitte Schnittstellen und Schichtverantwortung klarer absichern."
+      },
+      "progressLinks": [
+        "lf10fiae_produktdesign_architektur"
+      ]
+    },
+    {
+      "id": "q2",
+      "type": "single_choice",
+      "title": "Entwurfsmuster sinnvoll nutzen",
+      "prompt": "Wann ist der Einsatz eines Entwurfsmusters sinnvoll?",
+      "options": [
+        {
+          "text": "Nur wenn es im Tutorial stand",
+          "rationale": "Nicht kontextbezogen."
+        },
+        {
+          "text": "Wenn es das konkrete Problem vereinfacht und nachvollziehbar bleibt",
+          "rationale": "Praxisnahe Musteranwendung."
+        },
+        {
+          "text": "Immer, weil Muster modern wirken",
+          "rationale": "Kein fachliches Kriterium."
+        }
+      ],
+      "correctIndex": 1,
+      "feedback": {
+        "correct": "Richtig: Muster muessen dem Problem dienen.",
+        "wrong": "Nicht passend: Musterwahl braucht Problembezug."
+      },
+      "progressLinks": [
+        "lf10fiae_produktdesign_architektur"
+      ]
+    },
+    {
+      "id": "q3",
+      "type": "ordering",
+      "title": "Designentscheidung absichern",
+      "prompt": "Ordnen Sie den Ablauf fuer eine belastbare Designentscheidung.",
+      "items": [
+        "Nutzer- und Prozessziel klaeren",
+        "Loesungsoptionen skizzieren",
+        "Architekturwirkung bewerten",
+        "Entscheidung im Team reviewen",
+        "Entscheidung dokumentieren"
+      ],
+      "correctOrder": [
+        "Nutzer- und Prozessziel klaeren",
+        "Loesungsoptionen skizzieren",
+        "Architekturwirkung bewerten",
+        "Entscheidung im Team reviewen",
+        "Entscheidung dokumentieren"
+      ],
+      "feedback": {
+        "correct": "Richtig: Der Entscheidungsweg ist nachvollziehbar.",
+        "wrong": "Nicht optimal: Bitte Ziel und Architekturwirkung vor Doku/Review durchlaufen."
+      },
+      "progressLinks": [
+        "lf10fiae_produktdesign_architektur"
+      ]
+    },
+    {
+      "id": "q4",
+      "type": "number",
+      "title": "Designreview-Zeit",
+      "prompt": "Vier Designvarianten werden je 18 Minuten diskutiert, plus 22 Minuten Abschlussrunde. Wie viele Minuten insgesamt?",
+      "expected": 94,
+      "toleranceAbs": 1,
+      "showExpectedFormula": "4*18 + 22 = 94 Minuten",
+      "feedback": {
+        "correct": "Richtig gerechnet.",
+        "wrong": "Bitte Variantenzeiten und Abschlussrunde korrekt summieren."
+      },
+      "progressLinks": [
+        "lf10fiae_produktdesign_architektur"
+      ]
+    },
+    {
+      "id": "q5",
+      "type": "short_text",
+      "title": "Architekturentscheid kurz begruenden",
+      "prompt": "Beschreiben Sie in 4-6 Saetzen, warum die gewaehlte UI-Architektur wartbar ist.",
+      "minChars": 150,
+      "requiredKeywords": [
+        "schicht",
+        "schnittstelle",
+        "wartbar"
+      ],
+      "expectedOutline": "Wartbarkeitsbegruendung ueber Schichtung und klare Schnittstellen.",
+      "feedback": {
+        "correct": "Richtig: Die Begruendung ist technisch schluessig.",
+        "wrong": "Bitte Schicht- und Schnittstellenbezug deutlicher ausarbeiten."
+      },
+      "progressLinks": [
+        "lf10fiae_produktdesign_architektur",
+        "lf10fiae_ui_dokumentation"
+      ]
+    }
+  ]
+}

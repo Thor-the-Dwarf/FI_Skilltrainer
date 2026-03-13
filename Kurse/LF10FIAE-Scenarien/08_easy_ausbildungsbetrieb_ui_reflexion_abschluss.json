@@ -1,0 +1,161 @@
+{
+  "scenario": {
+    "company": "Ausbildungsbetrieb IT-Service",
+    "scale": "Mittelstand, 220 Mitarbeitende",
+    "context": "Station 08 des Tageslaufs: Abschlussbewertung der UI-Entwicklung.",
+    "mission": "Sie reflektieren Zielerreichung, offene Punkte und Verbesserungen fuer den naechsten Entwicklungszyklus.",
+    "station": {
+      "id": "LF10FIAE-ST-08",
+      "department": "Project Review",
+      "profile": "Abschlussbewertung und Verbesserungsplanung",
+      "constraints": [
+        "Soll-Ist-Vergleich faktenbasiert",
+        "Restpunkte transparent",
+        "naechste Schritte verbindlich"
+      ]
+    },
+    "customerRequest": {
+      "from": "projektleitung@ausbildungsbetrieb.example",
+      "to": "dev.team@ausbildungsbetrieb.example",
+      "subject": "Station 08: UI-Abschluss und Reflexion",
+      "date": "2026-03-13",
+      "body": "Bitte erstellen Sie eine Abschlussreflexion mit Zielerreichung, Risiko und konkretem Folgeplan."
+    }
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "type": "single_choice",
+      "title": "Soll-Ist-Bewertung starten",
+      "prompt": "Was ist der sinnvollste Einstieg in die Abschlussreflexion?",
+      "options": [
+        {
+          "text": "Nur subjektive Eindruecke auflisten",
+          "rationale": "Zu wenig belastbar."
+        },
+        {
+          "text": "Ziele und erreichte Ergebnisse strukturiert gegenueberstellen",
+          "rationale": "Faktenbasis fuer Bewertung."
+        },
+        {
+          "text": "Nur offene Bugs nennen",
+          "rationale": "Unvollstaendiges Bild."
+        }
+      ],
+      "correctIndex": 1,
+      "feedback": {
+        "correct": "Richtig: Soll-Ist ist die tragfaehige Grundlage.",
+        "wrong": "Nicht passend: Reflexion braucht Zielbezug und Fakten."
+      },
+      "progressLinks": [
+        "lf10fiae_ui_tests_ux"
+      ]
+    },
+    {
+      "id": "q2",
+      "type": "multi_select",
+      "title": "Verbesserungen ableiten",
+      "prompt": "Welche Punkte helfen bei belastbaren Verbesserungsmassnahmen? (Mehrfachauswahl)",
+      "options": [
+        {
+          "text": "Ursache und Wirkung eines Problems benennen",
+          "correct": true,
+          "rationale": "Erhoeht Lernwirkung."
+        },
+        {
+          "text": "Massnahme mit Verantwortlichem und Termin versehen",
+          "correct": true,
+          "rationale": "Steigert Umsetzungschance."
+        },
+        {
+          "text": "Kritische Punkte auslassen",
+          "correct": false,
+          "rationale": "Verhindert Verbesserungen."
+        },
+        {
+          "text": "Positive Muster fuer Wiederverwendung festhalten",
+          "correct": true,
+          "rationale": "Skaliert gute Praxis."
+        },
+        {
+          "text": "Alles gleich priorisieren",
+          "correct": false,
+          "rationale": "Erschwert Steuerung."
+        }
+      ],
+      "feedback": {
+        "correct": "Richtig: Die Massnahmen sind umsetzbar aufgebaut.",
+        "wrong": "Teilweise falsch: Bitte Ursachenbezug und Verbindlichkeit staerker sichern."
+      },
+      "progressLinks": [
+        "lf10fiae_ui_tests_ux",
+        "lf10fiae_ui_dokumentation"
+      ]
+    },
+    {
+      "id": "q3",
+      "type": "ordering",
+      "title": "Abschlussprozess LF10",
+      "prompt": "Ordnen Sie den Ablauf fuer den UI-Projektabschluss.",
+      "items": [
+        "Zielerreichung bewerten",
+        "Abweichungen analysieren",
+        "Verbesserungen priorisieren",
+        "naechste Schritte terminieren",
+        "Abschlussstatus kommunizieren"
+      ],
+      "correctOrder": [
+        "Zielerreichung bewerten",
+        "Abweichungen analysieren",
+        "Verbesserungen priorisieren",
+        "naechste Schritte terminieren",
+        "Abschlussstatus kommunizieren"
+      ],
+      "feedback": {
+        "correct": "Richtig: Das ist ein professioneller Abschlussprozess.",
+        "wrong": "Nicht optimal: Bitte Analyse und Priorisierung vor Kommunikation halten."
+      },
+      "progressLinks": [
+        "lf10fiae_ui_tests_ux",
+        "lf10fiae_ui_dokumentation"
+      ]
+    },
+    {
+      "id": "q4",
+      "type": "number",
+      "title": "Zielerreichungsquote",
+      "prompt": "Von 22 gesetzten UI-Zielen wurden 18 erreicht. Wie hoch ist die Zielerreichung in Prozent (gerundet)?",
+      "expected": 82,
+      "toleranceAbs": 1,
+      "showExpectedFormula": "18/22*100 = 81,82 % ~ 82 %",
+      "feedback": {
+        "correct": "Richtig gerechnet.",
+        "wrong": "Bitte Anteil erreichter Ziele korrekt berechnen."
+      },
+      "progressLinks": [
+        "lf10fiae_ui_tests_ux"
+      ]
+    },
+    {
+      "id": "q5",
+      "type": "short_text",
+      "title": "Abschlussnotiz",
+      "prompt": "Formulieren Sie in 4-6 Saetzen eine Abschlussnotiz mit Zielerreichung, Restpunkt und naechster Verbesserung.",
+      "minChars": 170,
+      "requiredKeywords": [
+        "zielerreichung",
+        "restpunkt",
+        "verbesserung"
+      ],
+      "expectedOutline": "Klarer Zielstand, transparenter Restpunkt und konkrete Verbesserung fuer den Folgezyklus.",
+      "feedback": {
+        "correct": "Richtig: Die Abschlussnotiz ist handlungsorientiert.",
+        "wrong": "Bitte Zielerreichung, Restpunkt und Verbesserung deutlicher ausarbeiten."
+      },
+      "progressLinks": [
+        "lf10fiae_ui_dokumentation",
+        "lf10fiae_ui_tests_ux"
+      ]
+    }
+  ]
+}
