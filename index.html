@@ -76,6 +76,7 @@
     const HOME_SKILLS_FOLDER_STORAGE_KEY = "sr_home_skills_folder";
     const SKILL_PROGRESS_STORAGE_KEY_PREFIX = "sr_skill_progress_v1";
     const SCENARIO_RATING_STORAGE_KEY_PREFIX = "sr_scenario_rating_v1";
+    const MANUAL_SHORTTEXT_CREDIT_BUTTON_LABEL = "So hab ich es gement";
     const DEFAULT_SKILL_TARGET_CORRECT = 8;
     const FALLBACK_ACCESS_KEY_TO_FOLDER = Object.freeze({
       LF01_03_26: "LF01-Scenarien",
@@ -666,6 +667,11 @@
           const rawSkills = scenarioValue.skillsById && typeof scenarioValue.skillsById === "object"
             ? scenarioValue.skillsById
             : {};
+          const manualCreditQuestionIds = uniqueStringArray(
+            (Array.isArray(scenarioValue.manualCreditQuestionIds) ? scenarioValue.manualCreditQuestionIds : [])
+              .map((entry) => normalizeProgressId(entry))
+              .filter(Boolean)
+          );
           for (const [skillRaw, rawSkill] of Object.entries(rawSkills)) {
             const skillId = normalizeProgressId(skillRaw);
             if (!skillId || !rawSkill || typeof rawSkill !== "object") continue;
@@ -682,7 +688,8 @@
             achievedScore,
             percent,
             updatedAt,
-            skillsById
+            skillsById,
+            manualCreditQuestionIds
           };
         }
         return { byScenario };
@@ -703,6 +710,11 @@
         const percent = clampPercent(scenarioValue.percent);
         const updatedAt = Math.max(0, Math.floor(Number(scenarioValue.updatedAt) || Date.now()));
         const skillsById = {};
+        const manualCreditQuestionIds = uniqueStringArray(
+          (Array.isArray(scenarioValue.manualCreditQuestionIds) ? scenarioValue.manualCreditQuestionIds : [])
+            .map((entry) => normalizeProgressId(entry))
+            .filter(Boolean)
+        );
         for (const [skillRaw, skillValue] of Object.entries(scenarioValue.skillsById || {})) {
           const skillId = normalizeProgressId(skillRaw);
           if (!skillId || !skillValue || typeof skillValue !== "object") continue;
@@ -719,7 +731,8 @@
           achievedScore: Math.min(achievedScore, totalQuestions || achievedScore),
           percent,
           updatedAt,
-          skillsById
+          skillsById,
+          manualCreditQuestionIds
         };
       }
       try {
@@ -742,17 +755,26 @@
       return "scenario";
     }
 
-    function buildScenarioRatingSnapshot(data, results) {
+    function buildScenarioRatingSnapshot(data, results, manualCreditQuestionIds = new Set()) {
       const questions = Array.isArray(data?.questions)
         ? data.questions.filter((q) => !isFollowupDivider(q))
         : [];
       const questionsById = new Map(questions.map((q) => [q.id, q]));
       const skillsById = {};
+      const manualCreditSet = manualCreditQuestionIds instanceof Set
+        ? manualCreditQuestionIds
+        : new Set(
+          (Array.isArray(manualCreditQuestionIds) ? manualCreditQuestionIds : [])
+            .map((entry) => normalizeProgressId(entry))
+            .filter(Boolean)
+        );
       let achievedScore = 0;
       for (const result of results || []) {
         const q = questionsById.get(result?.id);
         if (!q) continue;
-        const weight = getResultRatingWeight(result.status);
+        const questionProgressId = normalizeProgressId(q.id);
+        const isManualCredit = Boolean(questionProgressId && manualCreditSet.has(questionProgressId));
+        const weight = isManualCredit ? 1 : getResultRatingWeight(result.status);
         achievedScore += weight;
         const links = resolveQuestionProgressLinks(q, data);
         for (const linkRaw of links) {
@@ -770,22 +792,48 @@
       return { totalQuestions, achievedScore, percent, skillsById };
     }
 
-    function applyScenarioRatingFromResults(data, results) {
+    function applyScenarioRatingFromResults(data, results, options = {}) {
       const folder = sanitizeFolderName(activeScenarioFolder);
       if (!folder) return null;
       const scenarioId = resolveScenarioRatingId(data);
-      const snapshot = buildScenarioRatingSnapshot(data, results);
       const state = loadScenarioRatingState(folder);
+      const manualCreditQuestionId = normalizeProgressId(options?.manualCreditQuestionId || "");
+      const manualCreditQuestionIds = new Set(
+        (Array.isArray(state.byScenario?.[scenarioId]?.manualCreditQuestionIds)
+          ? state.byScenario[scenarioId].manualCreditQuestionIds
+          : [])
+          .map((entry) => normalizeProgressId(entry))
+          .filter(Boolean)
+      );
+      if (manualCreditQuestionId) manualCreditQuestionIds.add(manualCreditQuestionId);
+      const snapshot = buildScenarioRatingSnapshot(data, results, manualCreditQuestionIds);
       state.byScenario[scenarioId] = {
         ...snapshot,
-        updatedAt: Date.now()
+        updatedAt: Date.now(),
+        manualCreditQuestionIds: [...manualCreditQuestionIds]
       };
       saveScenarioRatingState(state, folder);
       return {
         scenarioId,
         scenarioPercent: snapshot.percent,
-        totalQuestions: snapshot.totalQuestions
+        totalQuestions: snapshot.totalQuestions,
+        manualCreditQuestionId,
+        manualCreditCount: manualCreditQuestionIds.size
       };
+    }
+
+    function getScenarioManualCreditQuestionIdSet(data) {
+      const folder = sanitizeFolderName(activeScenarioFolder);
+      if (!folder) return new Set();
+      const scenarioId = resolveScenarioRatingId(data);
+      const state = loadScenarioRatingState(folder);
+      return new Set(
+        (Array.isArray(state.byScenario?.[scenarioId]?.manualCreditQuestionIds)
+          ? state.byScenario[scenarioId].manualCreditQuestionIds
+          : [])
+          .map((entry) => normalizeProgressId(entry))
+          .filter(Boolean)
+      );
     }
 
     function getSkillPercentFromScenarioRatings(state, progressId) {
@@ -1792,9 +1840,12 @@
       });
     }
 
-    function buildSourceAssessments(card, q, result) {
+    function buildSourceAssessments(card, q, result, context = {}) {
       const out = [];
       if (!card || !q) return out;
+      const manualCreditQuestionIds = context.manualCreditQuestionIds instanceof Set
+        ? context.manualCreditQuestionIds
+        : new Set();
 
       if (q.type === "single_choice") {
         const chosen = Number.isInteger(answers[q.id]) ? answers[q.id] : null;
@@ -1893,13 +1944,24 @@
 
       if (q.type === "short_text") {
         const ta = card.querySelector("textarea");
+        const questionProgressId = normalizeProgressId(q.id);
+        const manualCreditApplied = Boolean(
+          questionProgressId && manualCreditQuestionIds.has(questionProgressId)
+        );
+        const status = manualCreditApplied ? "ok" : result.status;
+        const explain = manualCreditApplied
+          ? `${result.explanation} Manuell als korrekt anerkannt.`
+          : result.explanation;
         out.push({
           sourceEl: ta,
           anchorEl: ta,
-          status: result.status,
+          status,
           title: "Freitext-Feedback",
           detail: `Erwartung: ${result.expectedDisplay}`,
-          explain: result.explanation
+          explain,
+          hasManualShortTextCreditAction: true,
+          manualShortTextCreditApplied: manualCreditApplied,
+          manualShortTextCreditQuestionId: q.id
         });
         return out;
       }
@@ -1955,6 +2017,16 @@
       }
     }
 
+    function applyManualShortTextCredit(questionIdRaw) {
+      if (!scenarioData || !Array.isArray(lastResults) || !lastResults.length) return;
+      const questionId = normalizeProgressId(questionIdRaw);
+      if (!questionId) return;
+      const progressUpdate = applyScenarioRatingFromResults(scenarioData, lastResults, {
+        manualCreditQuestionId: questionId
+      });
+      renderInlineReview(lastResults, progressUpdate);
+    }
+
     function layoutReviewGraph(card, slot, assessments) {
       slot.innerHTML = `<svg class="review-canvas" aria-hidden="true"></svg><div class="review-list"></div>`;
       const svg = slot.querySelector(".review-canvas");
@@ -1969,7 +2041,7 @@
 
       const nodes = assessments.map((a) => {
         const node = document.createElement("article");
-        node.className = `review-node ${a.status}`;
+        node.className = `review-node ${a.status}${a.manualShortTextCreditApplied ? " manual-shorttext-credit" : ""}`;
         node.title = tooltipTextFromStatus(a.status);
         node.setAttribute("data-eval-tooltip", "1");
         node.setAttribute("data-eval-tooltip-text", tooltipTextFromStatus(a.status));
@@ -1977,6 +2049,21 @@
           `<p class="review-node-title">${esc(a.title || "")}</p>` +
           (a.detail ? `<div class="review-content">${esc(a.detail)}</div>` : "") +
           `<div class="review-node-explain ${explainClassFromStatus(a.status)}">${esc(a.explain || "")}</div>`;
+        if (a.hasManualShortTextCreditAction && !a.manualShortTextCreditApplied) {
+          const actions = document.createElement("div");
+          actions.className = "review-node-actions";
+          const actionButton = document.createElement("button");
+          actionButton.type = "button";
+          actionButton.className = "review-node-credit-btn";
+          actionButton.textContent = MANUAL_SHORTTEXT_CREDIT_BUTTON_LABEL;
+          actionButton.addEventListener("click", (ev) => {
+            ev.preventDefault();
+            ev.stopPropagation();
+            applyManualShortTextCredit(a.manualShortTextCreditQuestionId || "");
+          });
+          actions.appendChild(actionButton);
+          node.appendChild(actions);
+        }
         node.style.width = `${preferredNodeWidth}px`;
         list.appendChild(node);
         const fallbackSource = a.sourceEl || card.querySelector(".question-main") || card;
@@ -2166,9 +2253,17 @@
 
     function renderInlineReview(results, progressUpdate = null) {
       clearInlineReview();
-      const cOk = results.filter((r) => r.status === "ok").length;
-      const cPartial = results.filter((r) => r.status === "partial").length;
-      const cBad = results.filter((r) => r.status === "bad").length;
+      const manualCreditQuestionIds = getScenarioManualCreditQuestionIdSet(scenarioData);
+      const effectiveResults = (results || []).map((entry) => {
+        const question = (scenarioData?.questions || []).find((q) => q?.id === entry?.id);
+        if (!question || question.type !== "short_text") return entry;
+        const questionProgressId = normalizeProgressId(question.id);
+        if (!questionProgressId || !manualCreditQuestionIds.has(questionProgressId)) return entry;
+        return { ...entry, status: "ok" };
+      });
+      const cOk = effectiveResults.filter((r) => r.status === "ok").length;
+      const cPartial = effectiveResults.filter((r) => r.status === "partial").length;
+      const cBad = effectiveResults.filter((r) => r.status === "bad").length;
       const name = answers._meta_participant || "(ohne Name)";
       const group = answers._meta_group || "(ohne Gruppe)";
       const station = answers._meta_stationId || "(ohne Station)";
@@ -2180,7 +2275,7 @@
           inlineSummary.innerHTML += `<strong>Abgabe:</strong> ${esc(name)} | Gruppe ${esc(group)} | Station ${esc(station)}<br>`;
         }
         inlineSummary.innerHTML +=
-          `<strong>Ergebnisprofil:</strong> richtig ${cOk}, teilweise ${cPartial}, falsch/fehlend ${cBad}, gesamt ${results.length}.<br>` +
+          `<strong>Ergebnisprofil:</strong> richtig ${cOk}, teilweise ${cPartial}, falsch/fehlend ${cBad}, gesamt ${effectiveResults.length}.<br>` +
           `<span class="muted">Graph-Ansicht: Jede Eingabe ist mit einer Auswertungs-Node verbunden.</span>`;
         if (progressUpdate && Number.isFinite(progressUpdate.scenarioPercent)) {
           inlineSummary.innerHTML +=
@@ -2193,13 +2288,13 @@
         inlineSummary.classList.remove("hidden");
       }
 
-      for (const r of results) {
+      for (const r of effectiveResults) {
         const card = document.querySelector(`.question[data-qid="${r.id}"]`);
         if (!card) continue;
         const slot = card.querySelector(".review-slot");
         if (!slot) continue;
         const q = (scenarioData?.questions || []).find((x) => x.id === r.id);
-        const assessments = buildSourceAssessments(card, q, r);
+        const assessments = buildSourceAssessments(card, q, r, { manualCreditQuestionIds });
         if (!assessments.length) continue;
         applyInputBubbles(assessments);
         card.classList.add("evaluated");
