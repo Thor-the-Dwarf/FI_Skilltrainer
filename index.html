@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>FI Skilltrainer</title>
   <link rel="icon" href="data:," />
-  <link rel="stylesheet" href="./neon-glass.css" />
+  <link rel="stylesheet" href="./styles.css" />
 </head>
 <body>
   <div class="appbar" role="toolbar" aria-label="App-Leiste">
@@ -71,6 +71,8 @@
     const ACCESS_ACTIVE_FOLDER_STORAGE_KEY = "sr_active_folder";
     const ACCESS_KEY_STORAGE_KEY = "sr_access_key";
     const ACCESS_FOLDER_STORAGE_KEY = "sr_access_folder";
+    const SKILL_PROGRESS_STORAGE_KEY_PREFIX = "sr_skill_progress_v1";
+    const DEFAULT_SKILL_TARGET_CORRECT = 8;
     const ACCESS_KEY_TO_FOLDER = Object.freeze({
       LF01_03_26: "LF01-Scenarien",
       LF02_03_26: "LF02-Scenarien"
@@ -104,6 +106,7 @@
     let homeSkillsCache = null;
     let unlockedAccessEntries = [];
     let activeScenarioFolder = "";
+    let activeScenarioFile = "";
 
     function normalize(s) {
       return String(s || "").toLowerCase().trim().replace(/\s+/g, " ");
@@ -192,6 +195,7 @@
       homeSkillsCache = null;
       availableScenarios = [];
       scenarioData = null;
+      activeScenarioFile = "";
       try {
         localStorage.setItem(ACCESS_ENTRIES_STORAGE_KEY, JSON.stringify(unlockedAccessEntries));
         localStorage.setItem(ACCESS_ACTIVE_FOLDER_STORAGE_KEY, activeScenarioFolder);
@@ -218,6 +222,7 @@
     function clearUnlockedAccess() {
       unlockedAccessEntries = [];
       activeScenarioFolder = "";
+      activeScenarioFile = "";
       scenarioData = null;
       homeSkillsCache = null;
       availableScenarios = [];
@@ -420,17 +425,212 @@
         .filter((entry) => entry.length > 0);
     }
 
-    function renderList(items, className = "home-list") {
-      const list = asStringArray(items);
+    function toPositiveNumberOrNull(value) {
+      const n = Number(value);
+      if (!Number.isFinite(n) || n <= 0) return null;
+      return n;
+    }
+
+    function normalizeProgressId(value) {
+      return String(value || "")
+        .trim()
+        .toLowerCase()
+        .replace(/[^a-z0-9_-]+/g, "_")
+        .replace(/^_+|_+$/g, "");
+    }
+
+    function uniqueStringArray(list) {
+      return [...new Set((list || []).filter(Boolean))];
+    }
+
+    function asSkillItemArray(value) {
+      if (!Array.isArray(value)) return [];
+      return value
+        .map((entry) => {
+          if (typeof entry === "string") {
+            const text = String(entry || "").trim();
+            if (!text) return null;
+            return { text, progressId: "", targetCorrect: null };
+          }
+          if (!entry || typeof entry !== "object") return null;
+          const text = String(entry.text || entry.title || entry.label || "").trim();
+          if (!text) return null;
+          return {
+            text,
+            progressId: normalizeProgressId(entry.progressId || entry.id || entry.skillId || ""),
+            targetCorrect: toPositiveNumberOrNull(entry.targetCorrect || entry.progressTarget || entry.goal)
+          };
+        })
+        .filter(Boolean);
+    }
+
+    function createEmptySkillProgressState() {
+      return { pointsBySkill: {}, solvedQuestionKeys: new Set() };
+    }
+
+    function getSkillProgressStorageKey(folder = "") {
+      const safeFolder = sanitizeFolderName(folder || activeScenarioFolder);
+      if (!safeFolder) return "";
+      return `${SKILL_PROGRESS_STORAGE_KEY_PREFIX}::${safeFolder}`;
+    }
+
+    function loadSkillProgressState(folder = "") {
+      const key = getSkillProgressStorageKey(folder);
+      if (!key) return createEmptySkillProgressState();
+      try {
+        const raw = JSON.parse(localStorage.getItem(key) || "{}");
+        const rawPoints = raw && typeof raw.pointsBySkill === "object" ? raw.pointsBySkill : {};
+        const pointsBySkill = {};
+        for (const [idRaw, value] of Object.entries(rawPoints)) {
+          const id = normalizeProgressId(idRaw);
+          const points = Math.max(0, Math.floor(Number(value) || 0));
+          if (id && points > 0) pointsBySkill[id] = points;
+        }
+        const solvedSource = Array.isArray(raw?.solvedQuestionKeys) ? raw.solvedQuestionKeys : [];
+        const solvedQuestionKeys = new Set(
+          solvedSource
+            .map((entry) => String(entry || "").trim())
+            .filter(Boolean)
+        );
+        return { pointsBySkill, solvedQuestionKeys };
+      } catch {
+        return createEmptySkillProgressState();
+      }
+    }
+
+    function saveSkillProgressState(state, folder = "") {
+      const key = getSkillProgressStorageKey(folder);
+      if (!key) return;
+      const payload = {
+        pointsBySkill: {},
+        solvedQuestionKeys: []
+      };
+      for (const [idRaw, value] of Object.entries(state?.pointsBySkill || {})) {
+        const id = normalizeProgressId(idRaw);
+        const points = Math.max(0, Math.floor(Number(value) || 0));
+        if (id && points > 0) payload.pointsBySkill[id] = points;
+      }
+      payload.solvedQuestionKeys = [...(state?.solvedQuestionKeys || new Set())]
+        .map((entry) => String(entry || "").trim())
+        .filter(Boolean);
+      try {
+        localStorage.setItem(key, JSON.stringify(payload));
+      } catch {
+      }
+    }
+
+    function getSkillProgressPoints(state, progressId) {
+      const id = normalizeProgressId(progressId);
+      if (!id) return 0;
+      return Math.max(0, Math.floor(Number(state?.pointsBySkill?.[id] || 0)));
+    }
+
+    function clampPercent(value) {
+      return Math.max(0, Math.min(100, Number(value) || 0));
+    }
+
+    function getSkillProgressPercent(state, progressId, targetCorrect = DEFAULT_SKILL_TARGET_CORRECT) {
+      const target = toPositiveNumberOrNull(targetCorrect) || DEFAULT_SKILL_TARGET_CORRECT;
+      const points = getSkillProgressPoints(state, progressId);
+      return clampPercent((points / target) * 100);
+    }
+
+    function resolveQuestionProgressLinks(question, data) {
+      const direct = uniqueStringArray(
+        (Array.isArray(question?.progressLinks) ? question.progressLinks : [])
+          .map((entry) => normalizeProgressId(entry))
+          .filter(Boolean)
+      );
+      if (direct.length) return direct;
+      return uniqueStringArray(
+        (Array.isArray(data?.defaultProgressLinks) ? data.defaultProgressLinks : [])
+          .map((entry) => normalizeProgressId(entry))
+          .filter(Boolean)
+      );
+    }
+
+    function buildQuestionProgressKey(questionId) {
+      const filePart = normalizeProgressId(activeScenarioFile || scenarioData?.scenario?.station?.id || "scenario");
+      const qPart = normalizeProgressId(questionId || "") || String(questionId || "q");
+      return `${filePart || "scenario"}::${qPart}`;
+    }
+
+    function applySkillProgressFromResults(data, results) {
+      const folder = sanitizeFolderName(activeScenarioFolder);
+      if (!folder) return { gainedPoints: 0, newlySolvedCount: 0, gainedBySkill: {} };
+      const state = loadSkillProgressState(folder);
+      const questionsById = new Map((data?.questions || []).map((q) => [q.id, q]));
+      let gainedPoints = 0;
+      let newlySolvedCount = 0;
+      const gainedBySkill = {};
+
+      for (const result of results || []) {
+        if (result.status !== "ok") continue;
+        const q = questionsById.get(result.id);
+        if (!q || isFollowupDivider(q)) continue;
+        const links = resolveQuestionProgressLinks(q, data);
+        if (!links.length) continue;
+        const questionKey = buildQuestionProgressKey(q.id);
+        if (state.solvedQuestionKeys.has(questionKey)) continue;
+        state.solvedQuestionKeys.add(questionKey);
+        newlySolvedCount += 1;
+        for (const skillId of links) {
+          const id = normalizeProgressId(skillId);
+          if (!id) continue;
+          state.pointsBySkill[id] = getSkillProgressPoints(state, id) + 1;
+          gainedBySkill[id] = Math.max(0, Math.floor(Number(gainedBySkill[id] || 0))) + 1;
+          gainedPoints += 1;
+        }
+      }
+
+      if (newlySolvedCount > 0) {
+        saveSkillProgressState(state, folder);
+      }
+
+      return { gainedPoints, newlySolvedCount, gainedBySkill };
+    }
+
+    function renderProgressMeter(baseClass, percent, ariaLabel) {
+      const pct = clampPercent(percent);
+      const label = String(ariaLabel || `Fortschritt ${Math.round(pct)} Prozent`);
+      return (
+        `<span class="${baseClass}" role="img" aria-label="${esc(label)}">` +
+        `<span class="${baseClass}-fill" style="--progress-pct:${pct.toFixed(2)}%;"></span>` +
+        "</span>"
+      );
+    }
+
+    function renderList(items, className = "home-list", options = {}) {
+      const list = asSkillItemArray(items);
       if (!list.length) return "<p class='status-text'>Keine Eintraege vorhanden.</p>";
+      const cfg = options && typeof options === "object" ? options : {};
+      const showProgress = cfg.showProgress !== false;
+      const progressState = cfg.progressState || createEmptySkillProgressState();
+      const defaultProgressPercent = clampPercent(cfg.defaultProgressPercent || 0);
+      const defaultTargetCorrect = toPositiveNumberOrNull(cfg.defaultTargetCorrect) || DEFAULT_SKILL_TARGET_CORRECT;
+
       return (
         `<ul class="${className}">` +
-        list.map((entry) =>
-          "<li class='home-list-item'>" +
-          `<span class='home-list-text'>${esc(entry)}</span>` +
-          "<span class='home-list-progress' aria-hidden='true'><span class='home-list-progress-fill'></span></span>" +
-          "</li>"
-        ).join("") +
+        list.map((entry) => {
+          const text = entry.text;
+          let progressPercent = defaultProgressPercent;
+          if (showProgress && entry.progressId) {
+            progressPercent = getSkillProgressPercent(
+              progressState,
+              entry.progressId,
+              entry.targetCorrect || defaultTargetCorrect
+            );
+          }
+          const progressHtml = showProgress
+            ? renderProgressMeter("home-list-progress", progressPercent, `${text}: ${Math.round(progressPercent)} Prozent`)
+            : "";
+          return (
+            "<li class='home-list-item'>" +
+            `<span class='home-list-text'>${esc(text)}</span>` +
+            progressHtml +
+            "</li>"
+          );
+        }).join("") +
         "</ul>"
       );
     }
@@ -441,17 +641,40 @@
       return list.map((text) => `<p class="${className}">${esc(text)}</p>`).join("");
     }
 
-    function renderHomeDrawer(drawer) {
+    function resolveDrawerProgressMeta(section, subsection, subsectionIndex, payload) {
+      const explicitId = normalizeProgressId(subsection?.progressId || subsection?.id || subsection?.skillId || "");
+      const fallbackId = normalizeProgressId(
+        `${section?.title || "bereich"}_${subsection?.title || `punkt_${subsectionIndex + 1}`}`
+      );
+      const defaultTarget = toPositiveNumberOrNull(payload?.progressDefaults?.targetCorrect) || DEFAULT_SKILL_TARGET_CORRECT;
+      const targetCorrect = toPositiveNumberOrNull(subsection?.targetCorrect || subsection?.progressTarget) || defaultTarget;
+      return {
+        id: explicitId || fallbackId || `skill_${subsectionIndex + 1}`,
+        targetCorrect
+      };
+    }
+
+    function renderHomeDrawer(drawer, context = {}) {
       const title = String(drawer.title || "Unterpunkt");
       const intro = renderParagraphs(drawer.intro, "status-text");
       const notes = renderParagraphs(drawer.notes, "status-text");
-      const itemsHtml = renderList(drawer.items, "home-list");
+      const progressPercent = clampPercent(drawer.progressPercent || 0);
+      const progressValueText = `${Math.round(progressPercent)}%`;
+      const itemsHtml = renderList(drawer.items, "home-list", {
+        showProgress: true,
+        defaultProgressPercent: progressPercent,
+        progressState: context.progressState,
+        defaultTargetCorrect: drawer.targetCorrect
+      });
 
       return (
-        "<details class='panel home-drawer'>" +
+        `<details class='panel home-drawer' data-progress-id='${esc(drawer.progressId || "")}'>` +
         "<summary class='home-drawer-summary'>" +
         `<span class='home-drawer-title'>${esc(title)}</span>` +
-        "<span class='home-drawer-progress' aria-hidden='true'><span class='home-drawer-progress-fill'></span></span>" +
+        "<span class='home-drawer-progress-wrap'>" +
+        renderProgressMeter("home-drawer-progress", progressPercent, `${title}: ${progressValueText}`) +
+        `<span class='home-drawer-progress-value' aria-hidden='true'>${progressValueText}</span>` +
+        "</span>" +
         "</summary>" +
         "<div class='home-drawer-content'>" +
         intro +
@@ -478,13 +701,16 @@
           title: "Moegliche Aufgaben im Betrieb",
           subsections: categories.map((category) => ({
             title: String(category.title || "Unterpunkt"),
-            items: asStringArray(category.skills)
+            items: Array.isArray(category.skills) ? category.skills : []
           }))
         }
       ];
     }
 
-    function renderHomeSection(section) {
+    function renderHomeSection(section, context = {}) {
+      const payload = context.payload || {};
+      const progressState = context.progressState || createEmptySkillProgressState();
+      const drawerPercents = Array.isArray(context.drawerPercents) ? context.drawerPercents : [];
       const title = String(section.title || "Abschnitt");
       const hideTitle = title === "Mögliche Aufgaben im Betrieb" || title === "Moegliche Aufgaben im Betrieb";
       const titleHtml = hideTitle ? "" : `<h3 class='home-section-title'>${esc(title)}</h3>`;
@@ -496,12 +722,24 @@
 
       if (subsections.length) {
         const drawerList = subsections
-          .map((sub) => renderHomeDrawer({
-            title: String(sub.title || "Unterpunkt"),
-            intro: asStringArray(sub.intro),
-            items: asStringArray(sub.items),
-            notes: asStringArray(sub.notes)
-          }))
+          .map((sub, subIdx) => {
+            const progressMeta = resolveDrawerProgressMeta(section, sub, subIdx, payload);
+            const progressPercent = getSkillProgressPercent(
+              progressState,
+              progressMeta.id,
+              progressMeta.targetCorrect
+            );
+            drawerPercents.push(progressPercent);
+            return renderHomeDrawer({
+              title: String(sub.title || "Unterpunkt"),
+              intro: Array.isArray(sub.intro) ? sub.intro : [],
+              items: Array.isArray(sub.items) ? sub.items : [],
+              notes: Array.isArray(sub.notes) ? sub.notes : [],
+              progressId: progressMeta.id,
+              progressPercent,
+              targetCorrect: progressMeta.targetCorrect
+            }, context);
+          })
           .join("");
 
         return (
@@ -514,7 +752,7 @@
         );
       }
 
-      const itemsHtml = renderList(section.items, "home-list");
+      const itemsHtml = renderList(section.items, "home-list", { showProgress: false });
       return (
         "<section class='panel home-section'>" +
         titleHtml +
@@ -528,11 +766,21 @@
     function renderHomeContent(data) {
       const payload = data && typeof data === "object" ? data : {};
       const sections = normalizeHomeSections(payload);
-      const sectionsHtml = sections.map((section) => renderHomeSection(section)).join("");
+      const progressState = loadSkillProgressState(activeScenarioFolder);
+      const drawerPercents = [];
+      const sectionsHtml = sections
+        .map((section) => renderHomeSection(section, { payload, progressState, drawerPercents }))
+        .join("");
+      const overallProgress = drawerPercents.length
+        ? drawerPercents.reduce((sum, val) => sum + val, 0) / drawerPercents.length
+        : 0;
+      const overallText = `${Math.round(overallProgress)}%`;
 
       workspaceLeft.innerHTML =
         "<section class='panel home-skillset-banner'>" +
         "<h2>DeinSkillset</h2>" +
+        `<p class='status-text'>Gesamtfortschritt: ${overallText}</p>` +
+        `<div class='home-banner-progress-line'>${renderProgressMeter("home-drawer-progress", overallProgress, `Gesamtfortschritt ${overallText}`)}</div>` +
         "</section>" +
         `<section class="home-layout">${sectionsHtml}</section>`;
     }
@@ -641,6 +889,7 @@
         }
         const data = await loadScenarioByFilename(item.file, item.folder);
         scenarioData = data;
+        activeScenarioFile = item.file;
         resetRuntimeState();
         buildPage(data);
         setSubmitBarVisible(true);
@@ -649,6 +898,7 @@
         scenarioMenuButton.setAttribute("aria-label", `Szenario auswaehlen (aktuell: ${item.label}${folderSuffix})`);
       } catch (err) {
         scenarioData = null;
+        activeScenarioFile = "";
         resetRuntimeState();
         renderSelectionHint(`Fehler beim Laden: ${err.message}`);
       }
@@ -1507,7 +1757,7 @@
       }
     }
 
-    function renderInlineReview(results) {
+    function renderInlineReview(results, progressUpdate = null) {
       clearInlineReview();
       const cOk = results.filter((r) => r.status === "ok").length;
       const cPartial = results.filter((r) => r.status === "partial").length;
@@ -1525,6 +1775,14 @@
         inlineSummary.innerHTML +=
           `<strong>Ergebnisprofil:</strong> richtig ${cOk}, teilweise ${cPartial}, falsch/fehlend ${cBad}, gesamt ${results.length}.<br>` +
           `<span class="muted">Graph-Ansicht: Jede Eingabe ist mit einer Auswertungs-Node verbunden.</span>`;
+        if (progressUpdate && progressUpdate.newlySolvedCount > 0) {
+          inlineSummary.innerHTML +=
+            "<br>" +
+            `<strong>Skill-Fortschritt:</strong> +${progressUpdate.newlySolvedCount} neue Aufgaben abgeschlossen, +${progressUpdate.gainedPoints} Fortschrittspunkte gespeichert.`;
+        } else if (progressUpdate) {
+          inlineSummary.innerHTML +=
+            "<br><span class='muted'>Skill-Fortschritt: Keine neuen Punkte (bereits gewertete Aufgaben oder keine volle Trefferwertung).</span>";
+        }
         inlineSummary.classList.remove("hidden");
       }
 
@@ -1578,8 +1836,9 @@
           ...ev
         });
       }
+      const progressUpdate = applySkillProgressFromResults(scenarioData, results);
       lastResults = results;
-      renderInlineReview(results);
+      renderInlineReview(results, progressUpdate);
     }
 
     function setMetaField(fieldId, value) {
