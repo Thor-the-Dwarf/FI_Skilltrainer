@@ -127,6 +127,27 @@
       return String(s || "").toLowerCase().trim().replace(/\s+/g, " ");
     }
 
+    function normalizeSectionTitle(value) {
+      return String(value || "")
+        .toLowerCase()
+        .replace(/ä/g, "ae")
+        .replace(/ö/g, "oe")
+        .replace(/ü/g, "ue")
+        .replace(/ß/g, "ss")
+        .replace(/\s+/g, " ")
+        .trim();
+    }
+
+    const HIDDEN_HOME_SECTION_TITLES = new Set([
+      "was ein arbeitgeber daraus ableiten koennte",
+      "was eher noch nicht allein laufen sollte",
+      "sehr brauchbare verdichtung fuer den unterricht"
+    ]);
+
+    function isHiddenHomeSectionTitle(value) {
+      return HIDDEN_HOME_SECTION_TITLES.has(normalizeSectionTitle(value));
+    }
+
     function esc(s) {
       return String(s || "")
         .replaceAll("&", "&amp;")
@@ -828,7 +849,9 @@
       const sections = Array.isArray(payload.sections)
         ? payload.sections.filter((entry) => entry && typeof entry === "object")
         : [];
-      if (sections.length) return sections;
+      if (sections.length) {
+        return sections.filter((section) => !isHiddenHomeSectionTitle(section.title));
+      }
 
       const categories = Array.isArray(payload.categories)
         ? payload.categories.filter((entry) => entry && typeof entry === "object")
