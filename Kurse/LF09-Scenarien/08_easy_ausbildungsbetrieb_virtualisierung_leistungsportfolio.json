@@ -1,0 +1,161 @@
+{
+  "scenario": {
+    "company": "Nordufer Maschinenbau GmbH",
+    "scale": "Mittelstand, 2 Standorte, 310 Mitarbeitende",
+    "context": "Station 08 des Tageslaufs: Virtualisierungskonzepte und Managed Services im Leistungsportfolio erklaeren.",
+    "mission": "Sie bereiten eine kundenverstaendliche Einordnung von Virtualisierung, Mitwirkungsstufen und Ausbauoptionen vor.",
+    "station": {
+      "id": "LF09-ST-08",
+      "department": "Loesungsberatung",
+      "profile": "Virtualisierung und Leistungsportfolio",
+      "constraints": [
+        "Technik verstaendlich uebersetzen",
+        "Wirtschaftlichen Nutzen mit benennen",
+        "Mitwirkungsgrenzen transparent machen"
+      ]
+    },
+    "customerRequest": {
+      "from": "vertrieb@nordufer-maschinenbau.example",
+      "to": "infra.team@ausbildungsbetrieb.example",
+      "subject": "Station 08: Virtualisierung und Leistungsportfolio",
+      "date": "2026-03-13",
+      "body": "Bitte bereiten Sie fuer die Abschlussbesprechung eine kurze Einordnung zu Virtualisierung, Managed Services und Ausbauoptionen vor."
+    }
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "type": "single_choice",
+      "title": "Ziel der Informationsveranstaltung",
+      "prompt": "Was sollte das wichtigste Ziel einer kurzen Vorstellung des Virtualisierungskonzepts sein?",
+      "options": [
+        {
+          "text": "Moechlichst viele Fachbegriffe nennen, damit die Loesung modern wirkt",
+          "rationale": "Das verbessert die Kundensicht kaum."
+        },
+        {
+          "text": "Technischen und wirtschaftlichen Nutzen fuer den konkreten Ausbau verstaendlich machen",
+          "rationale": "Genau darum geht es in einer kundenorientierten Vorstellung."
+        },
+        {
+          "text": "Nur ueber Hardwarepreise sprechen",
+          "rationale": "Das greift fuer das Konzept viel zu kurz."
+        }
+      ],
+      "correctIndex": 1,
+      "feedback": {
+        "correct": "Richtig: Die Vorstellung muss den konkreten Nutzen erklaeren.",
+        "wrong": "Nicht passend: Ziel ist nicht Eindruck, sondern verstaendliche Einordnung."
+      },
+      "progressLinks": [
+        "lf09_virtualisierung_portfolio"
+      ]
+    },
+    {
+      "id": "q2",
+      "type": "short_text",
+      "title": "Managed Services erklaeren",
+      "prompt": "Beschreiben Sie in 4-6 Saetzen, wie Sie Managed-Service-Stufen und den Nutzen von Virtualisierung fuer den Kunden erklaeren wuerden.",
+      "minChars": 170,
+      "requiredKeywords": [
+        "managed",
+        "virtualisierung",
+        "nutzen"
+      ],
+      "expectedOutline": "Kundengerechte Einordnung von Mitwirkungsstufen, Flexibilitaet und Entlastung.",
+      "feedback": {
+        "correct": "Richtig: Die Leistungsstufen und ihr Nutzen sind verstaendlich erklaert.",
+        "wrong": "Bitte Managed Services, Virtualisierung und Kundennutzen konkreter verknuepfen."
+      },
+      "progressLinks": [
+        "lf09_virtualisierung_portfolio"
+      ]
+    },
+    {
+      "id": "q3",
+      "type": "multi_select",
+      "title": "Ausbauoptionen einordnen",
+      "prompt": "Welche Aussagen passen zu einer realistischen Einordnung von Virtualisierung, Containern und virtuellen Anwendungen? (Mehrfachauswahl)",
+      "options": [
+        {
+          "text": "Virtualisierung kann Konsolidierung und flexiblere Ressourcenplanung unterstuetzen",
+          "correct": true,
+          "rationale": "Das ist ein zentraler Nutzen im Betrieb."
+        },
+        {
+          "text": "Container und virtuelle Anwendungen muessen zum Betriebsmodell und Know-how passen",
+          "correct": true,
+          "rationale": "Technologieeinsatz braucht Kontext."
+        },
+        {
+          "text": "Jede Umgebung sollte automatisch voll virtualisiert werden, egal wie klein sie ist",
+          "correct": false,
+          "rationale": "Nicht jede Umgebung profitiert im gleichen Mass."
+        },
+        {
+          "text": "Mitwirkungsstufen sollten transparent machen, was Kunde und Dienstleister jeweils uebernehmen",
+          "correct": true,
+          "rationale": "Das schafft realistische Erwartungen."
+        },
+        {
+          "text": "Ein Portfolio braucht keine Grenzen und Voraussetzungen zu nennen",
+          "correct": false,
+          "rationale": "Gerade das ist fuer Beratung wichtig."
+        }
+      ],
+      "feedback": {
+        "correct": "Richtig: Die Einordnung bleibt technisch sinnvoll und kundenorientiert.",
+        "wrong": "Teilweise falsch: Bitte Nutzen, Grenzen und Mitwirkungsstufen klarer herausstellen."
+      },
+      "progressLinks": [
+        "lf09_virtualisierung_portfolio",
+        "lf09_rollout_uebergabe"
+      ]
+    },
+    {
+      "id": "q4",
+      "type": "number",
+      "title": "Leistungsaufnahme nach Konsolidierung",
+      "prompt": "Vier physische Server mit je 320 W werden durch zwei Virtualisierungshosts mit je 510 W ersetzt. Wie hoch ist die Leistungsaufnahme nach der Konsolidierung in Watt?",
+      "expected": 1020,
+      "toleranceAbs": 1,
+      "showExpectedFormula": "2 * 510 = 1020 W",
+      "feedback": {
+        "correct": "Richtig gerechnet.",
+        "wrong": "Bitte die Zahl der Hosts und deren Leistungsaufnahme korrekt multiplizieren."
+      },
+      "progressLinks": [
+        "lf09_virtualisierung_portfolio",
+        "lf09_wirtschaft_sicherheit_nachhaltigkeit"
+      ]
+    },
+    {
+      "id": "q5",
+      "type": "ordering",
+      "title": "Portfolio-Praesentation vorbereiten",
+      "prompt": "Ordnen Sie die Schritte fuer eine kurze, belastbare Abschlussvorstellung.",
+      "items": [
+        "Zielgruppe und Entscheidungskontext klaeren",
+        "Nutzen und Voraussetzungen der Virtualisierung darstellen",
+        "Managed-Service-Stufen und Rollen abgrenzen",
+        "Ausbauoptionen wie Container oder virtuelle Anwendungen einordnen",
+        "Empfehlung und naechste Schritte benennen"
+      ],
+      "correctOrder": [
+        "Zielgruppe und Entscheidungskontext klaeren",
+        "Nutzen und Voraussetzungen der Virtualisierung darstellen",
+        "Managed-Service-Stufen und Rollen abgrenzen",
+        "Ausbauoptionen wie Container oder virtuelle Anwendungen einordnen",
+        "Empfehlung und naechste Schritte benennen"
+      ],
+      "feedback": {
+        "correct": "Richtig: Die Vorstellung fuehrt klar vom Kontext zur Empfehlung.",
+        "wrong": "Nicht optimal: Bitte erst den Kontext, dann Nutzen, Rollen und Ausblick ordnen."
+      },
+      "progressLinks": [
+        "lf09_virtualisierung_portfolio",
+        "lf09_rollout_uebergabe"
+      ]
+    }
+  ]
+}
