@@ -1408,3 +1408,17 @@ body > * {
 :where(.panel, .question, .task-card, .summary, .meta-card, .request-letter, .table-wrap) {
   --glass-alpha-base: 0.3;
 }
+
+.halo-canvas {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  z-index: 0;
+}
+
+body.halo-canvas-active::before,
+body.halo-canvas-active::after {
+  display: none;
+}
