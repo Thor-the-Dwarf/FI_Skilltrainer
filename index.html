@@ -88,6 +88,7 @@
   <script>
     const workspaceLeft = document.getElementById("workspaceLeft");
     const submitBar = document.querySelector(".submit-bar");
+    const submitButton = document.getElementById("btnSubmit");
     const taskNavDrawer = document.getElementById("taskNavDrawer");
     const taskNavDrawerList = document.getElementById("taskNavDrawerList");
     const taskNavDrawerToggleBtn = document.getElementById("btnTaskDrawerToggle");
@@ -111,6 +112,7 @@
     const SCENARIO_RATING_STORAGE_KEY_PREFIX = "sr_scenario_rating_v1";
     const MANUAL_SHORTTEXT_CREDIT_BUTTON_LABEL = "So hab ich es gement";
     const DEFAULT_SKILL_TARGET_CORRECT = 8;
+    const SUBMIT_BUTTON_READY_LABEL = "Abgeben und Auswertung anzeigen";
     const FALLBACK_ACCESS_KEY_TO_FOLDER = Object.freeze({
       LF01_03_26: "LF01-Scenarien",
       LF02_03_26: "LF02-Scenarien",
@@ -149,6 +151,7 @@
         "</svg>"
     };
     const answers = {};
+    const touchedQuestionIds = new Set();
     let scenarioData = null;
     let inlineSummary = null;
     let lastResults = null;
@@ -499,13 +502,96 @@
 
     function resetRuntimeState() {
       for (const key of Object.keys(answers)) delete answers[key];
+      touchedQuestionIds.clear();
       inlineSummary = null;
       lastResults = null;
+      if (submitButton) {
+        submitButton.textContent = SUBMIT_BUTTON_READY_LABEL;
+        submitButton.classList.remove("is-pending");
+        submitButton.title = SUBMIT_BUTTON_READY_LABEL;
+      }
     }
 
     function setSubmitBarVisible(visible) {
       submitBar.classList.toggle("hidden", !visible);
       if (!visible) toggleTaskNavDrawer(false);
+      if (visible) updateSubmitButtonState();
+    }
+
+    function markQuestionTouched(questionId) {
+      const qid = String(questionId || "").trim();
+      if (!qid) return;
+      touchedQuestionIds.add(qid);
+      updateSubmitButtonState();
+    }
+
+    function isRequiredMetaFieldAnswered(field) {
+      const fieldId = String(field?.id || "").trim();
+      if (!fieldId) return true;
+      if (!document.querySelector(`input[data-field-id="${fieldId}"]`)) return true;
+      return String(answers["_meta_" + fieldId] || "").trim().length > 0;
+    }
+
+    function isQuestionAnswered(question) {
+      if (!question || isFollowupDivider(question)) return true;
+      const questionId = String(question.id || "").trim();
+      const user = answers[questionId];
+      if (question.type === "single_choice") return Number.isInteger(user);
+      if (question.type === "multi_select") return user instanceof Set && user.size > 0;
+      if (question.type === "ordering") {
+        return touchedQuestionIds.has(questionId) && Array.isArray(user) && user.length > 0;
+      }
+      if (question.type === "number") {
+        const raw = String(user || "").trim();
+        if (!raw) return false;
+        return Number.isFinite(Number(raw.replace(",", ".")));
+      }
+      if (question.type === "short_text") {
+        return String(user || "").trim().length > 0;
+      }
+      return String(user || "").trim().length > 0;
+    }
+
+    function getScenarioCompletionState(data) {
+      const questions = Array.isArray(data?.questions)
+        ? data.questions.filter((q) => !isFollowupDivider(q))
+        : [];
+      const requiredMetaFields = (data?.submission?.participantFields || []).filter((field) => field?.required);
+      const unansweredQuestions = questions.filter((question) => !isQuestionAnswered(question));
+      const unansweredMetaFields = requiredMetaFields.filter((field) => !isRequiredMetaFieldAnswered(field));
+      const totalRequired = questions.length + requiredMetaFields.length;
+      const completedCount = totalRequired - unansweredQuestions.length - unansweredMetaFields.length;
+      return {
+        totalRequired,
+        completedCount,
+        unansweredQuestions,
+        unansweredMetaFields,
+        missingCount: unansweredQuestions.length + unansweredMetaFields.length,
+        firstIncompleteQuestionId: unansweredQuestions[0]?.id || ""
+      };
+    }
+
+    function updateSubmitButtonState(data = scenarioData) {
+      if (!submitButton) return;
+      if (!data) {
+        submitButton.textContent = SUBMIT_BUTTON_READY_LABEL;
+        submitButton.classList.remove("is-pending");
+        submitButton.title = SUBMIT_BUTTON_READY_LABEL;
+        return;
+      }
+      const completion = getScenarioCompletionState(data);
+      if (completion.missingCount > 0) {
+        const missingLabel = completion.missingCount === 1
+          ? "Noch 1 Eingabe offen"
+          : `Noch ${completion.missingCount} Eingaben offen`;
+        submitButton.textContent = missingLabel;
+        submitButton.classList.add("is-pending");
+        submitButton.title = `${missingLabel} - bitte erst alles ausfuellen`;
+        return;
+      }
+      submitButton.textContent = SUBMIT_BUTTON_READY_LABEL;
+      submitButton.classList.remove("is-pending");
+      submitButton.title = SUBMIT_BUTTON_READY_LABEL;
     }
 
     function buildTaskNavigationItems(data) {
@@ -1747,6 +1833,7 @@
         radio.dataset.optionIndex = String(idx);
         radio.addEventListener("change", () => {
           answers[q.id] = Number(radio.value);
+          markQuestionTouched(q.id);
         });
         row.appendChild(radio);
         row.appendChild(document.createTextNode(o.text));
@@ -1770,6 +1857,7 @@
         cb.addEventListener("change", () => {
           if (cb.checked) selected.add(idx);
           else selected.delete(idx);
+          markQuestionTouched(q.id);
         });
         row.appendChild(cb);
         row.appendChild(document.createTextNode(o.text));
@@ -1797,10 +1885,12 @@
           down.disabled = idx === order.length - 1;
           up.addEventListener("click", () => {
             [order[idx - 1], order[idx]] = [order[idx], order[idx - 1]];
+            markQuestionTouched(q.id);
             draw();
           });
           down.addEventListener("click", () => {
             [order[idx + 1], order[idx]] = [order[idx], order[idx + 1]];
+            markQuestionTouched(q.id);
             draw();
           });
           row.append(txt, up, down);
@@ -1819,6 +1909,7 @@
       inp.dataset.qid = q.id;
       inp.addEventListener("input", () => {
         answers[q.id] = inp.value;
+        markQuestionTouched(q.id);
       });
       return inp;
     }
@@ -1829,6 +1920,7 @@
       ta.dataset.qid = q.id;
       ta.addEventListener("input", () => {
         answers[q.id] = ta.value;
+        markQuestionTouched(q.id);
       });
       return ta;
     }
@@ -2564,6 +2656,18 @@
 
     function onSubmit() {
       if (!scenarioData) return;
+      const completion = getScenarioCompletionState(scenarioData);
+      updateSubmitButtonState(scenarioData);
+      if (completion.missingCount > 0) {
+        const missingLabel = completion.missingCount === 1
+          ? "Es fehlt noch 1 Eingabe."
+          : `Es fehlen noch ${completion.missingCount} Eingaben.`;
+        alert(`${missingLabel} Bitte erst alles bearbeiten.`);
+        if (completion.firstIncompleteQuestionId) {
+          scrollToQuestionById(completion.firstIncompleteQuestionId);
+        }
+        return;
+      }
       if (!validateBeforeSubmit(scenarioData)) return;
       const results = [];
       for (const q of scenarioData.questions || []) {
@@ -2587,6 +2691,7 @@
         input.value = value;
         input.dispatchEvent(new Event("input", { bubbles: true }));
       }
+      updateSubmitButtonState();
     }
 
     function findInputsByQid(selector, qid) {
@@ -2720,6 +2825,7 @@
       });
       workspaceLeft.appendChild(qPanel);
       renderTaskNavDrawer(data);
+      updateSubmitButtonState(data);
     }
 
     initAppBar();
