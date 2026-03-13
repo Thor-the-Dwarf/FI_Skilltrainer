@@ -77,6 +77,7 @@
     const ACCESS_KEYS_CONFIG_PATH = "./access-keys.json";
     const HOME_SKILLS_FOLDER_STORAGE_KEY = "sr_home_skills_folder";
     const SKILL_PROGRESS_STORAGE_KEY_PREFIX = "sr_skill_progress_v1";
+    const SCENARIO_RATING_STORAGE_KEY_PREFIX = "sr_scenario_rating_v1";
     const DEFAULT_SKILL_TARGET_CORRECT = 8;
     const FALLBACK_ACCESS_KEY_TO_FOLDER = Object.freeze({
       LF01_03_26: "LF01-Scenarien",
@@ -87,7 +88,10 @@
       LF06_03_26: "LF06-Scenarien",
       LF07_03_26: "LF07-Scenarien",
       LF08_03_26: "LF08-Scenarien",
-      LF09_03_26: "LF09-Scenarien"
+      LF09_03_26: "LF09-Scenarien",
+      LF10FIAE_03_26: "LF10FIAE-Scenarien",
+      LF11FIAE_03_26: "LF11FIAE-Scenarien",
+      LF12FIAE_03_26: "LF12FIAE-Scenarien"
     });
     const SCENARIO_FILENAME_CONVENTION = /^\d{2}_(easy|medium|hard)_[a-z0-9_]+\.json$/i;
     const THEME_ORDER = ["light", "dark", "system"];
@@ -138,11 +142,7 @@
         .trim();
     }
 
-    const HIDDEN_HOME_SECTION_TITLES = new Set([
-      "was ein arbeitgeber daraus ableiten koennte",
-      "was eher noch nicht allein laufen sollte",
-      "sehr brauchbare verdichtung fuer den unterricht"
-    ]);
+    const HIDDEN_HOME_SECTION_TITLES = new Set([]);
 
     function isHiddenHomeSectionTitle(value) {
       return HIDDEN_HOME_SECTION_TITLES.has(normalizeSectionTitle(value));
@@ -632,6 +632,183 @@
       return Math.max(0, Math.min(100, Number(value) || 0));
     }
 
+    function normalizeScenarioRatingId(value) {
+      return String(value || "")
+        .trim()
+        .toLowerCase()
+        .replace(/[^a-z0-9._-]+/g, "_")
+        .replace(/^_+|_+$/g, "");
+    }
+
+    function createEmptyScenarioRatingState() {
+      return { byScenario: {} };
+    }
+
+    function getScenarioRatingStorageKey(folder = "") {
+      const safeFolder = sanitizeFolderName(folder || activeScenarioFolder);
+      if (!safeFolder) return "";
+      return `${SCENARIO_RATING_STORAGE_KEY_PREFIX}::${safeFolder}`;
+    }
+
+    function loadScenarioRatingState(folder = "") {
+      const key = getScenarioRatingStorageKey(folder);
+      if (!key) return createEmptyScenarioRatingState();
+      try {
+        const raw = JSON.parse(localStorage.getItem(key) || "{}");
+        const rawByScenario = raw && typeof raw.byScenario === "object" ? raw.byScenario : {};
+        const byScenario = {};
+        for (const [scenarioRaw, scenarioValue] of Object.entries(rawByScenario)) {
+          const scenarioId = normalizeScenarioRatingId(scenarioRaw);
+          if (!scenarioId || !scenarioValue || typeof scenarioValue !== "object") continue;
+          const totalQuestions = Math.max(0, Math.floor(Number(scenarioValue.totalQuestions) || 0));
+          const achievedScore = Math.max(0, Number(scenarioValue.achievedScore) || 0);
+          const percent = clampPercent(scenarioValue.percent);
+          const updatedAt = Math.max(0, Math.floor(Number(scenarioValue.updatedAt) || 0));
+          const skillsById = {};
+          const rawSkills = scenarioValue.skillsById && typeof scenarioValue.skillsById === "object"
+            ? scenarioValue.skillsById
+            : {};
+          for (const [skillRaw, rawSkill] of Object.entries(rawSkills)) {
+            const skillId = normalizeProgressId(skillRaw);
+            if (!skillId || !rawSkill || typeof rawSkill !== "object") continue;
+            const maxScore = Math.max(0, Number(rawSkill.maxScore) || 0);
+            const score = Math.max(0, Number(rawSkill.score) || 0);
+            if (maxScore <= 0) continue;
+            skillsById[skillId] = {
+              score: Math.min(score, maxScore),
+              maxScore
+            };
+          }
+          byScenario[scenarioId] = {
+            totalQuestions,
+            achievedScore,
+            percent,
+            updatedAt,
+            skillsById
+          };
+        }
+        return { byScenario };
+      } catch {
+        return createEmptyScenarioRatingState();
+      }
+    }
+
+    function saveScenarioRatingState(state, folder = "") {
+      const key = getScenarioRatingStorageKey(folder);
+      if (!key) return;
+      const payload = { byScenario: {} };
+      for (const [scenarioRaw, scenarioValue] of Object.entries(state?.byScenario || {})) {
+        const scenarioId = normalizeScenarioRatingId(scenarioRaw);
+        if (!scenarioId || !scenarioValue || typeof scenarioValue !== "object") continue;
+        const totalQuestions = Math.max(0, Math.floor(Number(scenarioValue.totalQuestions) || 0));
+        const achievedScore = Math.max(0, Number(scenarioValue.achievedScore) || 0);
+        const percent = clampPercent(scenarioValue.percent);
+        const updatedAt = Math.max(0, Math.floor(Number(scenarioValue.updatedAt) || Date.now()));
+        const skillsById = {};
+        for (const [skillRaw, skillValue] of Object.entries(scenarioValue.skillsById || {})) {
+          const skillId = normalizeProgressId(skillRaw);
+          if (!skillId || !skillValue || typeof skillValue !== "object") continue;
+          const maxScore = Math.max(0, Number(skillValue.maxScore) || 0);
+          const score = Math.max(0, Number(skillValue.score) || 0);
+          if (maxScore <= 0) continue;
+          skillsById[skillId] = {
+            score: Math.min(score, maxScore),
+            maxScore
+          };
+        }
+        payload.byScenario[scenarioId] = {
+          totalQuestions,
+          achievedScore: Math.min(achievedScore, totalQuestions || achievedScore),
+          percent,
+          updatedAt,
+          skillsById
+        };
+      }
+      try {
+        localStorage.setItem(key, JSON.stringify(payload));
+      } catch {
+      }
+    }
+
+    function getResultRatingWeight(status) {
+      if (status === "ok") return 1;
+      if (status === "partial") return 0.5;
+      return 0;
+    }
+
+    function resolveScenarioRatingId(data) {
+      const fromFile = normalizeScenarioRatingId(activeScenarioFile);
+      if (fromFile) return fromFile;
+      const stationId = normalizeScenarioRatingId(data?.scenario?.station?.id || data?.scenario?.id || "");
+      if (stationId) return stationId;
+      return "scenario";
+    }
+
+    function buildScenarioRatingSnapshot(data, results) {
+      const questions = Array.isArray(data?.questions)
+        ? data.questions.filter((q) => !isFollowupDivider(q))
+        : [];
+      const questionsById = new Map(questions.map((q) => [q.id, q]));
+      const skillsById = {};
+      let achievedScore = 0;
+      for (const result of results || []) {
+        const q = questionsById.get(result?.id);
+        if (!q) continue;
+        const weight = getResultRatingWeight(result.status);
+        achievedScore += weight;
+        const links = resolveQuestionProgressLinks(q, data);
+        for (const linkRaw of links) {
+          const link = normalizeProgressId(linkRaw);
+          if (!link) continue;
+          if (!skillsById[link]) skillsById[link] = { score: 0, maxScore: 0 };
+          skillsById[link].score += weight;
+          skillsById[link].maxScore += 1;
+        }
+      }
+      const totalQuestions = questions.length;
+      const percent = totalQuestions > 0
+        ? clampPercent((achievedScore / totalQuestions) * 100)
+        : 0;
+      return { totalQuestions, achievedScore, percent, skillsById };
+    }
+
+    function applyScenarioRatingFromResults(data, results) {
+      const folder = sanitizeFolderName(activeScenarioFolder);
+      if (!folder) return null;
+      const scenarioId = resolveScenarioRatingId(data);
+      const snapshot = buildScenarioRatingSnapshot(data, results);
+      const state = loadScenarioRatingState(folder);
+      state.byScenario[scenarioId] = {
+        ...snapshot,
+        updatedAt: Date.now()
+      };
+      saveScenarioRatingState(state, folder);
+      return {
+        scenarioId,
+        scenarioPercent: snapshot.percent,
+        totalQuestions: snapshot.totalQuestions
+      };
+    }
+
+    function getSkillPercentFromScenarioRatings(state, progressId) {
+      if (!state || typeof state !== "object" || typeof state.byScenario !== "object") return null;
+      const skillId = normalizeProgressId(progressId);
+      if (!skillId) return 0;
+      let scored = 0;
+      let maxScore = 0;
+      for (const scenarioValue of Object.values(state.byScenario || {})) {
+        const skill = scenarioValue?.skillsById?.[skillId];
+        if (!skill || typeof skill !== "object") continue;
+        const skillMax = Math.max(0, Number(skill.maxScore) || 0);
+        if (skillMax <= 0) continue;
+        const skillScore = Math.max(0, Number(skill.score) || 0);
+        scored += Math.min(skillScore, skillMax);
+        maxScore += skillMax;
+      }
+      if (maxScore <= 0) return 0;
+      return clampPercent((scored / maxScore) * 100);
+    }
+
     function resolveProgressTone(percent) {
       const pct = clampPercent(percent);
       if (pct < 10) {
@@ -683,6 +860,8 @@
     }
 
     function getSkillProgressPercent(state, progressId, targetCorrect = DEFAULT_SKILL_TARGET_CORRECT) {
+      const scenarioPercent = getSkillPercentFromScenarioRatings(state, progressId);
+      if (scenarioPercent !== null) return scenarioPercent;
       const target = toPositiveNumberOrNull(targetCorrect) || DEFAULT_SKILL_TARGET_CORRECT;
       const points = getSkillProgressPoints(state, progressId);
       return clampPercent((points / target) * 100);
@@ -967,7 +1146,7 @@
       const selectedFolder = sanitizeFolderName(context.homeFolder || activeHomeSkillsFolder || activeScenarioFolder);
       const availableFolders = Array.isArray(context.availableFolders) ? context.availableFolders : getUnlockedFolders();
       const sections = normalizeHomeSections(payload);
-      const progressState = loadSkillProgressState(selectedFolder);
+      const progressState = loadScenarioRatingState(selectedFolder);
       const drawerPercents = [];
       const sectionsHtml = sections
         .map((section) => renderHomeSection(section, { payload, progressState, drawerPercents }))
@@ -2005,13 +2184,13 @@
         inlineSummary.innerHTML +=
           `<strong>Ergebnisprofil:</strong> richtig ${cOk}, teilweise ${cPartial}, falsch/fehlend ${cBad}, gesamt ${results.length}.<br>` +
           `<span class="muted">Graph-Ansicht: Jede Eingabe ist mit einer Auswertungs-Node verbunden.</span>`;
-        if (progressUpdate && progressUpdate.newlySolvedCount > 0) {
+        if (progressUpdate && Number.isFinite(progressUpdate.scenarioPercent)) {
           inlineSummary.innerHTML +=
             "<br>" +
-            `<strong>Skill-Fortschritt:</strong> +${progressUpdate.newlySolvedCount} neue Aufgaben abgeschlossen, +${progressUpdate.gainedPoints} Fortschrittspunkte gespeichert.`;
+            `<strong>Skill-Fortschritt:</strong> Szenario-Bewertung gespeichert: ${Math.round(progressUpdate.scenarioPercent)}%.`;
         } else if (progressUpdate) {
           inlineSummary.innerHTML +=
-            "<br><span class='muted'>Skill-Fortschritt: Keine neuen Punkte (bereits gewertete Aufgaben oder keine volle Trefferwertung).</span>";
+            "<br><span class='muted'>Skill-Fortschritt: Keine Bewertung gespeichert.</span>";
         }
         inlineSummary.classList.remove("hidden");
       }
@@ -2066,7 +2245,7 @@
           ...ev
         });
       }
-      const progressUpdate = applySkillProgressFromResults(scenarioData, results);
+      const progressUpdate = applyScenarioRatingFromResults(scenarioData, results);
       lastResults = results;
       renderInlineReview(results, progressUpdate);
     }
