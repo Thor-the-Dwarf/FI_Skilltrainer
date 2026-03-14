@@ -1,0 +1,160 @@
+{
+  "scenario": {
+    "company": "Ausbildungsbetrieb Softwareloesungen",
+    "scale": "Mittelstand, 190 Mitarbeitende",
+    "context": "Station 04 des Tageslaufs: Bestehende Python-Anwendung gezielt anpassen.",
+    "mission": "Sie bewerten aenderungsrelevante Stellen im Bestandscode und planen eine sichere Anpassung ohne unnötige Seiteneffekte.",
+    "station": {
+      "id": "FSM2-ST-04",
+      "department": "Python-Entwicklung",
+      "profile": "Bestandscode lesen, Anpassung planen, Fehlergrenzen beachten, Wartbarkeit sichern",
+      "constraints": [
+        "Seiteneffekte vermeiden",
+        "Bestandslogik respektieren",
+        "Nachvollziehbar dokumentieren"
+      ]
+    },
+    "customerRequest": {
+      "from": "entwicklung.leitung@kundenauftrag.example",
+      "to": "python.team@ausbildungsbetrieb.example",
+      "subject": "Station 04: Bestehende Python-Routine fuer Einsatzfreigaben anpassen",
+      "date": "2026-03-15",
+      "body": "Bitte passen Sie die bestehende Python-Routine fuer Einsatzfreigaben so an, dass neue Statuswerte und Plausibilitaetspruefungen eingebaut werden koennen, ohne alte Ablaufe zu beschaedigen."
+    }
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "type": "single_choice",
+      "title": "Bestandsaenderung sinnvoll beginnen",
+      "prompt": "Wie sollte eine Aenderung im vorhandenen Python-Code am besten gestartet werden?",
+      "options": [
+        {
+          "text": "Bestehende Funktion, Eingaben und Seiteneffekte zuerst nachvollziehen",
+          "rationale": "Das ist die saubere Grundlage fuer eine sichere Anpassung."
+        },
+        {
+          "text": "Mehrere Dateien gleichzeitig umbauen, um schneller fertig zu sein",
+          "rationale": "Das macht Auswirkungen schwer nachvollziehbar."
+        },
+        {
+          "text": "Die alte Logik loeschen und spaeter neu erfinden",
+          "rationale": "Das waere fuer Bestandssoftware zu riskant."
+        }
+      ],
+      "correctIndex": 0,
+      "feedback": {
+        "correct": "Richtig: Wer Bestandscode aendert, muss vorher Funktion und Seiteneffekte verstehen.",
+        "wrong": "Nicht passend: Bestandsaenderungen brauchen zuerst Verstaendnis statt Schnellumbau."
+      },
+      "progressLinks": [
+        "fsm2_python_anwendung_anpassen"
+      ]
+    },
+    {
+      "id": "q2",
+      "type": "multi_select",
+      "title": "Typische Risiken in Bestandslogik",
+      "prompt": "Welche Risiken muessen bei einer Anpassung besonders beachtet werden? (Mehrfachauswahl)",
+      "options": [
+        {
+          "text": "Unbeabsichtigte Aenderungen an alten Statuswechseln",
+          "correct": true,
+          "rationale": "Das kann direkt produktive Prozesse beschaedigen."
+        },
+        {
+          "text": "Fehlende Pruefung fuer alte Eingabeformate",
+          "correct": true,
+          "rationale": "Altformate duerfen nicht versehentlich ausfallen."
+        },
+        {
+          "text": "Doppelte Logik an mehreren Stellen",
+          "correct": true,
+          "rationale": "Doppelte Logik erschwert Wartung und Fehleranalyse."
+        },
+        {
+          "text": "Zu wenig farbige Kommentare im Editor",
+          "correct": false,
+          "rationale": "Das ist kein Kernrisiko der Fachlogik."
+        },
+        {
+          "text": "Unklare Rueckgabewerte fuer Folgefunktionen",
+          "correct": true,
+          "rationale": "Das kann Folgeroutinen destabilisieren."
+        }
+      ],
+      "feedback": {
+        "correct": "Richtig: Altlogik, Formate und Rueckgaben muessen sauber abgesichert werden.",
+        "wrong": "Teilweise falsch: Bitte Seiteneffekte und Abhaengigkeiten staerker absichern."
+      },
+      "progressLinks": [
+        "fsm2_python_anwendung_anpassen"
+      ]
+    },
+    {
+      "id": "q3",
+      "type": "ordering",
+      "title": "Aenderungspfad im Bestand",
+      "prompt": "Ordnen Sie den Ablauf fuer eine sichere Bestandsanpassung.",
+      "items": [
+        "Bestehende Funktion und Aufrufer analysieren",
+        "Aenderungspunkt fachlich festlegen",
+        "Schutz durch Tests oder Beispieldaten definieren",
+        "Anpassung gezielt umsetzen",
+        "Aenderung und Wirkung dokumentieren"
+      ],
+      "correctOrder": [
+        "Bestehende Funktion und Aufrufer analysieren",
+        "Aenderungspunkt fachlich festlegen",
+        "Schutz durch Tests oder Beispieldaten definieren",
+        "Anpassung gezielt umsetzen",
+        "Aenderung und Wirkung dokumentieren"
+      ],
+      "feedback": {
+        "correct": "Richtig: Das ist ein belastbarer Ablauf fuer Bestandsaenderungen.",
+        "wrong": "Nicht optimal: Bitte Analyse und Schutz vor die eigentliche Aenderung setzen."
+      },
+      "progressLinks": [
+        "fsm2_python_anwendung_anpassen",
+        "fsm2_testkonzepte_qualitaet"
+      ]
+    },
+    {
+      "id": "q4",
+      "type": "number",
+      "title": "Refactoring-Zeit abschaetzen",
+      "prompt": "Fuer Analyse, Anpassung und Nachtest sind 2 h, 5 h und 3 h angesetzt. Wie viele Stunden umfasst die Aenderung insgesamt?",
+      "expected": 10,
+      "toleranceAbs": 0,
+      "showExpectedFormula": "2 + 5 + 3 = 10",
+      "feedback": {
+        "correct": "Richtig gerechnet.",
+        "wrong": "Bitte Analyse, Anpassung und Nachtest sauber zusammenzaehlen."
+      },
+      "progressLinks": [
+        "fsm2_python_anwendung_anpassen"
+      ]
+    },
+    {
+      "id": "q5",
+      "type": "short_text",
+      "title": "Anpassung fachlich begruenden",
+      "prompt": "Beschreiben Sie in 4-6 Saetzen, wie Sie eine bestehende Python-Funktion anpassen, ohne alte Freigabefaelle zu destabilisieren.",
+      "minChars": 170,
+      "requiredKeywords": [
+        "bestand",
+        "test",
+        "seiteneffekt"
+      ],
+      "expectedOutline": "Bestand verstehen, Tests absichern, Seiteneffekte kontrollieren.",
+      "feedback": {
+        "correct": "Richtig: Die Anpassung ist fachlich abgesichert beschrieben.",
+        "wrong": "Bitte Bestand, Tests und Seiteneffekte klarer zusammendenken."
+      },
+      "progressLinks": [
+        "fsm2_python_anwendung_anpassen",
+        "fsm2_testkonzepte_qualitaet"
+      ]
+    }
+  ]
+}

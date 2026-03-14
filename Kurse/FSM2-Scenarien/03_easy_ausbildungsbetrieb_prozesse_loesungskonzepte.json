@@ -1,0 +1,158 @@
+{
+  "scenario": {
+    "company": "Ausbildungsbetrieb Softwareloesungen",
+    "scale": "Mittelstand, 190 Mitarbeitende",
+    "context": "Station 03 des Tageslaufs: Fachprozesse analysieren und in ein Python-Loesungskonzept ueberfuehren.",
+    "mission": "Sie uebersetzen Kundenprozess, Rollen und Medienbrueche in ein tragfaehiges technisches Konzept.",
+    "station": {
+      "id": "FSM2-ST-03",
+      "department": "Fachanalyse",
+      "profile": "Ist-Prozess, Soll-Konzept, Rollen, Medienbrueche und Umsetzungslogik",
+      "constraints": [
+        "Prozesssicht vor Implementierungsdetails setzen",
+        "Ausnahmen und Rollen beachten",
+        "Loesungskonzept nachvollziehbar strukturieren"
+      ]
+    },
+    "customerRequest": {
+      "from": "fachkoordination@kundenauftrag.example",
+      "to": "python.team@ausbildungsbetrieb.example",
+      "subject": "Station 03: Prozessanalyse fuer Einsatzprotokolle und Freigaben",
+      "date": "2026-03-15",
+      "body": "Bitte analysieren Sie den Fachprozess vom Einsatzauftrag bis zur Freigabe und ueberfuehren Sie ihn in ein Python-nahes Loesungskonzept."
+    }
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "type": "multi_select",
+      "title": "Wichtige Prozessinformationen",
+      "prompt": "Welche Informationen werden fuer eine belastbare Prozessanalyse benoetigt? (Mehrfachauswahl)",
+      "options": [
+        {
+          "text": "Wer den Auftrag erstellt, bearbeitet und freigibt",
+          "correct": true,
+          "rationale": "Rollenklarheit ist fuer das Konzept wesentlich."
+        },
+        {
+          "text": "Welche Schritte heute manuell oder doppelt ausgefuehrt werden",
+          "correct": true,
+          "rationale": "Medienbrueche und Doppelarbeit sind wichtige Ansatzpunkte."
+        },
+        {
+          "text": "Welche Daten pro Schritt erzeugt oder geaendert werden",
+          "correct": true,
+          "rationale": "Das bildet die Grundlage fuer das Datenmodell."
+        },
+        {
+          "text": "Welche private Tastenkombination ein Anwender bevorzugt",
+          "correct": false,
+          "rationale": "Das gehoert nicht in die Prozessanalyse."
+        },
+        {
+          "text": "Welche Ausnahmefaelle zu Rueckfragen oder Nacharbeit fuehren",
+          "correct": true,
+          "rationale": "Ausnahmen muessen im Konzept beruecksichtigt werden."
+        }
+      ],
+      "feedback": {
+        "correct": "Richtig: Rollen, Daten und Medienbrueche gehoeren in die Analyse.",
+        "wrong": "Teilweise falsch: Bitte Rollen, Datenerzeugung und Ausnahmefaelle staerker gewichten."
+      },
+      "progressLinks": [
+        "fsm2_prozessanalyse_loesungskonzept"
+      ]
+    },
+    {
+      "id": "q2",
+      "type": "ordering",
+      "title": "Vom Ist-Prozess zum Konzept",
+      "prompt": "Ordnen Sie die Schritte fuer ein tragfaehiges Loesungskonzept.",
+      "items": [
+        "Ist-Prozess in Teilschritte und Rollen zerlegen",
+        "Schwachstellen und Medienbrueche markieren",
+        "Soll-Ablauf fuer die Python-Anwendung ableiten",
+        "Datenobjekte und Statuswechsel definieren",
+        "Konzept mit Fachseite rueckspiegeln"
+      ],
+      "correctOrder": [
+        "Ist-Prozess in Teilschritte und Rollen zerlegen",
+        "Schwachstellen und Medienbrueche markieren",
+        "Soll-Ablauf fuer die Python-Anwendung ableiten",
+        "Datenobjekte und Statuswechsel definieren",
+        "Konzept mit Fachseite rueckspiegeln"
+      ],
+      "feedback": {
+        "correct": "Richtig: So entsteht aus dem Ist-Prozess ein belastbares Soll-Konzept.",
+        "wrong": "Nicht optimal: Bitte erst analysieren und Schwachstellen erkennen, dann die technische Sollseite ableiten."
+      },
+      "progressLinks": [
+        "fsm2_prozessanalyse_loesungskonzept"
+      ]
+    },
+    {
+      "id": "q3",
+      "type": "single_choice",
+      "title": "Medienbruch fachlich behandeln",
+      "prompt": "Wie sollte ein heute manuell gepflegter Excel-Zwischenschritt im Konzept behandelt werden?",
+      "options": [
+        {
+          "text": "Ignorieren, solange die Fachseite damit lebt",
+          "rationale": "Dann bleibt das Problem im Prozess bestehen."
+        },
+        {
+          "text": "Als Datenquelle, Risiko und moeglichen Automatisierungspunkt explizit beschreiben",
+          "rationale": "Das macht den Medienbruch fachlich sichtbar und bearbeitbar."
+        },
+        {
+          "text": "Sofort verbieten, ohne den Fachablauf zu verstehen",
+          "rationale": "Ohne Prozessverstaendnis ist das nicht belastbar."
+        }
+      ],
+      "correctIndex": 1,
+      "feedback": {
+        "correct": "Richtig: Medienbrueche muessen fachlich sichtbar und technisch einordenbar sein.",
+        "wrong": "Nicht passend: Ein Medienbruch muss erst verstanden und dann zielgerichtet behandelt werden."
+      },
+      "progressLinks": [
+        "fsm2_prozessanalyse_loesungskonzept"
+      ]
+    },
+    {
+      "id": "q4",
+      "type": "number",
+      "title": "Rueckfragen im Ist-Prozess",
+      "prompt": "Pro Tag entstehen 14 Einsatzprotokolle. Bei 5 davon gibt es Rueckfragen, die je 12 Minuten kosten. Wie viele Minuten Rueckfrageaufwand entstehen taeglich?",
+      "expected": 60,
+      "toleranceAbs": 0,
+      "showExpectedFormula": "5 * 12 = 60 Minuten",
+      "feedback": {
+        "correct": "Richtig gerechnet.",
+        "wrong": "Bitte Zahl der Rueckfragen mit der Dauer pro Rueckfrage multiplizieren."
+      },
+      "progressLinks": [
+        "fsm2_prozessanalyse_loesungskonzept"
+      ]
+    },
+    {
+      "id": "q5",
+      "type": "short_text",
+      "title": "Loesungskonzept kurz formulieren",
+      "prompt": "Beschreiben Sie in 4-6 Saetzen, wie aus dem heutigen Freigabeprozess ein klarer Python-gestuetzter Soll-Ablauf werden soll.",
+      "minChars": 170,
+      "requiredKeywords": [
+        "soll",
+        "rolle",
+        "daten"
+      ],
+      "expectedOutline": "Soll-Ablauf, Rollenbezug und Datenfluss knapp und klar beschreiben.",
+      "feedback": {
+        "correct": "Richtig: Das Loesungskonzept ist fachlich nachvollziehbar.",
+        "wrong": "Bitte Soll-Ablauf, Rollen und Datenfluss klarer verbinden."
+      },
+      "progressLinks": [
+        "fsm2_prozessanalyse_loesungskonzept"
+      ]
+    }
+  ]
+}

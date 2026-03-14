@@ -1,0 +1,733 @@
+{
+  "scenario": {
+    "company": "Ausbildungsbetrieb Softwareloesungen",
+    "scale": "Mittelstand, 190 Mitarbeitende",
+    "context": "Station 01: Python-Kundenanwendung starten und mehrere Folgeauftraege entlang von Erweiterung, Datenaustausch, Reporting und Qualitaet bearbeiten.",
+    "mission": "Sie bearbeiten einen Startauftrag und mehrere Folgeauftraege mit steigender Verantwortung innerhalb einer bestehenden Python-Anwendungslandschaft.",
+    "station": {
+      "id": "FSM2-ST-01",
+      "department": "Kundenspezifische Softwareentwicklung",
+      "profile": "Python-Servicemodul, bestehende Architektur, Datenaustausch, Reporting, Git und Testauswertung",
+      "constraints": [
+        "Bestehende Systemarchitektur beachten",
+        "Kundenspezifische Erweiterungen nachvollziehbar planen",
+        "Qualitaet und Dokumentation mitdenken"
+      ]
+    },
+    "customerRequest": {
+      "from": "projektleitung@kundenauftrag.example",
+      "to": "python.team@ausbildungsbetrieb.example",
+      "subject": "Station 01: Startauftrag Python-Erweiterung fuer Servicehub",
+      "date": "2026-03-15",
+      "body": "Bitte erweitern Sie unsere bestehende Python-Anwendung Servicehub fuer einen Kunden um neue Einsatzprotokolle, Auswertungen und Datenaustauschpfade.\n\nNach dem Startauftrag folgen weitere Anforderungen zu Konfiguration, Importformaten, Reporting, Versionsverwaltung und Testpraesentation."
+    }
+  },
+  "questions": [
+    {
+      "id": "q01",
+      "type": "single_choice",
+      "title": "Einstieg in die bestehende Architektur",
+      "prompt": "Welcher erste Schritt ist fuer die Erweiterung einer bestehenden Python-Anwendung am sinnvollsten?",
+      "options": [
+        {
+          "text": "Neue Module ohne Blick auf Datenfluss und Schnittstellen direkt einbauen",
+          "rationale": "Erhoeht das Risiko fuer Seiteneffekte in der Bestandsarchitektur."
+        },
+        {
+          "text": "Vorhandene Module, Datenwege und Erweiterungspunkte zuerst fachlich erfassen",
+          "rationale": "Das schafft eine saubere Grundlage fuer die spaetere Umsetzung."
+        },
+        {
+          "text": "Nur den Oberflaechentext aendern und die Fachlogik spaeter betrachten",
+          "rationale": "Ohne Architektursicht bleibt die Loesung lueckenhaft."
+        }
+      ],
+      "correctIndex": 1,
+      "feedback": {
+        "correct": "Richtig: Eine Erweiterung sollte immer auf einer belastbaren Architektursicht starten.",
+        "wrong": "Nicht passend: Vor der Umsetzung muessen Struktur und Schnittstellen klar sein."
+      },
+      "progressLinks": [
+        "fsm2_architektur_designverfahren"
+      ]
+    },
+    {
+      "id": "q02",
+      "type": "multi_select",
+      "title": "Prozesssicht fuer das Startkonzept",
+      "prompt": "Welche Informationen sind fuer ein erstes Loesungskonzept wichtig? (Mehrfachauswahl)",
+      "options": [
+        {
+          "text": "Welche Eingaben aus dem Fachprozess in die Anwendung fliessen",
+          "correct": true,
+          "rationale": "Der Prozess liefert die fachliche Struktur."
+        },
+        {
+          "text": "Welche Rollen Daten erzeugen, pruefen und freigeben",
+          "correct": true,
+          "rationale": "Rollensicht ist fuer die Konzeption zentral."
+        },
+        {
+          "text": "Welche Sonderfaelle oder Medienbrueche auftreten koennen",
+          "correct": true,
+          "rationale": "Ohne Ausnahmefaelle fehlt Robustheit."
+        },
+        {
+          "text": "Welche private Lieblingsbibliothek ein Entwickler bevorzugt",
+          "correct": false,
+          "rationale": "Das ist kein fachlicher Startpunkt."
+        },
+        {
+          "text": "Welche bestehenden Datenquellen angebunden bleiben muessen",
+          "correct": true,
+          "rationale": "Schnittstellenbindung gehoert in das Startkonzept."
+        }
+      ],
+      "feedback": {
+        "correct": "Richtig: Prozess, Rollen, Ausnahmen und Datenquellen muessen zusammen betrachtet werden.",
+        "wrong": "Teilweise falsch: Bitte Prozesssicht und Datenwege staerker mitdenken."
+      },
+      "progressLinks": [
+        "fsm2_prozessanalyse_loesungskonzept"
+      ]
+    },
+    {
+      "id": "q03",
+      "type": "ordering",
+      "title": "Vom Bestand zum Umsetzungspfad",
+      "prompt": "Ordnen Sie die Schritte fuer einen sauberen Start der Python-Erweiterung.",
+      "items": [
+        "Implementierungsbausteine und Erweiterungspunkte festlegen",
+        "Bestehende Architektur und Schnittstellen erfassen",
+        "Fachprozess und Sollablauf beschreiben",
+        "Datenobjekte und Austauschformate eingrenzen",
+        "Startkonzept fuer Kunde und Team dokumentieren"
+      ],
+      "correctOrder": [
+        "Bestehende Architektur und Schnittstellen erfassen",
+        "Fachprozess und Sollablauf beschreiben",
+        "Datenobjekte und Austauschformate eingrenzen",
+        "Implementierungsbausteine und Erweiterungspunkte festlegen",
+        "Startkonzept fuer Kunde und Team dokumentieren"
+      ],
+      "feedback": {
+        "correct": "Richtig: So entsteht ein belastbarer Weg von der Analyse zur Umsetzung.",
+        "wrong": "Nicht optimal: Bitte erst Bestand und Prozess klaeren, dann die technische Einpassung."
+      },
+      "progressLinks": [
+        "fsm2_architektur_designverfahren",
+        "fsm2_prozessanalyse_loesungskonzept"
+      ]
+    },
+    {
+      "id": "q04",
+      "type": "number",
+      "title": "Aufwand fuer das Startpaket",
+      "prompt": "Analyse 11 h, Architekturabgleich 7 h, Konzeptdokumentation 5 h bei 74 EUR pro Stunde: Wie hoch sind die Kosten?",
+      "expected": 1702,
+      "toleranceAbs": 1,
+      "showExpectedFormula": "(11 + 7 + 5) * 74 = 1.702 EUR",
+      "feedback": {
+        "correct": "Richtig gerechnet.",
+        "wrong": "Bitte Gesamtstunden zuerst sauber addieren und danach mit dem Satz multiplizieren."
+      },
+      "progressLinks": [
+        "fsm2_prozessanalyse_loesungskonzept"
+      ]
+    },
+    {
+      "id": "q05",
+      "type": "short_text",
+      "title": "Startnotiz fuer den Kunden",
+      "prompt": "Formulieren Sie eine kurze Startnotiz (4-6 Saetze) mit Architektursicht, Prozessbezug und einem naechsten Umsetzungsschritt.",
+      "minChars": 170,
+      "requiredKeywords": [
+        "architektur",
+        "prozess",
+        "umsetzung"
+      ],
+      "expectedOutline": "Bestand einordnen, Prozesssicht benennen, naechsten Umsetzungsschritt klar machen.",
+      "feedback": {
+        "correct": "Richtig: Die Startnotiz ist fachlich orientiert und umsetzungsnah.",
+        "wrong": "Bitte Architektur, Prozess und Umsetzung klarer miteinander verbinden."
+      },
+      "progressLinks": [
+        "fsm2_architektur_designverfahren",
+        "fsm2_prozessanalyse_loesungskonzept"
+      ]
+    },
+    {
+      "id": "sep_f1",
+      "type": "followup_divider",
+      "title": "Folgeauftrag 1 - Kundenspezifische Regelwerke und Erweiterung",
+      "from": "fachseite@kundenauftrag.example",
+      "to": "python.team@ausbildungsbetrieb.example",
+      "subject": "Neue Statuslogik und konfigurierbare Prioritaetsregeln",
+      "date": "2026-03-15",
+      "body": "Der Kunde benoetigt jetzt zusaetzliche Statuswerte und Prioritaetsregeln, die je Standort unterschiedlich ausfallen koennen. Bitte pruefen Sie, wie dies in der bestehenden Python-Anwendung sauber erweiterbar und konfigurierbar umgesetzt werden kann."
+    },
+    {
+      "id": "q06",
+      "type": "multi_select",
+      "title": "Konfiguration statt harter Sonderlogik",
+      "prompt": "Welche Punkte sprechen fuer eine konfigurierbare statt fest eingebrannte Kundenregel? (Mehrfachauswahl)",
+      "options": [
+        {
+          "text": "Standortvarianten lassen sich ohne Codeaenderung abbilden",
+          "correct": true,
+          "rationale": "Das reduziert spaetere Aenderungsaufwaende."
+        },
+        {
+          "text": "Fachregeln bleiben fuer Support und Betrieb nachvollziehbarer",
+          "correct": true,
+          "rationale": "Konfigurationssicht hilft auch ausserhalb der Entwicklung."
+        },
+        {
+          "text": "Tests fuer Regelvarianten lassen sich systematischer aufbauen",
+          "correct": true,
+          "rationale": "Varianten koennen gezielt abgedeckt werden."
+        },
+        {
+          "text": "Alle Fehler verschwinden automatisch ohne weitere Pruefung",
+          "correct": false,
+          "rationale": "Auch Konfigurationen muessen validiert werden."
+        },
+        {
+          "text": "Regeln koennen von der Kernlogik getrennt werden",
+          "correct": true,
+          "rationale": "Das verbessert Wartbarkeit und Erweiterbarkeit."
+        }
+      ],
+      "feedback": {
+        "correct": "Richtig: Konfiguration hilft bei Varianten, Wartung und Testbarkeit.",
+        "wrong": "Teilweise falsch: Bitte Trennung von Kernlogik und Kundenregel klarer sehen."
+      },
+      "progressLinks": [
+        "fsm2_erweiterung_konfiguration"
+      ]
+    },
+    {
+      "id": "q07",
+      "type": "single_choice",
+      "title": "Sauberer Erweiterungspunkt",
+      "prompt": "Wo sollte eine neue kundenspezifische Statuslogik am besten eingebaut werden?",
+      "options": [
+        {
+          "text": "Direkt in allen Ausgabemasken gleichzeitig",
+          "rationale": "Fuehrt zu doppelter Logik und schlechter Wartbarkeit."
+        },
+        {
+          "text": "Nur in einer Exportdatei, damit die Oberflaeche unberuehrt bleibt",
+          "rationale": "Die Regel gehoert nicht nur in den Export."
+        },
+        {
+          "text": "An einer zentralen Fachlogik mit konfigurierbarem Regelzugriff",
+          "rationale": "Das ist architektonisch sauber und erweiterbar."
+        }
+      ],
+      "correctIndex": 2,
+      "feedback": {
+        "correct": "Richtig: Fachlogik und Konfiguration sollten zentral zusammengefuehrt werden.",
+        "wrong": "Nicht passend: Verteilte Sonderlogik macht die Python-Anwendung fragil."
+      },
+      "progressLinks": [
+        "fsm2_python_anwendung_anpassen",
+        "fsm2_erweiterung_konfiguration"
+      ]
+    },
+    {
+      "id": "q08",
+      "type": "short_text",
+      "title": "Erweiterungskonzept skizzieren",
+      "prompt": "Skizzieren Sie in 4-6 Saetzen, wie Statuslogik, Konfiguration und Bestandscode sauber zusammenspielen sollen.",
+      "minChars": 180,
+      "requiredKeywords": [
+        "bestandscode",
+        "konfiguration",
+        "regel"
+      ],
+      "expectedOutline": "Anknuepfungspunkt im Bestand, Rolle der Konfiguration, Regelpruefung beschreiben.",
+      "feedback": {
+        "correct": "Richtig: Das Konzept zeigt eine saubere Erweiterungslogik.",
+        "wrong": "Bitte Bestandscode, Konfiguration und Regelverarbeitung klarer verzahnen."
+      },
+      "progressLinks": [
+        "fsm2_python_anwendung_anpassen",
+        "fsm2_erweiterung_konfiguration"
+      ]
+    },
+    {
+      "id": "q09",
+      "type": "ordering",
+      "title": "Einfuehrung einer Kundenregel",
+      "prompt": "Ordnen Sie den Ablauf fuer die Einfuehrung einer neuen Kundenregel.",
+      "items": [
+        "Regel fachlich mit Beispieldaten beschreiben",
+        "Anknuepfungspunkt im Python-Bestand lokalisieren",
+        "Konfigurationsmodell ableiten",
+        "Tests fuer gueltige und ungueltige Regelwerte festlegen",
+        "Aenderung dokumentieren und freigeben"
+      ],
+      "correctOrder": [
+        "Regel fachlich mit Beispieldaten beschreiben",
+        "Anknuepfungspunkt im Python-Bestand lokalisieren",
+        "Konfigurationsmodell ableiten",
+        "Tests fuer gueltige und ungueltige Regelwerte festlegen",
+        "Aenderung dokumentieren und freigeben"
+      ],
+      "feedback": {
+        "correct": "Richtig: So wird die Kundenregel kontrolliert eingefuehrt.",
+        "wrong": "Nicht optimal: Bitte Fachbeschreibung, Anknuepfungspunkt und Tests sauber staffeln."
+      },
+      "progressLinks": [
+        "fsm2_erweiterung_konfiguration",
+        "fsm2_testkonzepte_qualitaet"
+      ]
+    },
+    {
+      "id": "sep_f2",
+      "type": "followup_divider",
+      "title": "Folgeauftrag 2 - Datenaustausch mit Alt- und Drittsystemen",
+      "from": "integration@kundenauftrag.example",
+      "to": "python.team@ausbildungsbetrieb.example",
+      "subject": "JSON-Import, XML-Export und Quellabgleich",
+      "date": "2026-03-15",
+      "body": "Die Python-Anwendung soll jetzt JSON-Daten aus einem Webdienst einlesen, XML fuer ein Altsystem erzeugen und Unterschiede zwischen Cloud-Liste, Office-Datei und Datenbankbestand sichtbar machen."
+    },
+    {
+      "id": "q10",
+      "type": "single_choice",
+      "title": "Import- und Exportstrategie",
+      "prompt": "Welche Strategie ist fuer JSON-Import und XML-Export am sinnvollsten?",
+      "options": [
+        {
+          "text": "Interne Datenstruktur definieren und JSON/XML jeweils kontrolliert hinein- oder herausabbilden",
+          "rationale": "Das entkoppelt die Formate von der Kernlogik."
+        },
+        {
+          "text": "JSON und XML ohne gemeinsames Modell direkt ineinander kopieren",
+          "rationale": "Das erschwert Pruefung und Weiterverarbeitung."
+        },
+        {
+          "text": "Nur noch XML nutzen, auch wenn die Webquelle JSON liefert",
+          "rationale": "Das ignoriert die Gegebenheiten der Quelle."
+        }
+      ],
+      "correctIndex": 0,
+      "feedback": {
+        "correct": "Richtig: Ein internes Modell macht die Python-Loesung deutlich robuster.",
+        "wrong": "Nicht passend: Der Datenaustausch braucht ein stabiles internes Zielmodell."
+      },
+      "progressLinks": [
+        "fsm2_datenschnittstellen_json_xml"
+      ]
+    },
+    {
+      "id": "q11",
+      "type": "multi_select",
+      "title": "Wichtige Importpruefungen",
+      "prompt": "Welche Pruefungen sind bei mehreren Datenquellen wichtig? (Mehrfachauswahl)",
+      "options": [
+        {
+          "text": "Pflichtfelder und Datentypen der Quelldaten pruefen",
+          "correct": true,
+          "rationale": "Grundlegende Validierung ist Pflicht."
+        },
+        {
+          "text": "Zeitstempel oder Versionsstand zwischen Quellen vergleichen",
+          "correct": true,
+          "rationale": "Hilft bei Konflikten zwischen Quellen."
+        },
+        {
+          "text": "Feldzuordnung zwischen Quell- und Zielmodell dokumentieren",
+          "correct": true,
+          "rationale": "Ohne Mapping leidet Nachvollziehbarkeit."
+        },
+        {
+          "text": "Unbekannte Felder immer kommentarlos verwerfen",
+          "correct": false,
+          "rationale": "Das kann relevante Informationen verlieren."
+        },
+        {
+          "text": "Fehlerfaelle protokollieren und nicht nur still ignorieren",
+          "correct": true,
+          "rationale": "Das ist fuer Betrieb und Analyse wichtig."
+        }
+      ],
+      "feedback": {
+        "correct": "Richtig: Mehrquellenimporte brauchen Mapping, Validierung und Protokollierung.",
+        "wrong": "Teilweise falsch: Bitte Datenqualitaet und Mapping staerker absichern."
+      },
+      "progressLinks": [
+        "fsm2_datenschnittstellen_json_xml",
+        "fsm2_datenquellen_reporting"
+      ]
+    },
+    {
+      "id": "q12",
+      "type": "number",
+      "title": "Datensaetze pro Tag",
+      "prompt": "Webdienst 180 Datensaetze, Office-Import 95, Cloud-Ablage 37, Datenbanknachtraege 28: Wie viele Datensaetze muessen insgesamt verarbeitet werden?",
+      "expected": 340,
+      "toleranceAbs": 0,
+      "showExpectedFormula": "180 + 95 + 37 + 28 = 340",
+      "feedback": {
+        "correct": "Richtig gerechnet.",
+        "wrong": "Bitte alle vier Quellmengen sauber summieren."
+      },
+      "progressLinks": [
+        "fsm2_datenquellen_reporting"
+      ]
+    },
+    {
+      "id": "q13",
+      "type": "short_text",
+      "title": "Homogenisierung erklaeren",
+      "prompt": "Erklaeren Sie in 4-6 Saetzen, wie Daten aus Office, Web, Cloud und Datenbank auf ein gemeinsames Modell gebracht werden sollten.",
+      "minChars": 180,
+      "requiredKeywords": [
+        "datenquelle",
+        "modell",
+        "mapping"
+      ],
+      "expectedOutline": "Quellen benennen, gemeinsames Modell erklaeren, Mapping und Pruefung nennen.",
+      "feedback": {
+        "correct": "Richtig: Die Homogenisierung ist technisch nachvollziehbar beschrieben.",
+        "wrong": "Bitte Datenquellen, Zielmodell und Mapping klarer verknuepfen."
+      },
+      "progressLinks": [
+        "fsm2_datenschnittstellen_json_xml",
+        "fsm2_datenquellen_reporting"
+      ]
+    },
+    {
+      "id": "q14",
+      "type": "ordering",
+      "title": "Importkette strukturieren",
+      "prompt": "Ordnen Sie die Schritte fuer eine saubere Mehrquellenverarbeitung.",
+      "items": [
+        "Quelldaten einlesen",
+        "Formate und Pflichtfelder validieren",
+        "Felder ins gemeinsame Modell ueberfuehren",
+        "Konflikte und Dubletten kennzeichnen",
+        "Export oder Bericht erzeugen"
+      ],
+      "correctOrder": [
+        "Quelldaten einlesen",
+        "Formate und Pflichtfelder validieren",
+        "Felder ins gemeinsame Modell ueberfuehren",
+        "Konflikte und Dubletten kennzeichnen",
+        "Export oder Bericht erzeugen"
+      ],
+      "feedback": {
+        "correct": "Richtig: So bleibt die Datenkette nachvollziehbar und wartbar.",
+        "wrong": "Nicht optimal: Bitte Validierung und Homogenisierung vor Bericht oder Export setzen."
+      },
+      "progressLinks": [
+        "fsm2_datenschnittstellen_json_xml",
+        "fsm2_datenquellen_reporting"
+      ]
+    },
+    {
+      "id": "sep_f3",
+      "type": "followup_divider",
+      "title": "Folgeauftrag 3 - Datenbestandsbericht fuer Fachbereich und Projektleitung",
+      "from": "reporting@kundenauftrag.example",
+      "to": "python.team@ausbildungsbetrieb.example",
+      "subject": "Bestandsbericht aus mehreren Quellen mit Auffaelligkeiten",
+      "date": "2026-03-15",
+      "body": "Der Kunde benoetigt einen taeglichen Datenbestandsbericht, der Mengen, Fehlerbilder und Unterschiede zwischen den Quellen sichtbar macht. Bitte bereiten Sie Abfragen, Kennzahlen und eine verstaendliche Darstellung vor."
+    },
+    {
+      "id": "q15",
+      "type": "multi_select",
+      "title": "Sinnvolle Eingangsquellen fuer den Bericht",
+      "prompt": "Welche Quellen sollten fuer einen taeglichen Bestandsbericht beruecksichtigt werden? (Mehrfachauswahl)",
+      "options": [
+        {
+          "text": "Operative Datenbank mit aktuellem Bestand",
+          "correct": true,
+          "rationale": "Sie liefert den Kernbestand."
+        },
+        {
+          "text": "Cloud-Ablage mit angelieferten Importdateien",
+          "correct": true,
+          "rationale": "Sie zeigt, welche Lieferdaten vorliegen."
+        },
+        {
+          "text": "Webdienst-Rueckmeldungen zu neuen Einsaetzen",
+          "correct": true,
+          "rationale": "Sie ergaenzen den aktuellen Ereignisstand."
+        },
+        {
+          "text": "Private Notizen eines Entwicklers ausserhalb des Systems",
+          "correct": false,
+          "rationale": "Das ist keine belastbare Datenquelle."
+        },
+        {
+          "text": "Office-Datei aus der Fachplanung als Referenzquelle",
+          "correct": true,
+          "rationale": "Sie hilft beim Soll-Ist-Abgleich."
+        }
+      ],
+      "feedback": {
+        "correct": "Richtig: Der Bericht braucht belastbare operative und fachliche Vergleichsquellen.",
+        "wrong": "Teilweise falsch: Bitte belastbare Referenz- und Bestandsquellen staerker gewichten."
+      },
+      "progressLinks": [
+        "fsm2_datenquellen_reporting"
+      ]
+    },
+    {
+      "id": "q16",
+      "type": "single_choice",
+      "title": "Berichtslogik fuer Auffaelligkeiten",
+      "prompt": "Welche Auswertungslogik passt am besten zu einem taeglichen Bestandsbericht?",
+      "options": [
+        {
+          "text": "Nur die Gesamtsumme ohne Herkunft und Fehlerfaelle anzeigen",
+          "rationale": "Das reicht fuer Fachbereich und Projektleitung nicht."
+        },
+        {
+          "text": "Mengen, Quellunterschiede, Fehlerfaelle und offene Konflikte getrennt sichtbar machen",
+          "rationale": "Das macht den Bericht steuerbar und auswertbar."
+        },
+        {
+          "text": "Nur Exportdateien archivieren und auf sichtbare Kennzahlen verzichten",
+          "rationale": "Ohne Kennzahlen fehlt die eigentliche Berichtswirkung."
+        }
+      ],
+      "correctIndex": 1,
+      "feedback": {
+        "correct": "Richtig: Ein guter Bericht verdichtet Mengen, Differenzen und Auffaelligkeiten getrennt.",
+        "wrong": "Nicht passend: Der Bericht braucht mehr als nur eine einzige Gesamtsumme."
+      },
+      "progressLinks": [
+        "fsm2_datenquellen_reporting",
+        "fsm2_testergebnisse_praesentation"
+      ]
+    },
+    {
+      "id": "q17",
+      "type": "number",
+      "title": "Fehlerquote berechnen",
+      "prompt": "Von 340 verarbeiteten Datensaetzen sind 17 fehlerhaft. Wie hoch ist die Fehlerquote in Prozent, auf eine Nachkommastelle gerundet?",
+      "expected": 5,
+      "toleranceAbs": 0.2,
+      "showExpectedFormula": "17 / 340 * 100 = 5,0 %",
+      "feedback": {
+        "correct": "Richtig gerechnet.",
+        "wrong": "Bitte fehlerhafte Datensaetze durch die Gesamtzahl teilen und in Prozent umrechnen."
+      },
+      "progressLinks": [
+        "fsm2_datenquellen_reporting",
+        "fsm2_testergebnisse_praesentation"
+      ]
+    },
+    {
+      "id": "q18",
+      "type": "ordering",
+      "title": "Berichtsworkflow",
+      "prompt": "Ordnen Sie die Schritte fuer einen belastbaren Datenbestandsbericht.",
+      "items": [
+        "Kennzahlen und Konfliktlisten erzeugen",
+        "Quellen aktuell abrufen",
+        "Bestandsdaten homogen zusammenfuehren",
+        "Auffaelligkeiten fachlich gruppieren",
+        "Ergebnis fuer Empfaenger aufbereiten"
+      ],
+      "correctOrder": [
+        "Quellen aktuell abrufen",
+        "Bestandsdaten homogen zusammenfuehren",
+        "Kennzahlen und Konfliktlisten erzeugen",
+        "Auffaelligkeiten fachlich gruppieren",
+        "Ergebnis fuer Empfaenger aufbereiten"
+      ],
+      "feedback": {
+        "correct": "Richtig: So bleibt der Bericht fachlich und technisch belastbar.",
+        "wrong": "Nicht optimal: Bitte erst abrufen und homogenisieren, dann verdichten und aufbereiten."
+      },
+      "progressLinks": [
+        "fsm2_datenquellen_reporting",
+        "fsm2_testergebnisse_praesentation"
+      ]
+    },
+    {
+      "id": "q19",
+      "type": "short_text",
+      "title": "Auffaelligkeiten fuer den Fachbereich beschreiben",
+      "prompt": "Beschreiben Sie in 4-6 Saetzen, wie ein Fachbereich Berichtsdifferenzen zwischen Office, Cloud und Datenbank verstehen soll.",
+      "minChars": 180,
+      "requiredKeywords": [
+        "abweichung",
+        "datenquelle",
+        "bericht"
+      ],
+      "expectedOutline": "Abweichung benennen, Quellenbezug erklaeren, Berichtsnutzen sichtbar machen.",
+      "feedback": {
+        "correct": "Richtig: Der Fachbereich bekommt eine nutzbare und verstaendliche Erklaerung.",
+        "wrong": "Bitte Abweichung, Datenquellen und Berichtsnutzen klarer verbinden."
+      },
+      "progressLinks": [
+        "fsm2_datenquellen_reporting",
+        "fsm2_testergebnisse_praesentation"
+      ]
+    },
+    {
+      "id": "q20",
+      "type": "multi_select",
+      "title": "Geeignete Berichtsinhalte fuer Leitung und Team",
+      "prompt": "Welche Inhalte sind fuer Leitung und Entwicklung gemeinsam sinnvoll? (Mehrfachauswahl)",
+      "options": [
+        {
+          "text": "Gesamtmenge und Quellverteilung",
+          "correct": true,
+          "rationale": "Zeigt Last und Herkunft."
+        },
+        {
+          "text": "Top-Fehlerbilder mit Haeufigkeit",
+          "correct": true,
+          "rationale": "Hilft bei Priorisierung."
+        },
+        {
+          "text": "Liste offener Konfliktdatensaetze",
+          "correct": true,
+          "rationale": "Foerdert gezielte Nacharbeit."
+        },
+        {
+          "text": "Nur interne Dateipfade der Entwicklerrechner",
+          "correct": false,
+          "rationale": "Das ist fuer die Empfaenger nicht zielfuehrend."
+        },
+        {
+          "text": "Trend zur Entwicklung der Fehlerquote",
+          "correct": true,
+          "rationale": "Das macht Verbesserungen sichtbar."
+        }
+      ],
+      "feedback": {
+        "correct": "Richtig: Diese Inhalte machen den Bericht steuerbar und teamfaehig.",
+        "wrong": "Teilweise falsch: Bitte steuerungsrelevante Kennzahlen und Fehlerbilder staerker gewichten."
+      },
+      "progressLinks": [
+        "fsm2_datenquellen_reporting",
+        "fsm2_testergebnisse_praesentation"
+      ]
+    },
+    {
+      "id": "sep_f4",
+      "type": "followup_divider",
+      "title": "Folgeauftrag 4 - Versionsverwaltung, Testkonzept und Ergebnisdarstellung",
+      "from": "qualitaet@kundenauftrag.example",
+      "to": "python.team@ausbildungsbetrieb.example",
+      "subject": "Git-Absicherung und Testpraesentation vor Kundenreview",
+      "date": "2026-03-15",
+      "body": "Vor dem Review sollen Aenderungen sauber versioniert, Testfaelle nachvollziehbar geplant und die Ergebnisse fuer Kunde und interne Leitung praesentierbar aufbereitet werden."
+    },
+    {
+      "id": "q21",
+      "type": "single_choice",
+      "title": "Git-Einsatz fuer den Kundenauftrag",
+      "prompt": "Welche Vorgehensweise passt im Team am besten?",
+      "options": [
+        {
+          "text": "Aenderungen nur lokal halten und spaeter gesammelt per Mail verschicken",
+          "rationale": "Das ist nicht nachvollziehbar und nicht teamfaehig."
+        },
+        {
+          "text": "Jede Aenderung direkt auf dem Hauptstand ohne Kontext einpflegen",
+          "rationale": "Das erschwert Review und Risikoabschaetzung."
+        },
+        {
+          "text": "Aenderungen in einem eigenen Git-Zweig umsetzen, testen und nachvollziehbar zusammenfuehren",
+          "rationale": "Das ist fuer Zusammenarbeit und Rueckverfolgbarkeit sinnvoll."
+        }
+      ],
+      "correctIndex": 2,
+      "feedback": {
+        "correct": "Richtig: Branch, Test und nachvollziehbare Zusammenfuehrung sind hier sauber.",
+        "wrong": "Nicht passend: Teamarbeit braucht Rueckverfolgbarkeit und kontrollierte Integration."
+      },
+      "progressLinks": [
+        "fsm2_git_versionsverwaltung"
+      ]
+    },
+    {
+      "id": "q22",
+      "type": "multi_select",
+      "title": "Bestandteile eines tragfaehigen Testkonzepts",
+      "prompt": "Welche Inhalte gehoeren in ein Testkonzept fuer die Python-Erweiterung? (Mehrfachauswahl)",
+      "options": [
+        {
+          "text": "Ziele und Testgegenstaende beschreiben",
+          "correct": true,
+          "rationale": "Ohne Zielbild ist das Konzept unvollstaendig."
+        },
+        {
+          "text": "Konkrete Testfaelle fuer Import, Regeln und Reporting ableiten",
+          "correct": true,
+          "rationale": "Das macht die Pruefung operativ nutzbar."
+        },
+        {
+          "text": "Ergebnisse und Auffaelligkeiten protokollieren",
+          "correct": true,
+          "rationale": "Nachvollziehbarkeit ist Pflicht."
+        },
+        {
+          "text": "Fehler still korrigieren, ohne sie zu dokumentieren",
+          "correct": false,
+          "rationale": "Das verhindert belastbare Auswertung."
+        },
+        {
+          "text": "Verantwortlichkeiten und Freigabekriterien festhalten",
+          "correct": true,
+          "rationale": "Das gehoert zu einem betrieblich brauchbaren Konzept."
+        }
+      ],
+      "feedback": {
+        "correct": "Richtig: Ziel, Faelle, Protokoll und Freigabe gehoeren zusammen.",
+        "wrong": "Teilweise falsch: Bitte Testziel, Testfaelle und Ergebnisprotokoll staerker zusammendenken."
+      },
+      "progressLinks": [
+        "fsm2_testkonzepte_qualitaet"
+      ]
+    },
+    {
+      "id": "q23",
+      "type": "number",
+      "title": "Anzahl der Testfaelle",
+      "prompt": "Es gibt 6 JSON-Importfaelle, 4 XML-Exportfaelle, 5 Konfigurationsfaelle und 3 Reportingfaelle. Wie viele Testfaelle umfasst der erste Testplan?",
+      "expected": 18,
+      "toleranceAbs": 0,
+      "showExpectedFormula": "6 + 4 + 5 + 3 = 18",
+      "feedback": {
+        "correct": "Richtig gerechnet.",
+        "wrong": "Bitte alle vier Testfallgruppen sauber addieren."
+      },
+      "progressLinks": [
+        "fsm2_testkonzepte_qualitaet"
+      ]
+    },
+    {
+      "id": "q24",
+      "type": "short_text",
+      "title": "Testergebnisse fuer das Review praesentieren",
+      "prompt": "Formulieren Sie in 4-6 Saetzen, wie Sie Testabdeckung, Auffaelligkeiten und Restpunkte fuer Kunde und Leitung praesentieren wuerden.",
+      "minChars": 180,
+      "requiredKeywords": [
+        "testabdeckung",
+        "auffaelligkeiten",
+        "restpunkte"
+      ],
+      "expectedOutline": "Abdeckung nennen, Auffaelligkeiten strukturieren, Restpunkte transparent machen.",
+      "feedback": {
+        "correct": "Richtig: Die Praesentation ist adressatengerecht und belastbar.",
+        "wrong": "Bitte Testabdeckung, Auffaelligkeiten und Restpunkte klarer verdichten."
+      },
+      "progressLinks": [
+        "fsm2_testkonzepte_qualitaet",
+        "fsm2_testergebnisse_praesentation"
+      ]
+    }
+  ]
+}

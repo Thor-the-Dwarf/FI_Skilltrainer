@@ -1,0 +1,160 @@
+{
+  "scenario": {
+    "company": "Ausbildungsbetrieb Softwareloesungen",
+    "scale": "Mittelstand, 190 Mitarbeitende",
+    "context": "Station 05 des Tageslaufs: Kundenspezifische Erweiterungen und Konfiguration strukturiert verwalten.",
+    "mission": "Sie planen eine Python-Erweiterung so, dass Kundenvorgaben per Konfiguration statt per Sondercode steuerbar bleiben.",
+    "station": {
+      "id": "FSM2-ST-05",
+      "department": "Produktanpassung",
+      "profile": "Konfigurationsmodell, Regelvarianten, Erweiterbarkeit und Releasefaehigkeit",
+      "constraints": [
+        "Kundenversionen trennbar halten",
+        "Konfigurationsfehler erkennbar machen",
+        "Wartbarkeit und Spaeterweiterung mitdenken"
+      ]
+    },
+    "customerRequest": {
+      "from": "produktmanagement@kundenauftrag.example",
+      "to": "python.team@ausbildungsbetrieb.example",
+      "subject": "Station 05: Standortregeln und Konfiguration strukturieren",
+      "date": "2026-03-15",
+      "body": "Bitte planen Sie die Python-Erweiterung so, dass standortabhaengige Regeln und Schwellwerte konfigurierbar statt hart kodiert umgesetzt werden."
+    }
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "type": "multi_select",
+      "title": "Merkmale guter Konfiguration",
+      "prompt": "Welche Merkmale sprechen fuer ein gutes Konfigurationsmodell? (Mehrfachauswahl)",
+      "options": [
+        {
+          "text": "Klare Trennung von Regelwerten und Programmcode",
+          "correct": true,
+          "rationale": "Das verbessert Wartbarkeit und Variantenfaehigkeit."
+        },
+        {
+          "text": "Validierbare Pflichtfelder fuer kundenrelevante Regeln",
+          "correct": true,
+          "rationale": "Konfiguration muss pruefbar bleiben."
+        },
+        {
+          "text": "Nachvollziehbare Bezeichner fuer Standorte und Regeln",
+          "correct": true,
+          "rationale": "Das hilft Entwicklung und Betrieb."
+        },
+        {
+          "text": "Versteckte Spezialwerte nur im Quelltext",
+          "correct": false,
+          "rationale": "Das widerspricht konfigurierbarer Steuerung."
+        },
+        {
+          "text": "Dokumentierte Standardwerte fuer den Fehlerfall",
+          "correct": true,
+          "rationale": "Fallbacks gehoeren zu robuster Konfiguration."
+        }
+      ],
+      "feedback": {
+        "correct": "Richtig: Gute Konfiguration ist trennbar, pruefbar und nachvollziehbar.",
+        "wrong": "Teilweise falsch: Bitte Validierung, Lesbarkeit und Fallbacks staerker beruecksichtigen."
+      },
+      "progressLinks": [
+        "fsm2_erweiterung_konfiguration"
+      ]
+    },
+    {
+      "id": "q2",
+      "type": "single_choice",
+      "title": "Regelvariante sauber einbauen",
+      "prompt": "Welche Umsetzung passt fuer mehrere Kundenauspraegungen am besten?",
+      "options": [
+        {
+          "text": "Je Kunde eine komplett eigene Python-Datei pflegen",
+          "rationale": "Das erzeugt schnell Parallelwelten im Code."
+        },
+        {
+          "text": "Ein gemeinsames Modul mit konfigurierbaren Regelvarianten aufbauen",
+          "rationale": "Das ist fuer Varianten und Wartung am sinnvollsten."
+        },
+        {
+          "text": "Nur Kommentare einfuegen und die Regel intern merken",
+          "rationale": "Ohne strukturierte Steuerung bleibt die Regel fragil."
+        }
+      ],
+      "correctIndex": 1,
+      "feedback": {
+        "correct": "Richtig: Gemeinsame Logik plus Konfiguration ist hier der saubere Weg.",
+        "wrong": "Nicht passend: Varianten sollten nicht als verstreute Sonderfaelle enden."
+      },
+      "progressLinks": [
+        "fsm2_erweiterung_konfiguration"
+      ]
+    },
+    {
+      "id": "q3",
+      "type": "ordering",
+      "title": "Konfigurationsaenderung sicher einfuehren",
+      "prompt": "Ordnen Sie den Ablauf fuer eine neue Standortkonfiguration.",
+      "items": [
+        "Regelbedarf fachlich beschreiben",
+        "Konfigurationsstruktur erweitern",
+        "Gueltige und ungueltige Werte festlegen",
+        "Testfaelle fuer die Varianten planen",
+        "Freigabe und Doku aktualisieren"
+      ],
+      "correctOrder": [
+        "Regelbedarf fachlich beschreiben",
+        "Konfigurationsstruktur erweitern",
+        "Gueltige und ungueltige Werte festlegen",
+        "Testfaelle fuer die Varianten planen",
+        "Freigabe und Doku aktualisieren"
+      ],
+      "feedback": {
+        "correct": "Richtig: So bleibt die Konfigurationsaenderung kontrollierbar.",
+        "wrong": "Nicht optimal: Bitte erst Bedarf und Struktur klaeren, dann Werte und Tests."
+      },
+      "progressLinks": [
+        "fsm2_erweiterung_konfiguration",
+        "fsm2_testkonzepte_qualitaet"
+      ]
+    },
+    {
+      "id": "q4",
+      "type": "number",
+      "title": "Variantenaufwand berechnen",
+      "prompt": "4 Standorte erhalten je 3 neue Regelparameter. Jede Parameterauspruefung dauert 6 Minuten. Wie viele Minuten reiner Pruefaufwand entstehen?",
+      "expected": 72,
+      "toleranceAbs": 0,
+      "showExpectedFormula": "4 * 3 * 6 = 72",
+      "feedback": {
+        "correct": "Richtig gerechnet.",
+        "wrong": "Bitte Standorte, Parameter und Minuten pro Pruefung multiplizieren."
+      },
+      "progressLinks": [
+        "fsm2_erweiterung_konfiguration"
+      ]
+    },
+    {
+      "id": "q5",
+      "type": "short_text",
+      "title": "Konfigurationsstrategie erklaeren",
+      "prompt": "Erklaeren Sie in 4-6 Saetzen, wie eine kundenspezifische Python-Erweiterung durch Konfiguration wartbar und releasefaehig bleibt.",
+      "minChars": 175,
+      "requiredKeywords": [
+        "konfiguration",
+        "wartbar",
+        "release"
+      ],
+      "expectedOutline": "Trennung von Code und Regeln, Wartbarkeit und Releasebezug beschreiben.",
+      "feedback": {
+        "correct": "Richtig: Die Strategie verbindet Konfiguration, Wartbarkeit und Freigabe sauber.",
+        "wrong": "Bitte Konfiguration, Wartbarkeit und Releasefaehigkeit klarer verzahnen."
+      },
+      "progressLinks": [
+        "fsm2_erweiterung_konfiguration",
+        "fsm2_git_versionsverwaltung"
+      ]
+    }
+  ]
+}
