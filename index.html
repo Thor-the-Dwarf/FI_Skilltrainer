@@ -111,6 +111,7 @@
     const SKILL_PROGRESS_STORAGE_KEY_PREFIX = "sr_skill_progress_v1";
     const SCENARIO_RATING_STORAGE_KEY_PREFIX = "sr_scenario_rating_v1";
     const QUESTION_MARKER_STORAGE_KEY_PREFIX = "sr_question_marker_v1";
+    const QUESTION_MARKER_INTERACTION_STORAGE_KEY_PREFIX = "sr_question_marker_touch_v1";
     const MANUAL_SHORTTEXT_CREDIT_BUTTON_LABEL = "So hab ich es gement";
     const DEFAULT_SKILL_TARGET_CORRECT = 8;
     const SUBMIT_BUTTON_READY_LABEL = "Abgeben und Auswertung anzeigen";
@@ -246,10 +247,22 @@
       return `${QUESTION_MARKER_STORAGE_KEY_PREFIX}::${safeFolder}::${scenarioKey}`;
     }
 
+    function getQuestionMarkerInteractionStorageKey(data = scenarioData, folder = "") {
+      const safeFolder = sanitizeFolderName(folder || activeScenarioFolder) || "standalone";
+      const scenarioKey = getQuestionMarkerScenarioKey(data);
+      if (!scenarioKey) return "";
+      return `${QUESTION_MARKER_INTERACTION_STORAGE_KEY_PREFIX}::${safeFolder}::${scenarioKey}`;
+    }
+
     function loadQuestionMarkerState(data = scenarioData, folder = "") {
       const key = getQuestionMarkerStorageKey(data, folder);
+      const interactionKey = getQuestionMarkerInteractionStorageKey(data, folder);
       if (!key) return Object.create(null);
       try {
+        if (!interactionKey || localStorage.getItem(interactionKey) !== "1") {
+          localStorage.removeItem(key);
+          return Object.create(null);
+        }
         const raw = JSON.parse(localStorage.getItem(key) || "{}");
         const next = Object.create(null);
         for (const [questionId, stateRaw] of Object.entries(raw || {})) {
@@ -261,6 +274,15 @@
         return next;
       } catch {
         return Object.create(null);
+      }
+    }
+
+    function markQuestionMarkerInteracted(data = scenarioData, folder = "") {
+      const key = getQuestionMarkerInteractionStorageKey(data, folder);
+      if (!key) return;
+      try {
+        localStorage.setItem(key, "1");
+      } catch {
       }
     }
 
@@ -353,6 +375,7 @@
       } else {
         nextState = currentState === "marked" ? "none" : "marked";
       }
+      markQuestionMarkerInteracted(data);
       if (nextState === "none" || nextState === "answered") delete questionMarkerState[q.id];
       else questionMarkerState[q.id] = nextState;
       saveQuestionMarkerState(data);
@@ -817,6 +840,7 @@
       const qid = String(questionId || "").trim();
       if (!qid) return;
       touchedQuestionIds.add(qid);
+      markQuestionMarkerInteracted(scenarioData);
       updateSubmitButtonState();
       syncQuestionMarkerWithAnswer(qid);
     }
