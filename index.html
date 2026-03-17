@@ -12,18 +12,15 @@
   <div class="appbar" role="toolbar" aria-label="App-Leiste">
     <div class="appbar-left-tools appbar-icon-left">
       <div class="appbar-action appbar-action-left">
-        <button id="btnScenarioMenu" type="button" class="icon-button" aria-label="Posteingang oeffnen" title="Posteingang oeffnen" aria-haspopup="menu" aria-expanded="false">
+        <button id="btnScenarioMenu" type="button" class="icon-button" aria-label="Szenario Ordnerbaum oeffnen" title="Szenario Ordnerbaum oeffnen" aria-haspopup="dialog" aria-controls="scenarioMenu" aria-expanded="false">
           <svg class="icon-svg" viewBox="0 0 24 24" aria-hidden="true">
-            <path d="M4.5 7.5h15v10h-15z"></path>
-            <path d="M4.5 13.5h4.2l1.8 2h3l1.8-2h4.2"></path>
-            <path d="M12 4.5v6"></path>
-            <path d="M9.5 8l2.5 2.5L14.5 8"></path>
+            <path d="M4.5 6.5h6l1.9 2h7.1v9H4.5z"></path>
+            <path d="M8 12.5h4"></path>
+            <path d="M10 12.5v5"></path>
+            <path d="M10 17.5h5"></path>
+            <path d="M15 17.5v2"></path>
           </svg>
         </button>
-        <div id="scenarioMenu" class="scenario-menu hidden" role="menu" aria-label="Szenario Auswahl">
-          <div class="scenario-menu-title">Szenario waehlen</div>
-          <div id="scenarioMenuOptions" class="scenario-menu-options"></div>
-        </div>
       </div>
       <button id="btnHome" type="button" class="icon-button" aria-label="Fortschritte anzeigen" title="Fortschritte anzeigen">
         <svg class="icon-svg" viewBox="0 0 24 24" aria-hidden="true">
@@ -75,6 +72,23 @@
     </button>
   </div>
 
+  <button id="scenarioNavBackdrop" type="button" class="task-nav-backdrop hidden" aria-label="Szenario Ordnerbaum schliessen"></button>
+  <aside id="scenarioMenu" class="scenario-nav-drawer hidden" aria-hidden="true" aria-label="Szenario Ordnerbaum">
+    <div class="scenario-nav-drawer-head">
+      <div class="scenario-nav-drawer-title-wrap">
+        <h3>Szenarien</h3>
+        <p class="scenario-nav-drawer-kicker">FolderTree mit Ordnern und Tickets</p>
+      </div>
+      <button id="btnScenarioMenuClose" type="button" class="icon-button" aria-label="Szenario Ordnerbaum schliessen" title="Schliessen">
+        <svg class="icon-svg" viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M6 6l12 12"></path>
+          <path d="M18 6L6 18"></path>
+        </svg>
+      </button>
+    </div>
+    <div id="scenarioMenuOptions" class="scenario-tree" aria-label="Szenario FolderTree"></div>
+  </aside>
+
   <button id="taskNavBackdrop" type="button" class="task-nav-backdrop hidden" aria-label="Aufgaben Navigation schliessen"></button>
   <aside id="taskNavDrawer" class="task-nav-drawer hidden" aria-hidden="true" aria-label="Aufgaben Navigation">
     <div class="task-nav-drawer-head">
@@ -98,7 +112,9 @@
     const taskNavDrawerToggleBtn = document.getElementById("btnTaskDrawerToggle");
     const taskNavDrawerCloseBtn = document.getElementById("btnTaskDrawerClose");
     const taskNavBackdrop = document.getElementById("taskNavBackdrop");
+    const scenarioNavBackdrop = document.getElementById("scenarioNavBackdrop");
     const scenarioMenuButton = document.getElementById("btnScenarioMenu");
+    const scenarioMenuCloseBtn = document.getElementById("btnScenarioMenuClose");
     const homeButton = document.getElementById("btnHome");
     const accessManagerButton = document.getElementById("btnAccessManager");
     const scenarioMenu = document.getElementById("scenarioMenu");
@@ -989,6 +1005,7 @@
       if (!taskNavDrawer || !taskNavDrawerToggleBtn || !taskNavBackdrop) return;
       const currentlyOpen = !taskNavDrawer.classList.contains("hidden");
       const nextOpen = typeof forceOpen === "boolean" ? forceOpen : !currentlyOpen;
+      if (nextOpen) toggleScenarioMenu(false);
       taskNavDrawer.classList.toggle("hidden", !nextOpen);
       taskNavBackdrop.classList.toggle("hidden", !nextOpen);
       taskNavDrawer.setAttribute("aria-hidden", String(!nextOpen));
@@ -1850,10 +1867,49 @@
     }
 
     function toggleScenarioMenu(forceOpen) {
+      if (!scenarioMenu || !scenarioMenuButton || !scenarioNavBackdrop) return;
       const currentlyOpen = !scenarioMenu.classList.contains("hidden");
       const nextOpen = typeof forceOpen === "boolean" ? forceOpen : !currentlyOpen;
+      if (nextOpen) toggleTaskNavDrawer(false);
+      if (nextOpen && availableScenarios.length) {
+        renderScenarioMenu(availableScenarios);
+      }
       scenarioMenu.classList.toggle("hidden", !nextOpen);
+      scenarioNavBackdrop.classList.toggle("hidden", !nextOpen);
+      scenarioMenu.setAttribute("aria-hidden", String(!nextOpen));
       scenarioMenuButton.setAttribute("aria-expanded", String(nextOpen));
+      updateScenarioMenuButtonState(nextOpen);
+    }
+
+    function getActiveScenarioMenuLabel() {
+      for (const group of availableScenarios || []) {
+        if (sanitizeFolderName(group?.folder) !== sanitizeFolderName(activeScenarioFolder)) continue;
+        for (const item of group?.items || []) {
+          if (String(item?.file || "").trim() === String(activeScenarioFile || "").trim()) {
+            return String(item.label || "").trim();
+          }
+        }
+      }
+      if (activeScenarioFile) {
+        return buildScenarioLabelFromFilename(activeScenarioFile);
+      }
+      return "";
+    }
+
+    function updateScenarioMenuButtonState(isOpen = false) {
+      if (!scenarioMenuButton) return;
+      if (isOpen) {
+        scenarioMenuButton.setAttribute("aria-label", "Szenario Ordnerbaum schliessen");
+        scenarioMenuButton.title = "Szenario Ordnerbaum schliessen";
+        return;
+      }
+      const activeLabel = getActiveScenarioMenuLabel();
+      const folderSuffix = activeScenarioFolder ? ` | ${activeScenarioFolder}` : "";
+      const baseLabel = activeLabel
+        ? `Szenario Ordnerbaum oeffnen (aktuell: ${activeLabel}${folderSuffix})`
+        : "Szenario Ordnerbaum oeffnen";
+      scenarioMenuButton.setAttribute("aria-label", baseLabel);
+      scenarioMenuButton.title = baseLabel;
     }
 
     function normalizeScenarioItem(raw) {
@@ -1995,13 +2051,12 @@
         resetRuntimeState();
         buildPage(data);
         setSubmitBarVisible(true);
-        const folderSuffix = item.folder ? ` | ${item.folder}` : "";
-        scenarioMenuButton.title = `Szenario auswaehlen (aktuell: ${item.label}${folderSuffix})`;
-        scenarioMenuButton.setAttribute("aria-label", `Szenario auswaehlen (aktuell: ${item.label}${folderSuffix})`);
+        updateScenarioMenuButtonState(false);
       } catch (err) {
         scenarioData = null;
         activeScenarioFile = "";
         resetRuntimeState();
+        updateScenarioMenuButtonState(false);
         renderSelectionHint(`Fehler beim Laden: ${err.message}`);
       }
     }
@@ -2009,24 +2064,38 @@
     function renderScenarioMenu(groups) {
       scenarioMenuOptions.innerHTML = "";
       if (!groups.length) {
-        scenarioMenuOptions.innerHTML = "<p class='status-text'>Keine JSON-Szenarien gefunden.</p>";
+        scenarioMenuOptions.innerHTML = "<p class='status-text scenario-tree-empty'>Keine Tickets gefunden.</p>";
         return;
       }
 
       for (const group of groups) {
         const drawer = document.createElement("details");
-        drawer.className = "scenario-folder-drawer";
+        drawer.className = "scenario-tree-folder";
+        drawer.open = group.folder === activeScenarioFolder;
         const title = document.createElement("summary");
-        title.className = "scenario-folder-title";
-        title.textContent = group.folder;
+        title.className = "scenario-tree-folder-summary";
+        const folderShortLabel = getFolderShortcutLabel(group.folder) || group.folder;
+        const ticketCount = Array.isArray(group.items) ? group.items.length : 0;
+        title.innerHTML =
+          "<span class='scenario-tree-folder-icon' aria-hidden='true'>" +
+          '<svg class="icon-svg" viewBox="0 0 24 24"><path d="M3.5 6.5h6l1.8 2H20.5v9H3.5z"></path></svg>' +
+          "</span>" +
+          "<span class='scenario-tree-folder-main'>" +
+          `<span class='scenario-tree-folder-name'>${esc(folderShortLabel)}</span>` +
+          `<span class='scenario-tree-folder-meta'>${esc(group.folder)} · ${ticketCount} Tickets</span>` +
+          "</span>" +
+          `<span class='scenario-tree-folder-count'>${ticketCount}</span>` +
+          "<span class='scenario-tree-folder-caret' aria-hidden='true'>" +
+          '<svg class="icon-svg" viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"></path></svg>' +
+          "</span>";
         drawer.appendChild(title);
         const content = document.createElement("div");
-        content.className = "scenario-folder-content";
+        content.className = "scenario-tree-ticket-list";
         drawer.appendChild(content);
 
         if (group.error) {
           const errorText = document.createElement("p");
-          errorText.className = "status-text";
+          errorText.className = "status-text scenario-tree-empty";
           errorText.textContent = `Ordnerfehler: ${group.error}`;
           content.appendChild(errorText);
           scenarioMenuOptions.appendChild(drawer);
@@ -2035,8 +2104,8 @@
 
         if (!group.items.length) {
           const emptyText = document.createElement("p");
-          emptyText.className = "status-text";
-          emptyText.textContent = "Keine Szenarien im Manifest.";
+          emptyText.className = "status-text scenario-tree-empty";
+          emptyText.textContent = "Keine Tickets im Manifest.";
           content.appendChild(emptyText);
           scenarioMenuOptions.appendChild(drawer);
           continue;
@@ -2045,9 +2114,19 @@
         for (const item of group.items) {
           const option = document.createElement("button");
           option.type = "button";
-          option.className = "scenario-option";
-          option.setAttribute("role", "menuitem");
-          option.innerHTML = `<span class="scenario-option-title">${esc(item.label)}</span>`;
+          option.className = "scenario-tree-ticket";
+          if (item.folder === activeScenarioFolder && item.file === activeScenarioFile) {
+            option.classList.add("is-active");
+            option.setAttribute("aria-current", "true");
+          }
+          option.innerHTML =
+            "<span class='scenario-tree-ticket-icon' aria-hidden='true'>" +
+            '<svg class="icon-svg" viewBox="0 0 24 24"><path d="M4.5 8.5h3v-2h9v2h3v3c-1.1 0-2 .9-2 2s.9 2 2 2v3h-3v2h-9v-2h-3v-3c1.1 0 2-.9 2-2s-.9-2-2-2z"></path></svg>' +
+            "</span>" +
+            "<span class='scenario-tree-ticket-main'>" +
+            "<span class='scenario-tree-ticket-kind'>Ticket</span>" +
+            `<span class='scenario-tree-ticket-title'>${esc(item.label)}</span>` +
+            "</span>";
           option.addEventListener("click", () => {
             selectScenario(item);
           });
@@ -2079,6 +2158,7 @@
     function initAppBar() {
       applyThemeMode(loadThemeMode());
       setAppBarSelection("");
+      updateScenarioMenuButtonState(false);
       themeToggleBtn.addEventListener("click", cycleThemeMode);
       accessManagerButton.addEventListener("click", () => {
         renderUnlockScreen();
@@ -2098,6 +2178,14 @@
           return;
         }
         toggleScenarioMenu();
+      });
+
+      scenarioMenuCloseBtn.addEventListener("click", () => {
+        toggleScenarioMenu(false);
+      });
+
+      scenarioNavBackdrop.addEventListener("click", () => {
+        toggleScenarioMenu(false);
       });
 
       scenarioMenu.addEventListener("click", (ev) => {

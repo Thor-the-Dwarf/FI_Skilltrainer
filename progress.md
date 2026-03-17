@@ -1,0 +1,29 @@
+Original prompt: Kuemmere dich jetzt bitte um eine Korrekte Anzeige der Fortschritte. Denn egal wie viele Scenarien ich mache, die Fortschritte im zugehoerigen Skillset aktualisieren nicht
+
+- Analyse: `onSubmit()` speichert aktuell nur Szenario-Bewertungen via `applyScenarioRatingFromResults(...)`.
+- Analyse: Die Home-Ansicht laedt derzeit `loadScenarioRatingState(...)` und verwendet dadurch nicht den eigentlichen aufgabenbasierten Skill-Fortschritt.
+- Erwartetes Verhalten laut Auftrag: Jede korrekt beantwortete Aufgabe soll Fortschritt auf zugeordnete Skill-IDs geben und die Ladebalken im Skillset schrittweise fuellen.
+- Naechster Schritt: `index.html` so patchen, dass Submit und manuelle Short-Text-Gutschrift auch Skill-Punkte speichern und die Home-Ansicht diese Punkte korrekt rendert.
+- Fix umgesetzt: `renderHomeContent(...)` liest jetzt `loadSkillProgressState(...)`, damit die Skillset-Balken aufgabenbasierten Fortschritt anzeigen.
+- Fix umgesetzt: `onSubmit()` speichert jetzt neben der Szenario-Bewertung auch Skill-Punkte ueber `applySkillProgressFromResults(...)`.
+- Fix umgesetzt: manuelle Kurztext-Gutschrift schreibt nun ebenfalls Skill-Punkte, falls eine Aufgabe nachtraeglich als korrekt gewertet wird.
+- Browser-Test bestanden: LF02 Station 02 von 0% auf 6% Gesamtfortschritt, Drawer `lf02_kompatibilitaet_pruefen` auf 38%.
+- Browser-Test bestanden: erneutes Abschicken derselben korrekt geloesten Aufgaben vergibt keine doppelten Skill-Punkte.
+- Härtung umgesetzt: Fortschrittsspeicherung laeuft jetzt zentral ueber `persistEvaluationProgress(...)`, damit Submit und manuelle Kurztext-Gutschrift denselben Pfad nutzen.
+- Härtung umgesetzt: `migratedScenarioIds` verhindert unnoetige Altstand-Nachmigration bei bereits voll geloesten Szenarien.
+- Härtung umgesetzt: `ensureLegacySkillProgressMigration(...)` rekonstruiert fuer alte 100%-Szenario-Bewertungen die Skill-Punkte und `solvedQuestionKeys` aus den JSON-Dateien.
+- Härtung umgesetzt: sichtbare Home-Ansicht reagiert jetzt auch auf `storage`-Events anderer Tabs/Fenster.
+- Browser-Test bestanden: frischer Lauf, manueller Kurztext-Credit und Legacy-Migration ohne Doppelvergabe der Punkte.
+- 2026-03-17: Unerwuenschte Skillset-Abschnitte entfernt (`Sehr brauchbare Verdichtung...`, `Was eher noch nicht allein laufen sollte`, `Was ein Arbeitgeber daraus ableiten koennte`).
+- 2026-03-17: Alle betroffenen `possible_skills.json` bereinigt und `index.html` mit harter Titelfilter-Sperre versehen, damit diese Abschnitte auch bei Altstaenden nicht mehr gerendert werden.
+- 2026-03-17: HaloSphere-Hintergrund an das aktive Theme gekoppelt. `styles.css` nutzt jetzt Theme-Variablen fuer Halo-Backdrop, Spotfarben und Linienmodus; `halo-background.js` liest Theme-Farben aus CSS und reagiert auf `data-theme`-, `data-theme-mode`- und Systemtheme-Wechsel.
+- 2026-03-17: Home-Button in der AppBar bekommt jetzt einen echten Active-State, wenn das Skillset/Home sichtbar ist; Szenario- und Unlock-Ansichten setzen ihn wieder zurueck.
+- 2026-03-17: Aufgaben-Markierungsfunktion fuer Szenarien begonnen.
+- Neu: Jede Frage hat jetzt einen Status-Button mit den Stati `None`, `Answered`, `DoubleChecked`, `Marked`.
+- Neu: `Answered` wird automatisch gesetzt, sobald die Aufgabe bearbeitet wurde; manuelle Stati bleiben bestehen.
+- Neu: Der rechte Aufgaben-Drawer spiegelt den aktuellen Fragenstatus live als farbige Status-Pills.
+- Persistenz: Markierungen werden pro Szenario in `localStorage` gespeichert (`sr_question_marker_v1::<Ordner>::<Szenario>`).
+- Browser-Test bestanden: in `szenario.html` wechselt `q01` sauber von `None` zu `Answered`, dann `DoubleChecked`, dann `Marked`, und der Drawer zieht live nach.
+- 2026-03-17: Szenario-AppBar von Dropdown auf linken Drawer umgestellt. Der Drawer zeigt jetzt einen FolderTree: Szenarioordner als Ordner, Stationen als Tickets.
+- 2026-03-17: UI-Polish fuer den Szenario-Ordnerbaum ergaenzt: neues Folder/Ticket-Icon, aktive Ticket-Markierung, dynamisches Re-Render beim Oeffnen und alte Dropdown-CSS-Reste entfernt.
+- 2026-03-17: Trocken geprueft: keine alten `scenario-menu`/`scenario-folder-drawer`-Referenzen mehr, Inline-Script parsebar, Browser-Smoke via Playwright lokal nicht moeglich weil `playwright` nicht installiert ist.
