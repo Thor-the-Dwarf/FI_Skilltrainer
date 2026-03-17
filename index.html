@@ -182,7 +182,11 @@
         .trim();
     }
 
-    const HIDDEN_HOME_SECTION_TITLES = new Set([]);
+    const HIDDEN_HOME_SECTION_TITLES = new Set([
+      "sehr brauchbare verdichtung fuer den unterricht",
+      "was eher noch nicht allein laufen sollte",
+      "was ein arbeitgeber daraus ableiten koennte"
+    ]);
 
     function isHiddenHomeSectionTitle(value) {
       return HIDDEN_HOME_SECTION_TITLES.has(normalizeSectionTitle(value));
@@ -1436,6 +1440,7 @@
       const progressState = context.progressState || createEmptySkillProgressState();
       const drawerPercents = Array.isArray(context.drawerPercents) ? context.drawerPercents : [];
       const title = String(section.title || "Abschnitt");
+      if (isHiddenHomeSectionTitle(title)) return "";
       const hideTitle = title === "Mögliche Aufgaben im Betrieb" || title === "Moegliche Aufgaben im Betrieb";
       const titleHtml = hideTitle ? "" : `<h3 class='home-section-title'>${esc(title)}</h3>`;
       const introHtml = renderParagraphs(section.intro, "status-text");
