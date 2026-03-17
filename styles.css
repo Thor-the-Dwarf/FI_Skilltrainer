@@ -273,7 +273,7 @@ body {
   list-style: none;
   cursor: pointer;
   display: grid;
-  grid-template-columns: auto minmax(0, 1fr) auto auto;
+  grid-template-columns: auto minmax(0, 1fr) auto;
   align-items: center;
   gap: 10px;
   padding: 10px 12px;
@@ -290,6 +290,8 @@ body {
   display: grid;
   place-items: center;
   color: hsl(var(--primary));
+  font-size: 18px;
+  line-height: 1;
 }
 
 .scenario-tree-folder-main,
@@ -313,19 +315,6 @@ body {
   color: hsl(var(--txt));
   border: 1px solid hsl(var(--glass-border) / 0.7);
   background: hsl(var(--surface-soft) / 0.82);
-}
-
-.scenario-tree-folder-caret {
-  width: 16px;
-  height: 16px;
-  display: grid;
-  place-items: center;
-  color: hsl(var(--txt-muted));
-  transition: transform 150ms ease;
-}
-
-.scenario-tree-folder[open] .scenario-tree-folder-caret {
-  transform: rotate(90deg);
 }
 
 .scenario-tree-ticket-list {
@@ -601,9 +590,21 @@ body {
 }
 
 .icon-slot,
+.icon-emoji,
 .icon-svg {
   width: 21px;
   height: 21px;
+}
+
+.icon-slot,
+.icon-emoji {
+  display: grid;
+  place-items: center;
+  font-size: 19px;
+  line-height: 1;
+}
+
+.icon-svg {
   display: block;
 }
 

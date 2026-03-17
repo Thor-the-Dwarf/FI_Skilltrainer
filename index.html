@@ -12,37 +12,18 @@
   <div class="appbar" role="toolbar" aria-label="App-Leiste">
     <div class="appbar-left-tools appbar-icon-left">
       <div class="appbar-action appbar-action-left">
-        <button id="btnScenarioMenu" type="button" class="icon-button" aria-label="Szenario Ordnerbaum oeffnen" title="Szenario Ordnerbaum oeffnen" aria-haspopup="dialog" aria-controls="scenarioMenu" aria-expanded="false">
-          <svg class="icon-svg" viewBox="0 0 24 24" aria-hidden="true">
-            <path d="M4.5 6.5h6l1.9 2h7.1v9H4.5z"></path>
-            <path d="M8 12.5h4"></path>
-            <path d="M10 12.5v5"></path>
-            <path d="M10 17.5h5"></path>
-            <path d="M15 17.5v2"></path>
-          </svg>
+        <button id="btnScenarioMenu" type="button" class="icon-button" aria-label="Posteingang oeffnen" title="Posteingang oeffnen" aria-haspopup="dialog" aria-controls="scenarioMenu" aria-expanded="false">
+          <span class="icon-emoji" aria-hidden="true">📥</span>
         </button>
       </div>
       <button id="btnHome" type="button" class="icon-button" aria-label="Fortschritte anzeigen" title="Fortschritte anzeigen">
-        <svg class="icon-svg" viewBox="0 0 24 24" aria-hidden="true">
-          <path d="M4.5 19.5h15"></path>
-          <path d="M7.5 17v-4"></path>
-          <path d="M12 17V8"></path>
-          <path d="M16.5 17v-6"></path>
-          <path d="M7.5 11l4-4 2.8 2.2 3-3.7"></path>
-        </svg>
+        <span class="icon-emoji" aria-hidden="true">📊</span>
       </button>
     </div>
     <div class="appbar-title">Die Wiederholung ist die Mutter des Lernens</div>
     <div class="appbar-right-tools appbar-icon-right">
       <button id="btnAccessManager" type="button" class="icon-button" aria-label="Schluessel verwalten" title="Schluessel verwalten">
-        <svg class="icon-svg" viewBox="0 0 24 24" aria-hidden="true">
-          <circle cx="8.5" cy="9" r="2.5"></circle>
-          <path d="M11 9h9"></path>
-          <path d="M17 9v2"></path>
-          <path d="M19.5 9v2"></path>
-          <path d="M16 17h6"></path>
-          <path d="M19 14v6"></path>
-        </svg>
+        <span class="icon-emoji" aria-hidden="true">🔑</span>
       </button>
       <button id="btnThemeToggle" type="button" class="icon-button" aria-label="Theme umschalten" title="Theme umschalten">
         <span id="themeToggleIcon" class="icon-slot" aria-hidden="true"></span>
@@ -161,23 +142,9 @@
     const SCENARIO_FILENAME_CONVENTION = /^\d{2}_(easy|medium|hard)_[a-z0-9_]+\.json$/i;
     const THEME_ORDER = ["light", "dark", "system"];
     const THEME_ICONS = {
-      light:
-        '<svg class="icon-svg" viewBox="0 0 24 24" aria-hidden="true">' +
-        '<circle cx="12" cy="12" r="4.2"></circle>' +
-        '<path d="M12 2.5v3"></path><path d="M12 18.5v3"></path>' +
-        '<path d="M2.5 12h3"></path><path d="M18.5 12h3"></path>' +
-        '<path d="M5.3 5.3l2.2 2.2"></path><path d="M16.5 16.5l2.2 2.2"></path>' +
-        '<path d="M18.7 5.3l-2.2 2.2"></path><path d="M7.5 16.5l-2.2 2.2"></path>' +
-        "</svg>",
-      dark:
-        '<svg class="icon-svg" viewBox="0 0 24 24" aria-hidden="true">' +
-        '<path d="M18 14.5A6.8 6.8 0 1 1 9.5 6a5.8 5.8 0 1 0 8.5 8.5z"></path>' +
-        "</svg>",
-      system:
-        '<svg class="icon-svg" viewBox="0 0 24 24" aria-hidden="true">' +
-        '<rect x="3.5" y="4.5" width="17" height="12" rx="2"></rect>' +
-        '<path d="M9 19.5h6"></path><path d="M12 16.5v3"></path>' +
-        "</svg>"
+      light: "☀️",
+      dark: "🌙",
+      system: "💻"
     };
     const answers = {};
     const touchedQuestionIds = new Set();
@@ -794,9 +761,16 @@
 
     function updateThemeToggleUi(mode) {
       const next = THEME_ORDER[(THEME_ORDER.indexOf(mode) + 1) % THEME_ORDER.length];
-      themeToggleIcon.innerHTML = THEME_ICONS[mode] || THEME_ICONS.system;
+      themeToggleIcon.textContent = THEME_ICONS[mode] || THEME_ICONS.system;
       themeToggleBtn.setAttribute("aria-label", `Theme wechseln (aktuell: ${mode}, naechstes: ${next})`);
       themeToggleBtn.title = `Theme: ${mode} | Naechstes: ${next}`;
+    }
+
+    function updateScenarioTreeFolderEmoji(drawer) {
+      if (!drawer) return;
+      const icon = drawer.querySelector(".scenario-tree-folder-icon");
+      if (!icon) return;
+      icon.textContent = drawer.open ? "📂" : "📁";
     }
 
     function applyThemeMode(mode) {
@@ -2065,16 +2039,17 @@
         const ticketCount = Array.isArray(group.items) ? group.items.length : 0;
         title.innerHTML =
           "<span class='scenario-tree-folder-icon' aria-hidden='true'>" +
-          '<svg class="icon-svg" viewBox="0 0 24 24"><path d="M3.5 6.5h6l1.8 2H20.5v9H3.5z"></path></svg>' +
+          "📁" +
           "</span>" +
           "<span class='scenario-tree-folder-main'>" +
           `<span class='scenario-tree-folder-name'>${esc(folderShortLabel)}</span>` +
           "</span>" +
-          `<span class='scenario-tree-folder-count'>${ticketCount}</span>` +
-          "<span class='scenario-tree-folder-caret' aria-hidden='true'>" +
-          '<svg class="icon-svg" viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"></path></svg>' +
-          "</span>";
+          `<span class='scenario-tree-folder-count'>${ticketCount}</span>`;
         drawer.appendChild(title);
+        updateScenarioTreeFolderEmoji(drawer);
+        drawer.addEventListener("toggle", () => {
+          updateScenarioTreeFolderEmoji(drawer);
+        });
         const content = document.createElement("div");
         content.className = "scenario-tree-ticket-list";
         drawer.appendChild(content);
@@ -2107,7 +2082,7 @@
           }
           option.innerHTML =
             "<span class='scenario-tree-ticket-icon' aria-hidden='true'>" +
-            '<svg class="icon-svg" viewBox="0 0 24 24"><path d="M4.5 8.5h3v-2h9v2h3v3c-1.1 0-2 .9-2 2s.9 2 2 2v3h-3v2h-9v-2h-3v-3c1.1 0 2-.9 2-2s-.9-2-2-2z"></path></svg>' +
+            "🎫" +
             "</span>" +
             "<span class='scenario-tree-ticket-main'>" +
             `<span class='scenario-tree-ticket-title'>${esc(item.label)}</span>` +
