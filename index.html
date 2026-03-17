@@ -110,9 +110,33 @@
     const HOME_SKILLS_FOLDER_STORAGE_KEY = "sr_home_skills_folder";
     const SKILL_PROGRESS_STORAGE_KEY_PREFIX = "sr_skill_progress_v1";
     const SCENARIO_RATING_STORAGE_KEY_PREFIX = "sr_scenario_rating_v1";
+    const QUESTION_MARKER_STORAGE_KEY_PREFIX = "sr_question_marker_v1";
     const MANUAL_SHORTTEXT_CREDIT_BUTTON_LABEL = "So hab ich es gement";
     const DEFAULT_SKILL_TARGET_CORRECT = 8;
     const SUBMIT_BUTTON_READY_LABEL = "Abgeben und Auswertung anzeigen";
+    const QUESTION_MARKER_STATE_ORDER = ["none", "answered", "double_checked", "marked"];
+    const QUESTION_MARKER_META = Object.freeze({
+      none: {
+        label: "None",
+        uiLabel: "Offen",
+        description: "Noch nicht bearbeitet"
+      },
+      answered: {
+        label: "Answered",
+        uiLabel: "Bearbeitet",
+        description: "Automatisch erkannt"
+      },
+      double_checked: {
+        label: "DoubleChecked",
+        uiLabel: "Geprueft",
+        description: "Manuell bestaetigt"
+      },
+      marked: {
+        label: "Marked",
+        uiLabel: "Markiert",
+        description: "Manuell markiert"
+      }
+    });
     const FALLBACK_ACCESS_KEY_TO_FOLDER = Object.freeze({
       FSM2_03_26: "FSM2-Scenarien",
       LF01_03_26: "LF01-Scenarien",
@@ -156,6 +180,7 @@
     let scenarioData = null;
     let inlineSummary = null;
     let lastResults = null;
+    let questionMarkerState = Object.create(null);
     let availableScenarios = [];
     let homeSkillsCache = Object.create(null);
     let unlockedAccessEntries = [];
@@ -198,6 +223,163 @@
         .replaceAll("<", "&lt;")
         .replaceAll(">", "&gt;")
         .replaceAll('"', "&quot;");
+    }
+
+    function normalizeQuestionMarkerState(value) {
+      return QUESTION_MARKER_STATE_ORDER.includes(value) ? value : "none";
+    }
+
+    function getQuestionMarkerMeta(state) {
+      return QUESTION_MARKER_META[normalizeQuestionMarkerState(state)] || QUESTION_MARKER_META.none;
+    }
+
+    function getQuestionMarkerScenarioKey(data = scenarioData) {
+      const fromFile = String(activeScenarioFile || "").trim();
+      if (fromFile) return fromFile;
+      const fromStation = normalizeProgressId(data?.scenario?.station?.id || "");
+      if (fromStation) return `station_${fromStation}`;
+      const fromSubject = normalizeProgressId(data?.scenario?.customerRequest?.subject || data?.scenario?.mission || "");
+      if (fromSubject) return `scenario_${fromSubject}`;
+      return "";
+    }
+
+    function getQuestionMarkerStorageKey(data = scenarioData, folder = "") {
+      const safeFolder = sanitizeFolderName(folder || activeScenarioFolder) || "standalone";
+      const scenarioKey = getQuestionMarkerScenarioKey(data);
+      if (!scenarioKey) return "";
+      return `${QUESTION_MARKER_STORAGE_KEY_PREFIX}::${safeFolder}::${scenarioKey}`;
+    }
+
+    function loadQuestionMarkerState(data = scenarioData, folder = "") {
+      const key = getQuestionMarkerStorageKey(data, folder);
+      if (!key) return Object.create(null);
+      try {
+        const raw = JSON.parse(localStorage.getItem(key) || "{}");
+        const next = Object.create(null);
+        for (const [questionId, stateRaw] of Object.entries(raw || {})) {
+          const qid = String(questionId || "").trim();
+          const state = normalizeQuestionMarkerState(stateRaw);
+          if (!qid || state === "none") continue;
+          next[qid] = state;
+        }
+        return next;
+      } catch {
+        return Object.create(null);
+      }
+    }
+
+    function saveQuestionMarkerState(data = scenarioData, folder = "") {
+      const key = getQuestionMarkerStorageKey(data, folder);
+      if (!key) return;
+      const payload = {};
+      for (const [questionId, stateRaw] of Object.entries(questionMarkerState || {})) {
+        const qid = String(questionId || "").trim();
+        const state = normalizeQuestionMarkerState(stateRaw);
+        if (!qid || state === "none") continue;
+        payload[qid] = state;
+      }
+      try {
+        localStorage.setItem(key, JSON.stringify(payload));
+      } catch {
+      }
+    }
+
+    function getQuestionById(questionId, data = scenarioData) {
+      const qid = String(questionId || "").trim();
+      if (!qid) return null;
+      return (data?.questions || []).find((question) => String(question?.id || "").trim() === qid) || null;
+    }
+
+    function getQuestionMarkerEffectiveState(questionId, question = null, data = scenarioData) {
+      const q = question || getQuestionById(questionId, data);
+      const storedState = normalizeQuestionMarkerState(questionMarkerState[String(questionId || "").trim()]);
+      if (storedState === "double_checked" || storedState === "marked") return storedState;
+      if (storedState === "answered" && !q) return "answered";
+      return q && isQuestionAnswered(q) ? "answered" : "none";
+    }
+
+    function updateQuestionMarkerElements(questionId, question = null, data = scenarioData) {
+      const qid = String(questionId || "").trim();
+      if (!qid) return;
+      const state = getQuestionMarkerEffectiveState(qid, question, data);
+      const meta = getQuestionMarkerMeta(state);
+      const card = document.querySelector(`.question[data-qid="${qid}"]`);
+      if (card) {
+        card.dataset.markerState = state;
+        const main = card.querySelector(".question-main");
+        if (main) main.dataset.markerState = state;
+        const button = card.querySelector(".question-marker-button");
+        if (button) {
+          button.dataset.markerState = state;
+          button.title = `Fragenstatus: ${meta.label}. Klickt durch die Markierungen.`;
+          button.setAttribute("aria-label", `Fragenstatus ${meta.label} fuer ${qid}`);
+          const stateLabel = button.querySelector(".question-marker-state");
+          const description = button.querySelector(".question-marker-description");
+          if (stateLabel) stateLabel.textContent = meta.label;
+          if (description) description.textContent = meta.description;
+        }
+      }
+    }
+
+    function syncQuestionMarkerWithAnswer(questionId, data = scenarioData) {
+      const q = getQuestionById(questionId, data);
+      if (!q || isFollowupDivider(q)) return;
+      const qid = String(q.id || "").trim();
+      const currentState = normalizeQuestionMarkerState(questionMarkerState[qid]);
+      if (currentState === "double_checked" || currentState === "marked") {
+        updateQuestionMarkerElements(qid, q, data);
+        renderTaskNavDrawer(data);
+        return;
+      }
+      const nextState = isQuestionAnswered(q) ? "answered" : "none";
+      if (nextState === "none") delete questionMarkerState[qid];
+      else questionMarkerState[qid] = nextState;
+      saveQuestionMarkerState(data);
+      updateQuestionMarkerElements(qid, q, data);
+      renderTaskNavDrawer(data);
+    }
+
+    function syncAllQuestionMarkersWithAnswers(data = scenarioData) {
+      if (!data) return;
+      for (const question of data.questions || []) {
+        if (!question || isFollowupDivider(question)) continue;
+        syncQuestionMarkerWithAnswer(question.id, data);
+      }
+    }
+
+    function cycleQuestionMarkerState(questionId, data = scenarioData) {
+      const q = getQuestionById(questionId, data);
+      if (!q || isFollowupDivider(q)) return;
+      const currentState = getQuestionMarkerEffectiveState(q.id, q, data);
+      const currentIndex = Math.max(0, QUESTION_MARKER_STATE_ORDER.indexOf(currentState));
+      const nextState = QUESTION_MARKER_STATE_ORDER[(currentIndex + 1) % QUESTION_MARKER_STATE_ORDER.length] || "none";
+      if (nextState === "none") delete questionMarkerState[q.id];
+      else questionMarkerState[q.id] = nextState;
+      saveQuestionMarkerState(data);
+      updateQuestionMarkerElements(q.id, q, data);
+      renderTaskNavDrawer(data);
+    }
+
+    function createQuestionMarkerButton(question, data = scenarioData) {
+      const button = document.createElement("button");
+      button.type = "button";
+      button.className = "question-marker-button";
+      button.dataset.qid = question.id;
+      button.innerHTML =
+        "<span class='question-marker-label'>Status</span>" +
+        "<span class='question-marker-state'></span>" +
+        "<span class='question-marker-description'></span>";
+      const initialState = getQuestionMarkerEffectiveState(question.id, question, data);
+      const meta = getQuestionMarkerMeta(initialState);
+      button.dataset.markerState = initialState;
+      button.title = `Fragenstatus: ${meta.label}. Klickt durch die Markierungen.`;
+      button.setAttribute("aria-label", `Fragenstatus ${meta.label} fuer ${question.id}`);
+      button.querySelector(".question-marker-state").textContent = meta.label;
+      button.querySelector(".question-marker-description").textContent = meta.description;
+      button.addEventListener("click", () => {
+        cycleQuestionMarkerState(question.id, data);
+      });
+      return button;
     }
 
     function normalizeAccessKey(rawKey) {
@@ -619,6 +801,7 @@
         submitButton.classList.remove("is-pending");
         submitButton.title = SUBMIT_BUTTON_READY_LABEL;
       }
+      questionMarkerState = Object.create(null);
     }
 
     function setSubmitBarVisible(visible) {
@@ -639,6 +822,7 @@
       if (!fieldId) return true;
       if (!document.querySelector(`input[data-field-id="${fieldId}"]`)) return true;
       return String(answers["_meta_" + fieldId] || "").trim().length > 0;
+      syncQuestionMarkerWithAnswer(qid);
     }
 
     function isQuestionAnswered(question) {
@@ -714,7 +898,12 @@
         const isDivider = isFollowupDivider(q);
         const label = isDivider ? title : `${visibleIndex + 1}. ${title}`;
         if (!isDivider) visibleIndex += 1;
-        items.push({ qid, label });
+        items.push({
+          qid,
+          label,
+          isDivider,
+          markerState: isDivider ? "none" : getQuestionMarkerEffectiveState(qid, q, data)
+        });
       }
       return items;
     }
@@ -744,7 +933,19 @@
         const button = document.createElement("button");
         button.type = "button";
         button.className = "task-nav-item";
-        button.textContent = item.label;
+        button.dataset.qid = item.qid;
+        button.dataset.markerState = item.markerState;
+        const label = document.createElement("span");
+        label.className = "task-nav-item-label";
+        label.textContent = item.label;
+        button.appendChild(label);
+        if (!item.isDivider) {
+          const status = document.createElement("span");
+          status.className = "task-nav-item-status";
+          status.dataset.markerState = item.markerState;
+          status.textContent = getQuestionMarkerMeta(item.markerState).uiLabel;
+          button.appendChild(status);
+        }
         button.addEventListener("click", () => {
           scrollToQuestionById(item.qid);
           toggleTaskNavDrawer(false);
@@ -2062,9 +2263,17 @@
         return card;
       }
       const titlePrefix = Number.isInteger(idx) ? `${idx + 1}. ` : "";
-      main.innerHTML =
-        `<h3>${titlePrefix}${esc(q.title)}</h3>` +
-        (q.prompt ? `<p>${esc(q.prompt)}</p>` : "");
+      const head = document.createElement("div");
+      head.className = "question-head";
+      const title = document.createElement("h3");
+      title.textContent = `${titlePrefix}${q.title}`;
+      head.append(title, createQuestionMarkerButton(q, scenarioData));
+      main.appendChild(head);
+      if (q.prompt) {
+        const prompt = document.createElement("p");
+        prompt.textContent = q.prompt;
+        main.appendChild(prompt);
+      }
 
       let body = null;
       if (q.type === "single_choice") body = renderSingleChoice(q);
@@ -2963,3 +3172,5 @@
   </script>
 </body>
 </html>
+      questionMarkerState = loadQuestionMarkerState(data);
+      syncAllQuestionMarkersWithAnswers(data);
