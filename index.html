@@ -791,6 +791,13 @@
       applyThemeMode(next);
     }
 
+    function setAppBarSelection(view = "") {
+      const normalized = String(view || "").trim().toLowerCase();
+      const isHome = normalized === "home";
+      homeButton.classList.toggle("is-active", isHome);
+      homeButton.setAttribute("aria-pressed", isHome ? "true" : "false");
+    }
+
     function resetRuntimeState() {
       for (const key of Object.keys(answers)) delete answers[key];
       touchedQuestionIds.clear();
@@ -1003,6 +1010,7 @@
     }
 
     function renderUnlockScreen(message) {
+      setAppBarSelection("");
       toggleScenarioMenu(false);
       setSubmitBarVisible(false);
       resetRuntimeState();
@@ -1779,6 +1787,7 @@
         renderUnlockScreen("Bitte zuerst gueltigen Key eingeben.");
         return;
       }
+      setAppBarSelection("home");
       const folders = getUnlockedFolders();
       const hint = sanitizeFolderName(folderHint);
       if (hint && folders.includes(hint)) {
@@ -1941,6 +1950,7 @@
     }
 
     async function selectScenario(item) {
+      setAppBarSelection("");
       toggleScenarioMenu(false);
       setSubmitBarVisible(false);
       renderSelectionHint(`Lade ${item.label} ...`);
@@ -2044,6 +2054,7 @@
 
     function initAppBar() {
       applyThemeMode(loadThemeMode());
+      setAppBarSelection("");
       themeToggleBtn.addEventListener("click", cycleThemeMode);
       accessManagerButton.addEventListener("click", () => {
         renderUnlockScreen();
