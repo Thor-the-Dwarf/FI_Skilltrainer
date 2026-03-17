@@ -1,0 +1,131 @@
+{
+  "scenario": {
+    "company": "Sonnenbogen Energie GmbH",
+    "scale": "Regionaler Energieversorger, 190 Mitarbeitende",
+    "context": "Die Aufgaben 1 bis 4 dieses Pruefungsvorbereitungsblocks beziehen sich auf folgende Ausgangssituation: Die Sonnenbogen Energie GmbH moechte den Prozess zur Strom-Abrechnung weiter digitalisieren. Innerhalb dieses Projekts sollen mehrere Apps entwickelt werden. Dabei arbeiten und unterstuetzen Sie bei Planung, Umsetzung und Einfuehrung.",
+    "mission": "Sie bearbeiten die erste Originalaufgabe als zusammenhaengende Algorithmusaufgabe zur Auswertung von Jahreszaehlerstaenden.",
+    "source": {
+      "kind": "Pseudonymisierte Pruefungsvorlage",
+      "reference": "AP2 FIAE Teil 2, Sommer 2022, Aufgabe 1",
+      "note": "Aufgabe 1 besitzt keine offiziellen Unteraufgaben; sie wird deshalb als ein zusammenhaengender Originalauftrag abgebildet."
+    },
+    "station": {
+      "id": "PV2FIAE-ST-01",
+      "department": "Pruefungsvorbereitung Anwendungsentwicklung",
+      "profile": "Algorithmik, Arrays, Listenobjekte und Diagrammformen",
+      "constraints": [
+        "Die Tabelle enthaelt Zaehlerstaende, Monatsverbraeuche entstehen erst durch Differenzbildung",
+        "Die Quellaufgabe bleibt als ein zusammenhaengender Auftrag erhalten",
+        "Als Antwortform sind Pseudocode, Struktogramm, Programmablaufplan oder UML-Aktivitaetsdiagramm zugelassen"
+      ]
+    },
+    "customerRequest": {
+      "from": "fachbereich.energiereporting@sonnenbogen-energie.example",
+      "to": "exam-prep.team@ausbildungsbetrieb.example",
+      "subject": "Ticket 01: Originalaufgabe Verbrauchsstatistik aus Zaehlerstaenden",
+      "date": "2026-03-17",
+      "body": "Fuer eine Statistik sollen die Energieverbraeuche des jeweils letzten Jahres ausgewertet werden. Die Zaehlerstaende zu jedem Monatsende eines Jahres liegen fuer alle Verbraucher in Zweipersonenhaushalten in einem zweidimensionalen Array `verbrauch` vor.\n\nIn Spalte 0 des Arrays ist die Verbrauchernummer und in der Spalte 1 der Zaehlerstand vom Dezember des Vorjahres eingetragen. Alle anderen Spalten enthalten die Zaehlerstaende der einzelnen Monate des auszuwertenden Jahres. Die Zeile 0 enthaelt die Daten des ersten Verbrauchers.\n\nBeispiel:\nVerbraucherNr | Vorjahr | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12\n1001          | 23      | 28 | 31 | 35 | 42 | 45 | 47 | 50 | 56 | 61 | 67 | 73 | 78\n1002          | 25      | 29 | 33 | 37 | 42 | 46 | 49 | 53 | 58 | 62 | 66 | 72 | 78\n5999          | 24      | 30 | 34 | 40 | 44 | 48 | 55 | 62 | 66 | 71 | 77 | 82 | 88\n\nFuer die Auswertung der Daten werden folgende statistische Werte benoetigt:\n- Minimaler Monatsverbrauch ueber alle Verbraucher hinweg\n- Maximaler Monatsverbrauch ueber alle Verbraucher hinweg\n- Fuer jeden Verbraucher, der in einem Monat einen vorgegebenen Schwellwert `limit` ueberschritten hat, sind folgende Informationen in einem Objekt der Klasse `Monatsverbrauch` zu speichern: Verbrauchernummer, Monatsnummer (1 fuer Januar, ..., 12 fuer Dezember) und Verbrauch. Dieses Objekt wird anschliessend einer Liste hinzugefuegt.\n\nDas zweidimensionale Array `verbrauch` steht innerhalb der Methode zur Verfuegung, ebenso eine Variable `limit`, welche den vorgegebenen Schwellwert enthaelt. Die Anzahl der Datensaetze des Arrays kann durch `verbrauch.length` bestimmt werden. Fuer ein List-Objekt stehen `List()` und `add(Monatsverbrauch o)` zur Verfuegung.\n\nErstellen Sie eine Methode `statistik(verbrauch: int[][], limit: int)` zur Auswertung der Verbrauchsdaten, welche alle geforderten Werte bestimmt. Der Rueckgabewert soll ein Objekt vom Typ `Jahresstatistik(minVerbrauch: int, maxVerbrauch: int, limitVerbraucher: List)` sein.\n\nGeben Sie Ihre Loesung in Pseudocode, als Struktogramm, als Programmablaufplan oder als UML-Aktivitaetsdiagramm an."
+    },
+    "referenceData": {
+      "arrayName": "verbrauch",
+      "methodSignature": "statistik(verbrauch: int[][], limit: int): Jahresstatistik",
+      "returnShape": "Jahresstatistik(minVerbrauch: int, maxVerbrauch: int, limitVerbraucher: List)",
+      "consumptionFormula": "Monatsverbrauch = aktueller Monatszaehlerstand - vorheriger Zaehlerstand",
+      "officialStructure": {
+        "level": "Aufgabe",
+        "hasSubtasks": false
+      },
+      "sampleTable": {
+        "headers": [
+          "VerbraucherNr",
+          "Vorjahr",
+          "1",
+          "2",
+          "3",
+          "4",
+          "5",
+          "6",
+          "7",
+          "8",
+          "9",
+          "10",
+          "11",
+          "12"
+        ],
+        "rows": [
+          [1001, 23, 28, 31, 35, 42, 45, 47, 50, 56, 61, 67, 73, 78],
+          [1002, 25, 29, 33, 37, 42, 46, 49, 53, 58, 62, 66, 72, 78],
+          [5999, 24, 30, 34, 40, 44, 48, 55, 62, 66, 71, 77, 82, 88]
+        ]
+      }
+    }
+  },
+  "questions": [
+    {
+      "id": "q01",
+      "type": "algorithm_solution_placeholder",
+      "title": "Aufgabe 1 im Originalformat bearbeiten",
+      "prompt": "Entwickeln Sie fuer die beschriebene Statistik die Methode `statistik(verbrauch: int[][], limit: int)` und geben Sie die Loesung in einem der zugelassenen Formate ab.",
+      "placeholderMode": "manual_scoring",
+      "acceptedAnswerModes": [
+        "Pseudocode",
+        "Struktogramm",
+        "Programmablaufplan",
+        "UML-Aktivitaetsdiagramm"
+      ],
+      "requiredOutputs": [
+        "Minimalen Monatsverbrauch ueber alle Verbraucher bestimmen",
+        "Maximalen Monatsverbrauch ueber alle Verbraucher bestimmen",
+        "Grenzwertverletzungen als Objekte `Monatsverbrauch` in einer Liste sammeln",
+        "Ein Objekt `Jahresstatistik(minVerbrauch, maxVerbrauch, limitVerbraucher)` zurueckgeben"
+      ],
+      "supportingFacts": [
+        "Spalte 0 enthaelt die Verbrauchernummer",
+        "Spalte 1 enthaelt den Dezemberwert des Vorjahres",
+        "Alle weiteren Spalten enthalten Monatszaehlerstaende",
+        "Monatsverbraeuche muessen aus aufeinanderfolgenden Zaehlerstaenden berechnet werden",
+        "`verbrauch.length` liefert die Anzahl der Datensaetze",
+        "`add(Monatsverbrauch o)` fuegt einen Treffer der Liste hinzu"
+      ],
+      "exampleTable": {
+        "headers": [
+          "VerbraucherNr",
+          "Vorjahr",
+          "1",
+          "2",
+          "3",
+          "4",
+          "5",
+          "6",
+          "7",
+          "8",
+          "9",
+          "10",
+          "11",
+          "12"
+        ],
+        "rows": [
+          [1001, 23, 28, 31, 35, 42, 45, 47, 50, 56, 61, 67, 73, 78],
+          [1002, 25, 29, 33, 37, 42, 46, 49, 53, 58, 62, 66, 72, 78],
+          [5999, 24, 30, 34, 40, 44, 48, 55, 62, 66, 71, 77, 82, 88]
+        ]
+      },
+      "reviewChecklist": [
+        "Wird fuer Januar gegen den Vorjahreswert differenziert?",
+        "Wird in den Folgemonaten immer gegen den vorherigen Monatszaehlerstand differenziert?",
+        "Werden min und max ueber alle Monatsverbraeuche hinweg gepflegt?",
+        "Werden bei Grenzwertverletzungen korrekt `Monatsverbrauch`-Objekte erzeugt?",
+        "Entsteht am Ende ein Rueckgabeobjekt vom Typ `Jahresstatistik`?"
+      ],
+      "feedback": {
+        "correct": "Placeholder: Diese Originalaufgabe wird spaeter ueber einen offenen Bewertungsmodus oder Diagramm-Designer bewertet.",
+        "wrong": "Placeholder: Dieser Aufgabentyp ist noch nicht implementiert."
+      },
+      "progressLinks": [
+        "pv2fiae_algorithmen_pseudocode",
+        "pv2fiae_datenstrukturen_listen",
+        "pv2fiae_tabellen_uml_placeholder"
+      ]
+    }
+  ]
+}
