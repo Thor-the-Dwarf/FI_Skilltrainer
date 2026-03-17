@@ -74,18 +74,6 @@
 
   <button id="scenarioNavBackdrop" type="button" class="task-nav-backdrop hidden" aria-label="Szenario Ordnerbaum schliessen"></button>
   <aside id="scenarioMenu" class="scenario-nav-drawer hidden" aria-hidden="true" aria-label="Szenario Ordnerbaum">
-    <div class="scenario-nav-drawer-head">
-      <div class="scenario-nav-drawer-title-wrap">
-        <h3>Szenarien</h3>
-        <p class="scenario-nav-drawer-kicker">FolderTree mit Ordnern und Tickets</p>
-      </div>
-      <button id="btnScenarioMenuClose" type="button" class="icon-button" aria-label="Szenario Ordnerbaum schliessen" title="Schliessen">
-        <svg class="icon-svg" viewBox="0 0 24 24" aria-hidden="true">
-          <path d="M6 6l12 12"></path>
-          <path d="M18 6L6 18"></path>
-        </svg>
-      </button>
-    </div>
     <div id="scenarioMenuOptions" class="scenario-tree" aria-label="Szenario FolderTree"></div>
   </aside>
 
@@ -114,7 +102,6 @@
     const taskNavBackdrop = document.getElementById("taskNavBackdrop");
     const scenarioNavBackdrop = document.getElementById("scenarioNavBackdrop");
     const scenarioMenuButton = document.getElementById("btnScenarioMenu");
-    const scenarioMenuCloseBtn = document.getElementById("btnScenarioMenuClose");
     const homeButton = document.getElementById("btnHome");
     const accessManagerButton = document.getElementById("btnAccessManager");
     const scenarioMenu = document.getElementById("scenarioMenu");
@@ -2082,7 +2069,6 @@
           "</span>" +
           "<span class='scenario-tree-folder-main'>" +
           `<span class='scenario-tree-folder-name'>${esc(folderShortLabel)}</span>` +
-          `<span class='scenario-tree-folder-meta'>${esc(group.folder)} · ${ticketCount} Tickets</span>` +
           "</span>" +
           `<span class='scenario-tree-folder-count'>${ticketCount}</span>` +
           "<span class='scenario-tree-folder-caret' aria-hidden='true'>" +
@@ -2124,7 +2110,6 @@
             '<svg class="icon-svg" viewBox="0 0 24 24"><path d="M4.5 8.5h3v-2h9v2h3v3c-1.1 0-2 .9-2 2s.9 2 2 2v3h-3v2h-9v-2h-3v-3c1.1 0 2-.9 2-2s-.9-2-2-2z"></path></svg>' +
             "</span>" +
             "<span class='scenario-tree-ticket-main'>" +
-            "<span class='scenario-tree-ticket-kind'>Ticket</span>" +
             `<span class='scenario-tree-ticket-title'>${esc(item.label)}</span>` +
             "</span>";
           option.addEventListener("click", () => {
@@ -2178,10 +2163,6 @@
           return;
         }
         toggleScenarioMenu();
-      });
-
-      scenarioMenuCloseBtn.addEventListener("click", () => {
-        toggleScenarioMenu(false);
       });
 
       scenarioNavBackdrop.addEventListener("click", () => {
