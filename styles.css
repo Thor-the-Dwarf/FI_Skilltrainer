@@ -896,13 +896,15 @@ label {
 
 .question-marker-button {
   flex: 0 0 auto;
-  min-width: 148px;
-  max-width: min(100%, 188px);
-  padding: 8px 10px;
+  min-width: 108px;
+  max-width: min(100%, 132px);
+  min-height: 42px;
+  padding: 8px 12px;
   border-radius: 12px;
-  text-align: left;
-  display: grid;
-  gap: 2px;
+  text-align: center;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   align-self: flex-start;
   border: 1px solid hsl(var(--glass-border) / 0.7);
   background:
@@ -913,25 +915,12 @@ label {
     inset 0 0 0 1px hsl(var(--primary) / 0.08);
 }
 
-.question-marker-label {
-  font-size: 10px;
-  line-height: 1.1;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: hsl(var(--txt-muted));
-}
-
 .question-marker-state {
-  font-size: 13px;
-  line-height: 1.2;
+  font-size: 12px;
+  line-height: 1;
   font-weight: 700;
   color: hsl(var(--txt));
-}
-
-.question-marker-description {
-  font-size: 11px;
-  line-height: 1.2;
-  color: hsl(var(--txt-muted));
+  white-space: nowrap;
 }
 
 .question-main[data-marker-state="answered"],

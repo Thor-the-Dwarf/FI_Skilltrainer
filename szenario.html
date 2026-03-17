@@ -65,24 +65,20 @@
     const QUESTION_MARKER_STATE_ORDER = ["none", "answered", "double_checked", "marked"];
     const QUESTION_MARKER_META = Object.freeze({
       none: {
-        label: "None",
-        uiLabel: "Offen",
-        description: "Noch nicht bearbeitet"
+        label: "offen",
+        uiLabel: "offen"
       },
       answered: {
-        label: "Answered",
-        uiLabel: "Bearbeitet",
-        description: "Automatisch erkannt"
+        label: "bearbeitet",
+        uiLabel: "bearbeitet"
       },
       double_checked: {
-        label: "DoubleChecked",
-        uiLabel: "Geprueft",
-        description: "Manuell bestaetigt"
+        label: "geprüft",
+        uiLabel: "geprüft"
       },
       marked: {
-        label: "Marked",
-        uiLabel: "Markiert",
-        description: "Manuell markiert"
+        label: "markiert",
+        uiLabel: "markiert"
       }
     });
     const answers = {};
@@ -169,7 +165,7 @@
       for (const [questionId, stateRaw] of Object.entries(questionMarkerState || {})) {
         const qid = String(questionId || "").trim();
         const state = normalizeQuestionMarkerState(stateRaw);
-        if (!qid || state === "none") continue;
+        if (!qid || state === "none" || state === "answered") continue;
         payload[qid] = state;
       }
       try {
@@ -187,8 +183,8 @@
     function getQuestionMarkerEffectiveState(questionId, question = null, data = scenarioData) {
       const q = question || getQuestionById(questionId, data);
       const storedState = normalizeQuestionMarkerState(questionMarkerState[String(questionId || "").trim()]);
-      if (storedState === "double_checked" || storedState === "marked") return storedState;
-      if (storedState === "answered" && !q) return "answered";
+      if (storedState === "marked") return "marked";
+      if (storedState === "double_checked" && q && isQuestionAnswered(q)) return "double_checked";
       return q && isQuestionAnswered(q) ? "answered" : "none";
     }
 
@@ -205,12 +201,10 @@
         const button = card.querySelector(".question-marker-button");
         if (button) {
           button.dataset.markerState = state;
-          button.title = `Fragenstatus: ${meta.label}. Klickt durch die Markierungen.`;
-          button.setAttribute("aria-label", `Fragenstatus ${meta.label} fuer ${qid}`);
+          button.title = `Fragenstatus: ${meta.uiLabel}.`;
+          button.setAttribute("aria-label", `Fragenstatus ${meta.uiLabel} fuer ${qid}`);
           const stateLabel = button.querySelector(".question-marker-state");
-          const description = button.querySelector(".question-marker-description");
-          if (stateLabel) stateLabel.textContent = meta.label;
-          if (description) description.textContent = meta.description;
+          if (stateLabel) stateLabel.textContent = meta.uiLabel;
         }
       }
     }
@@ -220,14 +214,12 @@
       if (!q || isFollowupDivider(q)) return;
       const qid = String(q.id || "").trim();
       const currentState = normalizeQuestionMarkerState(questionMarkerState[qid]);
-      if (currentState === "double_checked" || currentState === "marked") {
+      if (currentState === "marked") {
         updateQuestionMarkerElements(qid, q, data);
         renderTaskNavDrawer(data);
         return;
       }
-      const nextState = isQuestionAnswered(q) ? "answered" : "none";
-      if (nextState === "none") delete questionMarkerState[qid];
-      else questionMarkerState[qid] = nextState;
+      delete questionMarkerState[qid];
       saveQuestionMarkerState(data);
       updateQuestionMarkerElements(qid, q, data);
       renderTaskNavDrawer(data);
@@ -245,9 +237,17 @@
       const q = getQuestionById(questionId, data);
       if (!q || isFollowupDivider(q)) return;
       const currentState = getQuestionMarkerEffectiveState(q.id, q, data);
-      const currentIndex = Math.max(0, QUESTION_MARKER_STATE_ORDER.indexOf(currentState));
-      const nextState = QUESTION_MARKER_STATE_ORDER[(currentIndex + 1) % QUESTION_MARKER_STATE_ORDER.length] || "none";
-      if (nextState === "none") delete questionMarkerState[q.id];
+      const answered = isQuestionAnswered(q);
+      let nextState = "none";
+      if (answered) {
+        if (currentState === "answered") nextState = "double_checked";
+        else if (currentState === "double_checked") nextState = "marked";
+        else if (currentState === "marked") nextState = "none";
+        else nextState = "double_checked";
+      } else {
+        nextState = currentState === "marked" ? "none" : "marked";
+      }
+      if (nextState === "none" || nextState === "answered") delete questionMarkerState[q.id];
       else questionMarkerState[q.id] = nextState;
       saveQuestionMarkerState(data);
       updateQuestionMarkerElements(q.id, q, data);
@@ -259,17 +259,13 @@
       button.type = "button";
       button.className = "question-marker-button";
       button.dataset.qid = question.id;
-      button.innerHTML =
-        "<span class='question-marker-label'>Status</span>" +
-        "<span class='question-marker-state'></span>" +
-        "<span class='question-marker-description'></span>";
+      button.innerHTML = "<span class='question-marker-state'></span>";
       const initialState = getQuestionMarkerEffectiveState(question.id, question, data);
       const meta = getQuestionMarkerMeta(initialState);
       button.dataset.markerState = initialState;
-      button.title = `Fragenstatus: ${meta.label}. Klickt durch die Markierungen.`;
-      button.setAttribute("aria-label", `Fragenstatus ${meta.label} fuer ${question.id}`);
-      button.querySelector(".question-marker-state").textContent = meta.label;
-      button.querySelector(".question-marker-description").textContent = meta.description;
+      button.title = `Fragenstatus: ${meta.uiLabel}.`;
+      button.setAttribute("aria-label", `Fragenstatus ${meta.uiLabel} fuer ${question.id}`);
+      button.querySelector(".question-marker-state").textContent = meta.uiLabel;
       button.addEventListener("click", () => {
         cycleQuestionMarkerState(question.id, data);
       });
