@@ -163,6 +163,8 @@
     let activeScenarioFile = "";
     let activeHomeSkillsFolder = "";
     let accessKeyToFolder = { ...FALLBACK_ACCESS_KEY_TO_FOLDER };
+    let accessKeyToFolders = Object.create(null);
+    let accessKeyToFolderPrefixes = Object.create(null);
     let accessKeyConfigLoaded = false;
 
     function normalize(s) {
@@ -203,16 +205,71 @@
       return key;
     }
 
+    function normalizeFolderPrefix(rawPrefix) {
+      const prefix = String(rawPrefix || "").trim().toUpperCase();
+      if (!prefix || !/^[A-Z0-9_-]+$/.test(prefix)) return "";
+      return prefix;
+    }
+
+    function normalizeAccessFolderList(rawValue) {
+      const source = Array.isArray(rawValue) ? rawValue : [rawValue];
+      const seen = new Set();
+      const folders = [];
+      for (const item of source) {
+        const folder = sanitizeFolderName(item);
+        if (!folder || seen.has(folder)) continue;
+        seen.add(folder);
+        folders.push(folder);
+      }
+      return folders.sort((a, b) => a.localeCompare(b, "de", { numeric: true, sensitivity: "base" }));
+    }
+
+    function normalizeAccessFolderPrefixes(rawValue) {
+      const source = Array.isArray(rawValue) ? rawValue : [rawValue];
+      const seen = new Set();
+      const prefixes = [];
+      for (const item of source) {
+        const prefix = normalizeFolderPrefix(item);
+        if (!prefix || seen.has(prefix)) continue;
+        seen.add(prefix);
+        prefixes.push(prefix);
+      }
+      return prefixes;
+    }
+
     function normalizeAccessKeyConfig(payload) {
       const source = payload && typeof payload === "object"
         ? (payload.keys && typeof payload.keys === "object" ? payload.keys : payload)
         : {};
-      const normalized = {};
-      for (const [rawKey, rawFolder] of Object.entries(source || {})) {
+      const normalized = {
+        singleFolderMap: {},
+        multiFolderMap: {},
+        prefixMap: {}
+      };
+      for (const [rawKey, rawValue] of Object.entries(source || {})) {
         const key = normalizeAccessKey(rawKey);
-        const folder = sanitizeFolderName(rawFolder);
-        if (!key || !folder) continue;
-        normalized[key] = folder;
+        if (!key || rawValue == null) continue;
+
+        if (typeof rawValue === "string") {
+          const folder = sanitizeFolderName(rawValue);
+          if (folder) normalized.singleFolderMap[key] = folder;
+          continue;
+        }
+
+        const folderList = normalizeAccessFolderList(
+          Array.isArray(rawValue) ? rawValue : (rawValue.folders || rawValue.folderList || [])
+        );
+        const singleFolder = Array.isArray(rawValue) ? "" : sanitizeFolderName(rawValue.folder || "");
+        const prefixes = Array.isArray(rawValue)
+          ? []
+          : normalizeAccessFolderPrefixes(rawValue.folderPrefixes || rawValue.prefixes || rawValue.folderPrefix || []);
+
+        if (singleFolder) {
+          normalized.singleFolderMap[key] = singleFolder;
+          if (!folderList.includes(singleFolder)) folderList.unshift(singleFolder);
+        }
+        if (folderList.length) normalized.multiFolderMap[key] = folderList;
+        if (prefixes.length) normalized.prefixMap[key] = prefixes;
       }
       return normalized;
     }
@@ -225,17 +282,64 @@
         if (!res.ok) return;
         const payload = await res.json();
         const normalized = normalizeAccessKeyConfig(payload);
-        if (Object.keys(normalized).length > 0) {
-          accessKeyToFolder = { ...FALLBACK_ACCESS_KEY_TO_FOLDER, ...normalized };
-        }
+        accessKeyToFolder = { ...FALLBACK_ACCESS_KEY_TO_FOLDER, ...normalized.singleFolderMap };
+        accessKeyToFolders = { ...normalized.multiFolderMap };
+        accessKeyToFolderPrefixes = { ...normalized.prefixMap };
       } catch {
       }
     }
 
-    function resolveFolderFromAccessKey(rawKey) {
+    function getKnownScenarioFolders() {
+      const seen = new Set();
+      const folders = [];
+      const pushFolder = (rawFolder) => {
+        const folder = sanitizeFolderName(rawFolder);
+        if (!folder || seen.has(folder)) return;
+        seen.add(folder);
+        folders.push(folder);
+      };
+
+      Object.values(FALLBACK_ACCESS_KEY_TO_FOLDER).forEach(pushFolder);
+      Object.values(accessKeyToFolder).forEach(pushFolder);
+      Object.values(accessKeyToFolders).forEach((folderList) => {
+        (folderList || []).forEach(pushFolder);
+      });
+      unlockedAccessEntries.forEach((entry) => pushFolder(entry?.folder));
+
+      return folders.sort((a, b) => a.localeCompare(b, "de", { numeric: true, sensitivity: "base" }));
+    }
+
+    function resolveFoldersFromAccessKey(rawKey) {
       const key = normalizeAccessKey(rawKey);
-      if (!key) return "";
-      return accessKeyToFolder[key] || "";
+      if (!key) return [];
+
+      const seen = new Set();
+      const folders = [];
+      const pushFolder = (rawFolder) => {
+        const folder = sanitizeFolderName(rawFolder);
+        if (!folder || seen.has(folder)) return;
+        seen.add(folder);
+        folders.push(folder);
+      };
+
+      pushFolder(accessKeyToFolder[key]);
+      (accessKeyToFolders[key] || []).forEach(pushFolder);
+
+      const prefixes = accessKeyToFolderPrefixes[key] || [];
+      if (prefixes.length) {
+        getKnownScenarioFolders().forEach((folder) => {
+          const upperFolder = folder.toUpperCase();
+          if (prefixes.some((prefix) => upperFolder.startsWith(prefix))) {
+            pushFolder(folder);
+          }
+        });
+      }
+
+      return folders.sort((a, b) => a.localeCompare(b, "de", { numeric: true, sensitivity: "base" }));
+    }
+
+    function resolveFolderFromAccessKey(rawKey) {
+      return resolveFoldersFromAccessKey(rawKey)[0] || "";
     }
 
     function sanitizeFolderName(folder) {
@@ -248,10 +352,10 @@
       if (!rawEntry || typeof rawEntry !== "object") return null;
       const key = normalizeAccessKey(rawEntry.key || "");
       if (!key) return null;
-      const resolvedFolder = resolveFolderFromAccessKey(key);
-      const folder = sanitizeFolderName(rawEntry.folder || resolvedFolder);
+      const resolvedFolders = resolveFoldersFromAccessKey(key);
+      const folder = sanitizeFolderName(rawEntry.folder || resolvedFolders[0] || "");
       if (!folder) return null;
-      if (resolvedFolder && folder !== resolvedFolder) return null;
+      if (resolvedFolders.length && !resolvedFolders.includes(folder)) return null;
       return { key, folder };
     }
 
@@ -376,10 +480,10 @@
         const storedKey = normalizeAccessKey(localStorage.getItem(ACCESS_KEY_STORAGE_KEY) || "");
         if (!storedKey) return null;
         const storedFolder = String(localStorage.getItem(ACCESS_FOLDER_STORAGE_KEY) || "").trim();
-        const resolvedFolder = resolveFolderFromAccessKey(storedKey);
-        const folder = sanitizeFolderName(storedFolder || resolvedFolder);
+        const resolvedFolders = resolveFoldersFromAccessKey(storedKey);
+        const folder = sanitizeFolderName(storedFolder || resolvedFolders[0] || "");
         if (!folder) return null;
-        if (resolvedFolder && folder !== resolvedFolder) return null;
+        if (resolvedFolders.length && !resolvedFolders.includes(folder)) return null;
         return { entries: [{ key: storedKey, folder }], activeFolder: folder };
       } catch {
       }
