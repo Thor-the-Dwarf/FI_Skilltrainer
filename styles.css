@@ -17,6 +17,18 @@
   --surface: 228 32% 14%;
   --surface-soft: 225 28% 18%;
   --line: 210 45% 34%;
+  --halo-bg-start: 258 32% 10%;
+  --halo-bg-mid: 241 34% 7%;
+  --halo-bg-end: 238 44% 5%;
+  --halo-spot-a: 334 96% 64%;
+  --halo-spot-b: 52 100% 56%;
+  --halo-core: 242 30% 8%;
+  --halo-line-color: 220 52% 82%;
+  --halo-line-blend-mode: screen;
+  --halo-line-opacity: 0.55;
+  --halo-canvas-line-rgb: 194, 206, 255;
+  --halo-sphere-core-rgb: 17, 14, 29;
+  --halo-sphere-core-alpha: 0.98;
   color-scheme: dark;
 }
 
@@ -30,6 +42,18 @@
     --surface: 0 0% 100%;
     --surface-soft: 210 55% 96%;
     --line: 210 28% 72%;
+    --halo-bg-start: 212 68% 97%;
+    --halo-bg-mid: 210 58% 93%;
+    --halo-bg-end: 205 60% 88%;
+    --halo-spot-a: 334 88% 74%;
+    --halo-spot-b: 46 100% 68%;
+    --halo-core: 210 38% 98%;
+    --halo-line-color: 214 36% 48%;
+    --halo-line-blend-mode: multiply;
+    --halo-line-opacity: 0.28;
+    --halo-canvas-line-rgb: 124, 142, 186;
+    --halo-sphere-core-rgb: 248, 250, 255;
+    --halo-sphere-core-alpha: 0.96;
     color-scheme: light;
   }
 }
@@ -43,6 +67,18 @@ html[data-theme="dark"] {
   --surface: 228 32% 14%;
   --surface-soft: 225 28% 18%;
   --line: 210 45% 34%;
+  --halo-bg-start: 258 32% 10%;
+  --halo-bg-mid: 241 34% 7%;
+  --halo-bg-end: 238 44% 5%;
+  --halo-spot-a: 334 96% 64%;
+  --halo-spot-b: 52 100% 56%;
+  --halo-core: 242 30% 8%;
+  --halo-line-color: 220 52% 82%;
+  --halo-line-blend-mode: screen;
+  --halo-line-opacity: 0.55;
+  --halo-canvas-line-rgb: 194, 206, 255;
+  --halo-sphere-core-rgb: 17, 14, 29;
+  --halo-sphere-core-alpha: 0.98;
   color-scheme: dark;
 }
 
@@ -55,6 +91,18 @@ html[data-theme="light"] {
   --surface: 0 0% 100%;
   --surface-soft: 210 55% 96%;
   --line: 210 28% 72%;
+  --halo-bg-start: 212 68% 97%;
+  --halo-bg-mid: 210 58% 93%;
+  --halo-bg-end: 205 60% 88%;
+  --halo-spot-a: 334 88% 74%;
+  --halo-spot-b: 46 100% 68%;
+  --halo-core: 210 38% 98%;
+  --halo-line-color: 214 36% 48%;
+  --halo-line-blend-mode: multiply;
+  --halo-line-opacity: 0.28;
+  --halo-canvas-line-rgb: 124, 142, 186;
+  --halo-sphere-core-rgb: 248, 250, 255;
+  --halo-sphere-core-alpha: 0.96;
   color-scheme: light;
 }
 
@@ -1464,14 +1512,18 @@ textarea.mark-bad {
   --ui-glass-border-opacity: 0.92;
   --ui-glass-blur: 16px;
   --ui-glass-saturation: 1.14;
-  --halo-line-color: 220 52% 82%;
 }
 
 body {
   position: relative;
   isolation: isolate;
   background:
-    radial-gradient(1320px 860px at 50% -16%, hsl(258 32% 10%), hsl(241 34% 7%) 54%, hsl(238 44% 5%) 100%);
+    radial-gradient(
+      1320px 860px at 50% -16%,
+      hsl(var(--halo-bg-start)),
+      hsl(var(--halo-bg-mid)) 54%,
+      hsl(var(--halo-bg-end)) 100%
+    );
   background-attachment: fixed;
 }
 
@@ -1486,10 +1538,10 @@ body::after {
 body::before {
   z-index: 0;
   background:
-    radial-gradient(300px 300px at 43% 36%, hsl(334 96% 64% / 0.46) 0%, transparent 72%),
-    radial-gradient(370px 370px at 46% 66%, hsl(52 100% 56% / 0.42) 0%, transparent 74%),
-    radial-gradient(circle 78px at 43% 36%, hsl(242 30% 8%) 98%, transparent 100%),
-    radial-gradient(circle 70px at 46% 66%, hsl(242 30% 8%) 98%, transparent 100%);
+    radial-gradient(300px 300px at 43% 36%, hsl(var(--halo-spot-a) / 0.46) 0%, transparent 72%),
+    radial-gradient(370px 370px at 46% 66%, hsl(var(--halo-spot-b) / 0.42) 0%, transparent 74%),
+    radial-gradient(circle 78px at 43% 36%, hsl(var(--halo-core)) 98%, transparent 100%),
+    radial-gradient(circle 70px at 46% 66%, hsl(var(--halo-core)) 98%, transparent 100%);
   filter: saturate(1.08);
   opacity: 0.95;
 }
@@ -1507,8 +1559,8 @@ body::after {
     linear-gradient(31deg, transparent 0 70%, hsl(var(--halo-line-color) / 0.13) 70.1%, transparent 70.3%),
     linear-gradient(39deg, transparent 0 71%, hsl(var(--halo-line-color) / 0.12) 71.1%, transparent 71.3%),
     linear-gradient(48deg, transparent 0 73%, hsl(var(--halo-line-color) / 0.15) 73.1%, transparent 73.3%);
-  mix-blend-mode: screen;
-  opacity: 0.55;
+  mix-blend-mode: var(--halo-line-blend-mode);
+  opacity: var(--halo-line-opacity);
 }
 
 body > * {

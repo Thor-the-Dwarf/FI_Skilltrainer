@@ -1,6 +1,7 @@
 (() => {
   const TAU = Math.PI * 2;
   const REDUCED_MOTION = window.matchMedia("(prefers-reduced-motion: reduce)");
+  const COLOR_SCHEME = window.matchMedia("(prefers-color-scheme: dark)");
   const COLORS = [
     [247, 83, 171],
     [245, 90, 90],
@@ -26,6 +27,11 @@
   let dpr = Math.max(1, Math.min(2, window.devicePixelRatio || 1));
   let rafId = 0;
   let nodes = [];
+  let haloTheme = {
+    lineRgb: "194, 206, 255",
+    coreRgb: "17, 14, 29",
+    coreAlpha: 0.98
+  };
 
   function rand(min, max) {
     return min + Math.random() * (max - min);
@@ -33,6 +39,29 @@
 
   function chooseColor(index) {
     return COLORS[index % COLORS.length];
+  }
+
+  function normalizeRgbValue(value, fallback) {
+    const raw = String(value || "")
+      .trim()
+      .replace(/\s*,\s*/g, ", ")
+      .replace(/\s+/g, " ");
+    return raw || fallback;
+  }
+
+  function clamp01(value, fallback) {
+    const num = Number.parseFloat(String(value || "").trim());
+    if (!Number.isFinite(num)) return fallback;
+    return Math.max(0, Math.min(1, num));
+  }
+
+  function updateHaloTheme() {
+    const styles = getComputedStyle(document.documentElement);
+    haloTheme = {
+      lineRgb: normalizeRgbValue(styles.getPropertyValue("--halo-canvas-line-rgb"), "194, 206, 255"),
+      coreRgb: normalizeRgbValue(styles.getPropertyValue("--halo-sphere-core-rgb"), "17, 14, 29"),
+      coreAlpha: clamp01(styles.getPropertyValue("--halo-sphere-core-alpha"), 0.98)
+    };
   }
 
   function nodeCountForViewport() {
@@ -87,7 +116,7 @@
         const dist = Math.hypot(dx, dy);
         if (dist > maxDist) continue;
         const alpha = Math.max(0.03, 0.16 - (dist / maxDist) * 0.15);
-        ctx.strokeStyle = `rgba(194, 206, 255, ${alpha.toFixed(4)})`;
+        ctx.strokeStyle = `rgba(${haloTheme.lineRgb}, ${alpha.toFixed(4)})`;
         ctx.lineWidth = 1;
         ctx.beginPath();
         ctx.moveTo(a.x, a.y);
@@ -113,7 +142,7 @@
 
     ctx.beginPath();
     ctx.arc(pos.x, pos.y, node.radius, 0, TAU);
-    ctx.fillStyle = "rgba(17, 14, 29, 0.98)";
+    ctx.fillStyle = `rgba(${haloTheme.coreRgb}, ${haloTheme.coreAlpha.toFixed(2)})`;
     ctx.fill();
   }
 
@@ -135,7 +164,13 @@
     canvas.style.width = `${w}px`;
     canvas.style.height = `${h}px`;
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    updateHaloTheme();
     buildNodes();
+    draw(performance.now() / 1000);
+  }
+
+  function refreshTheme() {
+    updateHaloTheme();
     draw(performance.now() / 1000);
   }
 
@@ -153,6 +188,11 @@
     if (!REDUCED_MOTION.matches) {
       rafId = requestAnimationFrame(tick);
     }
+  });
+  COLOR_SCHEME.addEventListener("change", refreshTheme);
+  new MutationObserver(refreshTheme).observe(document.documentElement, {
+    attributes: true,
+    attributeFilter: ["data-theme", "data-theme-mode"]
   });
 
   resize();
