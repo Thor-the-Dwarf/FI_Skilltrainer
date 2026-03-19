@@ -26,8 +26,8 @@ Quelle: `access-keys.json`
 
 | Key | Gewaehrt Zugang zu |
 | --- | --- |
-| `AÜ-Sommer26` | Alle Ordner mit Prefix `LF` |
+| `AÜ-Sommer26` | Alle verfuegbaren Szenario-Ordner mit Prefix `LF`, `FSM` oder `Pruefungsvorbereitung` |
 
 ## Hinweis
 
-Der Sammel-Key `AÜ-Sommer26` greift laut Konfiguration auf alle Szenario-Ordner, deren Name mit `LF` beginnt.
+Der Sammel-Key `AÜ-Sommer26` ist der Master-Key. Er greift laut Konfiguration auf alle aktuell verfuegbaren Szenario-Ordner, deren Name mit `LF`, `FSM` oder `Pruefungsvorbereitung` beginnt.
