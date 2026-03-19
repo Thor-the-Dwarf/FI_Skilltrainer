@@ -722,7 +722,7 @@
 
     function buildScenarioLabelFromFilename(fileName) {
       const raw = String(fileName || "").trim().replace(/\.json$/i, "");
-      if (!raw) return "Station";
+      if (!raw) return "Ticket";
       const parts = raw.split("_");
       const stationPart = parts[0] || "";
       const words = parts.slice(2).map((part) => {
@@ -730,7 +730,7 @@
         if (!lower) return "";
         return lower.charAt(0).toUpperCase() + lower.slice(1);
       }).filter(Boolean);
-      const stationPrefix = /^\d{2}$/.test(stationPart) ? `Station ${stationPart}` : "Station";
+      const stationPrefix = /^\d{2}$/.test(stationPart) ? `Ticket ${stationPart}` : "Ticket";
       return words.length ? `${stationPrefix} - ${words.join(" ")}` : stationPrefix;
     }
 
@@ -2191,7 +2191,7 @@
         `<div class="meta-card"><strong>Auftrag</strong>${esc(s.mission || "")}</div>` +
         `</div>` +
         `<div class="meta-grid meta-grid-spaced">` +
-        `<div class="meta-card"><strong>Station-ID</strong>${esc(st.id || "")}</div>` +
+        `<div class="meta-card"><strong>Ticket-ID</strong>${esc(st.id || "")}</div>` +
         `<div class="meta-card"><strong>Bereich</strong>${esc(st.department || "")}</div>` +
         `<div class="meta-card"><strong>Profil</strong>${esc(st.profile || "")}</div>` +
         `<div class="meta-card"><strong>Randbedingungen</strong><ul class="constraint-list">${(st.constraints || []).map((c) => `<li>${esc(c)}</li>`).join("")}</ul></div>` +
@@ -2998,7 +2998,7 @@
       if (inlineSummary) {
         inlineSummary.innerHTML = "";
         if (hasMeta) {
-          inlineSummary.innerHTML += `<strong>Abgabe:</strong> ${esc(name)} | Gruppe ${esc(group)} | Station ${esc(station)}<br>`;
+          inlineSummary.innerHTML += `<strong>Abgabe:</strong> ${esc(name)} | Gruppe ${esc(group)} | Ticket ${esc(station)}<br>`;
         }
         inlineSummary.innerHTML +=
           `<strong>Ergebnisprofil:</strong> richtig ${cOk}, teilweise ${cPartial}, falsch/fehlend ${cBad}, gesamt ${effectiveResults.length}.<br>` +
