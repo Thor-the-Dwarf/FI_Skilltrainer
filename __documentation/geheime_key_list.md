@@ -7,7 +7,6 @@ Quelle: `access-keys.json`
 
 | Key | Gewaehrt Zugang zu |
 | --- | --- |
-| `FSM2_03_26` | `FSM2-Scenarien` |
 | `LF01_03_26` | `LF01-Scenarien` |
 | `LF02_03_26` | `LF02-Scenarien` |
 | `LF03_03_26` | `LF03-Scenarien` |
@@ -26,8 +25,8 @@ Quelle: `access-keys.json`
 
 | Key | Gewaehrt Zugang zu |
 | --- | --- |
-| `AÜ-Sommer26` | Alle verfuegbaren Szenario-Ordner mit Prefix `LF`, `FSM` oder `Pruefungsvorbereitung` |
+| `AÜ-Sommer26` | Alle aktuell verfuegbaren Szenario-Ordner |
 
 ## Hinweis
 
-Der Sammel-Key `AÜ-Sommer26` ist der Master-Key. Er greift laut Konfiguration auf alle aktuell verfuegbaren Szenario-Ordner, deren Name mit `LF`, `FSM` oder `Pruefungsvorbereitung` beginnt.
+Der Sammel-Key `AÜ-Sommer26` ist der Master-Key. Er enthaelt aktuell alle verfuegbaren Szenario-Ordner explizit und nimmt zusaetzlich kuenftige Ordner mit Prefix `LF` oder `Pruefungsvorbereitung` automatisch mit.
