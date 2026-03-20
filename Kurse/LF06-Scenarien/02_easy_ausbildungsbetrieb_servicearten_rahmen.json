@@ -1,0 +1,161 @@
+{
+  "scenario": {
+    "company": "Ausbildungsbetrieb IT-Service",
+    "scale": "Regional, 210 Mitarbeitende",
+    "context": "Station 2 des Tageslaufs: Servicearten, Rahmenwerke und rechtliche Vorgaben einordnen.",
+    "mission": "Sie unterscheiden Servicearten, SLA-Bezug und den sicheren Rahmen fuer die Servicebearbeitung.",
+    "station": {
+      "id": "LF06-ST-02",
+      "department": "Service Management",
+      "profile": "Servicearten, SLA, Datenschutz und vertragliche Einbindung",
+      "constraints": [
+        "Rahmen vor Aktion klaeren",
+        "Datenminimierung beachten",
+        "Begriffe sauber unterscheiden"
+      ]
+    },
+    "customerRequest": {
+      "from": "service.manager@ausbildungsbetrieb.example",
+      "to": "service.desk@ausbildungsbetrieb.example",
+      "subject": "Station 02: Servicearten und Rahmenvorgaben sauber einordnen",
+      "date": "2026-03-13",
+      "body": "Bitte erstellen Sie fuer neue Teammitglieder einen kompakten Ueberblick zu Servicearten, SLA-Bezug, Datenschutz und der Weitergabe von Servicefaellen."
+    }
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "type": "single_choice",
+      "title": "Incident oder Service Request",
+      "prompt": "Welche Aussage beschreibt einen Incident am treffendsten?",
+      "options": [
+        {
+          "text": "Eine ungeplante Beeintraechtigung eines laufenden Dienstes",
+          "rationale": "Das ist die typische Grunddefinition eines Stoerungsfalls."
+        },
+        {
+          "text": "Ein geplanter Wunsch nach neuer Standardsoftware",
+          "rationale": "Das ist eher ein Service Request."
+        },
+        {
+          "text": "Eine unverbindliche Ideensammlung ohne Bearbeitungsbedarf",
+          "rationale": "Das ist kein klarer Servicefall."
+        }
+      ],
+      "correctIndex": 0,
+      "feedback": {
+        "correct": "Richtig: So laesst sich ein Incident sauber von anderen Faellen trennen.",
+        "wrong": "Nicht passend: Bitte ungeplante Beeintraechtigung und Betriebsbezug beachten."
+      },
+      "progressLinks": [
+        "lf06_servicearten_anforderungen"
+      ]
+    },
+    {
+      "id": "q2",
+      "type": "multi_select",
+      "title": "Rahmenvorgaben bei externer Weitergabe",
+      "prompt": "Welche Punkte muessen vor einer externen Weitergabe geprueft werden? (Mehrfachauswahl)",
+      "options": [
+        {
+          "text": "Servicevertrag oder SLA fuer den betroffenen Dienst ist bekannt",
+          "correct": true,
+          "rationale": "Davon haengen Fristen und Verantwortlichkeiten ab."
+        },
+        {
+          "text": "Nur notwendige personenbezogene Daten werden weitergegeben",
+          "correct": true,
+          "rationale": "Datenminimierung bleibt im Service wichtig."
+        },
+        {
+          "text": "Zustaendiger Ansprechpartner und Eskalationsweg sind geklaert",
+          "correct": true,
+          "rationale": "So wird die Bearbeitung steuerbar."
+        },
+        {
+          "text": "Beliebige Zusatzdaten koennen vorsorglich immer mitgesendet werden",
+          "correct": false,
+          "rationale": "Das waere fachlich und rechtlich problematisch."
+        },
+        {
+          "text": "Interne Dokumentation ist nach externer Weitergabe unnoetig",
+          "correct": false,
+          "rationale": "Das Ticket muss intern nachvollziehbar bleiben."
+        }
+      ],
+      "feedback": {
+        "correct": "Richtig: Sie verbinden SLA, Datenschutz und Verantwortung sauber.",
+        "wrong": "Teilweise falsch: Bitte Rahmen, Datenminimierung und Zustimmungswege staerker gewichten."
+      },
+      "progressLinks": [
+        "lf06_servicearten_anforderungen",
+        "lf06_standards_recht"
+      ]
+    },
+    {
+      "id": "q3",
+      "type": "ordering",
+      "title": "Prozesskonforme Ticketweitergabe",
+      "prompt": "Ordnen Sie die Schritte sinnvoll.",
+      "items": [
+        "Kundenstatus mit zulassiger Aussage aktualisieren",
+        "Vertrag, SLA und Datenschutzrahmen pruefen",
+        "Ticket mit Fakten und Befunden aktualisieren",
+        "Ziel der Weitergabe und Verantwortlichkeit klaeren",
+        "Externe Weitergabe nur mit notwendigen Daten ausloesen"
+      ],
+      "correctOrder": [
+        "Vertrag, SLA und Datenschutzrahmen pruefen",
+        "Ticket mit Fakten und Befunden aktualisieren",
+        "Ziel der Weitergabe und Verantwortlichkeit klaeren",
+        "Externe Weitergabe nur mit notwendigen Daten ausloesen",
+        "Kundenstatus mit zulassiger Aussage aktualisieren"
+      ],
+      "feedback": {
+        "correct": "Richtig: So bleibt die Weitergabe fachlich und rechtlich abgesichert.",
+        "wrong": "Nicht optimal: Bitte erst Rahmen und Faktenbasis, dann Weitergabe und Kommunikation ordnen."
+      },
+      "progressLinks": [
+        "lf06_standards_recht",
+        "lf06_bearbeitungsprozess"
+      ]
+    },
+    {
+      "id": "q4",
+      "type": "number",
+      "title": "SLA-Frist bestimmen",
+      "prompt": "Ein Ticket wird um 09:10 erfasst. Das SLA fordert eine qualifizierte Rueckmeldung innerhalb von 35 Minuten. Um wie viel Uhr endet die Frist?",
+      "expected": 585,
+      "toleranceAbs": 0,
+      "showExpectedFormula": "09:10 = 550 min, +35 = 585 min (09:45)",
+      "feedback": {
+        "correct": "Richtig gerechnet.",
+        "wrong": "Bitte Startzeit in Minuten umrechnen und SLA-Zeit addieren."
+      },
+      "progressLinks": [
+        "lf06_servicearten_anforderungen"
+      ]
+    },
+    {
+      "id": "q5",
+      "type": "short_text",
+      "title": "Rahmennotiz fuer das Team",
+      "prompt": "Formulieren Sie in 4-6 Saetzen eine Kurznachricht mit Serviceart, SLA-Hinweis und Datenschutzaspekt.",
+      "minChars": 150,
+      "requiredKeywords": [
+        "serviceart",
+        "sla",
+        "datenschutz"
+      ],
+      "expectedOutline": "Serviceart nennen, SLA-Bezug kurz einordnen und Datenminimierung erwaehnen.",
+      "feedback": {
+        "correct": "Richtig: Die Rahmennotiz ist knapp und prozessfaehig.",
+        "wrong": "Bitte Serviceart, SLA und Datenschutz klarer miteinander verbinden."
+      },
+      "progressLinks": [
+        "lf06_standards_recht",
+        "lf06_dokumentation_reflexion"
+      ]
+    }
+  ]
+}

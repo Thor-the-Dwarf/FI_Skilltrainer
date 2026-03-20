@@ -1,0 +1,160 @@
+{
+  "scenario": {
+    "company": "Ausbildungsbetrieb IT-Service",
+    "scale": "Mittelstand, 180 Mitarbeitende",
+    "context": "Station 3 des Tageslaufs: Gesetze, Standards und Grundschutz unterscheiden.",
+    "mission": "Sie ordnen Rechtsrahmen, Sicherheitsleitlinie und BSI-Grundschutz fuer einen Arbeitsbereich praxisnah ein.",
+    "station": {
+      "id": "LF04-ST-03",
+      "department": "IT und Compliance",
+      "profile": "Sicherheitsleitlinie, Regeln und strukturierte Umsetzungsrahmen",
+      "constraints": [
+        "Verbindlichkeit sauber trennen",
+        "Praxisbezug behalten",
+        "Knappe Leitungskommunikation ermoeglichen"
+      ]
+    },
+    "customerRequest": {
+      "from": "compliance@ausbildungsbetrieb.example",
+      "to": "it.service@ausbildungsbetrieb.example",
+      "subject": "Station 03: Sicherheitsrahmen im Betrieb erklaeren",
+      "date": "2026-03-13",
+      "body": "Bitte bereiten Sie fuer den Arbeitsbereich eine kompakte Einordnung von Gesetzen, Standards, Sicherheitsleitlinie und BSI-Grundschutz vor."
+    }
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "type": "single_choice",
+      "title": "Verbindlichkeit und Umsetzungsrahmen",
+      "prompt": "Welche Aussage ist fachlich am treffendsten?",
+      "options": [
+        {
+          "text": "Gesetze sind verbindlich, Standards und Grundschutz helfen bei der strukturierten Umsetzung",
+          "rationale": "Das trennt Rechtsrahmen und Umsetzungshilfe sauber."
+        },
+        {
+          "text": "Gesetze und Standards sind immer dasselbe",
+          "rationale": "Sie haben unterschiedliche Funktionen."
+        },
+        {
+          "text": "Nur interne Notizen sind fuer Sicherheit relevant",
+          "rationale": "Externe Anforderungen duerfen nicht ignoriert werden."
+        }
+      ],
+      "correctIndex": 0,
+      "feedback": {
+        "correct": "Richtig: So laesst sich der Rahmen im Alltag gut einordnen.",
+        "wrong": "Nicht passend: Bitte Rechtsrahmen und Standards deutlicher trennen."
+      },
+      "progressLinks": [
+        "lf04_gesetze_standards_grundschutz"
+      ]
+    },
+    {
+      "id": "q2",
+      "type": "multi_select",
+      "title": "Bestandteile eines Sicherheitsrahmens",
+      "prompt": "Welche Punkte gehoeren in einen nachvollziehbaren Sicherheitsrahmen? (Mehrfachauswahl)",
+      "options": [
+        {
+          "text": "Eine Sicherheitsleitlinie mit klaren Grundsaetzen",
+          "correct": true,
+          "rationale": "Sie gibt Orientierung fuer weitere Schritte."
+        },
+        {
+          "text": "Regeln oder Standards fuer konkrete Umsetzung",
+          "correct": true,
+          "rationale": "Sie machen den Rahmen anwendbar."
+        },
+        {
+          "text": "Dokumentierte Ableitung von Massnahmen und Verantwortlichkeiten",
+          "correct": true,
+          "rationale": "Ohne Ableitung bleibt der Rahmen abstrakt."
+        },
+        {
+          "text": "Ausschliesslich spontane Einzelentscheidungen ohne Vorgaben",
+          "correct": false,
+          "rationale": "Das fuehrt nicht zu einem belastbaren Sicherheitsrahmen."
+        },
+        {
+          "text": "Vollstaendige Trennung von Fachbereich und IT",
+          "correct": false,
+          "rationale": "Sicherheit braucht abgestimmte Zusammenarbeit."
+        }
+      ],
+      "feedback": {
+        "correct": "Richtig: Leitlinie, Regeln und Verantwortlichkeiten greifen sinnvoll ineinander.",
+        "wrong": "Teilweise falsch: Bitte Leitlinie, Umsetzungsregeln und Verantwortlichkeiten klarer zusammendenken."
+      },
+      "progressLinks": [
+        "lf04_gesetze_standards_grundschutz",
+        "lf04_sicherheitsprozess_leitlinie"
+      ]
+    },
+    {
+      "id": "q3",
+      "type": "ordering",
+      "title": "Von der Leitlinie zur Umsetzung",
+      "prompt": "Ordnen Sie die Schritte sinnvoll.",
+      "items": [
+        "Konkrete Massnahmen und Verantwortliche benennen",
+        "Sicherheitsleitlinie und Rahmenvorgaben aufnehmen",
+        "Schutzobjekte und Schutzbedarf bewerten",
+        "Ergebnisse prozesskonform dokumentieren",
+        "Prioritaeten fuer die Umsetzung ableiten"
+      ],
+      "correctOrder": [
+        "Sicherheitsleitlinie und Rahmenvorgaben aufnehmen",
+        "Schutzobjekte und Schutzbedarf bewerten",
+        "Prioritaeten fuer die Umsetzung ableiten",
+        "Konkrete Massnahmen und Verantwortliche benennen",
+        "Ergebnisse prozesskonform dokumentieren"
+      ],
+      "feedback": {
+        "correct": "Richtig: Der Sicherheitsprozess fuehrt sauber von Vorgaben zu konkreten Schritten.",
+        "wrong": "Nicht optimal: Bitte erst Rahmen, dann Bewertung, Priorisierung und Doku durchlaufen."
+      },
+      "progressLinks": [
+        "lf04_sicherheitsprozess_leitlinie"
+      ]
+    },
+    {
+      "id": "q4",
+      "type": "number",
+      "title": "Umsetzungsquote aus einer Checkliste",
+      "prompt": "Von 24 geforderten Sicherheitskontrollen sind 18 bereits umgesetzt. Wie hoch ist die Umsetzungsquote in Prozent?",
+      "expected": 75,
+      "toleranceAbs": 0.5,
+      "showExpectedFormula": "18 / 24 * 100 = 75 %",
+      "feedback": {
+        "correct": "Richtig gerechnet.",
+        "wrong": "Bitte umgesetzte Kontrollen durch die Gesamtzahl teilen und in Prozent umrechnen."
+      },
+      "progressLinks": [
+        "lf04_gesetze_standards_grundschutz"
+      ]
+    },
+    {
+      "id": "q5",
+      "type": "short_text",
+      "title": "Sicherheitsrahmen kurz erklaeren",
+      "prompt": "Erklaeren Sie in 4-6 Saetzen, wie Leitlinie, Grundschutz und Standards im Betrieb zusammenwirken.",
+      "minChars": 150,
+      "requiredKeywords": [
+        "leitlinie",
+        "grundschutz",
+        "standard"
+      ],
+      "expectedOutline": "Rolle der Leitlinie, Nutzen strukturierter Standards und kurzer Betriebsbezug.",
+      "feedback": {
+        "correct": "Richtig: Der Rahmen ist verstaendlich und betrieblich greifbar beschrieben.",
+        "wrong": "Bitte Leitlinie, Grundschutz und Standards klarer voneinander abgrenzen und verbinden."
+      },
+      "progressLinks": [
+        "lf04_gesetze_standards_grundschutz",
+        "lf04_sicherheitsprozess_leitlinie"
+      ]
+    }
+  ]
+}

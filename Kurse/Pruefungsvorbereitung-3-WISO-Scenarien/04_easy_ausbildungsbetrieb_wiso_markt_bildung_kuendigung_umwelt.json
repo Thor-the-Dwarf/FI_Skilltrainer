@@ -1,0 +1,1388 @@
+{
+  "scenario": {
+    "company": "Auenwerk Digital GmbH",
+    "scale": "IT-Dienstleister mit Logistik-, Schulungs- und Verwaltungsbereich, 94 Mitarbeitende",
+    "context": "Pruefungsvorbereitung WISO im Stationsformat mit Markt-, Ausbildungs-, GmbH-, AGG- und Umweltthemen.",
+    "mission": "Sie bearbeiten eine zusammenhaengende Fachsituation zu Marktformen, Konjunktur, Berufsbildung, JAV, Kuendigung, GmbH, AGG, Arbeitssicherheit und Umweltkennzeichnungen.",
+    "source": {
+      "kind": "Pseudonymisierte Pruefungsvorlage",
+      "reference": "AP2 Wirtschafts- und Sozialkunde, Sommer 2025",
+      "note": "Die fachliche Reihenfolge bleibt erhalten; Namen, Orte und Unternehmensbezug wurden in das Kursformat ueberfuehrt."
+    },
+    "station": {
+      "id": "PV3WISO-ST-04",
+      "department": "Pruefungsvorbereitung Wirtschafts- und Sozialkunde",
+      "profile": "Markt, Berufsbildung, Kuendigung, AGG und Umwelt",
+      "constraints": [
+        "Die 30 Originalaufgaben bleiben in thematischen Folgeauftraegen sichtbar",
+        "Kennzahlen, Rechtsquellen und Bildzeichen werden mit vorhandenen Aufgabentypen uebernommen",
+        "Rechen-, Auswahl- und Zuordnungsaufgaben sollen moeglichst direkt auto-auswertbar bleiben"
+      ]
+    },
+    "customerRequest": {
+      "from": "qualifizierung@auenwerk-digital.example",
+      "to": "projektteam@ausbildungsbetrieb.example",
+      "subject": "Bitte das naechste WISO-Trainingspaket zu Markt, Berufsbildung und Umwelt aufsetzen",
+      "date": "2026-03-20",
+      "body": "Guten Tag,\n\nwir moechten fuer unsere Auszubildenden ein weiteres WISO-Training im Stationsformat erstellen. Diesmal sollen Marktformen, Konjunktur und Unternehmensziele ebenso vorkommen wie Berufsbildung, JAV, Jugendarbeitsschutz, Arbeitszeugnis, Kuendigungsschutz, GmbH-Gruendung, AGG, Sicherheitsunterweisungen und Umweltkennzeichnungen.\n\nBitte uebernehmen Sie die Themen wieder quellenah, aber sauber pseudonymisiert. Bildzeichen und Kennzeichnungen duerfen textnah beschrieben werden, solange die fachliche Aussage eindeutig bleibt.\n\nViele Gruesse\nQualifizierung"
+    }
+  },
+  "questions": [
+    {
+      "id": "q01",
+      "type": "single_choice",
+      "title": "Sekundaeren Wirtschaftssektor erkennen",
+      "prompt": "Die Auenwerk Digital GmbH arbeitet mit verschiedenen Partnerunternehmen zusammen. Welches der folgenden Unternehmen gehoert zum sekundaeren Wirtschaftssektor?",
+      "options": [
+        {
+          "text": "Spedition Nordlicht OHG",
+          "rationale": "Transportdienstleistungen gehoeren zum tertiaeren Sektor."
+        },
+        {
+          "text": "Lagerlogistik Martin Ebert e.K.",
+          "rationale": "Auch Logistik ist eine Dienstleistung."
+        },
+        {
+          "text": "Importhaus Keller OHG",
+          "rationale": "Der Handel gehoert ebenfalls zum tertiaeren Sektor."
+        },
+        {
+          "text": "Akku- und Ladegeraetebau Auenwerk GmbH",
+          "rationale": "Die Herstellung von Guetern gehoert zum sekundaeren Sektor."
+        },
+        {
+          "text": "Handelsvertretung Show & Service GmbH",
+          "rationale": "Eine Handelsvertretung erbringt Dienstleistungen."
+        }
+      ],
+      "correctIndex": 3,
+      "feedback": {
+        "correct": "Das Unternehmen des sekundaeren Sektors wurde korrekt erkannt.",
+        "wrong": "Achten Sie darauf, ob Gueter hergestellt oder vor allem Dienstleistungen erbracht werden."
+      },
+      "progressLinks": [
+        "pv3wiso_wirtschaftssektoren_unternehmensformen"
+      ]
+    },
+    {
+      "id": "q02",
+      "type": "single_choice",
+      "title": "Marktform bei zwei Anbietern bestimmen",
+      "prompt": "Ein Wettbewerber hatte bereits im Vorjahr allein eine Steuer-App im Angebot. In diesem Jahr bringt die Auenwerk Digital GmbH eine aehnliche App auf den Markt. Es gibt viele Kaufinteressenten und keine weiteren Anbieter. Welche Marktform liegt dann vor?",
+      "options": [
+        {
+          "text": "Angebotsmonopol",
+          "rationale": "Dafuer gaebe es nur einen Anbieter."
+        },
+        {
+          "text": "Nachfrageoligopol",
+          "rationale": "Hier geht es nicht um wenige Nachfrager."
+        },
+        {
+          "text": "Angebotsoligopol",
+          "rationale": "Zwei Anbieter bei vielen Nachfragern entsprechen einem Angebotsoligopol."
+        },
+        {
+          "text": "Angebotspolypol",
+          "rationale": "Dafuer muesste es viele Anbieter geben."
+        },
+        {
+          "text": "Nachfragepolypol",
+          "rationale": "Das beschreibt nicht die gegebene Konstellation."
+        }
+      ],
+      "correctIndex": 2,
+      "feedback": {
+        "correct": "Die Marktform wurde korrekt bestimmt.",
+        "wrong": "Zaehlen Sie Anbieter und Nachfrager getrennt und ordnen Sie die Kombination dann der passenden Marktform zu."
+      },
+      "progressLinks": [
+        "pv3wiso_wirtschaftssektoren_unternehmensformen"
+      ]
+    },
+    {
+      "id": "q03",
+      "type": "single_choice",
+      "title": "Maximalprinzip vom Minimalprinzip abgrenzen",
+      "prompt": "In welchem Fall handelt die Auenwerk Digital GmbH nach dem oekonomischen Maximalprinzip?",
+      "options": [
+        {
+          "text": "Im Zentrallager wird bei gleicher Umschlagmenge die Zahl der Beschaeftigten gesenkt.",
+          "rationale": "Gleicher Output mit weniger Input entspricht dem Minimalprinzip."
+        },
+        {
+          "text": "In der Verwaltung werden Rationalisierungsmassnahmen eingefuehrt, um die Kosten zu senken.",
+          "rationale": "Auch das zielt auf denselben Erfolg mit geringerem Mitteleinsatz."
+        },
+        {
+          "text": "Der Umsatz steigt bei gleich bleibenden Personalkosten um 20 Prozent.",
+          "rationale": "Mehr Ertrag mit gleichem Mitteleinsatz beschreibt das Maximalprinzip."
+        },
+        {
+          "text": "Durch zusaetzliche Werbung wird ein Rueckgang der Verkaufszahlen gestoppt.",
+          "rationale": "Die Aussage ist zu unscharf, um eindeutig das Maximalprinzip zu beschreiben."
+        },
+        {
+          "text": "Fuer B2B-Kunden werden die Absatzpreise gesenkt, um Kosten zu sparen.",
+          "rationale": "Preisnachlaesse sind hier kein klares Beispiel fuer das Maximalprinzip."
+        }
+      ],
+      "correctIndex": 2,
+      "feedback": {
+        "correct": "Das Maximalprinzip wurde korrekt erkannt.",
+        "wrong": "Fragen Sie sich, ob mit gleichem Input mehr Output erzielt oder derselbe Output mit weniger Input erreicht wird."
+      },
+      "progressLinks": [
+        "pv3wiso_wirtschaftlichkeit_unternehmensanalyse"
+      ]
+    },
+    {
+      "id": "ctx04",
+      "type": "context_card",
+      "title": "Wirtschaftliche Entwicklung in der EU",
+      "contentBlocks": [
+        {
+          "type": "text",
+          "text": "Die Unternehmensleitung bespricht in einer Konferenz die folgenden Kennzahlen zur wirtschaftlichen Entwicklung in der EU."
+        },
+        {
+          "type": "table",
+          "columns": [
+            "Indikator",
+            "Vorjahr in %",
+            "Aktuelles Jahr in %",
+            "Prognose Folgejahr in %"
+          ],
+          "rows": [
+            [
+              "Bruttoinlandsprodukt",
+              "-0,5",
+              "-1,0",
+              "-2,0"
+            ],
+            [
+              "Inflationsrate",
+              "2,2",
+              "2,2",
+              "2,0"
+            ],
+            [
+              "Arbeitslosenquote",
+              "6,0",
+              "6,5",
+              "7,5"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "id": "q04",
+      "type": "single_choice",
+      "title": "Konjunkturphase im aktuellen Jahr bestimmen",
+      "prompt": "In welcher Phase der gesamtwirtschaftlichen Entwicklung befindet sich die EU anhand der Angaben fuer das aktuelle Jahr?",
+      "options": [
+        {
+          "text": "Stillstand oder Stagnation",
+          "rationale": "Die Werte deuten auf eine deutlich negative Entwicklung und nicht nur auf Stillstand hin."
+        },
+        {
+          "text": "Aufschwung oder Expansion",
+          "rationale": "Dafuer wuerden steigende Wirtschaftsleistung und sinkende Arbeitslosigkeit sprechen."
+        },
+        {
+          "text": "Hochstand oder Boom",
+          "rationale": "Die Kennzahlen zeigen gerade keinen Boom."
+        },
+        {
+          "text": "Abschwung oder Rezession",
+          "rationale": "Sinkendes BIP bei steigender Arbeitslosigkeit passt zu einer Rezession."
+        },
+        {
+          "text": "Tiefstand oder Depression",
+          "rationale": "So weit ist die Lage in der Tabelle noch nicht beschrieben."
+        }
+      ],
+      "correctIndex": 3,
+      "feedback": {
+        "correct": "Die Konjunkturphase wurde korrekt bestimmt.",
+        "wrong": "Vergleichen Sie BIP und Arbeitslosenquote mit den typischen Merkmalen der Konjunkturphasen."
+      },
+      "progressLinks": [
+        "pv3wiso_wirtschaftlichkeit_unternehmensanalyse"
+      ]
+    },
+    {
+      "id": "q05",
+      "type": "single_choice",
+      "title": "Typisches Merkmal einer Rezession erkennen",
+      "prompt": "Welches der folgenden Merkmale ist typisch fuer eine konjunkturelle Rezession?",
+      "options": [
+        {
+          "text": "Die Investitionen steigen stark an.",
+          "rationale": "In einer Rezession gehen Investitionen eher zurueck."
+        },
+        {
+          "text": "Das Bruttoinlandsprodukt waechst deutlich.",
+          "rationale": "Eine Rezession ist durch ruecklaeufige Wirtschaftsleistung gekennzeichnet."
+        },
+        {
+          "text": "Die gesamtwirtschaftliche Lohnsumme steigt stark an.",
+          "rationale": "Das ist kein typisches Kernmerkmal einer Rezession."
+        },
+        {
+          "text": "Die Kapazitaetsauslastung steigt weiter.",
+          "rationale": "In der Rezession sinkt die Auslastung typischerweise."
+        },
+        {
+          "text": "Die Lagerbestaende nehmen zu.",
+          "rationale": "Wenn die Nachfrage nachlaesst, wachsen haeufig die Lagerbestaende."
+        }
+      ],
+      "correctIndex": 4,
+      "feedback": {
+        "correct": "Das typische Rezessionsmerkmal wurde korrekt erkannt.",
+        "wrong": "Achten Sie auf Folgen sinkender Nachfrage fuer Produktion und Absatz."
+      },
+      "progressLinks": [
+        "pv3wiso_wirtschaftlichkeit_unternehmensanalyse"
+      ]
+    },
+    {
+      "id": "q06",
+      "type": "single_choice",
+      "title": "Konjunkturbelebende Massnahme auswaehlen",
+      "prompt": "Welche Massnahme belebt die Konjunktur und koennte zu einer besseren Auftragslage fuehren?",
+      "options": [
+        {
+          "text": "Erhoehung der staatlichen Investitionen",
+          "rationale": "Zusaetzliche staatliche Investitionen wirken nachfragebelebend."
+        },
+        {
+          "text": "Erhoehung der Steuerlast",
+          "rationale": "Hoehere Steuern bremsen eher die Nachfrage."
+        },
+        {
+          "text": "Erhoehung der Leitzinsen",
+          "rationale": "Steigende Zinsen wirken meist eher drosselnd."
+        },
+        {
+          "text": "Kuerzung des Kindergeldes",
+          "rationale": "Das staerkt die Nachfrage nicht."
+        },
+        {
+          "text": "Kuerzung des Arbeitslosengeldes",
+          "rationale": "Auch das wirkt nicht konjunkturbelebend."
+        }
+      ],
+      "correctIndex": 0,
+      "feedback": {
+        "correct": "Die konjunkturbelebende Massnahme wurde korrekt erkannt.",
+        "wrong": "Ueberlegen Sie, welche Massnahme die gesamtwirtschaftliche Nachfrage direkt steigern kann."
+      },
+      "progressLinks": [
+        "pv3wiso_wirtschaftlichkeit_unternehmensanalyse"
+      ]
+    },
+    {
+      "id": "q07",
+      "type": "table_fill",
+      "title": "Unternehmensziele den Zielarten zuordnen",
+      "prompt": "Ordnen Sie die Unternehmensziele der passenden Zielart zu.",
+      "columns": [
+        "Unternehmensziel",
+        "Zielart"
+      ],
+      "rows": [
+        [
+          "Die Chancengleichheit von Frauen und Maennern wird sichergestellt.",
+          {
+            "key": "goal_a",
+            "label": "Chancengleichheit sicherstellen",
+            "expected": "Weder oekonomisches noch oekologisches Ziel",
+            "inputType": "select",
+            "placeholder": "Zielart waehlen",
+            "options": [
+              "Oekonomisches Ziel",
+              "Oekologisches Ziel",
+              "Weder oekonomisches noch oekologisches Ziel"
+            ]
+          }
+        ],
+        [
+          "Die Mitarbeitenden sollen durch Gewinnbeteiligung zu effizienterer Arbeitsleistung motiviert werden.",
+          {
+            "key": "goal_b",
+            "label": "Gewinnbeteiligung zur Leistungssteigerung",
+            "expected": "Oekonomisches Ziel",
+            "inputType": "select",
+            "placeholder": "Zielart waehlen",
+            "options": [
+              "Oekonomisches Ziel",
+              "Oekologisches Ziel",
+              "Weder oekonomisches noch oekologisches Ziel"
+            ]
+          }
+        ],
+        [
+          "Es sollen ausreichend Gewinne erwirtschaftet werden, damit Investitionen nicht ausschliesslich mit Fremdkapital finanziert werden muessen.",
+          {
+            "key": "goal_c",
+            "label": "Gewinne fuer Investitionen sichern",
+            "expected": "Oekonomisches Ziel",
+            "inputType": "select",
+            "placeholder": "Zielart waehlen",
+            "options": [
+              "Oekonomisches Ziel",
+              "Oekologisches Ziel",
+              "Weder oekonomisches noch oekologisches Ziel"
+            ]
+          }
+        ],
+        [
+          "Die CO2-Emissionen sollen durch den Einbau einer Photovoltaikanlage sinken.",
+          {
+            "key": "goal_d",
+            "label": "CO2-Emissionen senken",
+            "expected": "Oekologisches Ziel",
+            "inputType": "select",
+            "placeholder": "Zielart waehlen",
+            "options": [
+              "Oekonomisches Ziel",
+              "Oekologisches Ziel",
+              "Weder oekonomisches noch oekologisches Ziel"
+            ]
+          }
+        ],
+        [
+          "In Lagerlogistik und Transport sollen moderne Verfahren eingesetzt werden, damit die natuerliche Lebensgrundlage moeglichst wenig belastet wird.",
+          {
+            "key": "goal_e",
+            "label": "Lebensgrundlagen durch Logistik schonen",
+            "expected": "Oekologisches Ziel",
+            "inputType": "select",
+            "placeholder": "Zielart waehlen",
+            "options": [
+              "Oekonomisches Ziel",
+              "Oekologisches Ziel",
+              "Weder oekonomisches noch oekologisches Ziel"
+            ]
+          }
+        ]
+      ],
+      "feedback": {
+        "correct": "Die Unternehmensziele wurden korrekt zugeordnet.",
+        "wrong": "Pruefen Sie, ob das Ziel primaer wirtschaftliche Ergebnisse, Umweltwirkungen oder einen anderen Bereich betrifft."
+      },
+      "progressLinks": [
+        "pv3wiso_wirtschaftlichkeit_unternehmensanalyse"
+      ]
+    },
+    {
+      "id": "f02",
+      "type": "followup_divider",
+      "title": "Berufsbildung, JAV und Jugendarbeitsschutz",
+      "from": "ausbildung@auenwerk-digital.example",
+      "to": "projektteam@ausbildungsbetrieb.example",
+      "subject": "Bitte den naechsten Block zu Berufsausbildung, JAV und Betriebsversammlung ausarbeiten",
+      "date": "2026-03-20",
+      "body": "Hallo,\n\nim zweiten Themenblock sollen Regeln zur Berufsausbildung, zur Jugend- und Auszubildendenvertretung, zum Jugendarbeitsschutz und zur Betriebsversammlung vorkommen. Bitte halten Sie die Rechtsfolgen klar und nutzen Sie bei den Bildungsfragen die vorhandenen auto-auswertbaren Formate.\n\nViele Gruesse\nAusbildung"
+    },
+    {
+      "id": "q08",
+      "type": "single_choice",
+      "title": "Fehlerhaften Vertragsinhalt im Ausbildungsvertrag erkennen",
+      "prompt": "Eine 20-jaehrige Auszubildende beginnt am 1. Februar ihre Berufsausbildung. Welcher Vertragsinhalt im vorbereiteten Ausbildungsvertrag muss korrigiert werden?",
+      "options": [
+        {
+          "text": "Die Ausbildungsverguetung ist bereits fuer alle Ausbildungsjahre eingetragen.",
+          "rationale": "Das ist zulaessig und sinnvoll."
+        },
+        {
+          "text": "Die Angaben der Eltern fehlen.",
+          "rationale": "Bei einer volljaehrigen Auszubildenden muessen die Eltern nicht aufgenommen werden."
+        },
+        {
+          "text": "Die Kuendigungsregeln sind aufgefuehrt.",
+          "rationale": "Auch solche Angaben koennen Bestandteil des Vertrags sein."
+        },
+        {
+          "text": "Die Probezeit ist mit sechs Monaten eingetragen.",
+          "rationale": "Die Probezeit im Ausbildungsverhaeltnis darf nicht so lang sein."
+        },
+        {
+          "text": "Die Ausbildungsdauer ist mit 36 Monaten eingetragen.",
+          "rationale": "Das kann fuer einen dreijaehrigen Ausbildungsberuf korrekt sein."
+        }
+      ],
+      "correctIndex": 3,
+      "feedback": {
+        "correct": "Der fehlerhafte Vertragsinhalt wurde korrekt erkannt.",
+        "wrong": "Achten Sie besonders auf die gesetzlich zulaessige Dauer der Probezeit im Ausbildungsverhaeltnis."
+      },
+      "progressLinks": [
+        "pv3wiso_arbeitsrecht_ausbildung"
+      ]
+    },
+    {
+      "id": "q09",
+      "type": "multi_select",
+      "title": "BBiG-konforme Aussagen zur Ausbildung auswaehlen",
+      "prompt": "Welche zwei Aussagen entsprechen den Regelungen des Berufsbildungsgesetzes?",
+      "options": [
+        {
+          "text": "Waehrend der Probezeit kann das Ausbildungsverhaeltnis nur mit einer Frist von vier Wochen gekuendigt werden.",
+          "correct": false,
+          "rationale": "In der Probezeit kann ohne Einhaltung einer Frist gekuendigt werden."
+        },
+        {
+          "text": "Eine Auszubildende kann nach der Probezeit mit vier Wochen Frist kuendigen, wenn sie die Ausbildung aufgeben oder einen anderen Beruf erlernen will.",
+          "correct": true,
+          "rationale": "Genau diese Sonderregel sieht das BBiG vor."
+        },
+        {
+          "text": "Eine Weiterbeschaeftigung nach der Ausbildung kann bereits verbindlich im urspruenglichen Berufsausbildungsvertrag festgelegt werden.",
+          "correct": false,
+          "rationale": "Eine solche Bindung ist im urspruenglichen Ausbildungsvertrag gerade nicht zulaessig."
+        },
+        {
+          "text": "Das Ausbildungsverhaeltnis endet immer erst mit Ablauf der vertraglichen Ausbildungszeit, auch wenn die Abschlusspruefung frueher bestanden wird.",
+          "correct": false,
+          "rationale": "Bei frueher bestandenem Abschluss endet das Ausbildungsverhaeltnis vorzeitig."
+        },
+        {
+          "text": "Der Ausbildungsbetrieb muss auf Verlangen der ausgelernten Person ein qualifiziertes Zeugnis ausstellen.",
+          "correct": true,
+          "rationale": "Auf Verlangen ist ein qualifiziertes Zeugnis auszustellen."
+        },
+        {
+          "text": "Der Ausbildungsbetrieb muss unmittelbar nach bestandener Abschlusspruefung zwingend einen unbefristeten Arbeitsvertrag anbieten.",
+          "correct": false,
+          "rationale": "Eine solche automatische Uebernahmepflicht gibt es nicht."
+        }
+      ],
+      "feedback": {
+        "correct": "Die BBiG-konformen Aussagen wurden korrekt ausgewaehlt.",
+        "wrong": "Pruefen Sie noch einmal Probezeit, Beendigungszeitpunkt, Zeugnisanspruch und Weiterbeschaeftigung."
+      },
+      "progressLinks": [
+        "pv3wiso_arbeitsrecht_ausbildung"
+      ]
+    },
+    {
+      "id": "q10",
+      "type": "single_choice",
+      "title": "Pflichtunterlage des Berufsausbildungsvertrags bestimmen",
+      "prompt": "Welche der folgenden Unterlagen ist gemaess Berufsbildungsgesetz Teil des Berufsausbildungsvertrags?",
+      "options": [
+        {
+          "text": "Der fachlich gegliederte Stoffplan der Berufsschule",
+          "rationale": "Der Berufsschulstoffplan ist nicht der betriebliche Vertragsbestandteil."
+        },
+        {
+          "text": "Der gemeinsame Ausbildungsplan von Berufsschule und Betrieb",
+          "rationale": "Ein solcher gemeinsamer Plan ist nicht die gesuchte Pflichtunterlage."
+        },
+        {
+          "text": "Der Rahmenlehrplan der Berufsschule",
+          "rationale": "Auch der Rahmenlehrplan gehoert nicht direkt in den Ausbildungsvertrag."
+        },
+        {
+          "text": "Der Ausbildungsplan des Ausbildungsbetriebs",
+          "rationale": "Der betriebliche Ausbildungsplan gehoert zum Vertrag."
+        },
+        {
+          "text": "Der Einsatz- und der Pausenplan des jeweiligen Betriebs",
+          "rationale": "Das ist kein Bestandteil des Berufsausbildungsvertrags im engeren Sinn."
+        }
+      ],
+      "correctIndex": 3,
+      "feedback": {
+        "correct": "Die Pflichtunterlage wurde korrekt bestimmt.",
+        "wrong": "Denken Sie an den Plan, der die betriebliche Vermittlung der Ausbildungsinhalte konkretisiert."
+      },
+      "progressLinks": [
+        "pv3wiso_arbeitsrecht_ausbildung"
+      ]
+    },
+    {
+      "id": "q11",
+      "type": "single_choice",
+      "title": "Rechtsgrundlage der JAV benennen",
+      "prompt": "Eine Auszubildende moechte wissen, in welchem Gesetz die Aufgaben der Jugend- und Auszubildendenvertretung geregelt sind. Welche Rechtsgrundlage ist richtig?",
+      "options": [
+        {
+          "text": "Buergerliches Gesetzbuch",
+          "rationale": "Das BGB enthaelt diese betriebsverfassungsrechtlichen Regeln nicht."
+        },
+        {
+          "text": "Arbeitsschutzgesetz",
+          "rationale": "Das Arbeitsschutzgesetz regelt die JAV nicht."
+        },
+        {
+          "text": "Berufsbildungsgesetz",
+          "rationale": "Das BBiG regelt zwar die Ausbildung, aber nicht die JAV als Interessenvertretung."
+        },
+        {
+          "text": "Jugendarbeitsschutzgesetz",
+          "rationale": "Das JArbSchG regelt Schutzvorschriften, nicht die JAV."
+        },
+        {
+          "text": "Betriebsverfassungsgesetz",
+          "rationale": "Dort sind Wahl, Aufgaben und Rechte der JAV geregelt."
+        }
+      ],
+      "correctIndex": 4,
+      "feedback": {
+        "correct": "Die Rechtsgrundlage der JAV wurde korrekt erkannt.",
+        "wrong": "Suchen Sie nach dem Gesetz, das die betriebliche Mitbestimmung regelt."
+      },
+      "progressLinks": [
+        "pv3wiso_mitbestimmung_tarif_sozialversicherung"
+      ]
+    },
+    {
+      "id": "q12",
+      "type": "single_choice",
+      "title": "Zusammenarbeit zwischen JAV und Betriebsrat einordnen",
+      "prompt": "Welche Aussage ueber die Zusammenarbeit zwischen JAV, Betriebsrat und Geschaeftsleitung trifft zu?",
+      "options": [
+        {
+          "text": "Die JAV darf nur einmal oder zweimal im Jahr an Sitzungen des Betriebsrats teilnehmen.",
+          "rationale": "So eng ist die Beteiligung der JAV nicht begrenzt."
+        },
+        {
+          "text": "Die JAV kann den Betriebsrat bitten, Massnahmen zugunsten der Auszubildenden zu beantragen.",
+          "rationale": "Genau diese Schnittstelle zwischen JAV und Betriebsrat besteht."
+        },
+        {
+          "text": "Die JAV vertritt alle Jugendlichen und Auszubildenden unmittelbar gegenueber der Geschaeftsleitung ohne Beteiligung des Betriebsrats.",
+          "rationale": "Die JAV arbeitet nicht voellig losgeloest vom Betriebsrat."
+        },
+        {
+          "text": "Der Betriebsrat muss die JAV vor jeder einzelnen Entscheidung des Betriebs anhoeren.",
+          "rationale": "Eine solch ausnahmslose Pflicht besteht nicht."
+        },
+        {
+          "text": "Die JAV hat bei allen betrieblichen Angelegenheiten ein volles Mitspracherecht.",
+          "rationale": "Ihre Rechte sind auf jugend- und ausbildungsbezogene Themen bezogen."
+        }
+      ],
+      "correctIndex": 1,
+      "feedback": {
+        "correct": "Die Rolle der JAV wurde korrekt eingeordnet.",
+        "wrong": "Achten Sie darauf, wie die JAV ihre Anliegen typischerweise ueber den Betriebsrat einbringt."
+      },
+      "progressLinks": [
+        "pv3wiso_mitbestimmung_tarif_sozialversicherung"
+      ]
+    },
+    {
+      "id": "q13",
+      "type": "single_choice",
+      "title": "Voraussetzung fuer die Wahl in den Betriebsrat erkennen",
+      "prompt": "Welche Voraussetzung muss eine Fachinformatikerin erfuellen, damit sie in den Betriebsrat gewaehlt werden kann?",
+      "options": [
+        {
+          "text": "Sie muss volljaehrig sein und die Ausbildung bereits abgeschlossen haben.",
+          "rationale": "Ein abgeschlossener Ausbildungsberuf ist dafuer nicht zwingend erforderlich."
+        },
+        {
+          "text": "Sie muss mindestens 15 Jahre alt sein.",
+          "rationale": "Das reicht fuer die Waehlbarkeit nicht aus."
+        },
+        {
+          "text": "Sie muss volljaehrig sein und dem Betrieb seit mindestens sechs Monaten angehoeren.",
+          "rationale": "Das entspricht den Voraussetzungen fuer die Waehlbarkeit in den Betriebsrat."
+        },
+        {
+          "text": "Berufliche und strafrechtliche Vorgeschichte spielen immer ueberhaupt keine Rolle.",
+          "rationale": "Die Aussage beschreibt nicht die eigentlichen gesetzlichen Voraussetzungen."
+        },
+        {
+          "text": "Sie muss volljaehrig sein und darf dem Betrieb hoechstens sechs Monate angehoeren.",
+          "rationale": "Gefordert ist gerade eine Mindestzugehoerigkeit."
+        }
+      ],
+      "correctIndex": 2,
+      "feedback": {
+        "correct": "Die Voraussetzung fuer die Waehlbarkeit wurde korrekt erkannt.",
+        "wrong": "Pruefen Sie Alter und Mindestzugehoerigkeit zum Betrieb."
+      },
+      "progressLinks": [
+        "pv3wiso_mitbestimmung_tarif_sozialversicherung"
+      ]
+    },
+    {
+      "id": "q14",
+      "type": "single_choice",
+      "title": "Zutreffende Regel des Jugendarbeitsschutzes auswaehlen",
+      "prompt": "Welche der folgenden Regeln trifft im Jugendarbeitsschutzgesetz zu?",
+      "options": [
+        {
+          "text": "Jugendliche duerfen bis zu acht Stunden ohne Unterbrechung beschaeftigt werden.",
+          "rationale": "Pausen duerfen bei Jugendlichen nicht entfallen."
+        },
+        {
+          "text": "Jugendliche muessen spaetestens nach 4,5 Stunden eine Ruhepause von acht Stunden einlegen.",
+          "rationale": "Die Pausenregel ist so nicht formuliert."
+        },
+        {
+          "text": "Jugendliche sollen vor jeder Gefaehrdung ihrer Gesundheit oder ihrer Entwicklung bewahrt werden.",
+          "rationale": "Genau dieser Schutzgedanke steht im Mittelpunkt des JArbSchG."
+        },
+        {
+          "text": "Jugendliche duerfen nach eigener Entscheidung auch auf Sonntage und in die Nachtarbeit ausweichen.",
+          "rationale": "Derartige Abweichungen sind nicht frei waehlbar."
+        },
+        {
+          "text": "Jugendliche muessen vor der Abschlusspruefung generell zwei Arbeitstage freigestellt werden.",
+          "rationale": "Die Freistellungsregeln sehen etwas anderes vor."
+        }
+      ],
+      "correctIndex": 2,
+      "feedback": {
+        "correct": "Die zutreffende Regel des Jugendarbeitsschutzes wurde korrekt erkannt.",
+        "wrong": "Achten Sie auf den grundlegenden Schutz von Gesundheit und Entwicklung Jugendlicher."
+      },
+      "progressLinks": [
+        "pv3wiso_jugendarbeitsschutz_urlaub"
+      ]
+    },
+    {
+      "id": "q15",
+      "type": "single_choice",
+      "title": "Teilnahmeberechtigung an der Betriebsversammlung bestimmen",
+      "prompt": "Der Betriebsrat laedt zur vierteljaehrlichen Betriebsversammlung ein. Welche Personengruppe ist berechtigt, daran teilzunehmen?",
+      "options": [
+        {
+          "text": "Alle Arbeitnehmenden des Unternehmens",
+          "rationale": "Die Betriebsversammlung richtet sich an die Beschaeftigten des Betriebs."
+        },
+        {
+          "text": "Nur die Betriebsratsmitglieder und die Gewerkschaftsvertreter",
+          "rationale": "Die Teilnahme ist nicht auf diese Gruppe beschraenkt."
+        },
+        {
+          "text": "Nur die Geschaeftsleitung und ehemalige Mitarbeitende",
+          "rationale": "Auch das beschreibt nicht den Teilnehmerkreis."
+        },
+        {
+          "text": "Nur die Vollzeitbeschaeftigten und die Fuehrungskraefte",
+          "rationale": "Die Teilnahme ist nicht auf Vollzeit und Fuehrungsebene beschraenkt."
+        },
+        {
+          "text": "Nur die Vollzeitbeschaeftigten und die Auszubildenden",
+          "rationale": "Auch Teilzeitkraefte und andere Arbeitnehmende sind nicht ausgeschlossen."
+        }
+      ],
+      "correctIndex": 0,
+      "feedback": {
+        "correct": "Der Kreis der Teilnahmeberechtigten wurde korrekt bestimmt.",
+        "wrong": "Denken Sie daran, fuer wen die Betriebsversammlung als Informations- und Austauschforum gedacht ist."
+      },
+      "progressLinks": [
+        "pv3wiso_mitbestimmung_tarif_sozialversicherung"
+      ]
+    },
+    {
+      "id": "f03",
+      "type": "followup_divider",
+      "title": "Rechtsquellen, Streik und Kuendigungsfristen",
+      "from": "personalservice@auenwerk-digital.example",
+      "to": "projektteam@ausbildungsbetrieb.example",
+      "subject": "Bitte den Block zu Rechtsquellen, Streik und Kuendigung vervollstaendigen",
+      "date": "2026-03-20",
+      "body": "Hallo,\n\nim dritten Themenblock wollen wir Rechtsquellen, Tarifstreik, Kuendigungsfristen, Arbeitszeugnis und besonderen Kuendigungsschutz verbinden. Bitte behalten Sie besonders bei den Fristen und Schutzrechten die jurische Trennschaerfe bei.\n\nViele Gruesse\nPersonalservice"
+    },
+    {
+      "id": "q16",
+      "type": "table_fill",
+      "title": "Sachverhalte den passenden Rechtsquellen zuordnen",
+      "prompt": "Ordnen Sie den Sachverhalten die jeweils zutreffende Rechtsquelle zu.",
+      "columns": [
+        "Sachverhalt",
+        "Rechtsquelle"
+      ],
+      "rows": [
+        [
+          "Geschaeftsfuehrung und Betriebsrat arbeiten unter Beachtung der geltenden Tarifvertraege und gesetzlichen Regelungen konstruktiv zusammen.",
+          {
+            "key": "law_a",
+            "label": "Zusammenarbeit von Geschaeftsfuehrung und Betriebsrat",
+            "expected": "Betriebsverfassungsgesetz",
+            "inputType": "select",
+            "placeholder": "Rechtsquelle waehlen",
+            "options": [
+              "Berufsbildungsgesetz",
+              "Handelsgesetzbuch",
+              "Betriebsverfassungsgesetz",
+              "Buergerliches Gesetzbuch",
+              "Bundesurlaubsgesetz",
+              "Jugendarbeitsschutzgesetz"
+            ]
+          }
+        ],
+        [
+          "Die Geschaeftsleitung des Unternehmens erarbeitet neue Allgemeine Geschaeftsbedingungen.",
+          {
+            "key": "law_b",
+            "label": "Allgemeine Geschaeftsbedingungen erarbeiten",
+            "expected": "Buergerliches Gesetzbuch",
+            "inputType": "select",
+            "placeholder": "Rechtsquelle waehlen",
+            "options": [
+              "Berufsbildungsgesetz",
+              "Handelsgesetzbuch",
+              "Betriebsverfassungsgesetz",
+              "Buergerliches Gesetzbuch",
+              "Bundesurlaubsgesetz",
+              "Jugendarbeitsschutzgesetz"
+            ]
+          }
+        ]
+      ],
+      "feedback": {
+        "correct": "Die Rechtsquellen wurden korrekt zugeordnet.",
+        "wrong": "Vergleichen Sie betriebsverfassungsrechtliche Fragen mit zivilrechtlichen Regelungen zu Geschaeftsbedingungen."
+      }
+    },
+    {
+      "id": "q17",
+      "type": "single_choice",
+      "title": "Rechtsfolge eines unbefristeten Streiks erkennen",
+      "prompt": "Die Gewerkschaft plant nach Ablauf der Friedenspflicht Streikmassnahmen. Welche Aussage zu einem unbefristeten Streik trifft zu?",
+      "options": [
+        {
+          "text": "Ein unbefristeter Streik muss vom DGB genehmigt werden.",
+          "rationale": "Eine solche formale Genehmigung ist nicht die entscheidende Voraussetzung."
+        },
+        {
+          "text": "Ein unbefristeter Streik muss beim Bundesministerium fuer Arbeit und Soziales beantragt werden.",
+          "rationale": "Ein ministerieller Antrag ist dafuer nicht vorgesehen."
+        },
+        {
+          "text": "Ein unbefristeter Streik ist nur vor dem Ende eines Tarifvertrags moeglich.",
+          "rationale": "Gerade die Friedenspflicht waehrend eines laufenden Tarifvertrags steht dem entgegen."
+        },
+        {
+          "text": "Ein unbefristeter Streik wird immer nur parallel zu Tarifverhandlungen gefuehrt.",
+          "rationale": "Das ist zu pauschal und nicht die zentrale Rechtsfolge."
+        },
+        {
+          "text": "Ein unbefristeter Streik kann von den Arbeitgebern mit einer Aussperrung beantwortet werden.",
+          "rationale": "Die Aussperrung ist das typische Gegenmittel der Arbeitgeberseite."
+        }
+      ],
+      "correctIndex": 4,
+      "feedback": {
+        "correct": "Die Rechtsfolge des unbefristeten Streiks wurde korrekt erkannt.",
+        "wrong": "Pruefen Sie, welche Reaktionsmoeglichkeit die Arbeitgeberseite in einem Arbeitskampf hat."
+      },
+      "progressLinks": [
+        "pv3wiso_mitbestimmung_tarif_sozialversicherung"
+      ]
+    },
+    {
+      "id": "ctx18",
+      "type": "context_card",
+      "title": "Kuendigungsfrist nach dem BGB anwenden",
+      "contentBlocks": [
+        {
+          "type": "text",
+          "text": "Der Mitarbeiter Milan Berger ist seit dem 01.01.2012 bei der Auenwerk Digital GmbH beschaeftigt. Im Dezember 2025 soll das Arbeitsverhaeltnis ordentlich zum naechstmoeglichen Termin beendet werden."
+        },
+        {
+          "type": "table",
+          "columns": [
+            "Beschaeftigungsdauer",
+            "Kuendigungsfrist des Arbeitgebers"
+          ],
+          "rows": [
+            [
+              "Allgemeiner Ausgangspunkt",
+              "4 Wochen zum 15. oder zum Monatsende"
+            ],
+            [
+              "ab 2 Jahren",
+              "1 Monat zum Monatsende"
+            ],
+            [
+              "ab 5 Jahren",
+              "2 Monate zum Monatsende"
+            ],
+            [
+              "ab 8 Jahren",
+              "3 Monate zum Monatsende"
+            ],
+            [
+              "ab 10 Jahren",
+              "4 Monate zum Monatsende"
+            ],
+            [
+              "ab 12 Jahren",
+              "5 Monate zum Monatsende"
+            ],
+            [
+              "ab 15 Jahren",
+              "6 Monate zum Monatsende"
+            ],
+            [
+              "ab 20 Jahren",
+              "7 Monate zum Monatsende"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "id": "q18",
+      "type": "table_fill",
+      "title": "Naechstmoeglichen Beendigungstermin eintragen",
+      "prompt": "Tragen Sie den naechstmoeglichen Beendigungstermin im Format `TT.MM.JJJJ` ein.",
+      "columns": [
+        "Eintrag",
+        "Datum"
+      ],
+      "rows": [
+        [
+          "Naechstmoeglicher Termin fuer die ordentliche Arbeitgeberkuendigung",
+          {
+            "key": "termination_date",
+            "label": "Naechstmoeglicher Beendigungstermin",
+            "expected": "31.05.2026",
+            "inputType": "text",
+            "placeholder": "TT.MM.JJJJ"
+          }
+        ]
+      ],
+      "feedback": {
+        "correct": "Der naechstmoegliche Beendigungstermin wurde korrekt eingetragen.",
+        "wrong": "Beruecksichtigen Sie die Betriebszugehoerigkeit seit 2012 und die gestaffelte Arbeitgeberfrist zum Monatsende."
+      },
+      "progressLinks": [
+        "pv3wiso_arbeitsrecht_ausbildung"
+      ]
+    },
+    {
+      "id": "q19",
+      "type": "single_choice",
+      "title": "Anspruch auf ein qualifiziertes Arbeitszeugnis verstehen",
+      "prompt": "Welche Aussage trifft auf ein qualifiziertes Arbeitszeugnis zu?",
+      "options": [
+        {
+          "text": "Es enthaelt nur Angaben ueber Art und Dauer der Beschaeftigung.",
+          "rationale": "Das beschreibt ein einfaches Zeugnis."
+        },
+        {
+          "text": "Es darf auf Wunsch Aussagen ueber das private Auftreten enthalten.",
+          "rationale": "Private Umstaende gehoeren nicht in das qualifizierte Zeugnis."
+        },
+        {
+          "text": "Es wird allein nach Ermessen des Arbeitgebers ausgestellt.",
+          "rationale": "Der Zeugnisanspruch haengt nicht nur vom freien Ermessen des Arbeitgebers ab."
+        },
+        {
+          "text": "Es wird nur bei sehr guten Leistungen ausgestellt.",
+          "rationale": "Ein qualifiziertes Zeugnis ist nicht auf Spitzenleistungen beschraenkt."
+        },
+        {
+          "text": "Es muss auf Verlangen der Arbeitnehmerin oder des Arbeitnehmers ausgestellt werden.",
+          "rationale": "Genau dann besteht der Anspruch auf ein qualifiziertes Zeugnis."
+        }
+      ],
+      "correctIndex": 4,
+      "feedback": {
+        "correct": "Der Anspruch auf das qualifizierte Zeugnis wurde korrekt eingeordnet.",
+        "wrong": "Trennen Sie bitte einfaches und qualifiziertes Zeugnis sowie den Ausloeser fuer den Anspruch."
+      },
+      "progressLinks": [
+        "pv3wiso_arbeitsrecht_ausbildung"
+      ]
+    },
+    {
+      "id": "q20",
+      "type": "single_choice",
+      "title": "Ordentliche Kuendigung trotz Kuendigungsschutz am ehesten moeglich",
+      "prompt": "Bei der Auenwerk Digital GmbH soll Personal abgebaut werden. Das Kuendigungsschutzgesetz ist anwendbar. Bei welchem Arbeitsverhaeltnis koennte eine ordentliche Kuendigung am ehesten in Betracht kommen?",
+      "options": [
+        {
+          "text": "Dan Schulze, 19 Jahre, Auszubildender im zweiten Ausbildungsjahr",
+          "rationale": "Auszubildende nach der Probezeit sind besonders geschuetzt."
+        },
+        {
+          "text": "Leon Berger, 32 Jahre, Fachinformatiker Systemintegration, seit fuenf Jahren im Unternehmen, ledig und ohne Kinder",
+          "rationale": "Hier besteht im Vergleich zu den anderen Faellen kein besonderer Sonderkuendigungsschutz."
+        },
+        {
+          "text": "Jola Hase, 35 Jahre, schwerbehindert, zwei Kinder, seit zehn Jahren im Unternehmen",
+          "rationale": "Schwerbehinderung und weitere soziale Gesichtspunkte sprechen gegen eine einfache ordentliche Kuendigung."
+        },
+        {
+          "text": "Luisa Nova, 28 Jahre, Personalsachbearbeiterin, im fuenften Monat schwanger",
+          "rationale": "Schwangere stehen unter besonderem Kuendigungsschutz."
+        },
+        {
+          "text": "Tim Svenson, 38 Jahre, IT-System-Elektroniker, vor einem Jahr in den Betriebsrat gewaehlt",
+          "rationale": "Betriebsratsmitglieder geniessen besonderen Kuendigungsschutz."
+        }
+      ],
+      "correctIndex": 1,
+      "feedback": {
+        "correct": "Das am ehesten kuendigbare Arbeitsverhaeltnis wurde korrekt erkannt.",
+        "wrong": "Vergleichen Sie die besonderen Schutzrechte der genannten Personengruppen."
+      },
+      "progressLinks": [
+        "pv3wiso_arbeitsrecht_ausbildung"
+      ]
+    },
+    {
+      "id": "f04",
+      "type": "followup_divider",
+      "title": "GmbH-Gruendung und AGG",
+      "from": "unternehmensentwicklung@auenwerk-digital.example",
+      "to": "projektteam@ausbildungsbetrieb.example",
+      "subject": "Bitte den Block zu GmbH-Gruendung und Gleichbehandlung vervollstaendigen",
+      "date": "2026-03-20",
+      "body": "Hallo,\n\nim vierten Teil soll es um die Gruendung einer Tochter-GmbH, die Verteilung eines Gewinns und um AGG-konforme Personalauswahl gehen. Bitte halten Sie die GmbH-Aussagen fachlich klar und bei den AGG-Faellen die Diskriminierungsmerkmale eindeutig.\n\nViele Gruesse\nUnternehmensentwicklung"
+    },
+    {
+      "id": "ctx21",
+      "type": "context_card",
+      "title": "Geplante Gruendung einer Tochter-GmbH",
+      "contentBlocks": [
+        {
+          "type": "text",
+          "text": "Zur Reduzierung finanzieller Risiken plant die Auenwerk Digital GmbH, den Bereich `Allgemeine Dienstleistungen` auszulagern. Nils Berger und Lea Vogt wollen dafuer eine selbststaendige Tochtergesellschaft in der Rechtsform der GmbH gruenden. Nils Berger beteiligt sich mit 80.000,00 EUR, Lea Vogt mit 40.000,00 EUR."
+        }
+      ]
+    },
+    {
+      "id": "q21",
+      "type": "single_choice",
+      "title": "Zutreffenden Sachverhalt zur GmbH-Gruendung erkennen",
+      "prompt": "Welcher Sachverhalt ist im Zusammenhang mit dieser GmbH-Gruendung zutreffend?",
+      "options": [
+        {
+          "text": "Lea Vogt muss die Eintragung der GmbH erst abwarten, bevor sie sich an der Gruendung beteiligen darf.",
+          "rationale": "Die Gruendungshandlungen setzen keine spaetere Registereintragung als Vorbedingung fuer die Beteiligung voraus."
+        },
+        {
+          "text": "Das neue Unternehmen darf unter keinen Umstaenden einen an die Muttergesellschaft angelehnten Namen tragen.",
+          "rationale": "Eine pauschale Unzulaessigkeit besteht so nicht."
+        },
+        {
+          "text": "Nils Berger oder Lea Vogt koennen geschaeftsfuehrende Gesellschafter sein.",
+          "rationale": "Gesellschafter einer GmbH koennen zugleich die Geschaeftsfuehrung uebernehmen."
+        },
+        {
+          "text": "Die Einlagen der beiden Gesellschafter muessen zusammen mehr als das Fuenffache des gesetzlichen Mindeststammkapitals betragen.",
+          "rationale": "Eine solche starre Ueberhoehung ist nicht vorgeschrieben."
+        },
+        {
+          "text": "Zur Rechtswirksamkeit genuegt es, wenn die Gesellschafter die Gruendung muendlich vereinbaren.",
+          "rationale": "Der Gesellschaftsvertrag einer GmbH verlangt Formvorschriften."
+        }
+      ],
+      "correctIndex": 2,
+      "feedback": {
+        "correct": "Der zutreffende Sachverhalt zur GmbH-Gruendung wurde korrekt erkannt.",
+        "wrong": "Achten Sie auf Gruendungsform, Gesellschafterrolle und die Moeglichkeit, zugleich Geschaeftsfuehrer zu sein."
+      },
+      "progressLinks": [
+        "pv3wiso_wirtschaftssektoren_unternehmensformen"
+      ]
+    },
+    {
+      "id": "q22",
+      "type": "single_choice",
+      "title": "Richtige Aussage zur GmbH auswaehlen",
+      "prompt": "Welche der folgenden Aussagen zur GmbH trifft zu?",
+      "options": [
+        {
+          "text": "Die Geschaeftsfuehrung muss zwingend von allen Gesellschaftern gemeinsam ausgeuebt werden.",
+          "rationale": "Eine GmbH kann ihre Geschaeftsfuehrung auch anders organisieren."
+        },
+        {
+          "text": "Ein Gesellschafter der GmbH kann zum Geschaeftsfuehrer bestellt werden.",
+          "rationale": "Genau das ist bei einer GmbH moeglich."
+        },
+        {
+          "text": "Die Gesellschafter haften mit ihrem Privatvermoegen fuer alle Verbindlichkeiten der GmbH.",
+          "rationale": "Gerade die Haftungsbeschraenkung unterscheidet die GmbH von Personengesellschaften."
+        },
+        {
+          "text": "Eine GmbH darf nicht in das Handelsregister eingetragen werden.",
+          "rationale": "Die GmbH wird gerade in das Handelsregister eingetragen."
+        },
+        {
+          "text": "Das Stammkapital muss in voller Hoehe von der Geschaeftsfuehrung geleistet werden.",
+          "rationale": "Die Einlagen werden nicht von der Geschaeftsfuehrung als Organ geleistet."
+        }
+      ],
+      "correctIndex": 1,
+      "feedback": {
+        "correct": "Die richtige Aussage zur GmbH wurde korrekt erkannt.",
+        "wrong": "Trennen Sie Gesellschafterstellung, Geschaeftsfuehrung, Registereintragung und Haftung sauber voneinander."
+      },
+      "progressLinks": [
+        "pv3wiso_wirtschaftssektoren_unternehmensformen"
+      ]
+    },
+    {
+      "id": "q23",
+      "type": "number",
+      "title": "Gewinnanteil einer Gesellschafterin berechnen",
+      "prompt": "Im ersten Geschaeftsjahr erzielt die neue GmbH einen Gewinn von 60.000,00 EUR. Fuer die Gewinnverteilung gibt es keine Sonderregel. Welcher Gewinnanteil entfaellt auf Lea Vogt?",
+      "expected": 20000,
+      "toleranceAbs": 0.01,
+      "showExpectedFormula": "Gesamteinlage: 80.000,00 + 40.000,00 = 120.000,00 EUR; Anteil Lea Vogt: 40.000,00 / 120.000,00 = 1/3; Gewinnanteil: 60.000,00 x 1/3 = 20.000,00 EUR.",
+      "feedback": {
+        "correct": "Der Gewinnanteil wurde korrekt berechnet.",
+        "wrong": "Bestimmen Sie zuerst den Kapitalanteil von Lea Vogt an der gesamten Einlage und wenden Sie ihn dann auf den Gewinn an."
+      },
+      "progressLinks": [
+        "pv3wiso_wirtschaftlichkeit_unternehmensanalyse"
+      ]
+    },
+    {
+      "id": "q24",
+      "type": "multi_select",
+      "title": "AGG-Verstoesse im Betrieb erkennen",
+      "prompt": "In welchen zwei Faellen wurde gegen das Allgemeine Gleichbehandlungsgesetz verstossen?",
+      "options": [
+        {
+          "text": "In einer Stellenanzeige wird nach `jungen Mitarbeitenden` gesucht.",
+          "correct": true,
+          "rationale": "Die Formulierung benachteiligt wegen des Alters."
+        },
+        {
+          "text": "Zwei Mitarbeitende werden abgemahnt, weil sie trotz Verbots im Lager wiederholt Pausen gemacht haben.",
+          "correct": false,
+          "rationale": "Eine betriebliche Regelverletzung ist kein AGG-Fall."
+        },
+        {
+          "text": "Alle volljaehrigen Mitarbeitenden erhalten einen zusaetzlichen freien Tag im Jahr.",
+          "correct": false,
+          "rationale": "Allein daraus ergibt sich hier kein typischer AGG-Verstoss."
+        },
+        {
+          "text": "Ein Bewerber wird wegen einer deutlich sichtbaren Hauterkrankung abgelehnt.",
+          "correct": true,
+          "rationale": "Eine Benachteiligung wegen einer Behinderung oder gesundheitlichen Beeintraechtigung kann gegen das AGG verstossen."
+        },
+        {
+          "text": "Schwerbehinderte Mitarbeitende erhalten mehr Urlaubstage als nicht schwerbehinderte Mitarbeitende.",
+          "correct": false,
+          "rationale": "Zusatzurlaub fuer schwerbehinderte Menschen ist gesetzlich vorgesehen."
+        },
+        {
+          "text": "Ein Bewerber fuer die Personalabteilung wird abgelehnt, weil er keine PC-Kenntnisse hat.",
+          "correct": false,
+          "rationale": "Fehlende berufsrelevante Qualifikationen duerfen beruecksichtigt werden."
+        }
+      ],
+      "feedback": {
+        "correct": "Die AGG-Verstoesse wurden korrekt ausgewaehlt.",
+        "wrong": "Achten Sie auf Benachteiligungen wegen geschuetzter Merkmale und trennen Sie diese von sachlichen Eignungskriterien."
+      },
+      "progressLinks": [
+        "pv3wiso_arbeitsschutz_umwelt_diversity"
+      ]
+    },
+    {
+      "id": "q25",
+      "type": "single_choice",
+      "title": "AGG-konforme Personalauswahl bestimmen",
+      "prompt": "Welcher Sachverhalt entspricht dem AGG bei der Auswahl neuer Mitarbeitender?",
+      "options": [
+        {
+          "text": "Vor der Sichtung der Bewerbungsunterlagen werden Name und Alter der Bewerbenden offen gelegt, damit daran direkt vorselektiert werden kann.",
+          "rationale": "Das foerdert gerade keine diskriminierungsfreie Auswahl."
+        },
+        {
+          "text": "In der Stellenanzeige wird darauf hingewiesen, dass Bewerbende aus Italien bevorzugt werden.",
+          "rationale": "Eine solche Herkunftsbevorzugung ist nicht AGG-konform."
+        },
+        {
+          "text": "Bei der Auswahl des Personals werden Maenner bevorzugt.",
+          "rationale": "Das verstoesst gegen das Gebot der Gleichbehandlung."
+        },
+        {
+          "text": "Bei der Auswahl werden ausschliesslich die Qualifikationen der Bewerberinnen und Bewerber zugrunde gelegt.",
+          "rationale": "Genau das entspricht einer diskriminierungsfreien Auswahl am Leistungsprinzip."
+        },
+        {
+          "text": "In einer Stellenanzeige wird mit `jungem, dynamischem Team` geworben und es werden nur Bewerberinnen unter 35 Jahren beruecksichtigt.",
+          "rationale": "Das benachteiligt wegen des Alters und des Geschlechts."
+        }
+      ],
+      "correctIndex": 3,
+      "feedback": {
+        "correct": "Der AGG-konforme Sachverhalt wurde korrekt erkannt.",
+        "wrong": "Entscheidend ist eine Auswahl nach berufsrelevanten Qualifikationen statt nach geschuetzten Merkmalen."
+      },
+      "progressLinks": [
+        "pv3wiso_arbeitsschutz_umwelt_diversity"
+      ]
+    },
+    {
+      "id": "f05",
+      "type": "followup_divider",
+      "title": "Arbeitssicherheit und Umweltkennzeichnungen",
+      "from": "nachhaltigkeit@auenwerk-digital.example",
+      "to": "projektteam@ausbildungsbetrieb.example",
+      "subject": "Bitte den Abschlussblock zu Sicherheitsunterweisung und Umweltzeichen abschliessen",
+      "date": "2026-03-20",
+      "body": "Hallo,\n\nzum Abschluss sollen noch Arbeitssicherheit, zustaendige Stellen, Sicherheitszeichen, Umweltschutzmassnahmen und Verpackungskennzeichnungen vorkommen. Die Zeichen und Symbole duerfen textnah beschrieben werden, solange die Zuordnung eindeutig bleibt.\n\nViele Gruesse\nNachhaltigkeit"
+    },
+    {
+      "id": "q26",
+      "type": "single_choice",
+      "title": "Zeitpunkt der Sicherheitsunterweisung bestimmen",
+      "prompt": "Zu welchem Zeitpunkt muss die Auenwerk Digital GmbH ihre Beschaeftigten ueber Unfall- und Gesundheitsgefahren belehren?",
+      "options": [
+        {
+          "text": "Nur bei Aufnahme der Beschaeftigung",
+          "rationale": "Die Unterweisung ist keine einmalige Massnahme."
+        },
+        {
+          "text": "Bei Aufnahme der Beschaeftigung und anschliessend in regelmaessigen Abstaenden",
+          "rationale": "Genau diese Kombination verlangt die Sicherheitsunterweisung."
+        },
+        {
+          "text": "Nur nach Ablauf der Probezeit",
+          "rationale": "Die Unterweisung muss frueher beginnen."
+        },
+        {
+          "text": "Erst bei Beendigung des Arbeitsvertrags",
+          "rationale": "Dann waere sie wirkungslos fuer den Arbeitsschutz."
+        },
+        {
+          "text": "Es besteht keine entsprechende Pflicht des Arbeitgebers",
+          "rationale": "Eine solche Pflicht besteht sehr wohl."
+        }
+      ],
+      "correctIndex": 1,
+      "feedback": {
+        "correct": "Der richtige Zeitpunkt der Unterweisung wurde korrekt erkannt.",
+        "wrong": "Denken Sie an die Erstunterweisung beim Start und an wiederkehrende Unterweisungen."
+      },
+      "progressLinks": [
+        "pv3wiso_arbeitsschutz_umwelt_diversity"
+      ]
+    },
+    {
+      "id": "q27",
+      "type": "single_choice",
+      "title": "Zustaendige Einrichtung fuer Infos zum Sicherheitsbeauftragten finden",
+      "prompt": "Ein Mitarbeiter soll die Aufgabe des Sicherheitsbeauftragten uebernehmen. An welche Einrichtung kann er sich fuer genauere Informationen wenden?",
+      "options": [
+        {
+          "text": "An die Gewerbeaufsichtsbehoerde",
+          "rationale": "Sie ueberwacht zwar Arbeitsschutz, ist hier aber nicht die typische erste Fachstelle fuer diese Rolle."
+        },
+        {
+          "text": "An den Deutschen Gewerkschaftsbund",
+          "rationale": "Der DGB ist dafuer nicht die zustaendige Fachinstitution."
+        },
+        {
+          "text": "An die Berufsgenossenschaft",
+          "rationale": "Die Berufsgenossenschaft ist die zentrale Ansprechstelle fuer Fragen der betrieblichen Unfallverhuetung."
+        },
+        {
+          "text": "An die Industrie- und Handelskammer",
+          "rationale": "Die IHK ist hier nicht die spezialisierte Fachstelle."
+        },
+        {
+          "text": "An die Handwerkskammer",
+          "rationale": "Auch sie ist hier nicht die naechstliegende Fachinstitution."
+        }
+      ],
+      "correctIndex": 2,
+      "feedback": {
+        "correct": "Die zustaendige Einrichtung wurde korrekt bestimmt.",
+        "wrong": "Bei Fragen zum betrieblichen Unfall- und Gesundheitsschutz ist die Berufsgenossenschaft die naechstliegende Fachstelle."
+      },
+      "progressLinks": [
+        "pv3wiso_arbeitsschutz_umwelt_diversity"
+      ]
+    },
+    {
+      "id": "q28",
+      "type": "table_fill",
+      "title": "Sicherheitszeichen den Zeichenarten zuordnen",
+      "prompt": "Ordnen Sie den beschriebenen Schildern die richtige Zeichenart zu. Die Bildzeichen der Quelle werden hier als kurze Beschreibungen wiedergegeben.",
+      "columns": [
+        "Beschriebenes Schild",
+        "Zeichenart"
+      ],
+      "rows": [
+        [
+          "Blaues Rundzeichen mit weissem Sicherheitsschuh",
+          {
+            "key": "sign_1",
+            "label": "Sicherheitsschuh-Zeichen",
+            "expected": "Gebotszeichen",
+            "inputType": "select",
+            "placeholder": "Zeichenart waehlen",
+            "options": [
+              "Rettungszeichen",
+              "Verbotszeichen",
+              "Brandschutzzeichen",
+              "Gebotszeichen",
+              "Warnzeichen"
+            ]
+          }
+        ],
+        [
+          "Gruenes Quadrat mit weissem Kreuz",
+          {
+            "key": "sign_2",
+            "label": "Weisses Kreuz auf gruenem Grund",
+            "expected": "Rettungszeichen",
+            "inputType": "select",
+            "placeholder": "Zeichenart waehlen",
+            "options": [
+              "Rettungszeichen",
+              "Verbotszeichen",
+              "Brandschutzzeichen",
+              "Gebotszeichen",
+              "Warnzeichen"
+            ]
+          }
+        ],
+        [
+          "Rundes Verbotszeichen mit durchgestrichener Zigarette",
+          {
+            "key": "sign_3",
+            "label": "Rauchverbotsschild",
+            "expected": "Verbotszeichen",
+            "inputType": "select",
+            "placeholder": "Zeichenart waehlen",
+            "options": [
+              "Rettungszeichen",
+              "Verbotszeichen",
+              "Brandschutzzeichen",
+              "Gebotszeichen",
+              "Warnzeichen"
+            ]
+          }
+        ],
+        [
+          "Gelbes Warndreieck mit stolpernder Person",
+          {
+            "key": "sign_4",
+            "label": "Warnschild Stolperstelle",
+            "expected": "Warnzeichen",
+            "inputType": "select",
+            "placeholder": "Zeichenart waehlen",
+            "options": [
+              "Rettungszeichen",
+              "Verbotszeichen",
+              "Brandschutzzeichen",
+              "Gebotszeichen",
+              "Warnzeichen"
+            ]
+          }
+        ],
+        [
+          "Rotes Brandschutzzeichen mit aufgerolltem Loeschschlauch",
+          {
+            "key": "sign_5",
+            "label": "Loeschschlauch-Zeichen",
+            "expected": "Brandschutzzeichen",
+            "inputType": "select",
+            "placeholder": "Zeichenart waehlen",
+            "options": [
+              "Rettungszeichen",
+              "Verbotszeichen",
+              "Brandschutzzeichen",
+              "Gebotszeichen",
+              "Warnzeichen"
+            ]
+          }
+        ]
+      ],
+      "feedback": {
+        "correct": "Die Zeichenarten wurden korrekt zugeordnet.",
+        "wrong": "Vergleichen Sie Farbe, Form und Zweck der beschriebenen Sicherheitszeichen noch einmal systematisch."
+      },
+      "progressLinks": [
+        "pv3wiso_arbeitsschutz_umwelt_diversity"
+      ]
+    },
+    {
+      "id": "q29",
+      "type": "single_choice",
+      "title": "Massnahme ohne Beitrag zum Umweltschutz erkennen",
+      "prompt": "Die Auenwerk Digital GmbH will den Umweltschutz verbessern. Welche der folgenden Massnahmen traegt nicht zur Erreichung dieses Ziels bei?",
+      "options": [
+        {
+          "text": "Die Beleuchtung in den Buero- und Verkaufsraeumen wird auf LED-Leuchtmittel umgestellt.",
+          "rationale": "Das senkt typischerweise den Energieverbrauch."
+        },
+        {
+          "text": "In der Betriebskantine wird der Kaffee in Einwegbechern aus Kunststoff ausgegeben.",
+          "rationale": "Einwegbecher aus Kunststoff verschlechtern die Umweltbilanz statt sie zu verbessern."
+        },
+        {
+          "text": "Die Transportlogistik wird mithilfe einer geeigneten Software optimiert.",
+          "rationale": "Effizientere Logistik kann Wege und Emissionen reduzieren."
+        },
+        {
+          "text": "Die Reinigung der Gebaeudefenster erfolgt mit biologisch abbaubaren Reinigungsmitteln.",
+          "rationale": "Auch das unterstuetzt umweltschonendes Handeln."
+        },
+        {
+          "text": "In den Bueros wird ausschliesslich Recycling-Papier verwendet.",
+          "rationale": "Recycling-Papier ist eine typische Umweltmassnahme."
+        }
+      ],
+      "correctIndex": 1,
+      "feedback": {
+        "correct": "Die nicht umweltschonende Massnahme wurde korrekt erkannt.",
+        "wrong": "Achten Sie darauf, welche Massnahme Abfall und Ressourcenverbrauch eher erhoeht als senkt."
+      },
+      "progressLinks": [
+        "pv3wiso_arbeitsschutz_umwelt_diversity"
+      ]
+    },
+    {
+      "id": "q30",
+      "type": "single_choice",
+      "title": "Recycling-Kennzeichnung auf Verpackungen finden",
+      "prompt": "Auf Produktverpackungen finden sich unterschiedliche Kennzeichnungen. Welche Kennzeichnung weist auf das Recycling von Verpackungen hin?",
+      "options": [
+        {
+          "text": "Der Blaue Engel",
+          "rationale": "Der Blaue Engel ist ein Umweltzeichen, aber nicht das klassische Recycling-Symbol fuer Verpackungen."
+        },
+        {
+          "text": "Das Fairtrade-Zeichen",
+          "rationale": "Fairtrade steht fuer soziale und faire Handelsstandards."
+        },
+        {
+          "text": "Das CE-Zeichen",
+          "rationale": "CE kennzeichnet Konformitaet mit bestimmten EU-Vorgaben, nicht Recycling."
+        },
+        {
+          "text": "Das Symbol mit drei im Kreis laufenden Pfeilen",
+          "rationale": "Dieses Zeichen steht fuer Recycling beziehungsweise den Recyclingkreislauf."
+        },
+        {
+          "text": "Das Tiegelsymbol mit `6M`",
+          "rationale": "Dieses Zeichen verweist auf die Verwendungsdauer nach dem Oeffnen."
+        }
+      ],
+      "correctIndex": 3,
+      "feedback": {
+        "correct": "Die Recycling-Kennzeichnung wurde korrekt erkannt.",
+        "wrong": "Vergleichen Sie Umweltzeichen, Produktkonformitaet, Haltbarkeit nach dem Oeffnen und das eigentliche Recycling-Symbol."
+      },
+      "progressLinks": [
+        "pv3wiso_arbeitsschutz_umwelt_diversity"
+      ]
+    }
+  ]
+}

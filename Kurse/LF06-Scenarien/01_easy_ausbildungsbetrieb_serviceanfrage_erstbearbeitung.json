@@ -1,0 +1,734 @@
+{
+  "scenario": {
+    "company": "Ausbildungsbetrieb IT-Service",
+    "scale": "Regional, 210 Mitarbeitende",
+    "context": "Station 01: Startauftrag und Folgeauftraege zur Bearbeitung eines Servicefalls aus dem Tagesgeschaeft.",
+    "mission": "Sie nehmen eine Anfrage auf, priorisieren sie, analysieren den Fall, koordinieren die Bearbeitung und liefern eine begruendete Serviceempfehlung.",
+    "station": {
+      "id": "LF06-ST-01",
+      "department": "IT-Service-Desk",
+      "profile": "Ticketannahme, Erstdiagnose, Kundenkommunikation, Teamuebergabe, Praevention",
+      "constraints": [
+        "Serviceprozess einhalten",
+        "Kundengerecht kommunizieren",
+        "Ergebnisse nachvollziehbar dokumentieren"
+      ]
+    },
+    "customerRequest": {
+      "from": "vertrieb.team@ausbildungsbetrieb.example",
+      "to": "service.desk@ausbildungsbetrieb.example",
+      "subject": "Dringende Serviceanfrage: CRM-Zugriff fehlerhaft",
+      "date": "2026-03-13",
+      "body": "Seit heute 08:30 koennen mehrere Kolleginnen und Kollegen im Vertrieb nicht mehr stabil auf das CRM zugreifen.\n\nDanach folgen weitere Auftraege zur selben Stoerung mit steigender Verantwortung rund um Rahmenvorgaben, Analyse, Teamkoordination, Kommunikation und Praevention."
+    }
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "type": "single_choice",
+      "title": "Serviceanfrage oder Stoerung?",
+      "prompt": "Wie ist der geschilderte Fall am ehesten einzuordnen?",
+      "options": [
+        {
+          "text": "Geplanter Servicewunsch ohne Betriebsbezug",
+          "rationale": "Der Fall beschreibt eine akute Beeintraechtigung im Betrieb."
+        },
+        {
+          "text": "Stoerungsfall mit unmittelbarer Auswirkung auf den Fachbereich",
+          "rationale": "Mehrere Nutzer mit Zugriffsproblemen sprechen fuer eine Stoerung."
+        },
+        {
+          "text": "Reine Schulungsanfrage ohne Technikbezug",
+          "rationale": "Der Fokus liegt hier auf Verfuegbarkeitsproblem, nicht nur auf Schulung."
+        }
+      ],
+      "correctIndex": 1,
+      "feedback": {
+        "correct": "Richtig: Das ist eine betriebsrelevante Stoerung.",
+        "wrong": "Nicht passend: Bitte betriebliche Auswirkung und Stoerungscharakter beachten."
+      },
+      "progressLinks": [
+        "lf06_servicearten_anforderungen"
+      ]
+    },
+    {
+      "id": "q2",
+      "type": "multi_select",
+      "title": "Eingangsbearbeitung sauber starten",
+      "prompt": "Welche Schritte sind in der Eingangsbearbeitung sinnvoll? (Mehrfachauswahl)",
+      "options": [
+        {
+          "text": "Betroffene Nutzergruppe und Zeitpunkt konkret erfassen",
+          "correct": true,
+          "rationale": "Basis fuer Reproduzierbarkeit und Priorisierung."
+        },
+        {
+          "text": "Ticketkategorie und Prioritaet nachvollziehbar setzen",
+          "correct": true,
+          "rationale": "Steuert Bearbeitungsweg und Fristen."
+        },
+        {
+          "text": "Erste Rueckmeldung mit naechstem Schritt an den Fachbereich geben",
+          "correct": true,
+          "rationale": "Reduziert Unsicherheit und verbessert Kundenerleben."
+        },
+        {
+          "text": "Ohne Pruefung sofort als erledigt markieren",
+          "correct": false,
+          "rationale": "Widerspricht jedem geordneten Prozess."
+        },
+        {
+          "text": "Ticket ohne Dokumentation direkt weiterleiten",
+          "correct": false,
+          "rationale": "Fehlende Daten erschweren Teamarbeit und Analyse."
+        }
+      ],
+      "feedback": {
+        "correct": "Richtig: Die Eingangsbearbeitung ist strukturiert und kundenorientiert.",
+        "wrong": "Teilweise falsch: Bitte Prozessschritte und Dokumentation strikter beachten."
+      },
+      "progressLinks": [
+        "lf06_anfragen_entgegennehmen"
+      ]
+    },
+    {
+      "id": "q3",
+      "type": "ordering",
+      "title": "Ablauf der Erstbearbeitung",
+      "prompt": "Ordnen Sie die Schritte in eine sinnvolle Reihenfolge.",
+      "items": [
+        "Status und naechsten Schritt an den Kunden kommunizieren",
+        "Ticketdaten und Auswirkung erfassen",
+        "Erstdiagnose durch Basispruefungen starten",
+        "Prioritaet und Bearbeitungsweg festlegen",
+        "Entscheidung ueber Eskalation oder Loesungsweg dokumentieren"
+      ],
+      "correctOrder": [
+        "Ticketdaten und Auswirkung erfassen",
+        "Prioritaet und Bearbeitungsweg festlegen",
+        "Erstdiagnose durch Basispruefungen starten",
+        "Entscheidung ueber Eskalation oder Loesungsweg dokumentieren",
+        "Status und naechsten Schritt an den Kunden kommunizieren"
+      ],
+      "feedback": {
+        "correct": "Richtig: So bleibt die Bearbeitung transparent und steuerbar.",
+        "wrong": "Nicht optimal: Erst erfassen und priorisieren, dann Diagnose und Kommunikation."
+      },
+      "progressLinks": [
+        "lf06_bearbeitungsprozess"
+      ]
+    },
+    {
+      "id": "q4",
+      "type": "number",
+      "title": "SLA-Reaktionszeit pruefen",
+      "prompt": "Ein Ticket wurde um 08:30 erstellt. Die Reaktionszeit im SLA betraegt 45 Minuten. Bis wann muss spaetestens eine erste qualifizierte Rueckmeldung erfolgen? (Minuten nach 08:00)",
+      "expected": 555,
+      "toleranceAbs": 0,
+      "showExpectedFormula": "08:30 = 510 min, +45 = 555 min (09:15)",
+      "feedback": {
+        "correct": "Richtig gerechnet.",
+        "wrong": "Bitte Startzeit in Minuten umrechnen und SLA-Zeit addieren."
+      },
+      "progressLinks": [
+        "lf06_servicearten_anforderungen"
+      ]
+    },
+    {
+      "id": "q5",
+      "type": "short_text",
+      "title": "Kundengerechte Erstmeldung",
+      "prompt": "Formulieren Sie eine Erstmeldung (4-6 Saetze) mit Status, naechstem Schritt und erwarteter Rueckmeldezeit.",
+      "minChars": 150,
+      "requiredKeywords": [
+        "status",
+        "naechster schritt",
+        "rueckmeldung"
+      ],
+      "expectedOutline": "Kurzlage, was gerade geprueft wird, wann das naechste Update kommt.",
+      "feedback": {
+        "correct": "Richtig: Die Meldung ist klar, verbindlich und kundenorientiert.",
+        "wrong": "Bitte Status, Handlung und Zeitbezug klarer darstellen."
+      },
+      "progressLinks": [
+        "lf06_kundenkommunikation",
+        "lf06_anfragen_entgegennehmen"
+      ]
+    },
+    {
+      "id": "sep_f1",
+      "type": "followup_divider",
+      "title": "Folgeauftrag 1 - Rahmenvorgaben und externe Beteiligung",
+      "from": "service.manager@ausbildungsbetrieb.example",
+      "to": "service.desk@ausbildungsbetrieb.example",
+      "subject": "Bitte Standards, Datenschutz und Dienstleistereinbindung pruefen",
+      "date": "2026-03-13",
+      "body": "Die Stoerung muss moeglicherweise an einen externen Dienstleister eskaliert werden. Bitte pruefen Sie, welche Service- und Datenschutzvorgaben bei der Ticketweitergabe gelten und dokumentieren Sie den Bearbeitungsrahmen."
+    },
+    {
+      "id": "q6",
+      "type": "single_choice",
+      "title": "Wichtigste Vorpruefung vor externer Weitergabe",
+      "prompt": "Was ist vor einer Ticketweitergabe an einen externen Dienstleister besonders wichtig?",
+      "options": [
+        {
+          "text": "Nur notwendige Informationen weitergeben und vertragliche sowie datenschutzbezogene Vorgaben beachten",
+          "rationale": "So bleiben Serviceprozess und Datenschutz gewahrt."
+        },
+        {
+          "text": "Das komplette Postfach des Kunden zur Sicherheit mitsenden",
+          "rationale": "Das waere unnoetig und datenschutzrechtlich problematisch."
+        },
+        {
+          "text": "Ohne Ticketaktualisierung direkt weiterleiten",
+          "rationale": "Ohne Nachvollziehbarkeit leidet der Prozess."
+        }
+      ],
+      "correctIndex": 0,
+      "feedback": {
+        "correct": "Richtig: Notwendigkeit, Datenschutz und Prozessrahmen gehoeren hier zusammen.",
+        "wrong": "Nicht passend: Bitte Datenminimierung und Servicevorgaben klarer beachten."
+      },
+      "progressLinks": [
+        "lf06_standards_recht"
+      ]
+    },
+    {
+      "id": "q7",
+      "type": "multi_select",
+      "title": "Rahmenvorgaben im Ticketprozess",
+      "prompt": "Welche Punkte sollten vor einer externen Eskalation geprueft werden? (Mehrfachauswahl)",
+      "options": [
+        {
+          "text": "SLA oder Servicevertrag fuer den betroffenen Dienst ist bekannt",
+          "correct": true,
+          "rationale": "Bearbeitungsfristen und Zustimmungswege haengen daran."
+        },
+        {
+          "text": "Nur notwendige personenbezogene Daten werden im Ticket weitergegeben",
+          "correct": true,
+          "rationale": "Datenminimierung bleibt auch im Serviceprozess wichtig."
+        },
+        {
+          "text": "Verantwortliche Ansprechperson und Meldeweg sind geklaert",
+          "correct": true,
+          "rationale": "So wird die Weitergabe steuerbar."
+        },
+        {
+          "text": "Interne Dokumentation kann entfallen, wenn ein Dienstleister uebernimmt",
+          "correct": false,
+          "rationale": "Das Ticket muss intern trotzdem nachvollziehbar bleiben."
+        },
+        {
+          "text": "Beliebige Zusatzdaten koennen vorsorglich mitgesendet werden",
+          "correct": false,
+          "rationale": "Unnoetige Datenweitergabe ist fachlich und rechtlich problematisch."
+        }
+      ],
+      "feedback": {
+        "correct": "Richtig: Sie verbinden SLA, Datenschutz und Zustimmungswege sinnvoll.",
+        "wrong": "Teilweise falsch: Bitte Datenminimierung, Vertrag und Nachvollziehbarkeit staerker gewichten."
+      },
+      "progressLinks": [
+        "lf06_standards_recht",
+        "lf06_servicearten_anforderungen"
+      ]
+    },
+    {
+      "id": "q8",
+      "type": "ordering",
+      "title": "Saubere Einbindung eines externen Dienstleisters",
+      "prompt": "Ordnen Sie die Schritte fuer eine prozesskonforme Weitergabe.",
+      "items": [
+        "Kundenstatus mit zulassiger Aussage aktualisieren",
+        "Vertrag, SLA und Datenschutzrahmen pruefen",
+        "Ticket mit notwendigen Fakten und Befunden aktualisieren",
+        "Zustaendigkeit und Uebergabeziel formulieren",
+        "Externe Weitergabe nur mit erforderlichen Daten ausloesen"
+      ],
+      "correctOrder": [
+        "Vertrag, SLA und Datenschutzrahmen pruefen",
+        "Ticket mit notwendigen Fakten und Befunden aktualisieren",
+        "Zustaendigkeit und Uebergabeziel formulieren",
+        "Externe Weitergabe nur mit erforderlichen Daten ausloesen",
+        "Kundenstatus mit zulassiger Aussage aktualisieren"
+      ],
+      "feedback": {
+        "correct": "Richtig: So bleibt die Weitergabe fachlich und rechtlich abgesichert.",
+        "wrong": "Nicht optimal: Bitte erst Rahmen und Ticketbasis klaeren, dann weitergeben und kommunizieren."
+      },
+      "progressLinks": [
+        "lf06_standards_recht",
+        "lf06_bearbeitungsprozess"
+      ]
+    },
+    {
+      "id": "q9",
+      "type": "number",
+      "title": "Prioritaetswert mit Kundenfaktor",
+      "prompt": "Ein erweitertes Modell lautet: Prioritaetswert = Auswirkung (1-5) + Dringlichkeit (1-5) + Kundenfaktor (0-2). Bei 4, 3 und 2: Wie hoch ist der Wert?",
+      "expected": 9,
+      "toleranceAbs": 0,
+      "showExpectedFormula": "4 + 3 + 2 = 9",
+      "feedback": {
+        "correct": "Richtig gerechnet.",
+        "wrong": "Bitte alle drei Faktoren addieren."
+      },
+      "progressLinks": [
+        "lf06_servicearten_anforderungen"
+      ]
+    },
+    {
+      "id": "q10",
+      "type": "short_text",
+      "title": "Kurznotiz zu Vorgaben und Eskalation",
+      "prompt": "Formulieren Sie eine kurze Notiz (4-6 Saetze) mit Bearbeitungsrahmen, Datenschutzaspekt und naechstem Eskalationsschritt.",
+      "minChars": 160,
+      "requiredKeywords": [
+        "rahmen",
+        "datenschutz",
+        "eskalation"
+      ],
+      "expectedOutline": "Rahmenvorgaben nennen, Datenminimierung erwaehnen und den naechsten Prozessschritt klar machen.",
+      "feedback": {
+        "correct": "Richtig: Die Notiz ist fachlich sauber und prozessfaehig formuliert.",
+        "wrong": "Bitte Rahmen, Datenschutz und Eskalationsschritt klarer herausarbeiten."
+      },
+      "progressLinks": [
+        "lf06_standards_recht",
+        "lf06_dokumentation_reflexion"
+      ]
+    },
+    {
+      "id": "sep_f2",
+      "type": "followup_divider",
+      "title": "Folgeauftrag 2 - Vertiefte Analyse und Toolnutzung",
+      "from": "second.level@ausbildungsbetrieb.example",
+      "to": "service.desk@ausbildungsbetrieb.example",
+      "subject": "Bitte Analysebasis fuer den CRM-Fall nachliefern",
+      "date": "2026-03-13",
+      "body": "Das Second-Level benoetigt eine sauber vorbereitete Analysebasis. Bitte grenzen Sie den Fehler ueber Symptome, gemeinsame Merkmale und Monitoringdaten ein und geben Sie eine Zwischenmeldung zum Analysefortschritt."
+    },
+    {
+      "id": "q11",
+      "type": "single_choice",
+      "title": "Analysemethode waehlen",
+      "prompt": "Welche Methode passt fuer eine schnelle Erstursachenanalyse am besten?",
+      "options": [
+        {
+          "text": "Symptome sammeln, gemeinsame Merkmale pruefen und moegliche Ursachen eingrenzen",
+          "rationale": "Strukturiert und praxistauglich fuer den Service-Desk-Start."
+        },
+        {
+          "text": "Sofort zufaellige Aenderungen in Produktion durchfuehren",
+          "rationale": "Hoher Risikofaktor ohne begruendete Diagnosebasis."
+        },
+        {
+          "text": "Nur auf subjektive Vermutungen einzelner Personen vertrauen",
+          "rationale": "Ohne Datenbasis ist die Analyse unsicher."
+        }
+      ],
+      "correctIndex": 0,
+      "feedback": {
+        "correct": "Richtig: Das ist ein stabiler Ansatz fuer Erstanalysen.",
+        "wrong": "Nicht passend: Bitte daten- und methodenbasiert vorgehen."
+      },
+      "progressLinks": [
+        "lf06_analysemethoden"
+      ]
+    },
+    {
+      "id": "q12",
+      "type": "multi_select",
+      "title": "Monitoring und Entstoerungstools",
+      "prompt": "Welche Aussagen sind fuer den Tooleinsatz in der Erstdiagnose sinnvoll? (Mehrfachauswahl)",
+      "options": [
+        {
+          "text": "Monitoringdaten helfen, den Zeitraum der Stoerung einzugrenzen",
+          "correct": true,
+          "rationale": "Zeitlicher Kontext beschleunigt die Ursachenfindung."
+        },
+        {
+          "text": "Toolbefunde sollen im Ticket nachvollziehbar protokolliert werden",
+          "correct": true,
+          "rationale": "Wichtig fuer Teamuebergaben und spaetere Analyse."
+        },
+        {
+          "text": "Ein passendes Tool richtet sich nach Problemtyp und Datenlage",
+          "correct": true,
+          "rationale": "Kontextgerechter Einsatz verbessert die Trefferquote."
+        },
+        {
+          "text": "Tools ersetzen jede fachliche Bewertung",
+          "correct": false,
+          "rationale": "Befunde muessen interpretiert und eingeordnet werden."
+        },
+        {
+          "text": "Ohne Logs und Metriken ist jede Diagnose gleich belastbar",
+          "correct": false,
+          "rationale": "Ohne Daten sinkt die Aussagekraft deutlich."
+        }
+      ],
+      "feedback": {
+        "correct": "Richtig: Toolnutzung und Bewertung greifen sinnvoll ineinander.",
+        "wrong": "Teilweise falsch: Bitte Toolwahl, Protokollierung und Interpretation klar trennen."
+      },
+      "progressLinks": [
+        "lf06_monitoring_tools"
+      ]
+    },
+    {
+      "id": "q13",
+      "type": "ordering",
+      "title": "Schnelltest bei instabilem CRM-Zugriff",
+      "prompt": "Ordnen Sie die Schritte fuer einen sauberen Analyse-Schnelltest.",
+      "items": [
+        "Gemeinsame Merkmale betroffener Nutzer sammeln",
+        "Ergebnis und Befunde im Ticket dokumentieren",
+        "Basisverfuegbarkeit des Dienstes und des Netzes pruefen",
+        "Monitoring- oder Logdaten zum Zeitraum hinzuziehen",
+        "Wahrscheinliche Ursachen und naechsten Schritt ableiten"
+      ],
+      "correctOrder": [
+        "Gemeinsame Merkmale betroffener Nutzer sammeln",
+        "Basisverfuegbarkeit des Dienstes und des Netzes pruefen",
+        "Monitoring- oder Logdaten zum Zeitraum hinzuziehen",
+        "Wahrscheinliche Ursachen und naechsten Schritt ableiten",
+        "Ergebnis und Befunde im Ticket dokumentieren"
+      ],
+      "feedback": {
+        "correct": "Richtig: Die Analyse bleibt damit strukturiert und anschlussfaehig.",
+        "wrong": "Nicht optimal: Bitte erst Merkmale und Basispruefung, dann Datenlage und Dokumentation staffeln."
+      },
+      "progressLinks": [
+        "lf06_analysemethoden",
+        "lf06_monitoring_tools"
+      ]
+    },
+    {
+      "id": "q14",
+      "type": "number",
+      "title": "Fehlerquote in einem Login-Test",
+      "prompt": "Von 120 Testanmeldungen schlagen 18 fehl. Wie hoch ist die Fehlerquote in Prozent?",
+      "expected": 15,
+      "toleranceAbs": 0.5,
+      "showExpectedFormula": "18 / 120 * 100 = 15 %",
+      "feedback": {
+        "correct": "Richtig gerechnet.",
+        "wrong": "Bitte fehlgeschlagene Versuche durch die Gesamtzahl teilen und in Prozent umrechnen."
+      },
+      "progressLinks": [
+        "lf06_analysemethoden"
+      ]
+    },
+    {
+      "id": "q15",
+      "type": "short_text",
+      "title": "Zwischenmeldung zur Analyse",
+      "prompt": "Formulieren Sie eine Zwischenmeldung (4-6 Saetze) mit vermuteter Ursache, laufender Pruefung und naechstem Analysepunkt.",
+      "minChars": 160,
+      "requiredKeywords": [
+        "ursache",
+        "pruefung",
+        "naechster punkt"
+      ],
+      "expectedOutline": "Kurzlage zur Analyse, begruendete Vermutung und klares Folgeupdate.",
+      "feedback": {
+        "correct": "Richtig: Die Meldung ist transparent und handlungsorientiert.",
+        "wrong": "Bitte Ursache, laufende Pruefung und naechsten Analysepunkt klarer trennen."
+      },
+      "progressLinks": [
+        "lf06_analysemethoden",
+        "lf06_kundenkommunikation"
+      ]
+    },
+    {
+      "id": "sep_f3",
+      "type": "followup_divider",
+      "title": "Folgeauftrag 3 - Teamkoordination und Kundenstatus",
+      "from": "service.manager@ausbildungsbetrieb.example",
+      "to": "service.desk@ausbildungsbetrieb.example",
+      "subject": "Bitte Teamuebergabe und Kundenkommunikation absichern",
+      "date": "2026-03-13",
+      "body": "Das Ticket muss zwischen First-Level, Second-Level und Fachbereich sauber abgestimmt werden. Bitte sichern Sie Teamuebergabe, Statuskommunikation und den Umgang mit einem zunehmend ungeduldigen Ansprechpartner ab."
+    },
+    {
+      "id": "q16",
+      "type": "single_choice",
+      "title": "Kern einer sauberen Teamuebergabe",
+      "prompt": "Welcher Punkt ist fuer eine gute Uebergabe an das Second-Level am wichtigsten?",
+      "options": [
+        {
+          "text": "Ticket mit Fakten, Befunden und bisherigem Vorgehen vollstaendig aktualisieren",
+          "rationale": "Ohne belastbare Fakten sinkt die Uebergabequalitaet sofort."
+        },
+        {
+          "text": "Nur den Betreff aendern und den Rest muendlich erklaeren",
+          "rationale": "Das ist fuer Nachvollziehbarkeit und Teamarbeit zu wenig."
+        },
+        {
+          "text": "Den Kunden gar nicht mehr informieren",
+          "rationale": "Statuspflege bleibt trotz Uebergabe wichtig."
+        }
+      ],
+      "correctIndex": 0,
+      "feedback": {
+        "correct": "Richtig: Faktenbasis und Dokumentation tragen die Uebergabe.",
+        "wrong": "Nicht passend: Bitte Informationsbasis und Nachvollziehbarkeit staerker gewichten."
+      },
+      "progressLinks": [
+        "lf06_team_loesung"
+      ]
+    },
+    {
+      "id": "q17",
+      "type": "multi_select",
+      "title": "Koordination zwischen den Beteiligten",
+      "prompt": "Welche Punkte helfen bei einer guten Teamkoordination? (Mehrfachauswahl)",
+      "options": [
+        {
+          "text": "Uebergabeziel und Verantwortlichkeiten klar benennen",
+          "correct": true,
+          "rationale": "So werden Doppelarbeit und Luecken reduziert."
+        },
+        {
+          "text": "Kundenstatus mit abgestimmter Aussage aktualisieren",
+          "correct": true,
+          "rationale": "Ein gemeinsamer Kommunikationsstand verhindert Widersprueche."
+        },
+        {
+          "text": "Rueckfragekanal fuer den Uebergebenden offenhalten",
+          "correct": true,
+          "rationale": "So bleiben Detailfragen schnell klaerbar."
+        },
+        {
+          "text": "Jede Stelle kommuniziert unabgestimmt ihre eigene Vermutung",
+          "correct": false,
+          "rationale": "Das fuehrt zu Unsicherheit und Widerspruechen."
+        },
+        {
+          "text": "Offene Punkte nur im Kopf behalten",
+          "correct": false,
+          "rationale": "Nicht dokumentierte Punkte gehen leicht verloren."
+        }
+      ],
+      "feedback": {
+        "correct": "Richtig: Sie verbinden Verantwortlichkeit, Statuspflege und Rueckfragen sinnvoll.",
+        "wrong": "Teilweise falsch: Bitte Zielklarheit, Kundenstatus und Dokumentation staerker betonen."
+      },
+      "progressLinks": [
+        "lf06_team_loesung",
+        "lf06_bearbeitungsprozess"
+      ]
+    },
+    {
+      "id": "q18",
+      "type": "ordering",
+      "title": "Ablauf der Teamuebergabe",
+      "prompt": "Ordnen Sie die Schritte fuer eine saubere Teamuebergabe.",
+      "items": [
+        "Rueckfragekanal fuer den Uebergebenden offenhalten",
+        "Ticket mit Fakten, Logs und bisherigen Schritten aktualisieren",
+        "Uebergabegrund und erwartetes Ziel klar formulieren",
+        "Verantwortung und naechsten Statuspunkt abstimmen",
+        "Kundenstatus mit abgestimmter Aussage aktualisieren"
+      ],
+      "correctOrder": [
+        "Ticket mit Fakten, Logs und bisherigen Schritten aktualisieren",
+        "Uebergabegrund und erwartetes Ziel klar formulieren",
+        "Verantwortung und naechsten Statuspunkt abstimmen",
+        "Kundenstatus mit abgestimmter Aussage aktualisieren",
+        "Rueckfragekanal fuer den Uebergebenden offenhalten"
+      ],
+      "feedback": {
+        "correct": "Richtig: Die Uebergabe ist fachlich und kommunikativ abgesichert.",
+        "wrong": "Nicht optimal: Ohne saubere Faktenbasis verliert die Teamuebergabe Qualitaet."
+      },
+      "progressLinks": [
+        "lf06_team_loesung"
+      ]
+    },
+    {
+      "id": "q19",
+      "type": "number",
+      "title": "Puffer bis zum zugesagten Update",
+      "prompt": "Ein abgestimmtes Kundenupdate ist fuer 11:30 geplant. Die interne Analysebesprechung endet um 11:18. Wie viele Minuten Puffer bleiben bis zum zugesagten Update?",
+      "expected": 12,
+      "toleranceAbs": 0,
+      "showExpectedFormula": "11:30 - 11:18 = 12 Minuten",
+      "feedback": {
+        "correct": "Richtig gerechnet.",
+        "wrong": "Bitte die Differenz zwischen Besprechungsende und Updatezeit bestimmen."
+      },
+      "progressLinks": [
+        "lf06_bearbeitungsprozess"
+      ]
+    },
+    {
+      "id": "q20",
+      "type": "short_text",
+      "title": "Statusupdate nach Teamabstimmung",
+      "prompt": "Schreiben Sie ein kurzes Statusupdate (4-6 Saetze) mit abgestimmtem Stand, naechstem Schritt und Rueckmeldezeit.",
+      "minChars": 160,
+      "requiredKeywords": [
+        "stand",
+        "naechster schritt",
+        "rueckmeldezeit"
+      ],
+      "expectedOutline": "Abgestimmten Bearbeitungsstand nennen, naechste Aktion benennen und den Zeitbezug klaeren.",
+      "feedback": {
+        "correct": "Richtig: Das Update ist abgestimmt, klar und kundenfaehig.",
+        "wrong": "Bitte Stand, naechsten Schritt und Zeitbezug klarer formulieren."
+      },
+      "progressLinks": [
+        "lf06_kundenkommunikation",
+        "lf06_team_loesung"
+      ]
+    },
+    {
+      "id": "sep_f4",
+      "type": "followup_divider",
+      "title": "Folgeauftrag 4 - Praevention, Schulung und Abschluss",
+      "from": "service.manager@ausbildungsbetrieb.example",
+      "to": "service.desk@ausbildungsbetrieb.example",
+      "subject": "Bitte Wiederholungen vermeiden und Abschlusswissen sichern",
+      "date": "2026-03-13",
+      "body": "Die aktuelle Stoerung soll nicht nur geloest, sondern fuer Folgefaelle besser vorbereitet werden. Bitte leiten Sie praeventive Massnahmen, einen kurzen Schulungshinweis und eine gute Abschlussdokumentation ab."
+    },
+    {
+      "id": "q21",
+      "type": "single_choice",
+      "title": "Wirksamste Praeventionsmassnahme",
+      "prompt": "Welche Massnahme hilft am ehesten, wiederkehrende Servicefaelle derselben Art zu reduzieren?",
+      "options": [
+        {
+          "text": "Wiederkehrende Ursachen analysieren und das Ergebnis als Known-Issue mit Standardvorgehen dokumentieren",
+          "rationale": "So wird aus Einzelfaellen belastbares Teamwissen."
+        },
+        {
+          "text": "Das Problem nur muendlich weitergeben und nicht festhalten",
+          "rationale": "Ohne Nachweis geht Lerntransfer schnell verloren."
+        },
+        {
+          "text": "Kunden erst nach dem naechsten Ausfall informieren",
+          "rationale": "Praevention braucht fruehen Wissens- und Erwartungstransfer."
+        }
+      ],
+      "correctIndex": 0,
+      "feedback": {
+        "correct": "Richtig: Praevention braucht Musteranalyse und standardisierte Ableitung.",
+        "wrong": "Nicht passend: Bitte Wirksamkeit, Dokumentation und Teamlernen klarer gewichten."
+      },
+      "progressLinks": [
+        "lf06_praevention_wartung"
+      ]
+    },
+    {
+      "id": "q22",
+      "type": "multi_select",
+      "title": "Schulung und Medienkompetenz im Service",
+      "prompt": "Welche Massnahmen unterstuetzen Nutzende nach einem wiederkehrenden Servicefall sinnvoll? (Mehrfachauswahl)",
+      "options": [
+        {
+          "text": "Kurze Anwenderhinweise fuer typische Fehlbedienungen bereitstellen",
+          "correct": true,
+          "rationale": "Das senkt haeufig die Zahl einfacher Rueckfragen."
+        },
+        {
+          "text": "Ein passendes Medium fuer den Hinweis waehlen, z. B. Kurzmail oder Intranet-Eintrag",
+          "correct": true,
+          "rationale": "Medienwahl beeinflusst Reichweite und Nutzbarkeit."
+        },
+        {
+          "text": "Wiederkehrende Muster in Wartungs- oder Praeventionsaufgaben ueberfuehren",
+          "correct": true,
+          "rationale": "Damit wird der Service nachhaltig verbessert."
+        },
+        {
+          "text": "Jede Erklaerung absichtlich unklar formulieren",
+          "correct": false,
+          "rationale": "Das verschlechtert Kundenerleben und Selbsthilfe."
+        },
+        {
+          "text": "Kunden nur bei Totalausfall informieren",
+          "correct": false,
+          "rationale": "Fruehe Hinweise verbessern Erwartungsmanagement und Selbsthilfe."
+        }
+      ],
+      "feedback": {
+        "correct": "Richtig: Sie verbinden Praevention, Medienwahl und Anwenderhilfe sinnvoll.",
+        "wrong": "Teilweise falsch: Bitte Nutzendenhinweise, Medienwahl und Praevention staerker verknuepfen."
+      },
+      "progressLinks": [
+        "lf06_praevention_wartung",
+        "lf06_schulung_medienkompetenz"
+      ]
+    },
+    {
+      "id": "q23",
+      "type": "ordering",
+      "title": "Vom Stoerungsmuster zur Verbesserungsmassnahme",
+      "prompt": "Ordnen Sie die Schritte fuer eine nachhaltige Verbesserung.",
+      "items": [
+        "Kurze Anwender- oder Teamhinweise ableiten",
+        "Wiederkehrende Stoerungsmuster auswerten",
+        "Praeventive Massnahmen und Wartungsaufgaben priorisieren",
+        "Wirksamkeit spaeter nachpruefen",
+        "Known-Issue oder Lernpunkt dokumentieren"
+      ],
+      "correctOrder": [
+        "Wiederkehrende Stoerungsmuster auswerten",
+        "Known-Issue oder Lernpunkt dokumentieren",
+        "Praeventive Massnahmen und Wartungsaufgaben priorisieren",
+        "Kurze Anwender- oder Teamhinweise ableiten",
+        "Wirksamkeit spaeter nachpruefen"
+      ],
+      "feedback": {
+        "correct": "Richtig: Der Ablauf verbindet Analyse, Praevention und Lerntransfer.",
+        "wrong": "Nicht optimal: Bitte erst Muster erkennen, dann dokumentieren, priorisieren und kommunizieren."
+      },
+      "progressLinks": [
+        "lf06_praevention_wartung",
+        "lf06_dokumentation_reflexion"
+      ]
+    },
+    {
+      "id": "q24",
+      "type": "number",
+      "title": "Anteil wiederkehrender Tickets",
+      "prompt": "Von 48 Tickets eines Monats gehoeren 12 zu demselben wiederkehrenden Fehlerbild. Wie hoch ist der Anteil in Prozent?",
+      "expected": 25,
+      "toleranceAbs": 0.5,
+      "showExpectedFormula": "12 / 48 * 100 = 25 %",
+      "feedback": {
+        "correct": "Richtig gerechnet.",
+        "wrong": "Bitte die wiederkehrenden Tickets durch die Gesamtzahl teilen und in Prozent umrechnen."
+      },
+      "progressLinks": [
+        "lf06_praevention_wartung"
+      ]
+    },
+    {
+      "id": "q25",
+      "type": "short_text",
+      "title": "Abschlussnotiz mit Lerntransfer",
+      "prompt": "Formulieren Sie eine Abschlussnotiz (5-7 Saetze) mit Ergebnis, Praeventionsmassnahme, kurzem Schulungshinweis und naechstem Schritt.",
+      "minChars": 190,
+      "requiredKeywords": [
+        "ergebnis",
+        "praevention",
+        "naechster schritt"
+      ],
+      "expectedOutline": "Fallabschluss nennen, eine Verbesserungsmassnahme festhalten und den Lerntransfer fuer Folgefaelle sichern.",
+      "feedback": {
+        "correct": "Richtig: Die Notiz ist fuer Team und Fachbereich gut nutzbar.",
+        "wrong": "Bitte Ergebnis, Praevention und Lerntransfer klarer strukturieren."
+      },
+      "progressLinks": [
+        "lf06_praevention_wartung",
+        "lf06_schulung_medienkompetenz",
+        "lf06_dokumentation_reflexion"
+      ]
+    }
+  ]
+}

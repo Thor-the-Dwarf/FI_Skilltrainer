@@ -19,7 +19,9 @@ Quelle: `access-keys.json`
 | `LF10FIAE_03_26` | `LF10FIAE-Scenarien` |
 | `LF11FIAE_03_26` | `LF11FIAE-Scenarien` |
 | `LF12FIAE_03_26` | `LF12FIAE-Scenarien` |
+| `PV1FIAE_03_26` | `Pruefungsvorbereitung-1-FIAE-Scenarien` |
 | `PV2FIAE_03_26` | `Pruefungsvorbereitung-2-FIAE-Scenarien` |
+| `PV3WISO_03_26` | `Pruefungsvorbereitung-3-WISO-Scenarien` |
 
 ## Sammel-Key
 

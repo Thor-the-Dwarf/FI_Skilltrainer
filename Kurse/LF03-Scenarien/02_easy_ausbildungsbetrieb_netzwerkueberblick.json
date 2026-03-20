@@ -1,0 +1,160 @@
+{
+  "scenario": {
+    "company": "Ausbildungsbetrieb IT-Service",
+    "scale": "Regional, 140 Mitarbeitende",
+    "context": "Station 2 des Tageslaufs: Netzwerkueberblick und Rollen sauber einordnen.",
+    "mission": "Sie ordnen Netzwerkbereiche, Komponentenrollen und Dienste eines Unternehmensnetzes fachlich ein.",
+    "station": {
+      "id": "LF03-ST-02",
+      "department": "Interner IT-Service",
+      "profile": "Buero-Clients, Serverdienste, Netzbereiche und Grundinventar",
+      "constraints": [
+        "Begriffe sauber unterscheiden",
+        "Betrieblichen Kontext mitdenken",
+        "Ergebnisse knapp dokumentieren"
+      ]
+    },
+    "customerRequest": {
+      "from": "it.leitung@ausbildungsbetrieb.example",
+      "to": "support.team@ausbildungsbetrieb.example",
+      "subject": "Station 02: Netzwerkueberblick fuer neue Kolleginnen und Kollegen aufbereiten",
+      "date": "2026-03-13",
+      "body": "Bitte bereiten Sie einen kompakten Netzwerkueberblick fuer neue Teammitglieder vor. Fokus: Rollen von Clients, Servern und Infrastruktur sowie eine nachvollziehbare Einordnung der wichtigsten Netzbereiche."
+    }
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "type": "single_choice",
+      "title": "Client und Server unterscheiden",
+      "prompt": "Welche Aussage beschreibt die Rollen von Client und Server am treffendsten?",
+      "options": [
+        {
+          "text": "Ein Client nutzt Dienste, ein Server stellt Dienste zentral bereit",
+          "rationale": "Das beschreibt die typische Rollenverteilung im Unternehmensnetz."
+        },
+        {
+          "text": "Client und Server sind immer dasselbe Geraet",
+          "rationale": "Das kann vorkommen, ist aber keine allgemeine Rollenbeschreibung."
+        },
+        {
+          "text": "Ein Switch ersetzt die Aufgaben eines Servers",
+          "rationale": "Ein Switch stellt keine typischen Serverdienste bereit."
+        }
+      ],
+      "correctIndex": 0,
+      "feedback": {
+        "correct": "Richtig: So sind die Rollen im Grundsatz sauber getrennt.",
+        "wrong": "Nicht passend: Bitte Nutzung und Bereitstellung von Diensten klar unterscheiden."
+      },
+      "progressLinks": [
+        "lf03_hauptbestandteile_unterscheiden"
+      ]
+    },
+    {
+      "id": "q2",
+      "type": "multi_select",
+      "title": "Netzbereiche sinnvoll gliedern",
+      "prompt": "Welche Aussagen helfen bei einer brauchbaren Einordnung von Netzbereichen? (Mehrfachauswahl)",
+      "options": [
+        {
+          "text": "Arbeitsplatznetz, Serverbereich und Internetanbindung getrennt betrachten",
+          "correct": true,
+          "rationale": "So lassen sich Aufgaben und Risiken besser zuordnen."
+        },
+        {
+          "text": "Mobile und stationaere Clients getrennt erfassen",
+          "correct": true,
+          "rationale": "Die Nutzungsform beeinflusst haeufig Anforderungen und Support."
+        },
+        {
+          "text": "Rechenzentrum oder Serverraum gesondert dokumentieren",
+          "correct": true,
+          "rationale": "Zentrale Dienste brauchen eine klare Einordnung."
+        },
+        {
+          "text": "Alle Geraete ohne Zweck in einer Sammelliste fuehren",
+          "correct": false,
+          "rationale": "Ohne Struktur sinkt die Aussagekraft deutlich."
+        },
+        {
+          "text": "Endgeraete, Infrastruktur und Dienste zusammenwerfen",
+          "correct": false,
+          "rationale": "Die Rollen werden dadurch unklar."
+        }
+      ],
+      "feedback": {
+        "correct": "Richtig: Sie strukturieren das Netz nach Aufgaben und Nutzung.",
+        "wrong": "Teilweise falsch: Bitte Bereiche und Rollen deutlicher trennen."
+      },
+      "progressLinks": [
+        "lf03_netzwerk_einfuehrung",
+        "lf03_hauptbestandteile_unterscheiden"
+      ]
+    },
+    {
+      "id": "q3",
+      "type": "ordering",
+      "title": "Weg einer typischen Client-Anfrage",
+      "prompt": "Ordnen Sie den Ablauf einer einfachen Dienstanfrage sinnvoll.",
+      "items": [
+        "Antwort erreicht wieder den Client",
+        "Client startet eine Anfrage",
+        "Serverdienst verarbeitet die Anfrage",
+        "Switch transportiert die Anfrage im LAN",
+        "Gateway oder Router wird bei Bedarf eingebunden"
+      ],
+      "correctOrder": [
+        "Client startet eine Anfrage",
+        "Switch transportiert die Anfrage im LAN",
+        "Gateway oder Router wird bei Bedarf eingebunden",
+        "Serverdienst verarbeitet die Anfrage",
+        "Antwort erreicht wieder den Client"
+      ],
+      "feedback": {
+        "correct": "Richtig: Der Kommunikationsweg ist im Grundsatz sauber aufgebaut.",
+        "wrong": "Nicht optimal: Bitte vom Client aus denken und Transport, Vermittlung und Dienst sauber ordnen."
+      },
+      "progressLinks": [
+        "lf03_netzwerk_einfuehrung"
+      ]
+    },
+    {
+      "id": "q4",
+      "type": "number",
+      "title": "Grundinventar erfassen",
+      "prompt": "An einem Standort gibt es 18 Arbeitsplatz-Clients, 2 Drucker, 1 Besprechungsdisplay und 1 Access Point. Wie viele Endgeraete muessen mindestens im Grundinventar stehen?",
+      "expected": 22,
+      "toleranceAbs": 0,
+      "showExpectedFormula": "18 + 2 + 1 + 1 = 22",
+      "feedback": {
+        "correct": "Richtig gerechnet.",
+        "wrong": "Bitte alle genannten Endgeraete gemeinsam zaehlen."
+      },
+      "progressLinks": [
+        "lf03_hauptbestandteile_unterscheiden"
+      ]
+    },
+    {
+      "id": "q5",
+      "type": "short_text",
+      "title": "Netzwerkueberblick fuer neue Kolleginnen und Kollegen",
+      "prompt": "Erklaeren Sie in 4-6 Saetzen den Unterschied zwischen Arbeitsplatznetz, Serverdiensten und Netzwerkinfrastruktur.",
+      "minChars": 140,
+      "requiredKeywords": [
+        "client",
+        "server",
+        "switch"
+      ],
+      "expectedOutline": "Klare Einordnung der Rollen, kurzer Betriebsbezug und saubere Fachbegriffe.",
+      "feedback": {
+        "correct": "Richtig: Der Ueberblick ist knapp, fachlich sauber und alltagstauglich.",
+        "wrong": "Bitte Rollen, Bereiche und Komponenten klarer voneinander trennen."
+      },
+      "progressLinks": [
+        "lf03_netzwerk_einfuehrung",
+        "lf03_hauptbestandteile_unterscheiden"
+      ]
+    }
+  ]
+}

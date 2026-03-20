@@ -1,0 +1,158 @@
+{
+  "scenario": {
+    "company": "Ausbildungsbetrieb IT-Service",
+    "scale": "Mittelstand, 160 Mitarbeitende",
+    "context": "Station 3 des Tageslaufs: Daten- und Informationsgrundlagen anwenden.",
+    "mission": "Sie bewerten Datentypen, Dateiformate, Datenmengen und die Aussagekraft von Informationen im Anwendungskontext.",
+    "station": {
+      "id": "LF05-ST-03",
+      "department": "Datenpflege",
+      "profile": "CSV, Kennzahlen, Datenarten und Importmengen",
+      "constraints": [
+        "Kontext und Aussagekraft unterscheiden",
+        "Einheiten sauber rechnen",
+        "Dateiformate fachlich einordnen"
+      ]
+    },
+    "customerRequest": {
+      "from": "fachbereich.leitung@ausbildungsbetrieb.example",
+      "to": "dev.team@ausbildungsbetrieb.example",
+      "subject": "Station 03: Datenbasis fuer die Anwendung erklaeren",
+      "date": "2026-03-13",
+      "body": "Bitte bereiten Sie einen kompakten Ueberblick zu Datenarten, Datenmengen und Dateiformaten fuer die bestehende Datenverwaltungssoftware vor."
+    }
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "type": "single_choice",
+      "title": "Daten oder Information",
+      "prompt": "Welche Aussage trifft zu?",
+      "options": [
+        {
+          "text": "Ein einzelner Rohwert ist Datenmaterial, eine ausgewertete Kennzahl ist Information",
+          "rationale": "Information entsteht durch Kontext und Interpretation."
+        },
+        {
+          "text": "Daten und Information sind immer exakt dasselbe",
+          "rationale": "Der Kontext macht den Unterschied."
+        },
+        {
+          "text": "Nur gedruckte Listen koennen Information enthalten",
+          "rationale": "Information ist nicht auf ein Medium beschraenkt."
+        }
+      ],
+      "correctIndex": 0,
+      "feedback": {
+        "correct": "Richtig: Kontext und Auswertung machen aus Daten nutzbare Information.",
+        "wrong": "Nicht passend: Bitte Rohdaten und interpretierte Information klarer trennen."
+      },
+      "progressLinks": [
+        "lf05_daten_grundlagen"
+      ]
+    },
+    {
+      "id": "q2",
+      "type": "multi_select",
+      "title": "Dateiformate und Datenarten einordnen",
+      "prompt": "Welche Aussagen sind fachlich sinnvoll? (Mehrfachauswahl)",
+      "options": [
+        {
+          "text": "CSV ist fuer tabellarische Importdaten oft praktikabel",
+          "correct": true,
+          "rationale": "Es ist leicht zu erzeugen und weiterzuverarbeiten."
+        },
+        {
+          "text": "Datentypen beeinflussen Validierung und Berechnung",
+          "correct": true,
+          "rationale": "Typfehler erzeugen schnell Folgeprobleme."
+        },
+        {
+          "text": "Datenherkunft ist fuer Plausibilitaet und Qualitaet relevant",
+          "correct": true,
+          "rationale": "Quelle und Erfassungsweg bestimmen die Vertrauenswuerdigkeit."
+        },
+        {
+          "text": "Das Format ist egal, solange eine Datei vorhanden ist",
+          "correct": false,
+          "rationale": "Format und Struktur beeinflussen die Verarbeitbarkeit."
+        },
+        {
+          "text": "Datenmengen spielen fuer Speicher- und Performancefragen eine Rolle",
+          "correct": true,
+          "rationale": "Menge und Struktur beeinflussen das Systemverhalten."
+        }
+      ],
+      "feedback": {
+        "correct": "Richtig: Sie verbinden Format, Typ und Datenherkunft sinnvoll.",
+        "wrong": "Teilweise falsch: Bitte Format, Typ und Qualitaet staerker zusammen denken."
+      },
+      "progressLinks": [
+        "lf05_daten_grundlagen"
+      ]
+    },
+    {
+      "id": "q3",
+      "type": "ordering",
+      "title": "Von Rohdaten zur Kennzahl",
+      "prompt": "Ordnen Sie die Schritte sinnvoll.",
+      "items": [
+        "Kennzahl oder Auswertung interpretieren",
+        "Rohdaten einlesen",
+        "Daten pruefen und bereinigen",
+        "Daten passend strukturieren",
+        "Berechnung oder Aggregation ausfuehren"
+      ],
+      "correctOrder": [
+        "Rohdaten einlesen",
+        "Daten pruefen und bereinigen",
+        "Daten passend strukturieren",
+        "Berechnung oder Aggregation ausfuehren",
+        "Kennzahl oder Auswertung interpretieren"
+      ],
+      "feedback": {
+        "correct": "Richtig: So entsteht aus Rohdaten eine belastbare Information.",
+        "wrong": "Nicht optimal: Bitte erst Einlesen und Qualitaet, dann Struktur, Berechnung und Interpretation."
+      },
+      "progressLinks": [
+        "lf05_daten_grundlagen"
+      ]
+    },
+    {
+      "id": "q4",
+      "type": "number",
+      "title": "Importmenge berechnen",
+      "prompt": "7.200 Datensaetze mit je 1,8 KB sollen importiert werden. Wie gross ist die Datenmenge in MB (dezimal, 1 MB = 1000 KB)?",
+      "expected": 12.96,
+      "toleranceAbs": 0.1,
+      "showExpectedFormula": "7.200 * 1,8 KB = 12.960 KB = 12,96 MB",
+      "feedback": {
+        "correct": "Richtig gerechnet.",
+        "wrong": "Bitte Datensatzanzahl, Groesse und Einheiten sauber umrechnen."
+      },
+      "progressLinks": [
+        "lf05_daten_grundlagen"
+      ]
+    },
+    {
+      "id": "q5",
+      "type": "short_text",
+      "title": "Dateiformat begruenden",
+      "prompt": "Erklaeren Sie in 4-6 Saetzen, warum ein strukturiertes CSV fuer einen Importfall brauchbar sein kann und wo seine Grenzen liegen.",
+      "minChars": 150,
+      "requiredKeywords": [
+        "csv",
+        "struktur",
+        "grenze"
+      ],
+      "expectedOutline": "Praktischer Nutzen, einfache Struktur und mindestens eine reale Grenze benennen.",
+      "feedback": {
+        "correct": "Richtig: Das Format ist realistisch und differenziert eingeordnet.",
+        "wrong": "Bitte Nutzen, Struktur und Grenzen klarer voneinander abgrenzen."
+      },
+      "progressLinks": [
+        "lf05_daten_grundlagen"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,161 @@
+{
+  "scenario": {
+    "company": "Ausbildungsbetrieb IT-Service",
+    "scale": "Regional, 210 Mitarbeitende",
+    "context": "Station 3 des Tageslaufs: Serviceanfragen entgegennehmen und klassifizieren.",
+    "mission": "Sie erfassen Ticketinformationen, klassifizieren den Fall und sichern eine saubere Eingangsbearbeitung ab.",
+    "station": {
+      "id": "LF06-ST-03",
+      "department": "IT-Service-Desk",
+      "profile": "Ticketannahme, Priorisierung, Status und erste Rueckmeldung",
+      "constraints": [
+        "Eingangsdaten sauber erfassen",
+        "Prioritaet begruenden",
+        "Kundenerwartung frueh steuern"
+      ]
+    },
+    "customerRequest": {
+      "from": "fachbereich@ausbildungsbetrieb.example",
+      "to": "service.desk@ausbildungsbetrieb.example",
+      "subject": "Station 03: Eingangsbearbeitung fuer einen neuen Servicefall vorbereiten",
+      "date": "2026-03-13",
+      "body": "Bitte zeigen Sie an einem neuen Servicefall, wie eine saubere Eingangsbearbeitung von der Erfassung bis zur ersten Rueckmeldung aussieht."
+    }
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "type": "single_choice",
+      "title": "Wichtige Erstinformation",
+      "prompt": "Welche Information ist fuer die erste Einordnung eines Tickets besonders wichtig?",
+      "options": [
+        {
+          "text": "Betroffene Nutzergruppe und fachliche Auswirkung",
+          "rationale": "Das beeinflusst Relevanz, Prioritaet und Bearbeitungsweg."
+        },
+        {
+          "text": "Die Lieblingsfarbe des Anrufers",
+          "rationale": "Das ist fuer die Bearbeitung nicht relevant."
+        },
+        {
+          "text": "Nur die Signatur der Mail ohne Problemtext",
+          "rationale": "Ohne inhaltliche Angaben fehlt die Bearbeitungsbasis."
+        }
+      ],
+      "correctIndex": 0,
+      "feedback": {
+        "correct": "Richtig: Betroffenheit und Auswirkung tragen die Priorisierung.",
+        "wrong": "Nicht passend: Bitte fachliche Auswirkung und Betroffenheit staerker gewichten."
+      },
+      "progressLinks": [
+        "lf06_anfragen_entgegennehmen"
+      ]
+    },
+    {
+      "id": "q2",
+      "type": "multi_select",
+      "title": "Saubere Eingangsbearbeitung",
+      "prompt": "Welche Schritte gehoeren in die Eingangsbearbeitung? (Mehrfachauswahl)",
+      "options": [
+        {
+          "text": "Zeitpunkt und Umfang der Beeintraechtigung festhalten",
+          "correct": true,
+          "rationale": "Das hilft bei Reproduzierbarkeit und Priorisierung."
+        },
+        {
+          "text": "Kategorie und Prioritaet nachvollziehbar setzen",
+          "correct": true,
+          "rationale": "Steuert Bearbeitung und Fristen."
+        },
+        {
+          "text": "Erste Rueckmeldung mit naechstem Schritt geben",
+          "correct": true,
+          "rationale": "Verbessert Erwartungsmanagement."
+        },
+        {
+          "text": "Ticket ohne Inhalt sofort schliessen",
+          "correct": false,
+          "rationale": "Das widerspricht einem geordneten Prozess."
+        },
+        {
+          "text": "Offene Punkte fuer spaetere Analyse dokumentieren",
+          "correct": true,
+          "rationale": "So bleibt der Fall anschlussfaehig."
+        }
+      ],
+      "feedback": {
+        "correct": "Richtig: Sie sichern die Eingangsbearbeitung fachlich und kundenorientiert ab.",
+        "wrong": "Teilweise falsch: Bitte Dokumentation, Priorisierung und Rueckmeldung staerker gewichten."
+      },
+      "progressLinks": [
+        "lf06_anfragen_entgegennehmen",
+        "lf06_bearbeitungsprozess"
+      ]
+    },
+    {
+      "id": "q3",
+      "type": "ordering",
+      "title": "Reihenfolge bei der Ticketaufnahme",
+      "prompt": "Ordnen Sie die Schritte sinnvoll.",
+      "items": [
+        "Erste Rueckmeldung mit naechstem Schritt geben",
+        "Ticketdaten und Auswirkung erfassen",
+        "Prioritaet und Bearbeitungsweg festlegen",
+        "Offene Fragen und erste Pruefidee dokumentieren",
+        "Ticketkategorie sauber zuordnen"
+      ],
+      "correctOrder": [
+        "Ticketdaten und Auswirkung erfassen",
+        "Ticketkategorie sauber zuordnen",
+        "Prioritaet und Bearbeitungsweg festlegen",
+        "Offene Fragen und erste Pruefidee dokumentieren",
+        "Erste Rueckmeldung mit naechstem Schritt geben"
+      ],
+      "feedback": {
+        "correct": "Richtig: So bleibt die Aufnahme strukturiert und vollstaendig.",
+        "wrong": "Nicht optimal: Bitte erst erfassen, dann zuordnen, priorisieren und kommunizieren."
+      },
+      "progressLinks": [
+        "lf06_anfragen_entgegennehmen",
+        "lf06_bearbeitungsprozess"
+      ]
+    },
+    {
+      "id": "q4",
+      "type": "number",
+      "title": "Prioritaetswert bilden",
+      "prompt": "Ein einfaches Modell lautet: Prioritaet = Auswirkung (1-5) + Dringlichkeit (1-5). Bei 5 und 2: Wie hoch ist der Wert?",
+      "expected": 7,
+      "toleranceAbs": 0,
+      "showExpectedFormula": "5 + 2 = 7",
+      "feedback": {
+        "correct": "Richtig gerechnet.",
+        "wrong": "Bitte beide Faktoren addieren."
+      },
+      "progressLinks": [
+        "lf06_anfragen_entgegennehmen"
+      ]
+    },
+    {
+      "id": "q5",
+      "type": "short_text",
+      "title": "Erstmeldung an den Fachbereich",
+      "prompt": "Formulieren Sie in 4-6 Saetzen eine Erstmeldung mit Status, naechstem Schritt und Rueckmeldezeit.",
+      "minChars": 150,
+      "requiredKeywords": [
+        "status",
+        "naechster schritt",
+        "rueckmeldezeit"
+      ],
+      "expectedOutline": "Kurzlage, naechste Aktion und verbindlicher Zeitbezug fuer das naechste Update.",
+      "feedback": {
+        "correct": "Richtig: Die Meldung ist klar und kundenorientiert.",
+        "wrong": "Bitte Status, naechsten Schritt und Zeitbezug klarer formulieren."
+      },
+      "progressLinks": [
+        "lf06_anfragen_entgegennehmen",
+        "lf06_kundenkommunikation"
+      ]
+    }
+  ]
+}

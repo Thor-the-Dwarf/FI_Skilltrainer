@@ -1,259 +1,712 @@
 {
   "scenario": {
     "company": "Ausbildungsbetrieb IT-Service",
-    "scale": "Mittelstand, 85 Mitarbeitende",
-    "context": "Neue Auszubildende starten im IT-Service und sollen ihre Rolle im Betrieb verstehen.",
-    "mission": "Sie bearbeiten Station 01 zum Lernfeld 1 mit Fokus auf Rolle, Beteiligte im dualen System und Verhalten im Betrieb.",
+    "scale": "Mittelstand, 90 Mitarbeitende",
+    "context": "Station 01: Onboarding-Welle mit mehreren Folgeauftraegen zu Rolle, Rechten und Teamverhalten.",
+    "mission": "Sie bearbeiten den Startauftrag und mehrere Folgeauftraege entlang des ersten Ausbildungstags mit steigender Verantwortung.",
     "station": {
       "id": "LF01-ST-01",
       "department": "IT-Service",
-      "profile": "Onboarding, Teamarbeit, Kommunikation, Grundverstaendnis Betrieb",
+      "profile": "Onboarding, Rollenverstaendnis, Rechte und Pflichten, Teamkommunikation",
       "constraints": [
-        "Fachlich korrekt und praxisnah argumentieren",
-        "Rolle als Auszubildende/r klar abgrenzen",
-        "Ergebnisse kurz und nachvollziehbar dokumentieren"
+        "professionell und nachvollziehbar argumentieren",
+        "Rollenklarheit als Azubi halten",
+        "Ergebnisse kurz und belastbar dokumentieren"
       ]
     },
     "customerRequest": {
       "from": "ausbildung@ausbildungsbetrieb.example",
       "to": "klasse.fiae@berufsschule.example",
-      "subject": "Station 01: Rolle im Betrieb und duales System",
+      "subject": "Station 01: Starttag im Betrieb mit Folgeauftraegen",
       "date": "2026-03-13",
-      "body": "Willkommen im Ausbildungsbetrieb IT-Service.\n\nIn dieser Station sollen die Teilnehmenden zeigen, dass sie die Beteiligten im dualen System einordnen koennen, die eigene Rolle im Betrieb reflektieren und typische Alltagssituationen angemessen bearbeiten.\n\nBitte auf klare Begruendungen und professionelle Kommunikation achten."
+      "body": "Bitte bearbeiten Sie fuer den Starttag im Ausbildungsbetrieb mehrere aufeinander aufbauende Aufgaben.\n\nSchwerpunkte: Beteiligte im dualen System, Rolle im Team, Rechte und Pflichten, Mitbestimmung, Berufsplanung und sauberer Tagesabschluss."
     }
   },
   "questions": [
     {
-      "id": "q1",
+      "id": "q01",
       "type": "single_choice",
-      "title": "Beteiligte im dualen System",
-      "prompt": "Welche Kombination beschreibt die zentralen Lernorte im dualen System am treffendsten?",
+      "title": "Lernorte korrekt einordnen",
+      "prompt": "Welche Kombination beschreibt das duale System am treffendsten?",
       "options": [
         {
-          "text": "Nur Ausbildungsbetrieb und Selbststudium",
-          "rationale": "Die Berufsschule als Lernort fehlt."
-        },
-        {
-          "text": "Nur Berufsschule und Pruefungsausschuss",
+          "text": "Nur Berufsschule und Eigenstudium",
           "rationale": "Der Betrieb als zentraler Lernort fehlt."
         },
         {
           "text": "Ausbildungsbetrieb und Berufsschule, begleitet durch zustaendige Stellen",
           "rationale": "Das bildet die duale Struktur korrekt ab."
+        },
+        {
+          "text": "Nur Ausbildungsbetrieb und Pruefungstag",
+          "rationale": "Berufsschule und laufende Begleitung fehlen."
         }
       ],
-      "correctIndex": 2,
+      "correctIndex": 1,
       "feedback": {
-        "correct": "Richtig: Betrieb und Berufsschule sind die beiden Hauptlernorte.",
+        "correct": "Richtig: Betrieb und Berufsschule sind die Kernlernorte.",
         "wrong": "Nicht vollstaendig: Bitte die duale Struktur korrekt einordnen."
-      }
+      },
+      "progressLinks": [
+        "lf01_duales_system_beteiligte"
+      ]
     },
     {
-      "id": "q2",
+      "id": "q02",
       "type": "multi_select",
-      "title": "Aufgaben der Ausbilderrolle",
-      "prompt": "Welche Aufgaben passen typischerweise zur Rolle der Ausbilderin bzw. des Ausbilders? (Mehrfachauswahl)",
+      "title": "Beteiligte und Rollen",
+      "prompt": "Welche Aussagen zu Beteiligten im dualen System sind korrekt? (Mehrfachauswahl)",
       "options": [
         {
-          "text": "Lernfortschritt begleiten und Feedback geben",
+          "text": "Ausbilder begleiten fachlich und geben Feedback",
           "correct": true,
-          "rationale": "Foerderung und Rueckmeldung gehoeren zur Kernaufgabe."
+          "rationale": "Das gehoert zur Kernaufgabe in der Ausbildung."
         },
         {
-          "text": "Arbeitsauftraege passend zum Ausbildungsstand zuteilen",
+          "text": "Berufsschule vermittelt theoretische Grundlagen",
           "correct": true,
-          "rationale": "Aufgaben sollen fordern, aber nicht ueberfordern."
+          "rationale": "Schule und Betrieb greifen inhaltlich ineinander."
         },
         {
-          "text": "Alle Entscheidungen ohne Erklaerung durchsetzen",
+          "text": "Azubis brauchen keine Rueckfragen zu stellen",
           "correct": false,
-          "rationale": "Ausbildung braucht Anleitung und Transparenz."
+          "rationale": "Rueckfragen gehoeren zu professionellem Lernen."
         },
         {
-          "text": "Einhaltung von Ausbildungszielen sicherstellen",
+          "text": "Zustaendige Stellen sichern den rechtlichen Rahmen mit ab",
           "correct": true,
-          "rationale": "Zielorientierung ist zentral in der Ausbildung."
+          "rationale": "Sie sind Teil der Gesamtstruktur."
         },
         {
-          "text": "Private Probleme der Azubis im Team verbreiten",
+          "text": "Teamkollegen haben keinen Einfluss auf den Lernfortschritt",
           "correct": false,
-          "rationale": "Nicht professionell und nicht zulassig."
+          "rationale": "Praxislernen im Team ist zentral."
         }
       ],
       "feedback": {
-        "correct": "Richtig: Die ausgewaehlten Punkte spiegeln die Ausbildungsfunktion.",
-        "wrong": "Teilweise unpassend: Bitte Rolle der Ausbildenden fachlich sauber einordnen."
-      }
+        "correct": "Richtig: Die Rollen sind fachlich sauber eingeordnet.",
+        "wrong": "Teilweise falsch: Bitte Lernorte und Verantwortungen klarer trennen."
+      },
+      "progressLinks": [
+        "lf01_duales_system_beteiligte"
+      ]
     },
     {
-      "id": "q3",
+      "id": "q03",
       "type": "ordering",
-      "title": "Erster Arbeitstag strukturiert",
-      "prompt": "Ordnen Sie die Schritte fuer einen professionellen Start im Betrieb in eine sinnvolle Reihenfolge.",
+      "title": "Startablauf am ersten Tag",
+      "prompt": "Ordnen Sie den Ablauf fuer einen professionellen Start im Betrieb.",
       "items": [
-        "Kurz reflektieren und offene Fragen notieren",
-        "Beim Team vorstellen und Zustaendigkeiten klaeren",
-        "Arbeitsplatz und Sicherheitsregeln kennenlernen",
-        "Erste Aufgaben mit Erwartungsklaerung aufnehmen",
-        "Dokumentation der Tagesergebnisse erstellen"
+        "Aufgaben mit Erwartungsklaerung aufnehmen",
+        "Team und Zustaendigkeiten kennenlernen",
+        "Arbeitsplatz und Sicherheitsregeln durchgehen",
+        "Ergebnisse dokumentieren",
+        "Offene Fragen und Lernpunkte notieren"
       ],
       "correctOrder": [
-        "Beim Team vorstellen und Zustaendigkeiten klaeren",
-        "Arbeitsplatz und Sicherheitsregeln kennenlernen",
-        "Erste Aufgaben mit Erwartungsklaerung aufnehmen",
-        "Dokumentation der Tagesergebnisse erstellen",
-        "Kurz reflektieren und offene Fragen notieren"
+        "Team und Zustaendigkeiten kennenlernen",
+        "Arbeitsplatz und Sicherheitsregeln durchgehen",
+        "Aufgaben mit Erwartungsklaerung aufnehmen",
+        "Ergebnisse dokumentieren",
+        "Offene Fragen und Lernpunkte notieren"
       ],
       "feedback": {
-        "correct": "Richtig: So entsteht ein strukturierter und sicherer Start.",
-        "wrong": "Nicht optimal: Reihenfolge sollte Orientierung, Arbeit und Reflexion sauber verbinden."
-      }
+        "correct": "Richtig: Das verbindet Orientierung, Arbeit und Reflexion sauber.",
+        "wrong": "Nicht optimal: Bitte erst Orientierung, dann Aufgabenbearbeitung und Reflexion."
+      },
+      "progressLinks": [
+        "lf01_duales_system_beteiligte",
+        "lf01_reflexion_verbesserung"
+      ]
     },
     {
-      "id": "q4",
+      "id": "q04",
       "type": "short_text",
-      "title": "Eigene Rolle beschreiben",
-      "prompt": "Beschreiben Sie Ihre Rolle als Auszubildende/r im IT-Team in 5-7 Saetzen.",
+      "title": "Eigene Rolle im Team",
+      "prompt": "Beschreiben Sie in 4-6 Saetzen Ihre Rolle als Azubi im IT-Team.",
       "minChars": 150,
       "requiredKeywords": [
         "lernen",
         "verantwortung",
         "rueckfrage"
       ],
-      "expectedOutline": "Rolle zwischen Lernen und Mitwirkung, klare Verantwortungsgrenzen, aktive Kommunikation bei Unsicherheit.",
+      "expectedOutline": "Rolle zwischen Lernen und Mitwirkung, klare Verantwortungsgrenzen, aktives Rueckfrageverhalten.",
       "feedback": {
         "correct": "Richtig: Die Rollenbeschreibung ist reflektiert und praxisnah.",
-        "wrong": "Bitte Lernauftrag, Verantwortung und Kommunikationsverhalten klarer ausarbeiten."
-      }
+        "wrong": "Bitte Lernauftrag, Verantwortung und Rueckfragen klarer ausarbeiten."
+      },
+      "progressLinks": [
+        "lf01_rechte_pflichten_ausbildung",
+        "lf01_reflexion_verbesserung"
+      ]
     },
     {
-      "id": "q5",
+      "id": "q05",
       "type": "number",
-      "title": "Zeitplanung im Onboarding",
-      "prompt": "Ein Azubi bearbeitet 4 Einfuehrungsaufgaben zu je 25 Minuten und hat zusaetzlich 35 Minuten Einweisung. Wie viele Minuten sind insgesamt eingeplant?",
-      "expected": 135,
+      "title": "Einarbeitungszeit kalkulieren",
+      "prompt": "Vier Einfuehrungsbloecke dauern je 35 Minuten, dazu kommen 30 Minuten Teamrunde. Wie viele Minuten sind insgesamt einzuplanen?",
+      "expected": 170,
       "toleranceAbs": 1,
-      "showExpectedFormula": "4 * 25 + 35 = 135 Minuten",
+      "showExpectedFormula": "4 * 35 + 30 = 170 Minuten",
       "feedback": {
         "correct": "Richtig gerechnet.",
-        "wrong": "Bitte Anzahl Aufgaben und Einweisungszeit sauber addieren."
-      }
+        "wrong": "Bitte Blockzeiten und Teamrunde korrekt addieren."
+      },
+      "progressLinks": [
+        "lf01_reflexion_verbesserung"
+      ]
     },
     {
-      "id": "q6",
-      "type": "single_choice",
-      "title": "Verhalten bei Unsicherheit",
-      "prompt": "Sie erhalten einen Auftrag, den Sie fachlich noch nicht sicher beherrschen. Was ist die beste Reaktion?",
-      "options": [
-        {
-          "text": "Rueckfrage stellen, Ziel klaeren und dann strukturiert starten",
-          "rationale": "Professionell und lernorientiert."
-        },
-        {
-          "text": "Einfach irgendetwas umsetzen, Hauptsache schnell",
-          "rationale": "Erhoeht Fehler- und Risikowahrscheinlichkeit."
-        },
-        {
-          "text": "Auftrag ablehnen und nichts dokumentieren",
-          "rationale": "Unprofessionell ohne Abstimmung."
-        }
-      ],
-      "correctIndex": 0,
-      "feedback": {
-        "correct": "Richtig: Rueckfrage und Zielklaerung zeigen professionelles Arbeiten.",
-        "wrong": "Nicht geeignet: Bei Unsicherheit sind Abstimmung und Struktur entscheidend."
-      }
+      "id": "sep_f1",
+      "type": "followup_divider",
+      "title": "Folgeauftrag 1 - Rechte und Pflichten im Alltag",
+      "from": "ausbildung@ausbildungsbetrieb.example",
+      "to": "klasse.fiae@berufsschule.example",
+      "subject": "Meldewege, Sorgfalt und Verbindlichkeit",
+      "date": "2026-03-13",
+      "body": "Bitte pruefen Sie typische Alltagssituationen im Hinblick auf Rechte und Pflichten und treffen Sie begruendete Entscheidungen."
     },
     {
-      "id": "q7",
+      "id": "q06",
       "type": "multi_select",
-      "title": "Rechte und Pflichten im Ausbildungsalltag",
-      "prompt": "Welche Aussagen passen zu einem professionellen Ausbildungsalltag? (Mehrfachauswahl)",
+      "title": "Pflichten im Ausbildungsalltag",
+      "prompt": "Welche Verhaltensweisen sind pflichtkonform? (Mehrfachauswahl)",
       "options": [
         {
-          "text": "Arbeitsauftraege sorgfaeltig bearbeiten und Ergebnisse dokumentieren",
+          "text": "Arbeitsauftraege sorgfaeltig bearbeiten und dokumentieren",
           "correct": true,
-          "rationale": "Sorgfalt und Nachvollziehbarkeit sind Pflicht."
+          "rationale": "Sorgfalt und Nachvollziehbarkeit gehoeren dazu."
         },
         {
-          "text": "Bei Problemen rechtzeitig Rueckmeldung geben",
+          "text": "Bei Problemen fruehzeitig Rueckmeldung geben",
           "correct": true,
-          "rationale": "Transparenz reduziert Folgerisiken."
+          "rationale": "Transparenz senkt Betriebsrisiken."
         },
         {
-          "text": "Sicherheitsregeln nur bei Zeit beachten",
+          "text": "Sicherheitsregeln bei Zeitdruck aussetzen",
           "correct": false,
-          "rationale": "Sicherheit gilt durchgaengig."
+          "rationale": "Sicherheitsregeln gelten durchgaengig."
         },
         {
-          "text": "Lernangebote im Betrieb aktiv nutzen",
+          "text": "Lernangebote aktiv nutzen",
           "correct": true,
           "rationale": "Eigeninitiative ist Teil der Ausbildung."
         },
         {
-          "text": "Dokumentation weglassen, wenn es stressig wird",
+          "text": "Dokumentation bei Stress auslassen",
           "correct": false,
-          "rationale": "Dokumentation bleibt wichtig, gerade bei Belastung."
+          "rationale": "Dokumentation bleibt verpflichtend."
         }
       ],
       "feedback": {
-        "correct": "Richtig: Die Auswahl zeigt ein professionelles Rollenverstaendnis.",
-        "wrong": "Teilweise unpassend: Bitte Pflichten und professionelles Verhalten klarer trennen."
-      }
+        "correct": "Richtig: Das zeigt professionelles Pflichtverstaendnis.",
+        "wrong": "Teilweise falsch: Bitte Verbindlichkeit und Sicherheit staerker gewichten."
+      },
+      "progressLinks": [
+        "lf01_rechte_pflichten_ausbildung"
+      ]
     },
     {
-      "id": "q8",
-      "type": "ordering",
-      "title": "Mini-Praesentation vorbereiten",
-      "prompt": "Ordnen Sie die Schritte fuer eine kurze Team-Praesentation ueber den Ausbildungsbetrieb.",
-      "items": [
-        "Kernbotschaften kurz zusammenfassen",
-        "Thema und Zielgruppe klaeren",
-        "Inhalte sammeln und strukturieren",
-        "Probevortrag im Team durchfuehren",
-        "Feedback einarbeiten"
+      "id": "q07",
+      "type": "single_choice",
+      "title": "Unsicherheit bei Auftrag",
+      "prompt": "Wie reagieren Sie professionell, wenn Sie einen Auftrag fachlich noch nicht sicher beherrschen?",
+      "options": [
+        {
+          "text": "Rueckfrage stellen, Ziel klaeren und Umsetzung abstimmen",
+          "rationale": "Das reduziert Fehler und zeigt Professionalitaet."
+        },
+        {
+          "text": "Ohne Abstimmung irgendetwas abgeben",
+          "rationale": "Fuehrt oft zu Fehlleistungen."
+        },
+        {
+          "text": "Auftrag stillschweigend ignorieren",
+          "rationale": "Nicht teamfaehig und nicht verlaesslich."
+        }
       ],
-      "correctOrder": [
-        "Thema und Zielgruppe klaeren",
-        "Inhalte sammeln und strukturieren",
-        "Kernbotschaften kurz zusammenfassen",
-        "Probevortrag im Team durchfuehren",
-        "Feedback einarbeiten"
-      ],
+      "correctIndex": 0,
       "feedback": {
-        "correct": "Richtig: Vorbereitung und Qualitaetssicherung sind sinnvoll verzahnt.",
-        "wrong": "Nicht optimal: Gute Praesentationen brauchen Zielklaerung, Struktur und Feedback."
-      }
+        "correct": "Richtig: Zielklaerung und Abstimmung sind der richtige Weg.",
+        "wrong": "Nicht passend: Bei Unsicherheit braucht es Transparenz und Ruecksprache."
+      },
+      "progressLinks": [
+        "lf01_rechte_pflichten_ausbildung"
+      ]
     },
     {
-      "id": "q9",
+      "id": "q08",
+      "type": "short_text",
+      "title": "Kritische Rueckfrage formulieren",
+      "prompt": "Formulieren Sie eine kurze Rueckfrage (4-6 Saetze), wenn ein Auftrag unklar und zeitkritisch ist.",
+      "minChars": 140,
+      "requiredKeywords": [
+        "auftrag",
+        "unklar",
+        "vorschlag"
+      ],
+      "expectedOutline": "Sachliche Problembenennung, konkrete Rueckfrage, praktikabler Vorschlag.",
+      "feedback": {
+        "correct": "Richtig: Die Rueckfrage ist professionell und loesungsorientiert.",
+        "wrong": "Bitte Auftrag, Unklarheit und Vorschlag klarer trennen."
+      },
+      "progressLinks": [
+        "lf01_rechte_pflichten_ausbildung",
+        "lf01_reflexion_verbesserung"
+      ]
+    },
+    {
+      "id": "q09",
       "type": "number",
-      "title": "Praesentationszeit planen",
-      "prompt": "Eine Team-Praesentation hat 6 Folien. Pro Folie sind 2,5 Minuten vorgesehen, plus 7 Minuten Fragenrunde. Wie lange dauert der Slot insgesamt?",
-      "expected": 22,
+      "title": "Meldekette zeitlich absichern",
+      "prompt": "Ein Vorfall muss innerhalb von 20 Minuten intern gemeldet werden. 6 Minuten vergehen fuer Analyse, 4 fuer Dokumentation. Wie viele Minuten bleiben fuer die Meldung?",
+      "expected": 10,
       "toleranceAbs": 1,
-      "showExpectedFormula": "6 * 2,5 + 7 = 22 Minuten",
+      "showExpectedFormula": "20 - 6 - 4 = 10 Minuten",
       "feedback": {
         "correct": "Richtig gerechnet.",
-        "wrong": "Bitte Folienzeit und Fragerunde gemeinsam kalkulieren."
-      }
+        "wrong": "Bitte Restzeit nach Analyse und Dokumentation korrekt berechnen."
+      },
+      "progressLinks": [
+        "lf01_rechte_pflichten_ausbildung"
+      ]
     },
     {
       "id": "q10",
+      "type": "ordering",
+      "title": "Vorfall korrekt weitergeben",
+      "prompt": "Ordnen Sie den Ablauf fuer eine saubere Meldung bei einem Betriebsvorfall.",
+      "items": [
+        "Meldung an zustaendige Stelle senden",
+        "Sachverhalt kurz verifizieren",
+        "Vorfall strukturiert dokumentieren",
+        "Rueckmeldung und weiteres Vorgehen abstimmen",
+        "Nachverfolgung terminieren"
+      ],
+      "correctOrder": [
+        "Sachverhalt kurz verifizieren",
+        "Vorfall strukturiert dokumentieren",
+        "Meldung an zustaendige Stelle senden",
+        "Rueckmeldung und weiteres Vorgehen abstimmen",
+        "Nachverfolgung terminieren"
+      ],
+      "feedback": {
+        "correct": "Richtig: Der Ablauf ist nachvollziehbar und belastbar.",
+        "wrong": "Nicht optimal: Bitte Verifikation, Dokumentation und Meldung sauber staffeln."
+      },
+      "progressLinks": [
+        "lf01_rechte_pflichten_ausbildung",
+        "lf01_reflexion_verbesserung"
+      ]
+    },
+    {
+      "id": "sep_f2",
+      "type": "followup_divider",
+      "title": "Folgeauftrag 2 - Arbeitsrechte und Mitbestimmung",
+      "from": "personal@ausbildungsbetrieb.example",
+      "to": "klasse.fiae@berufsschule.example",
+      "subject": "Anliegen richtig adressieren und Eskalationswege nutzen",
+      "date": "2026-03-13",
+      "body": "Bitte bearbeiten Sie Situationen zu Mitbestimmung, Konfliktkommunikation und korrekter Eskalation im Teamalltag."
+    },
+    {
+      "id": "q11",
+      "type": "single_choice",
+      "title": "Anliegen richtig platzieren",
+      "prompt": "Ein Teamprozess betrifft mehrere Kolleginnen und Kollegen dauerhaft negativ. Was ist der beste erste Schritt?",
+      "options": [
+        {
+          "text": "Anliegen sachlich aufbereiten und ueber den vorgesehenen Mitbestimmungskanal platzieren",
+          "rationale": "Das ist strukturiert und verfahrenskonform."
+        },
+        {
+          "text": "Problem ignorieren, solange kein Kunde betroffen ist",
+          "rationale": "Risiken bleiben bestehen."
+        },
+        {
+          "text": "Sofort oeffentlich eskalieren ohne Vorabklaerung",
+          "rationale": "Kann die Sachklaerung unnoetig verhaerten."
+        }
+      ],
+      "correctIndex": 0,
+      "feedback": {
+        "correct": "Richtig: Sachliche, passende Kanalwahl ist professionell.",
+        "wrong": "Nicht passend: Anliegen brauchen einen geordneten Weg."
+      },
+      "progressLinks": [
+        "lf01_arbeitsrechte_mitbestimmung"
+      ]
+    },
+    {
+      "id": "q12",
+      "type": "multi_select",
+      "title": "Mitbestimmung praxisnah",
+      "prompt": "Welche Punkte sprechen fuer eine wirksame Mitbestimmung im Betrieb? (Mehrfachauswahl)",
+      "options": [
+        {
+          "text": "Themen mit belastbaren Beispielen vorbereiten",
+          "correct": true,
+          "rationale": "Sachlichkeit verbessert Entscheidungsqualitaet."
+        },
+        {
+          "text": "Auswirkungen auf Team und Prozesse aufzeigen",
+          "correct": true,
+          "rationale": "Praxisbezug macht Anliegen nachvollziehbar."
+        },
+        {
+          "text": "Konflikte nur persoenlich und ohne Dokumentation fuehren",
+          "correct": false,
+          "rationale": "Ohne Nachweis fehlt Verbindlichkeit."
+        },
+        {
+          "text": "Verantwortliche und Fristen eindeutig benennen",
+          "correct": true,
+          "rationale": "Erhoeht Umsetzungswahrscheinlichkeit."
+        },
+        {
+          "text": "Rueckmeldungen ignorieren, wenn sie kritisch sind",
+          "correct": false,
+          "rationale": "Lern- und Verbesserungschance geht verloren."
+        }
+      ],
+      "feedback": {
+        "correct": "Richtig: Das foerdert verlaessliche Mitbestimmung.",
+        "wrong": "Teilweise falsch: Bitte Verfahrensklarheit und Nachvollziehbarkeit staerker einbeziehen."
+      },
+      "progressLinks": [
+        "lf01_arbeitsrechte_mitbestimmung"
+      ]
+    },
+    {
+      "id": "q13",
+      "type": "ordering",
+      "title": "Konfliktgespraech strukturieren",
+      "prompt": "Ordnen Sie den Ablauf fuer ein professionelles Konfliktgespraech.",
+      "items": [
+        "Konkrete Loesungsoption vorschlagen",
+        "Sachlage mit Beispielen beschreiben",
+        "Rueckfragen und Gegenposition aufnehmen",
+        "Gemeinsames Vorgehen festhalten",
+        "Nachtermin vereinbaren"
+      ],
+      "correctOrder": [
+        "Sachlage mit Beispielen beschreiben",
+        "Rueckfragen und Gegenposition aufnehmen",
+        "Konkrete Loesungsoption vorschlagen",
+        "Gemeinsames Vorgehen festhalten",
+        "Nachtermin vereinbaren"
+      ],
+      "feedback": {
+        "correct": "Richtig: Sachlichkeit und Verbindlichkeit sind gut kombiniert.",
+        "wrong": "Nicht optimal: Bitte erst klaeren, dann loesen und verbindlich festhalten."
+      },
+      "progressLinks": [
+        "lf01_arbeitsrechte_mitbestimmung"
+      ]
+    },
+    {
+      "id": "q14",
       "type": "short_text",
-      "title": "Reflexion zum Betriebsumfeld",
-      "prompt": "Formulieren Sie eine kurze Reflexion (5-7 Saetze), was Sie ueber den Ausbildungsbetrieb und Ihre Entwicklung gelernt haben.",
+      "title": "Sachliche Rueckmeldung schreiben",
+      "prompt": "Formulieren Sie eine sachliche Rueckmeldung (4-6 Saetze) zu einer unklaren Teamregel.",
+      "minChars": 140,
+      "requiredKeywords": [
+        "sachlage",
+        "auswirkung",
+        "vorschlag"
+      ],
+      "expectedOutline": "Sachlage und Auswirkung kurz benennen, praktikablen Vorschlag machen.",
+      "feedback": {
+        "correct": "Richtig: Die Rueckmeldung ist professionell und konstruktiv.",
+        "wrong": "Bitte Sachlage, Auswirkung und Vorschlag klarer trennen."
+      },
+      "progressLinks": [
+        "lf01_arbeitsrechte_mitbestimmung"
+      ]
+    },
+    {
+      "id": "q15",
+      "type": "number",
+      "title": "Terminfenster fuer Klaerung",
+      "prompt": "Fuer ein Klaerungsgespraech sind 45 Minuten geplant. 18 Minuten sind bereits mit Sachverhaltsdarstellung und 12 Minuten mit Rueckfragen belegt. Wie viel Zeit bleibt fuer Loesungsabstimmung?",
+      "expected": 15,
+      "toleranceAbs": 1,
+      "showExpectedFormula": "45 - 18 - 12 = 15 Minuten",
+      "feedback": {
+        "correct": "Richtig gerechnet.",
+        "wrong": "Bitte verbleibende Zeit korrekt berechnen."
+      },
+      "progressLinks": [
+        "lf01_arbeitsrechte_mitbestimmung"
+      ]
+    },
+    {
+      "id": "sep_f3",
+      "type": "followup_divider",
+      "title": "Folgeauftrag 3 - Berufs- und Lebensplanung",
+      "from": "ausbildungsleitung@ausbildungsbetrieb.example",
+      "to": "klasse.fiae@berufsschule.example",
+      "subject": "Entwicklungsziele und Lernzeit strukturiert planen",
+      "date": "2026-03-13",
+      "body": "Bitte erstellen Sie einen realistischen Entwicklungsrahmen fuer die naechsten Monate und priorisieren Sie Lernziele nachvollziehbar."
+    },
+    {
+      "id": "q16",
+      "type": "multi_select",
+      "title": "Bestandteile einer Entwicklungsplanung",
+      "prompt": "Welche Elemente gehoeren in eine solide Berufs- und Lernplanung? (Mehrfachauswahl)",
+      "options": [
+        {
+          "text": "Klare Lernziele mit Zeitrahmen",
+          "correct": true,
+          "rationale": "Macht Fortschritt messbar."
+        },
+        {
+          "text": "Praxisaufgaben zur Anwendung des Gelernten",
+          "correct": true,
+          "rationale": "Transfer sichert Nachhaltigkeit."
+        },
+        {
+          "text": "Ausschliesslich Zufallsaufgaben ohne Zielbezug",
+          "correct": false,
+          "rationale": "Ohne Zielbezug fehlt Entwicklungslinie."
+        },
+        {
+          "text": "Regelmaessige Reflexionspunkte mit Feedback",
+          "correct": true,
+          "rationale": "Foerdert Kurskorrekturen."
+        },
+        {
+          "text": "Kritische Rueckmeldungen ausblenden",
+          "correct": false,
+          "rationale": "Hemmt Entwicklung."
+        }
+      ],
+      "feedback": {
+        "correct": "Richtig: Das ist eine tragfaehige Entwicklungsbasis.",
+        "wrong": "Teilweise falsch: Bitte Zielbezug, Transfer und Reflexion staerker verknuepfen."
+      },
+      "progressLinks": [
+        "lf01_berufs_lebensplanung"
+      ]
+    },
+    {
+      "id": "q17",
+      "type": "single_choice",
+      "title": "Naechster Entwicklungsschritt",
+      "prompt": "Welcher naechste Schritt ist nach einer Woche Onboarding am sinnvollsten?",
+      "options": [
+        {
+          "text": "Ein konkretes Lernziel mit Praxisaufgabe und Termin abstimmen",
+          "rationale": "Schafft Richtung und Verbindlichkeit."
+        },
+        {
+          "text": "Abwarten, bis zufaellig eine passende Aufgabe kommt",
+          "rationale": "Entwicklung bleibt ungeplant."
+        },
+        {
+          "text": "Nur theoretische Themen sammeln ohne Anwendung",
+          "rationale": "Transfer in den Betrieb fehlt."
+        }
+      ],
+      "correctIndex": 0,
+      "feedback": {
+        "correct": "Richtig: Ziel, Aufgabe und Termin machen Entwicklung steuerbar.",
+        "wrong": "Nicht passend: Der Schritt muss konkret und umsetzbar sein."
+      },
+      "progressLinks": [
+        "lf01_berufs_lebensplanung"
+      ]
+    },
+    {
+      "id": "q18",
+      "type": "short_text",
+      "title": "Entwicklungsplan in Kurzform",
+      "prompt": "Beschreiben Sie in 4-6 Saetzen einen Entwicklungsplan fuer die naechsten 6 Wochen.",
       "minChars": 160,
       "requiredKeywords": [
-        "betrieb",
-        "entwicklung",
+        "ziel",
+        "praxis",
+        "feedback"
+      ],
+      "expectedOutline": "Konkretes Zielbild, Praxisanwendung, Feedback- und Kontrollpunkte.",
+      "feedback": {
+        "correct": "Richtig: Der Plan ist realistisch und lernwirksam.",
+        "wrong": "Bitte Ziel, Praxisanteil und Feedbackmechanik klarer ausarbeiten."
+      },
+      "progressLinks": [
+        "lf01_berufs_lebensplanung",
+        "lf01_reflexion_verbesserung"
+      ]
+    },
+    {
+      "id": "q19",
+      "type": "number",
+      "title": "Lernzeit pro Monat",
+      "prompt": "Pro Woche sind 3,5 Stunden geplante Lernzeit vorgesehen. Wie viele Stunden sind in 6 Wochen einzuplanen?",
+      "expected": 21,
+      "toleranceAbs": 0.5,
+      "showExpectedFormula": "3,5 * 6 = 21 Stunden",
+      "feedback": {
+        "correct": "Richtig gerechnet.",
+        "wrong": "Bitte Wochenumfang mit der Anzahl Wochen multiplizieren."
+      },
+      "progressLinks": [
+        "lf01_berufs_lebensplanung"
+      ]
+    },
+    {
+      "id": "q20",
+      "type": "ordering",
+      "title": "Lernzielprozess sinnvoll aufbauen",
+      "prompt": "Ordnen Sie die Schritte vom Lernziel bis zur Auswertung.",
+      "items": [
+        "Lernziel konkret formulieren",
+        "Praxisaufgabe festlegen",
+        "Durchfuehrung im Betrieb",
+        "Feedback einholen",
+        "Naechsten Lernschritt ableiten"
+      ],
+      "correctOrder": [
+        "Lernziel konkret formulieren",
+        "Praxisaufgabe festlegen",
+        "Durchfuehrung im Betrieb",
+        "Feedback einholen",
+        "Naechsten Lernschritt ableiten"
+      ],
+      "feedback": {
+        "correct": "Richtig: Der Lernprozess ist didaktisch sauber aufgebaut.",
+        "wrong": "Nicht optimal: Bitte von Ziel ueber Praxis zur Auswertung strukturieren."
+      },
+      "progressLinks": [
+        "lf01_berufs_lebensplanung",
+        "lf01_reflexion_verbesserung"
+      ]
+    },
+    {
+      "id": "sep_f4",
+      "type": "followup_divider",
+      "title": "Folgeauftrag 4 - Tagesabschluss und Teamuebergabe",
+      "from": "teamleitung@ausbildungsbetrieb.example",
+      "to": "klasse.fiae@berufsschule.example",
+      "subject": "Status, offene Punkte und naechster Schritt bis Feierabend",
+      "date": "2026-03-13",
+      "body": "Die Ergebnisse des Tages sollen klar dokumentiert und ans Team uebergeben werden. Bitte priorisieren Sie Transparenz und Nachvollziehbarkeit."
+    },
+    {
+      "id": "q21",
+      "type": "single_choice",
+      "title": "Kurzstatus am Tagesende",
+      "prompt": "Welche Aussage passt am besten in einen professionellen Tagesstatus?",
+      "options": [
+        {
+          "text": "Nur melden, dass alles ungefaehr fertig ist",
+          "rationale": "Zu unpraezise fuer Nachverfolgung."
+        },
+        {
+          "text": "Erledigte Punkte, offene Risiken und naechste Aktion konkret benennen",
+          "rationale": "Das ist fuer Teamarbeit direkt nutzbar."
+        },
+        {
+          "text": "Nur auf morgen verweisen ohne Ergebnisbezug",
+          "rationale": "Fehlende Transparenz."
+        }
+      ],
+      "correctIndex": 1,
+      "feedback": {
+        "correct": "Richtig: Genau so wird der Status uebergabefaehig.",
+        "wrong": "Nicht passend: Status braucht Ergebnis, Risiko und naechste Aktion."
+      },
+      "progressLinks": [
+        "lf01_reflexion_verbesserung"
+      ]
+    },
+    {
+      "id": "q22",
+      "type": "multi_select",
+      "title": "Dokumentation fuer Teamuebergabe",
+      "prompt": "Welche Inhalte gehoeren in eine gute Teamuebergabe? (Mehrfachauswahl)",
+      "options": [
+        {
+          "text": "Kurzer Ergebnisstand je Arbeitspaket",
+          "correct": true,
+          "rationale": "Sichert Arbeitskontinuitaet."
+        },
+        {
+          "text": "Offene Punkte mit Verantwortlichen",
+          "correct": true,
+          "rationale": "Macht Nachverfolgung klar."
+        },
+        {
+          "text": "Unsortierte Notizen ohne Kontext",
+          "correct": false,
+          "rationale": "Nicht nutzbar fuer Teamarbeit."
+        },
+        {
+          "text": "Risiko- oder Blockerhinweise",
+          "correct": true,
+          "rationale": "Wichtig fuer Priorisierung."
+        },
+        {
+          "text": "Persoenliche Meinungen ohne Faktenbezug",
+          "correct": false,
+          "rationale": "Fuer Uebergabe zu unpraezise."
+        }
+      ],
+      "feedback": {
+        "correct": "Richtig: Die Uebergabe ist klar und anschlussfaehig.",
+        "wrong": "Teilweise falsch: Bitte Fakten, Verantwortungen und Risiken staerker strukturieren."
+      },
+      "progressLinks": [
+        "lf01_reflexion_verbesserung"
+      ]
+    },
+    {
+      "id": "q23",
+      "type": "ordering",
+      "title": "Tagesabschluss strukturiert",
+      "prompt": "Ordnen Sie die Schritte fuer einen professionellen Tagesabschluss.",
+      "items": [
+        "Kurzstatus ans Team senden",
+        "Ergebnisse dokumentieren",
+        "Offene Punkte priorisieren",
+        "Naechste Aktion definieren",
+        "Unterlagen geordnet ablegen"
+      ],
+      "correctOrder": [
+        "Ergebnisse dokumentieren",
+        "Offene Punkte priorisieren",
+        "Naechste Aktion definieren",
+        "Kurzstatus ans Team senden",
+        "Unterlagen geordnet ablegen"
+      ],
+      "feedback": {
+        "correct": "Richtig: Das ist ein sauberer Abschlussprozess.",
+        "wrong": "Nicht optimal: Bitte erst dokumentieren und planen, dann kommunizieren."
+      },
+      "progressLinks": [
+        "lf01_reflexion_verbesserung"
+      ]
+    },
+    {
+      "id": "q24",
+      "type": "short_text",
+      "title": "Abschlussmeldung schreiben",
+      "prompt": "Schreiben Sie eine Abschlussmeldung (5-7 Saetze) mit Status, offenem Punkt, Risiko und naechstem Schritt.",
+      "minChars": 170,
+      "requiredKeywords": [
+        "status",
+        "offener punkt",
         "naechster schritt"
       ],
-      "expectedOutline": "Betriebsverstaendnis, eigenes Lernbild, konkreter naechster Entwicklungsschritt.",
+      "expectedOutline": "Klarer Status, offene Punkte mit Risiko, konkrete Folgeaktion.",
       "feedback": {
-        "correct": "Richtig: Die Reflexion ist konkret und entwicklungsorientiert.",
-        "wrong": "Bitte Betriebsbezug, Entwicklung und naechsten Schritt klarer benennen."
-      }
+        "correct": "Richtig: Die Meldung ist teamfaehig und entscheidungsreif.",
+        "wrong": "Bitte Status, offenen Punkt und naechsten Schritt konkreter formulieren."
+      },
+      "progressLinks": [
+        "lf01_reflexion_verbesserung"
+      ]
     }
   ]
 }

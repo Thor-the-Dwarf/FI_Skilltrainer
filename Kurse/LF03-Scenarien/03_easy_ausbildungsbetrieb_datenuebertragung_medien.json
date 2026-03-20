@@ -1,0 +1,159 @@
+{
+  "scenario": {
+    "company": "Ausbildungsbetrieb IT-Service",
+    "scale": "Regional, 140 Mitarbeitende",
+    "context": "Station 3 des Tageslaufs: Datenuebertragung und Netzwerkmedien bewerten.",
+    "mission": "Sie bewerten Datenfluss, Medienwahl und Einflussfaktoren fuer stabile Client-Kommunikation.",
+    "station": {
+      "id": "LF03-ST-03",
+      "department": "Netzwerkteam",
+      "profile": "Kupfer, Funk, Glasfaser und grundlegender Datenfluss im Client-Netz",
+      "constraints": [
+        "Praxisnah begruenden",
+        "Medium und Einsatzzweck koppeln",
+        "Fehlerquellen mitdenken"
+      ]
+    },
+    "customerRequest": {
+      "from": "netzwerk.teamlead@ausbildungsbetrieb.example",
+      "to": "support.team@ausbildungsbetrieb.example",
+      "subject": "Station 03: Datenuebertragung und Medienwahl absichern",
+      "date": "2026-03-13",
+      "body": "Bitte bewerten Sie fuer mehrere Arbeitsplatzbereiche die grundlegende Datenuebertragung und die passende Medienwahl. Wir benoetigen eine kurze, nachvollziehbare Empfehlung fuer den Betriebsalltag."
+    }
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "type": "single_choice",
+      "title": "Grundlage stabiler Datenuebertragung",
+      "prompt": "Welche Aussage beschreibt die Basis einer zuverlaessigen Datenuebertragung im LAN am besten?",
+      "options": [
+        {
+          "text": "Eine saubere physische Verbindung und passende Standards sind die Grundlage",
+          "rationale": "Ohne stabile Basis koennen hoehere Dienste nicht verlaesslich arbeiten."
+        },
+        {
+          "text": "Nur der Geraetename entscheidet ueber die Uebertragungsqualitaet",
+          "rationale": "Der Name allein hat keinen Einfluss auf die physische oder logische Uebertragung."
+        },
+        {
+          "text": "Solange ein Kabel steckt, ist jede Uebertragung automatisch fehlerfrei",
+          "rationale": "Auch mit Kabel koennen Standards, Defekte oder Fehlkonfigurationen stoeren."
+        }
+      ],
+      "correctIndex": 0,
+      "feedback": {
+        "correct": "Richtig: Die Uebertragung beginnt mit einer stabilen technischen Basis.",
+        "wrong": "Nicht passend: Bitte physische Verbindung und Standardkonformitaet staerker gewichten."
+      },
+      "progressLinks": [
+        "lf03_datenuebertragung_verstehen"
+      ]
+    },
+    {
+      "id": "q2",
+      "type": "multi_select",
+      "title": "Medien fachlich einordnen",
+      "prompt": "Welche Aussagen zu Netzwerkmedien treffen zu? (Mehrfachauswahl)",
+      "options": [
+        {
+          "text": "Kupfer ist fuer typische Bueroentfernungen oft praktikabel",
+          "correct": true,
+          "rationale": "Das passt zu vielen Standardarbeitsplaetzen."
+        },
+        {
+          "text": "Glasfaser ist fuer groessere Distanzen und geringe Stoeranfaelligkeit geeignet",
+          "correct": true,
+          "rationale": "Sie bietet Vorteile bei Reichweite und elektromagnetischer Robustheit."
+        },
+        {
+          "text": "WLAN ist flexibel, aber anfaelliger fuer Stoerungen als eine saubere Kabelstrecke",
+          "correct": true,
+          "rationale": "Das ist ein typischer Praxisunterschied."
+        },
+        {
+          "text": "Alle Medien sind unter allen Bedingungen gleich stabil",
+          "correct": false,
+          "rationale": "Einsatzumgebung und Technik beeinflussen die Stabilitaet stark."
+        },
+        {
+          "text": "Die Medienwahl sollte sich nach Einsatzzweck und Umgebung richten",
+          "correct": true,
+          "rationale": "Nur so entsteht eine passende technische Entscheidung."
+        }
+      ],
+      "feedback": {
+        "correct": "Richtig: Sie bewerten Medien nach Einsatzzweck und Stoerungsrisiko.",
+        "wrong": "Teilweise falsch: Bitte Flexibilitaet, Reichweite und Stoerungsrisiko genauer einordnen."
+      },
+      "progressLinks": [
+        "lf03_netzwerkmedien_zugriff"
+      ]
+    },
+    {
+      "id": "q3",
+      "type": "ordering",
+      "title": "Datenweg vom Client zum Dienst",
+      "prompt": "Ordnen Sie den Ablauf einer typischen Datenuebertragung.",
+      "items": [
+        "Switch oder Netz transportiert die Daten weiter",
+        "Client-Anwendung zeigt das Ergebnis an",
+        "Server oder Dienst verarbeitet die Anfrage",
+        "Client-Anwendung startet die Anfrage",
+        "Netzwerkkarte uebergibt Daten an das Medium"
+      ],
+      "correctOrder": [
+        "Client-Anwendung startet die Anfrage",
+        "Netzwerkkarte uebergibt Daten an das Medium",
+        "Switch oder Netz transportiert die Daten weiter",
+        "Server oder Dienst verarbeitet die Anfrage",
+        "Client-Anwendung zeigt das Ergebnis an"
+      ],
+      "feedback": {
+        "correct": "Richtig: So laesst sich der Datenfluss nachvollziehbar beschreiben.",
+        "wrong": "Nicht optimal: Bitte von der Anwendung ueber die Schnittstelle zum Dienst denken."
+      },
+      "progressLinks": [
+        "lf03_datenuebertragung_verstehen"
+      ]
+    },
+    {
+      "id": "q4",
+      "type": "number",
+      "title": "Uebertragungszeit abschaetzen",
+      "prompt": "Ein 800-MB-Logarchiv soll idealisiert ueber 100 Mbit/s uebertragen werden. Wie viele Sekunden dauert das theoretisch ungefaehr?",
+      "expected": 64,
+      "toleranceAbs": 2,
+      "showExpectedFormula": "800 MB * 8 = 6400 Mbit, 6400 / 100 = 64 s",
+      "feedback": {
+        "correct": "Richtig gerechnet.",
+        "wrong": "Bitte zuerst in Mbit umrechnen und dann durch die Datenrate teilen."
+      },
+      "progressLinks": [
+        "lf03_datenuebertragung_verstehen"
+      ]
+    },
+    {
+      "id": "q5",
+      "type": "short_text",
+      "title": "Medienempfehlung fuer zwei Einsatzorte",
+      "prompt": "Empfehlen Sie in 4-6 Saetzen ein Medium fuer zwei Bueros auf derselben Etage und fuer einen weiter entfernten Technikraum.",
+      "minChars": 150,
+      "requiredKeywords": [
+        "kupfer",
+        "glasfaser",
+        "begruendung"
+      ],
+      "expectedOutline": "Einsatzort, Medienwahl und kurze technische Begruendung fuer beide Faelle.",
+      "feedback": {
+        "correct": "Richtig: Die Empfehlung ist betriebsnah und technisch schluessig.",
+        "wrong": "Bitte Einsatzort, Medium und Begruendung klarer koppeln."
+      },
+      "progressLinks": [
+        "lf03_netzwerkmedien_zugriff",
+        "lf03_datenuebertragung_verstehen"
+      ]
+    }
+  ]
+}

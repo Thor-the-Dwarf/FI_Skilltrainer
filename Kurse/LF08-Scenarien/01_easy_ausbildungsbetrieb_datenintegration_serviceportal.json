@@ -1,0 +1,359 @@
+{
+  "scenario": {
+    "company": "Ausbildungsbetrieb IT-Service",
+    "scale": "Mittelstand, 230 Mitarbeitende",
+    "context": "Station 01: Daten fuer ein internes Serviceportal systemuebergreifend bereitstellen.",
+    "mission": "Sie planen die Datenzusammenfuehrung aus zwei Quellsystemen, entwerfen eine einfache Loesungsstruktur und sichern Test- und Abnahmefaehigkeit.",
+    "station": {
+      "id": "LF08-ST-01",
+      "department": "Anwendungsentwicklung",
+      "profile": "Datenintegration, API-Abfrage, SQL-Auswertung, UI-Entwurf",
+      "constraints": [
+        "Datenqualitaet und Sicherheit beruecksichtigen",
+        "Loesung nachvollziehbar dokumentieren",
+        "Abnahmekriterien klar formulieren"
+      ]
+    },
+    "customerRequest": {
+      "from": "fachbereich.service@ausbildungsbetrieb.example",
+      "to": "dev.team@ausbildungsbetrieb.example",
+      "subject": "Station 01: Daten fuer Serviceportal zusammenfuehren",
+      "date": "2026-03-13",
+      "body": "Bitte stellen Sie fuer unser neues Serviceportal Daten aus dem Ticketsystem und aus der Kundendatenbank gemeinsam bereit.\n\nWir brauchen eine belastbare Planung fuer Datenmodell, Integrationsweg, Testfaelle und Abnahmeprotokoll."
+    }
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "type": "single_choice",
+      "title": "Projektauftrag sauber starten",
+      "prompt": "Welche Aktion ist fuer den Projektstart am sinnvollsten?",
+      "options": [
+        {
+          "text": "Sofort implementieren, ohne Anforderungen abzugleichen",
+          "rationale": "Fuehrt haeufig zu Nacharbeit und Fehlumsetzung."
+        },
+        {
+          "text": "Ziel, Scope und Abnahmekriterien mit dem Auftraggeber klar abstimmen",
+          "rationale": "Sichert eine belastbare Grundlage fuer Umsetzung und Abnahme."
+        },
+        {
+          "text": "Nur interne Teamannahmen dokumentieren",
+          "rationale": "Ohne Kundenabgleich fehlen verbindliche Leitplanken."
+        }
+      ],
+      "correctIndex": 1,
+      "feedback": {
+        "correct": "Richtig: Ein klarer Projektauftrag reduziert spaetere Konflikte.",
+        "wrong": "Nicht passend: Bitte Kundenabstimmung und Abnahmebezug frueh sichern."
+      },
+      "progressLinks": [
+        "lf08_kundenauftraege_projekte"
+      ]
+    },
+    {
+      "id": "q2",
+      "type": "multi_select",
+      "title": "Datenqualitaet vor Integration",
+      "prompt": "Welche Punkte sind vor der Zusammenfuehrung besonders wichtig? (Mehrfachauswahl)",
+      "options": [
+        {
+          "text": "Pflichtfelder und Schluesselwerte auf Vollstaendigkeit pruefen",
+          "correct": true,
+          "rationale": "Fehlende Schluesseldaten brechen Integrationslogik."
+        },
+        {
+          "text": "Datums- und Statusformate zwischen Quellen vergleichen",
+          "correct": true,
+          "rationale": "Formatkonflikte erzeugen inkonsistente Ergebnisse."
+        },
+        {
+          "text": "Dubletten und inkonsistente IDs erkennen",
+          "correct": true,
+          "rationale": "Verhindert fehlerhafte Zusammenfuehrung."
+        },
+        {
+          "text": "Nur Dateigroesse betrachten, Inhalte ignorieren",
+          "correct": false,
+          "rationale": "Inhaltliche Qualitaet ist zentral."
+        },
+        {
+          "text": "Fehlerwerte ohne Kennzeichnung still verwerfen",
+          "correct": false,
+          "rationale": "Mindert Nachvollziehbarkeit und Datenvertrauen."
+        }
+      ],
+      "feedback": {
+        "correct": "Richtig: Sie sichern die Datenbasis fachlich ab.",
+        "wrong": "Teilweise falsch: Bitte Qualitaets- und Konsistenzpruefung staerker gewichten."
+      },
+      "progressLinks": [
+        "lf08_datenqualitaet_integration"
+      ]
+    },
+    {
+      "id": "q3",
+      "type": "ordering",
+      "title": "Ablauf der Datenintegration",
+      "prompt": "Ordnen Sie den Integrationsablauf fuer zwei Quellsysteme.",
+      "items": [
+        "Integrationsfehler protokollieren und Ruecklauf definieren",
+        "Quellen analysieren und Schluesselbezug festlegen",
+        "Datenabruf und Vorvalidierung durchfuehren",
+        "Daten transformieren und zusammenfuehren",
+        "Ergebnis gegen Abnahmekriterien pruefen"
+      ],
+      "correctOrder": [
+        "Quellen analysieren und Schluesselbezug festlegen",
+        "Datenabruf und Vorvalidierung durchfuehren",
+        "Daten transformieren und zusammenfuehren",
+        "Ergebnis gegen Abnahmekriterien pruefen",
+        "Integrationsfehler protokollieren und Ruecklauf definieren"
+      ],
+      "feedback": {
+        "correct": "Richtig: Die Reihenfolge ist technisch und betrieblich schluessig.",
+        "wrong": "Nicht optimal: Bitte erst Struktur und Validierung, dann Merge und Nachweis."
+      },
+      "progressLinks": [
+        "lf08_systemuebergreifende_anbindung"
+      ]
+    },
+    {
+      "id": "q4",
+      "type": "number",
+      "title": "Datensatzmenge nach Filterung",
+      "prompt": "Aus Quelle A kommen 8.400 Datensaetze, aus Quelle B 5.900. 12 % der kombinierten Datensaetze sind wegen Fehlern unbrauchbar. Wie viele bleiben uebrig?",
+      "expected": 12584,
+      "toleranceAbs": 1,
+      "showExpectedFormula": "(8400+5900)=14300; 14300*0,88=12584",
+      "feedback": {
+        "correct": "Richtig gerechnet.",
+        "wrong": "Bitte Gesamtmenge bilden und Fehleranteil korrekt abziehen."
+      },
+      "progressLinks": [
+        "lf08_datenqualitaet_integration"
+      ]
+    },
+    {
+      "id": "q5",
+      "type": "short_text",
+      "title": "Sicherheitsaspekte im Entwurf",
+      "prompt": "Beschreiben Sie in 4-6 Saetzen, welche zwei sicherheitsrelevanten Aspekte in der Planung zwingend beruecksichtigt werden muessen.",
+      "minChars": 160,
+      "requiredKeywords": [
+        "zugriff",
+        "protokollierung",
+        "schutz"
+      ],
+      "expectedOutline": "Mindestens zwei konkrete Sicherheitsaspekte und deren Nutzen fuer den Betrieb.",
+      "feedback": {
+        "correct": "Richtig: Die Sicherheitsplanung ist praxisnah und belastbar.",
+        "wrong": "Bitte Sicherheitsaspekte konkreter benennen und mit Schutzwirkung verknuepfen."
+      },
+      "progressLinks": [
+        "lf08_oo_sicher_planen"
+      ]
+    },
+    {
+      "id": "q6",
+      "type": "single_choice",
+      "title": "UML-Artefakt passend waehlen",
+      "prompt": "Welches UML-Diagramm eignet sich am besten, um Datenobjekte und ihre Beziehungen zu zeigen?",
+      "options": [
+        {
+          "text": "Klassendiagramm",
+          "rationale": "Es beschreibt Struktur, Attribute und Beziehungen von Objekten."
+        },
+        {
+          "text": "Aktivitaetsdiagramm",
+          "rationale": "Zeigt primaer Ablauflogik statt Objektstruktur."
+        },
+        {
+          "text": "Use-Case-Diagramm",
+          "rationale": "Beschreibt Akteure und Funktionensicht, nicht Detailstruktur."
+        }
+      ],
+      "correctIndex": 0,
+      "feedback": {
+        "correct": "Richtig: Fuer Datenobjekte ist das Klassendiagramm passend.",
+        "wrong": "Nicht passend: Bitte Strukturmodell und Ablaufmodell klar trennen."
+      },
+      "progressLinks": [
+        "lf08_uml_modellierung"
+      ]
+    },
+    {
+      "id": "q7",
+      "type": "multi_select",
+      "title": "UI-Entwurf fuer Datenuebersicht",
+      "prompt": "Welche Punkte verbessern die ergonomische Nutzbarkeit einer Datenuebersicht? (Mehrfachauswahl)",
+      "options": [
+        {
+          "text": "Klare Filter- und Suchfunktion mit sofortigem Feedback",
+          "correct": true,
+          "rationale": "Unterstuetzt effiziente Informationssuche."
+        },
+        {
+          "text": "Konsistente Benennung und visuelle Hierarchie",
+          "correct": true,
+          "rationale": "Erleichtert Orientierung und Bedienung."
+        },
+        {
+          "text": "Alle Informationen ohne Struktur auf einer Seite",
+          "correct": false,
+          "rationale": "Fuehrt zu Ueberlastung und Fehlbedienung."
+        },
+        {
+          "text": "Fehlermeldungen mit konkretem Korrekturhinweis",
+          "correct": true,
+          "rationale": "Verbessert Verstaendlichkeit und Selbsthilfe."
+        },
+        {
+          "text": "Unterschiedliche Bedeutung gleicher Farben ohne Legende",
+          "correct": false,
+          "rationale": "Erhoeht Fehlinterpretation."
+        }
+      ],
+      "feedback": {
+        "correct": "Richtig: Der Entwurf folgt zentralen Usability-Prinzipien.",
+        "wrong": "Teilweise falsch: Bitte Bedienbarkeit und Klarheit staerker priorisieren."
+      },
+      "progressLinks": [
+        "lf08_ui_ergonomie"
+      ]
+    },
+    {
+      "id": "q8",
+      "type": "number",
+      "title": "SQL-Ergebnis plausibilisieren",
+      "prompt": "Eine Abfrage liefert pro Tag im Mittel 1.260 relevante Datensaetze. Fuer 14 Tage: Wie viele Datensaetze werden erwartet?",
+      "expected": 17640,
+      "toleranceAbs": 1,
+      "showExpectedFormula": "1260*14=17640",
+      "feedback": {
+        "correct": "Richtig gerechnet.",
+        "wrong": "Bitte Tageswert und Zeitraum korrekt multiplizieren."
+      },
+      "progressLinks": [
+        "lf08_datenbankloesungen"
+      ]
+    },
+    {
+      "id": "q9",
+      "type": "ordering",
+      "title": "Test- und Abnahmeablauf",
+      "prompt": "Ordnen Sie einen sinnvollen Ablauf von Test bis Projektabnahme.",
+      "items": [
+        "Abnahmeprotokoll mit Befund und Restpunkten erstellen",
+        "Blackbox-Testfaelle aus Anforderungen ableiten",
+        "Testdaten gezielt fuer Normal- und Fehlerfaelle vorbereiten",
+        "Tests ausfuehren und Ergebnisse bewerten",
+        "Abweichungen korrigieren und Nachtest durchfuehren"
+      ],
+      "correctOrder": [
+        "Blackbox-Testfaelle aus Anforderungen ableiten",
+        "Testdaten gezielt fuer Normal- und Fehlerfaelle vorbereiten",
+        "Tests ausfuehren und Ergebnisse bewerten",
+        "Abweichungen korrigieren und Nachtest durchfuehren",
+        "Abnahmeprotokoll mit Befund und Restpunkten erstellen"
+      ],
+      "feedback": {
+        "correct": "Richtig: So entsteht ein reproduzierbarer Weg bis zur Abnahme.",
+        "wrong": "Nicht optimal: Erst Testdesign, dann Ausfuehrung, Korrektur und formaler Abschluss."
+      },
+      "progressLinks": [
+        "lf08_test_abnahme"
+      ]
+    },
+    {
+      "id": "q10",
+      "type": "short_text",
+      "title": "Abnahmehinweis an den Auftraggeber",
+      "prompt": "Formulieren Sie eine kurze Abnahmemeldung (4-6 Saetze) mit Ergebnis, Restpunkten und naechstem Schritt.",
+      "minChars": 150,
+      "requiredKeywords": [
+        "ergebnis",
+        "restpunkt",
+        "naechster schritt"
+      ],
+      "expectedOutline": "Klare Ergebnislage, benannte Restpunkte, verbindlicher naechster Schritt.",
+      "feedback": {
+        "correct": "Richtig: Die Meldung ist transparent und handlungsorientiert.",
+        "wrong": "Bitte Ergebnis, Restpunkte und naechsten Schritt klarer strukturieren."
+      },
+      "progressLinks": [
+        "lf08_dokumentation_qualitaet",
+        "lf08_test_abnahme"
+      ]
+    },
+    {
+      "id": "q11",
+      "type": "multi_select",
+      "title": "Java/Python in der Integrationsarchitektur",
+      "prompt": "Welche Aussagen sind fuer die Werkzeugentscheidung sinnvoll? (Mehrfachauswahl)",
+      "options": [
+        {
+          "text": "Sprachwahl richtet sich nach Teamkompetenz und Integrationsaufgabe",
+          "correct": true,
+          "rationale": "Praxisnahe Auswahl verbindet Lieferfaehigkeit und Wartbarkeit."
+        },
+        {
+          "text": "Java kann fuer stabile Backend-Integrationsbausteine geeignet sein",
+          "correct": true,
+          "rationale": "Typischer Einsatz in vielen Unternehmensumgebungen."
+        },
+        {
+          "text": "Python ist fuer Datenverarbeitung und schnelle Prototypen oft sinnvoll",
+          "correct": true,
+          "rationale": "Unterstuetzt flexible Daten- und Integrationsaufgaben."
+        },
+        {
+          "text": "Sprache ist immer egal, da Wartung keine Rolle spielt",
+          "correct": false,
+          "rationale": "Wartbarkeit ist zentral fuer den Betrieb."
+        },
+        {
+          "text": "Werkzeugauswahl sollte nicht dokumentiert werden",
+          "correct": false,
+          "rationale": "Ohne Begruendung fehlt Nachvollziehbarkeit."
+        }
+      ],
+      "feedback": {
+        "correct": "Richtig: Die Entscheidung ist technisch und organisatorisch fundiert.",
+        "wrong": "Teilweise falsch: Bitte Aufgabenfit, Teamkompetenz und Wartbarkeit staerker beachten."
+      },
+      "progressLinks": [
+        "lf08_java_implementierung",
+        "lf08_python_implementierung"
+      ]
+    },
+    {
+      "id": "q12",
+      "type": "single_choice",
+      "title": "NoSQL oder relational",
+      "prompt": "Wann ist ein NoSQL-Ansatz im Kontext systemuebergreifender Daten eher sinnvoll?",
+      "options": [
+        {
+          "text": "Wenn flexibel strukturierte Daten aus mehreren Quellen mit variierenden Schemata verarbeitet werden",
+          "rationale": "Hier kann schemaflexible Ablage Vorteile haben."
+        },
+        {
+          "text": "Wenn strikt relationale Konsistenzregeln und feste Strukturen im Mittelpunkt stehen",
+          "rationale": "Das spricht eher fuer ein relationales Modell."
+        },
+        {
+          "text": "Wenn keinerlei Such- oder Abfragebedarf besteht",
+          "rationale": "Dann ist die Systemwahl nicht fachlich begruendet."
+        }
+      ],
+      "correctIndex": 0,
+      "feedback": {
+        "correct": "Richtig: Der Vorteil liegt oft in flexibleren Datenschemata.",
+        "wrong": "Nicht passend: Bitte Datenstruktur und Abfrageanforderungen differenzieren."
+      },
+      "progressLinks": [
+        "lf08_datenbankloesungen"
+      ]
+    }
+  ]
+}

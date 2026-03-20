@@ -1,0 +1,1283 @@
+{
+  "scenario": {
+    "company": "Mainbogen Digital GmbH",
+    "scale": "IT-Dienstleister mit Werkstatt, Verwaltung und 92 Mitarbeitenden",
+    "context": "Pruefungsvorbereitung WISO im Stationsformat mit Ausbildungs-, Sicherheits-, Unternehmens- und Nachhaltigkeitsfragen.",
+    "mission": "Sie bearbeiten eine zusammenhaengende Fachsituation zu Probezeit, Betriebsvereinbarung, Arbeitsschutz, GmbH, Wirtschaftlichkeit, Tarifrecht, AGG und nachhaltigem Wirtschaften.",
+    "source": {
+      "kind": "Pseudonymisierte Pruefungsvorlage",
+      "reference": "AP2 Wirtschafts- und Sozialkunde, Sommer 2024",
+      "note": "Die fachliche Reihenfolge bleibt erhalten; Namen, Orte und Unternehmensbezug wurden in das Kursformat ueberfuehrt."
+    },
+    "station": {
+      "id": "PV3WISO-ST-03",
+      "department": "Pruefungsvorbereitung Wirtschafts- und Sozialkunde",
+      "profile": "Ausbildung, Arbeitsschutz, GmbH, Tarifrecht und Nachhaltigkeit",
+      "constraints": [
+        "Die 30 Einzelaufgaben bleiben in thematischen Folgeauftraegen erkennbar",
+        "Bildzeichen, Tabellen und Registerdaten werden mit vorhandenen Renderern oder textnahen Ersatzbeschreibungen uebernommen",
+        "Rechen- und Zuordnungsaufgaben sollen moeglichst direkt auto-auswertbar bleiben"
+      ]
+    },
+    "customerRequest": {
+      "from": "trainingskoordination@mainbogen-digital.example",
+      "to": "projektteam@ausbildungsbetrieb.example",
+      "subject": "Bitte das naechste WISO-Trainingspaket zu Sicherheit, GmbH und Nachhaltigkeit vorbereiten",
+      "date": "2026-03-20",
+      "body": "Guten Tag,\n\nwir moechten fuer unsere Auszubildenden ein weiteres WISO-Training im Stationsformat aufbauen. Diesmal sollen Fragen zu Probezeit und Ausbildungsende, Betriebsvereinbarung, Arbeitsschutz, gesetzlicher Unfallversicherung, Handelsregister, GmbH, Mutterschutz, Businessplan, Wirtschaftlichkeit, Tarifrecht, AGG und nachhaltigem Wirtschaften enthalten sein.\n\nBitte halten Sie die Themenfolge der Quelle erkennbar, formulieren Sie alles sauber pseudonymisiert und nutzen Sie vorhandene Aufgabenformate, damit die Antworten moeglichst direkt auswertbar bleiben.\n\nViele Gruesse\nTrainingskoordination"
+    }
+  },
+  "questions": [
+    {
+      "id": "q01",
+      "type": "single_choice",
+      "title": "Probezeit im Ausbildungsvertrag richtig einordnen",
+      "prompt": "Die Mainbogen Digital GmbH will in neue Ausbildungsvertraege wieder eine Probezeit aufnehmen. Welche Aussage trifft fuer Berufsausbildungsverhaeltnisse zu?",
+      "options": [
+        {
+          "text": "Eine Probezeit ist bei Ausbildungsvertraegen nicht erforderlich.",
+          "rationale": "Gerade im Ausbildungsverhaeltnis ist eine Probezeit vorgesehen."
+        },
+        {
+          "text": "Die Probezeit muss mindestens sechs Monate betragen.",
+          "rationale": "So lang darf die Probezeit im Ausbildungsverhaeltnis nicht dauern."
+        },
+        {
+          "text": "Eine Probezeit ist nur bei kaufmaennischen Berufen notwendig.",
+          "rationale": "Die Regel gilt nicht nur fuer bestimmte Berufsgruppen."
+        },
+        {
+          "text": "Die Probezeit muss mindestens einen und darf hoechstens vier Monate dauern.",
+          "rationale": "Das entspricht der gesetzlichen Vorgabe fuer Berufsausbildungsverhaeltnisse."
+        },
+        {
+          "text": "Eine Probezeit von einem Monat ist nur bei dreijaehriger Ausbildungsdauer vorgeschrieben.",
+          "rationale": "Die Probezeit haengt nicht so von der Gesamtdauer des Berufs ab."
+        }
+      ],
+      "correctIndex": 3,
+      "feedback": {
+        "correct": "Die gesetzliche Probezeitregel wurde korrekt erkannt.",
+        "wrong": "Pruefen Sie noch einmal die Mindest- und Hoechstdauer der Probezeit im BBiG."
+      },
+      "progressLinks": [
+        "pv3wiso_arbeitsrecht_ausbildung"
+      ]
+    },
+    {
+      "id": "q02",
+      "type": "single_choice",
+      "title": "Kuendigung nach der Probezeit beurteilen",
+      "prompt": "Mia Lorenz begann im September 2023 ihre Ausbildung zur Fachinformatikerin. Im Mai 2024 moechte sie die Ausbildung beenden, weil sie an eine Hochschule wechseln will. Welche Aussage trifft zu?",
+      "options": [
+        {
+          "text": "Die Kuendigungsfrist betraegt fuer beide Vertragsparteien sechs Monate.",
+          "rationale": "Eine solche allgemeine Sechs-Monats-Frist gibt es hier nicht."
+        },
+        {
+          "text": "Mia Lorenz kann das Ausbildungsverhaeltnis mit einer Frist von vier Wochen kuendigen, wenn sie die Ausbildung aufgeben oder sich beruflich neu orientieren will.",
+          "rationale": "Genau diese Sonderregel besteht fuer Auszubildende nach der Probezeit."
+        },
+        {
+          "text": "Nach der Probezeit kann der Ausbildungsbetrieb mit vier Wochen Frist ordentlich kuendigen.",
+          "rationale": "Der Ausbildungsbetrieb kann nach der Probezeit nicht einfach ordentlich kuendigen."
+        },
+        {
+          "text": "Nach der Probezeit kann nur die IHK ein Ausbildungsverhaeltnis kuendigen.",
+          "rationale": "Die IHK ist keine kuendigende Vertragspartei."
+        },
+        {
+          "text": "Eine Kuendigung waere nur mit Zustimmung des Betriebsrats wirksam.",
+          "rationale": "Eine solche Zustimmungsvoraussetzung besteht hier nicht."
+        }
+      ],
+      "correctIndex": 1,
+      "feedback": {
+        "correct": "Die Kuendigungsmoeglichkeit nach der Probezeit wurde richtig eingeordnet.",
+        "wrong": "Achten Sie auf die Sonderregel fuer Auszubildende, wenn sie die Berufsausbildung aufgeben oder wechseln wollen."
+      },
+      "progressLinks": [
+        "pv3wiso_arbeitsrecht_ausbildung"
+      ]
+    },
+    {
+      "id": "q03",
+      "type": "single_choice",
+      "title": "Ende eines Ausbildungsverhaeltnisses bestimmen",
+      "prompt": "Ein Auszubildender im letzten Lehrjahr moechte wissen, wann sein Ausbildungsverhaeltnis bei bestandener Abschlusspruefung endet. Welche Aussage ist richtig?",
+      "options": [
+        {
+          "text": "Der Ausbildungsbetrieb muss nach bestandener Abschlusspruefung kuendigen.",
+          "rationale": "Das Ende tritt nicht erst durch eine gesonderte Kuendigung ein."
+        },
+        {
+          "text": "Der Auszubildende muss selbst kuendigen, sobald die Pruefung bestanden ist.",
+          "rationale": "Auch dafuer braucht es keine eigene Kuendigung."
+        },
+        {
+          "text": "Das Ausbildungsverhaeltnis endet mit der Bekanntgabe des Bestehens der Abschlusspruefung.",
+          "rationale": "Genau dieser Zeitpunkt ist entscheidend."
+        },
+        {
+          "text": "Das Ausbildungsverhaeltnis kann nur von der zustaendigen Stelle beendet werden.",
+          "rationale": "Die zustaendige Stelle spricht hier keine Beendigung aus."
+        },
+        {
+          "text": "Das Ausbildungsverhaeltnis endet erst mit dem Ende der Berufsschulpflicht.",
+          "rationale": "Die Berufsschulpflicht ist nicht der massgebliche Endzeitpunkt."
+        }
+      ],
+      "correctIndex": 2,
+      "feedback": {
+        "correct": "Der Endzeitpunkt des Ausbildungsverhaeltnisses wurde korrekt bestimmt.",
+        "wrong": "Denken Sie an den Zusammenhang zwischen bestandener Abschlusspruefung und dem Ende des Ausbildungsverhaeltnisses."
+      },
+      "progressLinks": [
+        "pv3wiso_arbeitsrecht_ausbildung"
+      ]
+    },
+    {
+      "id": "q04",
+      "type": "single_choice",
+      "title": "Befristetes Arbeitsverhaeltnis nach der Ausbildung verstehen",
+      "prompt": "Nach erfolgreich bestandener Ausbildung soll ein ehemaliger Auszubildender fuer ein Jahr in ein befristetes Arbeitsverhaeltnis uebernommen werden. Welche Aussage trifft zu?",
+      "options": [
+        {
+          "text": "Auszubildende duerfen nach der Ausbildung nur unbefristet uebernommen werden.",
+          "rationale": "Eine befristete Uebernahme ist grundsaetzlich moeglich."
+        },
+        {
+          "text": "Das Arbeitsverhaeltnis endet nach Ablauf der vereinbarten Zeit, ohne dass es einer Kuendigung bedarf.",
+          "rationale": "Das ist das Grundprinzip einer kalendermassigen Befristung."
+        },
+        {
+          "text": "Eine Befristung ist nur mit Zustimmung der Agentur fuer Arbeit zulaessig.",
+          "rationale": "Eine solche Zustimmung ist dafuer nicht erforderlich."
+        },
+        {
+          "text": "Ein befristeter Arbeitsvertrag muss mindestens zwei Jahre laufen.",
+          "rationale": "Eine Mindestlaufzeit von zwei Jahren gibt es nicht."
+        },
+        {
+          "text": "Ein befristeter Vertrag ist nur mit Zustimmung des Betriebsrats moeglich.",
+          "rationale": "Der Betriebsrat hat hier keine solche Zustimmungsfunktion."
+        }
+      ],
+      "correctIndex": 1,
+      "feedback": {
+        "correct": "Die Wirkung der Befristung wurde richtig erkannt.",
+        "wrong": "Pruefen Sie, was bei einem kalendermassig befristeten Vertrag am Ende der Laufzeit passiert."
+      },
+      "progressLinks": [
+        "pv3wiso_arbeitsrecht_ausbildung"
+      ]
+    },
+    {
+      "id": "q05",
+      "type": "multi_select",
+      "title": "Betriebsvereinbarung von Tarifinhalten abgrenzen",
+      "prompt": "Welche zwei Themen koennen typischerweise durch eine Betriebsvereinbarung geregelt werden?",
+      "options": [
+        {
+          "text": "Einfuehrung einer neuen Pausenregelung fuer die Mitarbeitenden",
+          "correct": true,
+          "rationale": "Solche Fragen der betrieblichen Ordnung koennen Gegenstand einer Betriebsvereinbarung sein."
+        },
+        {
+          "text": "Reduzierung der Urlaubstage entgegen den tariflichen Vorgaben",
+          "correct": false,
+          "rationale": "Tarifliche Mindeststandards koennen nicht einfach per Betriebsvereinbarung abgesenkt werden."
+        },
+        {
+          "text": "Hoehe der Arbeitsentgelte nach Gehaltsgruppen",
+          "correct": false,
+          "rationale": "Entgeltgruppen sind typischerweise Sache des Tarifvertrags."
+        },
+        {
+          "text": "Aufstellung des Urlaubsplans im Betrieb",
+          "correct": true,
+          "rationale": "Der konkrete Urlaubsplan ist ein klassisches Feld betrieblicher Regelungen."
+        },
+        {
+          "text": "Erhoehung der regelmaessigen taeglichen Arbeitszeit auf elf Stunden",
+          "correct": false,
+          "rationale": "Gesetzliche Grenzen koennen nicht per Betriebsvereinbarung aufgehoben werden."
+        },
+        {
+          "text": "Dauer der Entgeltfortzahlung im Krankheitsfall",
+          "correct": false,
+          "rationale": "Die Entgeltfortzahlung ist gesetzlich geregelt und kein typischer Betriebsvereinbarungsinhalt."
+        }
+      ],
+      "feedback": {
+        "correct": "Die typischen Inhalte einer Betriebsvereinbarung wurden korrekt erkannt.",
+        "wrong": "Trennen Sie betriebliche Ordnungsfragen von tariflichen und gesetzlichen Mindeststandards."
+      },
+      "progressLinks": [
+        "pv3wiso_mitbestimmung_tarif_sozialversicherung"
+      ]
+    },
+    {
+      "id": "q06",
+      "type": "single_choice",
+      "title": "Interessenvertretung des Betriebsrats zuordnen",
+      "prompt": "Wessen Interessen vertritt der Betriebsrat nach dem Betriebsverfassungsgesetz?",
+      "options": [
+        {
+          "text": "Die Interessen des Arbeitgebers",
+          "rationale": "Der Betriebsrat ist keine Arbeitgebervertretung."
+        },
+        {
+          "text": "Die Interessen der Arbeitnehmerinnen und Arbeitnehmer",
+          "rationale": "Genau diese Personengruppe vertritt der Betriebsrat."
+        },
+        {
+          "text": "Die Interessen der leitenden Angestellten",
+          "rationale": "Leitende Angestellte werden nicht durch den Betriebsrat vertreten."
+        },
+        {
+          "text": "Die Interessen der Industrie- und Handelskammern",
+          "rationale": "Die IHK gehoert nicht zum Vertretungsbereich des Betriebsrats."
+        },
+        {
+          "text": "Die Interessen der Bundesagentur fuer Arbeit",
+          "rationale": "Auch diese Institution wird nicht durch den Betriebsrat vertreten."
+        }
+      ],
+      "correctIndex": 1,
+      "feedback": {
+        "correct": "Die Rolle des Betriebsrats wurde richtig eingeordnet.",
+        "wrong": "Der Betriebsrat ist die innerbetriebliche Interessenvertretung der Beschaeftigten."
+      },
+      "progressLinks": [
+        "pv3wiso_mitbestimmung_tarif_sozialversicherung"
+      ]
+    },
+    {
+      "id": "q07",
+      "type": "single_choice",
+      "title": "Zustaendiges Gericht bei Kassenstreitigkeit finden",
+      "prompt": "Eine gesetzlich krankenversicherte Mitarbeiterin will gegen ihre Krankenkasse klagen, weil diese nur einen geringen Zuschuss zu einer Zahnbehandlung bewilligt hat. Vor welchem Gericht muss sie klagen?",
+      "options": [
+        {
+          "text": "Vor dem Amtsgericht",
+          "rationale": "Das Amtsgericht ist dafuer nicht die zustaendige Fachgerichtsbarkeit."
+        },
+        {
+          "text": "Vor dem Landgericht",
+          "rationale": "Auch das Landgericht ist hier nicht zustaendig."
+        },
+        {
+          "text": "Vor dem Arbeitsgericht",
+          "rationale": "Es geht nicht um einen Streit mit dem Arbeitgeber."
+        },
+        {
+          "text": "Vor dem Sozialgericht",
+          "rationale": "Streitigkeiten mit gesetzlichen Sozialversicherungstraegern gehoeren vor das Sozialgericht."
+        },
+        {
+          "text": "Vor dem Finanzgericht",
+          "rationale": "Finanzgerichte behandeln andere Rechtsgebiete."
+        }
+      ],
+      "correctIndex": 3,
+      "feedback": {
+        "correct": "Die zustaendige Gerichtsbarkeit wurde korrekt bestimmt.",
+        "wrong": "Bei Streit mit gesetzlichen Sozialversicherungstraegern ist die Sozialgerichtsbarkeit entscheidend."
+      },
+      "progressLinks": [
+        "pv3wiso_mitbestimmung_tarif_sozialversicherung"
+      ]
+    },
+    {
+      "id": "q08",
+      "type": "single_choice",
+      "title": "Beitragsbemessungsgrenze in der Rentenversicherung verstehen",
+      "prompt": "In einem Beitrag wird erwaehnt, dass die Beitragsbemessungsgrenze in der gesetzlichen Rentenversicherung auf 87.600 EUR pro Jahr festgelegt wurde. Welche Aussage trifft zu?",
+      "options": [
+        {
+          "text": "Der Arbeitgeber muss den Beitrag zur Rentenversicherung mindestens in dieser Hoehe bezahlen.",
+          "rationale": "Die Beitragsbemessungsgrenze ist keine Mindestbeitragspflicht."
+        },
+        {
+          "text": "Auf den Teil des Bruttolohns oberhalb dieser Grenze werden keine Rentenversicherungsbeitraege erhoben.",
+          "rationale": "Genau das beschreibt die Funktion der Beitragsbemessungsgrenze."
+        },
+        {
+          "text": "Bei einem Einkommen oberhalb dieser Grenze besteht keine Versicherungspflicht in der gesetzlichen Rentenversicherung mehr.",
+          "rationale": "Die Versicherungspflicht entfaellt dadurch nicht automatisch."
+        },
+        {
+          "text": "Wer oberhalb der Beitragsbemessungsgrenze verdient, muss zwingend privat vorsorgen, weil er aus der gesetzlichen Rentenversicherung ausscheidet.",
+          "rationale": "Auch das folgt aus der Grenze nicht."
+        },
+        {
+          "text": "Wer oberhalb der Beitragsbemessungsgrenze verdient, verliert den Anspruch auf Erwerbsminderungsrente.",
+          "rationale": "Ein solcher Automatismus besteht nicht."
+        }
+      ],
+      "correctIndex": 1,
+      "feedback": {
+        "correct": "Die Bedeutung der Beitragsbemessungsgrenze wurde korrekt eingeordnet.",
+        "wrong": "Pruefen Sie, auf welchen Teil des Einkommens Sozialbeitraege erhoben werden."
+      },
+      "progressLinks": [
+        "pv3wiso_mitbestimmung_tarif_sozialversicherung"
+      ]
+    },
+    {
+      "id": "q09",
+      "type": "multi_select",
+      "title": "Unternehmen nach Sektor und Zielrichtung einordnen",
+      "prompt": "Die Mainbogen Digital GmbH erbringt IT-Dienstleistungen. Welche zwei Bezeichnungen passen zu diesem Unternehmen?",
+      "options": [
+        {
+          "text": "Unternehmen des primaeren Sektors",
+          "correct": false,
+          "rationale": "IT-Dienstleistungen gehoeren nicht zur Urproduktion."
+        },
+        {
+          "text": "Unternehmen des sekundaeren Sektors",
+          "correct": false,
+          "rationale": "Auch der industrielle Produktionssektor passt hier nicht."
+        },
+        {
+          "text": "Unternehmen des tertiaeren Sektors",
+          "correct": true,
+          "rationale": "Dienstleistungen gehoeren zum tertiaeren Sektor."
+        },
+        {
+          "text": "Erwerbswirtschaftlicher Betrieb",
+          "correct": true,
+          "rationale": "Das Unternehmen arbeitet gewinnorientiert."
+        },
+        {
+          "text": "Gemeinwirtschaftlicher Betrieb",
+          "correct": false,
+          "rationale": "Ein gemeinwirtschaftlicher Zweck steht hier nicht im Vordergrund."
+        },
+        {
+          "text": "Personengesellschaft",
+          "correct": false,
+          "rationale": "Eine GmbH ist eine Kapitalgesellschaft."
+        }
+      ],
+      "feedback": {
+        "correct": "Sektor und Zielrichtung des Unternehmens wurden korrekt erkannt.",
+        "wrong": "Trennen Sie Wirtschaftssektor, Zielsetzung und Rechtsform des Unternehmens sauber voneinander."
+      },
+      "progressLinks": [
+        "pv3wiso_wirtschaftssektoren_unternehmensformen"
+      ]
+    },
+    {
+      "id": "f02",
+      "type": "followup_divider",
+      "title": "Arbeitssicherheit, Unfallversicherung und Brandschutz",
+      "from": "arbeitsschutz@mainbogen-digital.example",
+      "to": "projektteam@ausbildungsbetrieb.example",
+      "subject": "Bitte den Block zu Sicherheitsorganisation und Brandschutz ausarbeiten",
+      "date": "2026-03-20",
+      "body": "Hallo,\n\nim naechsten Themenblock sollen unsere Auszubildenden Fragen zur Arbeitssicherheit, zur gesetzlichen Unfallversicherung und zu Brandschutzzeichen bearbeiten. Bitte uebernehmen Sie die Schilder fachlich nah an der Quelle, aber so, dass sie ohne neue Renderer loesbar bleiben.\n\nViele Gruesse\nArbeitsschutz"
+    },
+    {
+      "id": "q10",
+      "type": "single_choice",
+      "title": "Pflicht zum Arbeitsschutzausschuss erkennen",
+      "prompt": "Die Mainbogen Digital GmbH ist verpflichtet, die Arbeitssicherheit im Unternehmen zu gewaehrleisten. Welche Aussage trifft zu?",
+      "options": [
+        {
+          "text": "Eine Mitbestimmung von Arbeitnehmern beim Arbeitsschutz ist ausgeschlossen, weil das Arbeitsschutzgesetz die Pflichten des Arbeitgebers abschliessend regelt.",
+          "rationale": "Die Beschaeftigtenvertretung ist beim Arbeitsschutz gerade nicht vollkommen ausgeschlossen."
+        },
+        {
+          "text": "Ein Unfallverhuetigungsteam ist nur bei mindestens 200 Beschaeftigten vorgeschrieben.",
+          "rationale": "So lautet die gesetzliche Pflicht nicht."
+        },
+        {
+          "text": "Ein Unternehmen mit mehr als 20 Beschaeftigten muss einen Arbeitsschutzausschuss bilden, in dem Arbeitsschutzthemen beraten werden.",
+          "rationale": "Genau diese Pflicht gilt nach dem Arbeitssicherheitsgesetz."
+        },
+        {
+          "text": "Die Ergonomie an Arbeitsplaetzen ist keine Anforderung der Arbeitssicherheit, sondern nur freiwillige Zusatzleistung des Arbeitgebers.",
+          "rationale": "Ergonomische Arbeitsbedingungen gehoeren durchaus zum Arbeitsschutz."
+        },
+        {
+          "text": "Fuer die betriebliche Arbeitssicherheit ist vorrangig die Gewerkschaft zustaendig.",
+          "rationale": "Die betriebliche Organisation des Arbeitsschutzes liegt nicht bei der Gewerkschaft."
+        }
+      ],
+      "correctIndex": 2,
+      "feedback": {
+        "correct": "Die Pflicht zum Arbeitsschutzausschuss wurde korrekt erkannt.",
+        "wrong": "Pruefen Sie, welche organisatorische Struktur Unternehmen mit mehr als 20 Beschaeftigten im Arbeitsschutz vorhalten muessen."
+      },
+      "progressLinks": [
+        "pv3wiso_arbeitsschutz_umwelt_diversity"
+      ]
+    },
+    {
+      "id": "q11",
+      "type": "multi_select",
+      "title": "Versicherte Faelle der gesetzlichen Unfallversicherung bestimmen",
+      "prompt": "Welche zwei Faelle werden von der gesetzlichen Unfallversicherung abgedeckt?",
+      "options": [
+        {
+          "text": "Eine Mitarbeiterin stuerzt im Materiallager und verletzt sich am Fuss.",
+          "correct": true,
+          "rationale": "Das ist ein klassischer Arbeitsunfall waehrend der versicherten Taetigkeit."
+        },
+        {
+          "text": "Ein Mitarbeiter verletzt sich in seiner Freizeit bei einer Radtour.",
+          "correct": false,
+          "rationale": "Freizeitunfaelle sind grundsaetzlich nicht gesetzlich unfallversichert."
+        },
+        {
+          "text": "Ein Auszubildender stuerzt auf dem direkten Weg zur Arbeit mit dem Fahrrad.",
+          "correct": true,
+          "rationale": "Der unmittelbare Weg zur Arbeit ist als Wegeunfall versichert."
+        },
+        {
+          "text": "Eine Mitarbeiterin erkaeltet sich im Homeoffice und faellt deshalb krank aus.",
+          "correct": false,
+          "rationale": "Eine normale Erkrankung ist kein Unfall im Sinne der gesetzlichen Unfallversicherung."
+        },
+        {
+          "text": "Ein Mitarbeiter faehrt in der Mittagspause mit dem eigenen Auto zu einem privaten Arzttermin.",
+          "correct": false,
+          "rationale": "Ein privater Arzttermin in der Pause gehoert nicht zum versicherten Betriebsweg."
+        },
+        {
+          "text": "Ein Mitarbeiter geht zum Augenarzt, weil sich seine Sehkraft in den letzten Monaten verschlechtert hat.",
+          "correct": false,
+          "rationale": "Das ist kein ploetzliches Unfallereignis."
+        }
+      ],
+      "feedback": {
+        "correct": "Die versicherten Unfallfaelle wurden korrekt ausgewaehlt.",
+        "wrong": "Trennen Sie Arbeits- und Wegeunfaelle von Freizeit- oder Krankheitsfaellen."
+      },
+      "progressLinks": [
+        "pv3wiso_arbeitsschutz_umwelt_diversity"
+      ]
+    },
+    {
+      "id": "q12",
+      "type": "single_choice",
+      "title": "Traeger der gesetzlichen Unfallversicherung benennen",
+      "prompt": "Welche Organisation ist Traeger der gesetzlichen Unfallversicherung fuer Unternehmen wie die Mainbogen Digital GmbH?",
+      "options": [
+        {
+          "text": "Die Deutsche Rentenversicherung Bund",
+          "rationale": "Sie ist nicht Traeger der gesetzlichen Unfallversicherung."
+        },
+        {
+          "text": "Die Gewerbeaufsichtsaemter",
+          "rationale": "Diese beaufsichtigen, sind aber nicht der Versicherungstraeger."
+        },
+        {
+          "text": "Die Berufsgenossenschaft",
+          "rationale": "Die Berufsgenossenschaft ist der zustandige Unfallversicherungstraeger."
+        },
+        {
+          "text": "Die gesetzliche Krankenkasse",
+          "rationale": "Krankenkassen sind keine Traeger der gesetzlichen Unfallversicherung."
+        },
+        {
+          "text": "Eine private Krankenkasse",
+          "rationale": "Private Krankenkassen uebernehmen diese Aufgabe nicht."
+        }
+      ],
+      "correctIndex": 2,
+      "feedback": {
+        "correct": "Der Traeger der gesetzlichen Unfallversicherung wurde korrekt benannt.",
+        "wrong": "Denken Sie an den spezialisierten Versicherungstraeger fuer Arbeits- und Wegeunfaelle."
+      },
+      "progressLinks": [
+        "pv3wiso_arbeitsschutz_umwelt_diversity"
+      ]
+    },
+    {
+      "id": "q13",
+      "type": "table_fill",
+      "title": "Sicherheitszeichen den Bedeutungen zuordnen",
+      "prompt": "Ordnen Sie den beschriebenen Sicherheitszeichen die passende Bedeutung zu. Die Bildzeichen aus der Quelle werden hier bewusst in kurzen Textbeschreibungen wiedergegeben.",
+      "columns": [
+        "Beschriebenes Schild",
+        "Bedeutung"
+      ],
+      "rows": [
+        [
+          "a) Gruenes Rettungszeichen mit laufender Person und Pfeil nach rechts",
+          {
+            "key": "sign_a",
+            "label": "Rettungszeichen mit Pfeil nach rechts",
+            "expected": "Richtung des Fluchtwegs",
+            "inputType": "select",
+            "placeholder": "Bedeutung waehlen",
+            "options": [
+              "Vor Oeffnen Netzstecker ziehen",
+              "Gefahr durch Laserstrahl",
+              "Richtung des Fluchtwegs",
+              "Erste Hilfe",
+              "Feuerloescher"
+            ]
+          }
+        ],
+        [
+          "b) Gruenes Quadrat mit weissem Kreuz",
+          {
+            "key": "sign_b",
+            "label": "Gruenes Quadrat mit weissem Kreuz",
+            "expected": "Erste Hilfe",
+            "inputType": "select",
+            "placeholder": "Bedeutung waehlen",
+            "options": [
+              "Vor Oeffnen Netzstecker ziehen",
+              "Gefahr durch Laserstrahl",
+              "Richtung des Fluchtwegs",
+              "Erste Hilfe",
+              "Feuerloescher"
+            ]
+          }
+        ],
+        [
+          "c) Rotes Brandschutzzeichen mit Feuerloescher-Symbol",
+          {
+            "key": "sign_c",
+            "label": "Rotes Brandschutzzeichen mit Feuerloescher",
+            "expected": "Feuerloescher",
+            "inputType": "select",
+            "placeholder": "Bedeutung waehlen",
+            "options": [
+              "Vor Oeffnen Netzstecker ziehen",
+              "Gefahr durch Laserstrahl",
+              "Richtung des Fluchtwegs",
+              "Erste Hilfe",
+              "Feuerloescher"
+            ]
+          }
+        ],
+        [
+          "d) Blaues Gebotsschild mit Stecker und ziehender Hand",
+          {
+            "key": "sign_d",
+            "label": "Blaues Gebotsschild mit Stecker",
+            "expected": "Vor Oeffnen Netzstecker ziehen",
+            "inputType": "select",
+            "placeholder": "Bedeutung waehlen",
+            "options": [
+              "Vor Oeffnen Netzstecker ziehen",
+              "Gefahr durch Laserstrahl",
+              "Richtung des Fluchtwegs",
+              "Erste Hilfe",
+              "Feuerloescher"
+            ]
+          }
+        ],
+        [
+          "e) Gelbes Warndreieck mit Laserstrahl",
+          {
+            "key": "sign_e",
+            "label": "Gelbes Warndreieck mit Laserstrahl",
+            "expected": "Gefahr durch Laserstrahl",
+            "inputType": "select",
+            "placeholder": "Bedeutung waehlen",
+            "options": [
+              "Vor Oeffnen Netzstecker ziehen",
+              "Gefahr durch Laserstrahl",
+              "Richtung des Fluchtwegs",
+              "Erste Hilfe",
+              "Feuerloescher"
+            ]
+          }
+        ]
+      ],
+      "feedback": {
+        "correct": "Die Sicherheitszeichen wurden korrekt zugeordnet.",
+        "wrong": "Vergleichen Sie Rettungsweg-, Erste-Hilfe-, Brandschutz-, Gebots- und Warnzeichen noch einmal systematisch."
+      },
+      "progressLinks": [
+        "pv3wiso_arbeitsschutz_umwelt_diversity"
+      ]
+    },
+    {
+      "id": "q14",
+      "type": "single_choice",
+      "title": "Erste Reaktion bei Brand im Lager festlegen",
+      "prompt": "Im Lager der Mainbogen Digital GmbH geraet eine Palette in Brand. Welche Aktion ist zuerst durchzufuehren?",
+      "options": [
+        {
+          "text": "Sofort mit dem Loeschen beginnen.",
+          "rationale": "Vor allem muss der Brand zunaechst gemeldet werden."
+        },
+        {
+          "text": "Fenster und Tueren oeffnen, damit der Rauch abziehen kann.",
+          "rationale": "Das ist nicht die erste Brandschutzmassnahme."
+        },
+        {
+          "text": "Den Brandmelder betaetigen oder den Brand melden.",
+          "rationale": "Das ist die vorrangige erste Reaktion im Brandfall."
+        },
+        {
+          "text": "Nur andere Mitarbeitende warnen und sonst nichts tun.",
+          "rationale": "Warnen ist wichtig, ersetzt aber die Alarmierung nicht."
+        },
+        {
+          "text": "Sofort den Sammelpunkt aufsuchen, ohne den Brand zu melden.",
+          "rationale": "Die Meldung des Brandes darf nicht entfallen."
+        }
+      ],
+      "correctIndex": 2,
+      "feedback": {
+        "correct": "Die erste Massnahme im Brandfall wurde korrekt erkannt.",
+        "wrong": "Im Brandfall hat die Alarmierung Vorrang vor allen weiteren Schritten."
+      },
+      "progressLinks": [
+        "pv3wiso_arbeitsschutz_umwelt_diversity"
+      ]
+    },
+    {
+      "id": "f03",
+      "type": "followup_divider",
+      "title": "Handelsregister, GmbH und Mutterschutz",
+      "from": "verwaltung@mainbogen-digital.example",
+      "to": "projektteam@ausbildungsbetrieb.example",
+      "subject": "Bitte den Rechts- und Registerblock fuer die naechste Station vorbereiten",
+      "date": "2026-03-20",
+      "body": "Hallo,\n\nwir brauchen nun einen Block zu Registerdaten, zur GmbH und zum Mutterschutz. Der Registerauszug aus der Quelle soll als uebersichtliche Tabelle sichtbar bleiben, damit daraus sowohl eine Quellenfrage als auch eine Rechenfrage bearbeitet werden koennen.\n\nViele Gruesse\nVerwaltung"
+    },
+    {
+      "id": "ctx15",
+      "type": "context_card",
+      "title": "Auszug aus den vorliegenden Registerdaten",
+      "contentBlocks": [
+        {
+          "type": "text",
+          "text": "Fuer die naechsten beiden Aufgaben liegen der Mainbogen Digital GmbH die folgenden Auszuege vor."
+        },
+        {
+          "type": "table",
+          "columns": [
+            "Nummer der Eintragung",
+            "Firma / Ort",
+            "Grund- oder Stammkapital",
+            "Gesellschafter",
+            "Prokura"
+          ],
+          "rows": [
+            [
+              "1",
+              "Mainbogen Digital GmbH; Hamburg",
+              "330.000,00 EUR",
+              "Jonas Kramer, Kaufmann, Hamburg; Lea Berger, Kauffrau, Hamburg",
+              "keine Angabe"
+            ]
+          ]
+        },
+        {
+          "type": "text",
+          "text": "Jonas Kramer haelt 198.000,00 EUR des Stammkapitals. Lea Berger haelt den Rest. Der Gewinn nach Steuern betraegt 87.450,00 EUR und wird im Verhaeltnis der Kapitalanteile verteilt."
+        }
+      ]
+    },
+    {
+      "id": "q15",
+      "type": "single_choice",
+      "title": "Informationsquelle des Auszugs bestimmen",
+      "prompt": "Aus welcher Informationsquelle stammen die dargestellten Daten zur GmbH am ehesten?",
+      "options": [
+        {
+          "text": "Aus dem Grundbuch",
+          "rationale": "Das Grundbuch enthaelt vor allem Daten zu Grundstuecken."
+        },
+        {
+          "text": "Aus dem Patentregister",
+          "rationale": "Dort werden Schutzrechte, nicht Gesellschaftsdaten gefuehrt."
+        },
+        {
+          "text": "Aus dem Gesellschaftsvertrag",
+          "rationale": "Einzelne Angaben koennen dort stehen, aber der gezeigte Auszug entspricht eher einer Registerquelle."
+        },
+        {
+          "text": "Aus dem Handelsregister",
+          "rationale": "Gesellschaft, Sitz und Stammkapital einer GmbH werden dort gefuehrt."
+        },
+        {
+          "text": "Aus dem Vereinsregister",
+          "rationale": "Eine GmbH steht nicht im Vereinsregister."
+        }
+      ],
+      "correctIndex": 3,
+      "feedback": {
+        "correct": "Die Registerquelle wurde korrekt erkannt.",
+        "wrong": "Denken Sie an das Register, in dem Kapitalgesellschaften eingetragen werden."
+      },
+      "progressLinks": [
+        "pv3wiso_wirtschaftssektoren_unternehmensformen"
+      ]
+    },
+    {
+      "id": "q16",
+      "type": "number",
+      "title": "Gewinnanteil einer Gesellschafterin berechnen",
+      "prompt": "Wie hoch ist der Gewinnanteil von Lea Berger? Geben Sie den Betrag in EUR an.",
+      "expected": 34980,
+      "toleranceAbs": 0.01,
+      "showExpectedFormula": "Restanteil Stammkapital: 330.000,00 - 198.000,00 = 132.000,00 EUR; Kapitalanteil Lea Berger: 132.000,00 / 330.000,00 = 40 %; Gewinnanteil: 87.450,00 x 40 % = 34.980,00 EUR.",
+      "feedback": {
+        "correct": "Der Gewinnanteil wurde korrekt berechnet.",
+        "wrong": "Bestimmen Sie zuerst den restlichen Kapitalanteil und wenden Sie diesen Anteil dann auf den Gewinn an."
+      },
+      "progressLinks": [
+        "pv3wiso_wirtschaftlichkeit_unternehmensanalyse"
+      ]
+    },
+    {
+      "id": "q17",
+      "type": "single_choice",
+      "title": "Zutreffende Aussage zur GmbH auswaehlen",
+      "prompt": "Welche Aussage trifft fuer die Mainbogen Digital GmbH zu?",
+      "options": [
+        {
+          "text": "Eine GmbH ist eine Personengesellschaft.",
+          "rationale": "Die GmbH gehoert zu den Kapitalgesellschaften."
+        },
+        {
+          "text": "Eine GmbH wird in das Handelsregister Abteilung A eingetragen.",
+          "rationale": "Kapitalgesellschaften werden nicht in Abteilung A gefuehrt."
+        },
+        {
+          "text": "Eine GmbH kann auch von nur einer Person gegruendet werden.",
+          "rationale": "Eine Ein-Personen-GmbH ist moeglich."
+        },
+        {
+          "text": "Das gesetzliche Mindeststammkapital betraegt 5.000 EUR.",
+          "rationale": "Das Mindeststammkapital liegt hoeher."
+        },
+        {
+          "text": "Eine GmbH darf grundsaetzlich nur einen Geschaeftsfuehrer haben.",
+          "rationale": "Mehrere Geschaeftsfuehrer sind sehr wohl moeglich."
+        }
+      ],
+      "correctIndex": 2,
+      "feedback": {
+        "correct": "Die zutreffende Aussage zur GmbH wurde richtig erkannt.",
+        "wrong": "Pruefen Sie Rechtsform, Registerabteilung, Gruendungsmoeglichkeiten und Stammkapital noch einmal getrennt."
+      },
+      "progressLinks": [
+        "pv3wiso_wirtschaftssektoren_unternehmensformen"
+      ]
+    },
+    {
+      "id": "q18",
+      "type": "number",
+      "title": "Beschaeftigungsverbot nach der Entbindung benennen",
+      "prompt": "Eine 26-jaehrige Mitarbeiterin erwartet ihr erstes Kind. Wie viele Wochen darf sie nach dem Mutterschutzgesetz ab dem Tag der Entbindung grundsaetzlich nicht beschaeftigt werden?",
+      "expected": 8,
+      "toleranceAbs": 0.01,
+      "showExpectedFormula": "Grundsaetzliche Schutzfrist nach der Entbindung: 8 Wochen.",
+      "feedback": {
+        "correct": "Die Schutzfrist nach der Entbindung wurde korrekt angegeben.",
+        "wrong": "Denken Sie an die allgemeine Schutzfrist nach der Entbindung im Mutterschutzgesetz."
+      },
+      "progressLinks": [
+        "pv3wiso_arbeitsrecht_ausbildung"
+      ]
+    },
+    {
+      "id": "f04",
+      "type": "followup_divider",
+      "title": "Businessplan, Wirtschaftlichkeit und Tarifordnung",
+      "from": "controlling@mainbogen-digital.example",
+      "to": "projektteam@ausbildungsbetrieb.example",
+      "subject": "Bitte den Block zu Gruendung, Wirtschaftlichkeit und Tarifrecht ergaenzen",
+      "date": "2026-03-20",
+      "body": "Hallo,\n\nim vierten Teil sollen Gruendungswissen, Wirtschaftlichkeitsvergleiche, Leitungsstrukturen, Kartelle, Kuendigungsschutz und Tarifvertraege vorkommen. Die wirtschaftliche Vergleichsrechnung braucht wieder eine sichtbare Tabelle, damit der Rechenweg nachvollziehbar bleibt.\n\nViele Gruesse\nControlling"
+    },
+    {
+      "id": "q19",
+      "type": "single_choice",
+      "title": "Inhalt eines Businessplans erkennen",
+      "prompt": "Zwei Mitarbeitende wollen sich mit einem IT-Service-Unternehmen selbststaendig machen. Die Bank erwartet im Businessplan einen klaren Existenzgruendungsnachweis. Welche Aussage trifft zu?",
+      "options": [
+        {
+          "text": "Der Businessplan wird von der zustaendigen IHK ausgestellt.",
+          "rationale": "Die IHK kann beraten, stellt aber keinen Businessplan aus."
+        },
+        {
+          "text": "Der Businessplan wird im Handelsregister eingetragen.",
+          "rationale": "Ein Businessplan ist keine Registereintragung."
+        },
+        {
+          "text": "Ein Businessplan ist nur fuer Kapitalgesellschaften erforderlich.",
+          "rationale": "Er kann fuer viele Gruendungsformen sinnvoll oder erforderlich sein."
+        },
+        {
+          "text": "Ein Businessplan wird nur benoetigt, wenn ein Darlehen aufgenommen wird.",
+          "rationale": "Auch ohne Darlehen ist er ein wichtiges Planungsinstrument."
+        },
+        {
+          "text": "Im Businessplan werden unter anderem die Unternehmensidee und das Finanzkonzept dargestellt.",
+          "rationale": "Genau das gehoert zu den Kernbestandteilen eines Businessplans."
+        }
+      ],
+      "correctIndex": 4,
+      "feedback": {
+        "correct": "Der typische Inhalt eines Businessplans wurde korrekt erkannt.",
+        "wrong": "Ein Businessplan dient der Darstellung der Idee, des Marktes und der finanziellen Tragfaehigkeit."
+      },
+      "progressLinks": [
+        "pv3wiso_wirtschaftlichkeit_unternehmensanalyse"
+      ]
+    },
+    {
+      "id": "ctx20",
+      "type": "context_card",
+      "title": "Vier Auftraege im Wirtschaftlichkeitsvergleich",
+      "contentBlocks": [
+        {
+          "type": "text",
+          "text": "Ein Praktikant soll vier erledigte Auftraege der Mainbogen Digital GmbH auf ihre Wirtschaftlichkeit hin pruefen."
+        },
+        {
+          "type": "table",
+          "columns": [
+            "Kennzahl",
+            "Auftrag 1",
+            "Auftrag 2",
+            "Auftrag 3",
+            "Auftrag 4"
+          ],
+          "rows": [
+            [
+              "Aufwand in EUR",
+              "600.000",
+              "320.000",
+              "160.000",
+              "200.000"
+            ],
+            [
+              "Ertrag in EUR",
+              "720.000",
+              "400.000",
+              "208.000",
+              "248.000"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "id": "q20",
+      "type": "single_choice",
+      "title": "Wirtschaftlichsten Auftrag bestimmen",
+      "prompt": "Welcher Auftrag wurde am wirtschaftlichsten abgewickelt?",
+      "options": [
+        {
+          "text": "Auftrag 1",
+          "rationale": "720.000 / 600.000 = 1,20 und damit nicht der beste Wert."
+        },
+        {
+          "text": "Auftrag 2",
+          "rationale": "400.000 / 320.000 = 1,25 und damit besser als Auftrag 1, aber nicht am hoechsten."
+        },
+        {
+          "text": "Auftrag 3",
+          "rationale": "208.000 / 160.000 = 1,30 und damit der hoechste Wirtschaftlichkeitswert."
+        },
+        {
+          "text": "Auftrag 4",
+          "rationale": "248.000 / 200.000 = 1,24 und damit unter dem Wert von Auftrag 3."
+        }
+      ],
+      "correctIndex": 2,
+      "feedback": {
+        "correct": "Der wirtschaftlichste Auftrag wurde korrekt bestimmt.",
+        "wrong": "Vergleichen Sie die Wirtschaftlichkeit ueber das Verhaeltnis von Ertrag zu Aufwand."
+      },
+      "progressLinks": [
+        "pv3wiso_wirtschaftlichkeit_unternehmensanalyse"
+      ]
+    },
+    {
+      "id": "q21",
+      "type": "single_choice",
+      "title": "Leitungssystem aus einem Organigramm ableiten",
+      "prompt": "Das Organigramm der Quelle zeigt eine Unternehmensspitze, darunter drei Leitungsstellen und darunter jeweils zugeordnete Mitarbeitende. Jede Stelle ist genau einer uebergeordneten Stelle unterstellt. Welches Leitungssystem beschreibt das?",
+      "options": [
+        {
+          "text": "Einliniensystem",
+          "rationale": "Genau dieses System ist dadurch gekennzeichnet, dass jede Stelle nur eine vorgesetzte Stelle hat."
+        },
+        {
+          "text": "Matrixsystem",
+          "rationale": "Im Matrixsystem gibt es gerade mehrere Weisungslinien."
+        },
+        {
+          "text": "Mehrliniensystem",
+          "rationale": "Auch hier waeren mehrere direkte Weisungsbeziehungen typisch."
+        },
+        {
+          "text": "Stabliniensystem",
+          "rationale": "Ein Stabliniensystem wuerde zusaetzliche beratende Stabsstellen zeigen."
+        },
+        {
+          "text": "Abteilungssystem",
+          "rationale": "Das beschreibt eher eine Gliederungslogik als das konkrete Weisungssystem."
+        }
+      ],
+      "correctIndex": 0,
+      "feedback": {
+        "correct": "Das Leitungssystem wurde korrekt erkannt.",
+        "wrong": "Achten Sie darauf, ob jede Stelle nur eine oder mehrere direkte Weisungslinien hat."
+      },
+      "progressLinks": [
+        "pv3wiso_wirtschaftssektoren_unternehmensformen"
+      ]
+    },
+    {
+      "id": "q22",
+      "type": "single_choice",
+      "title": "Anmeldepflichtiges Kartell im Pruefungskontext erkennen",
+      "prompt": "Die Mainbogen Digital GmbH befasst sich mit einem vermuteten Kartell. Welche Kartellform gilt im klassischen WISO-Pruefungskontext als anmeldepflichtig?",
+      "options": [
+        {
+          "text": "Ein Kartell, in dem Mindestpreise vereinbart werden",
+          "rationale": "Preisabsprachen gehoeren nicht zur anmeldepflichtigen Ausnahmeform."
+        },
+        {
+          "text": "Ein Kartell, in dem einheitliche Abmessungen und Ausfuehrungsformen vereinbart werden",
+          "rationale": "Das beschreibt ein Normen- und Typenkartell und ist im Pruefungskontext die anmeldepflichtige Form."
+        },
+        {
+          "text": "Ein Kartell mit exklusiven Absatzgebieten",
+          "rationale": "Gebietskartelle gehoeren nicht zu der hier gesuchten Ausnahme."
+        },
+        {
+          "text": "Ein Kartell mit Produktionsquoten fuer die Mitglieder",
+          "rationale": "Produktions- oder Quotenkartelle sind nicht die gesuchte Kartellform."
+        },
+        {
+          "text": "Ein Kartell mit vereinbartem Hoechstpreis",
+          "rationale": "Auch dies ist nicht die hier gesuchte anmeldepflichtige Form."
+        }
+      ],
+      "correctIndex": 1,
+      "feedback": {
+        "correct": "Die Kartellform wurde im Pruefungskontext korrekt zugeordnet.",
+        "wrong": "Denken Sie an Kartelle, die auf Standardisierung und Typisierung abzielen."
+      },
+      "progressLinks": [
+        "pv3wiso_wirtschaftssektoren_unternehmensformen"
+      ]
+    },
+    {
+      "id": "q23",
+      "type": "single_choice",
+      "title": "Keinen besonderen Kuendigungsschutz erkennen",
+      "prompt": "Eine Kollegin hat Fragen zum gesetzlichen Kuendigungsschutz. Welche Personengruppe geniesst keinen besonderen Kuendigungsschutz?",
+      "options": [
+        {
+          "text": "Betriebsratsmitglieder",
+          "rationale": "Betriebsratsmitglieder geniessen einen besonderen Kuendigungsschutz."
+        },
+        {
+          "text": "Schwerbehinderte Menschen",
+          "rationale": "Auch hier gibt es besonderen Kuendigungsschutz."
+        },
+        {
+          "text": "Werdende Muetter",
+          "rationale": "Fuer werdende Muetter gelten besondere Schutzvorschriften."
+        },
+        {
+          "text": "Mitarbeitende ueber 45 Jahre",
+          "rationale": "Das Alter allein begruendet keinen besonderen gesetzlichen Kuendigungsschutz."
+        },
+        {
+          "text": "Auszubildende nach der Probezeit",
+          "rationale": "Auszubildende nach der Probezeit sind besonders geschuetzt."
+        }
+      ],
+      "correctIndex": 3,
+      "feedback": {
+        "correct": "Die Personengruppe ohne besonderen Kuendigungsschutz wurde korrekt bestimmt.",
+        "wrong": "Pruefen Sie, fuer welche Gruppen das Gesetz ausdrueckliche Sonderregeln vorsieht."
+      },
+      "progressLinks": [
+        "pv3wiso_arbeitsrecht_ausbildung"
+      ]
+    },
+    {
+      "id": "q24",
+      "type": "single_choice",
+      "title": "Typischen Inhalt eines Lohn- und Gehaltstarifvertrags bestimmen",
+      "prompt": "Im Rahmen von Tarifverhandlungen wird zwischen einem Lohn- und Gehaltstarifvertrag und einem Manteltarifvertrag unterschieden. Welcher Inhalt wird typischerweise in einem Lohn- und Gehaltstarifvertrag geregelt?",
+      "options": [
+        {
+          "text": "Kuendigungsfristen",
+          "rationale": "Solche Rahmenbedingungen gehoeren typischerweise in den Manteltarifvertrag."
+        },
+        {
+          "text": "Taegliche und woechentliche Arbeitszeit",
+          "rationale": "Auch das ist eher ein Inhalt des Manteltarifvertrags."
+        },
+        {
+          "text": "Mindesturlaubstage",
+          "rationale": "Urlaubsfragen finden sich typischerweise nicht im Lohn- und Gehaltstarifvertrag."
+        },
+        {
+          "text": "Gehaltssaetze fuer die einzelnen Gehaltsgruppen",
+          "rationale": "Genau das ist der typische Kern eines Lohn- und Gehaltstarifvertrags."
+        },
+        {
+          "text": "Arbeitsbefreiung fuer Pruefungstaetigkeit bei IHK-Pruefungen",
+          "rationale": "Das ist kein typischer Inhalt dieses Tarifvertragstyps."
+        }
+      ],
+      "correctIndex": 3,
+      "feedback": {
+        "correct": "Der typische Inhalt eines Lohn- und Gehaltstarifvertrags wurde korrekt erkannt.",
+        "wrong": "Trennen Sie Entgeltregelungen von allgemeinen Arbeitsbedingungen."
+      },
+      "progressLinks": [
+        "pv3wiso_mitbestimmung_tarif_sozialversicherung"
+      ]
+    },
+    {
+      "id": "q25",
+      "type": "single_choice",
+      "title": "Grundsatz zu Tarifvertraegen erkennen",
+      "prompt": "Fuer die Mainbogen Digital GmbH wird ein neuer Tarifvertrag ausgehandelt. Welche Aussage zu Tarifvertraegen ist zutreffend?",
+      "options": [
+        {
+          "text": "Arbeitgeberverbaende und Gewerkschaften handeln Tarifvertraege aus.",
+          "rationale": "Genau diese Tarifparteien schliessen Tarifvertraege ab."
+        },
+        {
+          "text": "Waehrend der Laufzeit eines Tarifvertrags sind Arbeitskaempfe erlaubt, wenn sie vier Wochen vorher angekuendigt werden.",
+          "rationale": "Waehrend der Laufzeit gilt die Friedenspflicht."
+        },
+        {
+          "text": "Tarifvertraege werden zwischen der Geschaeftsfuehrung und den einzelnen Arbeitnehmern geschlossen.",
+          "rationale": "Individuelle Arbeitsvertraege sind keine Tarifvertraege."
+        },
+        {
+          "text": "Tarifvertraege sind nur unverbindliche Empfehlungen fuer die Tarifparteien.",
+          "rationale": "Tarifvertraege haben gerade eine rechtlich verbindliche Wirkung."
+        },
+        {
+          "text": "Arbeitskampfmassnahmen muessen jeder Tarifverhandlung vorausgehen.",
+          "rationale": "Arbeitskaempfe sind kein zwingender Einstieg in Tarifverhandlungen."
+        }
+      ],
+      "correctIndex": 0,
+      "feedback": {
+        "correct": "Der Grundsatz zu Tarifvertraegen wurde korrekt erkannt.",
+        "wrong": "Achten Sie darauf, wer Tarifparteien sind und welche Wirkung Tarifvertraege haben."
+      },
+      "progressLinks": [
+        "pv3wiso_mitbestimmung_tarif_sozialversicherung"
+      ]
+    },
+    {
+      "id": "f05",
+      "type": "followup_divider",
+      "title": "Rente, AGG und nachhaltiges Wirtschaften",
+      "from": "nachhaltigkeit@mainbogen-digital.example",
+      "to": "projektteam@ausbildungsbetrieb.example",
+      "subject": "Bitte den Abschlussblock zu Sozialstaat, AGG und Umweltprinzipien vervollstaendigen",
+      "date": "2026-03-20",
+      "body": "Hallo,\n\nzum Abschluss brauchen wir noch Aufgaben zum Generationenvertrag, zum AGG, zu einem weiteren Brandschutzzeichen sowie zu nachhaltigem Wirtschaften und dem Verursacherprinzip. Bitte halten Sie die Formulierungen fachlich eindeutig, damit die beiden Mehrfachauswahlen und die Umweltfragen klar bewertbar bleiben.\n\nViele Gruesse\nNachhaltigkeit"
+    },
+    {
+      "id": "q26",
+      "type": "single_choice",
+      "title": "Generationenvertrag der Rentenversicherung erklaeren",
+      "prompt": "In der gesetzlichen Rentenversicherung wird vom sogenannten Generationenvertrag gesprochen. Welche Aussage beschreibt dieses Prinzip zutreffend?",
+      "options": [
+        {
+          "text": "Jede Generation muss ihre Altersvorsorge vollstaendig nur fuer sich selbst ansparen.",
+          "rationale": "Das beschreibt gerade nicht das Umlageprinzip der gesetzlichen Rente."
+        },
+        {
+          "text": "Jeder Arbeitnehmer bekommt spaeter exakt die eigenen eingezahlten Beitraege zurueck.",
+          "rationale": "Die gesetzliche Rentenversicherung funktioniert nicht als individuelles Sparkonto."
+        },
+        {
+          "text": "Der Generationenvertrag gilt nur fuer Personen, die bereits vor 2023 in die Rentenversicherung eingezahlt haben.",
+          "rationale": "Das Prinzip ist nicht auf einen solchen Personenkreis begrenzt."
+        },
+        {
+          "text": "Mit den Einzahlungen der aktuell Erwerbstaetigen werden die Renten der heutigen Rentenbeziehenden finanziert.",
+          "rationale": "Genau das beschreibt das Umlageverfahren der gesetzlichen Rentenversicherung."
+        },
+        {
+          "text": "Jeder Sozialversicherungszweig stuetzt finanziell alle anderen Zweige.",
+          "rationale": "Das ist nicht die Aussage des Generationenvertrags."
+        }
+      ],
+      "correctIndex": 3,
+      "feedback": {
+        "correct": "Der Generationenvertrag wurde korrekt beschrieben.",
+        "wrong": "Denken Sie an das Umlageverfahren zwischen aktuell Erwerbstaetigen und heutigen Rentenbeziehenden."
+      },
+      "progressLinks": [
+        "pv3wiso_mitbestimmung_tarif_sozialversicherung"
+      ]
+    },
+    {
+      "id": "q27",
+      "type": "single_choice",
+      "title": "Nicht geschuetztes Merkmal im AGG finden",
+      "prompt": "Die Mainbogen Digital GmbH ueberprueft ihre Diversity-Regeln anhand des AGG. Welcher Punkt wird im AGG nicht als geschuetztes Merkmal beruecksichtigt?",
+      "options": [
+        {
+          "text": "Alter",
+          "rationale": "Das Alter ist im AGG ausdruecklich geschuetzt."
+        },
+        {
+          "text": "Religion",
+          "rationale": "Auch Religion ist ein geschuetztes Merkmal."
+        },
+        {
+          "text": "Sexuelle Orientierung oder Identitaet",
+          "rationale": "Auch dieser Bereich faellt in den Schutz des AGG."
+        },
+        {
+          "text": "Art des Abschlusses",
+          "rationale": "Die Art des Schul- oder Berufsabschlusses ist kein geschuetztes Merkmal des AGG."
+        },
+        {
+          "text": "Ethnische Herkunft",
+          "rationale": "Die ethnische Herkunft ist im AGG geschuetzt."
+        }
+      ],
+      "correctIndex": 3,
+      "feedback": {
+        "correct": "Das nicht geschuetzte Merkmal wurde korrekt erkannt.",
+        "wrong": "Vergleichen Sie die aufzaehlten Punkte mit den ausdruecklich geschuetzten Merkmalen des AGG."
+      },
+      "progressLinks": [
+        "pv3wiso_arbeitsschutz_umwelt_diversity"
+      ]
+    },
+    {
+      "id": "q28",
+      "type": "single_choice",
+      "title": "Brandschutzzeichen fuer einen Loeschschlauch deuten",
+      "prompt": "In einem Unternehmensgebaeude ist ein Brandschutzzeichen mit einem aufgerollten Schlauch neben Flammen-Symbolen angebracht. Welche Bedeutung hat dieses Schild?",
+      "options": [
+        {
+          "text": "Feuerwehreingang mit Schlauchanschluss an dieser Stelle",
+          "rationale": "Das wird durch dieses einfache Brandschutzzeichen nicht ausgesagt."
+        },
+        {
+          "text": "Erste-Hilfe-Einrichtung mit Hinweis auf den Verbandskasten",
+          "rationale": "Erste-Hilfe-Zeichen sehen anders aus."
+        },
+        {
+          "text": "Sprinkleranlage mit Spruehgefahr von oben",
+          "rationale": "Das Zeichen steht nicht fuer eine Sprinkleranlage."
+        },
+        {
+          "text": "Fluchtweg fuer im Gebaeude anwesende Personen",
+          "rationale": "Fluchtwege werden mit Rettungszeichen und nicht mit Brandschutzzeichen markiert."
+        },
+        {
+          "text": "Loeschschlauch befindet sich hier",
+          "rationale": "Das Schild weist auf den Standort eines Loeschschlauchs hin."
+        }
+      ],
+      "correctIndex": 4,
+      "feedback": {
+        "correct": "Das Brandschutzzeichen wurde korrekt gedeutet.",
+        "wrong": "Achten Sie darauf, ob das Zeichen zu Rettungswegen, Erste Hilfe oder Brandschutzeinrichtungen gehoert."
+      },
+      "progressLinks": [
+        "pv3wiso_arbeitsschutz_umwelt_diversity"
+      ]
+    },
+    {
+      "id": "q29",
+      "type": "multi_select",
+      "title": "Nachhaltige Massnahmen im Betrieb auswaehlen",
+      "prompt": "Welche zwei Massnahmen zahlen am ehesten auf nachhaltiges Wirtschaften ein?",
+      "options": [
+        {
+          "text": "Lebensmittel fuer die Betriebskantine ohne weitere Kriterien ausschliesslich aus weit entfernten Importquellen zu beziehen",
+          "correct": false,
+          "rationale": "Allein der Import ohne weitere Nachhaltigkeitskriterien spricht nicht fuer nachhaltiges Wirtschaften."
+        },
+        {
+          "text": "Betriebsstoffe ausschliesslich nach dem guenstigsten Preis einzukaufen, unabhaengig von Umweltfolgen",
+          "correct": false,
+          "rationale": "Eine reine Billigstrategie ohne Umweltbezug ist nicht nachhaltig."
+        },
+        {
+          "text": "Verkaufs- und Produktionsabfaelle dem Recycling zuzufuehren",
+          "correct": true,
+          "rationale": "Recycling traegt zur Ressourcenschonung und Kreislaufwirtschaft bei."
+        },
+        {
+          "text": "Produkte bevorzugt dort herstellen zu lassen, wo nur die Lohnkosten moeglichst niedrig sind",
+          "correct": false,
+          "rationale": "Allein niedrige Lohnkosten sind kein Nachhaltigkeitskriterium."
+        },
+        {
+          "text": "Produkte soweit moeglich aus nachwachsenden Rohstoffen herzustellen",
+          "correct": true,
+          "rationale": "Der Einsatz nachwachsender Rohstoffe ist ein typischer Nachhaltigkeitsbeitrag."
+        },
+        {
+          "text": "Die Produktion auf wenige Bestseller auszuweiten, ohne Material- und Umweltfolgen zu betrachten",
+          "correct": false,
+          "rationale": "Ohne Ressourcenkriterium ist das keine nachhaltige Massnahme."
+        }
+      ],
+      "feedback": {
+        "correct": "Die nachhaltigen Massnahmen wurden korrekt ausgewaehlt.",
+        "wrong": "Pruefen Sie, welche Massnahmen tatsaechlich Ressourcen schonen oder Stoffkreislaufe verbessern."
+      },
+      "progressLinks": [
+        "pv3wiso_arbeitsschutz_umwelt_diversity"
+      ]
+    },
+    {
+      "id": "q30",
+      "type": "single_choice",
+      "title": "Verursacherprinzip im Umweltschutz anwenden",
+      "prompt": "Im Umweltschutz soll nach dem Verursacherprinzip verfahren werden. Welche Aussage beschreibt dieses Prinzip zutreffend?",
+      "options": [
+        {
+          "text": "Umweltschutz wird staerker Bestandteil schulischer Lehrplaene.",
+          "rationale": "Das kann sinnvoll sein, beschreibt aber nicht das Verursacherprinzip."
+        },
+        {
+          "text": "Abfalltrennung ist immer wichtiger als Abfallvermeidung.",
+          "rationale": "Das ist kein Definitionsmerkmal des Verursacherprinzips."
+        },
+        {
+          "text": "Abfallentsorgung ist stets wichtiger als Abfallvermeidung.",
+          "rationale": "Auch das beschreibt das Prinzip nicht."
+        },
+        {
+          "text": "Die Kosten fuer die Beseitigung von Umweltschaeden tragen diejenigen, die fuer diese Schaeden verantwortlich sind.",
+          "rationale": "Genau das ist der Kern des Verursacherprinzips."
+        },
+        {
+          "text": "Die Kosten fuer die Beseitigung von Umweltschaeden werden gleichmaessig auf alle Einwohner verteilt.",
+          "rationale": "Gerade das widerspricht dem Verursacherprinzip."
+        }
+      ],
+      "correctIndex": 3,
+      "feedback": {
+        "correct": "Das Verursacherprinzip wurde korrekt beschrieben.",
+        "wrong": "Fragen Sie sich, wer die finanziellen Folgen eines verursachten Umweltschadens tragen soll."
+      },
+      "progressLinks": [
+        "pv3wiso_arbeitsschutz_umwelt_diversity"
+      ]
+    }
+  ]
+}

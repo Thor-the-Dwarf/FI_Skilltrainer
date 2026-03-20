@@ -1,0 +1,1458 @@
+{
+  "scenario": {
+    "company": "Nordstern IT-Service GmbH",
+    "scale": "Regionaler IT-Dienstleister, 95 Mitarbeitende",
+    "context": "Pruefungsvorbereitung WISO im Stationsformat mit Personal-, Rechts- und Organisationsfragen.",
+    "mission": "Sie bearbeiten eine zusammenhaengende Fachsituation zu Arbeitsrecht, Mitbestimmung, Tarifrecht, Volkswirtschaft, Unternehmensformen, Arbeitsschutz, Umwelt und Diversity.",
+    "source": {
+      "kind": "Pseudonymisierte Pruefungsvorlage",
+      "reference": "AP2 Wirtschafts- und Sozialkunde, Sommer 2022",
+      "note": "Die fachliche Reihenfolge bleibt erhalten; Namen, Unternehmen und Kommunikationsdaten wurden in das Kursformat ueberfuehrt."
+    },
+    "station": {
+      "id": "PV3WISO-ST-01",
+      "department": "Pruefungsvorbereitung Wirtschafts- und Sozialkunde",
+      "profile": "Arbeitsrecht, Mitbestimmung, Tarifrecht, VWL und Arbeitsschutz",
+      "constraints": [
+        "Die fachlichen Themenbloecke der Quelle bleiben als Folgeauftraege sichtbar",
+        "Offene Aufgaben werden moeglichst in auto-auswertbare Formate ueberfuehrt",
+        "Visuals werden nur dort eingesetzt, wo die Quelle fachlich mit Tabellen, Schreiben oder Kennzeichen arbeitet"
+      ]
+    },
+    "customerRequest": {
+      "from": "personalentwicklung@nordstern-it.example",
+      "to": "projektteam@ausbildungsbetrieb.example",
+      "subject": "Bitte mehrere Personal-, Rechts- und Organisationsfragen fuer unsere Auszubildenden aufbereiten",
+      "date": "2026-03-19",
+      "body": "Guten Tag,\n\nwir moechten unsere Auszubildenden gezielt auf pruefungsnahe WISO-Faelle vorbereiten. Dafuer brauchen wir ein zusammenhaengendes Aufgabenpaket rund um Arbeitsvertrag, Jugendarbeitsschutz, Mitbestimmung, Tarifbindung, Unternehmenspraxis, Arbeitsschutz und Diversity.\n\nBitte bearbeiten Sie die Teilauftraege in der vorgegebenen Reihenfolge. Wichtig ist uns, dass die Faelle fachlich nah an echten Betriebssituationen bleiben und sich trotzdem direkt auswerten lassen.\n\nViele Gruesse\nPersonalentwicklung"
+    }
+  },
+  "questions": [
+    {
+      "id": "q01",
+      "type": "multi_select",
+      "title": "Einzelarbeitsvertrag fachlich einordnen",
+      "prompt": "Der 25-jaehrige Jasper Voss schliesst mit der Nordstern IT-Service GmbH einen individuellen Arbeitsvertrag. Welche zwei Aussagen treffen zu?",
+      "options": [
+        {
+          "text": "Ein Einzelarbeitsvertrag ist nur dann moeglich, wenn im Betrieb kein Tarifvertrag gilt.",
+          "correct": false,
+          "rationale": "Ein Einzelarbeitsvertrag kann auch in tarifgebundenen Unternehmen bestehen; Tarifnormen koennen dann den Rahmen setzen."
+        },
+        {
+          "text": "Der Vertrag benoetigt die Zustimmung einer Gewerkschaft, damit er wirksam wird.",
+          "correct": false,
+          "rationale": "Ein Arbeitsvertrag wird nicht erst durch eine Gewerkschaftsgenehmigung wirksam."
+        },
+        {
+          "text": "Ein Arbeitsvertrag kann auch ohne Zeuginnen oder Zeugen wirksam geschlossen werden.",
+          "correct": true,
+          "rationale": "Fuer den Abschluss sind keine Zeuginnen oder Zeugen vorgeschrieben."
+        },
+        {
+          "text": "Der Vertrag ist nur gueltig, wenn das vereinbarte Entgelt ueber dem Tariflohn liegt.",
+          "correct": false,
+          "rationale": "Eine Wirksamkeit haengt nicht an dieser Formulierung; massgeblich sind die verbindlichen Mindeststandards."
+        },
+        {
+          "text": "Ein Arbeitsvertrag kann grundsaetzlich auch muendlich zustande kommen.",
+          "correct": true,
+          "rationale": "Der Vertrag kann auch muendlich geschlossen werden; Nachweispflichten sind davon zu unterscheiden."
+        }
+      ],
+      "feedback": {
+        "correct": "Die beiden zutreffenden Aussagen treffen die Grundsaetze des Arbeitsvertragsrechts.",
+        "wrong": "Achten Sie auf Formfreiheit, Tarifbindung und darauf, was fuer die Wirksamkeit wirklich erforderlich ist."
+      },
+      "progressLinks": [
+        "pv3wiso_arbeitsrecht_ausbildung"
+      ]
+    },
+    {
+      "id": "q02",
+      "type": "multi_select",
+      "title": "Probezeit richtig bewerten",
+      "prompt": "Im Vertrag von Jasper Voss ist eine Probezeit vorgesehen. Welche zwei Aussagen passen zur Probezeit?",
+      "options": [
+        {
+          "text": "Eine Probezeit kann auch ganz entfallen.",
+          "correct": true,
+          "rationale": "Eine Probezeit ist moeglich, aber nicht zwingend vorgeschrieben."
+        },
+        {
+          "text": "Sie muss zwingend einen Monat dauern.",
+          "correct": false,
+          "rationale": "Es gibt keine feste Pflichtdauer von genau einem Monat."
+        },
+        {
+          "text": "Sie muss mindestens drei Monate dauern.",
+          "correct": false,
+          "rationale": "Eine gesetzliche Mindestdauer von drei Monaten gibt es nicht."
+        },
+        {
+          "text": "Sie muss mindestens vier Monate dauern.",
+          "correct": false,
+          "rationale": "Auch diese starre Mindestdauer besteht nicht."
+        },
+        {
+          "text": "Sie kann bis zu sechs Monate dauern.",
+          "correct": true,
+          "rationale": "Bis zu sechs Monate sind arbeitsrechtlich als Obergrenze typisch."
+        },
+        {
+          "text": "Sie darf bei Bedarf auf bis zu zwei Jahre ausgedehnt werden.",
+          "correct": false,
+          "rationale": "Eine solche Ausdehnung waere keine regulaere Probezeit mehr."
+        }
+      ],
+      "feedback": {
+        "correct": "Die Probezeit ist richtig eingeordnet.",
+        "wrong": "Pruefen Sie noch einmal, was freiwillig ist und wo die typische Obergrenze liegt."
+      },
+      "progressLinks": [
+        "pv3wiso_arbeitsrecht_ausbildung"
+      ]
+    },
+    {
+      "id": "ctx03",
+      "type": "context_card",
+      "title": "Dienstplan einer minderjaehrigen Fachkraft",
+      "contentBlocks": [
+        {
+          "type": "text",
+          "text": "Robin Winter ist 17 Jahre alt und absolviert seit dem 01.01.2021 eine Ausbildung im IT-Betrieb der Nordstern IT-Service GmbH. Wegen personeller Engpaesse soll sein Dienstplan angepasst werden.\n\nFuer die Einordnung sind drei Regeln wichtig:\n- Jugendliche duerfen grundsaetzlich nur zwischen 06:00 Uhr und 20:00 Uhr beschaeftigt werden.\n- Nach dem Arbeitsende muessen mindestens 12 Stunden Freizeit folgen.\n- Die regulaere Wochenarbeitszeit darf 40 Stunden nicht uebersteigen."
+        },
+        {
+          "type": "table",
+          "columns": [
+            "Tag",
+            "Arbeitsblock 1",
+            "Pause",
+            "Arbeitsblock 2"
+          ],
+          "rows": [
+            [
+              "Montag",
+              "09:00-13:00",
+              "13:00-14:00",
+              "14:00-18:00"
+            ],
+            [
+              "Dienstag",
+              "09:00-13:00",
+              "13:00-14:00",
+              "14:00-18:00"
+            ],
+            [
+              "Mittwoch",
+              "09:00-13:00",
+              "13:00-14:00",
+              "14:00-18:00"
+            ],
+            [
+              "Donnerstag",
+              "11:00-15:30",
+              "15:30-16:30",
+              "16:30-20:00"
+            ],
+            [
+              "Freitag",
+              "09:00-13:00",
+              "13:00-14:00",
+              "14:00-18:00"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "id": "q03",
+      "type": "single_choice",
+      "title": "Fruehesten Dienstbeginn ableiten",
+      "prompt": "Nach dem spaeten Donnerstag soll der Freitag neu geplant werden. Welche Uhrzeit ist als fruehester zulaessiger Dienstbeginn fachlich korrekt?",
+      "options": [
+        {
+          "text": "06:00 Uhr",
+          "rationale": "Zwischen 20:00 Uhr und 06:00 Uhr liegen nur 10 Stunden Ruhezeit."
+        },
+        {
+          "text": "08:00 Uhr",
+          "rationale": "Von 20:00 Uhr bis 08:00 Uhr liegen genau 12 Stunden Freizeit."
+        },
+        {
+          "text": "09:00 Uhr",
+          "rationale": "Das waere moeglich, aber nicht der frueheste erlaubte Beginn."
+        },
+        {
+          "text": "10:00 Uhr",
+          "rationale": "Auch das waere spaeter als noetig."
+        }
+      ],
+      "correctIndex": 1,
+      "feedback": {
+        "correct": "Der frueheste zulaessige Beginn ist korrekt aus der Ruhezeit abgeleitet.",
+        "wrong": "Rechnen Sie die 12 Stunden Freizeit ab dem Arbeitsende am Donnerstag sauber nach."
+      },
+      "progressLinks": [
+        "pv3wiso_jugendarbeitsschutz_urlaub"
+      ]
+    },
+    {
+      "id": "q04",
+      "type": "single_choice",
+      "title": "Jugendarbeitsschutz sicher anwenden",
+      "prompt": "Welche Aussage passt zum Jugendarbeitsschutz fuer eine 17-jaehrige Auszubildende bzw. einen 17-jaehrigen Auszubildenden?",
+      "options": [
+        {
+          "text": "Jugendliche duerfen grundsaetzlich nur an fuenf Tagen pro Woche beschaeftigt werden.",
+          "rationale": "Das trifft den Regelfall des Gesetzes."
+        },
+        {
+          "text": "Die erste Pflichtuntersuchung darf bis drei Monate nach Ausbildungsbeginn nachgeholt werden.",
+          "rationale": "Die Erstuntersuchung muss grundsaetzlich vor der Beschaeftigung vorliegen."
+        },
+        {
+          "text": "Samstagsarbeit ist immer ohne besondere Ausnahmeregeln erlaubt.",
+          "rationale": "Fuer Samstagsarbeit gelten Ausnahmen und Ersatzruhetage."
+        },
+        {
+          "text": "Die beiden woechentlichen Ruhetage muessen immer zwingend direkt aufeinander folgen.",
+          "rationale": "So starr formuliert ist die Regel nicht."
+        },
+        {
+          "text": "Jugendliche duerfen bis zu 48 Stunden pro Woche arbeiten.",
+          "rationale": "Die regulaere Grenze liegt niedriger."
+        }
+      ],
+      "correctIndex": 0,
+      "feedback": {
+        "correct": "Die Vorschrift ist korrekt erkannt.",
+        "wrong": "Achten Sie auf die Grundregeln zu Fuenf-Tage-Woche, Untersuchung und Wochenarbeitszeit."
+      },
+      "progressLinks": [
+        "pv3wiso_jugendarbeitsschutz_urlaub"
+      ]
+    },
+    {
+      "id": "ctx05",
+      "type": "context_card",
+      "title": "Urlaubsanspruch aus Gesetz und Tarif",
+      "contentBlocks": [
+        {
+          "type": "text",
+          "text": "Robin Winter wird am 04.04.2022 volljaehrig. Sein Ausbildungsverhaeltnis besteht im gesamten Kalenderjahr 2022 fort. Fuer den Urlaub gelten zwei Ebenen:\n- Nach Jugendarbeitsschutzrecht stehen Personen, die zu Jahresbeginn noch nicht 18 Jahre alt sind, mindestens 25 Werktage zu.\n- Der Haustarif der Nordstern IT-Service GmbH gewaehrt allen Beschaeftigten 30 Arbeitstage pro Kalenderjahr.\n- Die Zwoelftelung gilt nur, wenn das Beschaeftigungsverhaeltnis im laufenden Jahr beginnt oder endet."
+        }
+      ]
+    },
+    {
+      "id": "q05",
+      "type": "number",
+      "title": "Jahresurlaub berechnen",
+      "prompt": "Wie viele Urlaubstage stehen Robin Winter fuer das Kalenderjahr 2022 zu?",
+      "expected": 30,
+      "toleranceAbs": 0,
+      "showExpectedFormula": "Guenstiger Tarifanspruch: 30 Arbeitstage im vollen Kalenderjahr.",
+      "feedback": {
+        "correct": "Der guenstigere Tarifanspruch wurde richtig angewendet.",
+        "wrong": "Vergleichen Sie gesetzliches Minimum und tarifliche Regelung und beachten Sie, dass das Ausbildungsverhaeltnis das ganze Jahr laeuft."
+      },
+      "progressLinks": [
+        "pv3wiso_jugendarbeitsschutz_urlaub"
+      ]
+    },
+    {
+      "id": "q06",
+      "type": "single_choice",
+      "title": "Voraussetzung fuer Ausbilder erkennen",
+      "prompt": "Welche Voraussetzung muessen künftige Ausbilderinnen oder Ausbilder nach den gesetzlichen Grundregeln erfuellen?",
+      "options": [
+        {
+          "text": "Sie muessen Mitglied im zustaendigen Pruefungsausschuss sein.",
+          "rationale": "Das ist keine generelle Pflichtvoraussetzung."
+        },
+        {
+          "text": "Sie muessen persoenlich und fachlich geeignet sein.",
+          "rationale": "Das ist die gesetzliche Kernvoraussetzung."
+        },
+        {
+          "text": "Sie muessen jedes Jahr verpflichtend eine IHK-Weiterbildung besuchen.",
+          "rationale": "Eine solche starre Jahrespflicht besteht nicht allgemein."
+        },
+        {
+          "text": "Sie muessen Mitglied der Geschaeftsleitung sein.",
+          "rationale": "Auch das ist keine gesetzliche Voraussetzung."
+        },
+        {
+          "text": "Sie muessen Mitglied einer Gewerkschaft sein.",
+          "rationale": "Eine Gewerkschaftsmitgliedschaft ist nicht vorgeschrieben."
+        }
+      ],
+      "correctIndex": 1,
+      "feedback": {
+        "correct": "Die Voraussetzung fuer Ausbilderinnen und Ausbilder ist korrekt erkannt.",
+        "wrong": "Massgeblich sind persoenliche und fachliche Eignung, nicht Ehrenamt oder Mitgliedschaft."
+      },
+      "progressLinks": [
+        "pv3wiso_arbeitsrecht_ausbildung"
+      ]
+    },
+    {
+      "id": "f02",
+      "type": "followup_divider",
+      "title": "Mitbestimmung, Kuendigung und Zeugnis",
+      "from": "betriebsrat@nordstern-it.example",
+      "to": "projektteam@ausbildungsbetrieb.example",
+      "subject": "Bitte typische Faelle zu Betriebsrat, JAV und Ausbildungsende einordnen",
+      "date": "2026-03-19",
+      "body": "Hallo zusammen,\n\nim naechsten Block brauchen wir kurze, aber saubere Einordnungen zu Mitbestimmung und Ausbildungsrecht. Im Fokus stehen die Anhoerung des Betriebsrats, die JAV, die Wirksamkeit einer Kuendigung minderjaehriger Auszubildender sowie der Unterschied zwischen einfachem und qualifiziertem Zeugnis.\n\nViele Gruesse\nBetriebsrat"
+    },
+    {
+      "id": "q07",
+      "type": "single_choice",
+      "title": "Kuendigung ohne Betriebsratsanhoerung bewerten",
+      "prompt": "Einem Mitarbeiter wurde gekuendigt, ohne dass der Betriebsrat vorher angehoert wurde. Welche Aussage ist richtig?",
+      "options": [
+        {
+          "text": "Die Kuendigung ist wirksam, weil keine Zustimmung des Betriebsrats erforderlich ist.",
+          "rationale": "Eine Zustimmung ist zwar regelmaessig nicht noetig, die vorherige Anhoerung aber schon."
+        },
+        {
+          "text": "Die Kuendigung ist wirksam, weil die Anhoerung erst nach Ausspruch nachgeholt werden kann.",
+          "rationale": "Eine nachtraegliche Heilung funktioniert hier nicht."
+        },
+        {
+          "text": "Die Kuendigung ist unwirksam, weil die Anhoerung des Betriebsrats vorab vorgeschrieben ist.",
+          "rationale": "Genau diese Vorabanhoerung ist zwingend."
+        },
+        {
+          "text": "Die Kuendigung wird erst dann wirksam, wenn das Arbeitsgericht sie bestaetigt.",
+          "rationale": "So laeuft das Verfahren nicht."
+        }
+      ],
+      "correctIndex": 2,
+      "feedback": {
+        "correct": "Die Folge der fehlenden Betriebsratsanhoerung ist richtig erkannt.",
+        "wrong": "Entscheidend ist, dass die Anhoerung vor Ausspruch der Kuendigung stattfinden muss."
+      },
+      "progressLinks": [
+        "pv3wiso_mitbestimmung_tarif_sozialversicherung"
+      ]
+    },
+    {
+      "id": "ctx08",
+      "type": "context_card",
+      "title": "Schreiben zur Beendigung der Ausbildung",
+      "contentBlocks": [
+        {
+          "type": "text",
+          "text": "Die 17-jaehrige Pamela Bornberg moechte ihre Ausbildung beenden, weil sie kuenftig einen anderen Beruf erlernen will. Das Unternehmen erhaelt dazu folgendes Schreiben:"
+        },
+        {
+          "type": "document_card",
+          "layout": "letter_sheet",
+          "documentTitle": "Kuendigungsschreiben",
+          "leftSections": [
+            {
+              "label": "Von:",
+              "lines": [
+                "Pamela Bornberg"
+              ]
+            }
+          ],
+          "rightSections": [
+            {
+              "label": "Datum:",
+              "value": "12.03.2022"
+            },
+            {
+              "label": "An:",
+              "lines": [
+                "Nordstern IT-Service GmbH",
+                "Personalabteilung"
+              ]
+            }
+          ],
+          "salutation": "Sehr geehrte Damen und Herren,",
+          "bodyLead": "hiermit moechte ich mein Ausbildungsverhaeltnis zum 15.04.2022 beenden, weil ich eine Ausbildung in einem anderen Beruf aufnehmen werde.",
+          "entries": [
+            "Bitte stellen Sie mir ausserdem ein qualifiziertes Zeugnis aus."
+          ],
+          "signoff": "Pamela Bornberg"
+        }
+      ]
+    },
+    {
+      "id": "q08",
+      "type": "single_choice",
+      "title": "Wirksamkeit der Azubi-Kuendigung pruefen",
+      "prompt": "Welche Beurteilung passt am besten zu diesem Schreiben?",
+      "options": [
+        {
+          "text": "Die Kuendigung ist wirksam, weil der Wechsel in einen anderen Ausbildungsberuf als Grund genannt wurde.",
+          "rationale": "Der Grund allein reicht bei Minderjaehrigen noch nicht aus."
+        },
+        {
+          "text": "Die Kuendigung ist wirksam, weil zwischen Zugang und Beendigungsdatum mehr als vier Wochen liegen.",
+          "rationale": "Die Fristfrage ist hier nicht der zentrale Fehler."
+        },
+        {
+          "text": "Die Kuendigung ist unwirksam, weil die gesetzliche Vertretung der Minderjaehrigen nicht mit unterschrieben hat.",
+          "rationale": "Bei einer minderjaehrigen Auszubildenden ist die gesetzliche Vertretung mitzudenken."
+        },
+        {
+          "text": "Die Kuendigung ist unwirksam, weil eine Beendigung ausserhalb der Probezeit niemals moeglich ist.",
+          "rationale": "Eine ordentliche Kuendigung zum Berufswechsel kann grundsaetzlich moeglich sein."
+        }
+      ],
+      "correctIndex": 2,
+      "feedback": {
+        "correct": "Die entscheidende Schwachstelle des Schreibens ist richtig erkannt.",
+        "wrong": "Achten Sie auf die Besonderheiten bei minderjaehrigen Auszubildenden."
+      },
+      "progressLinks": [
+        "pv3wiso_arbeitsrecht_ausbildung"
+      ]
+    },
+    {
+      "id": "q09",
+      "type": "single_choice",
+      "title": "Formulierung fuer ein qualifiziertes Zeugnis erkennen",
+      "prompt": "Welche Formulierung macht aus einem Ausbildungszeugnis ein qualifiziertes Zeugnis?",
+      "options": [
+        {
+          "text": "Pamela Bornberg, geboren am 03.12.2004, ...",
+          "rationale": "Personendaten gehoeren auch in ein einfaches Zeugnis."
+        },
+        {
+          "text": "wohnhaft in Solingen, ...",
+          "rationale": "Die Wohnanschrift ist kein Merkmal des qualifizierten Zeugnisses."
+        },
+        {
+          "text": "Pamela Bornberg wurde seit dem 01.01.2021 in unserem Betrieb ausgebildet.",
+          "rationale": "Das beschreibt nur Art und Dauer der Ausbildung."
+        },
+        {
+          "text": "Sie erledigte die ihr uebertragenen Aufgaben stets zu unserer vollsten Zufriedenheit.",
+          "rationale": "Hier wird die Leistung bewertet; genau das kennzeichnet ein qualifiziertes Zeugnis."
+        },
+        {
+          "text": "Wir wuenschen ihr fuer die Zukunft alles Gute.",
+          "rationale": "Das ist eine Schlussformel, aber keine Leistungsbeurteilung."
+        }
+      ],
+      "correctIndex": 3,
+      "feedback": {
+        "correct": "Die leistungsbezogene Formulierung ist richtig erkannt.",
+        "wrong": "Ein qualifiziertes Zeugnis enthaelt insbesondere eine Bewertung von Leistung und Verhalten."
+      },
+      "progressLinks": [
+        "pv3wiso_arbeitsrecht_ausbildung"
+      ]
+    },
+    {
+      "id": "q10",
+      "type": "single_choice",
+      "title": "Mitbestimmungsrecht des Betriebsrats zuordnen",
+      "prompt": "Welche Aussage zum Betriebsrat trifft zu?",
+      "options": [
+        {
+          "text": "Ein Betriebsrat muss in jeder GmbH zwingend gewaehlt werden.",
+          "rationale": "Ein Betriebsrat kann gewaehlt werden, ist aber nicht in jeder GmbH automatisch vorhanden."
+        },
+        {
+          "text": "Er wird paritaetisch aus Arbeitgebenden und Arbeitnehmenden zusammengesetzt.",
+          "rationale": "Der Betriebsrat besteht aus Arbeitnehmervertretungen, nicht aus einer Paritaet beider Seiten."
+        },
+        {
+          "text": "Er darf fast alle Rechtsgeschaefte des Unternehmens anstelle der Geschaeftsfuehrung abschliessen.",
+          "rationale": "Der Betriebsrat ist kein Ersatz fuer die Unternehmensleitung."
+        },
+        {
+          "text": "Er muss der Gruendung einer Filiale zwingend zustimmen.",
+          "rationale": "Eine solche Zustimmungspflicht besteht nicht allgemein."
+        },
+        {
+          "text": "Er hat bei der Aufstellung eines Urlaubsplans ein Mitbestimmungsrecht.",
+          "rationale": "Die Urlaubsplanung ist ein klassischer Bereich der Mitbestimmung."
+        }
+      ],
+      "correctIndex": 4,
+      "feedback": {
+        "correct": "Das Mitbestimmungsrecht ist richtig zugeordnet.",
+        "wrong": "Achten Sie darauf, wo der Betriebsrat beteiligt wird und wo nicht."
+      },
+      "progressLinks": [
+        "pv3wiso_mitbestimmung_tarif_sozialversicherung"
+      ]
+    },
+    {
+      "id": "q11",
+      "type": "single_choice",
+      "title": "JAV-Wahl richtig einordnen",
+      "prompt": "Welche Aussage zur Jugend- und Auszubildendenvertretung ist zutreffend?",
+      "options": [
+        {
+          "text": "Drei Vorgesetzte muessen eine Kandidatur schriftlich unterstuetzen, sonst ist sie unzulaessig.",
+          "rationale": "So funktioniert eine JAV-Kandidatur nicht."
+        },
+        {
+          "text": "Eine strafrechtliche Verurteilung ohne Bezug zum Betrieb ist fuer die Wahl immer voellig irrelevant.",
+          "rationale": "Die Aussage ist zu pauschal und trifft die Wahlvoraussetzungen nicht."
+        },
+        {
+          "text": "Als Auszubildende oder Auszubildender unter 25 Jahren kann man an der JAV-Wahl teilnehmen und auch kandidieren.",
+          "rationale": "Diese Aussage trifft den Kern von Wahlrecht und Waehlbarkeit."
+        },
+        {
+          "text": "Bei 20 Wahlberechtigten muessen immer genau vier JAV-Mitglieder gewaehlt werden.",
+          "rationale": "Die Anzahl ist so nicht festgelegt."
+        },
+        {
+          "text": "Eine JAV kann nur gewaehlt werden, wenn mehr als 50 Auszubildende im Betrieb taetig sind.",
+          "rationale": "Die Schwelle liegt deutlich niedriger."
+        }
+      ],
+      "correctIndex": 2,
+      "feedback": {
+        "correct": "Die Grundregel zur JAV-Wahl ist korrekt erkannt.",
+        "wrong": "Pruefen Sie noch einmal, wer an der JAV-Wahl teilnehmen und kandidieren kann."
+      },
+      "progressLinks": [
+        "pv3wiso_mitbestimmung_tarif_sozialversicherung"
+      ]
+    },
+    {
+      "id": "f03",
+      "type": "followup_divider",
+      "title": "Tarifbindung, Sozialversicherung und Volkswirtschaft",
+      "from": "personalservice@nordstern-it.example",
+      "to": "projektteam@ausbildungsbetrieb.example",
+      "subject": "Bitte den naechsten Block zu Tarifrecht, Sozialversicherung und Europa aufbereiten",
+      "date": "2026-03-19",
+      "body": "Guten Tag,\n\nim dritten Themenblock sollen unsere Auszubildenden typische WISO-Fragen zu Tarifvertraegen, Friedenspflicht, Sozialversicherung, Europass und Wirtschaftssektoren bearbeiten. Bitte formulieren Sie die Aufgaben so, dass die Kernaussagen schnell und eindeutig rueckmeldbar bleiben.\n\nViele Gruesse\nPersonalservice"
+    },
+    {
+      "id": "q12",
+      "type": "single_choice",
+      "title": "Absolute Friedenspflicht deuten",
+      "prompt": "Wofuer steht die absolute Friedenspflicht im Tarifrecht?",
+      "options": [
+        {
+          "text": "Fuer ein gutes Betriebsklima ohne Konflikte im Alltag.",
+          "rationale": "Das beschreibt eher ein Ziel als die tarifrechtliche Bedeutung."
+        },
+        {
+          "text": "Fuer das Verbot von Arbeitskampfmassnahmen waehrend eines gueltigen Tarifvertrags.",
+          "rationale": "Genau darum geht es bei der absoluten Friedenspflicht."
+        },
+        {
+          "text": "Fuer den Verzicht auf Klagen vor dem Arbeitsgericht.",
+          "rationale": "Die Friedenspflicht ersetzt nicht den Rechtsweg."
+        },
+        {
+          "text": "Fuer einen besonderen Kuendigungsschutz des Betriebsrats.",
+          "rationale": "Das ist ein anderes Rechtsgebiet."
+        }
+      ],
+      "correctIndex": 1,
+      "feedback": {
+        "correct": "Die Friedenspflicht ist richtig eingeordnet.",
+        "wrong": "Entscheidend ist der Bezug zu tarifgebundenen Arbeitskampfmassnahmen."
+      },
+      "progressLinks": [
+        "pv3wiso_mitbestimmung_tarif_sozialversicherung"
+      ]
+    },
+    {
+      "id": "q13",
+      "type": "multi_select",
+      "title": "Merkmale eines Tarifvertrags pruefen",
+      "prompt": "Welche zwei Aussagen treffen auf einen Tarifvertrag zu?",
+      "options": [
+        {
+          "text": "Er kommt durch freie Vereinbarung der Tarifparteien zustande.",
+          "correct": true,
+          "rationale": "Tarifvertraege entstehen durch Vereinbarung der Tarifparteien."
+        },
+        {
+          "text": "Er braucht die Genehmigung eines staatlich bestellten Schlichters.",
+          "correct": false,
+          "rationale": "Eine solche Genehmigung ist keine Voraussetzung."
+        },
+        {
+          "text": "Guenstigere Betriebsvereinbarungen werden dadurch nicht automatisch ausgeschlossen.",
+          "correct": true,
+          "rationale": "Guenstigere Regelungen koennen moeglich bleiben."
+        },
+        {
+          "text": "Er darf nur fuer gewerkschaftlich organisierte Beschaeftigte angewendet werden.",
+          "correct": false,
+          "rationale": "Arbeitsvertraege koennen Tarifinhalte auch weitergehend in Bezug nehmen."
+        },
+        {
+          "text": "Er darf hoechstens drei Jahre laufen.",
+          "correct": false,
+          "rationale": "Eine starre Maximaldauer gibt es nicht."
+        },
+        {
+          "text": "Er legt nur Hoechstgrenzen fuer Loehne und Gehaelter fest.",
+          "correct": false,
+          "rationale": "Tarifvertraege regeln typischerweise verbindliche Standards, nicht bloss Obergrenzen."
+        }
+      ],
+      "feedback": {
+        "correct": "Die beiden zutreffenden Merkmale des Tarifvertrags sind korrekt erkannt.",
+        "wrong": "Achten Sie auf Abschluss, Wirkung und typische Missverstaendnisse rund um Tarifvertraege."
+      },
+      "progressLinks": [
+        "pv3wiso_mitbestimmung_tarif_sozialversicherung"
+      ]
+    },
+    {
+      "id": "q14",
+      "type": "single_choice",
+      "title": "Inhalt eines Mantel- oder Rahmentarifvertrags erkennen",
+      "prompt": "Welche Regelung passt typischerweise in einen Mantel- oder Rahmentarifvertrag?",
+      "options": [
+        {
+          "text": "Der genaue Euro-Betrag des Ecklohns.",
+          "rationale": "Konkrete Entgelthoehen gehoeren eher in Entgelt- oder Lohntarifvertraege."
+        },
+        {
+          "text": "Mindest- und Hoechstlohngruenzen je Verguetungsgruppe.",
+          "rationale": "Auch das gehoert eher in entgeltbezogene Tarifwerke."
+        },
+        {
+          "text": "Die Anzahl zusaetzlicher Sonderurlaubstage.",
+          "rationale": "Allgemeine Arbeitsbedingungen wie Urlaub gehoeren typischerweise in Mantel- oder Rahmentarifvertraege."
+        },
+        {
+          "text": "Die konkrete Ausbildungsverguetung pro Monat.",
+          "rationale": "Auch diese Verguetungshoehe ist eher Gegenstand eines Entgelttarifvertrags."
+        }
+      ],
+      "correctIndex": 2,
+      "feedback": {
+        "correct": "Der typische Regelungsgegenstand ist korrekt erkannt.",
+        "wrong": "Mantel- oder Rahmentarifvertraege regeln eher allgemeine Arbeitsbedingungen als konkrete Entgelthoehen."
+      },
+      "progressLinks": [
+        "pv3wiso_mitbestimmung_tarif_sozialversicherung"
+      ]
+    },
+    {
+      "id": "q15",
+      "type": "multi_select",
+      "title": "Beitrag des Arbeitnehmers zur Sozialversicherung abgrenzen",
+      "prompt": "Welche zwei Versicherungen sind nicht Bestandteil des regulaeren Arbeitnehmeranteils zur Sozialversicherung?",
+      "options": [
+        {
+          "text": "Krankenversicherung",
+          "correct": false,
+          "rationale": "Sie gehoert zu den regulaeren Beitragsbestandteilen."
+        },
+        {
+          "text": "Pflegeversicherung",
+          "correct": false,
+          "rationale": "Auch sie ist Teil der Sozialversicherung."
+        },
+        {
+          "text": "Lebensversicherung",
+          "correct": true,
+          "rationale": "Sie gehoert nicht zur gesetzlichen Sozialversicherung."
+        },
+        {
+          "text": "Rentenversicherung",
+          "correct": false,
+          "rationale": "Sie ist Teil der gesetzlichen Sozialversicherung."
+        },
+        {
+          "text": "Arbeitslosenversicherung",
+          "correct": false,
+          "rationale": "Auch diese wird regulaer mit abgefuehrt."
+        },
+        {
+          "text": "Unfallversicherung",
+          "correct": true,
+          "rationale": "Sie wird nicht ueber den Arbeitnehmeranteil finanziert."
+        }
+      ],
+      "feedback": {
+        "correct": "Die beiden nicht enthaltenen Versicherungen sind richtig herausgefiltert.",
+        "wrong": "Pruefen Sie, welche Zweige Teil der gesetzlichen Sozialversicherung sind und wer sie finanziert."
+      },
+      "progressLinks": [
+        "pv3wiso_mitbestimmung_tarif_sozialversicherung"
+      ]
+    },
+    {
+      "id": "q16",
+      "type": "single_choice",
+      "title": "Europass zutreffend beschreiben",
+      "prompt": "Eine Auszubildende plant einen Abschnitt ihrer Ausbildung im Ausland. Welche Aussage zum Europass trifft zu?",
+      "options": [
+        {
+          "text": "Der Europass ist ein kostenpflichtiger Spezialdienst fuer Auslandspraktika.",
+          "rationale": "Der Europass ist nicht als kostenpflichtiger Spezialdienst ausgestaltet."
+        },
+        {
+          "text": "Der Europass hilft dabei, Qualifikationen, Faehigkeiten und Kompetenzen europaweit verstaendlich darzustellen.",
+          "rationale": "Das beschreibt Ziel und Nutzen des Europass passend."
+        },
+        {
+          "text": "Der Europass beglaubigt Ausbildungsabschnitte automatisch rechtsverbindlich.",
+          "rationale": "Er dokumentiert und macht sichtbar, ersetzt aber keine allgemeine Rechtsbeglaubigung."
+        },
+        {
+          "text": "Ein Europass-Mobilitaet ist fuer jede Berufsausbildung im Ausland zwingend vorgeschrieben.",
+          "rationale": "Er kann sinnvoll sein, ist aber nicht pauschal verpflichtend."
+        },
+        {
+          "text": "Der Europass-Sprachenpass ist ein amtliches Sprachzertifikat mit Pruefungscharakter.",
+          "rationale": "Er dokumentiert Sprachkompetenzen, ist aber kein amtliches Pruefungszertifikat."
+        }
+      ],
+      "correctIndex": 1,
+      "feedback": {
+        "correct": "Die Funktion des Europass ist korrekt beschrieben.",
+        "wrong": "Achten Sie auf den Zweck: europaweite Vergleichbarkeit und transparente Darstellung von Kompetenzen."
+      },
+      "progressLinks": [
+        "pv3wiso_mitbestimmung_tarif_sozialversicherung"
+      ]
+    },
+    {
+      "id": "q17",
+      "type": "table_fill",
+      "title": "Wirtschaftliche Taetigkeiten den Sektoren zuordnen",
+      "prompt": "Ordnen Sie die Taetigkeiten dem passenden Wirtschaftssektor zu. Verwenden Sie `1` fuer primaer, `2` fuer sekundaer und `3` fuer tertiaer.",
+      "columns": [
+        "Sachverhalt",
+        "Sektor"
+      ],
+      "rows": [
+        [
+          "Ein Computerhersteller produziert Laptops.",
+          {
+            "key": "sector_a",
+            "label": "Computerhersteller produziert Laptops",
+            "expected": "2",
+            "inputType": "select",
+            "placeholder": "Sektor waehlen",
+            "options": [
+              "1",
+              "2",
+              "3"
+            ]
+          }
+        ],
+        [
+          "Rohstoffe fuer Smartphones werden im Tagebau gefoerdert.",
+          {
+            "key": "sector_b",
+            "label": "Rohstoffe werden im Tagebau gefoerdert",
+            "expected": "1",
+            "inputType": "select",
+            "placeholder": "Sektor waehlen",
+            "options": [
+              "1",
+              "2",
+              "3"
+            ]
+          }
+        ],
+        [
+          "Ein IT-Unternehmen entwickelt Sicherheits-Software fuer Firmenkunden.",
+          {
+            "key": "sector_c",
+            "label": "IT-Unternehmen entwickelt Sicherheits-Software",
+            "expected": "3",
+            "inputType": "select",
+            "placeholder": "Sektor waehlen",
+            "options": [
+              "1",
+              "2",
+              "3"
+            ]
+          }
+        ],
+        [
+          "Die Nordstern IT-Service GmbH kauft Monitore ein und verkauft sie weiter.",
+          {
+            "key": "sector_d",
+            "label": "Monitore werden eingekauft und weiterverkauft",
+            "expected": "3",
+            "inputType": "select",
+            "placeholder": "Sektor waehlen",
+            "options": [
+              "1",
+              "2",
+              "3"
+            ]
+          }
+        ],
+        [
+          "Die Nordstern IT-Service GmbH beraet Kundinnen und Kunden zu Sicherheitsfragen.",
+          {
+            "key": "sector_e",
+            "label": "Kundschaft wird zu Sicherheitsfragen beraten",
+            "expected": "3",
+            "inputType": "select",
+            "placeholder": "Sektor waehlen",
+            "options": [
+              "1",
+              "2",
+              "3"
+            ]
+          }
+        ]
+      ],
+      "feedback": {
+        "correct": "Die Taetigkeiten sind den Sektoren fachlich passend zugeordnet.",
+        "wrong": "Unterscheiden Sie Rohstoffgewinnung, Produktion und Dienstleistungen bzw. Handel sauber voneinander."
+      },
+      "progressLinks": [
+        "pv3wiso_wirtschaftssektoren_unternehmensformen"
+      ]
+    },
+    {
+      "id": "f04",
+      "type": "followup_divider",
+      "title": "Unternehmensformen, Wirtschaftlichkeit und Organisation",
+      "from": "geschaeftsfuehrung@nordstern-it.example",
+      "to": "projektteam@ausbildungsbetrieb.example",
+      "subject": "Bitte den Unternehmensblock fuer die Pruefungsvorbereitung vervollstaendigen",
+      "date": "2026-03-19",
+      "body": "Hallo,\n\nim vierten Block sollen unsere Auszubildenden Unternehmensformen, wirtschaftliche Kennzahlen, Unternehmenszusammenschluesse und Leitungssysteme wiederholen. Bitte verbinden Sie die Fragen mit realistischen Betriebsdaten und halten Sie die Rueckmeldungen knapp und fachlich klar.\n\nViele Gruesse\nGeschaeftsfuehrung"
+    },
+    {
+      "id": "q18",
+      "type": "single_choice",
+      "title": "Typisches Merkmal einer GmbH erkennen",
+      "prompt": "Welche Aussage passt zu einer GmbH?",
+      "options": [
+        {
+          "text": "Ihre Anteile werden boersentaeglich wie Aktien gehandelt.",
+          "rationale": "Das trifft auf die GmbH so nicht zu."
+        },
+        {
+          "text": "Das gesetzliche Stammkapital betraegt zwingend 100.000 EUR.",
+          "rationale": "Diese Summe ist zu hoch angesetzt."
+        },
+        {
+          "text": "Alle Gesellschafter fuehren automatisch die Geschaefte.",
+          "rationale": "Gesellschafter und Geschaeftsfuehrung sind rechtlich zu trennen."
+        },
+        {
+          "text": "Die Gesellschafter haften grundsaetzlich mit ihrem Privatvermoegen.",
+          "rationale": "Genau das soll die Haftungsbeschraenkung gerade vermeiden."
+        },
+        {
+          "text": "Gewinne werden grundsaetzlich nach den Beteiligungsverhaeltnissen verteilt, wenn nichts anderes vereinbart ist.",
+          "rationale": "Das beschreibt ein typisches Grundprinzip der GmbH."
+        }
+      ],
+      "correctIndex": 4,
+      "feedback": {
+        "correct": "Das passende Merkmal der GmbH ist korrekt erkannt.",
+        "wrong": "Achten Sie auf Stammkapital, Haftung und die Rolle der Gesellschafter."
+      },
+      "progressLinks": [
+        "pv3wiso_wirtschaftssektoren_unternehmensformen"
+      ]
+    },
+    {
+      "id": "ctx19",
+      "type": "context_card",
+      "title": "Vier Auftraege im Vergleich",
+      "contentBlocks": [
+        {
+          "type": "text",
+          "text": "Fuer vier abgeschlossene Auftraege liegen Aufwand und Ertrag vor. Gesucht ist der Auftrag mit der hoechsten Wirtschaftlichkeit, also dem besten Verhaeltnis von Ertrag zu Aufwand."
+        },
+        {
+          "type": "table",
+          "columns": [
+            "Auftrag",
+            "Aufwand (EUR)",
+            "Ertrag (EUR)"
+          ],
+          "rows": [
+            [
+              "1",
+              "150.000",
+              "180.000"
+            ],
+            [
+              "2",
+              "40.000",
+              "50.000"
+            ],
+            [
+              "3",
+              "40.000",
+              "52.000"
+            ],
+            [
+              "4",
+              "50.000",
+              "62.000"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "id": "q19",
+      "type": "number",
+      "title": "Wirtschaftlichsten Auftrag bestimmen",
+      "prompt": "Welche Auftragsnummer weist die hoechste Wirtschaftlichkeit auf?",
+      "expected": 3,
+      "toleranceAbs": 0,
+      "showExpectedFormula": "Ertrag / Aufwand: Auftrag 1 = 1,20; Auftrag 2 = 1,25; Auftrag 3 = 1,30; Auftrag 4 = 1,24.",
+      "feedback": {
+        "correct": "Die Wirtschaftlichkeit wurde korrekt verglichen.",
+        "wrong": "Vergleichen Sie nicht den absoluten Gewinn, sondern das Verhaeltnis von Ertrag zu Aufwand."
+      },
+      "progressLinks": [
+        "pv3wiso_wirtschaftlichkeit_unternehmensanalyse"
+      ]
+    },
+    {
+      "id": "q20",
+      "type": "single_choice",
+      "title": "Unternehmenszusammenschluss einordnen",
+      "prompt": "Die Nordstern IT-Service GmbH kauft die Bajic GmbH und fuehrt sie unter deren bisherigem Namen weiter. Welche Form des Unternehmenszusammenschlusses ist damit am besten beschrieben?",
+      "options": [
+        {
+          "text": "Fusion",
+          "rationale": "Bei einer Fusion geht die rechtliche Selbststaendigkeit typischerweise unter."
+        },
+        {
+          "text": "Arbeitsgemeinschaft",
+          "rationale": "Das waere eine zeitlich begrenzte Zusammenarbeit fuer einen bestimmten Zweck."
+        },
+        {
+          "text": "Interessengemeinschaft",
+          "rationale": "Das beschreibt eher eine lose Zusammenarbeit."
+        },
+        {
+          "text": "Kartell",
+          "rationale": "Ein Kartell meint wettbewerbsbeschraenkende Absprachen."
+        },
+        {
+          "text": "Konzern",
+          "rationale": "Die gekaufte Gesellschaft bleibt als rechtlich eigenstaendige Einheit unter dem Konzern bestehen."
+        }
+      ],
+      "correctIndex": 4,
+      "feedback": {
+        "correct": "Die Form des Zusammenschlusses ist korrekt bestimmt.",
+        "wrong": "Entscheidend ist, dass die erworbene Gesellschaft weiterbesteht und beherrscht wird."
+      },
+      "progressLinks": [
+        "pv3wiso_wirtschaftssektoren_unternehmensformen"
+      ]
+    },
+    {
+      "id": "ctx21",
+      "type": "context_card",
+      "title": "Leitungssystem des Betriebs",
+      "contentBlocks": [
+        {
+          "type": "text",
+          "text": "Unter der Unternehmensleitung stehen die Funktionsbereiche `Einkauf`, `Produktion` und `Absatz`. Gleichzeitig werden die Produktlinien `PC`, `Netz` und `Software` quer ueber diese Funktionen hinweg gefuehrt und greifen jeweils auf alle drei Bereiche zu."
+        },
+        {
+          "type": "table",
+          "columns": [
+            "Produktlinie",
+            "Einkauf",
+            "Produktion",
+            "Absatz"
+          ],
+          "rows": [
+            [
+              "PC",
+              "x",
+              "x",
+              "x"
+            ],
+            [
+              "Netz",
+              "x",
+              "x",
+              "x"
+            ],
+            [
+              "Software",
+              "x",
+              "x",
+              "x"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "id": "q21",
+      "type": "single_choice",
+      "title": "Leitungssystem benennen",
+      "prompt": "Welches Leitungssystem beschreibt diese Kombination aus Funktions- und Produktverantwortung am treffendsten?",
+      "options": [
+        {
+          "text": "Einliniensystem",
+          "rationale": "Hier existieren gerade mehrere fachliche Bezugslinien."
+        },
+        {
+          "text": "Matrixsystem",
+          "rationale": "Das Zusammentreffen von Produkt- und Funktionsverantwortung ist typisch fuer ein Matrixsystem."
+        },
+        {
+          "text": "Mehrliniensystem",
+          "rationale": "Mehrere Weisungswege allein beschreiben die konkrete Struktur noch nicht so genau."
+        },
+        {
+          "text": "Stabliniensystem",
+          "rationale": "Ein Stab unterstuetzt die Linie, ohne diese Matrixstruktur zu erzeugen."
+        },
+        {
+          "text": "Reines Abteilungssystem",
+          "rationale": "Die querliegenden Produktlinien sprechen gegen eine reine Abteilungsorganisation."
+        }
+      ],
+      "correctIndex": 1,
+      "feedback": {
+        "correct": "Das Leitungssystem ist korrekt erkannt.",
+        "wrong": "Achten Sie auf die gleichzeitige Struktur nach Funktionen und Produktlinien."
+      },
+      "progressLinks": [
+        "pv3wiso_wirtschaftssektoren_unternehmensformen"
+      ]
+    },
+    {
+      "id": "q22",
+      "type": "single_choice",
+      "title": "Auswirkung weltweiter Arbeitsteilung bewerten",
+      "prompt": "Welche Auswirkung ist fuer die weltweite Arbeitsteilung typisch?",
+      "options": [
+        {
+          "text": "Produktion findet automatisch nur in Laendern mit den hoechsten Umweltstandards statt.",
+          "rationale": "Das folgt aus weltweiter Arbeitsteilung gerade nicht automatisch."
+        },
+        {
+          "text": "Durch die Nutzung guenstiger Rohstoff- und Produktionsstandorte steigt haeufig die Menge transportierter Waren.",
+          "rationale": "Das ist eine typische Folge global verteilter Produktionsketten."
+        },
+        {
+          "text": "Alle Staaten muessen dadurch identische soziale und oekologische Standards einhalten.",
+          "rationale": "Eine solche Angleichung ist nicht automatisch gegeben."
+        },
+        {
+          "text": "Volkswirtschaften spezialisieren sich deshalb gerade nicht auf bestimmte Produktionen.",
+          "rationale": "Das Gegenteil ist typisch."
+        },
+        {
+          "text": "Auf dem Weltarbeitsmarkt besteht dadurch eine uneingeschraenkte Arbeitnehmerfreizuegigkeit.",
+          "rationale": "Diese Aussage ist zu pauschal."
+        }
+      ],
+      "correctIndex": 1,
+      "feedback": {
+        "correct": "Die typische Auswirkung der weltweiten Arbeitsteilung ist korrekt erkannt.",
+        "wrong": "Denken Sie an Spezialisierung, Standortwahl und steigende Transportketten."
+      },
+      "progressLinks": [
+        "pv3wiso_wirtschaftssektoren_unternehmensformen"
+      ]
+    },
+    {
+      "id": "ctx23",
+      "type": "context_card",
+      "title": "Sicherheitskennzeichen im Betrieb",
+      "contentBlocks": [
+        {
+          "type": "text",
+          "text": "Die Sicherheitsfachkraft zeigt mehrere Kennzeichen. Fuer die Zuordnung reicht folgende Kurzbeschreibung der Symbole:"
+        },
+        {
+          "type": "table",
+          "columns": [
+            "Nr.",
+            "Kurzbeschreibung"
+          ],
+          "rows": [
+            [
+              "1",
+              "Hand betaetigt einen Druckknopf neben einem Flammensymbol"
+            ],
+            [
+              "2",
+              "Warn-Dreieck mit Flammensymbol"
+            ],
+            [
+              "3",
+              "Warn-Dreieck mit Blitzsymbol"
+            ],
+            [
+              "4",
+              "Verbotszeichen mit Hand: nicht anfassen"
+            ],
+            [
+              "5",
+              "Rettungswegpfeil nach rechts"
+            ],
+            [
+              "6",
+              "Verbotszeichen gegen offenes Feuer bzw. Rauchen"
+            ],
+            [
+              "7",
+              "Sammelstelle mit Personen und Pfeilen"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "id": "q23",
+      "type": "table_fill",
+      "title": "Sicherheitsbedeutungen richtig zuordnen",
+      "prompt": "Ordnen Sie jeder Bedeutung die passende Kennzeichen-Nummer zu.",
+      "columns": [
+        "Bedeutung",
+        "Kennzeichen-Nr."
+      ],
+      "rows": [
+        [
+          "Warnung vor feuergefaehrlichen Stoffen",
+          {
+            "key": "sign_a",
+            "label": "Warnung vor feuergefaehrlichen Stoffen",
+            "expected": "2",
+            "inputType": "select",
+            "placeholder": "Nummer waehlen",
+            "options": [
+              "1",
+              "2",
+              "3",
+              "4",
+              "5",
+              "6",
+              "7"
+            ]
+          }
+        ],
+        [
+          "Gehaeuse unter Spannung, nicht beruehren",
+          {
+            "key": "sign_b",
+            "label": "Gehaeuse unter Spannung, nicht beruehren",
+            "expected": "4",
+            "inputType": "select",
+            "placeholder": "Nummer waehlen",
+            "options": [
+              "1",
+              "2",
+              "3",
+              "4",
+              "5",
+              "6",
+              "7"
+            ]
+          }
+        ],
+        [
+          "Manueller Brandmelder",
+          {
+            "key": "sign_c",
+            "label": "Manueller Brandmelder",
+            "expected": "1",
+            "inputType": "select",
+            "placeholder": "Nummer waehlen",
+            "options": [
+              "1",
+              "2",
+              "3",
+              "4",
+              "5",
+              "6",
+              "7"
+            ]
+          }
+        ],
+        [
+          "Richtungsangabe Rettungsweg",
+          {
+            "key": "sign_d",
+            "label": "Richtungsangabe Rettungsweg",
+            "expected": "5",
+            "inputType": "select",
+            "placeholder": "Nummer waehlen",
+            "options": [
+              "1",
+              "2",
+              "3",
+              "4",
+              "5",
+              "6",
+              "7"
+            ]
+          }
+        ]
+      ],
+      "feedback": {
+        "correct": "Die Sicherheitskennzeichen sind korrekt zugeordnet.",
+        "wrong": "Vergleichen Sie Warn-, Verbots-, Rettungs- und Meldezeichen noch einmal genau."
+      },
+      "progressLinks": [
+        "pv3wiso_arbeitsschutz_umwelt_diversity"
+      ]
+    },
+    {
+      "id": "f05",
+      "type": "followup_divider",
+      "title": "Arbeitsschutz, Umwelt und Vielfalt",
+      "from": "sicherheitsmanagement@nordstern-it.example",
+      "to": "projektteam@ausbildungsbetrieb.example",
+      "subject": "Bitte den Abschlussblock zu Schutz, Umwelt und Diversity vorbereiten",
+      "date": "2026-03-19",
+      "body": "Hallo,\n\nzum Abschluss brauchen wir noch einen gemischten Block zu Informationspflichten im Arbeitsschutz, richtigem Verhalten beim Loeschen, Umweltprinzipien, Recycling und Diversity Management. Bitte halten Sie die Aufgaben weiterhin pruefungsnah, aber sprachlich sauber pseudonymisiert.\n\nViele Gruesse\nSicherheitsmanagement"
+    },
+    {
+      "id": "q24",
+      "type": "single_choice",
+      "title": "Informationspflicht zu Unfallverhuetungsvorschriften erkennen",
+      "prompt": "Welche Aussage beschreibt die Pflicht des Unternehmens am besten?",
+      "options": [
+        {
+          "text": "Es reicht aus, neue Mitarbeitende einmal muendlich beim Vorstellungsgespraech zu informieren.",
+          "rationale": "Die Unterweisung darf nicht auf diesen einmaligen Zeitpunkt verkuerzt werden."
+        },
+        {
+          "text": "Die einschlaegigen Vorschriften muessen den Beschaeftigten an geeigneter Stelle zugaenglich gemacht werden, zum Beispiel digital ueber das Intranet.",
+          "rationale": "Genau diese Zugaenglichkeit ist gefordert."
+        },
+        {
+          "text": "Nur die Berufsgenossenschaft ist fuer die Information der Beschaeftigten verantwortlich.",
+          "rationale": "Die Verantwortung liegt nicht ausschliesslich bei der Berufsgenossenschaft."
+        },
+        {
+          "text": "Ein sichtbarer Aushang ersetzt jede weitere Unterweisung vollstaendig.",
+          "rationale": "Zugaenglichkeit und Unterweisung sind nicht identisch."
+        }
+      ],
+      "correctIndex": 1,
+      "feedback": {
+        "correct": "Die Pflicht zur Zugaenglichkeit der Vorschriften ist richtig erfasst.",
+        "wrong": "Entscheidend ist, dass die Vorschriften erreichbar und nicht nur punktuell erwaehnt werden."
+      },
+      "progressLinks": [
+        "pv3wiso_arbeitsschutz_umwelt_diversity"
+      ]
+    },
+    {
+      "id": "q25",
+      "type": "single_choice",
+      "title": "Falsche Loeschregel erkennen",
+      "prompt": "Welche der folgenden Regeln zum Einsatz von Feuerloeschern beschreibt unzutreffendes Verhalten?",
+      "options": [
+        {
+          "text": "Die Brandstelle nach dem Loeschen beobachten und auf Wiederentzuendung achten.",
+          "rationale": "Das ist eine sinnvolle Verhaltensregel."
+        },
+        {
+          "text": "Moeglichst mehrere Feuerloescher gleichzeitig und nicht nacheinander einsetzen.",
+          "rationale": "Auch das entspricht der gaengigen Empfehlung."
+        },
+        {
+          "text": "Tropf- und Fliessbraende von unten nach oben loeschen und nie von oben beginnen.",
+          "rationale": "Genau diese Richtung ist fachlich falsch."
+        },
+        {
+          "text": "Flaechenbraende von vorne nach hinten abloeschen.",
+          "rationale": "Das ist eine uebliche Loeschregel."
+        },
+        {
+          "text": "Immer mit der Windrichtung arbeiten und nicht gegen den Wind loeschen.",
+          "rationale": "Auch das ist fachlich richtig."
+        }
+      ],
+      "correctIndex": 2,
+      "feedback": {
+        "correct": "Die unzutreffende Regel wurde erkannt.",
+        "wrong": "Pruefen Sie vor allem die richtige Loeschrichtung bei tropfenden oder fliessenden Braenden."
+      },
+      "progressLinks": [
+        "pv3wiso_arbeitsschutz_umwelt_diversity"
+      ]
+    },
+    {
+      "id": "q26",
+      "type": "ordering",
+      "title": "Feuerloescher sicher in Betrieb nehmen",
+      "prompt": "Bringen Sie die Schritte zur Bedienung eines an der Wand montierten Feuerloeschers in die richtige Reihenfolge.",
+      "items": [
+        "Sicherungsstift bzw. Sicherungslasche ziehen.",
+        "Feuerloescher aus der Wandhalterung nehmen.",
+        "Betaetigungshebel ziehen oder Drucktaste ausloesen.",
+        "Schlauch in Richtung Brandherd halten.",
+        "Zum Feuerloescher laufen."
+      ],
+      "correctOrder": [
+        "Zum Feuerloescher laufen.",
+        "Feuerloescher aus der Wandhalterung nehmen.",
+        "Sicherungsstift bzw. Sicherungslasche ziehen.",
+        "Schlauch in Richtung Brandherd halten.",
+        "Betaetigungshebel ziehen oder Drucktaste ausloesen."
+      ],
+      "feedback": {
+        "correct": "Die Bedienreihenfolge des Feuerloeschers ist stimmig sortiert.",
+        "wrong": "Denken Sie an Holen, Entsichern, Zielen und erst dann Ausloesen."
+      },
+      "progressLinks": [
+        "pv3wiso_arbeitsschutz_umwelt_diversity"
+      ]
+    },
+    {
+      "id": "q27",
+      "type": "single_choice",
+      "title": "Verursacherprinzip anwenden",
+      "prompt": "Welche Aussage trifft das Verursacherprinzip im Umweltschutz am besten?",
+      "options": [
+        {
+          "text": "Die Kosten fuer Umweltschaeden werden gleichmaessig auf alle Sozialversicherten verteilt.",
+          "rationale": "Das widerspricht dem Grundgedanken des Prinzips."
+        },
+        {
+          "text": "Die Kosten fuer die Beseitigung von Umweltschaeden tragen diejenigen, die die Schaeden verursacht haben.",
+          "rationale": "Genau das beschreibt das Verursacherprinzip."
+        },
+        {
+          "text": "Es geht vor allem darum, Verpackungen fuer Konsumentinnen und Konsumenten leichter entsorgbar zu machen.",
+          "rationale": "Das ist zu eng und trifft nicht den Kern."
+        },
+        {
+          "text": "Abfallentsorgung ist wichtiger als Abfallvermeidung.",
+          "rationale": "Das trifft das Prinzip nicht."
+        }
+      ],
+      "correctIndex": 1,
+      "feedback": {
+        "correct": "Das Verursacherprinzip ist richtig erfasst.",
+        "wrong": "Entscheidend ist die Kostenverantwortung derjenigen, die den Schaden ausloesen."
+      },
+      "progressLinks": [
+        "pv3wiso_arbeitsschutz_umwelt_diversity"
+      ]
+    },
+    {
+      "id": "q28",
+      "type": "single_choice",
+      "title": "Recycling im Betriebsalltag erkennen",
+      "prompt": "Welche Handlung im Betriebsablauf ist ein Beispiel fuer Recycling?",
+      "options": [
+        {
+          "text": "Es wird nur noch FSC-zertifiziertes Papier eingekauft.",
+          "rationale": "Das ist nachhaltiger Einkauf, aber noch kein Recycling."
+        },
+        {
+          "text": "Essensreste aus der Kantine werden an ein Tierheim abgegeben.",
+          "rationale": "Das ist eine Weiterverwendung, aber kein klassisches Recycling."
+        },
+        {
+          "text": "Verpackungsabfaelle werden nach Materialien getrennt und dem Recyclingsystem zugefuehrt.",
+          "rationale": "Hier werden Stoffe aufbereitet und erneut in den Kreislauf gebracht."
+        },
+        {
+          "text": "Bei WCs werden wasserarme Spuelungen eingebaut.",
+          "rationale": "Das spart Ressourcen, ist aber kein Recycling."
+        },
+        {
+          "text": "In der Kantine werden nur biologische Lebensmittel angeboten.",
+          "rationale": "Das kann nachhaltig sein, ist aber kein Recyclingvorgang."
+        }
+      ],
+      "correctIndex": 2,
+      "feedback": {
+        "correct": "Das Recycling-Beispiel ist korrekt ausgewaehlt.",
+        "wrong": "Recycling meint die Rueckfuehrung von Stoffen in einen neuen Verwertungskreislauf."
+      },
+      "progressLinks": [
+        "pv3wiso_arbeitsschutz_umwelt_diversity"
+      ]
+    },
+    {
+      "id": "q29",
+      "type": "single_choice",
+      "title": "Nicht beruecksichtigtes Merkmal der Charta der Vielfalt finden",
+      "prompt": "Welcher Punkt gehoert nicht zu den klassischen in der Charta der Vielfalt beruecksichtigten Merkmalen?",
+      "options": [
+        {
+          "text": "Alter",
+          "rationale": "Alter ist ein klassisches Diversity-Merkmal."
+        },
+        {
+          "text": "Religion oder Weltanschauung",
+          "rationale": "Auch das gehoert dazu."
+        },
+        {
+          "text": "Sexuelle Orientierung bzw. Identitaet",
+          "rationale": "Auch dieses Merkmal wird beruecksichtigt."
+        },
+        {
+          "text": "Ausbildungsstand oder Art des Abschlusses",
+          "rationale": "Das ist kein klassisches Kernmerkmal der Charta der Vielfalt."
+        },
+        {
+          "text": "Ethnische Herkunft und Nationalitaet",
+          "rationale": "Auch das gehoert dazu."
+        }
+      ],
+      "correctIndex": 3,
+      "feedback": {
+        "correct": "Das nicht beruecksichtigte Merkmal wurde korrekt herausgefiltert.",
+        "wrong": "Orientieren Sie sich an den klassischen Diversity-Dimensionen der Charta der Vielfalt."
+      },
+      "progressLinks": [
+        "pv3wiso_arbeitsschutz_umwelt_diversity"
+      ]
+    },
+    {
+      "id": "q30",
+      "type": "single_choice",
+      "title": "Ziel von Diversity Management bestimmen",
+      "prompt": "Was ist das zentrale Ziel von Diversity Management im Unternehmen?",
+      "options": [
+        {
+          "text": "Vorhandene Vorurteile von Kundinnen und Kunden gezielt wirtschaftlich auszunutzen.",
+          "rationale": "Das waere dem Ziel von Diversity Management entgegengesetzt."
+        },
+        {
+          "text": "Gewinne vor allem durch Personaleinsparungen zu steigern.",
+          "rationale": "Das beschreibt nicht den eigentlichen Ansatz."
+        },
+        {
+          "text": "Alle Unterschiede in der Belegschaft unsichtbar zu machen.",
+          "rationale": "Diversity Management arbeitet nicht auf Unsichtbarmachung hin."
+        },
+        {
+          "text": "Das gesamte Humankapital der Belegschaft ausschliesslich dem Management verfuegbar zu machen.",
+          "rationale": "Die Formulierung verengt das Thema unzutreffend."
+        },
+        {
+          "text": "Das in der Vielfalt der Belegschaft liegende Potenzial fuer das Unternehmen nutzbar zu machen.",
+          "rationale": "Das trifft Ziel und Nutzen von Diversity Management am besten."
+        }
+      ],
+      "correctIndex": 4,
+      "feedback": {
+        "correct": "Das Ziel von Diversity Management ist treffend beschrieben.",
+        "wrong": "Im Mittelpunkt steht nicht das Verdecken von Unterschieden, sondern deren konstruktive Nutzung."
+      },
+      "progressLinks": [
+        "pv3wiso_arbeitsschutz_umwelt_diversity"
+      ]
+    }
+  ]
+}

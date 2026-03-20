@@ -1,0 +1,160 @@
+{
+  "scenario": {
+    "company": "Ausbildungsbetrieb IT-Service",
+    "scale": "Mittelstand, 90 Mitarbeitende",
+    "context": "Station 03 des Tageslaufs: Arbeitsrechte, Mitbestimmung und Entwicklungsplanung kombinieren.",
+    "mission": "Sie loesen Teamkonflikte strukturiert und leiten daraus einen verantwortlichen Entwicklungsplan ab.",
+    "station": {
+      "id": "LF01-ST-03",
+      "department": "IT-Service",
+      "profile": "Mitbestimmung, Konfliktkommunikation, Lernplanung",
+      "constraints": [
+        "sachlich und teamorientiert argumentieren",
+        "geeignete Eskalationswege nutzen",
+        "naechste Lernschritte konkret machen"
+      ]
+    },
+    "customerRequest": {
+      "from": "teamleitung@ausbildungsbetrieb.example",
+      "to": "klasse.fiae@berufsschule.example",
+      "subject": "Station 03: Konfliktkommunikation und Lernplanung",
+      "date": "2026-03-13",
+      "body": "Bitte bearbeiten Sie eine Teamkonfliktsituation mit geeigneter Mitbestimmungs- und Kommunikationslogik und leiten Sie daraus einen konkreten Lern- und Entwicklungsplan ab."
+    }
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "type": "multi_select",
+      "title": "Konflikt sachlich vorbereiten",
+      "prompt": "Welche Schritte helfen bei der Vorbereitung eines Konfliktgespraechs? (Mehrfachauswahl)",
+      "options": [
+        {
+          "text": "Konkrete Beispiele sammeln",
+          "correct": true,
+          "rationale": "Erhoeht Sachlichkeit."
+        },
+        {
+          "text": "Auswirkungen auf den Prozess benennen",
+          "correct": true,
+          "rationale": "Macht Handlungsbedarf sichtbar."
+        },
+        {
+          "text": "Persoenliche Vorwuerfe als Einstieg waehlen",
+          "correct": false,
+          "rationale": "Fuehrt meist zu Verhaertung."
+        },
+        {
+          "text": "Loesungsoptionen vorab ueberlegen",
+          "correct": true,
+          "rationale": "Foerdert konstruktiven Verlauf."
+        },
+        {
+          "text": "Keine Nachbereitung planen",
+          "correct": false,
+          "rationale": "Ohne Nachgang keine Verbindlichkeit."
+        }
+      ],
+      "feedback": {
+        "correct": "Richtig: Das ist eine strukturierte Konfliktvorbereitung.",
+        "wrong": "Teilweise falsch: Bitte Sachbezug und Loesungsorientierung staerker priorisieren."
+      },
+      "progressLinks": [
+        "lf01_arbeitsrechte_mitbestimmung"
+      ]
+    },
+    {
+      "id": "q2",
+      "type": "single_choice",
+      "title": "Geeigneter Eskalationsweg",
+      "prompt": "Ein Problem bleibt trotz Teamgespraech bestehen. Was ist der beste naechste Schritt?",
+      "options": [
+        {
+          "text": "Dokumentierten Sachstand ueber den vorgesehenen Eskalationsweg weitergeben",
+          "rationale": "Das ist transparent und verfahrenskonform."
+        },
+        {
+          "text": "Thema intern streuen, ohne Verantwortliche einzubeziehen",
+          "rationale": "Fuehrt zu Unklarheit."
+        },
+        {
+          "text": "Gar nichts tun und auf Zufall hoffen",
+          "rationale": "Problem bleibt bestehen."
+        }
+      ],
+      "correctIndex": 0,
+      "feedback": {
+        "correct": "Richtig: Eskalation braucht Nachweis und sauberen Kanal.",
+        "wrong": "Nicht passend: Ohne geordneten Weg sinkt Loesungswahrscheinlichkeit."
+      },
+      "progressLinks": [
+        "lf01_arbeitsrechte_mitbestimmung"
+      ]
+    },
+    {
+      "id": "q3",
+      "type": "ordering",
+      "title": "Vom Konflikt zur Lernmassnahme",
+      "prompt": "Ordnen Sie den Ablauf von Problemfeststellung bis Lernableitung.",
+      "items": [
+        "Ursache analysieren",
+        "Problem strukturiert dokumentieren",
+        "Verbesserung im Team abstimmen",
+        "Lernziel fuer die eigene Rolle formulieren",
+        "Termin fuer Nachpruefung setzen"
+      ],
+      "correctOrder": [
+        "Problem strukturiert dokumentieren",
+        "Ursache analysieren",
+        "Verbesserung im Team abstimmen",
+        "Lernziel fuer die eigene Rolle formulieren",
+        "Termin fuer Nachpruefung setzen"
+      ],
+      "feedback": {
+        "correct": "Richtig: So wird aus Konflikt ein Lernfortschritt.",
+        "wrong": "Nicht optimal: Bitte erst dokumentieren/analysieren, dann verbessern und nachhalten."
+      },
+      "progressLinks": [
+        "lf01_arbeitsrechte_mitbestimmung",
+        "lf01_berufs_lebensplanung"
+      ]
+    },
+    {
+      "id": "q4",
+      "type": "number",
+      "title": "Lernfenster planen",
+      "prompt": "Sie planen 5 Lernslots zu je 40 Minuten plus 35 Minuten Reflexion. Wie viele Minuten umfasst der Block?",
+      "expected": 235,
+      "toleranceAbs": 1,
+      "showExpectedFormula": "5 * 40 + 35 = 235 Minuten",
+      "feedback": {
+        "correct": "Richtig gerechnet.",
+        "wrong": "Bitte Lernslots und Reflexionszeit korrekt summieren."
+      },
+      "progressLinks": [
+        "lf01_berufs_lebensplanung"
+      ]
+    },
+    {
+      "id": "q5",
+      "type": "short_text",
+      "title": "Entwicklungsziel nach Konflikt",
+      "prompt": "Formulieren Sie in 4-6 Saetzen ein Entwicklungsziel, das aus einem Teamkonflikt abgeleitet wurde.",
+      "minChars": 150,
+      "requiredKeywords": [
+        "ursache",
+        "ziel",
+        "nachpruefung"
+      ],
+      "expectedOutline": "Konfliktursache, konkretes Lernziel, terminierte Nachpruefung.",
+      "feedback": {
+        "correct": "Richtig: Das Ziel ist klar, umsetzbar und kontrollierbar.",
+        "wrong": "Bitte Ursache, Ziel und Nachpruefung konkreter verbinden."
+      },
+      "progressLinks": [
+        "lf01_berufs_lebensplanung",
+        "lf01_reflexion_verbesserung"
+      ]
+    }
+  ]
+}

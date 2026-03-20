@@ -1,0 +1,972 @@
+{
+  "scenario": {
+    "company": "Nordufer Verkehrsbetriebe GmbH",
+    "scale": "Kommunaler Mobilitaetsanbieter mit Stadtbahn- und Busbetrieb, 420 Mitarbeitende",
+    "context": "Pruefungsvorbereitung FIAE im Stationsformat mit zusammenhaengenden Folgeauftraegen fuer Projektplanung, Netze, UML und Design Patterns.",
+    "mission": "Sie planen die Fahrplanauskunft fuer ein neues Stadtbahnprojekt, ordnen Netzwerktechnik zu, modellieren UML-Strukturen und begruenden passende Entwurfsmuster.",
+    "source": {
+      "kind": "Pseudonymisierte Pruefungsvorlage",
+      "reference": "AP2 FIAE Teil 1, Winter 2024/25",
+      "note": "Die fachliche Aufgabenreihenfolge bleibt erhalten; Orte, Namen und Unternehmensbezug wurden in das Kursformat ueberfuehrt."
+    },
+    "station": {
+      "id": "PV1FIAE-ST-02",
+      "department": "Pruefungsvorbereitung Anwendungsentwicklung",
+      "profile": "Projektmanagement, Datenschutz, Netze, UML und Design Patterns",
+      "constraints": [
+        "Die vier Hauptaufgaben bleiben als fachlich zusammenhaengende Folgeauftraege sichtbar",
+        "Offene Pruefungsfragen werden moeglichst auto-auswertbar, aber fachlich gleichwertig umgesetzt",
+        "Text, Code und Modellierungslogik bleiben pseudonymisiert und nah an der Quelle"
+      ]
+    },
+    "customerRequest": {
+      "from": "digitalisierung@nordufer-verkehr.example",
+      "to": "projektteam@ausbildungsbetrieb.example",
+      "subject": "Stadtbahn-Ausbau, Fahrplanauskunft und Anzeigenlogik konzipieren",
+      "date": "2026-03-20",
+      "body": "Guten Tag,\n\nim Zuge des Stadtbahn-Ausbaus muessen mehrere IT-Bausteine gleichzeitig vorbereitet werden. Dazu gehoeren eine neue Fahrplanauskunft fuer mobile Endgeraete, die technische Einordnung unterschiedlicher Datennetze, Modellierungsentscheidungen fuer Streckennetz und Personalverwaltung sowie die Logik fuer Auslastungsanzeigen.\n\nBitte bearbeiten Sie die Teilauftraege in der vorgegebenen Reihenfolge. Im Fokus stehen Vorgehensmodelle, Datenschutz, Netzwerktechnik, UML-Modelle und passende Entwurfsmuster fuer die Aktualisierung mehrerer Anzeigen.\n\nViele Gruesse\nDigitalisierung"
+    }
+  },
+  "questions": [
+    {
+      "id": "ctx01",
+      "type": "context_card",
+      "title": "Kontext zum Projektstart",
+      "contentBlocks": [
+        {
+          "type": "text",
+          "text": "Nordufer erweitert das Nahverkehrssystem um eine neue Stadtbahn. Im Zusammenhang mit diesem Ausbau muessen App, Anzeigen, Vernetzung und weitere IT-Systeme neu geplant oder erweitert werden.\n\nIm Teilprojekt `Fahrplanauskunft` entsteht eine App fuer mobile Endgeraete. Fuer die Nutzung muessen sich Fahrgaeste registrieren. Spaetere Versionen sollen ausserdem Ticketbuchungen und Zahlungen unterstuetzen. Gleichzeitig muessen Datenschutz und Datensicherheit von Beginn an mitgedacht werden."
+        }
+      ]
+    },
+    {
+      "id": "q01",
+      "type": "single_choice",
+      "title": "Kategorien von Vorgehensmodellen erkennen",
+      "prompt": "Welche zwei Kategorien von Vorgehensmodellen sind fuer dieses Entwicklungsprojekt gemeint?",
+      "options": [
+        {
+          "text": "Klassisches Projektmanagement und agiles Projektmanagement",
+          "rationale": "Genau diese beiden Kategorien werden in der Aufgabenstellung angesprochen."
+        },
+        {
+          "text": "Zentrales und dezentrales Projektmanagement",
+          "rationale": "Das sind moegliche Organisationsformen, aber nicht die hier gemeinten Grundkategorien."
+        },
+        {
+          "text": "Objektorientiertes und relationales Projektmanagement",
+          "rationale": "Das sind keine passenden Kategorien von Vorgehensmodellen."
+        },
+        {
+          "text": "Synchrones und asynchrones Projektmanagement",
+          "rationale": "Diese Unterscheidung trifft den Projektmanagement-Kontext der Aufgabe nicht."
+        }
+      ],
+      "correctIndex": 0,
+      "feedback": {
+        "correct": "Die beiden gesuchten Kategorien von Vorgehensmodellen sind richtig erkannt.",
+        "wrong": "Gesucht sind die bekannten Grundrichtungen, die typischerweise als klassisch und agil gegenuebergestellt werden."
+      },
+      "progressLinks": [
+        "pv1fiae_vorgehensmodelle_datenschutz"
+      ]
+    },
+    {
+      "id": "q02",
+      "type": "table_fill",
+      "title": "Vorgehensmodell mit Beschreibung und Beispiel verbinden",
+      "prompt": "Ordnen Sie den beiden Kategorien jeweils die passende Kurzbeschreibung und ein typisches Beispielmodell zu.",
+      "columns": [
+        "Kategorie",
+        "Kurzbeschreibung",
+        "Beispielmodell"
+      ],
+      "rows": [
+        [
+          "Klassisches Projektmanagement",
+          {
+            "key": "classic_desc",
+            "label": "Klassisch / Kurzbeschreibung",
+            "expected": "Projekt in linearen Phasen planen und nacheinander abarbeiten",
+            "inputType": "select",
+            "placeholder": "Beschreibung waehlen",
+            "options": [
+              "Projekt in linearen Phasen planen und nacheinander abarbeiten",
+              "Projekt iterativ mit enger Zusammenarbeit und flexibler Anpassung steuern",
+              "Projekt ohne definierte Abschnitte ausschliesslich spontan bearbeiten",
+              "Projekt nur ueber Datenbanktabellen und SQL-Statements strukturieren"
+            ]
+          },
+          {
+            "key": "classic_model",
+            "label": "Klassisch / Beispielmodell",
+            "expected": "Wasserfallmodell",
+            "inputType": "select",
+            "placeholder": "Modell waehlen",
+            "options": [
+              "Wasserfallmodell",
+              "Scrum",
+              "Observer-Pattern",
+              "Facade-Pattern"
+            ]
+          }
+        ],
+        [
+          "Agiles Projektmanagement",
+          {
+            "key": "agile_desc",
+            "label": "Agil / Kurzbeschreibung",
+            "expected": "Projekt iterativ mit enger Zusammenarbeit und flexibler Anpassung steuern",
+            "inputType": "select",
+            "placeholder": "Beschreibung waehlen",
+            "options": [
+              "Projekt iterativ mit enger Zusammenarbeit und flexibler Anpassung steuern",
+              "Projekt strikt erst nach vollstaendiger Endplanung bearbeiten",
+              "Projekt nur ueber Hardwaretausch und Netzwerkinstallation organisieren",
+              "Projekt als reine Nachbereitung ohne laufende Ueberpruefung behandeln"
+            ]
+          },
+          {
+            "key": "agile_model",
+            "label": "Agil / Beispielmodell",
+            "expected": "Scrum",
+            "inputType": "select",
+            "placeholder": "Modell waehlen",
+            "options": [
+              "Scrum",
+              "Wasserfallmodell",
+              "Singleton-Pattern",
+              "Lastenheft"
+            ]
+          }
+        ]
+      ],
+      "feedback": {
+        "correct": "Kategorien, Beschreibungen und Beispielmodelle sind stimmig zugeordnet.",
+        "wrong": "Achten Sie auf den Unterschied zwischen linearer Phasenlogik und iterativ-flexibler Zusammenarbeit sowie auf typische Modellbeispiele."
+      },
+      "progressLinks": [
+        "pv1fiae_vorgehensmodelle_datenschutz"
+      ]
+    },
+    {
+      "id": "q03",
+      "type": "table_fill",
+      "title": "Projektbegriffe erlaeutern",
+      "prompt": "Ordnen Sie jedem Begriff die fachlich passende Erlaeuterung zu.",
+      "columns": [
+        "Begriff",
+        "Erlaeuterung"
+      ],
+      "rows": [
+        [
+          "Change Request Management",
+          {
+            "key": "term_crm",
+            "label": "Change Request Management",
+            "expected": "Prozess zum Planen, Umsetzen und Steuern von Aenderungen waehrend des Projekts",
+            "inputType": "select",
+            "placeholder": "Erlaeuterung waehlen",
+            "options": [
+              "Prozess zum Planen, Umsetzen und Steuern von Aenderungen waehrend des Projekts",
+              "Wichtiger Kontrollpunkt im Projektverlauf zur Fortschrittsbewertung",
+              "Personen oder Gruppen mit Interesse am Projekt oder seinen Ergebnissen",
+              "Gesammelte Erfahrungen und Erkenntnisse fuer kuenftige Projekte"
+            ]
+          }
+        ],
+        [
+          "Meilenstein",
+          {
+            "key": "term_milestone",
+            "label": "Meilenstein",
+            "expected": "Wichtiger Kontrollpunkt im Projektverlauf zur Fortschrittsbewertung",
+            "inputType": "select",
+            "placeholder": "Erlaeuterung waehlen",
+            "options": [
+              "Wichtiger Kontrollpunkt im Projektverlauf zur Fortschrittsbewertung",
+              "Prozess zum Planen, Umsetzen und Steuern von Aenderungen waehrend des Projekts",
+              "Gesammelte Erfahrungen und Erkenntnisse fuer kuenftige Projekte",
+              "Formale Einwilligung zur Verarbeitung personenbezogener Daten"
+            ]
+          }
+        ],
+        [
+          "Stakeholder",
+          {
+            "key": "term_stakeholder",
+            "label": "Stakeholder",
+            "expected": "Personen oder Gruppen mit Interesse am Projekt oder seinen Ergebnissen",
+            "inputType": "select",
+            "placeholder": "Erlaeuterung waehlen",
+            "options": [
+              "Personen oder Gruppen mit Interesse am Projekt oder seinen Ergebnissen",
+              "Wichtiger Kontrollpunkt im Projektverlauf zur Fortschrittsbewertung",
+              "Gesammelte Erfahrungen und Erkenntnisse fuer kuenftige Projekte",
+              "JSON-Struktur fuer den Export aller Endgeraete"
+            ]
+          }
+        ],
+        [
+          "Lessons Learned",
+          {
+            "key": "term_lessons",
+            "label": "Lessons Learned",
+            "expected": "Gesammelte Erfahrungen und Erkenntnisse fuer kuenftige Projekte",
+            "inputType": "select",
+            "placeholder": "Erlaeuterung waehlen",
+            "options": [
+              "Gesammelte Erfahrungen und Erkenntnisse fuer kuenftige Projekte",
+              "Wichtiger Kontrollpunkt im Projektverlauf zur Fortschrittsbewertung",
+              "Prozess zum Planen, Umsetzen und Steuern von Aenderungen waehrend des Projekts",
+              "Liste aller erlaubten Fahrzeugtypen pro Fahrer"
+            ]
+          }
+        ]
+      ],
+      "feedback": {
+        "correct": "Die zentralen Projektbegriffe sind korrekt eingeordnet.",
+        "wrong": "Pruefen Sie, ob der Begriff eher Aenderungen, Fortschrittspunkte, beteiligte Interessengruppen oder Projekterkenntnisse beschreibt."
+      },
+      "progressLinks": [
+        "pv1fiae_vorgehensmodelle_datenschutz"
+      ]
+    },
+    {
+      "id": "q04",
+      "type": "multi_select",
+      "title": "Datenschutzerklaerung und Einwilligung begruenden",
+      "prompt": "Welche Gruende sprechen fuer eine Datenschutzerklaerung mit aktiver Einwilligung in der Fahrplanauskunft? Waehlen Sie alle passenden Aussagen.",
+      "options": [
+        {
+          "text": "Benutzende werden transparent darueber informiert, welche personenbezogenen Daten wofuer verarbeitet werden.",
+          "correct": true,
+          "rationale": "Transparenz und Informationspflicht sind ein zentraler Datenschutzgrund."
+        },
+        {
+          "text": "Benutzende koennen der Datenverarbeitung aktiv zustimmen oder sie ablehnen.",
+          "correct": true,
+          "rationale": "Die Einwilligung schafft eine nachvollziehbare Entscheidung der betroffenen Person."
+        },
+        {
+          "text": "Die Anwendung kann rechtliche Anforderungen wie die DSGVO besser erfuellen.",
+          "correct": true,
+          "rationale": "Eine saubere Information und Einwilligung stuetzen die rechtliche Compliance."
+        },
+        {
+          "text": "Missbrauch oder verdeckte Datennutzung ohne Wissen der Benutzenden wird erschwert.",
+          "correct": true,
+          "rationale": "Klare Regeln und aktive Zustimmung reduzieren das Risiko verdeckter Datenverarbeitung."
+        },
+        {
+          "text": "Eine Einwilligung ersetzt jede technische Sicherheitsmassnahme in der App.",
+          "correct": false,
+          "rationale": "Datenschutzrechtliche Einwilligung ersetzt keine technische Absicherung."
+        },
+        {
+          "text": "Mit Einwilligung duerfen personenbezogene Daten immer ohne Zweckbindung weitergegeben werden.",
+          "correct": false,
+          "rationale": "Auch mit Einwilligung bleiben Datenschutzgrundsaetze wie Zweckbindung relevant."
+        }
+      ],
+      "feedback": {
+        "correct": "Die Bedeutung von Datenschutzerklaerung und Einwilligung ist fachlich treffend erfasst.",
+        "wrong": "Achten Sie auf Transparenz, aktive Zustimmung, rechtliche Grundlage und Schutz vor missbraeuchlicher Verarbeitung."
+      },
+      "progressLinks": [
+        "pv1fiae_vorgehensmodelle_datenschutz"
+      ]
+    },
+    {
+      "id": "f02",
+      "type": "followup_divider",
+      "title": "Datennetze und Adresslogik einordnen",
+      "from": "infrastruktur@nordufer-verkehr.example",
+      "to": "projektteam@ausbildungsbetrieb.example",
+      "subject": "Netzwerkkonzepte, Ethernet und Scan-Skript fuer das Verkehrsnetz vorbereiten",
+      "date": "2026-03-20",
+      "body": "Hallo zusammen,\n\nje nach Einsatzbereich betreiben wir sehr unterschiedliche Datennetze. Fuer die Planung der Stadtbahn-IT brauchen wir eine klare Zuordnung der Netzwerkkonzepte, ein solides Verstaendnis des Ethernet-Frames und eine passende Skriptlogik, mit der die erreichbaren Geraete in einem /24-Netz in ein JSON-Ergebnis geschrieben werden koennen.\n\nViele Gruesse\nInfrastruktur"
+    },
+    {
+      "id": "q05",
+      "type": "match_pairs",
+      "title": "Netzwerkkonzepte den Einsatzgebieten zuordnen",
+      "prompt": "Ordnen Sie die drei Netzwerkkonzepte dem passendsten Einsatzgebiet inklusive Kerngruendung zu.",
+      "layout": "table",
+      "columns": [
+        "Netzwerkkonzept",
+        "Einsatzgebiet mit Kerngruendung"
+      ],
+      "pairs": [
+        {
+          "key": "net_1",
+          "left": "LPWAN",
+          "right": "Internet der Dinge mit hoher Reichweite und niedrigem Energieverbrauch"
+        },
+        {
+          "key": "net_2",
+          "left": "LAN",
+          "right": "Unternehmensnetzwerk mit hoher Bandbreite und geringer Latenz"
+        },
+        {
+          "key": "net_3",
+          "left": "SAN",
+          "right": "Rechenzentrum fuer schnellen und zuverlaessigen Datenaustausch zwischen Servern und Speichersystemen"
+        }
+      ],
+      "options": [
+        "Internet der Dinge mit hoher Reichweite und niedrigem Energieverbrauch",
+        "Unternehmensnetzwerk mit hoher Bandbreite und geringer Latenz",
+        "Rechenzentrum fuer schnellen und zuverlaessigen Datenaustausch zwischen Servern und Speichersystemen"
+      ],
+      "feedback": {
+        "correct": "Die Netzwerkkonzepte sind ihren typischen Einsatzbereichen sauber zugeordnet.",
+        "wrong": "Denken Sie an Reichweite und Energiebedarf bei IoT, an hohe Bandbreite im Unternehmensnetz und an spezialisierte Speicherkommunikation im Rechenzentrum."
+      },
+      "progressLinks": [
+        "pv1fiae_netzwerkkonzepte_ethernet"
+      ]
+    },
+    {
+      "id": "q06",
+      "type": "table_fill",
+      "title": "Ethernet-Frame in die richtige Reihenfolge bringen",
+      "prompt": "Ordnen Sie die Bezeichner den Feldern des Ethernet-Frames in der richtigen Reihenfolge zu.",
+      "columns": [
+        "8 Bytes",
+        "6 Bytes",
+        "6 Bytes",
+        "2 Bytes",
+        "46-1500 Bytes",
+        "4 Bytes"
+      ],
+      "rows": [
+        [
+          {
+            "key": "eth_1",
+            "label": "8 Bytes",
+            "expected": "Preamble",
+            "inputType": "select",
+            "placeholder": "Feld waehlen",
+            "options": [
+              "Preamble",
+              "Destination Address",
+              "Source Address",
+              "Type",
+              "Data Payload",
+              "Frame Check Sequence"
+            ]
+          },
+          {
+            "key": "eth_2",
+            "label": "6 Bytes A",
+            "expected": "Destination Address",
+            "inputType": "select",
+            "placeholder": "Feld waehlen",
+            "options": [
+              "Preamble",
+              "Destination Address",
+              "Source Address",
+              "Type",
+              "Data Payload",
+              "Frame Check Sequence"
+            ]
+          },
+          {
+            "key": "eth_3",
+            "label": "6 Bytes B",
+            "expected": "Source Address",
+            "inputType": "select",
+            "placeholder": "Feld waehlen",
+            "options": [
+              "Preamble",
+              "Destination Address",
+              "Source Address",
+              "Type",
+              "Data Payload",
+              "Frame Check Sequence"
+            ]
+          },
+          {
+            "key": "eth_4",
+            "label": "2 Bytes",
+            "expected": "Type",
+            "inputType": "select",
+            "placeholder": "Feld waehlen",
+            "options": [
+              "Preamble",
+              "Destination Address",
+              "Source Address",
+              "Type",
+              "Data Payload",
+              "Frame Check Sequence"
+            ]
+          },
+          {
+            "key": "eth_5",
+            "label": "46-1500 Bytes",
+            "expected": "Data Payload",
+            "inputType": "select",
+            "placeholder": "Feld waehlen",
+            "options": [
+              "Preamble",
+              "Destination Address",
+              "Source Address",
+              "Type",
+              "Data Payload",
+              "Frame Check Sequence"
+            ]
+          },
+          {
+            "key": "eth_6",
+            "label": "4 Bytes",
+            "expected": "Frame Check Sequence",
+            "inputType": "select",
+            "placeholder": "Feld waehlen",
+            "options": [
+              "Preamble",
+              "Destination Address",
+              "Source Address",
+              "Type",
+              "Data Payload",
+              "Frame Check Sequence"
+            ]
+          }
+        ]
+      ],
+      "feedback": {
+        "correct": "Die Reihenfolge des Ethernet-Frames ist korrekt aufgebaut.",
+        "wrong": "Achten Sie auf die klassische Reihenfolge von Preamble, Ziel- und Quelladresse, Typ, Nutzdaten und Abschlusspruefung."
+      },
+      "progressLinks": [
+        "pv1fiae_netzwerkkonzepte_ethernet"
+      ]
+    },
+    {
+      "id": "q07",
+      "type": "single_choice",
+      "title": "MAC-Adresse fachlich erklaeren",
+      "prompt": "Welche Aussage beschreibt Aufbau und Bedeutung einer MAC-Adresse am treffendsten?",
+      "options": [
+        {
+          "text": "Eine MAC-Adresse ist 6 Byte lang; die ersten 3 Byte kennzeichnen den Hersteller, die letzten 3 Byte identifizieren das konkrete Geraet.",
+          "rationale": "Damit sind Laenge, OUI und geraeteindividueller Teil korrekt beschrieben."
+        },
+        {
+          "text": "Eine MAC-Adresse ist 4 Byte lang und entspricht immer exakt der IPv4-Adresse des Geraets.",
+          "rationale": "MAC- und IP-Adresse sind unterschiedliche Adressarten mit unterschiedlicher Laenge."
+        },
+        {
+          "text": "Die ersten 3 Byte beschreiben das Betriebssystem, die letzten 3 Byte den eingesetzten Browser.",
+          "rationale": "Das hat nichts mit dem Aufbau einer MAC-Adresse zu tun."
+        },
+        {
+          "text": "Eine MAC-Adresse wird nur im Rechenzentrum verwendet und spielt in LANs keine Rolle.",
+          "rationale": "MAC-Adressen sind gerade im LAN-Umfeld zentral."
+        }
+      ],
+      "correctIndex": 0,
+      "feedback": {
+        "correct": "Die Struktur der MAC-Adresse ist korrekt beschrieben.",
+        "wrong": "Denken Sie an 6 Byte insgesamt sowie an die Aufteilung in Herstellerkennung und geraetespezifischen Teil."
+      },
+      "progressLinks": [
+        "pv1fiae_netzwerkkonzepte_ethernet"
+      ]
+    },
+    {
+      "id": "q08",
+      "type": "single_choice",
+      "title": "Netzscan als Skript logisch aufbauen",
+      "prompt": "Welche Skriptvariante ermittelt alle Hostadressen im Netz `192.168.0.0/24`, fragt die MAC-Adresse ab, ignoriert `NULL` und sammelt das Ergebnis als JSON-nahe Objektliste?",
+      "options": [
+        {
+          "label": "Variante A",
+          "language": "powershell",
+          "code": "$networkPrefix = \"192.168.0\"\n$results = @()\nfor ($host = 1; $host -le 254; $host++) {\n  $ipAddress = \"$networkPrefix.$host\"\n  $macAddress = getMacAddress($ipAddress)\n  if ($macAddress -ne $null) {\n    $results += @{ \"IP-Adresse\" = $ipAddress; \"MAC-Adresse\" = $macAddress }\n  }\n}",
+          "rationale": "Diese Variante durchlaeuft den Hostbereich sauber, prueft auf `NULL` und fuegt nur gefundene Eintraege der Ergebnisliste hinzu."
+        },
+        {
+          "label": "Variante B",
+          "language": "powershell",
+          "code": "$networkPrefix = \"192.168.0\"\n$results = @()\nfor ($host = 0; $host -le 255; $host++) {\n  $ipAddress = \"$networkPrefix\"\n  $macAddress = getMacAddress($networkPrefix)\n  $results += @{ \"IP-Adresse\" = $ipAddress; \"MAC-Adresse\" = $macAddress }\n}",
+          "rationale": "Hier wird die Hostadresse nicht korrekt zusammengesetzt und `NULL` wird nicht herausgefiltert."
+        },
+        {
+          "label": "Variante C",
+          "language": "powershell",
+          "code": "$results = @()\n$macAddress = getMacAddress(\"192.168.0.0/24\")\n$results += @{ \"IP-Adresse\" = \"192.168.0.0/24\"; \"MAC-Adresse\" = $macAddress }",
+          "rationale": "Es wird kein Hostbereich durchlaufen, sondern nur ein einzelner Netzstring an die Funktion uebergeben."
+        },
+        {
+          "label": "Variante D",
+          "language": "powershell",
+          "code": "$networkPrefix = \"192.168.0\"\nfor ($host = 1; $host -le 254; $host++) {\n  $ipAddress = \"$networkPrefix.$host\"\n  $results += \"$ipAddress\"\n}",
+          "rationale": "Die MAC-Adresse wird hier gar nicht abgefragt und das Ergebnis wird nicht als Objektstruktur aufgebaut."
+        }
+      ],
+      "correctIndex": 0,
+      "feedback": {
+        "correct": "Die Schleife, der MAC-Abruf, die `NULL`-Pruefung und die JSON-nahe Ergebnisstruktur sind passend kombiniert.",
+        "wrong": "Achten Sie auf den Hostbereich `1..254`, den Aufruf `getMacAddress(ip)`, das Filtern von `NULL` und den Aufbau einer Objektliste."
+      },
+      "progressLinks": [
+        "pv1fiae_scan_skripte_json"
+      ]
+    },
+    {
+      "id": "f03",
+      "type": "followup_divider",
+      "title": "Streckennetz und Personalverwaltung modellieren",
+      "from": "softwarearchitektur@nordufer-verkehr.example",
+      "to": "projektteam@ausbildungsbetrieb.example",
+      "subject": "Klassendiagramme fuer Fahrplanauskunft und Personalverwaltung abstimmen",
+      "date": "2026-03-20",
+      "body": "Hallo,\n\nfuer die Fahrplanauskunft soll das Streckennetz neu modelliert werden. Dabei muessen Haltestellen, direkte Strecken, geordnete Linien und konkrete Fahrten auseinandergehalten werden. Als Beispiel dient unter anderem die Linie 5 mit der Folge `Markt -> Friedhof -> Sportplatz -> Grenzweg -> IHK`.\n\nZusatzlich liegt ein Klassendiagramm-Ausschnitt fuer `Personalverwaltung`, `Fahrer` und `Fahrzeugtyp` vor. Dort sind die Beziehungen als Aggregationen modelliert; die Listen und Multiplizitaeten sollen fachlich sauber interpretiert werden.\n\nViele Gruesse\nSoftwarearchitektur"
+    },
+    {
+      "id": "ctx03",
+      "type": "context_card",
+      "title": "Kontext zum UML-Block",
+      "contentBlocks": [
+        {
+          "type": "text",
+          "text": "Fuer das Streckennetz gelten folgende Regeln:\n- Eine `Haltestelle` besitzt `bezeichnung`, `position` und `aufenthaltsdauer`.\n- Eine `Strecke` ist eine direkte Verbindung zwischen genau zwei Haltestellen und hat eine `fahrtdauer`.\n- Eine `Linie` besteht aus einer geordneten Liste von Strecken.\n- Eine `Fahrt` nutzt eine ganze Linie oder einen Teil davon und hat `starthaltestelle`, `startzeit` und `endhaltestelle`.\n\nIm Personalverwaltungs-Ausschnitt gilt ausserdem:\n- `Fahrzeugtyp` hat `typID`.\n- `Fahrer` besitzt eine Liste erlaubter Fahrzeugtypen.\n- `Personalverwaltung` besitzt eine Liste aller Fahrer und eine Suchfunktion nach `typID`."
+        }
+      ]
+    },
+    {
+      "id": "q09",
+      "type": "multi_select",
+      "title": "Benoetigte Klassen fuer das Streckennetz",
+      "prompt": "Welche Klassen muessen gemaess der Aufgabenbeschreibung im Klassendiagramm fuer das Streckennetz vorkommen? Waehlen Sie alle passenden Antworten.",
+      "options": [
+        {
+          "text": "Haltestelle",
+          "correct": true,
+          "rationale": "Haltestellen sind explizit als eigene Klasse gefordert."
+        },
+        {
+          "text": "Strecke",
+          "correct": true,
+          "rationale": "Direkte Verbindungen zwischen Haltestellen werden als eigene Klasse modelliert."
+        },
+        {
+          "text": "Linie",
+          "correct": true,
+          "rationale": "Eine Linie ist als geordnete Folge von Strecken ein eigener Modellbestandteil."
+        },
+        {
+          "text": "Fahrt",
+          "correct": true,
+          "rationale": "Die konkrete Fahrt mit Start und Ende muss ebenfalls modelliert werden."
+        },
+        {
+          "text": "Ticketautomat",
+          "correct": false,
+          "rationale": "Ein Ticketautomat gehoert nicht zu den geforderten Klassen des Streckennetzes."
+        },
+        {
+          "text": "Fahrer",
+          "correct": false,
+          "rationale": "Der Fahrer taucht nur im spaeteren Personalverwaltungs-Ausschnitt auf, nicht als Kernklasse des Streckennetzes."
+        }
+      ],
+      "feedback": {
+        "correct": "Die fuer das Streckennetz benoetigten UML-Klassen sind korrekt erkannt.",
+        "wrong": "Achten Sie darauf, welche vier Begriffe in der Aufgabenstellung explizit als Modellierungsobjekte genannt werden."
+      },
+      "progressLinks": [
+        "pv1fiae_klassendiagramme_beziehungen"
+      ]
+    },
+    {
+      "id": "q10",
+      "type": "match_pairs",
+      "title": "Attribute den passenden Klassen zuordnen",
+      "prompt": "Ordnen Sie die Attribute oder Merkmale der jeweils passenden Klasse zu.",
+      "layout": "table",
+      "columns": [
+        "Attribut oder Merkmal",
+        "Klasse"
+      ],
+      "pairs": [
+        {
+          "key": "class_attr_1",
+          "left": "bezeichnung, position, aufenthaltsdauer",
+          "right": "Haltestelle"
+        },
+        {
+          "key": "class_attr_2",
+          "left": "fahrtdauer fuer eine direkte Verbindung",
+          "right": "Strecke"
+        },
+        {
+          "key": "class_attr_3",
+          "left": "geordnete Liste von Strecken",
+          "right": "Linie"
+        },
+        {
+          "key": "class_attr_4",
+          "left": "starthaltestelle, startzeit, endhaltestelle",
+          "right": "Fahrt"
+        }
+      ],
+      "options": [
+        "Haltestelle",
+        "Strecke",
+        "Linie",
+        "Fahrt"
+      ],
+      "feedback": {
+        "correct": "Die Attribute und Merkmale sind den passenden Klassen zugeordnet.",
+        "wrong": "Pruefen Sie, ob das Merkmal eher eine Haltestelle beschreibt, eine direkte Verbindung, eine geordnete Linienstruktur oder eine konkrete Fahrt."
+      },
+      "progressLinks": [
+        "pv1fiae_klassendiagramme_beziehungen"
+      ]
+    },
+    {
+      "id": "q11",
+      "type": "single_choice",
+      "title": "Beziehungslogik im Klassendiagramm verstehen",
+      "prompt": "Welche Aussage bildet die fachliche Beziehungslogik des Streckennetzes am treffendsten ab?",
+      "options": [
+        {
+          "text": "Eine Strecke verbindet genau zwei Haltestellen, eine Linie ist eine geordnete Folge von Strecken, und eine Fahrt nutzt eine ganze Linie oder einen Teil davon.",
+          "rationale": "Damit werden direkte Verbindung, Reihenfolge der Linie und Teilnutzung einer Fahrt korrekt kombiniert."
+        },
+        {
+          "text": "Eine Linie besteht aus einer ungeordneten Menge von Haltestellen, waehrend eine Fahrt immer die komplette Linie ohne Teilstrecke abfahren muss.",
+          "rationale": "Die Linie ist gerade als geordnete Folge von Strecken beschrieben und eine Fahrt darf auch nur einen Teil nutzen."
+        },
+        {
+          "text": "Eine Strecke verbindet beliebig viele Haltestellen gleichzeitig, damit Kreuzungen leichter modelliert werden koennen.",
+          "rationale": "Die Aufgabe beschreibt eine direkte Verbindung zwischen genau zwei Haltestellen."
+        },
+        {
+          "text": "Eine Fahrt besitzt keine Haltestellen, sondern nur eine Linie und eine Gesamtdauer.",
+          "rationale": "Starthaltestelle und Endhaltestelle werden explizit genannt."
+        }
+      ],
+      "correctIndex": 0,
+      "feedback": {
+        "correct": "Die zentrale Beziehungslogik zwischen Haltestelle, Strecke, Linie und Fahrt ist korrekt beschrieben.",
+        "wrong": "Achten Sie auf direkte Verbindungen zwischen zwei Haltestellen, auf die geordnete Streckenfolge einer Linie und darauf, dass Fahrten auch Teillinien nutzen duerfen."
+      },
+      "progressLinks": [
+        "pv1fiae_klassendiagramme_beziehungen"
+      ]
+    },
+    {
+      "id": "q12",
+      "type": "single_choice",
+      "title": "Aggregation zwischen Personalverwaltung und Fahrer",
+      "prompt": "Welche Bedeutung hat die Aggregation zwischen `Personalverwaltung` und `Fahrer` am treffendsten?",
+      "options": [
+        {
+          "text": "Die Personalverwaltung bildet ein Ganzes, das Fahrer als enthaltene Teile in einer Liste fuehrt.",
+          "rationale": "Genau diese Ganzes-Teil-Beziehung beschreibt die Aggregation in diesem Kontext."
+        },
+        {
+          "text": "Jeder Fahrer ist technisch identisch mit der Personalverwaltung und ersetzt diese bei Bedarf.",
+          "rationale": "Aggregation beschreibt keine Gleichsetzung zweier Klassen."
+        },
+        {
+          "text": "Fahrer duerfen nur existieren, solange genau eine bestimmte Personalverwaltung aktiv ist.",
+          "rationale": "Das waere eher eine starke Existenzabhaengigkeit wie bei Komposition, nicht die normale Aggregation."
+        },
+        {
+          "text": "Aggregation bedeutet hier ausschliesslich, dass Methoden vererbt werden.",
+          "rationale": "Vererbung und Aggregation sind unterschiedliche Modellierungsbeziehungen."
+        }
+      ],
+      "correctIndex": 0,
+      "feedback": {
+        "correct": "Die Aggregation ist korrekt als Ganzes-Teil-Beziehung eingeordnet.",
+        "wrong": "Achten Sie darauf, dass Aggregation hier die Sammlung von Fahrern in einer uebergeordneten Personalverwaltung beschreibt."
+      },
+      "progressLinks": [
+        "pv1fiae_klassendiagramme_beziehungen"
+      ]
+    },
+    {
+      "id": "q13",
+      "type": "multi_select",
+      "title": "Multiplizitaeten fachlich lesen",
+      "prompt": "Welche Aussagen beschreiben die Multiplizitaeten im Diagramm fachlich richtig? Waehlen Sie alle passenden Antworten.",
+      "options": [
+        {
+          "text": "`1..*` zwischen `Personalverwaltung` und `Fahrer` bedeutet: Es gibt mindestens einen Fahrer, moeglich sind aber auch viele.",
+          "correct": true,
+          "rationale": "Genau diese Mindest- und Offenheitslogik steckt in `1..*`."
+        },
+        {
+          "text": "`*` zwischen `Fahrer` und `Fahrzeugtyp` erlaubt auch den Fall, dass ein neu eingestellter Fahrer noch keinen erlaubten Fahrzeugtyp hat.",
+          "correct": true,
+          "rationale": "Die Multiplizitaet `*` laesst null bis viele Objekte auf der Gegenseite zu."
+        },
+        {
+          "text": "`1..*` bedeutet hier, dass es exakt einen Fahrer und nie mehr geben darf.",
+          "correct": false,
+          "rationale": "Exakt eins waere `1`, nicht `1..*`."
+        },
+        {
+          "text": "`*` bedeutet, dass jeder Fahrzeugtyp genau einem Fahrer fest zugeordnet sein muss.",
+          "correct": false,
+          "rationale": "Die Aussage verengt die offene Multiplizitaet unzutreffend auf genau eins."
+        }
+      ],
+      "feedback": {
+        "correct": "Die Bedeutung von `1..*` und `*` ist korrekt gelesen.",
+        "wrong": "Pruefen Sie, ob eine Multiplizitaet ein Minimum und Maximum festlegt oder gerade Offenheit fuer null bis viele Beziehungen laesst."
+      },
+      "progressLinks": [
+        "pv1fiae_klassendiagramme_beziehungen"
+      ]
+    },
+    {
+      "id": "q14",
+      "type": "single_choice",
+      "title": "Komposition statt Aggregation?",
+      "prompt": "Ist fuer die Beziehung zwischen `Personalverwaltung` und `Fahrer` statt Aggregation auch eine Komposition sinnvoll?",
+      "options": [
+        {
+          "text": "Nein, weil Fahrer auch ausserhalb genau dieser Personalverwaltung existieren koennen und damit nicht existenzabhaengig genug fuer eine Komposition sind.",
+          "rationale": "Die moegliche Eigenstaendigkeit der Fahrer spricht gegen eine Komposition."
+        },
+        {
+          "text": "Ja, weil jede Liste automatisch eine Komposition sein muss, sobald mindestens ein Eintrag enthalten ist.",
+          "rationale": "Eine Liste allein macht aus einer Beziehung noch keine Komposition."
+        },
+        {
+          "text": "Ja, weil Aggregation und Komposition im UML-Kontext immer dieselbe Bedeutung haben.",
+          "rationale": "Komposition ist die staerkere Form einer Ganzes-Teil-Beziehung und gerade nicht bedeutungsgleich."
+        },
+        {
+          "text": "Nein, weil Komposition nur fuer primitive Datentypen, aber nie fuer Klassen erlaubt ist.",
+          "rationale": "Komposition bezieht sich sehr wohl auf Klassenbeziehungen."
+        }
+      ],
+      "correctIndex": 0,
+      "feedback": {
+        "correct": "Die Abgrenzung zwischen Aggregation und Komposition ist hier fachlich korrekt getroffen.",
+        "wrong": "Achten Sie darauf, ob die Teile ohne das Ganze sinnvoll weiter existieren koennen."
+      },
+      "progressLinks": [
+        "pv1fiae_klassendiagramme_beziehungen"
+      ]
+    },
+    {
+      "id": "f04",
+      "type": "followup_divider",
+      "title": "Auslastungszustaende und Anzeigen-Updates modellieren",
+      "from": "betriebssysteme@nordufer-verkehr.example",
+      "to": "projektteam@ausbildungsbetrieb.example",
+      "subject": "Zustandslogik der Bahnen und passendes Entwurfsmuster fuer Anzeigen abstimmen",
+      "date": "2026-03-20",
+      "body": "Hallo,\n\ndie aktuelle Auslastung der Bahnen soll in der App, auf Haltestellenanzeigen und in der Verwaltungssoftware sichtbar sein. Dafuer muessen wir einerseits die Zustandslogik der Bahn sauber beschreiben und andererseits ein Entwurfsmuster waehlen, mit dem mehrere Anzeigen bei Zustandsaenderungen konsistent aktualisiert werden.\n\nViele Gruesse\nBetriebssysteme"
+    },
+    {
+      "id": "ctx04",
+      "type": "context_card",
+      "title": "Kontext zum Zustandsdiagramm",
+      "contentBlocks": [
+        {
+          "type": "text",
+          "text": "Fuer die Auslastung werden die Zustaende `leer`, `niedrig`, `normal` und `hoch` unterschieden.\n\nRegeln:\n- Wenn die Fahrt beginnt oder alle Personen ausgestiegen sind (`Auslastung = 0 %`), befindet sich die Bahn im Zustand `leer`.\n- Ist eine Bahn leer, kann sie die Fahrt beenden und in den Endzustand wechseln.\n- Beim Ereignis `Abfahrt` wird die aktuelle Auslastung geprueft.\n- `niedrig`: bis 30 % Auslastung\n- `normal`: ueber 30 % und unter 70 % Auslastung\n- `hoch`: ab 70 % Auslastung\n- Direkte Uebergaenge zwischen `leer` und `normal` bzw. `hoch` sollen zur Vereinfachung nicht beruecksichtigt werden."
+        }
+      ]
+    },
+    {
+      "id": "q15",
+      "type": "match_pairs",
+      "title": "Zustaende mit Bedingungen verbinden",
+      "prompt": "Ordnen Sie den vier Zustaenden die jeweils passende Bedingung zu.",
+      "layout": "table",
+      "columns": [
+        "Zustand",
+        "Passende Bedingung"
+      ],
+      "pairs": [
+        {
+          "key": "state_1",
+          "left": "leer",
+          "right": "Fahrtbeginn oder Auslastung = 0 %"
+        },
+        {
+          "key": "state_2",
+          "left": "niedrig",
+          "right": "Auslastung ueber 0 % bis 30 % bei Abfahrt"
+        },
+        {
+          "key": "state_3",
+          "left": "normal",
+          "right": "Auslastung ueber 30 % und unter 70 % bei Abfahrt"
+        },
+        {
+          "key": "state_4",
+          "left": "hoch",
+          "right": "Auslastung ab 70 % bei Abfahrt"
+        }
+      ],
+      "options": [
+        "Fahrtbeginn oder Auslastung = 0 %",
+        "Auslastung ueber 0 % bis 30 % bei Abfahrt",
+        "Auslastung ueber 30 % und unter 70 % bei Abfahrt",
+        "Auslastung ab 70 % bei Abfahrt"
+      ],
+      "feedback": {
+        "correct": "Die vier Zustaende sind mit den passenden Bedingungen verbunden.",
+        "wrong": "Pruefen Sie die Prozentgrenzen und die Sonderrolle des Zustands `leer` bei Fahrtbeginn oder 0 % Auslastung."
+      },
+      "progressLinks": [
+        "pv1fiae_zustaende_entwurfsmuster"
+      ]
+    },
+    {
+      "id": "q16",
+      "type": "single_choice",
+      "title": "Vereinfachung im Zustandsdiagramm beachten",
+      "prompt": "Welche Aussage muss im UML-Zustandsdiagramm unbedingt beruecksichtigt werden?",
+      "options": [
+        {
+          "text": "Die Bahn startet im Zustand `leer`, kann von dort in den Endzustand wechseln, und direkte Uebergaenge von `leer` nach `normal` oder `hoch` werden nicht modelliert.",
+          "rationale": "Damit sind Start-/Endlogik und die explizite Vereinfachungsregel korrekt zusammengefasst."
+        },
+        {
+          "text": "Die Bahn startet immer in `normal`, weil reale Auslastungen selten exakt bei 0 % liegen.",
+          "rationale": "Die Aufgabenstellung setzt den Beginn bzw. 0 % klar mit `leer` gleich."
+        },
+        {
+          "text": "Direkte Uebergaenge von `leer` nach `hoch` muessen auf jeden Fall enthalten sein, da sonst Spitzenlasten nicht sichtbar waeren.",
+          "rationale": "Gerade diese direkte Verbindung soll zur Vereinfachung nicht modelliert werden."
+        },
+        {
+          "text": "Ein Endzustand ist nicht zulaessig, solange mehr als zwei Zwischenzustaende existieren.",
+          "rationale": "Das ist keine Regel fuer Zustandsdiagramme."
+        }
+      ],
+      "correctIndex": 0,
+      "feedback": {
+        "correct": "Die Start-/Endlogik und die modellierte Vereinfachung sind richtig erkannt.",
+        "wrong": "Achten Sie vor allem auf den Zustand `leer` und die explizit ausgeschlossenen direkten Spruenge zu `normal` oder `hoch`."
+      },
+      "progressLinks": [
+        "pv1fiae_zustaende_entwurfsmuster"
+      ]
+    },
+    {
+      "id": "q17",
+      "type": "multi_select",
+      "title": "Vorteile von Entwurfsmustern",
+      "prompt": "Welche Vorteile koennen sich durch die Verwendung von Entwurfsmustern ergeben? Waehlen Sie alle passenden Aussagen.",
+      "options": [
+        {
+          "text": "Bewaehrte Loesungen fuer wiederkehrende Probleme sparen Zeit und reduzieren Entwicklungsaufwand.",
+          "correct": true,
+          "rationale": "Entwurfsmuster greifen auf erprobte Loesungsideen zurueck."
+        },
+        {
+          "text": "Sie koennen Wartbarkeit, Erweiterbarkeit oder Effizienz einer Software verbessern.",
+          "correct": true,
+          "rationale": "Gerade strukturelle und verhaltensbezogene Muster helfen bei solchen Qualitaetszielen."
+        },
+        {
+          "text": "Sie erleichtern die Kommunikation zwischen Entwickelnden, weil gemeinsame Begriffe fuer typische Loesungen entstehen.",
+          "correct": true,
+          "rationale": "Muster liefern eine gemeinsame Sprache fuer wiederkehrende Architekturideen."
+        },
+        {
+          "text": "Mit einem Entwurfsmuster entfallen automatisch alle Tests der spaeteren Implementierung.",
+          "correct": false,
+          "rationale": "Muster verbessern den Entwurf, ersetzen aber keine Tests."
+        },
+        {
+          "text": "Sobald ein Pattern verwendet wird, ist die Software automatisch frei von Sicherheitsproblemen.",
+          "correct": false,
+          "rationale": "Sicherheit haengt von deutlich mehr Faktoren ab als nur vom gewaehlten Pattern."
+        }
+      ],
+      "feedback": {
+        "correct": "Die typischen Vorteile von Entwurfsmustern sind passend erkannt.",
+        "wrong": "Achten Sie auf bewahrte Loesungen, bessere Wartbarkeit und eine leichtere Kommunikation im Team statt auf ueberzogene Allheilversprechen."
+      },
+      "progressLinks": [
+        "pv1fiae_zustaende_entwurfsmuster"
+      ]
+    },
+    {
+      "id": "q18",
+      "type": "match_pairs",
+      "title": "Pattern-Kategorien mit Beispielen verknuepfen",
+      "prompt": "Ordnen Sie den Kategorien jeweils ein passendes Beispiel zu.",
+      "layout": "table",
+      "columns": [
+        "Kategorie",
+        "Beispiel"
+      ],
+      "pairs": [
+        {
+          "key": "pattern_1",
+          "left": "Strukturmuster",
+          "right": "Facade-Pattern"
+        },
+        {
+          "key": "pattern_2",
+          "left": "Erzeugungsmuster",
+          "right": "Factory-Pattern"
+        },
+        {
+          "key": "pattern_3",
+          "left": "Verhaltensmuster",
+          "right": "Observer-Pattern"
+        }
+      ],
+      "options": [
+        "Facade-Pattern",
+        "Factory-Pattern",
+        "Observer-Pattern"
+      ],
+      "feedback": {
+        "correct": "Die Pattern-Kategorien sind mit passenden Beispielen verbunden.",
+        "wrong": "Pruefen Sie, ob das Beispiel eher Struktur, Erzeugung oder Verhalten von Objekten adressiert."
+      },
+      "progressLinks": [
+        "pv1fiae_zustaende_entwurfsmuster"
+      ]
+    },
+    {
+      "id": "q19",
+      "type": "single_choice",
+      "title": "Passendes Pattern fuer mehrere Anzeigen",
+      "prompt": "Welches Entwurfsmuster eignet sich am besten, wenn App, Haltestellenanzeige und Verwaltungssoftware bei jeder Aenderung der Bahnauslastung aktualisiert werden sollen?",
+      "options": [
+        {
+          "text": "Observer-Pattern, weil ein Subjekt mehrere abhaengige Anzeigen bei Zustandsaenderungen benachrichtigen kann.",
+          "rationale": "Genau diese Benachrichtigungsbeziehung zwischen einer Quelle und mehreren Beobachtern passt hier."
+        },
+        {
+          "text": "Singleton-Pattern, weil dadurch automatisch alle Anzeigen den gleichen Text anzeigen muessen.",
+          "rationale": "Ein Singleton adressiert globale Einzigartigkeit, nicht die Benachrichtigung mehrerer Anzeigen."
+        },
+        {
+          "text": "Facade-Pattern, weil dadurch keine Zustandsaenderungen mehr an einzelne Anzeigen gemeldet werden muessen.",
+          "rationale": "Eine Facade vereinfacht Schnittstellen, loest aber nicht das Beobachterproblem mehrerer Abhaengiger."
+        },
+        {
+          "text": "Factory-Pattern, weil neue Anzeigen dann leichter erzeugt statt aktualisiert werden koennen.",
+          "rationale": "Die Aufgabe dreht sich um das Reagieren auf Zustandsaenderungen, nicht um Objekterzeugung."
+        }
+      ],
+      "correctIndex": 0,
+      "feedback": {
+        "correct": "Das Observer-Pattern passt fachlich am besten zur Aktualisierung mehrerer Anzeigen bei Zustandsaenderungen.",
+        "wrong": "Gesucht ist ein Muster, das mehrere abhaengige Anzeigen ueber Zustandsaenderungen informiert."
+      },
+      "progressLinks": [
+        "pv1fiae_zustaende_entwurfsmuster"
+      ]
+    }
+  ]
+}

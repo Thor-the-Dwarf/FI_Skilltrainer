@@ -1,0 +1,161 @@
+{
+  "scenario": {
+    "company": "Ausbildungsbetrieb IT-Service",
+    "scale": "Mittelstand, 160 Mitarbeitende",
+    "context": "Station 5 des Tageslaufs: Projekt- und Anforderungsdenken nutzen.",
+    "mission": "Sie strukturieren ein kleines Softwarevorhaben ueber Anforderungen, Abnahmekriterien und Projektphasen.",
+    "station": {
+      "id": "LF05-ST-05",
+      "department": "Entwicklung",
+      "profile": "Kleine Anpassung, Lastenheft, Pflichtenheft, Abnahmekriterien",
+      "constraints": [
+        "Funktionale und nichtfunktionale Punkte trennen",
+        "Projektphasen nachvollziehbar halten",
+        "Abnahmesicht frueh mitdenken"
+      ]
+    },
+    "customerRequest": {
+      "from": "dev.teamlead@ausbildungsbetrieb.example",
+      "to": "dev.team@ausbildungsbetrieb.example",
+      "subject": "Station 05: Anforderungen und Projektweg strukturieren",
+      "date": "2026-03-13",
+      "body": "Bitte strukturieren Sie fuer die Softwareanpassung die Anforderungen, die Projektphasen und eine kurze Abnahmesicht."
+    }
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "type": "single_choice",
+      "title": "Funktional oder nichtfunktional",
+      "prompt": "Welche Aussage ist eine funktionale Anforderung?",
+      "options": [
+        {
+          "text": "Die Anwendung muss Datensaetze mit leerer Kunden-ID ablehnen",
+          "rationale": "Das beschreibt ein klar beobachtbares Systemverhalten."
+        },
+        {
+          "text": "Die Anwendung soll moeglichst angenehm wirken",
+          "rationale": "Das ist zu unbestimmt."
+        },
+        {
+          "text": "Die Farbe des Buttons ist nicht festgelegt",
+          "rationale": "Das ist keine fachliche Kernfunktion."
+        }
+      ],
+      "correctIndex": 0,
+      "feedback": {
+        "correct": "Richtig: Die Funktion ist konkret und pruefbar beschrieben.",
+        "wrong": "Nicht passend: Bitte das beschriebene Systemverhalten als Kriterium nehmen."
+      },
+      "progressLinks": [
+        "lf05_anforderung_planung"
+      ]
+    },
+    {
+      "id": "q2",
+      "type": "multi_select",
+      "title": "Lastenheft, Pflichtenheft und Abnahme",
+      "prompt": "Welche Aussagen treffen zu? (Mehrfachauswahl)",
+      "options": [
+        {
+          "text": "Das Lastenheft beschreibt den fachlichen Bedarf aus Sicht des Auftraggebers",
+          "correct": true,
+          "rationale": "Dort liegt die fachliche Erwartung."
+        },
+        {
+          "text": "Das Pflichtenheft beschreibt die geplante technische Umsetzung",
+          "correct": true,
+          "rationale": "Hier wird die Loesung konkretisiert."
+        },
+        {
+          "text": "Abnahmekriterien helfen, die Umsetzung spaeter eindeutig zu pruefen",
+          "correct": true,
+          "rationale": "Sie machen den Zielzustand messbar."
+        },
+        {
+          "text": "Anforderungen muessen nicht priorisiert werden",
+          "correct": false,
+          "rationale": "Ohne Prioritaet wird Umsetzung schwer steuerbar."
+        },
+        {
+          "text": "Abnahme kann ohne vereinbarte Kriterien genauso belastbar sein",
+          "correct": false,
+          "rationale": "Ohne Kriterien sinkt die Eindeutigkeit."
+        }
+      ],
+      "feedback": {
+        "correct": "Richtig: Bedarf, Umsetzung und Abnahmesicht sind sauber getrennt.",
+        "wrong": "Teilweise falsch: Bitte Lastenheft, Pflichtenheft und Abnahmekriterien klarer abgrenzen."
+      },
+      "progressLinks": [
+        "lf05_anforderung_planung",
+        "lf05_projekt_prozessdenken"
+      ]
+    },
+    {
+      "id": "q3",
+      "type": "ordering",
+      "title": "Von der Anforderung zur Abnahme",
+      "prompt": "Ordnen Sie die Schritte sinnvoll.",
+      "items": [
+        "Implementierung und Nachweis vorbereiten",
+        "Abnahmekriterien festlegen",
+        "Fachliche Anforderungen klaeren",
+        "Technischen Entwurf und Aufgaben zuschneiden",
+        "Dokumentation und Uebergabe abstimmen"
+      ],
+      "correctOrder": [
+        "Fachliche Anforderungen klaeren",
+        "Abnahmekriterien festlegen",
+        "Technischen Entwurf und Aufgaben zuschneiden",
+        "Implementierung und Nachweis vorbereiten",
+        "Dokumentation und Uebergabe abstimmen"
+      ],
+      "feedback": {
+        "correct": "Richtig: Die Abfolge verbindet Bedarf, Nachweis und Umsetzung sauber.",
+        "wrong": "Nicht optimal: Bitte erst Bedarf und Kriterien, dann Entwurf, Umsetzung und Uebergabe denken."
+      },
+      "progressLinks": [
+        "lf05_projekt_prozessdenken",
+        "lf05_anforderung_planung"
+      ]
+    },
+    {
+      "id": "q4",
+      "type": "number",
+      "title": "Gesamtaufwand im Sprint",
+      "prompt": "Vier Aufgaben dauern 3, 2, 5 und 4 Stunden. Wie hoch ist der Gesamtaufwand?",
+      "expected": 14,
+      "toleranceAbs": 0,
+      "showExpectedFormula": "3 + 2 + 5 + 4 = 14 Stunden",
+      "feedback": {
+        "correct": "Richtig gerechnet.",
+        "wrong": "Bitte alle Aufwaende addieren."
+      },
+      "progressLinks": [
+        "lf05_projekt_prozessdenken"
+      ]
+    },
+    {
+      "id": "q5",
+      "type": "short_text",
+      "title": "Planungsnotiz zur Anpassung",
+      "prompt": "Schreiben Sie in 4-6 Saetzen eine Planungsnotiz mit Anforderung, Abnahmekriterium und einem Projektrisiko.",
+      "minChars": 160,
+      "requiredKeywords": [
+        "anforderung",
+        "abnahmekriterium",
+        "risiko"
+      ],
+      "expectedOutline": "Wesentliche Anforderung, messbares Kriterium und ein realistisches Risiko benennen.",
+      "feedback": {
+        "correct": "Richtig: Die Planungsnotiz ist klar und umsetzungsnah.",
+        "wrong": "Bitte Anforderung, Abnahmekriterium und Risiko klarer trennen."
+      },
+      "progressLinks": [
+        "lf05_anforderung_planung",
+        "lf05_dokumentation_evaluation"
+      ]
+    }
+  ]
+}

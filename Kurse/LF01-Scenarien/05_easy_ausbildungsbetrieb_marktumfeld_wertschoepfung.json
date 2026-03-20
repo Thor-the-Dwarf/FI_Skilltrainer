@@ -1,0 +1,160 @@
+{
+  "scenario": {
+    "company": "Ausbildungsbetrieb IT-Service",
+    "scale": "Mittelstand, 90 Mitarbeitende",
+    "context": "Station 05 des Tageslaufs: Marktumfeld, Wertschoepfung und wirtschaftliche Zusammenhaenge verstehen.",
+    "mission": "Sie ordnen Markt- und Prozesszusammenhaenge ein und leiten Auswirkungen fuer den Betrieb ab.",
+    "station": {
+      "id": "LF01-ST-05",
+      "department": "Vertrieb und Service",
+      "profile": "Marktumfeld, Wettbewerb, Wertschoepfung, Wirtschaftskreislauf",
+      "constraints": [
+        "Marktbezug mit Betriebsbezug verknuepfen",
+        "Aussagen faktenorientiert begruenden",
+        "Risiken und Chancen sauber trennen"
+      ]
+    },
+    "customerRequest": {
+      "from": "vertrieb@ausbildungsbetrieb.example",
+      "to": "klasse.fiae@berufsschule.example",
+      "subject": "Station 05: Marktumfeld und Prozesse",
+      "date": "2026-03-13",
+      "body": "Bitte bewerten Sie Marktsituationen und deren Einfluss auf Wertschoepfung, Auftragslage und Priorisierung im Betrieb."
+    }
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "type": "multi_select",
+      "title": "Marktumfeld analysieren",
+      "prompt": "Welche Faktoren beeinflussen das Marktumfeld eines IT-Dienstleisters direkt? (Mehrfachauswahl)",
+      "options": [
+        {
+          "text": "Kundenanforderungen und Budgetdruck",
+          "correct": true,
+          "rationale": "Direkter Einfluss auf Leistungsangebot."
+        },
+        {
+          "text": "Wettbewerber mit aehnlichem Portfolio",
+          "correct": true,
+          "rationale": "Beeinflusst Preis und Differenzierung."
+        },
+        {
+          "text": "Zufaellige Teamlaune ohne Prozessbezug",
+          "correct": false,
+          "rationale": "Kein Marktindikator."
+        },
+        {
+          "text": "Technologische Veraenderungen im Zielmarkt",
+          "correct": true,
+          "rationale": "Veraendert Nachfrage und Leistungsschwerpunkte."
+        },
+        {
+          "text": "Komplette Ignoranz gegenueber Nachfrageentwicklung",
+          "correct": false,
+          "rationale": "Fuehrt zu Fehlsteuerung."
+        }
+      ],
+      "feedback": {
+        "correct": "Richtig: Das sind zentrale Markteinflussfaktoren.",
+        "wrong": "Teilweise falsch: Bitte Markt- und Betriebsfaktoren sauber trennen."
+      },
+      "progressLinks": [
+        "lf01_unternehmensumfeld_markt"
+      ]
+    },
+    {
+      "id": "q2",
+      "type": "single_choice",
+      "title": "Wertschoepfung verstehen",
+      "prompt": "Welche Aussage beschreibt Wertschoepfung im Dienstleistungsbetrieb am besten?",
+      "options": [
+        {
+          "text": "Leistungsschritte so kombinieren, dass fuer den Kunden ein nutzbarer Mehrwert entsteht",
+          "rationale": "Das beschreibt den Kern der Wertschoepfung."
+        },
+        {
+          "text": "Nur interne Aktivitaeten ohne Kundenbezug sammeln",
+          "rationale": "Ohne Kundennutzen keine tragfaehige Wertschoepfung."
+        },
+        {
+          "text": "Ausschliesslich den Endpreis ohne Prozesssicht betrachten",
+          "rationale": "Preis allein erklaert die Wertentstehung nicht."
+        }
+      ],
+      "correctIndex": 0,
+      "feedback": {
+        "correct": "Richtig: Wertschoepfung ist kundennutzenorientiert.",
+        "wrong": "Nicht passend: Wertschoepfung braucht Prozess- und Kundennutzenbezug."
+      },
+      "progressLinks": [
+        "lf01_prozesse_wertschoepfung"
+      ]
+    },
+    {
+      "id": "q3",
+      "type": "ordering",
+      "title": "Vom Marktimpuls zur Leistung",
+      "prompt": "Ordnen Sie den Ablauf von Marktimpuls bis Serviceleistung.",
+      "items": [
+        "Marktbedarf erkennen",
+        "Leistungsangebot anpassen",
+        "Interne Prozesse abstimmen",
+        "Leistung ausrollen",
+        "Kundenfeedback auswerten"
+      ],
+      "correctOrder": [
+        "Marktbedarf erkennen",
+        "Leistungsangebot anpassen",
+        "Interne Prozesse abstimmen",
+        "Leistung ausrollen",
+        "Kundenfeedback auswerten"
+      ],
+      "feedback": {
+        "correct": "Richtig: Das zeigt eine marktnahe Prozesskette.",
+        "wrong": "Nicht optimal: Bitte zuerst Marktimpuls, dann interne Umsetzung, dann Rueckkopplung."
+      },
+      "progressLinks": [
+        "lf01_unternehmensumfeld_markt",
+        "lf01_prozesse_wertschoepfung"
+      ]
+    },
+    {
+      "id": "q4",
+      "type": "number",
+      "title": "Nachfrageentwicklung berechnen",
+      "prompt": "Ein Service wird von 80 auf 98 Anfragen pro Monat nachgefragt. Um wie viele Prozent steigt die Nachfrage (gerundet)?",
+      "expected": 23,
+      "toleranceAbs": 1,
+      "showExpectedFormula": "(98 - 80) / 80 * 100 = 22,5 % ~ 23 %",
+      "feedback": {
+        "correct": "Richtig gerechnet.",
+        "wrong": "Bitte Anstieg korrekt auf den Ausgangswert beziehen."
+      },
+      "progressLinks": [
+        "lf01_wirtschaftskreislauf_marktsituation"
+      ]
+    },
+    {
+      "id": "q5",
+      "type": "short_text",
+      "title": "Marktbezug fuer den Ausbildungsbereich",
+      "prompt": "Formulieren Sie in 4-6 Saetzen, wie eine Marktveraenderung den Ausbildungsalltag im IT-Service beeinflussen kann.",
+      "minChars": 150,
+      "requiredKeywords": [
+        "markt",
+        "auswirkung",
+        "anpassung"
+      ],
+      "expectedOutline": "Marktveraenderung, betriebliche Auswirkung, konkrete Anpassung im Ausbildungsalltag.",
+      "feedback": {
+        "correct": "Richtig: Markt- und Betriebsbezug sind klar verknuepft.",
+        "wrong": "Bitte Marktveraenderung, Auswirkung und Anpassung konkreter verbinden."
+      },
+      "progressLinks": [
+        "lf01_unternehmensumfeld_markt",
+        "lf01_wirtschaftskreislauf_marktsituation"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,160 @@
+{
+  "scenario": {
+    "company": "Ausbildungsbetrieb IT-Service",
+    "scale": "Mittelstand, 180 Mitarbeitende",
+    "context": "Station 8 des Tageslaufs: Verfuegbarkeit, Schaden und Dokumentation abschliessen.",
+    "mission": "Sie verbinden quantitative Bewertung mit einer klaren Sicherheitsdokumentation fuer die Leitung.",
+    "station": {
+      "id": "LF04-ST-08",
+      "department": "IT-Leitung und Security",
+      "profile": "Ausfallzeit, Schadenswirkung, Rest-Risiko und Abschlusskommunikation",
+      "constraints": [
+        "Messwerte verstaendlich erklaeren",
+        "Restpunkte transparent benennen",
+        "Abschluss kurz und belastbar formulieren"
+      ]
+    },
+    "customerRequest": {
+      "from": "it.leitung@ausbildungsbetrieb.example",
+      "to": "it.service@ausbildungsbetrieb.example",
+      "subject": "Station 08: Sicherheitsdokumentation fuer die Bereichsleitung abschliessen",
+      "date": "2026-03-13",
+      "body": "Bitte bereiten Sie einen kurzen Abschluss mit Verfuegbarkeitsbezug, Rest-Risiko und nachvollziehbarer Sicherheitsdokumentation fuer die Bereichsleitung vor."
+    }
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "type": "multi_select",
+      "title": "Gute Sicherheitsdokumentation",
+      "prompt": "Welche Merkmale hat gute Sicherheitsdokumentation? (Mehrfachauswahl)",
+      "options": [
+        {
+          "text": "Schutzbedarf, Entscheidungen und Begruendungen sind nachvollziehbar festgehalten",
+          "correct": true,
+          "rationale": "Ohne Begruendung sinkt die Aussagekraft."
+        },
+        {
+          "text": "Offene Restrisiken und naechste Schritte sind benannt",
+          "correct": true,
+          "rationale": "Nachverfolgung braucht Transparenz."
+        },
+        {
+          "text": "Massnahmen sind mit Verantwortlichkeiten verknuepft",
+          "correct": true,
+          "rationale": "Nur so bleibt die Umsetzung steuerbar."
+        },
+        {
+          "text": "Wichtige Inhalte werden bewusst weggelassen, damit es kuerzer wirkt",
+          "correct": false,
+          "rationale": "Dadurch verliert die Dokumentation ihren Wert."
+        },
+        {
+          "text": "Ergebnisse sind fuer Leitung und Fachbereich verstaendlich formuliert",
+          "correct": true,
+          "rationale": "Adressatengerechte Sprache verbessert die Nutzbarkeit."
+        }
+      ],
+      "feedback": {
+        "correct": "Richtig: So wird Dokumentation zum Steuerungsinstrument.",
+        "wrong": "Teilweise falsch: Bitte Nachvollziehbarkeit, Restpunkte und Verantwortlichkeit staerker gewichten."
+      },
+      "progressLinks": [
+        "lf04_dokumentation_kommunikation"
+      ]
+    },
+    {
+      "id": "q2",
+      "type": "ordering",
+      "title": "Abschluss fuer die Bereichsleitung",
+      "prompt": "Ordnen Sie die Schritte fuer eine saubere Abschlusskommunikation.",
+      "items": [
+        "Abschlussnotiz mit Status und Rest-Risiko formulieren",
+        "Schutzbedarf und Risiken bewerten",
+        "Verfuegbarkeits- oder Schadenswerte aufbereiten",
+        "Massnahmen und Verantwortlichkeiten abstimmen",
+        "Nachverfolgung und naechsten Termin festhalten"
+      ],
+      "correctOrder": [
+        "Schutzbedarf und Risiken bewerten",
+        "Verfuegbarkeits- oder Schadenswerte aufbereiten",
+        "Massnahmen und Verantwortlichkeiten abstimmen",
+        "Abschlussnotiz mit Status und Rest-Risiko formulieren",
+        "Nachverfolgung und naechsten Termin festhalten"
+      ],
+      "feedback": {
+        "correct": "Richtig: So entsteht ein belastbarer und steuerbarer Abschluss.",
+        "wrong": "Nicht optimal: Bitte Bewertung, Kennzahlen, Abstimmung und Abschluss klar staffeln."
+      },
+      "progressLinks": [
+        "lf04_dokumentation_kommunikation",
+        "lf04_verfuegbarkeit_schaden_berechnen"
+      ]
+    },
+    {
+      "id": "q3",
+      "type": "single_choice",
+      "title": "Umgang mit Restrisiko",
+      "prompt": "Ein Schutzkonzept ist umsetzbar, aber ein kleines Restrisiko bleibt. Was ist der beste Umgang?",
+      "options": [
+        {
+          "text": "Restrisiko transparent dokumentieren, Verantwortliche benennen und Nachpruefung festlegen",
+          "rationale": "So bleibt das Risiko sichtbar und steuerbar."
+        },
+        {
+          "text": "Restrisiko verschweigen, damit die Freigabe schneller geht",
+          "rationale": "Das waere fachlich und organisatorisch falsch."
+        },
+        {
+          "text": "Alle Massnahmen stoppen, obwohl das Risiko klein und beherrschbar ist",
+          "rationale": "Das ist ohne weitere Begruendung unverhaeltnismaessig."
+        }
+      ],
+      "correctIndex": 0,
+      "feedback": {
+        "correct": "Richtig: Restrisiken muessen sichtbar und nachverfolgbar bleiben.",
+        "wrong": "Nicht passend: Rest-Risiken brauchen Transparenz und Steuerung."
+      },
+      "progressLinks": [
+        "lf04_dokumentation_kommunikation"
+      ]
+    },
+    {
+      "id": "q4",
+      "type": "number",
+      "title": "Ausfallzeit bei 99,8 % Verfuegbarkeit",
+      "prompt": "Ein Dienst soll in einem 30-Tage-Monat 99,8 % Verfuegbarkeit erreichen. Wie viele Minuten Ausfall sind maximal enthalten?",
+      "expected": 86.4,
+      "toleranceAbs": 0.5,
+      "showExpectedFormula": "30 * 24 * 60 * 0,002 = 86,4 Minuten",
+      "feedback": {
+        "correct": "Richtig gerechnet.",
+        "wrong": "Bitte Gesamtminuten des Monats mit dem Ausfallanteil multiplizieren."
+      },
+      "progressLinks": [
+        "lf04_verfuegbarkeit_schaden_berechnen"
+      ]
+    },
+    {
+      "id": "q5",
+      "type": "short_text",
+      "title": "Abschlussnotiz fuer die Leitung",
+      "prompt": "Formulieren Sie in 4-6 Saetzen eine Abschlussnotiz mit Schutzbedarf, Verfuegbarkeitsbezug und Restrisiko.",
+      "minChars": 170,
+      "requiredKeywords": [
+        "schutzbedarf",
+        "verfuegbarkeit",
+        "restrisiko"
+      ],
+      "expectedOutline": "Schutzbedarf benennen, Kennzahl einordnen und Rest-Risiko mit naechstem Schritt verbinden.",
+      "feedback": {
+        "correct": "Richtig: Die Notiz ist klar, knapp und leitungsfaehig.",
+        "wrong": "Bitte Schutzbedarf, Kennzahl und Restrisiko klarer miteinander verbinden."
+      },
+      "progressLinks": [
+        "lf04_dokumentation_kommunikation",
+        "lf04_verfuegbarkeit_schaden_berechnen"
+      ]
+    }
+  ]
+}

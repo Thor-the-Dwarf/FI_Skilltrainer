@@ -1,0 +1,159 @@
+{
+  "scenario": {
+    "company": "Ausbildungsbetrieb IT-Service",
+    "scale": "Mittelstand, 90 Mitarbeitende",
+    "context": "Station 07 des Tageslaufs: Praesentation durchfuehren, Fragen beantworten und Qualitaet sichern.",
+    "mission": "Sie bewerten die Praesentationsdurchfuehrung und sichern inhaltliche und kommunikative Qualitaet.",
+    "station": {
+      "id": "LF01-ST-07",
+      "department": "Ausbildungsteam",
+      "profile": "Praesentation, Rueckfragen, Qualitaetskontrolle",
+      "constraints": [
+        "adressatengerecht kommunizieren",
+        "Rueckfragen strukturiert beantworten",
+        "Qualitaetskriterien sichtbar anwenden"
+      ]
+    },
+    "customerRequest": {
+      "from": "ausbildungsleitung@ausbildungsbetrieb.example",
+      "to": "klasse.fiae@berufsschule.example",
+      "subject": "Station 07: Praesentation durchfuehren und kontrollieren",
+      "date": "2026-03-13",
+      "body": "Bitte fuehren Sie die vorbereitete Praesentation durch, beantworten Sie Rueckfragen sicher und sichern Sie die Qualitaet durch klare Kriterien."
+    }
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "type": "multi_select",
+      "title": "Qualitaetskriterien waehrend des Vortrags",
+      "prompt": "Welche Kriterien helfen bei einer guten Praesentationsdurchfuehrung? (Mehrfachauswahl)",
+      "options": [
+        {
+          "text": "Kernbotschaften klar und strukturiert darstellen",
+          "correct": true,
+          "rationale": "Erhoeht Verstaendlichkeit."
+        },
+        {
+          "text": "Tempo an Zielgruppe anpassen",
+          "correct": true,
+          "rationale": "Verhindert Ueberforderung."
+        },
+        {
+          "text": "Rueckfragen aus Zeitgruenden ignorieren",
+          "correct": false,
+          "rationale": "Senkt Qualitaet und Akzeptanz."
+        },
+        {
+          "text": "Beispiele aus dem Betriebsalltag nutzen",
+          "correct": true,
+          "rationale": "Staerkt Praxisbezug."
+        },
+        {
+          "text": "Widerspruechliche Aussagen unkommentiert stehen lassen",
+          "correct": false,
+          "rationale": "Fuehrt zu Unsicherheit."
+        }
+      ],
+      "feedback": {
+        "correct": "Richtig: Das sind zentrale Qualitaetskriterien.",
+        "wrong": "Teilweise falsch: Bitte Struktur, Zielgruppenbezug und Rueckfragen staerker beruecksichtigen."
+      },
+      "progressLinks": [
+        "lf01_praesentation_durchfuehrung"
+      ]
+    },
+    {
+      "id": "q2",
+      "type": "ordering",
+      "title": "Rueckfragen professionell beantworten",
+      "prompt": "Ordnen Sie den Ablauf fuer eine professionelle Antwort auf Rueckfragen.",
+      "items": [
+        "Frage aktiv aufnehmen",
+        "Kernaussage kurz strukturieren",
+        "Praxisbezug herstellen",
+        "Rueckfrage auf Verstaendnis stellen",
+        "Naechstes Thema sauber anschliessen"
+      ],
+      "correctOrder": [
+        "Frage aktiv aufnehmen",
+        "Kernaussage kurz strukturieren",
+        "Praxisbezug herstellen",
+        "Rueckfrage auf Verstaendnis stellen",
+        "Naechstes Thema sauber anschliessen"
+      ],
+      "feedback": {
+        "correct": "Richtig: Antwortqualitaet und Ablauf sind gut abgesichert.",
+        "wrong": "Nicht optimal: Bitte strukturierte Antwortfuehrung einhalten."
+      },
+      "progressLinks": [
+        "lf01_praesentation_durchfuehrung"
+      ]
+    },
+    {
+      "id": "q3",
+      "type": "single_choice",
+      "title": "Uebergang bei Zeitdruck",
+      "prompt": "Die Zeit wird knapp. Was ist der beste Schritt?",
+      "options": [
+        {
+          "text": "Rest spontan weglassen ohne Hinweis",
+          "rationale": "Verursacht Intransparenz."
+        },
+        {
+          "text": "Kernpunkte priorisieren und transparent kommunizieren, was nachgereicht wird",
+          "rationale": "Sichert Verstaendlichkeit trotz Zeitdruck."
+        },
+        {
+          "text": "Vortrag sofort abbrechen",
+          "rationale": "Unnoetig radikal."
+        }
+      ],
+      "correctIndex": 1,
+      "feedback": {
+        "correct": "Richtig: Priorisierung und Transparenz sind hier entscheidend.",
+        "wrong": "Nicht passend: Zeitdruck braucht strukturierte Priorisierung."
+      },
+      "progressLinks": [
+        "lf01_praesentation_durchfuehrung"
+      ]
+    },
+    {
+      "id": "q4",
+      "type": "number",
+      "title": "Fragerundenzeit bewerten",
+      "prompt": "Geplant waren 8 Minuten Fragenrunde, tatsaechlich dauerten die Fragen 11 Minuten. Um wie viele Minuten wurde der Plan ueberschritten?",
+      "expected": 3,
+      "toleranceAbs": 1,
+      "showExpectedFormula": "11 - 8 = 3 Minuten",
+      "feedback": {
+        "correct": "Richtig gerechnet.",
+        "wrong": "Bitte Differenz zwischen Ist und Plan korrekt berechnen."
+      },
+      "progressLinks": [
+        "lf01_praesentation_durchfuehrung"
+      ]
+    },
+    {
+      "id": "q5",
+      "type": "short_text",
+      "title": "Kurzfeedback zur Durchfuehrung",
+      "prompt": "Geben Sie ein kurzes Durchfuehrungsfeedback (4-6 Saetze) mit Staerke, Schwachstelle und konkreter Verbesserung.",
+      "minChars": 150,
+      "requiredKeywords": [
+        "staerke",
+        "schwachstelle",
+        "verbesserung"
+      ],
+      "expectedOutline": "Ausgewogene Bewertung mit direkt umsetzbarer Verbesserung.",
+      "feedback": {
+        "correct": "Richtig: Das Feedback ist differenziert und nutzbar.",
+        "wrong": "Bitte Staerke, Schwachstelle und Verbesserung klarer trennen."
+      },
+      "progressLinks": [
+        "lf01_praesentation_durchfuehrung",
+        "lf01_reflexion_verbesserung"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,159 @@
+{
+  "scenario": {
+    "company": "Ausbildungsbetrieb IT-Service",
+    "scale": "Mittelstand, 160 Mitarbeitende",
+    "context": "Station 8 des Tageslaufs: Software testen, debuggen und dokumentieren.",
+    "mission": "Sie strukturieren Test, Debugging, Freigabe und Entwicklungsdokumentation fuer die Softwareanpassung.",
+    "station": {
+      "id": "LF05-ST-08",
+      "department": "Entwicklung und QS",
+      "profile": "Testfaelle, Debugging, Freigabe und Projektdokumentation",
+      "constraints": [
+        "Reproduzierbarkeit sichern",
+        "Befunde klar kommunizieren",
+        "Lerntransfer fuer Folgeauftraege mitdenken"
+      ]
+    },
+    "customerRequest": {
+      "from": "dev.teamlead@ausbildungsbetrieb.example",
+      "to": "dev.team@ausbildungsbetrieb.example",
+      "subject": "Station 08: Test- und Doku-Basis fuer die Freigabe abschliessen",
+      "date": "2026-03-13",
+      "body": "Bitte bereiten Sie fuer die kleine Softwareanpassung die Test- und Dokumentationsbasis so auf, dass eine belastbare Freigabe moeglich ist."
+    }
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "type": "single_choice",
+      "title": "Bester Einstieg ins Debugging",
+      "prompt": "Was ist fuer die Fehlersuche an einer kleinen Importlogik am sinnvollsten?",
+      "options": [
+        {
+          "text": "Fehler reproduzierbar machen und den Ablauf schrittweise pruefen",
+          "rationale": "So entsteht eine belastbare Analysebasis."
+        },
+        {
+          "text": "Ohne Analyse sofort beliebige Codeaenderungen machen",
+          "rationale": "Das verschleiert Ursachen und erzeugt neue Fehler."
+        },
+        {
+          "text": "Einfach hoffen, dass der Fehler wieder verschwindet",
+          "rationale": "Ohne Analyse gibt es keinen belastbaren Fix."
+        }
+      ],
+      "correctIndex": 0,
+      "feedback": {
+        "correct": "Richtig: Reproduzierbarkeit und systematisches Pruefen sind entscheidend.",
+        "wrong": "Nicht passend: Debugging braucht einen nachvollziehbaren Analyseweg."
+      },
+      "progressLinks": [
+        "lf05_testen_debuggen"
+      ]
+    },
+    {
+      "id": "q2",
+      "type": "multi_select",
+      "title": "Gute Test- und Projektdokumentation",
+      "prompt": "Welche Punkte gehoeren in gute Test- und Entwicklungsdoku? (Mehrfachauswahl)",
+      "options": [
+        {
+          "text": "Entscheidungen und Annahmen nachvollziehbar festhalten",
+          "correct": true,
+          "rationale": "Das erleichtert Betrieb und Weiterentwicklung."
+        },
+        {
+          "text": "Aenderungen, Befunde und Versionen transparent dokumentieren",
+          "correct": true,
+          "rationale": "Wichtig fuer Nachverfolgung und Fehlersuche."
+        },
+        {
+          "text": "Abnahmekriterien und Testergebnisse referenzieren",
+          "correct": true,
+          "rationale": "So bleibt die Freigabe pruefbar."
+        },
+        {
+          "text": "Nur persoenliche Kurznotizen ohne Kontext",
+          "correct": false,
+          "rationale": "Das ist nicht teamfaehig."
+        },
+        {
+          "text": "Codekommentare als alleinigen Ersatz fuer Projektdoku ansehen",
+          "correct": false,
+          "rationale": "Kommentare allein decken Projektkontext nicht ab."
+        }
+      ],
+      "feedback": {
+        "correct": "Richtig: Die Doku wird damit fachlich und betrieblich belastbar.",
+        "wrong": "Teilweise falsch: Bitte Nachvollziehbarkeit, Versionen und Testbezug staerker priorisieren."
+      },
+      "progressLinks": [
+        "lf05_dokumentation_evaluation"
+      ]
+    },
+    {
+      "id": "q3",
+      "type": "ordering",
+      "title": "Test und Freigabe sauber aufbauen",
+      "prompt": "Ordnen Sie die Schritte sinnvoll.",
+      "items": [
+        "Freigabeempfehlung mit Befund formulieren",
+        "Testfaelle und erwartete Ergebnisse definieren",
+        "Testdaten vorbereiten",
+        "Funktionstests und Grenzfalltests ausfuehren",
+        "Fehler analysieren und Korrekturen nachtesten"
+      ],
+      "correctOrder": [
+        "Testfaelle und erwartete Ergebnisse definieren",
+        "Testdaten vorbereiten",
+        "Funktionstests und Grenzfalltests ausfuehren",
+        "Fehler analysieren und Korrekturen nachtesten",
+        "Freigabeempfehlung mit Befund formulieren"
+      ],
+      "feedback": {
+        "correct": "Richtig: Die Abfolge sichert reproduzierbare Qualitaet.",
+        "wrong": "Nicht optimal: Bitte erst Testdesign, dann Ausfuehrung, Nachtest und Freigabe ordnen."
+      },
+      "progressLinks": [
+        "lf05_testen_debuggen"
+      ]
+    },
+    {
+      "id": "q4",
+      "type": "number",
+      "title": "Fehlerquote aus Testfaellen",
+      "prompt": "Von 32 Testfaellen schlagen 4 im ersten Lauf fehl. Wie hoch ist die Fehlerquote in Prozent?",
+      "expected": 12.5,
+      "toleranceAbs": 0.5,
+      "showExpectedFormula": "4 / 32 * 100 = 12,5 %",
+      "feedback": {
+        "correct": "Richtig gerechnet.",
+        "wrong": "Bitte fehlgeschlagene Testfaelle durch die Gesamtzahl teilen und in Prozent umrechnen."
+      },
+      "progressLinks": [
+        "lf05_testen_debuggen"
+      ]
+    },
+    {
+      "id": "q5",
+      "type": "short_text",
+      "title": "Freigabenotiz verfassen",
+      "prompt": "Formulieren Sie in 4-6 Saetzen eine Freigabenotiz mit Teststatus, wichtigstem Befund und naechstem Verbesserungsschritt.",
+      "minChars": 170,
+      "requiredKeywords": [
+        "teststatus",
+        "befund",
+        "verbesserung"
+      ],
+      "expectedOutline": "Teststatus benennen, zentralen Befund einordnen und einen sinnvollen Folgepunkt nennen.",
+      "feedback": {
+        "correct": "Richtig: Die Freigabenotiz ist knapp, klar und teamfaehig.",
+        "wrong": "Bitte Teststatus, Befund und Verbesserungsschritt klarer verbinden."
+      },
+      "progressLinks": [
+        "lf05_testen_debuggen",
+        "lf05_dokumentation_evaluation"
+      ]
+    }
+  ]
+}
