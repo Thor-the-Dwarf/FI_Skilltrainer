@@ -160,7 +160,22 @@
     let accessKeyToFolder = { ...FALLBACK_ACCESS_KEY_TO_FOLDER };
     let accessKeyToFolders = Object.create(null);
     let accessKeyToFolderPrefixes = Object.create(null);
+    let accessKeyToAllFolders = Object.create(null);
     let accessKeyConfigLoaded = false;
+    let liveScenarioFolders = [];
+    let liveScenarioFoldersLoaded = false;
+    let liveScenarioFoldersPromise = null;
+    let scenarioFolderSyncMetaByFolder = Object.create(null);
+    let scenarioFolderCatalogState = {
+      mode: "known_only",
+      knownCount: 0,
+      liveCount: 0,
+      mergedCount: 0,
+      repoOnlyFolders: [],
+      knownOnlyFolders: [],
+      error: "",
+      checkedAt: ""
+    };
 
     function normalize(s) {
       return String(s || "").toLowerCase().trim().replace(/\s+/g, " ");
@@ -422,7 +437,8 @@
       const normalized = {
         singleFolderMap: {},
         multiFolderMap: {},
-        prefixMap: {}
+        prefixMap: {},
+        allFoldersMap: {}
       };
       for (const [rawKey, rawValue] of Object.entries(source || {})) {
         const key = normalizeAccessKey(rawKey);
@@ -441,6 +457,7 @@
         const prefixes = Array.isArray(rawValue)
           ? []
           : normalizeAccessFolderPrefixes(rawValue.folderPrefixes || rawValue.prefixes || rawValue.folderPrefix || []);
+        const allFolders = !Array.isArray(rawValue) && Boolean(rawValue.allFolders);
 
         if (singleFolder) {
           normalized.singleFolderMap[key] = singleFolder;
@@ -448,6 +465,7 @@
         }
         if (folderList.length) normalized.multiFolderMap[key] = folderList;
         if (prefixes.length) normalized.prefixMap[key] = prefixes;
+        if (allFolders) normalized.allFoldersMap[key] = true;
       }
       return normalized;
     }
@@ -463,11 +481,17 @@
         accessKeyToFolder = { ...FALLBACK_ACCESS_KEY_TO_FOLDER, ...normalized.singleFolderMap };
         accessKeyToFolders = { ...normalized.multiFolderMap };
         accessKeyToFolderPrefixes = { ...normalized.prefixMap };
+        accessKeyToAllFolders = { ...(normalized.allFoldersMap || {}) };
       } catch {
       }
     }
 
-    function getKnownScenarioFolders() {
+    function sortScenarioFolderNames(items) {
+      return [...new Set((items || []).map((item) => sanitizeFolderName(item)).filter(Boolean))]
+        .sort((a, b) => a.localeCompare(b, "de", { numeric: true, sensitivity: "base" }));
+    }
+
+    function getConfiguredScenarioFolders() {
       const seen = new Set();
       const folders = [];
       const pushFolder = (rawFolder) => {
@@ -485,6 +509,94 @@
       unlockedAccessEntries.forEach((entry) => pushFolder(entry?.folder));
 
       return folders.sort((a, b) => a.localeCompare(b, "de", { numeric: true, sensitivity: "base" }));
+    }
+
+    function updateScenarioFolderCatalogState(knownFolders, liveFolders, error = "") {
+      const known = sortScenarioFolderNames(knownFolders);
+      const live = sortScenarioFolderNames(liveFolders);
+      const knownSet = new Set(known);
+      const liveSet = new Set(live);
+      const merged = sortScenarioFolderNames([...known, ...live]);
+      scenarioFolderCatalogState = {
+        mode: error
+          ? "repo_error"
+          : isHostedOnGithubPages()
+            ? "repo_compared"
+            : "known_only",
+        knownCount: known.length,
+        liveCount: live.length,
+        mergedCount: merged.length,
+        repoOnlyFolders: live.filter((folder) => !knownSet.has(folder)),
+        knownOnlyFolders: known.filter((folder) => !liveSet.has(folder)),
+        error: String(error || ""),
+        checkedAt: new Date().toISOString()
+      };
+    }
+
+    function getKnownScenarioFolders() {
+      return sortScenarioFolderNames([
+        ...getConfiguredScenarioFolders(),
+        ...liveScenarioFolders
+      ]);
+    }
+
+    function normalizeLiveScenarioFolderItems(payload) {
+      if (!Array.isArray(payload)) return [];
+      return payload
+        .filter((entry) => entry && entry.type === "dir" && /-Scenarien$/i.test(String(entry.name || "")))
+        .map((entry) => sanitizeFolderName(entry.name))
+        .filter(Boolean);
+    }
+
+    async function fetchLiveScenarioFolders() {
+      if (!isHostedOnGithubPages()) return [];
+      const res = await fetch(buildGithubRepoContentsUrlForParts(["Kurse"]), {
+        cache: "no-store",
+        headers: {
+          Accept: "application/vnd.github+json"
+        }
+      });
+      if (!res.ok) {
+        throw new Error(`Repository-Abgleich fuer Kurse fehlgeschlagen (HTTP ${res.status})`);
+      }
+      const payload = await res.json();
+      return sortScenarioFolderNames(normalizeLiveScenarioFolderItems(payload));
+    }
+
+    async function ensureScenarioFolderCatalogLoaded(forceRefresh = false) {
+      const configuredFolders = getConfiguredScenarioFolders();
+      if (!isHostedOnGithubPages()) {
+        liveScenarioFolders = [];
+        liveScenarioFoldersLoaded = true;
+        updateScenarioFolderCatalogState(configuredFolders, []);
+        return scenarioFolderCatalogState;
+      }
+      if (liveScenarioFoldersLoaded && !forceRefresh) {
+        updateScenarioFolderCatalogState(configuredFolders, liveScenarioFolders);
+        return scenarioFolderCatalogState;
+      }
+      if (liveScenarioFoldersPromise && !forceRefresh) return liveScenarioFoldersPromise;
+
+      liveScenarioFoldersPromise = (async () => {
+        try {
+          liveScenarioFolders = await fetchLiveScenarioFolders();
+          liveScenarioFoldersLoaded = true;
+          updateScenarioFolderCatalogState(configuredFolders, liveScenarioFolders);
+        } catch (err) {
+          liveScenarioFolders = [];
+          liveScenarioFoldersLoaded = true;
+          updateScenarioFolderCatalogState(
+            configuredFolders,
+            [],
+            err?.message || "Repository-Abgleich derzeit nicht verfuegbar."
+          );
+        } finally {
+          liveScenarioFoldersPromise = null;
+        }
+        return scenarioFolderCatalogState;
+      })();
+
+      return liveScenarioFoldersPromise;
     }
 
     function resolveFoldersFromAccessKey(rawKey) {
@@ -511,6 +623,10 @@
             pushFolder(folder);
           }
         });
+      }
+
+      if (accessKeyToAllFolders[key]) {
+        getKnownScenarioFolders().forEach(pushFolder);
       }
 
       return folders.sort((a, b) => a.localeCompare(b, "de", { numeric: true, sensitivity: "base" }));
@@ -549,6 +665,42 @@
         out.push(entry);
       }
       return out;
+    }
+
+    function expandAccessEntriesFromKeys(entries) {
+      const expanded = [];
+      for (const rawEntry of entries || []) {
+        const key = normalizeAccessKey(rawEntry?.key || "");
+        if (!key) continue;
+        const resolvedFolders = resolveFoldersFromAccessKey(key);
+        if (resolvedFolders.length) {
+          resolvedFolders.forEach((folder) => {
+            expanded.push({ key, folder });
+          });
+          continue;
+        }
+        const fallbackFolder = sanitizeFolderName(rawEntry?.folder || "");
+        if (fallbackFolder) expanded.push({ key, folder: fallbackFolder });
+      }
+      return uniqueAccessEntries(expanded);
+    }
+
+    function refreshUnlockedEntriesFromCatalog() {
+      if (!hasUnlockedAccess()) return false;
+      const expandedEntries = expandAccessEntriesFromKeys(unlockedAccessEntries);
+      if (!expandedEntries.length) return false;
+      const currentSignature = unlockedAccessEntries
+        .map((entry) => `${entry.key}@@${entry.folder}`)
+        .sort()
+        .join("||");
+      const nextSignature = expandedEntries
+        .map((entry) => `${entry.key}@@${entry.folder}`)
+        .sort()
+        .join("||");
+      if (currentSignature === nextSignature) return false;
+      const preferredActiveFolder = sanitizeFolderName(activeScenarioFolder || activeHomeSkillsFolder || expandedEntries[0]?.folder || "");
+      setUnlockedEntries(expandedEntries, preferredActiveFolder);
+      return true;
     }
 
     function getUnlockedFolders() {
@@ -647,7 +799,7 @@
         const activeFolderRaw = sanitizeFolderName(localStorage.getItem(ACCESS_ACTIVE_FOLDER_STORAGE_KEY) || "");
         if (entriesRaw) {
           const parsed = JSON.parse(entriesRaw);
-          const entries = uniqueAccessEntries(Array.isArray(parsed) ? parsed : []);
+          const entries = expandAccessEntriesFromKeys(Array.isArray(parsed) ? parsed : []);
           if (entries.length) {
             const folderList = [...new Set(entries.map((entry) => entry.folder))];
             const activeFolder = folderList.includes(activeFolderRaw) ? activeFolderRaw : folderList[0];
@@ -659,9 +811,21 @@
         if (!storedKey) return null;
         const storedFolder = String(localStorage.getItem(ACCESS_FOLDER_STORAGE_KEY) || "").trim();
         const resolvedFolders = resolveFoldersFromAccessKey(storedKey);
-        const folder = sanitizeFolderName(storedFolder || resolvedFolders[0] || "");
+        if (resolvedFolders.length) {
+          const folder = sanitizeFolderName(storedFolder || resolvedFolders[0] || "");
+          if (!folder || !resolvedFolders.includes(folder)) {
+            return {
+              entries: resolvedFolders.map((resolvedFolder) => ({ key: storedKey, folder: resolvedFolder })),
+              activeFolder: resolvedFolders[0]
+            };
+          }
+          return {
+            entries: resolvedFolders.map((resolvedFolder) => ({ key: storedKey, folder: resolvedFolder })),
+            activeFolder: folder
+          };
+        }
+        const folder = sanitizeFolderName(storedFolder || "");
         if (!folder) return null;
-        if (resolvedFolders.length && !resolvedFolders.includes(folder)) return null;
         return { entries: [{ key: storedKey, folder }], activeFolder: folder };
       } catch {
       }
@@ -710,14 +874,21 @@
       };
     }
 
+    function buildGithubRepoContentsUrlForParts(parts) {
+      const { owner, repo } = resolveGithubRepoContext();
+      const path = (Array.isArray(parts) ? parts : [])
+        .map((part) => String(part || "").trim())
+        .filter(Boolean)
+        .map((part) => encodeURIComponent(part))
+        .join("/");
+      if (!path) return "";
+      return `https://api.github.com/repos/${encodeURIComponent(owner)}/${encodeURIComponent(repo)}/contents/${path}`;
+    }
+
     function buildGithubRepoContentsUrl(folder) {
       const safeFolder = sanitizeFolderName(folder);
       if (!safeFolder) return "";
-      const { owner, repo } = resolveGithubRepoContext();
-      const path = ["Kurse", safeFolder]
-        .map((part) => encodeURIComponent(part))
-        .join("/");
-      return `https://api.github.com/repos/${encodeURIComponent(owner)}/${encodeURIComponent(repo)}/contents/${path}`;
+      return buildGithubRepoContentsUrlForParts(["Kurse", safeFolder]);
     }
 
     function buildScenarioLabelFromFilename(fileName) {
@@ -999,13 +1170,21 @@
       }
 
       await ensureAccessKeyConfigLoaded();
-      const mappedFolder = resolveFolderFromAccessKey(key);
-      if (!mappedFolder) {
+      await ensureScenarioFolderCatalogLoaded();
+      const mappedFolders = resolveFoldersFromAccessKey(key);
+      if (!mappedFolders.length) {
         throw new Error("Key ungueltig. Bitte erneut pruefen.");
       }
 
-      await validateScenarioFolder(mappedFolder);
-      mergeUnlockedEntry({ key, folder: mappedFolder }, true);
+      for (const folder of mappedFolders) {
+        await validateScenarioFolder(folder);
+      }
+
+      const nextEntries = [
+        ...unlockedAccessEntries,
+        ...mappedFolders.map((folder) => ({ key, folder }))
+      ];
+      setUnlockedEntries(nextEntries, mappedFolders[0] || activeScenarioFolder);
       await initScenarioSelector();
       await showHomeContent();
     }
@@ -1826,12 +2005,23 @@
       }
     }
 
-    function toggleScenarioMenu(forceOpen) {
+    async function toggleScenarioMenu(forceOpen) {
       if (!scenarioMenu || !scenarioMenuButton || !scenarioNavBackdrop) return;
       const currentlyOpen = !scenarioMenu.classList.contains("hidden");
       const nextOpen = typeof forceOpen === "boolean" ? forceOpen : !currentlyOpen;
       if (nextOpen) toggleTaskNavDrawer(false);
-      if (nextOpen && availableScenarios.length) {
+      if (nextOpen && hasUnlockedAccess()) {
+        await ensureScenarioFolderCatalogLoaded(true);
+        const accessChanged = refreshUnlockedEntriesFromCatalog();
+        if (accessChanged || !availableScenarios.length) {
+          await initScenarioSelector();
+          if (workspaceLeft.querySelector(".home-layout")) {
+            await showHomeContent(activeHomeSkillsFolder || activeScenarioFolder);
+          }
+        } else if (availableScenarios.length) {
+          renderScenarioMenu(availableScenarios);
+        }
+      } else if (nextOpen && availableScenarios.length) {
         renderScenarioMenu(availableScenarios);
       }
       scenarioMenu.classList.toggle("hidden", !nextOpen);
@@ -1948,6 +2138,61 @@
       });
     }
 
+    function buildScenarioFolderSyncMeta(folder, manifestItems, liveItems, manifestError = null) {
+      const safeFolder = sanitizeFolderName(folder);
+      const manifestList = Array.isArray(manifestItems) ? manifestItems : [];
+      const liveList = Array.isArray(liveItems) ? liveItems : [];
+      const manifestFiles = new Set(manifestList.map((entry) => String(entry?.file || "").trim()).filter(Boolean));
+      const liveFiles = new Set(liveList.map((entry) => String(entry?.file || "").trim()).filter(Boolean));
+      return {
+        folder: safeFolder,
+        manifestCount: manifestList.length,
+        liveCount: liveList.length,
+        repoCompared: isHostedOnGithubPages(),
+        repoOnlyCount: liveList.filter((entry) => !manifestFiles.has(String(entry?.file || "").trim())).length,
+        knownOnlyCount: manifestList.filter((entry) => !liveFiles.has(String(entry?.file || "").trim())).length,
+        manifestError: manifestError?.message || ""
+      };
+    }
+
+    function buildScenarioTreeSyncBanner() {
+      const state = scenarioFolderCatalogState || {};
+      const banner = document.createElement("section");
+      banner.className = "scenario-tree-sync-banner";
+      const heading = document.createElement("strong");
+      heading.className = "scenario-tree-sync-title";
+      const text = document.createElement("p");
+      text.className = "scenario-tree-sync-text";
+
+      if (!isHostedOnGithubPages()) {
+        heading.textContent = "Bekannter Stand aktiv";
+        text.textContent = "Lokal wird zuerst der bekannte Stand aus der Seite genutzt. Auf GitHub Pages kommt zusaetzlich automatisch der Live-Abgleich gegen das Repository dazu.";
+        banner.append(heading, text);
+        return banner;
+      }
+
+      if (state.mode === "repo_error") {
+        heading.textContent = "Bekannter Stand geladen";
+        text.textContent = state.error
+          ? `Der Live-Abgleich mit dem Repository ist gerade nicht verfuegbar. Die App nutzt deshalb voruebergehend nur den bekannten Stand. (${state.error})`
+          : "Der Live-Abgleich mit dem Repository ist gerade nicht verfuegbar. Die App nutzt deshalb voruebergehend nur den bekannten Stand.";
+        banner.append(heading, text);
+        return banner;
+      }
+
+      heading.textContent = "Repository-Abgleich aktiv";
+      if (state.repoOnlyFolders?.length) {
+        const list = state.repoOnlyFolders.map((folder) => getFolderShortcutLabel(folder) || folder).join(", ");
+        text.textContent = `Bekannter Stand wurde geladen und anschliessend mit dem aktuellen Kurse-Ordner im Repository verglichen. Neu gegenueber dem bekannten Stand: ${list}.`;
+      } else if (Number.isFinite(state.mergedCount)) {
+        text.textContent = `Bekannter Stand wurde geladen und mit dem aktuellen Kurse-Ordner im Repository abgeglichen. Aktuell sichtbar: ${state.mergedCount} Szenario-Ordner.`;
+      } else {
+        text.textContent = "Bekannter Stand wurde geladen und anschliessend mit dem aktuellen Kurse-Ordner im Repository verglichen.";
+      }
+      banner.append(heading, text);
+      return banner;
+    }
+
     function assertScenarioFilename(name) {
       const val = String(name || "").trim();
       if (!/^[a-z0-9._-]+\.json$/i.test(val)) {
@@ -1971,9 +2216,11 @@
         manifestError = err;
       }
       const liveRepoItems = await fetchScenarioRepoItems(safeFolder);
+      const syncMeta = buildScenarioFolderSyncMeta(safeFolder, manifestItems, liveRepoItems, manifestError);
+      scenarioFolderSyncMetaByFolder[safeFolder] = syncMeta;
       const mergedItems = mergeScenarioItems(liveRepoItems, manifestItems);
-      if (mergedItems.length) return mergedItems;
-      if (manifestItems.length) return manifestItems;
+      if (mergedItems.length) return { items: mergedItems, sync: syncMeta };
+      if (manifestItems.length) return { items: manifestItems, sync: syncMeta };
       throw manifestError || new Error("Keine gueltigen Szenarien gefunden.");
     }
 
@@ -2028,6 +2275,8 @@
         return;
       }
 
+      scenarioMenuOptions.appendChild(buildScenarioTreeSyncBanner());
+
       for (const group of groups) {
         const drawer = document.createElement("details");
         drawer.className = "scenario-tree-folder";
@@ -2052,6 +2301,19 @@
         const content = document.createElement("div");
         content.className = "scenario-tree-ticket-list";
         drawer.appendChild(content);
+
+        if (group.sync?.repoCompared) {
+          const syncText = document.createElement("p");
+          syncText.className = "status-text scenario-tree-sync-note";
+          if (group.sync.repoOnlyCount > 0) {
+            syncText.textContent = `Live-Repo erweitert diesen Ordner aktuell um ${group.sync.repoOnlyCount} weiteres ${group.sync.repoOnlyCount === 1 ? "Ticket" : "Tickets"}.`;
+          } else if (group.sync.manifestError) {
+            syncText.textContent = "Manifest lokal nicht lesbar. Anzeige wird direkt aus dem Repository ergaenzt.";
+          } else {
+            syncText.textContent = "Bekannter Stand und Live-Repo wurden fuer diesen Ordner abgeglichen.";
+          }
+          content.appendChild(syncText);
+        }
 
         if (group.error) {
           const errorText = document.createElement("p");
@@ -2098,14 +2360,16 @@
     async function initScenarioSelector() {
       if (!hasUnlockedAccess()) {
         availableScenarios = [];
+        scenarioFolderSyncMetaByFolder = Object.create(null);
         renderScenarioMenu([]);
         return;
       }
+      await ensureScenarioFolderCatalogLoaded();
       const folders = getUnlockedFolders();
       const groups = await Promise.all(folders.map(async (folder) => {
         try {
-          const items = await loadScenarioManifestForFolder(folder);
-          return { folder, items };
+          const result = await loadScenarioManifestForFolder(folder);
+          return { folder, items: result.items, sync: result.sync };
         } catch (err) {
           return { folder, items: [], error: err.message };
         }
@@ -2130,17 +2394,17 @@
         showHomeContent();
       });
 
-      scenarioMenuButton.addEventListener("click", (ev) => {
+      scenarioMenuButton.addEventListener("click", async (ev) => {
         ev.stopPropagation();
         if (!hasUnlockedAccess()) {
           renderUnlockScreen("Bitte zuerst gueltigen Key eingeben.");
           return;
         }
-        toggleScenarioMenu();
+        await toggleScenarioMenu();
       });
 
       scenarioNavBackdrop.addEventListener("click", () => {
-        toggleScenarioMenu(false);
+        toggleScenarioMenu(false).catch(() => {});
       });
 
       scenarioMenu.addEventListener("click", (ev) => {
@@ -2166,12 +2430,12 @@
       });
 
       document.addEventListener("click", () => {
-        toggleScenarioMenu(false);
+        toggleScenarioMenu(false).catch(() => {});
       });
 
       document.addEventListener("keydown", (ev) => {
         if (ev.key === "Escape") {
-          toggleScenarioMenu(false);
+          toggleScenarioMenu(false).catch(() => {});
           toggleTaskNavDrawer(false);
         }
       });
@@ -3232,6 +3496,7 @@
     });
     (async () => {
       await ensureAccessKeyConfigLoaded();
+      await ensureScenarioFolderCatalogLoaded();
       const storedAccess = loadStoredAccess();
       activeHomeSkillsFolder = loadStoredHomeSkillsFolder();
       if (!storedAccess) {
