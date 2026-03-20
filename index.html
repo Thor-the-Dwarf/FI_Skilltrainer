@@ -173,6 +173,7 @@
     let unlockedAccessEntries = [];
     let activeScenarioFolder = "";
     let activeScenarioFile = "";
+    let activeScenarioCountsTowardProgress = false;
     let activeHomeSkillsFolder = "";
     let accessKeyToFolder = { ...FALLBACK_ACCESS_KEY_TO_FOLDER };
     let accessKeyToFolders = Object.create(null);
@@ -768,6 +769,7 @@
       availableScenarios = [];
       scenarioData = null;
       activeScenarioFile = "";
+      activeScenarioCountsTowardProgress = false;
       try {
         localStorage.setItem(ACCESS_ENTRIES_STORAGE_KEY, JSON.stringify(unlockedAccessEntries));
         localStorage.setItem(ACCESS_ACTIVE_FOLDER_STORAGE_KEY, activeScenarioFolder);
@@ -796,6 +798,7 @@
       unlockedAccessEntries = [];
       activeScenarioFolder = "";
       activeScenarioFile = "";
+      activeScenarioCountsTowardProgress = false;
       activeHomeSkillsFolder = "";
       scenarioData = null;
       homeSkillsCache = Object.create(null);
@@ -1899,9 +1902,24 @@
       return merged;
     }
 
+    function shouldCountScenarioTowardsSkillProgress(options = {}) {
+      if (typeof options?.countsTowardProgress === "boolean") {
+        return options.countsTowardProgress;
+      }
+      return Boolean(activeScenarioCountsTowardProgress);
+    }
+
     function applySkillProgressFromResults(data, results, options = {}) {
       const folder = sanitizeFolderName(options?.folder || activeScenarioFolder);
       if (!folder) return { gainedPoints: 0, newlySolvedCount: 0, gainedBySkill: {} };
+      if (!shouldCountScenarioTowardsSkillProgress(options)) {
+        return {
+          gainedPoints: 0,
+          newlySolvedCount: 0,
+          gainedBySkill: {},
+          progressSuppressed: true
+        };
+      }
       const state = loadSkillProgressState(folder);
       const questionsById = new Map((data?.questions || []).map((q) => [q.id, q]));
       const manualCreditQuestionId = normalizeProgressId(options?.manualCreditQuestionId || "");
@@ -1940,6 +1958,17 @@
       const ratingState = loadScenarioRatingState(safeFolder);
       const scenarioEntries = Object.entries(ratingState.byScenario || {});
       if (!scenarioEntries.length) return { migratedScenarioCount: 0, gainedPoints: 0 };
+      let progressEnabledFiles = null;
+      try {
+        const manifest = await loadScenarioManifestForFolder(safeFolder);
+        progressEnabledFiles = new Set(
+          (manifest?.items || [])
+            .filter((item) => item?.countsTowardProgress)
+            .map((item) => String(item.file || "").trim())
+            .filter(Boolean)
+        );
+      } catch {
+      }
 
       const skillState = loadSkillProgressState(safeFolder);
       let migratedScenarioCount = 0;
@@ -1951,11 +1980,8 @@
         if (!scenarioId || skillState.migratedScenarioIds.has(scenarioId)) continue;
         if (!scenarioValue || clampPercent(scenarioValue.percent) < 100) continue;
 
-        skillState.migratedScenarioIds.add(scenarioId);
-        migratedScenarioCount += 1;
-        shouldSave = true;
-
         if (!matchesScenarioNamingConvention(scenarioId)) continue;
+        if (progressEnabledFiles && !progressEnabledFiles.has(scenarioId)) continue;
         let data = null;
         try {
           data = await loadScenarioByFilename(scenarioId, safeFolder);
@@ -1972,6 +1998,9 @@
             shouldSave = true;
           }
         }
+        skillState.migratedScenarioIds.add(scenarioId);
+        migratedScenarioCount += 1;
+        shouldSave = true;
       }
 
       if (shouldSave) saveSkillProgressState(skillState, safeFolder);
@@ -1984,7 +2013,12 @@
       const merged = mergeProgressUpdates(scenarioProgressUpdate, skillProgressUpdate);
       const folder = sanitizeFolderName(options?.folder || activeScenarioFolder);
       const scenarioId = normalizeScenarioRatingId(scenarioProgressUpdate?.scenarioId || "");
-      if (folder && scenarioId && clampPercent(scenarioProgressUpdate?.scenarioPercent) >= 100) {
+      if (
+        folder &&
+        scenarioId &&
+        shouldCountScenarioTowardsSkillProgress(options) &&
+        clampPercent(scenarioProgressUpdate?.scenarioPercent) >= 100
+      ) {
         const skillState = loadSkillProgressState(folder);
         if (!skillState.migratedScenarioIds.has(scenarioId)) {
           skillState.migratedScenarioIds.add(scenarioId);
@@ -2440,25 +2474,46 @@
 
     function normalizeScenarioItem(raw) {
       if (typeof raw === "string") {
-        return { file: raw, label: raw.replace(/\.json$/i, "") };
+        return { file: raw, label: raw.replace(/\.json$/i, ""), countsTowardProgress: null };
       }
       if (!raw || typeof raw !== "object" || !raw.file) return null;
-      return { file: String(raw.file), label: String(raw.label || raw.file).replace(/\.json$/i, "") };
+      return {
+        file: String(raw.file),
+        label: String(raw.label || raw.file).replace(/\.json$/i, ""),
+        countsTowardProgress: typeof raw.countsTowardProgress === "boolean" ? raw.countsTowardProgress : null
+      };
+    }
+
+    function extractManifestProgressTicketSet(payload) {
+      if (!payload || typeof payload !== "object" || !Array.isArray(payload.progressTickets)) return null;
+      const files = payload.progressTickets
+        .map((entry) => String(entry || "").trim())
+        .filter((entry) => entry.toLowerCase().endsWith(".json"))
+        .filter((entry) => matchesScenarioNamingConvention(entry));
+      return new Set(files.map((entry) => assertScenarioFilename(entry)));
     }
 
     function normalizeScenarioManifestItems(payload, folder) {
       const safeFolder = sanitizeFolderName(folder);
       const source = Array.isArray(payload) ? payload : payload?.scenarios;
       if (!Array.isArray(source)) throw new Error("Manifest-Format ungueltig");
+      const progressTicketSet = extractManifestProgressTicketSet(payload);
       return source
         .map(normalizeScenarioItem)
         .filter((entry) => entry && entry.file.toLowerCase().endsWith(".json"))
         .filter((entry) => matchesScenarioNamingConvention(entry.file))
-        .map((entry) => ({
-          file: assertScenarioFilename(entry.file),
-          label: entry.label || buildScenarioLabelFromFilename(entry.file),
-          folder: safeFolder
-        }));
+        .map((entry) => {
+          const file = assertScenarioFilename(entry.file);
+          const countsTowardProgress = typeof entry.countsTowardProgress === "boolean"
+            ? entry.countsTowardProgress
+            : (progressTicketSet ? progressTicketSet.has(file) : true);
+          return {
+            file,
+            label: entry.label || buildScenarioLabelFromFilename(entry.file),
+            folder: safeFolder,
+            countsTowardProgress
+          };
+        });
     }
 
     async function fetchScenarioManifestItems(folder) {
@@ -2490,7 +2545,8 @@
             return {
               file,
               label: buildScenarioLabelFromFilename(file),
-              folder: safeFolder
+              folder: safeFolder,
+              countsTowardProgress: false
             };
           })
           .sort((a, b) => a.file.localeCompare(b.file, "de", { numeric: true, sensitivity: "base" }));
@@ -2509,7 +2565,11 @@
       return primaryItems.map((entry) => {
         const manifestMatch = manifestByFile.get(String(entry.file || "").trim());
         return manifestMatch
-          ? { ...entry, label: manifestMatch.label || entry.label }
+          ? {
+            ...entry,
+            label: manifestMatch.label || entry.label,
+            countsTowardProgress: Boolean(manifestMatch.countsTowardProgress)
+          }
           : entry;
       });
     }
@@ -2632,6 +2692,7 @@
         await validateScenarioProgressBindings(data, nextFolder || item.folder, item.file);
         scenarioData = data;
         activeScenarioFile = item.file;
+        activeScenarioCountsTowardProgress = Boolean(item.countsTowardProgress);
         resetRuntimeState();
         buildPage(data);
         setSubmitBarVisible(true);
@@ -2639,6 +2700,7 @@
       } catch (err) {
         scenarioData = null;
         activeScenarioFile = "";
+        activeScenarioCountsTowardProgress = false;
         resetRuntimeState();
         updateScenarioMenuButtonState(false);
         renderSelectionHint(`Fehler beim Laden: ${err.message}`);
@@ -5283,7 +5345,9 @@
             progressParts.push(`Szenario-Bewertung gespeichert: ${Math.round(progressUpdate.scenarioPercent)}%`);
           }
           if (Number.isFinite(progressUpdate.gainedPoints)) {
-            if (progressUpdate.gainedPoints > 0) {
+            if (progressUpdate.progressSuppressed) {
+              progressParts.push("Skill-Punkte pausiert: Dieses Ticket zaehlt noch nicht zur Gesamtbewertung");
+            } else if (progressUpdate.gainedPoints > 0) {
               const solvedCount = Math.max(0, Math.floor(Number(progressUpdate.newlySolvedCount) || 0));
               const solvedLabel = solvedCount === 1 ? "neu korrekter Aufgabe" : `${solvedCount} neu korrekten Aufgaben`;
               progressParts.push(`Skill-Punkte: +${Math.round(progressUpdate.gainedPoints)} aus ${solvedLabel}`);

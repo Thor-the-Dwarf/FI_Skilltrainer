@@ -74,6 +74,22 @@ def scenario_manifest_files(folder: Path) -> set[str]:
     return result
 
 
+def scenario_progress_ticket_files(folder: Path) -> set[str] | None:
+    manifest_path = folder / "scenario-manifest.json"
+    if not manifest_path.exists():
+        return None
+    payload = load_json(manifest_path)
+    progress_tickets = payload.get("progressTickets")
+    if not isinstance(progress_tickets, list):
+        return None
+    result = set()
+    for entry in progress_tickets:
+        file_name = str(entry or "").strip()
+        if file_name:
+            result.add(file_name)
+    return result
+
+
 def iter_scenario_folders(folder_filter: set[str]) -> list[Path]:
     folders = sorted(
         path for path in KURSE_DIR.iterdir()
@@ -119,6 +135,7 @@ def main() -> int:
             problems.append(f"{folder.name}: duplicate skill id '{duplicate}' in possible_skills.json")
 
         manifest_files = scenario_manifest_files(folder)
+        progress_ticket_files = scenario_progress_ticket_files(folder)
         disk_scenario_files = sorted(
             path for path in folder.glob("*.json")
             if path.name not in {"possible_skills.json", "scenario-manifest.json"}
@@ -135,6 +152,8 @@ def main() -> int:
 
         for scenario_path in scenario_files:
             checked_scenarios += 1
+            if progress_ticket_files is not None and scenario_path.name not in progress_ticket_files:
+                continue
             payload = load_json(scenario_path)
             questions = payload.get("questions", [])
             if not isinstance(questions, list):
