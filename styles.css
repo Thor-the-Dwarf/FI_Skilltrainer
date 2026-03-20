@@ -230,20 +230,20 @@ body {
 
 .scenario-nav-drawer {
   position: fixed;
-  left: 0;
+  right: 0;
   top: clamp(10px, 9vh, 86px);
   bottom: 16px;
   width: min(430px, 92vw);
-  border-right: 1px solid hsl(var(--primary) / 0.42);
+  border-left: 1px solid hsl(var(--primary) / 0.42);
   border-top: 1px solid hsl(var(--glass-border) / 0.56);
   border-bottom: 1px solid hsl(var(--glass-border) / 0.56);
-  border-top-right-radius: 14px;
-  border-bottom-right-radius: 14px;
+  border-top-left-radius: 14px;
+  border-bottom-left-radius: 14px;
   background:
     linear-gradient(135deg, hsl(var(--primary) / 0.22), hsl(var(--neon-secondary) / 0.14)),
     hsl(var(--surface) / 0.78);
   box-shadow:
-    14px 0 34px rgba(2, 6, 23, 0.46),
+    -14px 0 34px rgba(2, 6, 23, 0.46),
     0 0 24px hsl(var(--primary) / 0.2);
   backdrop-filter: blur(15px);
   -webkit-backdrop-filter: blur(15px);
@@ -251,12 +251,48 @@ body {
   display: flex;
   flex-direction: column;
   overflow: hidden;
+  transform: translateX(calc(100% + 28px));
+  opacity: 0;
+  transition: transform 220ms ease, opacity 220ms ease;
+}
+
+.scenario-nav-drawer.is-open {
+  transform: translateX(0);
+  opacity: 1;
+}
+
+.scenario-nav-backdrop {
+  opacity: 0;
+  transition: opacity 220ms ease;
+}
+
+.scenario-nav-backdrop.is-open {
+  opacity: 1;
+}
+
+.scenario-nav-drawer-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 12px 12px 10px;
+  border-bottom: 1px solid hsl(var(--glass-border) / 0.44);
+}
+
+.scenario-nav-drawer-head h3 {
+  margin: 0;
+  font-size: 17px;
+}
+
+.scenario-nav-drawer-body {
+  flex: 1 1 auto;
+  min-height: 0;
+  display: flex;
 }
 
 .scenario-tree {
   flex: 1 1 auto;
   min-height: 0;
-  height: 100%;
   padding: 12px 10px 10px;
   overflow-x: hidden;
   overflow-y: auto;

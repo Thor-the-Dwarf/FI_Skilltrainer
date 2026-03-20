@@ -53,9 +53,17 @@
     </button>
   </div>
 
-  <button id="scenarioNavBackdrop" type="button" class="task-nav-backdrop hidden" aria-label="Szenario Ordnerbaum schliessen"></button>
+  <button id="scenarioNavBackdrop" type="button" class="task-nav-backdrop scenario-nav-backdrop hidden" aria-label="Szenario Ordnerbaum schliessen"></button>
   <aside id="scenarioMenu" class="scenario-nav-drawer hidden" aria-hidden="true" aria-label="Szenario Ordnerbaum">
-    <div id="scenarioMenuOptions" class="scenario-tree" aria-label="Szenario FolderTree"></div>
+    <div class="scenario-nav-drawer-head">
+      <h3>Posteingang</h3>
+      <button id="btnScenarioMenuClose" type="button" class="icon-button" aria-label="Posteingang schliessen" title="Posteingang schliessen">
+        <span class="icon-emoji" aria-hidden="true">✖️</span>
+      </button>
+    </div>
+    <div class="scenario-nav-drawer-body">
+      <div id="scenarioMenuOptions" class="scenario-tree" aria-label="Szenario FolderTree"></div>
+    </div>
   </aside>
 
   <button id="taskNavBackdrop" type="button" class="task-nav-backdrop hidden" aria-label="Aufgaben Navigation schliessen"></button>
@@ -83,6 +91,7 @@
     const taskNavBackdrop = document.getElementById("taskNavBackdrop");
     const scenarioNavBackdrop = document.getElementById("scenarioNavBackdrop");
     const scenarioMenuButton = document.getElementById("btnScenarioMenu");
+    const scenarioMenuCloseButton = document.getElementById("btnScenarioMenuClose");
     const homeButton = document.getElementById("btnHome");
     const accessManagerButton = document.getElementById("btnAccessManager");
     const scenarioMenu = document.getElementById("scenarioMenu");
@@ -151,6 +160,7 @@
     let inlineSummary = null;
     let lastResults = null;
     let questionMarkerState = Object.create(null);
+    let scenarioMenuCloseTimer = 0;
     let availableScenarios = [];
     let homeSkillsCache = Object.create(null);
     let unlockedAccessEntries = [];
@@ -2007,7 +2017,7 @@
 
     async function toggleScenarioMenu(forceOpen) {
       if (!scenarioMenu || !scenarioMenuButton || !scenarioNavBackdrop) return;
-      const currentlyOpen = !scenarioMenu.classList.contains("hidden");
+      const currentlyOpen = scenarioMenu.classList.contains("is-open");
       const nextOpen = typeof forceOpen === "boolean" ? forceOpen : !currentlyOpen;
       if (nextOpen) toggleTaskNavDrawer(false);
       if (nextOpen && hasUnlockedAccess()) {
@@ -2024,8 +2034,23 @@
       } else if (nextOpen && availableScenarios.length) {
         renderScenarioMenu(availableScenarios);
       }
-      scenarioMenu.classList.toggle("hidden", !nextOpen);
-      scenarioNavBackdrop.classList.toggle("hidden", !nextOpen);
+      window.clearTimeout(scenarioMenuCloseTimer);
+      if (nextOpen) {
+        scenarioMenu.classList.remove("hidden");
+        scenarioNavBackdrop.classList.remove("hidden");
+        window.requestAnimationFrame(() => {
+          scenarioMenu.classList.add("is-open");
+          scenarioNavBackdrop.classList.add("is-open");
+        });
+      } else {
+        scenarioMenu.classList.remove("is-open");
+        scenarioNavBackdrop.classList.remove("is-open");
+        scenarioMenuCloseTimer = window.setTimeout(() => {
+          if (scenarioMenu.classList.contains("is-open")) return;
+          scenarioMenu.classList.add("hidden");
+          scenarioNavBackdrop.classList.add("hidden");
+        }, 220);
+      }
       scenarioMenu.setAttribute("aria-hidden", String(!nextOpen));
       scenarioMenuButton.setAttribute("aria-expanded", String(nextOpen));
       updateScenarioMenuButtonState(nextOpen);
@@ -2404,6 +2429,10 @@
       });
 
       scenarioNavBackdrop.addEventListener("click", () => {
+        toggleScenarioMenu(false).catch(() => {});
+      });
+
+      scenarioMenuCloseButton.addEventListener("click", () => {
         toggleScenarioMenu(false).catch(() => {});
       });
 
