@@ -1,0 +1,1624 @@
+{
+  "scenario": {
+    "company": "ParkFlow Solutions GmbH",
+    "scale": "Software- und Digitalisierungspartner fuer Freizeit- und Besucheranlagen, 95 Mitarbeitende",
+    "context": "Pruefungsvorbereitung FIAE im Stationsformat mit zusammenhaengenden Folgeauftraegen zu Projektkonflikten, Polymorphie, Preislogik, Zustandsmodellen und Datenmodellierung.",
+    "mission": "Sie begleiten die Weiterentwicklung einer Besucherapp fuer einen Freizeitpark und bearbeiten dazu Konflikte, Risiken, ISO-Qualitaet, Polymorphie, Tabellenkalkulation, Sensor-Sicherheit und 3NF.",
+    "source": {
+      "kind": "Pseudonymisierte Pruefungsvorlage",
+      "reference": "AP2 FIAE Teil 1, Sommer 2023",
+      "note": "Die fachliche Aufgabenreihenfolge bleibt erhalten; Unternehmens- und Projektdaten wurden in das Kursformat ueberfuehrt. Die Loesungs-PDF diente nur zur Klaerung fachlich offener Details."
+    },
+    "station": {
+      "id": "PV1FIAE-ST-07",
+      "department": "Pruefungsvorbereitung Anwendungsentwicklung",
+      "profile": "Projektkonflikte, Polymorphie, Preislogik, Zustandsmodelle und 3NF",
+      "constraints": [
+        "Die vier Hauptaufgaben bleiben als fachlich zusammenhaengende Folgeauftraege sichtbar",
+        "Offene Modellierungs-, Tabellenkalkulations- und Architekturaufgaben werden moeglichst auto-auswertbar, aber fachlich gleichwertig umgesetzt",
+        "Visuals werden nur dort eingesetzt, wo die Quelle selbst konkrete Artefakte wie Tabellen, Klassenausschnitte oder Datenmodelle vorgibt"
+      ]
+    },
+    "customerRequest": {
+      "from": "geschaeftsfuehrung@gruenpfad-park.example",
+      "to": "projektteam@ausbildungsbetrieb.example",
+      "subject": "Besucherapp, Preislogik und Sensor-Datenmodell abstimmen",
+      "date": "2026-03-20",
+      "body": "Guten Tag,\n\nunsere Parkanlage moechte Wartezeiten an den Einlasskontrollen verringern und gleichzeitig die digitale Besucherbetreuung ausbauen. Dazu entsteht eine Besucherapp fuer mobile Endgeraete. Im Projekt muessen Konflikte im Team, Projektrisiken, funktionale und nichtfunktionale Anforderungen sowie Kosten und Qualitaet abgesichert werden.\n\nIm zweiten Schritt soll die App fuer verschiedene Besuchertypen wartbarer werden. Dafuer muessen Softwarequalitaet nach ISO 9126, Polymorphie, abstrakte Klassen und eine statische Fabrikmethode sauber eingeordnet werden. Danach geht es um eine tabellenkalkulationsbasierte Preisvorschau fuer Familienkarten sowie um eine Auslastungsampel fuer die App. Abschliessend sollen Sensordaten aus Beeten sicher uebertragen und die Pflanzen-, Beet-, Sensor- und Messwertdaten in ein relationales 3NF-Modell ueberfuehrt werden.\n\nViele Gruesse\nGeschaeftsfuehrung"
+    }
+  },
+  "questions": [
+    {
+      "id": "ctx01",
+      "type": "context_card",
+      "title": "Kontext zum Projektstart",
+      "contentBlocks": [
+        {
+          "type": "text",
+          "text": "Die Besucherapp soll Online-Tickets und Einlasskontrollen entlasten. Im Projektteam arbeiten Softwareentwicklung, Vertriebskoordination des Parks und interne Projektleitung zusammen. Schon zu Beginn entsteht Unruhe beim Verkaufspersonal, weil befuerchtet wird, dass die App Arbeitsplaetze gefaehrdet.\n\nParallel wurden erste Projektrisiken, Anforderungen, Kostenarten und Qualitaetssicherungsfragen gesammelt."
+        }
+      ]
+    },
+    {
+      "id": "q01",
+      "type": "multi_select",
+      "title": "Konflikt um moeglichen Arbeitsplatzverlust entschaerfen",
+      "prompt": "Welche Schritte sind in dieser Situation besonders geeignet, um den Konflikt im Projektteam konstruktiv zu bearbeiten? Waehlen Sie alle passenden Antworten.",
+      "options": [
+        {
+          "text": "Das Verkaufspersonal fruehzeitig in das Projekt einbinden und dessen Sicht aktiv anhoeren",
+          "correct": true,
+          "rationale": "Fruehe Einbindung reduziert Geruechte und schafft Raum fuer echte Mitgestaltung."
+        },
+        {
+          "text": "Befuerchtungen konkret aufnehmen und gemeinsam nach tragfaehigen Loesungen suchen",
+          "correct": true,
+          "rationale": "Konflikte werden handhabbarer, wenn Sorgen benannt und in Massnahmen uebersetzt werden."
+        },
+        {
+          "text": "Mit der Parkleitung klaeren, wie Rollenveraenderungen oder Arbeitsplatzsicherung kommuniziert werden",
+          "correct": true,
+          "rationale": "Eine belastbare Aussage der Leitung kann Unsicherheit deutlich senken."
+        },
+        {
+          "text": "Rueckmeldungen des Verkaufspersonals bis nach dem Pilotbetrieb ignorieren",
+          "correct": false,
+          "rationale": "Gerade fruehe Konfliktsignale sollten bearbeitet und nicht vertagt werden."
+        },
+        {
+          "text": "Das Thema nur im kleinen Entwicklerkreis halten, damit keine weitere Diskussion entsteht",
+          "correct": false,
+          "rationale": "Abschottung verstaerkt typischerweise Misstrauen statt Akzeptanz."
+        }
+      ],
+      "feedback": {
+        "correct": "Die passenden Schritte zur Konfliktbearbeitung sind erkannt.",
+        "wrong": "Achten Sie auf fruehe Einbindung, das Aufnehmen von Befuerchtungen und eine belastbare Kommunikation statt auf Ausweichen oder Abschottung."
+      },
+      "progressLinks": [
+        "pv1fiae_konflikte_risiken_anforderungen"
+      ]
+    },
+    {
+      "id": "q02",
+      "type": "table_fill",
+      "title": "Risiken mit Ursachen und Auswirkungen absichern",
+      "prompt": "Ordnen Sie den Projektrisiken die fachlich passenden Ursachen und Auswirkungen zu.",
+      "columns": [
+        "Risiko",
+        "Ursache",
+        "Auswirkung"
+      ],
+      "rows": [
+        [
+          "Unterschaetzung des Entwicklungsaufwandes",
+          "Keine Erfahrung des Projektpartners mit den Prozessen der Parkanlage",
+          "Projekt verzoegert sich und wird teurer"
+        ],
+        [
+          "Inkompatible Software-Schnittstellen",
+          {
+            "key": "risk_interface_cause",
+            "label": "Inkompatible Schnittstellen / Ursache",
+            "expected": "Fehler oder Luecken in der Anforderungsanalyse",
+            "inputType": "select",
+            "placeholder": "Ursache waehlen",
+            "options": [
+              "Fehler oder Luecken in der Anforderungsanalyse",
+              "Zu viele Pflanzen im Sued-Beet",
+              "Zu wenig Sonnenschein im Fruehjahr",
+              "Ein fehlender Schreibtisch im Projektbuero"
+            ]
+          },
+          {
+            "key": "risk_interface_effect",
+            "label": "Inkompatible Schnittstellen / Auswirkung",
+            "expected": "Verzoegerung und Mehrkosten durch Nacharbeit",
+            "inputType": "select",
+            "placeholder": "Auswirkung waehlen",
+            "options": [
+              "Verzoegerung und Mehrkosten durch Nacharbeit",
+              "Sofortige automatische Freigabe aller Systeme",
+              "Weniger Abstimmungsbedarf mit anderen Beteiligten",
+              "Kein Einfluss auf Termin oder Budget"
+            ]
+          }
+        ],
+        [
+          "Widerspruch des Personalrates",
+          {
+            "key": "risk_staff_cause",
+            "label": "Personalrat / Ursache",
+            "expected": "Befuerchtung von Arbeitsplatzverlust oder stark veraenderten Taetigkeiten",
+            "inputType": "select",
+            "placeholder": "Ursache waehlen",
+            "options": [
+              "Befuerchtung von Arbeitsplatzverlust oder stark veraenderten Taetigkeiten",
+              "Zu viele Rabattregeln fuer Familienkarten",
+              "Zu schnelle WLAN-Verbindung im Park",
+              "Eine doppelte Sicherung der Eingangstore"
+            ]
+          },
+          {
+            "key": "risk_staff_effect",
+            "label": "Personalrat / Auswirkung",
+            "expected": "Projekt verzoegert sich oder wird im Extremfall abgebrochen",
+            "inputType": "select",
+            "placeholder": "Auswirkung waehlen",
+            "options": [
+              "Projekt verzoegert sich oder wird im Extremfall abgebrochen",
+              "Das Projekt wird automatisch guenstiger",
+              "Alle Beteiligten verzichten auf weitere Abstimmung",
+              "Die App benoetigt keine Anforderungen mehr"
+            ]
+          }
+        ]
+      ],
+      "feedback": {
+        "correct": "Die Risikologik aus Ursache und Auswirkung ist fachlich passend zugeordnet.",
+        "wrong": "Pruefen Sie, welche Ursachen wirklich zu Schnittstellenproblemen oder Personalratswiderspruch fuehren und welche Folgen diese im Projekt realistisch haben."
+      },
+      "progressLinks": [
+        "pv1fiae_konflikte_risiken_anforderungen"
+      ]
+    },
+    {
+      "id": "q03",
+      "type": "table_fill",
+      "title": "Funktionale und nichtfunktionale Anforderungen unterscheiden",
+      "prompt": "Ordnen Sie der funktionalen und der nichtfunktionalen Anforderung jeweils ein passendes Beispiel zu.",
+      "columns": [
+        "Kategorie",
+        "Passendes Beispiel"
+      ],
+      "rows": [
+        [
+          "Funktionale Anforderung",
+          {
+            "key": "req_functional",
+            "label": "Funktionale Anforderung",
+            "expected": "Die App ermoeglicht die Buchung von Eintrittstickets fuer mobile Endgeraete.",
+            "inputType": "select",
+            "placeholder": "Beispiel waehlen",
+            "options": [
+              "Die App ermoeglicht die Buchung von Eintrittstickets fuer mobile Endgeraete.",
+              "Die App soll eine hohe Verfuegbarkeit im Betrieb erreichen.",
+              "Die App soll wartbar und zuverlaessig sein.",
+              "Die App soll die Datenintegritaet absichern."
+            ]
+          }
+        ],
+        [
+          "Nichtfunktionale Anforderung",
+          {
+            "key": "req_nonfunctional",
+            "label": "Nichtfunktionale Anforderung",
+            "expected": "Die App soll eine hohe Verfuegbarkeit im Betrieb erreichen.",
+            "inputType": "select",
+            "placeholder": "Beispiel waehlen",
+            "options": [
+              "Die App benachrichtigt bei Aenderungen von Eintrittszeiten.",
+              "Die App zeigt freie Parkplaetze an.",
+              "Die App soll eine hohe Verfuegbarkeit im Betrieb erreichen.",
+              "Die App erlaubt das Einscannen digitaler Tickets."
+            ]
+          }
+        ]
+      ],
+      "feedback": {
+        "correct": "Funktionale und nichtfunktionale Anforderungen sind passend getrennt.",
+        "wrong": "Denken Sie daran: Funktionale Anforderungen beschreiben Leistungen der App, nichtfunktionale Anforderungen eher Qualitaetseigenschaften des Betriebs oder der Nutzung."
+      },
+      "progressLinks": [
+        "pv1fiae_konflikte_risiken_anforderungen"
+      ]
+    },
+    {
+      "id": "q04",
+      "type": "multi_select",
+      "title": "Plausible Kostenarten des Projekts erkennen",
+      "prompt": "Welche Positionen sind als Kostenarten oder konkrete Kostenbeispiele fuer dieses Projekt fachlich plausibel? Waehlen Sie alle passenden Antworten.",
+      "options": [
+        {
+          "text": "Kosten fuer externes Projektpersonal des Softwarepartners",
+          "correct": true,
+          "rationale": "Externe Entwicklungs- oder Beratungsleistung ist ein typischer Projektkostenblock."
+        },
+        {
+          "text": "Softwarekosten fuer die Entwicklung und den Betrieb der App",
+          "correct": true,
+          "rationale": "Lizenzen, Werkzeuge oder Plattformkosten gehoeren zu plausiblen Projektkosten."
+        },
+        {
+          "text": "Hardwarekosten fuer Kamerasysteme oder Ticket-Lesegeraete im Eingangsbereich",
+          "correct": true,
+          "rationale": "Einlasskontrolle und Hardware im Park koennen direkte Investitionskosten erzeugen."
+        },
+        {
+          "text": "Schulungskosten fuer Mitarbeitende und interne Qualifizierung",
+          "correct": true,
+          "rationale": "Neue Prozesse und Systeme verursachen oft Schulungs- und Einarbeitungskosten."
+        },
+        {
+          "text": "Privates Reisebudget einzelner Teammitglieder ohne Projektbezug",
+          "correct": false,
+          "rationale": "Ohne fachlichen Projektbezug ist das keine belastbare Kostenart des Vorhabens."
+        },
+        {
+          "text": "Dekoration fuer den Parkshop ohne Bezug zur Besucherapp",
+          "correct": false,
+          "rationale": "Das hat mit der hier geforderten App- und Prozessumsetzung nichts zu tun."
+        }
+      ],
+      "feedback": {
+        "correct": "Die plausiblen Kostenarten des Projekts sind richtig erkannt.",
+        "wrong": "Achten Sie auf Personal-, Software-, Hardware- oder Schulungskosten statt auf projektfremde Ausgaben."
+      },
+      "progressLinks": [
+        "pv1fiae_konflikte_risiken_anforderungen"
+      ]
+    },
+    {
+      "id": "q05",
+      "type": "multi_select",
+      "title": "Qualitaet der App-Entwicklung sichern",
+      "prompt": "Welche Massnahmen passen in diesem Projekt besonders gut zur Qualitaetssicherung der App-Entwicklung? Waehlen Sie alle passenden Antworten.",
+      "options": [
+        {
+          "text": "Geeignete Entwicklungswerkzeuge und definierte Testumgebungen verbindlich einsetzen",
+          "correct": true,
+          "rationale": "Wiederholbare Werkzeuge und Testumgebungen sind ein zentraler QS-Baustein."
+        },
+        {
+          "text": "Gesetzliche Vorgaben zum Datenschutz bei Verfahren, Testdaten und Dokumentation beruecksichtigen",
+          "correct": true,
+          "rationale": "Gerade bei personenbezogenen Daten gehoert Datenschutz zur Qualitaet der Umsetzung."
+        },
+        {
+          "text": "Ein standardisiertes Vorgehensmodell wie Scrum oder ein anderes geeignetes Modell festlegen",
+          "correct": true,
+          "rationale": "Ein klares Vorgehensmodell verbessert Nachvollziehbarkeit und Steuerbarkeit."
+        },
+        {
+          "text": "Tests und Reviews moeglichst erst nach dem Produktivstart durchfuehren",
+          "correct": false,
+          "rationale": "Qualitaetssicherung muss frueher greifen und nicht erst nach Livegang."
+        },
+        {
+          "text": "Auf dokumentierte Testfaelle verzichten, solange das Team klein ist",
+          "correct": false,
+          "rationale": "Gerade kleine Teams profitieren von nachvollziehbaren QS-Regeln statt von Bauchgefuehl."
+        }
+      ],
+      "feedback": {
+        "correct": "Die passenden Qualitaetssicherungs-Massnahmen sind erkannt.",
+        "wrong": "Denken Sie an standardisierte Werkzeuge, Testumgebungen, Datenschutz und ein klares Vorgehensmodell statt an Spaetpruefungen ohne Struktur."
+      },
+      "progressLinks": [
+        "pv1fiae_konflikte_risiken_anforderungen"
+      ]
+    },
+    {
+      "id": "f02",
+      "type": "followup_divider",
+      "title": "Besuchertypen wartbarer modellieren",
+      "from": "softwarearchitektur@parkflow.example",
+      "to": "projektteam@ausbildungsbetrieb.example",
+      "subject": "ISO-Qualitaet, Polymorphie und Fabrikmethode abstimmen",
+      "date": "2026-03-20",
+      "body": "Hallo,\n\nfuer die Besucherapp soll die bestehende Fallunterscheidung ueber den Besuchertyp aufgeloest werden. Neben den Qualitaetsmerkmalen nach ISO 9126 muessen deshalb Polymorphie, abstrakte Klassen, ueberschriebene Methoden und eine statische Fabrikmethode sauber verstanden werden.\n\nViele Gruesse\nSoftwarearchitektur",
+      "visuals": [
+        {
+          "type": "code_block",
+          "eyebrow": "Gegebener Klassenausschnitt",
+          "title": "Aktuelle Fallunterscheidung in `Besucher`",
+          "codeTitle": "besucher.txt",
+          "language": "text",
+          "code": "Besucher\n- typ : String\n+ Besucher(typ : String)\n+ isExpressEingang(isWerktag : Boolean) : Boolean\n+ calculatePreis(basisPreis : Double) : Double\n\nisExpressEingang:\nSTANDARD -> false\nPREMIUM  -> isWerktag\nVIP      -> true\n\ncalculatePreis:\nSTANDARD -> basisPreis\nPREMIUM  -> basisPreis * 0.95\nVIP      -> basisPreis * 0.9"
+        }
+      ]
+    },
+    {
+      "id": "ctx02",
+      "type": "context_card",
+      "title": "Kontext zu Qualitaet und Polymorphie",
+      "contentBlocks": [
+        {
+          "type": "text",
+          "text": "Fuer die App ist Maintainability bereits als ISO-9126-Merkmal genannt. Zusaetzlich sollen weitere Qualitaetsmerkmale eingeordnet werden. Weil kuenftig weitere Besuchertypen geplant sind, soll die Logik fuer Preis und Express-Eingang nicht mehr ueber redundante Fallunterscheidungen laufen, sondern ueber eine polymorphe Klassenhierarchie mit abstrakter Basisklasse und statischer Fabrikmethode."
+        }
+      ]
+    },
+    {
+      "id": "q06",
+      "type": "multi_select",
+      "title": "Weitere ISO-9126-Qualitaetsmerkmale erkennen",
+      "prompt": "Welche Merkmale gehoeren neben Maintainability ebenfalls zu den zentralen Softwarequalitaetsmerkmalen nach ISO 9126? Waehlen Sie alle passenden Antworten.",
+      "options": [
+        {
+          "text": "Functionality",
+          "correct": true,
+          "rationale": "Functionality gehoert zu den klassischen Hauptmerkmalen des Standards."
+        },
+        {
+          "text": "Reliability",
+          "correct": true,
+          "rationale": "Reliability ist ein weiteres ISO-9126-Hauptmerkmal."
+        },
+        {
+          "text": "Usability",
+          "correct": true,
+          "rationale": "Usability ist im Standard als eigenes Merkmal enthalten."
+        },
+        {
+          "text": "Efficiency",
+          "correct": true,
+          "rationale": "Efficiency gehoert ebenfalls zu den Hauptmerkmalen."
+        },
+        {
+          "text": "Portability",
+          "correct": true,
+          "rationale": "Portability ist ebenfalls als Hauptmerkmal genannt."
+        },
+        {
+          "text": "Observability",
+          "correct": false,
+          "rationale": "Observability ist fachlich relevant, aber kein klassisches ISO-9126-Hauptmerkmal."
+        },
+        {
+          "text": "Virality",
+          "correct": false,
+          "rationale": "Virality ist kein Merkmal dieses Qualitaetsstandards."
+        }
+      ],
+      "feedback": {
+        "correct": "Die weiteren ISO-9126-Merkmale sind korrekt erkannt.",
+        "wrong": "Achten Sie auf die klassischen Hauptmerkmale des Standards und nicht auf moderne, aber hier nicht standardgebundene Zusatzbegriffe."
+      },
+      "progressLinks": [
+        "pv1fiae_iso9126_polymorphie_fabrikmethoden"
+      ]
+    },
+    {
+      "id": "q07",
+      "type": "short_text",
+      "title": "Polymorphie fachlich erklaeren",
+      "prompt": "Beschreiben Sie in 1-3 Saetzen, was Polymorphie in diesem Besuchermodell bedeutet.",
+      "minChars": 90,
+      "requiredKeywords": [
+        "methode",
+        "unterklasse",
+        "verhalten"
+      ],
+      "expectedOutline": "Erklaert, dass gleiche Methodenaufrufe ueber die gemeinsame Basisklasse je nach konkreter Unterklasse unterschiedliches Verhalten ausloesen koennen.",
+      "feedback": {
+        "correct": "Die Grundidee der Polymorphie ist korrekt beschrieben.",
+        "wrong": "Achten Sie auf gleich benannte Methoden mit unterschiedlichem Verhalten je nach konkreter Unterklasse."
+      },
+      "progressLinks": [
+        "pv1fiae_iso9126_polymorphie_fabrikmethoden"
+      ]
+    },
+    {
+      "id": "q08",
+      "type": "multi_select",
+      "title": "Passende Designentscheidungen fuer den polymorphen Ansatz",
+      "prompt": "Welche Entscheidungen gehoeren gemaess Aufgabenbeschreibung in das neue Klassendesign? Waehlen Sie alle passenden Antworten.",
+      "options": [
+        {
+          "text": "Die Klasse `Besucher` wird abstrakt modelliert.",
+          "correct": true,
+          "rationale": "Die Basisklasse soll nicht mehr direkt als konkreter Typ dienen."
+        },
+        {
+          "text": "Das Instanzattribut `typ` wird entfernt.",
+          "correct": true,
+          "rationale": "Der konkrete Typ steckt kuenftig in der Unterklasse statt in einem String-Feld."
+        },
+        {
+          "text": "Fuer `StandardBesucher`, `PremiumBesucher` und `VipBesucher` werden Unterklassen verwendet.",
+          "correct": true,
+          "rationale": "Die Besuchertypen sollen ueber Vererbung und konkrete Klassen abgebildet werden."
+        },
+        {
+          "text": "Die Methoden fuer Preis und Express-Eingang werden in der Basisklasse abstrakt angelegt und in Unterklassen ueberschrieben.",
+          "correct": true,
+          "rationale": "So wird das konkrete Verhalten in den Unterklassen umgesetzt."
+        },
+        {
+          "text": "Eine statische Fabrikmethode `createBesucher(...)` liefert die passende Instanz je nach Typ zurueck.",
+          "correct": true,
+          "rationale": "Genau das fordert die Aufgabenbeschreibung fuer die Instanzerzeugung."
+        },
+        {
+          "text": "Die alte `switch`-Logik bleibt in jeder Methode erhalten, damit die Unterklassen moeglichst wenig tun muessen.",
+          "correct": false,
+          "rationale": "Gerade diese Redundanz soll durch Polymorphie aufgeloest werden."
+        },
+        {
+          "text": "Neue Besuchertypen werden kuenftig ausschliesslich ueber weitere String-Konstanten abgebildet.",
+          "correct": false,
+          "rationale": "Das fuehrt wieder zur alten Fallunterscheidungslogik zurueck."
+        }
+      ],
+      "feedback": {
+        "correct": "Die wesentlichen Designentscheidungen des polymorphen Ansatzes sind erkannt.",
+        "wrong": "Achten Sie auf abstrakte Basisklasse, Unterklassen, ueberschriebene Methoden und die statische Fabrik statt auf fortgesetzte `switch`-Redundanz."
+      },
+      "progressLinks": [
+        "pv1fiae_iso9126_polymorphie_fabrikmethoden"
+      ]
+    },
+    {
+      "id": "q09",
+      "type": "match_pairs",
+      "title": "Besuchertypen den Regeln zuordnen",
+      "prompt": "Ordnen Sie die Besuchertypen den passenden Regeln fuer Express-Eingang und Preis zu.",
+      "layout": "table",
+      "columns": [
+        "Besuchertyp",
+        "Passende Regel"
+      ],
+      "pairs": [
+        {
+          "key": "visitor_standard",
+          "left": "StandardBesucher",
+          "right": "Kein Express-Eingang; Preis bleibt beim Basispreis"
+        },
+        {
+          "key": "visitor_premium",
+          "left": "PremiumBesucher",
+          "right": "Express-Eingang nur an Werktagen; Preis = basisPreis * 0.95"
+        },
+        {
+          "key": "visitor_vip",
+          "left": "VipBesucher",
+          "right": "Express-Eingang immer; Preis = basisPreis * 0.9"
+        }
+      ],
+      "options": [
+        "Kein Express-Eingang; Preis bleibt beim Basispreis",
+        "Express-Eingang nur an Werktagen; Preis = basisPreis * 0.95",
+        "Express-Eingang immer; Preis = basisPreis * 0.9"
+      ],
+      "feedback": {
+        "correct": "Die Regeln der drei Besuchertypen sind korrekt zugeordnet.",
+        "wrong": "Pruefen Sie noch einmal, wer nie, wer nur an Werktagen und wer immer den Express-Eingang nutzen darf und wie sich der Preis veraendert."
+      },
+      "progressLinks": [
+        "pv1fiae_iso9126_polymorphie_fabrikmethoden"
+      ]
+    },
+    {
+      "id": "q10",
+      "type": "table_fill",
+      "title": "Statische Fabrikmethode `createBesucher` aufbauen",
+      "prompt": "Ordnen Sie Typkennung und Rueckgabe der statischen Fabrikmethode passend zu.",
+      "columns": [
+        "Eingabe oder Aspekt",
+        "Passende Rueckgabe bzw. Einordnung"
+      ],
+      "rows": [
+        [
+          "Typ `STANDARD`",
+          {
+            "key": "factory_standard_return",
+            "label": "Rueckgabe bei STANDARD",
+            "expected": "`new StandardBesucher()`",
+            "inputType": "select",
+            "placeholder": "Rueckgabe waehlen",
+            "options": [
+              "`new StandardBesucher()`",
+              "`new PremiumBesucher()`",
+              "`new VipBesucher()`",
+              "`new Besucher(typ)`"
+            ]
+          }
+        ],
+        [
+          "Typ `PREMIUM`",
+          {
+            "key": "factory_premium_return",
+            "label": "Rueckgabe bei PREMIUM",
+            "expected": "`new PremiumBesucher()`",
+            "inputType": "select",
+            "placeholder": "Rueckgabe waehlen",
+            "options": [
+              "`new StandardBesucher()`",
+              "`new PremiumBesucher()`",
+              "`new VipBesucher()`",
+              "`new Besucher(typ)`"
+            ]
+          }
+        ],
+        [
+          "Typ `VIP`",
+          {
+            "key": "factory_vip_return",
+            "label": "Rueckgabe bei VIP",
+            "expected": "`new VipBesucher()`",
+            "inputType": "select",
+            "placeholder": "Rueckgabe waehlen",
+            "options": [
+              "`new StandardBesucher()`",
+              "`new PremiumBesucher()`",
+              "`new VipBesucher()`",
+              "`new Besucher(typ)`"
+            ]
+          }
+        ],
+        [
+          "Allgemeiner Rueckgabetyp der Methode",
+          {
+            "key": "factory_return_type",
+            "label": "Rueckgabetyp",
+            "expected": "`Besucher`",
+            "inputType": "select",
+            "placeholder": "Rueckgabetyp waehlen",
+            "options": [
+              "`Besucher`",
+              "`void`",
+              "`String`",
+              "`PremiumBesucher`"
+            ]
+          }
+        ]
+      ],
+      "feedback": {
+        "correct": "Die Fabrikmethode ist logisch passend aufgebaut.",
+        "wrong": "Achten Sie darauf, dass eine statische Methode je nach Typ die passende Unterklasse erzeugt und als `Besucher` zurueckgibt."
+      },
+      "progressLinks": [
+        "pv1fiae_iso9126_polymorphie_fabrikmethoden"
+      ]
+    },
+    {
+      "id": "q11",
+      "type": "table_fill",
+      "title": "Ueberschriebene Methoden fuer `PremiumBesucher` erkennen",
+      "prompt": "Ordnen Sie den beiden ueberschriebenen Methoden des `PremiumBesucher` die passende Implementierung zu.",
+      "columns": [
+        "Methode",
+        "Passende Implementierung"
+      ],
+      "rows": [
+        [
+          "`isExpressEingang(isWerktag)`",
+          {
+            "key": "premium_express_logic",
+            "label": "Premium / Express",
+            "expected": "`return isWerktag`",
+            "inputType": "select",
+            "placeholder": "Implementierung waehlen",
+            "options": [
+              "`return isWerktag`",
+              "`return true`",
+              "`return false`",
+              "`return !isWerktag`"
+            ]
+          }
+        ],
+        [
+          "`calculatePreis(basisPreis)`",
+          {
+            "key": "premium_price_logic",
+            "label": "Premium / Preis",
+            "expected": "`return basisPreis * 0.95`",
+            "inputType": "select",
+            "placeholder": "Implementierung waehlen",
+            "options": [
+              "`return basisPreis * 0.95`",
+              "`return basisPreis * 0.9`",
+              "`return basisPreis`",
+              "`return basisPreis * 1.05`"
+            ]
+          }
+        ]
+      ],
+      "feedback": {
+        "correct": "Die ueberschriebenen Methoden fuer `PremiumBesucher` sind korrekt erkannt.",
+        "wrong": "Pruefen Sie noch einmal, dass Premium den Express-Eingang nur an Werktagen erhaelt und einen 5-Prozent-Rabatt bekommt."
+      },
+      "progressLinks": [
+        "pv1fiae_iso9126_polymorphie_fabrikmethoden"
+      ]
+    },
+    {
+      "id": "f03",
+      "type": "followup_divider",
+      "title": "Preisvorschau und Auslastungsampel der App abstimmen",
+      "from": "produktsteuerung@parkflow.example",
+      "to": "projektteam@ausbildungsbetrieb.example",
+      "subject": "Tabellenlogik fuer Preise und Zustandslogik fuer die Auslastung pruefen",
+      "date": "2026-03-20",
+      "body": "Hallo,\n\nfuer Familienkarten soll die Besucherapp moegliche Verkaufspreise auf Basis einer Tabellenkalkulation simulieren. Gleichzeitig soll die Auslastung des Parks ueber eine Ampellogik in der App angezeigt werden. Bitte ordnen Sie die Formeln, Funktionen und Zustandsuebergaenge sauber ein.\n\nViele Gruesse\nProduktsteuerung",
+      "visuals": [
+        {
+          "type": "code_block",
+          "eyebrow": "Arbeitsblatt-Ausschnitte",
+          "title": "Preis- und Wettertabellen fuer die Simulation",
+          "codeTitle": "buchung.txt",
+          "language": "text",
+          "code": "Preise\nWettersituation | Grundpreis\nSonnenschein   | 40\nleicht bewolkt | 37\nBewolkt        | 33\nNieselregen    | 30\nRegen          | 27\nStarkregen     | 24\nUnwetter       | 22\n\nWetterdaten\nDatum       | Wettersituation | Celsius\n26.04.2023  | Sonnenschein    | 14\n27.04.2023  | Bewolkt         | 13\n28.04.2023  | leicht bewolkt  | 12\n29.04.2023  | Regen           | 12\n30.04.2023  | Nieselregen     | 15\n01.05.2023  | Starkregen      | 16\n\nBuchung\nA2 = Mittwoch, 26. April 2023\nC = Datum, D = Wetterbedingungen, E = Temperatur in Celsius, F = Endpreis"
+        }
+      ]
+    },
+    {
+      "id": "ctx03",
+      "type": "context_card",
+      "title": "Kontext zu Tabellenkalkulation und Zustandslogik",
+      "contentBlocks": [
+        {
+          "type": "text",
+          "text": "Fuer die Preisvorschau stehen VLOOKUP, IF und WEEKDAY zur Verfuegung; die deutschen Funktionsnamen werden ebenfalls akzeptiert. Fuer die moeglichen Buchungstage soll das Datum fortgeschrieben, passende Wetterdaten nachgeschlagen und der Endpreis berechnet werden. Dabei ist der wetterabhaengige Grundpreis bereits als Hilfswert in `H3` verfuegbar; fuer Montag bis Freitag wird darauf zusaetzlich ein Abschlag von 10 Prozent angewendet.\n\nDie Auslastungsampel soll regelmaessig aktualisiert werden und folgende Zustandsbereiche abbilden: Gruen bis 50 Prozent, Orange ueber 50 bis 80 Prozent, Rot ueber 80 Prozent."
+        }
+      ]
+    },
+    {
+      "id": "q12",
+      "type": "match_pairs",
+      "title": "Tabellenfunktionen den deutschen Namen zuordnen",
+      "prompt": "Ordnen Sie die in der Quelle genannten Funktionsnamen den passenden deutschen Bezeichnungen zu.",
+      "layout": "table",
+      "columns": [
+        "Funktionsname",
+        "Deutsche Bezeichnung"
+      ],
+      "pairs": [
+        {
+          "key": "func_vlookup",
+          "left": "VLOOKUP",
+          "right": "SVERWEIS"
+        },
+        {
+          "key": "func_if",
+          "left": "IF",
+          "right": "WENN"
+        },
+        {
+          "key": "func_weekday",
+          "left": "WEEKDAY",
+          "right": "WOCHENTAG"
+        }
+      ],
+      "options": [
+        "SVERWEIS",
+        "WENN",
+        "WOCHENTAG"
+      ],
+      "feedback": {
+        "correct": "Die Tabellenfunktionen sind korrekt zugeordnet.",
+        "wrong": "Pruefen Sie noch einmal, welcher deutsche Name zur Nachschlage-, Bedingungs- und Wochentagsfunktion gehoert."
+      },
+      "progressLinks": [
+        "pv1fiae_tabellenkalkulation_zustandslogik"
+      ]
+    },
+    {
+      "id": "q13",
+      "type": "table_fill",
+      "title": "Naechsten Buchungstag berechnen",
+      "prompt": "Ordnen Sie der Datumsfortschreibung die passende Formel und den passenden Fachgrund zu.",
+      "columns": [
+        "Aspekt der Datumsfortschreibung",
+        "Passende Formel oder Begruendung"
+      ],
+      "rows": [
+        [
+          "Naechsten moeglichen Buchungstag aus dem Datum in `A2` bestimmen",
+          {
+            "key": "next_booking_formula",
+            "label": "Formel fuer den Folgetag",
+            "expected": "`=A2+1`",
+            "inputType": "select",
+            "placeholder": "Formel waehlen",
+            "options": [
+              "`=A2+1`",
+              "`=A2-1`",
+              "`=WEEKDAY(A2)+1`",
+              "`=IF(A2>0;1;A2)`"
+            ]
+          }
+        ],
+        [
+          "Warum funktioniert diese Formel fuer Datumswerte?",
+          {
+            "key": "next_booking_reason",
+            "label": "Begruendung fuer den Folgetag",
+            "expected": "Datumswerte werden intern als fortlaufende Tageszahlen gespeichert",
+            "inputType": "select",
+            "placeholder": "Begruendung waehlen",
+            "options": [
+              "Datumswerte werden intern als fortlaufende Tageszahlen gespeichert",
+              "WEEKDAY liefert direkt das konkrete Datum des naechsten Tages",
+              "Datumswerte duerfen nur mit IF-Funktionen veraendert werden",
+              "Datumswerte koennen in Tabellenkalkulation nicht addiert werden"
+            ]
+          }
+        ]
+      ],
+      "feedback": {
+        "correct": "Die Datumsfortschreibung ist korrekt erkannt.",
+        "wrong": "Achten Sie darauf, dass Datumswerte hier als fortlaufende Tageszahlen behandelt werden."
+      },
+      "progressLinks": [
+        "pv1fiae_tabellenkalkulation_zustandslogik"
+      ]
+    },
+    {
+      "id": "q14",
+      "type": "table_fill",
+      "title": "Passende Nachschlageformel fuer Wetterdaten waehlen",
+      "prompt": "Ordnen Sie den Bestandteilen der Nachschlageformel den passenden Wert zu.",
+      "columns": [
+        "Bestandteil der Formel",
+        "Passender Wert"
+      ],
+      "rows": [
+        [
+          "Suchwert",
+          {
+            "key": "weather_lookup_value",
+            "label": "Nachschlagewert",
+            "expected": "`C3`",
+            "inputType": "select",
+            "placeholder": "Wert waehlen",
+            "options": [
+              "`C3`",
+              "`B3`",
+              "`H3`",
+              "`A2`"
+            ]
+          }
+        ],
+        [
+          "Suchbereich",
+          {
+            "key": "weather_lookup_range",
+            "label": "Nachschlagebereich",
+            "expected": "`Wetterdaten!B3:C17`",
+            "inputType": "select",
+            "placeholder": "Bereich waehlen",
+            "options": [
+              "`Wetterdaten!B3:C17`",
+              "`Wetterdaten!C3:B17`",
+              "`Preise!A:B`",
+              "`Wetterdaten!A:A`"
+            ]
+          }
+        ],
+        [
+          "Rueckgabespalte im Suchbereich",
+          {
+            "key": "weather_lookup_column",
+            "label": "Rueckgabespalte",
+            "expected": "`2`",
+            "inputType": "select",
+            "placeholder": "Spalte waehlen",
+            "options": [
+              "`1`",
+              "`2`",
+              "`3`",
+              "`0`"
+            ]
+          }
+        ],
+        [
+          "Suchart",
+          {
+            "key": "weather_lookup_match",
+            "label": "Suchart",
+            "expected": "Exakte Suche mit `FALSE`",
+            "inputType": "select",
+            "placeholder": "Suchart waehlen",
+            "options": [
+              "Exakte Suche mit `FALSE`",
+              "Ungefaehre Suche mit `TRUE`",
+              "Nur Wochentag mit `WEEKDAY`",
+              "Bedingungslogik mit `IF`"
+            ]
+          }
+        ]
+      ],
+      "feedback": {
+        "correct": "Die Nachschlageformel fuer die Wettersituation ist korrekt erkannt.",
+        "wrong": "Achten Sie auf exakte Suche, die richtige Bereichsrichtung und darauf, dass der gesuchte Wert in der ersten Spalte des Bereichs steht."
+      },
+      "progressLinks": [
+        "pv1fiae_tabellenkalkulation_zustandslogik"
+      ]
+    },
+    {
+      "id": "q15",
+      "type": "table_fill",
+      "title": "Endpreis mit Wochenrabatt berechnen",
+      "prompt": "Ordnen Sie den Bestandteilen der Preisformel die passende fachliche Rolle zu.",
+      "columns": [
+        "Bestandteil der Formel",
+        "Passende Rolle"
+      ],
+      "rows": [
+        [
+          "`H3`",
+          {
+            "key": "weekday_discount_base",
+            "label": "Rolle von H3",
+            "expected": "Bereits ermittelter wetterabhaengiger Grundpreis",
+            "inputType": "select",
+            "placeholder": "Rolle waehlen",
+            "options": [
+              "Bereits ermittelter wetterabhaengiger Grundpreis",
+              "Wochentagsindex fuer Montag bis Sonntag",
+              "Rueckgabespalte der Wetter-Nachschlagefunktion",
+              "Fester Rabattwert unabhaengig vom Datum"
+            ]
+          }
+        ],
+        [
+          "`WEEKDAY(C3)<=5`",
+          {
+            "key": "weekday_discount_condition",
+            "label": "Rolle der Bedingung",
+            "expected": "Prueft, ob das Datum in C3 auf einen Werktag faellt",
+            "inputType": "select",
+            "placeholder": "Rolle waehlen",
+            "options": [
+              "Prueft, ob das Datum in C3 auf einen Werktag faellt",
+              "Berechnet direkt den Endpreis",
+              "Liest die Wettersituation aus einem anderen Blatt nach",
+              "Erzeugt das Datum des Vortags"
+            ]
+          }
+        ],
+        [
+          "`0,9`",
+          {
+            "key": "weekday_discount_factor",
+            "label": "Rolle von 0,9",
+            "expected": "Rabattfaktor fuer Montag bis Freitag",
+            "inputType": "select",
+            "placeholder": "Rolle waehlen",
+            "options": [
+              "Rabattfaktor fuer Montag bis Freitag",
+              "Preisaufschlag fuer Wochenenden",
+              "Code fuer exakte Suche",
+              "Wert fuer die Tagesfortschreibung"
+            ]
+          }
+        ],
+        [
+          "`1`",
+          {
+            "key": "weekday_discount_else",
+            "label": "Rolle von 1",
+            "expected": "Kein Rabatt ausserhalb der Werktage",
+            "inputType": "select",
+            "placeholder": "Rolle waehlen",
+            "options": [
+              "Kein Rabatt ausserhalb der Werktage",
+              "Automatische Preisverdopplung",
+              "Rueckgabespalte fuer SVERWEIS",
+              "Kennzeichnet einen Feiertag"
+            ]
+          }
+        ]
+      ],
+      "feedback": {
+        "correct": "Die Preisformel mit Werktagsrabatt ist korrekt erkannt.",
+        "wrong": "Achten Sie darauf, dass der Wochentag aus `C3` geprueft wird und der Rabatt auf den bereits ermittelten Grundpreis `H3` angewendet wird."
+      },
+      "progressLinks": [
+        "pv1fiae_tabellenkalkulation_zustandslogik"
+      ]
+    },
+    {
+      "id": "q16",
+      "type": "table_fill",
+      "title": "Weitere Einsatzmoeglichkeit fuer Tabellenkalkulation finden",
+      "prompt": "Ordnen Sie den Beispielen zu, ob sie eine plausible weitere Einsatzmoeglichkeit von Tabellenkalkulation sind.",
+      "columns": [
+        "Beispiel",
+        "Einordnung"
+      ],
+      "rows": [
+        [
+          "Arbeitszeitberechnung oder einfache Ressourcenplanung",
+          {
+            "key": "spreadsheet_use_plausible",
+            "label": "Einordnung Arbeitszeit/Ressourcen",
+            "expected": "Plausible Einsatzmoeglichkeit fuer Tabellenkalkulation",
+            "inputType": "select",
+            "placeholder": "Einordnung waehlen",
+            "options": [
+              "Plausible Einsatzmoeglichkeit fuer Tabellenkalkulation",
+              "Keine typische Aufgabe eines Tabellenkalkulationsprogramms"
+            ]
+          }
+        ],
+        [
+          "Verwaltung vererbbarer Klassenhierarchien in Java-Bytecode",
+          {
+            "key": "spreadsheet_use_bytecode",
+            "label": "Einordnung Bytecode",
+            "expected": "Keine typische Aufgabe eines Tabellenkalkulationsprogramms",
+            "inputType": "select",
+            "placeholder": "Einordnung waehlen",
+            "options": [
+              "Plausible Einsatzmoeglichkeit fuer Tabellenkalkulation",
+              "Keine typische Aufgabe eines Tabellenkalkulationsprogramms"
+            ]
+          }
+        ],
+        [
+          "Direkte Verschluesselung aller Funksignale im Beet-Sensornetz",
+          {
+            "key": "spreadsheet_use_crypto",
+            "label": "Einordnung Verschluesselung",
+            "expected": "Keine typische Aufgabe eines Tabellenkalkulationsprogramms",
+            "inputType": "select",
+            "placeholder": "Einordnung waehlen",
+            "options": [
+              "Plausible Einsatzmoeglichkeit fuer Tabellenkalkulation",
+              "Keine typische Aufgabe eines Tabellenkalkulationsprogramms"
+            ]
+          }
+        ],
+        [
+          "Automatisches Instanziieren polymorpher Objekte zur Laufzeit",
+          {
+            "key": "spreadsheet_use_runtime_objects",
+            "label": "Einordnung Laufzeitobjekte",
+            "expected": "Keine typische Aufgabe eines Tabellenkalkulationsprogramms",
+            "inputType": "select",
+            "placeholder": "Einordnung waehlen",
+            "options": [
+              "Plausible Einsatzmoeglichkeit fuer Tabellenkalkulation",
+              "Keine typische Aufgabe eines Tabellenkalkulationsprogramms"
+            ]
+          }
+        ]
+      ],
+      "feedback": {
+        "correct": "Die weitere Einsatzmoeglichkeit ist korrekt erkannt.",
+        "wrong": "Denken Sie an typische Rechen-, Planungs- oder Uebersichtsaufgaben und nicht an Softwarearchitektur oder Kryptografie."
+      },
+      "progressLinks": [
+        "pv1fiae_tabellenkalkulation_zustandslogik"
+      ]
+    },
+    {
+      "id": "q17",
+      "type": "short_text",
+      "title": "Grenzen von Tabellenkalkulation realistisch bewerten",
+      "prompt": "Beschreiben Sie in 1-3 Saetzen eine typische Grenze von Tabellenkalkulationsloesungen in komplexeren Situationen.",
+      "minChars": 100,
+      "requiredKeywords": [
+        "datenmengen",
+        "wartbar"
+      ],
+      "expectedOutline": "Erklaert, dass Tabellen bei grossen Datenmengen und vielen voneinander abhaengigen Berechnungen schnell unuebersichtlich und schlecht wartbar werden koennen.",
+      "feedback": {
+        "correct": "Die typische Grenze von Tabellenkalkulationsloesungen ist korrekt beschrieben.",
+        "wrong": "Achten Sie auf Skalierung, Uebersichtlichkeit und Abhaengigkeiten statt auf pauschal falsche Aussagen zur Grundfunktion von Tabellen."
+      },
+      "progressLinks": [
+        "pv1fiae_tabellenkalkulation_zustandslogik"
+      ]
+    },
+    {
+      "id": "q18",
+      "type": "match_pairs",
+      "title": "Ampelzustaende den Auslastungsbereichen zuordnen",
+      "prompt": "Ordnen Sie die drei Ampelzustaende den passenden Auslastungsbereichen zu.",
+      "layout": "table",
+      "columns": [
+        "Zustand",
+        "Auslastungsbereich"
+      ],
+      "pairs": [
+        {
+          "key": "state_green",
+          "left": "Gruen",
+          "right": "bis einschliesslich 50 Prozent"
+        },
+        {
+          "key": "state_orange",
+          "left": "Orange",
+          "right": "ueber 50 bis einschliesslich 80 Prozent"
+        },
+        {
+          "key": "state_red",
+          "left": "Rot",
+          "right": "ueber 80 Prozent"
+        }
+      ],
+      "options": [
+        "bis einschliesslich 50 Prozent",
+        "ueber 50 bis einschliesslich 80 Prozent",
+        "ueber 80 Prozent"
+      ],
+      "feedback": {
+        "correct": "Die Ampelzustaende sind den richtigen Bereichen zugeordnet.",
+        "wrong": "Pruefen Sie die Schwellenwerte fuer Gruen, Orange und Rot noch einmal genau."
+      },
+      "progressLinks": [
+        "pv1fiae_tabellenkalkulation_zustandslogik"
+      ]
+    },
+    {
+      "id": "q19",
+      "type": "table_fill",
+      "title": "Zustandslogik der Auslastungsampel verstehen",
+      "prompt": "Ordnen Sie den Situationen der Auslastungsampel den passenden Zustand oder Uebergang zu.",
+      "columns": [
+        "Situation",
+        "Passender Zustand oder Uebergang"
+      ],
+      "rows": [
+        [
+          "Ausgangszustand beim regulaeren Start der Ampel",
+          {
+            "key": "ampel_start_state",
+            "label": "Ampel / Startzustand",
+            "expected": "`Gruen`",
+            "inputType": "select",
+            "placeholder": "Zustand waehlen",
+            "options": [
+              "`Gruen`",
+              "`Orange`",
+              "`Rot`",
+              "Kein definierter Startzustand"
+            ]
+          }
+        ],
+        [
+          "Auslastung steigt auf mehr als 50 bis einschliesslich 80 Prozent",
+          {
+            "key": "ampel_mid_range",
+            "label": "Ampel / mittlerer Bereich",
+            "expected": "Wechsel in den Zustand `Orange`",
+            "inputType": "select",
+            "placeholder": "Uebergang waehlen",
+            "options": [
+              "Wechsel in den Zustand `Orange`",
+              "Direkter Wechsel in den Zustand `Rot`",
+              "Verbleib ohne Zustandsaenderung immer in `Gruen`",
+              "Automatischer Stopp der Ampel"
+            ]
+          }
+        ],
+        [
+          "Auslastung steigt auf ueber 80 Prozent",
+          {
+            "key": "ampel_high_range",
+            "label": "Ampel / hoher Bereich",
+            "expected": "Wechsel in den Zustand `Rot`",
+            "inputType": "select",
+            "placeholder": "Uebergang waehlen",
+            "options": [
+              "Wechsel in den Zustand `Rot`",
+              "Rueckwechsel in den Zustand `Gruen`",
+              "Verbleib immer in `Orange`",
+              "Status `Wetterwarnung`"
+            ]
+          }
+        ],
+        [
+          "Auslastung sinkt wieder unter die hoeheren Schwellen",
+          {
+            "key": "ampel_fallback_logic",
+            "label": "Ampel / Rueckwechsel",
+            "expected": "Rueckkehr in passendere niedrigere Zustaende ist moeglich",
+            "inputType": "select",
+            "placeholder": "Logik waehlen",
+            "options": [
+              "Rueckkehr in passendere niedrigere Zustaende ist moeglich",
+              "Die Ampel bleibt dauerhaft im einmal erreichten Zustand",
+              "Es gibt nur Aufwaertswechsel, aber nie Rueckwechsel",
+              "Bei sinkender Auslastung wird der Status undefiniert"
+            ]
+          }
+        ]
+      ],
+      "feedback": {
+        "correct": "Die Zustandslogik der Ampel ist korrekt verstanden.",
+        "wrong": "Achten Sie auf den Start in Gruen, die drei Schwellenbereiche und darauf, dass Uebergaenge bei jeder neuen Auslastung erneut moeglich sind."
+      },
+      "progressLinks": [
+        "pv1fiae_tabellenkalkulation_zustandslogik"
+      ]
+    },
+    {
+      "id": "f04",
+      "type": "followup_divider",
+      "title": "Sensorfunknetz absichern und in 3NF ueberfuehren",
+      "from": "datenarchitektur@parkflow.example",
+      "to": "projektteam@ausbildungsbetrieb.example",
+      "subject": "Verschluesselung, Signatur und relationales Modell fuer Beet-Sensoren abstimmen",
+      "date": "2026-03-20",
+      "body": "Hallo,\n\nzusaetzlich zur Besucherapp werden in den Beeten kleine Sensoren eingesetzt, um aktuelle Daten fuer automatische Bewaesserung und Pflege zu erfassen. Die Sensoren funken lokal und sind nur batteriebetrieben. Bitte waehlen Sie ein geeignetes Verschluesselungsverfahren, ordnen Sie den Vorschlag zur reinen Signatur ein und ueberfuehren Sie Pflanzen-, Beet-, Sensor- und Messwertdaten anschliessend in ein relationales 3NF-Modell.\n\nViele Gruesse\nDatenarchitektur",
+      "visuals": [
+        {
+          "type": "code_block",
+          "eyebrow": "Ausgangsdaten",
+          "title": "Pflanzenbestand und Sensormessung",
+          "codeTitle": "pflanzenbestand.txt",
+          "language": "text",
+          "code": "Pflanze         | Kuerzel | Beet-Name | Beet-Koordinaten | Pflanzdatum | Anzahl\nTulpen          | TLP     | Sued-Beet | N50.55 E6.53     | 11.11.2022  | 30\nSchneegloeckchen| SG      | West-Beet | N50.56 E6.54     | 23.02.2023  | 50\nTulpen          | TLP     | West-Beet | N50.56 E6.54     | 10.11.2022  | 25\n\n{\n  \"DeviceId\": \"72:69:F5:AC:9E:8A:BE:3D\",\n  \"Value\": 426,\n  \"Timestamp\": \"2023-04-26T07:00:00+0000\"\n}"
+        }
+      ]
+    },
+    {
+      "id": "ctx04",
+      "type": "context_card",
+      "title": "Kontext zu Sicherheit und Datenmodell",
+      "contentBlocks": [
+        {
+          "type": "text",
+          "text": "Die Sensoren kommunizieren nur ueber ein lokales Funknetz und verfuegen wegen Batteriebetrieb ueber geringe Rechenleistung. Die Daten sollen verschluesselt uebertragen werden. Ein Teamkollege schlaegt stattdessen vor, die Daten nur zu signieren.\n\nFuer die relationale Zielstruktur gilt ausserdem: Wiederholte Pflanzdaten sollen normalisiert werden, ein Beet kann mehrere Sensoren enthalten, und das Programm uebermittelt Messwerte mit `DeviceId`, Messwert und Zeitstempel. Daraus soll ein Relationenmodell in dritter Normalform entstehen."
+        }
+      ]
+    },
+    {
+      "id": "q20",
+      "type": "short_text",
+      "title": "Geeignetes Verschluesselungsverfahren fuer kleine Sensoren waehlen",
+      "prompt": "Beschreiben Sie in 1-3 Saetzen, welches Verschluesselungsverfahren fuer die kleinen batteriebetriebenen Sensoren hier am besten passt und warum.",
+      "minChars": 110,
+      "requiredKeywords": [
+        "symmetrisch",
+        "rechenleistung",
+        "schluessel"
+      ],
+      "expectedOutline": "Nennt symmetrische Verschluesselung, zum Beispiel mit gemeinsam bekanntem Schluessel, und begruendet dies mit geringer Rechenleistung und lokalem Funknetz.",
+      "feedback": {
+        "correct": "Das passende Verschluesselungsverfahren ist korrekt gewaehlt.",
+        "wrong": "Achten Sie auf geringe Rechenleistung, lokalen Funkbetrieb und die Notwendigkeit echter Vertraulichkeit."
+      },
+      "progressLinks": [
+        "pv1fiae_sensorik_verschluesselung_3nf"
+      ]
+    },
+    {
+      "id": "q21",
+      "type": "short_text",
+      "title": "Nur signieren statt verschluesseln?",
+      "prompt": "Erklaeren Sie in 1-3 Saetzen, warum eine reine Signatur die geforderte Verschluesselung der Sensordaten nicht ersetzt.",
+      "minChars": 110,
+      "requiredKeywords": [
+        "integritaet",
+        "authentizitaet",
+        "vertraulichkeit"
+      ],
+      "expectedOutline": "Erklaert, dass eine Signatur Integritaet und Authentizitaet unterstuetzen kann, aber keine Vertraulichkeit schafft und deshalb Verschluesselung nicht ersetzt.",
+      "feedback": {
+        "correct": "Die Sicherheitswirkung einer Signatur gegenueber Verschluesselung ist korrekt eingeordnet.",
+        "wrong": "Pruefen Sie noch einmal, ob es hier um Vertraulichkeit oder nur um Integritaet und Authentizitaet geht."
+      },
+      "progressLinks": [
+        "pv1fiae_sensorik_verschluesselung_3nf"
+      ]
+    },
+    {
+      "id": "q22",
+      "type": "multi_select",
+      "title": "Anomalien und Normalisierungsbedarf erkennen",
+      "prompt": "Welche Aussagen beschreiben den Normalisierungsbedarf der gezeigten Pflanzdaten fachlich passend? Waehlen Sie alle passenden Antworten.",
+      "options": [
+        {
+          "text": "Pflanzennamen und Beetkoordinaten wiederholen sich in mehreren Datensaetzen und sind damit Redundanzkandidaten.",
+          "correct": true,
+          "rationale": "Genau solche Wiederholungen sind ein typisches Signal fuer Normalisierungsbedarf."
+        },
+        {
+          "text": "Wenn ein Beet umbenannt oder seine Koordinate geaendert wird, muessen mehrere Zeilen konsistent nachgezogen werden.",
+          "correct": true,
+          "rationale": "Das beschreibt eine klassische Aenderungsanomalie."
+        },
+        {
+          "text": "Pflanzdatum und Pflanzenanzahl gehoeren fachlich zur konkreten Zuordnung zwischen Pflanze und Beet.",
+          "correct": true,
+          "rationale": "Diese Informationen beschreiben die Pflanzung, nicht nur die Pflanze oder nur das Beet."
+        },
+        {
+          "text": "Wiederholte Daten sind unproblematisch, solange jede Zeile eine Zahl enthaelt.",
+          "correct": false,
+          "rationale": "Zahlen verhindern keine Redundanz- oder Aenderungsanomalien."
+        },
+        {
+          "text": "Eine Tabelle mit wiederholten Pflanz- und Beetdaten ist automatisch bereits in 3NF.",
+          "correct": false,
+          "rationale": "Gerade die Wiederholungen sprechen gegen eine saubere 3NF-Struktur."
+        }
+      ],
+      "feedback": {
+        "correct": "Redundanz und Normalisierungsbedarf sind passend erkannt.",
+        "wrong": "Achten Sie auf wiederholte Stammdaten, moegliche Aenderungsanomalien und darauf, welche Attribute zur konkreten Pflanzung gehoeren."
+      },
+      "progressLinks": [
+        "pv1fiae_sensorik_verschluesselung_3nf"
+      ]
+    },
+    {
+      "id": "q23",
+      "type": "single_choice",
+      "title": "Passendes 3NF-Modell fuer Pflanzen, Beete und Sensoren auswaehlen",
+      "prompt": "Welches relationale Modell bildet die gezeigten Pflanz-, Beet-, Sensor- und Messwertdaten am treffendsten in 3NF ab?",
+      "options": [
+        {
+          "label": "Modell A",
+          "diagram": {
+            "type": "erm",
+            "width": 980,
+            "height": 560,
+            "entities": [
+              {
+                "id": "pflanze",
+                "title": "PFLANZE",
+                "x": 40,
+                "y": 48,
+                "width": 190,
+                "fields": [
+                  "PK pflanze_id",
+                  "kuerzel",
+                  "name"
+                ]
+              },
+              {
+                "id": "pflanzung",
+                "title": "PFLANZUNG",
+                "x": 300,
+                "y": 48,
+                "width": 220,
+                "fields": [
+                  "PK pflanzung_id",
+                  "FK pflanze_id",
+                  "FK beet_id",
+                  "pflanzdatum",
+                  "pflanzenanzahl"
+                ]
+              },
+              {
+                "id": "beet",
+                "title": "BEET",
+                "x": 610,
+                "y": 48,
+                "width": 200,
+                "fields": [
+                  "PK beet_id",
+                  "name",
+                  "koordinaten"
+                ]
+              },
+              {
+                "id": "sensor",
+                "title": "SENSOR",
+                "x": 250,
+                "y": 280,
+                "width": 180,
+                "fields": [
+                  "PK sensor_id",
+                  "FK beet_id"
+                ]
+              },
+              {
+                "id": "messwert",
+                "title": "MESSWERT",
+                "x": 560,
+                "y": 260,
+                "width": 220,
+                "fields": [
+                  "PK messwert_id",
+                  "FK sensor_id",
+                  "FK beet_id (optional)",
+                  "messwert",
+                  "messzeitpunkt"
+                ]
+              }
+            ],
+            "relations": [
+              {
+                "from": "pflanze",
+                "to": "pflanzung",
+                "label": "wird gepflanzt als",
+                "fromCard": "1",
+                "toCard": "0..n"
+              },
+              {
+                "from": "beet",
+                "to": "pflanzung",
+                "label": "enthaelt Pflanzung",
+                "fromCard": "1",
+                "toCard": "0..n"
+              },
+              {
+                "from": "beet",
+                "to": "sensor",
+                "label": "hat",
+                "fromCard": "1",
+                "toCard": "0..n"
+              },
+              {
+                "from": "sensor",
+                "to": "messwert",
+                "label": "liefert",
+                "fromCard": "1",
+                "toCard": "0..n"
+              },
+              {
+                "from": "beet",
+                "to": "messwert",
+                "label": "optional kontextualisiert",
+                "fromCard": "0..n",
+                "toCard": "0..1"
+              }
+            ]
+          },
+          "rationale": "Dieses Modell trennt Stammdaten, Pflanzung, Sensor und Messwert sauber und fuehrt die relevanten Beziehungen in 3NF zusammen."
+        },
+        {
+          "label": "Modell B",
+          "diagram": {
+            "type": "erm",
+            "width": 980,
+            "height": 520,
+            "entities": [
+              {
+                "id": "beet",
+                "title": "BEET",
+                "x": 120,
+                "y": 60,
+                "width": 280,
+                "fields": [
+                  "PK beet_id",
+                  "beet_name",
+                  "koordinaten",
+                  "pflanzenname",
+                  "kuerzel",
+                  "pflanzdatum",
+                  "pflanzenanzahl"
+                ]
+              },
+              {
+                "id": "sensor",
+                "title": "SENSOR",
+                "x": 520,
+                "y": 80,
+                "width": 220,
+                "fields": [
+                  "PK sensor_id",
+                  "FK beet_id",
+                  "messzeitpunkt",
+                  "messwert"
+                ]
+              }
+            ],
+            "relations": [
+              {
+                "from": "beet",
+                "to": "sensor",
+                "label": "hat",
+                "fromCard": "1",
+                "toCard": "0..n"
+              }
+            ]
+          },
+          "rationale": "Hier bleiben Pflanz- und Beetdaten unnormalisiert in einer Tabelle vermischt, und Messwerte werden nicht sauber von Sensoren getrennt."
+        },
+        {
+          "label": "Modell C",
+          "diagram": {
+            "type": "erm",
+            "width": 980,
+            "height": 540,
+            "entities": [
+              {
+                "id": "pflanze",
+                "title": "PFLANZE",
+                "x": 40,
+                "y": 50,
+                "width": 200,
+                "fields": [
+                  "PK pflanze_id",
+                  "kuerzel",
+                  "name"
+                ]
+              },
+              {
+                "id": "beet",
+                "title": "BEET",
+                "x": 320,
+                "y": 50,
+                "width": 200,
+                "fields": [
+                  "PK beet_id",
+                  "name",
+                  "koordinaten"
+                ]
+              },
+              {
+                "id": "sensor",
+                "title": "SENSOR",
+                "x": 600,
+                "y": 50,
+                "width": 220,
+                "fields": [
+                  "PK sensor_id",
+                  "FK pflanze_id"
+                ]
+              },
+              {
+                "id": "messwert",
+                "title": "MESSWERT",
+                "x": 360,
+                "y": 290,
+                "width": 220,
+                "fields": [
+                  "PK messwert_id",
+                  "FK beet_id",
+                  "messwert",
+                  "messzeitpunkt"
+                ]
+              }
+            ],
+            "relations": [
+              {
+                "from": "pflanze",
+                "to": "sensor",
+                "label": "hat",
+                "fromCard": "1",
+                "toCard": "0..n"
+              },
+              {
+                "from": "beet",
+                "to": "messwert",
+                "label": "liefert",
+                "fromCard": "1",
+                "toCard": "0..n"
+              }
+            ]
+          },
+          "rationale": "Hier ist der Sensor fachlich an der falschen Stelle verankert und die Pflanzung als Zuordnung zwischen Pflanze und Beet fehlt."
+        },
+        {
+          "label": "Modell D",
+          "diagram": {
+            "type": "erm",
+            "width": 980,
+            "height": 560,
+            "entities": [
+              {
+                "id": "pflanze",
+                "title": "PFLANZE",
+                "x": 40,
+                "y": 48,
+                "width": 190,
+                "fields": [
+                  "PK pflanze_id",
+                  "kuerzel",
+                  "name"
+                ]
+              },
+              {
+                "id": "pflanzung",
+                "title": "PFLANZUNG",
+                "x": 300,
+                "y": 48,
+                "width": 220,
+                "fields": [
+                  "PK pflanzung_id",
+                  "FK pflanze_id",
+                  "FK beet_id",
+                  "pflanzdatum"
+                ]
+              },
+              {
+                "id": "beet",
+                "title": "BEET",
+                "x": 610,
+                "y": 48,
+                "width": 200,
+                "fields": [
+                  "PK beet_id",
+                  "name",
+                  "koordinaten"
+                ]
+              },
+              {
+                "id": "sensor",
+                "title": "SENSOR",
+                "x": 250,
+                "y": 280,
+                "width": 180,
+                "fields": [
+                  "PK sensor_id",
+                  "FK beet_id",
+                  "DeviceId",
+                  "messwert",
+                  "messzeitpunkt"
+                ]
+              }
+            ],
+            "relations": [
+              {
+                "from": "pflanze",
+                "to": "pflanzung",
+                "label": "wird gepflanzt als",
+                "fromCard": "1",
+                "toCard": "0..n"
+              },
+              {
+                "from": "beet",
+                "to": "pflanzung",
+                "label": "enthaelt Pflanzung",
+                "fromCard": "1",
+                "toCard": "0..n"
+              },
+              {
+                "from": "beet",
+                "to": "sensor",
+                "label": "hat",
+                "fromCard": "1",
+                "toCard": "0..n"
+              }
+            ]
+          },
+          "rationale": "Hier fehlen die Pflanzenanzahl in der Pflanzung und eine eigene Entitaet fuer Messwerte; Sensordaten und Messungen werden unsauber vermischt."
+        }
+      ],
+      "correctIndex": 0,
+      "feedback": {
+        "correct": "Das 3NF-Modell fuer Pflanzen, Beete, Sensoren und Messwerte ist korrekt erkannt.",
+        "wrong": "Achten Sie auf getrennte Stammdaten, eine eigene Pflanzungszuordnung, die Sensor-Anbindung ans Beet und eine separate Messwert-Entitaet."
+      },
+      "progressLinks": [
+        "pv1fiae_sensorik_verschluesselung_3nf"
+      ]
+    },
+    {
+      "id": "q24",
+      "type": "multi_select",
+      "title": "Schluesselregeln des Zielmodells absichern",
+      "prompt": "Welche Aussagen muessen fuer ein fachlich passendes Zielmodell gelten? Waehlen Sie alle passenden Antworten.",
+      "options": [
+        {
+          "text": "Pflanze und Beet werden als eigene Stammdatentabellen gefuehrt.",
+          "correct": true,
+          "rationale": "So werden wiederholte Namen, Kuerzel und Koordinaten sauber normalisiert."
+        },
+        {
+          "text": "Die konkrete Pflanzung bildet die Zuordnung zwischen Pflanze und Beet und enthaelt Datum sowie Anzahl.",
+          "correct": true,
+          "rationale": "Genau dort gehoeren diese kontextbezogenen Attribute fachlich hin."
+        },
+        {
+          "text": "Ein Sensor ist einem Beet zugeordnet und liefert Messwerte ueber eine eigene Messwert-Entitaet.",
+          "correct": true,
+          "rationale": "Damit bleiben Sensor und einzelne Messungen fachlich getrennt."
+        },
+        {
+          "text": "Ein Messwert kann zusaetzlich mit einem Beet-Kontext versehen werden, diese Zuordnung muss aber nicht zwingend sein.",
+          "correct": true,
+          "rationale": "Die Quelle und die Loesungsstruktur lassen eine optionale Beet-Referenz am Messwert zu."
+        },
+        {
+          "text": "Jeder Messwert muss direkt mit mehreren Pflanzen gleichzeitig verknuepft werden.",
+          "correct": false,
+          "rationale": "Messwerte beziehen sich auf Sensor und optional Beet, nicht direkt auf mehrere Pflanzen."
+        },
+        {
+          "text": "Pflanze und Sensor sollten in einer gemeinsamen Tabelle stehen, weil beides physische Objekte sind.",
+          "correct": false,
+          "rationale": "Beide Objekte haben unterschiedliche Aufgaben und Attribute und sollten nicht vermischt werden."
+        }
+      ],
+      "feedback": {
+        "correct": "Die zentralen Regeln des Zielmodells sind korrekt abgesichert.",
+        "wrong": "Pruefen Sie noch einmal Stammdaten, Pflanzungszuordnung, Sensor-Messwert-Trennung und die optionale Beet-Kontextualisierung."
+      },
+      "progressLinks": [
+        "pv1fiae_sensorik_verschluesselung_3nf"
+      ]
+    }
+  ]
+}

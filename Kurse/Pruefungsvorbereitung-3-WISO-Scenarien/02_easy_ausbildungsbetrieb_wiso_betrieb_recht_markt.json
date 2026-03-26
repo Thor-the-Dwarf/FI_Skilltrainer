@@ -30,35 +30,88 @@
   "questions": [
     {
       "id": "q01",
-      "type": "single_choice",
-      "title": "Zulaessige Frage im Bewerbungsgespraech erkennen",
-      "prompt": "Ein Bewerber fuehrt mit der Rheinkern IT GmbH ein Vorstellungsgespraech. Welche Frage ist arbeitsrechtlich am ehesten zulaessig?",
-      "options": [
-        {
-          "text": "Welche Verguetung stellen Sie sich fuer die Stelle vor?",
-          "rationale": "Die Gehaltsvorstellung steht in direktem Bezug zum Arbeitsverhaeltnis."
-        },
-        {
-          "text": "Planen Sie in den naechsten zwei Jahren zu heiraten?",
-          "rationale": "Das betrifft die Privatsphaere und ist fuer die Stelle nicht erforderlich."
-        },
-        {
-          "text": "Gehoeren Sie einer politischen Partei an?",
-          "rationale": "Ohne besonderen Sachbezug ist diese Frage unzulaessig."
-        },
-        {
-          "text": "Wie hoch sind Ihre privaten Ersparnisse?",
-          "rationale": "Das hat mit der vorgesehenen Taetigkeit nichts zu tun."
-        },
-        {
-          "text": "Welche Krankheiten hatten Sie in Ihrem bisherigen Leben?",
-          "rationale": "So pauschal darf diese Frage nicht gestellt werden."
-        }
+      "type": "table_fill",
+      "title": "Fragen im Bewerbungsgespraech einordnen",
+      "prompt": "Ordnen Sie zu, welche Fragen im Bewerbungsgespraech fuer die Stelle typischerweise zulaessig sind.",
+      "columns": [
+        "Frage",
+        "Einordnung"
       ],
-      "correctIndex": 0,
+      "rows": [
+        [
+          "Welche Verguetung stellen Sie sich fuer die Stelle vor?",
+          {
+            "key": "bewerbung_a",
+            "label": "Frage nach der Verguetung",
+            "expected": "Zulaessig",
+            "inputType": "select",
+            "placeholder": "Auswahl treffen",
+            "options": [
+              "Zulaessig",
+              "Unzulaessig"
+            ]
+          }
+        ],
+        [
+          "Planen Sie in den naechsten zwei Jahren zu heiraten?",
+          {
+            "key": "bewerbung_b",
+            "label": "Frage nach Heiratsplaenen",
+            "expected": "Unzulaessig",
+            "inputType": "select",
+            "placeholder": "Auswahl treffen",
+            "options": [
+              "Zulaessig",
+              "Unzulaessig"
+            ]
+          }
+        ],
+        [
+          "Gehoeren Sie einer politischen Partei an?",
+          {
+            "key": "bewerbung_c",
+            "label": "Frage nach Parteizugehoerigkeit",
+            "expected": "Unzulaessig",
+            "inputType": "select",
+            "placeholder": "Auswahl treffen",
+            "options": [
+              "Zulaessig",
+              "Unzulaessig"
+            ]
+          }
+        ],
+        [
+          "Wie hoch sind Ihre privaten Ersparnisse?",
+          {
+            "key": "bewerbung_d",
+            "label": "Frage nach privaten Ersparnissen",
+            "expected": "Unzulaessig",
+            "inputType": "select",
+            "placeholder": "Auswahl treffen",
+            "options": [
+              "Zulaessig",
+              "Unzulaessig"
+            ]
+          }
+        ],
+        [
+          "Welche Krankheiten hatten Sie in Ihrem bisherigen Leben?",
+          {
+            "key": "bewerbung_e",
+            "label": "Pauschale Frage nach Krankheiten",
+            "expected": "Unzulaessig",
+            "inputType": "select",
+            "placeholder": "Auswahl treffen",
+            "options": [
+              "Zulaessig",
+              "Unzulaessig"
+            ]
+          }
+        ]
+      ],
       "feedback": {
-        "correct": "Die zulaessige Frage wurde korrekt erkannt.",
-        "wrong": "Achten Sie darauf, welche Informationen fuer die konkrete Stelle wirklich relevant sind."
+        "correct": "Die Fragen wurden passend nach beruflichem Bezug und Privatsphaere eingeordnet.",
+        "wrong": "Achten Sie darauf, ob die Information fuer die konkrete Stelle sachlich erforderlich ist oder in die geschuetzte Privatsphaere eingreift."
       },
       "progressLinks": [
         "pv3wiso_arbeitsrecht_ausbildung"
@@ -174,35 +227,88 @@
     },
     {
       "id": "q05",
-      "type": "single_choice",
-      "title": "Meldung nach einem Arbeitsunfall",
-      "prompt": "Luca Hansen verletzt sich waehrend der Arbeit am Knie und legt eine Arbeitsunfaehigkeitsbescheinigung vor. Welchen Schritt muss die Rheinkern IT GmbH danach unternehmen?",
-      "options": [
-        {
-          "text": "Den Unfall dem Technischen Ueberwachungsverein melden.",
-          "rationale": "Der TUEV ist hier nicht die zustaendige Stelle."
-        },
-        {
-          "text": "Den Unfall der zustaendigen Berufsgenossenschaft melden.",
-          "rationale": "Die Unfallanzeige geht an die gesetzliche Unfallversicherung."
-        },
-        {
-          "text": "Den Unfall dem Ordnungsamt melden.",
-          "rationale": "Das Ordnungsamt ist dafuer nicht zustaendig."
-        },
-        {
-          "text": "Dem Mitarbeitenden Schmerzensgeld zahlen.",
-          "rationale": "Das ist nicht die erste rechtliche Pflichtreaktion."
-        },
-        {
-          "text": "Dem Mitarbeitenden pauschalen Schadensersatz zahlen.",
-          "rationale": "Auch das ersetzt die Meldepflicht nicht."
-        }
+      "type": "table_fill",
+      "title": "Pflichtreaktionen nach einem Arbeitsunfall einordnen",
+      "prompt": "Ordnen Sie zu, welche Schritte nach dem geschilderten Arbeitsunfall zur typischen Pflichtreaktion des Betriebs gehoeren.",
+      "columns": [
+        "Schritt",
+        "Typische Pflichtreaktion?"
       ],
-      "correctIndex": 1,
+      "rows": [
+        [
+          "Den Unfall intern dokumentieren und die Unfallanzeige vorbereiten.",
+          {
+            "key": "unfall_a",
+            "label": "Unfall intern dokumentieren",
+            "expected": "Ja",
+            "inputType": "select",
+            "placeholder": "Auswahl treffen",
+            "options": [
+              "Ja",
+              "Nein"
+            ]
+          }
+        ],
+        [
+          "Den Unfall der zustaendigen Berufsgenossenschaft melden.",
+          {
+            "key": "unfall_b",
+            "label": "Unfall der Berufsgenossenschaft melden",
+            "expected": "Ja",
+            "inputType": "select",
+            "placeholder": "Auswahl treffen",
+            "options": [
+              "Ja",
+              "Nein"
+            ]
+          }
+        ],
+        [
+          "Den Unfall dem Technischen Ueberwachungsverein melden.",
+          {
+            "key": "unfall_c",
+            "label": "Unfall dem TUEV melden",
+            "expected": "Nein",
+            "inputType": "select",
+            "placeholder": "Auswahl treffen",
+            "options": [
+              "Ja",
+              "Nein"
+            ]
+          }
+        ],
+        [
+          "Den Unfall dem Ordnungsamt melden.",
+          {
+            "key": "unfall_d",
+            "label": "Unfall dem Ordnungsamt melden",
+            "expected": "Nein",
+            "inputType": "select",
+            "placeholder": "Auswahl treffen",
+            "options": [
+              "Ja",
+              "Nein"
+            ]
+          }
+        ],
+        [
+          "Die Arbeitsunfaehigkeitsbescheinigung ersetzt jede weitere Meldung.",
+          {
+            "key": "unfall_e",
+            "label": "AU ersetzt weitere Meldung",
+            "expected": "Nein",
+            "inputType": "select",
+            "placeholder": "Auswahl treffen",
+            "options": [
+              "Ja",
+              "Nein"
+            ]
+          }
+        ]
+      ],
       "feedback": {
-        "correct": "Die zustaendige Stelle wurde richtig identifiziert.",
-        "wrong": "Bei Arbeitsunfaellen ist vor allem an die gesetzliche Unfallversicherung zu denken."
+        "correct": "Die Pflichtreaktionen nach dem Arbeitsunfall wurden fachlich sauber eingeordnet.",
+        "wrong": "Wichtig sind die Dokumentation und die Meldung an die gesetzliche Unfallversicherung. Andere Stellen ersetzen diese Pflicht nicht."
       },
       "progressLinks": [
         "pv3wiso_arbeitsschutz_umwelt_diversity"
@@ -412,35 +518,88 @@
     },
     {
       "id": "q12",
-      "type": "single_choice",
-      "title": "Mitbestimmung des Betriebsrats erkennen",
-      "prompt": "In welchem Fall hat der Betriebsrat ein Mitbestimmungsrecht?",
-      "options": [
-        {
-          "text": "Eine neue Mitarbeiterin kuendigt waehrend der Probezeit, um eine besser bezahlte Stelle anzutreten.",
-          "rationale": "Die Eigenkuendigung der Mitarbeiterin begruendet hier kein Mitbestimmungsrecht."
-        },
-        {
-          "text": "Die Rheinkern IT GmbH will in der Ferienzeit die taegliche Arbeitszeit von acht auf zehn Stunden verlaengern.",
-          "rationale": "Die Lage und voruebergehende Verlaengerung der Arbeitszeit unterliegt der Mitbestimmung."
-        },
-        {
-          "text": "Ein gekuendigter Mitarbeiter moechte gegen seine Entlassung klagen.",
-          "rationale": "Die Klageentscheidung selbst ist kein Mitbestimmungsfall."
-        },
-        {
-          "text": "Eine Auszubildende verlangt wegen nicht bestandener Pruefung die Verlaengerung ihres Ausbildungsverhaeltnisses.",
-          "rationale": "Hier greifen gesetzliche Ausbildungsregeln, nicht das betriebliche Mitbestimmungsrecht des Betriebsrats."
-        },
-        {
-          "text": "Eine Auszubildende moechte nach bestandener Pruefung den Arbeitgeber wechseln.",
-          "rationale": "Das ist keine mitbestimmungspflichtige Arbeitgebermassnahme."
-        }
+      "type": "table_fill",
+      "title": "Mitbestimmungsfaelle des Betriebsrats einordnen",
+      "prompt": "Ordnen Sie zu, in welchen Faellen der Betriebsrat ein Mitbestimmungsrecht hat.",
+      "columns": [
+        "Fall",
+        "Mitbestimmungsrecht?"
       ],
-      "correctIndex": 1,
+      "rows": [
+        [
+          "Eine neue Mitarbeiterin kuendigt waehrend der Probezeit, um eine besser bezahlte Stelle anzutreten.",
+          {
+            "key": "mitbestimmung_a",
+            "label": "Eigenkuendigung waehrend der Probezeit",
+            "expected": "Nein",
+            "inputType": "select",
+            "placeholder": "Auswahl treffen",
+            "options": [
+              "Ja",
+              "Nein"
+            ]
+          }
+        ],
+        [
+          "Die Rheinkern IT GmbH will in der Ferienzeit die taegliche Arbeitszeit von acht auf zehn Stunden verlaengern.",
+          {
+            "key": "mitbestimmung_b",
+            "label": "Voruebergehende Verlaengerung der taeglichen Arbeitszeit",
+            "expected": "Ja",
+            "inputType": "select",
+            "placeholder": "Auswahl treffen",
+            "options": [
+              "Ja",
+              "Nein"
+            ]
+          }
+        ],
+        [
+          "Ein gekuendigter Mitarbeiter moechte gegen seine Entlassung klagen.",
+          {
+            "key": "mitbestimmung_c",
+            "label": "Entscheidung ueber eine Kuendigungsschutzklage",
+            "expected": "Nein",
+            "inputType": "select",
+            "placeholder": "Auswahl treffen",
+            "options": [
+              "Ja",
+              "Nein"
+            ]
+          }
+        ],
+        [
+          "Eine Auszubildende verlangt wegen nicht bestandener Pruefung die Verlaengerung ihres Ausbildungsverhaeltnisses.",
+          {
+            "key": "mitbestimmung_d",
+            "label": "Verlaengerung des Ausbildungsverhaeltnisses nach nicht bestandener Pruefung",
+            "expected": "Nein",
+            "inputType": "select",
+            "placeholder": "Auswahl treffen",
+            "options": [
+              "Ja",
+              "Nein"
+            ]
+          }
+        ],
+        [
+          "Eine Auszubildende moechte nach bestandener Pruefung den Arbeitgeber wechseln.",
+          {
+            "key": "mitbestimmung_e",
+            "label": "Arbeitgeberwechsel nach bestandener Pruefung",
+            "expected": "Nein",
+            "inputType": "select",
+            "placeholder": "Auswahl treffen",
+            "options": [
+              "Ja",
+              "Nein"
+            ]
+          }
+        ]
+      ],
       "feedback": {
-        "correct": "Der Mitbestimmungsfall wurde richtig erkannt.",
-        "wrong": "Achten Sie auf Arbeitszeitregelungen und andere Bereiche der sozialen Mitbestimmung."
+        "correct": "Die Faelle wurden passend nach sozialer Mitbestimmung und individuellen Entscheidungen getrennt.",
+        "wrong": "Achten Sie besonders auf Arbeitszeitregelungen. Dort hat der Betriebsrat ein echtes Mitbestimmungsrecht."
       },
       "progressLinks": [
         "pv3wiso_mitbestimmung_tarif_sozialversicherung"
@@ -520,35 +679,88 @@
     },
     {
       "id": "q15",
-      "type": "single_choice",
-      "title": "Gesetzliche Haftung der GmbH richtig beschreiben",
-      "prompt": "Mara Schubert gruendet als alleinige Gesellschafterin eine GmbH und bringt das Stammkapital vollstaendig ein. Welche Aussage zur gesetzlichen Haftung trifft zu?",
-      "options": [
-        {
-          "text": "Die Haftung der GmbH ist stets auf 25.000 EUR begrenzt.",
-          "rationale": "Die Gesellschaft haftet nicht nur bis zu diesem Betrag."
-        },
-        {
-          "text": "Die GmbH haftet nur bei grober Pflichtverletzung.",
-          "rationale": "Die Gesellschaft haftet grundsaetzlich mit ihrem Vermoegen fuer ihre Verbindlichkeiten."
-        },
-        {
-          "text": "Die GmbH haftet mit ihrem Gesellschaftsvermoegen.",
-          "rationale": "Genau das ist der Grundgedanke der Haftungsbeschraenkung."
-        },
-        {
-          "text": "Die Gesellschafterin haftet nur mit ihrem Privatvermoegen.",
-          "rationale": "Das widerspricht der Idee der GmbH."
-        },
-        {
-          "text": "Die Gesellschafterin haftet zusaetzlich zur Stammeinlage immer mit ihrem Privatvermoegen.",
-          "rationale": "Eine automatische zusaetzliche Privatvermoegenshaftung besteht nicht."
-        }
+      "type": "table_fill",
+      "title": "Haftung der GmbH fachlich einordnen",
+      "prompt": "Ordnen Sie zu, welche Aussagen zur gesetzlichen Haftung einer GmbH zutreffen.",
+      "columns": [
+        "Aussage",
+        "Trifft zu?"
       ],
-      "correctIndex": 2,
+      "rows": [
+        [
+          "Die GmbH haftet mit ihrem Gesellschaftsvermoegen.",
+          {
+            "key": "gmbhhaftung_a",
+            "label": "GmbH haftet mit Gesellschaftsvermoegen",
+            "expected": "Ja",
+            "inputType": "select",
+            "placeholder": "Auswahl treffen",
+            "options": [
+              "Ja",
+              "Nein"
+            ]
+          }
+        ],
+        [
+          "Nach voller Einzahlung der Stammeinlage besteht nicht automatisch eine zusaetzliche Privatvermoegenshaftung der Gesellschafterin.",
+          {
+            "key": "gmbhhaftung_b",
+            "label": "Keine automatische zusaetzliche Privatvermoegenshaftung",
+            "expected": "Ja",
+            "inputType": "select",
+            "placeholder": "Auswahl treffen",
+            "options": [
+              "Ja",
+              "Nein"
+            ]
+          }
+        ],
+        [
+          "Die Haftung der GmbH ist stets auf 25.000 EUR begrenzt.",
+          {
+            "key": "gmbhhaftung_c",
+            "label": "Haftung stets auf 25000 EUR begrenzt",
+            "expected": "Nein",
+            "inputType": "select",
+            "placeholder": "Auswahl treffen",
+            "options": [
+              "Ja",
+              "Nein"
+            ]
+          }
+        ],
+        [
+          "Die GmbH haftet nur bei grober Pflichtverletzung.",
+          {
+            "key": "gmbhhaftung_d",
+            "label": "GmbH haftet nur bei grober Pflichtverletzung",
+            "expected": "Nein",
+            "inputType": "select",
+            "placeholder": "Auswahl treffen",
+            "options": [
+              "Ja",
+              "Nein"
+            ]
+          }
+        ],
+        [
+          "Die Gesellschafterin haftet immer parallel unbegrenzt mit ihrem Privatvermoegen.",
+          {
+            "key": "gmbhhaftung_e",
+            "label": "Gesellschafterin haftet immer unbegrenzt privat",
+            "expected": "Nein",
+            "inputType": "select",
+            "placeholder": "Auswahl treffen",
+            "options": [
+              "Ja",
+              "Nein"
+            ]
+          }
+        ]
+      ],
       "feedback": {
-        "correct": "Die gesetzliche Haftung der GmbH ist korrekt beschrieben.",
-        "wrong": "Trennen Sie Gesellschaftsvermoegen und Privatvermoegen sauber voneinander."
+        "correct": "Haftungsmasse der Gesellschaft und Privatvermoegen der Gesellschafterin wurden sauber getrennt.",
+        "wrong": "Entscheidend ist die Haftung der GmbH mit ihrem Gesellschaftsvermoegen und die fehlende automatische Privatvermoegenshaftung."
       },
       "progressLinks": [
         "pv3wiso_wirtschaftssektoren_unternehmensformen"
@@ -716,35 +928,88 @@
     },
     {
       "id": "q18",
-      "type": "single_choice",
-      "title": "Wirksamkeit der Eigenkuendigung pruefen",
-      "prompt": "Ist die Kuendigung zum genannten Zeitpunkt wirksam?",
-      "options": [
-        {
-          "text": "Ja, weil eine schriftliche Kuendigung mit Begruendung immer ausreicht.",
-          "rationale": "Die Begruendung ist hier nicht der entscheidende Punkt."
-        },
-        {
-          "text": "Ja, weil bereits ein neuer Arbeitsplatz vorliegt.",
-          "rationale": "Ein neuer Job ersetzt die gesetzliche Kuendigungsfrist nicht."
-        },
-        {
-          "text": "Nein, weil eine Arbeitnehmerkuendigung vier Wochen zum Fuenfzehnten oder zum Monatsende einhalten muss.",
-          "rationale": "Der Zugang am 24.04. reicht fuer den 30.04. nicht aus."
-        },
-        {
-          "text": "Nein, weil die Arbeitnehmerin eine zweimonatige Frist zum Monatsende einhalten muss.",
-          "rationale": "Die laengeren Fristen gelten hier nicht fuer die Arbeitnehmerseite."
-        },
-        {
-          "text": "Nein, weil fuer die Kuendigung zusaetzlich die Zustimmung der IHK erforderlich waere.",
-          "rationale": "Eine solche Zustimmung braucht die Arbeitnehmerin nicht."
-        }
+      "type": "table_fill",
+      "title": "Aussagen zur Eigenkuendigung pruefen",
+      "prompt": "Ordnen Sie zu, welche Aussagen zum Kuendigungsschreiben fachlich zutreffen.",
+      "columns": [
+        "Aussage",
+        "Trifft zu?"
       ],
-      "correctIndex": 2,
+      "rows": [
+        [
+          "Die Arbeitnehmerin kuendigt selbst.",
+          {
+            "key": "kuendigung_a",
+            "label": "Arbeitnehmerin kuendigt selbst",
+            "expected": "Ja",
+            "inputType": "select",
+            "placeholder": "Auswahl treffen",
+            "options": [
+              "Ja",
+              "Nein"
+            ]
+          }
+        ],
+        [
+          "Der genannte Termin 30.04.2023 ist bei Zugang am 24.04.2023 fristgerecht erreichbar.",
+          {
+            "key": "kuendigung_b",
+            "label": "Termin 30042023 fristgerecht erreichbar",
+            "expected": "Nein",
+            "inputType": "select",
+            "placeholder": "Auswahl treffen",
+            "options": [
+              "Ja",
+              "Nein"
+            ]
+          }
+        ],
+        [
+          "Fuer Arbeitnehmerinnen und Arbeitnehmer gilt grundsaetzlich die Frist von vier Wochen zum Fuenfzehnten oder zum Monatsende.",
+          {
+            "key": "kuendigung_c",
+            "label": "Arbeitnehmerfrist vier Wochen zum Fuenfzehnten oder Monatsende",
+            "expected": "Ja",
+            "inputType": "select",
+            "placeholder": "Auswahl treffen",
+            "options": [
+              "Ja",
+              "Nein"
+            ]
+          }
+        ],
+        [
+          "Ein neuer Arbeitsplatz ersetzt die gesetzliche Kuendigungsfrist.",
+          {
+            "key": "kuendigung_d",
+            "label": "Neuer Arbeitsplatz ersetzt Kuendigungsfrist",
+            "expected": "Nein",
+            "inputType": "select",
+            "placeholder": "Auswahl treffen",
+            "options": [
+              "Ja",
+              "Nein"
+            ]
+          }
+        ],
+        [
+          "Die laengeren gestaffelten Fristen nach Betriebszugehoerigkeit gelten in diesem Fall fuer die Arbeitnehmerseite.",
+          {
+            "key": "kuendigung_e",
+            "label": "Gestaffelte Fristen gelten fuer Arbeitnehmerseite",
+            "expected": "Nein",
+            "inputType": "select",
+            "placeholder": "Auswahl treffen",
+            "options": [
+              "Ja",
+              "Nein"
+            ]
+          }
+        ]
+      ],
       "feedback": {
-        "correct": "Die Fristenlage wurde korrekt beurteilt.",
-        "wrong": "Pruefen Sie genau, welche Frist fuer Arbeitnehmer gilt und ab wann sie zu laufen beginnt."
+        "correct": "Schreiben, Frist und Rechtsfolge wurden sauber miteinander verknuepft.",
+        "wrong": "Pruefen Sie, welche Grundfrist fuer Arbeitnehmer gilt und warum der genannte Termin am 30.04. nicht erreicht wird."
       },
       "progressLinks": [
         "pv3wiso_arbeitsrecht_ausbildung"
@@ -1267,35 +1532,88 @@
     },
     {
       "id": "q29",
-      "type": "single_choice",
-      "title": "Aussage zum AGG richtig einordnen",
-      "prompt": "Welche Aussage trifft auf das Allgemeine Gleichbehandlungsgesetz zu?",
-      "options": [
-        {
-          "text": "Das AGG gilt nicht fuer Auszubildende.",
-          "rationale": "Das AGG erfasst auch Auszubildende."
-        },
-        {
-          "text": "Bewerberinnen und Bewerber koennen nach dem AGG nie Ansprueche geltend machen.",
-          "rationale": "Auch Bewerbungsverfahren sind vom AGG erfasst."
-        },
-        {
-          "text": "Das AGG schuetzt nur Arbeitnehmerinnen und Arbeitnehmer aus Nicht-EU-Laendern.",
-          "rationale": "Das Gesetz ist nicht auf diese Personengruppe beschraenkt."
-        },
-        {
-          "text": "Das AGG kann unangemessene persoenliche Fragen im Bewerbungsgespraech unzulaessig machen.",
-          "rationale": "Genau diese Schutzwirkung spielt in Bewerbungsverfahren eine Rolle."
-        },
-        {
-          "text": "Das AGG greift erst nach der Einstellung, nicht aber bei der Personalauswahl.",
-          "rationale": "Auch die Auswahl und Einstellung werden vom Gesetz erfasst."
-        }
+      "type": "table_fill",
+      "title": "AGG-Aussagen fachlich einordnen",
+      "prompt": "Ordnen Sie zu, welche Aussagen zum Allgemeinen Gleichbehandlungsgesetz zutreffen.",
+      "columns": [
+        "Aussage",
+        "Trifft zu?"
       ],
-      "correctIndex": 3,
+      "rows": [
+        [
+          "Das AGG gilt auch fuer Auszubildende.",
+          {
+            "key": "agg_a",
+            "label": "AGG gilt auch fuer Auszubildende",
+            "expected": "Ja",
+            "inputType": "select",
+            "placeholder": "Auswahl treffen",
+            "options": [
+              "Ja",
+              "Nein"
+            ]
+          }
+        ],
+        [
+          "Auch Bewerbungsverfahren werden vom AGG erfasst.",
+          {
+            "key": "agg_b",
+            "label": "Bewerbungsverfahren werden vom AGG erfasst",
+            "expected": "Ja",
+            "inputType": "select",
+            "placeholder": "Auswahl treffen",
+            "options": [
+              "Ja",
+              "Nein"
+            ]
+          }
+        ],
+        [
+          "Das AGG schuetzt nur Arbeitnehmerinnen und Arbeitnehmer aus Nicht-EU-Laendern.",
+          {
+            "key": "agg_c",
+            "label": "AGG schuetzt nur Nicht EU Arbeitnehmer",
+            "expected": "Nein",
+            "inputType": "select",
+            "placeholder": "Auswahl treffen",
+            "options": [
+              "Ja",
+              "Nein"
+            ]
+          }
+        ],
+        [
+          "Unangemessene persoenliche Fragen im Bewerbungsgespraech koennen nach dem AGG unzulaessig sein.",
+          {
+            "key": "agg_d",
+            "label": "Unangemessene persoenliche Fragen koennen unzulaessig sein",
+            "expected": "Ja",
+            "inputType": "select",
+            "placeholder": "Auswahl treffen",
+            "options": [
+              "Ja",
+              "Nein"
+            ]
+          }
+        ],
+        [
+          "Das AGG greift erst nach der Einstellung und nicht bei der Personalauswahl.",
+          {
+            "key": "agg_e",
+            "label": "AGG greift erst nach der Einstellung",
+            "expected": "Nein",
+            "inputType": "select",
+            "placeholder": "Auswahl treffen",
+            "options": [
+              "Ja",
+              "Nein"
+            ]
+          }
+        ]
+      ],
       "feedback": {
-        "correct": "Die Schutzwirkung des AGG wurde korrekt beschrieben.",
-        "wrong": "Denken Sie daran, dass das AGG schon im Bewerbungsverfahren greifen kann."
+        "correct": "Die Schutzwirkung des AGG wurde ueber Bewerbungsverfahren, Ausbildungsverhaeltnisse und unzulaessige Auswahlkriterien hinweg sauber eingeordnet.",
+        "wrong": "Denken Sie daran, dass das AGG bereits bei der Personalauswahl und im Bewerbungsverfahren greifen kann."
       },
       "progressLinks": [
         "pv3wiso_arbeitsschutz_umwelt_diversity"

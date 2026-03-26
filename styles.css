@@ -199,6 +199,43 @@ body {
   text-shadow: 0 0 10px hsl(var(--primary) / 0.3);
 }
 
+.appbar-title-button {
+  font: inherit;
+  appearance: none;
+  -webkit-appearance: none;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: hsl(var(--txt));
+  cursor: default;
+  transition:
+    color 140ms ease,
+    text-shadow 140ms ease,
+    text-decoration-color 140ms ease;
+}
+
+.appbar-title-button:hover {
+  cursor: pointer;
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.18em;
+  text-decoration-color: hsl(var(--primary) / 0.62);
+  text-shadow:
+    0 0 10px hsl(var(--primary) / 0.3),
+    0 0 14px hsl(var(--primary) / 0.16);
+}
+
+.appbar-title-button:focus-visible {
+  outline: none;
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.18em;
+  text-decoration-color: hsl(var(--primary));
+  text-shadow:
+    0 0 10px hsl(var(--primary) / 0.3),
+    0 0 14px hsl(var(--primary) / 0.16);
+}
+
 .icon-button {
   width: 42px;
   height: 42px;
@@ -535,6 +572,21 @@ body {
   text-align: center;
 }
 
+.localhost-admin-panel {
+  max-width: 760px;
+  margin: 14px auto 0;
+  text-align: center;
+}
+
+.localhost-admin-panel h3 {
+  margin: 0 0 8px;
+  font-size: 20px;
+}
+
+.localhost-admin-form {
+  margin-top: 14px;
+}
+
 .unlock-form {
   margin-top: 12px;
   display: grid;
@@ -579,6 +631,79 @@ body {
   text-shadow:
     0 0 16px hsl(166 100% 56% / 0.48),
     0 0 12px hsl(30 100% 65% / 0.36);
+}
+
+.markdown-scenario-panel {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 18px 18px 22px;
+}
+
+.markdown-scenario-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 18px;
+}
+
+.markdown-scenario-folder {
+  display: inline-flex;
+  align-items: center;
+  min-height: 28px;
+  padding: 0 10px;
+  border-radius: 999px;
+  border: 1px solid hsl(var(--glass-border) / 0.62);
+  background: hsl(var(--surface-soft) / 0.72);
+}
+
+.markdown-document {
+  display: grid;
+  gap: 14px;
+}
+
+.markdown-heading {
+  margin: 0;
+  color: hsl(var(--txt));
+}
+
+.markdown-heading-1 {
+  font-size: clamp(28px, 4vw, 38px);
+  line-height: 1.08;
+}
+
+.markdown-heading-2 {
+  margin-top: 10px;
+  font-size: 22px;
+}
+
+.markdown-heading-3,
+.markdown-heading-4,
+.markdown-heading-5,
+.markdown-heading-6 {
+  margin-top: 6px;
+  font-size: 18px;
+}
+
+.markdown-paragraph {
+  margin: 0;
+  color: hsl(var(--txt));
+  font-size: 15px;
+  line-height: 1.7;
+}
+
+.markdown-list {
+  margin: 0;
+  padding-left: 24px;
+  display: grid;
+  gap: 8px;
+  color: hsl(var(--txt));
+  font-size: 15px;
+  line-height: 1.65;
+}
+
+.markdown-code {
+  margin: 2px 0;
 }
 
 .home-section-title {
@@ -1619,21 +1744,6 @@ label {
     hsl(var(--surface-soft) / 0.84);
 }
 
-.question-main[data-marker-state="double_checked"],
-.question-marker-button[data-marker-state="double_checked"] {
-  border-color: hsl(var(--ok) / 0.6);
-  box-shadow:
-    0 0 0 1px hsl(var(--ok) / 0.18),
-    0 10px 18px rgba(2, 6, 23, 0.26),
-    0 0 26px hsl(var(--ok) / 0.16);
-}
-
-.question-marker-button[data-marker-state="double_checked"] {
-  background:
-    linear-gradient(135deg, hsl(var(--ok) / 0.26), hsl(163 82% 44% / 0.16)),
-    hsl(var(--surface-soft) / 0.84);
-}
-
 .question-main[data-marker-state="marked"],
 .question-marker-button[data-marker-state="marked"] {
   border-color: hsl(var(--bad) / 0.62);
@@ -2366,11 +2476,6 @@ label {
   box-shadow: 0 8px 18px hsl(var(--warn) / 0.12);
 }
 
-.task-nav-item[data-marker-state="double_checked"] {
-  border-color: hsl(var(--ok) / 0.52);
-  box-shadow: 0 8px 18px hsl(var(--ok) / 0.14);
-}
-
 .task-nav-item[data-marker-state="marked"] {
   border-color: hsl(var(--bad) / 0.54);
   box-shadow: 0 8px 18px hsl(var(--bad) / 0.14);
@@ -2380,12 +2485,6 @@ label {
   border-color: hsl(var(--warn) / 0.5);
   background: hsl(var(--warn) / 0.16);
   color: hsl(var(--warn));
-}
-
-.task-nav-item-status[data-marker-state="double_checked"] {
-  border-color: hsl(var(--ok) / 0.5);
-  background: hsl(var(--ok) / 0.16);
-  color: hsl(var(--ok));
 }
 
 .task-nav-item-status[data-marker-state="marked"] {

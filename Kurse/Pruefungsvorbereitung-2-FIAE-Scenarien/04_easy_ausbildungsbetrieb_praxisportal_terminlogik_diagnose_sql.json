@@ -1,0 +1,1364 @@
+{
+  "scenario": {
+    "company": "MediLane Systems GmbH",
+    "scale": "Softwareanbieter fuer Arztpraxen und medizinische Versorgungszentren, 145 Mitarbeitende",
+    "context": "Pruefungsvorbereitung 2 FIAE im Stationsformat mit Terminvergabe, Sicherheitslogik, Datenmodellierung und SQL fuer Praxissoftware.",
+    "mission": "Sie modellieren Termin- und Sicherheitslogik, pruefen einen Belegungsalgorithmus, erweitern ein medizinisches Datenmodell und erstellen SQL-Anweisungen fuer Medikamentendaten.",
+    "source": {
+      "kind": "Pseudonymisierte Pruefungsvorlage",
+      "reference": "AP2 FIAE Teil 2, Winter 2021/22",
+      "note": "Die fachliche Aufgabenreihenfolge bleibt erhalten; Namen, Werte und Organisationsbezug wurden in das Kursformat ueberfuehrt."
+    },
+    "station": {
+      "id": "PV2FIAE-ST-04",
+      "department": "Pruefungsvorbereitung Anwendungsentwicklung",
+      "profile": "Aktivitaetslogik, Algorithmen, ERM und SQL",
+      "constraints": [
+        "Die vier Hauptaufgaben bleiben als fachlich zusammenhaengende Folgeauftraege sichtbar",
+        "Offene Pruefungsfragen werden moeglichst auto-auswertbar, aber fachlich gleichwertig umgesetzt",
+        "Code und SQL erhalten Syntaxhighlighting; Visuals entstehen nur bei fachlichem Anlass"
+      ]
+    },
+    "customerRequest": {
+      "from": "produktmanagement@medilane-systems.example",
+      "to": "projektteam@ausbildungsbetrieb.example",
+      "subject": "Praxisportal, Terminlogik, Diagnosedaten und SQL-Aufgaben fuer das naechste Release vorbereiten",
+      "date": "2026-03-20",
+      "body": "Guten Tag,\n\nfuer das naechste Release unserer Praxissoftware muessen mehrere Themen in kurzer Zeit vorbereitet werden. Im Patientenportal soll die Online-Terminvergabe fachlich belastbar modelliert werden. Parallel brauchen wir eine sichere Passwortpruefung, einen Algorithmus fuer arztspezifische Zeitfenster, ein erweitertes Datenmodell fuer Untersuchungen und Diagnosen sowie mehrere SQL-Anweisungen fuer den Medikamentenkatalog.\n\nBitte bearbeiten Sie die Teilauftraege in der vorgegebenen Reihenfolge. Im Fokus stehen Aktivitaetslogik, sichere Validierung, Pseudocode fuer zweidimensionale Belegungsplaene, 3NF-Modellierung und saubere SQL-Abfragen.\n\nViele Gruesse\nProduktmanagement"
+    }
+  },
+  "questions": [
+    {
+      "id": "ctx01",
+      "type": "context_card",
+      "title": "Kontext zur Online-Terminvergabe",
+      "contentBlocks": [
+        {
+          "type": "text",
+          "text": "Fuer das Patientenportal wurden zwei fachliche Varianten fuer die Online-Terminvergabe vorbereitet. Beide Varianten suchen zuerst den Monat mit dem ersten freien Termin. Anschliessend unterscheiden sie sich darin, wann Termine blockiert werden und wie das System bei Konflikten reagiert."
+        },
+        {
+          "type": "table",
+          "columns": [
+            "Aspekt",
+            "Variante 1",
+            "Variante 2"
+          ],
+          "rows": [
+            [
+              "Anzeige",
+              "Das System zeigt den Monat des ersten freien Termins und die darin verfuegbaren Termine an.",
+              "Das System ermittelt den Monat des ersten freien Termins und blockiert zunaechst alle Termine dieses Monats."
+            ],
+            [
+              "Auswahl",
+              "Die Patientin waehlt einen freien Termin aus der sichtbaren Liste.",
+              "Die Patientin waehlt einen freien Termin aus dem zuvor blockierten Monat aus."
+            ],
+            [
+              "Reservierung",
+              "Nur der gewaehlte Termin wird blockiert; ist er noch frei, wird er final reserviert und die Patientin informiert.",
+              "Nach der Auswahl wird der Termin final reserviert, die Patientin informiert und alle uebrigen Monatsblockierungen werden freigegeben."
+            ],
+            [
+              "Konfliktfall",
+              "Ist der Termin inzwischen belegt, gibt das System eine Meldung aus und sucht erneut den ersten freien Termin.",
+              "Ein eigener Konfliktpfad ist nicht beschrieben; der Monat bleibt waehrend der Auswahlphase global blockiert."
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "id": "q01",
+      "type": "match_pairs",
+      "title": "Aktivitaeten den Swimlanes zuordnen",
+      "prompt": "Ordnen Sie die Kernaussagen von Variante 1 den beiden Swimlanes eines UML-Aktivitaetsdiagramms zu.",
+      "layout": "table",
+      "columns": [
+        "Aktivitaet",
+        "Swimlane"
+      ],
+      "pairs": [
+        {
+          "key": "lane_1",
+          "left": "Monat mit erstem freien Termin und freie Zeitfenster anzeigen",
+          "right": "Terminservice"
+        },
+        {
+          "key": "lane_2",
+          "left": "Einen angezeigten Termin auswaehlen",
+          "right": "Patientin"
+        },
+        {
+          "key": "lane_3",
+          "left": "Gewaehlten Termin blockieren und bei Erfolg final reservieren",
+          "right": "Terminservice"
+        },
+        {
+          "key": "lane_4",
+          "left": "Meldung ueber erfolgreiche Reservierung erhalten",
+          "right": "Patientin"
+        },
+        {
+          "key": "lane_5",
+          "left": "Bei Konflikt erneut den ersten freien Termin suchen",
+          "right": "Terminservice"
+        }
+      ],
+      "options": [
+        "Patientin",
+        "Terminservice"
+      ],
+      "feedback": {
+        "correct": "Die Aktivitaeten von Variante 1 sind den passenden Swimlanes zugeordnet.",
+        "wrong": "Pruefen Sie, welche Schritte fachlich von der Patientin ausgeloest werden und welche durch das System ablaufen."
+      },
+      "progressLinks": [
+        "pv2fiae_terminvergabe_workflow"
+      ]
+    },
+    {
+      "id": "q02",
+      "type": "single_choice",
+      "title": "Praktischere Terminvariante beurteilen",
+      "prompt": "Welche Variante ist fuer einen produktiven Praxisbetrieb die praktikablere Grundlage?",
+      "options": [
+        {
+          "text": "Variante 1, weil nur der konkret gewaehlte Termin blockiert wird und kein kompletter Monat waehrend der Auswahl gesperrt werden muss.",
+          "rationale": "Diese Variante vermeidet unnoetige Blockierungen und behandelt den Konfliktfall sauber."
+        },
+        {
+          "text": "Variante 2, weil moeglichst viele Termine gleichzeitig blockiert werden sollten, damit niemand anderes buchen kann.",
+          "rationale": "Das fuehrt eher zu unnoetiger Sperrung und ist im Praxisbetrieb unpraktisch."
+        },
+        {
+          "text": "Beide Varianten sind gleich praktisch, weil Terminblockierungen keine Auswirkungen auf andere Nutzende haben.",
+          "rationale": "Die Art der Blockierung hat sehr wohl direkte Auswirkungen auf Verfuegbarkeit und Konflikte."
+        },
+        {
+          "text": "Variante 2, weil die Patientin erst nach der finalen Reservierung eine Rueckmeldung erhalten darf.",
+          "rationale": "Die Rueckmeldung ist nicht der Kern der Praktikabilitaet; das Problem ist die Monatssperre."
+        }
+      ],
+      "correctIndex": 0,
+      "feedback": {
+        "correct": "Die praktikablere Prozessvariante ist korrekt erkannt.",
+        "wrong": "Achten Sie darauf, welche Variante im laufenden Betrieb weniger Termine unnoetig blockiert."
+      },
+      "progressLinks": [
+        "pv2fiae_terminvergabe_workflow"
+      ]
+    },
+    {
+      "id": "ctx01b",
+      "type": "context_card",
+      "title": "Kontext zur Passwortpruefung",
+      "contentBlocks": [
+        {
+          "type": "text",
+          "text": "Die Terminvergabe soll nur nach einem Login moeglich sein. Passwoerter muessen mindestens 10 Zeichen lang sein und mindestens einen Buchstaben, eine Ziffer und ein Sonderzeichen enthalten. Der folgende Arbeitsstand der Prueflogik ist noch fehlerhaft."
+        },
+        {
+          "type": "code_compare",
+          "eyebrow": "Fehlerhafter Arbeitsstand",
+          "title": "Ausschnitt aus `check_password(password)`",
+          "caption": "Die Logik soll `True` liefern, wenn alle Regeln eingehalten werden.",
+          "blocks": [
+            {
+              "title": "Vorliegende Prueflogik",
+              "language": "python",
+              "code": "special_char = False\nletter = False\ndigit = False\npassword_ok = False\n\nif len(password) > 10:\n    i = 0\n    while i <= len(password):\n        if password[i].isdigit():\n            digit = True\n        else:\n            digit = False\n            if password[i].isalpha():\n                letter = True\n            else:\n                special_char = True\n        i += 1\n\n    if letter and digit and special_char:\n        password_ok = True\n\nreturn password_ok"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "q03",
+      "type": "single_choice",
+      "title": "Fehler in der Schleifenbedingung erkennen",
+      "prompt": "Welche Korrektur behebt den Fehler in der Schleifenbedingung am treffendsten?",
+      "options": [
+        {
+          "text": "Die Schleife muss mit `while i < len(password)` laufen.",
+          "rationale": "Der groesste gueltige Index liegt eins unterhalb der Laenge des Passworts."
+        },
+        {
+          "text": "Die Schleife muss mit `while i == len(password)` laufen.",
+          "rationale": "Damit wuerde die Schleife fast nie sinnvoll iterieren."
+        },
+        {
+          "text": "Die Schleife muss mit `while i > len(password)` laufen.",
+          "rationale": "Damit wuerde der Schleifenkoerper gar nicht sinnvoll durchlaufen."
+        },
+        {
+          "text": "Die Schleife braucht keine Bedingung, weil jedes Passwort dieselbe Zeichenanzahl hat.",
+          "rationale": "Passwoerter koennen unterschiedlich lang sein; ohne Bedingung funktioniert die Iteration nicht."
+        }
+      ],
+      "correctIndex": 0,
+      "feedback": {
+        "correct": "Die Schleifenbedingung ist fachlich korrekt korrigiert.",
+        "wrong": "Denken Sie an den gueltigen Indexbereich eines Strings: der letzte Index ist immer kleiner als die Laenge."
+      },
+      "progressLinks": [
+        "pv2fiae_passwortlogik_pruefen"
+      ]
+    },
+    {
+      "id": "q04",
+      "type": "single_choice",
+      "title": "Mindestlaenge korrekt pruefen",
+      "prompt": "Welche Bedingung prueft die Regel 'mindestens 10 Zeichen' korrekt?",
+      "options": [
+        {
+          "text": "`len(password) >= 10`",
+          "rationale": "Mindestens 10 Zeichen bedeutet, dass auch genau 10 Zeichen bereits gueltig sind."
+        },
+        {
+          "text": "`len(password) > 10`",
+          "rationale": "Damit waeren Passwoerter mit genau 10 Zeichen faelschlich ungueltig."
+        },
+        {
+          "text": "`len(password) == 10`",
+          "rationale": "Damit waeren nur exakt 10 Zeichen erlaubt, aber nicht mehr."
+        },
+        {
+          "text": "`len(password) > 9 and len(password) < 10`",
+          "rationale": "Diese Bedingung kann nie wahr werden."
+        }
+      ],
+      "correctIndex": 0,
+      "feedback": {
+        "correct": "Die Langenpruefung fuer die Mindestlaenge ist korrekt gewaehlt.",
+        "wrong": "Die Formulierung 'mindestens 10' schliesst genau 10 bereits mit ein."
+      },
+      "progressLinks": [
+        "pv2fiae_passwortlogik_pruefen"
+      ]
+    },
+    {
+      "id": "f02",
+      "type": "followup_divider",
+      "title": "Arztspezifische Terminpruefung vorbereiten",
+      "from": "praxisbetrieb@medilane-systems.example",
+      "to": "projektteam@ausbildungsbetrieb.example",
+      "subject": "Pseudocode fuer freie Zeitfenster pro Arzt vorbereiten",
+      "date": "2026-03-20",
+      "body": "Hallo zusammen,\n\nfuer Gemeinschaftspraxen muessen wir freie Zeitfenster pro Arzt und Tag schnell pruefen koennen. Dazu liegt fuer jeden Arzt ein zweidimensionaler Belegungsplan vor. Bitte nutzen Sie den folgenden Ausschnitt als gemeinsame Arbeitsgrundlage und leiten Sie daraus belastbare Logik ab.\n\nViele Gruesse\nPraxisbetrieb"
+    },
+    {
+      "id": "ctx02",
+      "type": "context_card",
+      "title": "Kontext zum Belegungsplan eines Arztes",
+      "contentBlocks": [
+        {
+          "type": "text",
+          "text": "Jede Zeile des Arrays beschreibt einen Kalendertag fuer genau einen Arzt. Spalte `0` enthaelt den Monat, Spalte `1` den Tag. Die Spalten `2` bis `9` stehen fuer `slot 0` bis `slot 7`. Ein Wert `1` bedeutet belegt, ein Wert `0` bedeutet frei.\n\nDie Hilfsfunktion `load_time_table(doctor_id)` liefert den Belegungsplan des ausgewaehlten Arztes. Die zu entwickelnde Funktion `pruefe_termin(month, day, doctor_id, slot)` soll `True` liefern, wenn am gesuchten Tag ein passender freier Termin existiert. Wenn `slot = -1`, reicht irgendein freier Slot an diesem Tag aus."
+        },
+        {
+          "type": "table",
+          "columns": [
+            "Monat",
+            "Tag",
+            "Slot 0",
+            "Slot 1",
+            "Slot 2",
+            "Slot 3",
+            "Slot 4",
+            "Slot 5",
+            "Slot 6",
+            "Slot 7"
+          ],
+          "rows": [
+            [
+              "9",
+              "28",
+              "1",
+              "1",
+              "0",
+              "0",
+              "1",
+              "1",
+              "1",
+              "1"
+            ],
+            [
+              "10",
+              "4",
+              "0",
+              "0",
+              "1",
+              "1",
+              "0",
+              "0",
+              "1",
+              "1"
+            ],
+            [
+              "10",
+              "5",
+              "0",
+              "0",
+              "0",
+              "1",
+              "1",
+              "1",
+              "1",
+              "0"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "id": "q05",
+      "type": "single_choice",
+      "title": "Pseudocode fuer die Terminpruefung waehlen",
+      "prompt": "Welche Python-Variante bildet `pruefe_termin(month, day, doctor_id, slot)` fachlich korrekt ab?",
+      "options": [
+        {
+          "label": "Variante A",
+          "language": "python",
+          "code": "def pruefe_termin(month, day, doctor_id, slot):\n    plan = load_time_table(doctor_id)\n    for row in plan:\n        if row[0] == month and row[1] == day:\n            if slot == -1:\n                for index in range(2, 10):\n                    if row[index] == 0:\n                        return True\n                return False\n            return row[slot + 2] == 0\n    return False",
+          "rationale": "Die Variante prueft zuerst den richtigen Tag, behandelt `slot = -1` als 'irgendein freier Slot' und mappt `slot 0..7` korrekt auf die Spalten `2..9`."
+        },
+        {
+          "label": "Variante B",
+          "language": "python",
+          "code": "def pruefe_termin(month, day, doctor_id, slot):\n    plan = load_time_table(doctor_id)\n    for row in plan:\n        if row[0] == month:\n            if slot == -1:\n                return True\n            return row[slot + 1] == 1\n    return False",
+          "rationale": "Tag und Spaltenversatz werden falsch behandelt; ausserdem bedeutet `1` gerade belegt und nicht frei."
+        },
+        {
+          "label": "Variante C",
+          "language": "python",
+          "code": "def pruefe_termin(month, day, doctor_id, slot):\n    plan = load_time_table(doctor_id)\n    for row in plan:\n        if row[1] == day:\n            if slot == -1:\n                for index in range(2, 10):\n                    if row[index] == 1:\n                        return True\n                return False\n            return row[slot + 2] == 1\n    return False",
+          "rationale": "Hier werden belegte Slots als frei interpretiert, und der Monat wird gar nicht geprueft."
+        },
+        {
+          "label": "Variante D",
+          "language": "python",
+          "code": "def pruefe_termin(month, day, doctor_id, slot):\n    plan = load_time_table(doctor_id)\n    for row in plan:\n        if row[0] == month and row[1] == day:\n            if slot == -1:\n                return row[2] == 0\n            return row[slot] == 0\n    return True",
+          "rationale": "Bei `slot = -1` wuerde nur der erste Zeitslot geprueft, und der Rueckgabewert am Ende ist ebenfalls falsch."
+        }
+      ],
+      "correctIndex": 0,
+      "feedback": {
+        "correct": "Die Pseudocode-Variante fuer die Terminpruefung ist korrekt gewaehlt.",
+        "wrong": "Achten Sie auf die Tagespruefung, den Umgang mit `slot = -1`, den Spaltenversatz und die Bedeutung von `0` und `1`."
+      },
+      "progressLinks": [
+        "pv2fiae_terminmatrix_pseudocode"
+      ]
+    },
+    {
+      "id": "q06",
+      "type": "single_choice",
+      "title": "Sonderwert `-1` fachlich deuten",
+      "prompt": "Wann darf `pruefe_termin(...)` bei `slot = -1` den Wert `True` zurueckgeben?",
+      "options": [
+        {
+          "text": "Sobald es am gesuchten Tag mindestens einen freien Slot fuer den ausgewaehlten Arzt gibt.",
+          "rationale": "Genau das beschreibt der Sonderwert `-1`."
+        },
+        {
+          "text": "Nur dann, wenn an diesem Tag alle Slots frei sind.",
+          "rationale": "Der Sonderwert verlangt nicht, dass der komplette Tag frei ist."
+        },
+        {
+          "text": "Nur dann, wenn am Vortag derselbe Slot ebenfalls frei war.",
+          "rationale": "Der Vortag spielt fuer diese Funktion keine Rolle."
+        },
+        {
+          "text": "Sobald ein Slot belegt ist und deshalb eine Warteliste angelegt werden kann.",
+          "rationale": "Das waere die gegenteilige Logik."
+        }
+      ],
+      "correctIndex": 0,
+      "feedback": {
+        "correct": "Der Sonderwert `-1` ist fachlich korrekt eingeordnet.",
+        "wrong": "Bei `-1` geht es darum, ob irgendein passendes freies Zeitfenster vorhanden ist."
+      },
+      "progressLinks": [
+        "pv2fiae_terminmatrix_pseudocode"
+      ]
+    },
+    {
+      "id": "q07",
+      "type": "match_pairs",
+      "title": "Rueckgabewerte fuer Beispielaufrufe bestimmen",
+      "prompt": "Bestimmen Sie anhand des gezeigten Belegungsplans die Rueckgabewerte der folgenden Aufrufe von `pruefe_termin(...)`.",
+      "layout": "table",
+      "columns": [
+        "Aufruf",
+        "Rueckgabe"
+      ],
+      "pairs": [
+        {
+          "key": "call_1",
+          "left": "`pruefe_termin(10, 4, doctor_id, 4)`",
+          "right": "True"
+        },
+        {
+          "key": "call_2",
+          "left": "`pruefe_termin(9, 28, doctor_id, 1)`",
+          "right": "False"
+        },
+        {
+          "key": "call_3",
+          "left": "`pruefe_termin(10, 5, doctor_id, 2)`",
+          "right": "True"
+        },
+        {
+          "key": "call_4",
+          "left": "`pruefe_termin(10, 4, doctor_id, -1)`",
+          "right": "True"
+        },
+        {
+          "key": "call_5",
+          "left": "`pruefe_termin(11, 1, doctor_id, -1)`",
+          "right": "False"
+        }
+      ],
+      "options": [
+        "True",
+        "False"
+      ],
+      "feedback": {
+        "correct": "Die Beispielaufrufe sind gegen den Belegungsplan korrekt ausgewertet.",
+        "wrong": "Pruefen Sie Monat, Tag und die Freibelegung des jeweiligen Slots noch einmal genau."
+      },
+      "progressLinks": [
+        "pv2fiae_terminmatrix_pseudocode"
+      ]
+    },
+    {
+      "id": "f03",
+      "type": "followup_divider",
+      "title": "Relationales Modell fuer Untersuchungen erweitern",
+      "from": "datenmodell@medilane-systems.example",
+      "to": "projektteam@ausbildungsbetrieb.example",
+      "subject": "ERM fuer Untersuchungstermine und Diagnoseeintraege ergaenzen",
+      "date": "2026-03-20",
+      "body": "Hallo,\n\nim Datenmodell fuer das Praxisportal fehlen noch Strukturen fuer Untersuchungstermine und Diagnoseeintraege. Die Diagnose-Stammdaten existieren bereits, muessen jetzt aber mit den weiteren Fachobjekten in 3NF kombiniert werden. Bitte nutzen Sie die Beispieltabellen als Orientierung und achten Sie auf die fachliche Unabhaengigkeit von Termin und Diagnose.\n\nViele Gruesse\nDatenmodell"
+    },
+    {
+      "id": "ctx03",
+      "type": "context_card",
+      "title": "Kontext zu Untersuchungen und Diagnosen",
+      "contentBlocks": [
+        {
+          "type": "text",
+          "text": "Im bestehenden Modell ist die Entitaet `Diagnose` bereits vorhanden. Zusaetzlich muessen Untersuchungstermine und Diagnoseeintraege abgebildet werden. Wichtig: Termine und Diagnosen sind fachlich unabhaengig. Eine Diagnose kann auch ohne den gezeigten Untersuchungstermin oder durch eine andere Aerztin bzw. einen anderen Arzt entstanden sein."
+        },
+        {
+          "type": "table_group",
+          "eyebrow": "Beispieldaten",
+          "title": "Ausschnitte aus den zusaetzlichen Fachobjekten",
+          "caption": "Namen und Daten sind pseudonymisiert; die Fachlogik der Tabellen bleibt erhalten.",
+          "tableRows": [
+            [
+              {
+                "title": "Tabelle `ScreeningTermin`",
+                "columns": [
+                  "ST_ID",
+                  "DatumUhrzeit",
+                  "Patient",
+                  "Arzt",
+                  "Raum"
+                ],
+                "rows": [
+                  [
+                    "1",
+                    "18.05.2026 09:00",
+                    "Kluge, Mara",
+                    "Keller, Noam",
+                    "Diagnostikraum 2"
+                  ],
+                  [
+                    "2",
+                    "18.05.2026 10:30",
+                    "Urban, Nils",
+                    "Keller, Noam",
+                    "Diagnostikraum 1"
+                  ],
+                  [
+                    "3",
+                    "19.05.2026 11:00",
+                    "Rehm, Sina",
+                    "Vogt, Elif",
+                    "MRT"
+                  ]
+                ]
+              },
+              {
+                "title": "Tabelle `DiagnoseEintrag`",
+                "columns": [
+                  "DE_ID",
+                  "Datum",
+                  "Patient",
+                  "Arzt",
+                  "ICD_Code",
+                  "Bemerkung"
+                ],
+                "rows": [
+                  [
+                    "1",
+                    "18.05.2026",
+                    "Kluge, Mara",
+                    "Keller, Noam",
+                    "M71",
+                    "Wiedervorstellung in 3 Monaten"
+                  ],
+                  [
+                    "2",
+                    "07.06.2026",
+                    "Urban, Nils",
+                    "Brandt, Sara",
+                    "K93",
+                    "Rueckfrage mit Fachzentrum"
+                  ],
+                  [
+                    "3",
+                    "22.06.2026",
+                    "Rehm, Sina",
+                    "Vogt, Elif",
+                    "D50",
+                    "Kontrolle nach Medikation"
+                  ]
+                ]
+              }
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "id": "q08",
+      "type": "single_choice",
+      "title": "Passendes ERM fuer Untersuchung und Diagnose waehlen",
+      "prompt": "Welches ERM-Diagramm bildet die gezeigten Fachobjekte in 3. Normalform fachlich korrekt ab?",
+      "options": [
+        {
+          "label": "Modell A",
+          "diagram": {
+            "type": "erm",
+            "width": 920,
+            "height": 540,
+            "entities": [
+              {
+                "id": "patient",
+                "title": "PATIENT",
+                "x": 20,
+                "y": 28,
+                "width": 160,
+                "fields": [
+                  "PK patient_id",
+                  "name"
+                ]
+              },
+              {
+                "id": "arzt",
+                "title": "ARZT",
+                "x": 240,
+                "y": 28,
+                "width": 160,
+                "fields": [
+                  "PK arzt_id",
+                  "name"
+                ]
+              },
+              {
+                "id": "diagnose",
+                "title": "DIAGNOSE",
+                "x": 460,
+                "y": 28,
+                "width": 180,
+                "fields": [
+                  "PK diagnose_id",
+                  "icd_code",
+                  "kurzbeschreibung"
+                ]
+              },
+              {
+                "id": "raum",
+                "title": "RAUM",
+                "x": 720,
+                "y": 28,
+                "width": 160,
+                "fields": [
+                  "PK raum_id",
+                  "bezeichnung"
+                ]
+              },
+              {
+                "id": "termin",
+                "title": "SCREENINGTERMIN",
+                "x": 60,
+                "y": 250,
+                "width": 280,
+                "fields": [
+                  "PK screening_id",
+                  "datum_uhrzeit",
+                  "FK patient_id",
+                  "FK arzt_id",
+                  "FK raum_id"
+                ]
+              },
+              {
+                "id": "eintrag",
+                "title": "DIAGNOSEEINTRAG",
+                "x": 430,
+                "y": 250,
+                "width": 320,
+                "fields": [
+                  "PK eintrag_id",
+                  "datum",
+                  "bemerkung",
+                  "FK patient_id",
+                  "FK arzt_id",
+                  "FK diagnose_id"
+                ]
+              }
+            ],
+            "relations": [
+              {
+                "from": "patient",
+                "to": "termin",
+                "label": "hat",
+                "fromCard": "1",
+                "toCard": "0..n"
+              },
+              {
+                "from": "arzt",
+                "to": "termin",
+                "label": "betreut",
+                "fromCard": "1",
+                "toCard": "0..n"
+              },
+              {
+                "from": "raum",
+                "to": "termin",
+                "label": "findet statt in",
+                "fromCard": "1",
+                "toCard": "0..n"
+              },
+              {
+                "from": "patient",
+                "to": "eintrag",
+                "label": "erhaelt",
+                "fromCard": "1",
+                "toCard": "0..n"
+              },
+              {
+                "from": "arzt",
+                "to": "eintrag",
+                "label": "stellt",
+                "fromCard": "1",
+                "toCard": "0..n"
+              },
+              {
+                "from": "diagnose",
+                "to": "eintrag",
+                "label": "klassifiziert",
+                "fromCard": "1",
+                "toCard": "0..n"
+              }
+            ]
+          },
+          "rationale": "Dieses Modell trennt Stammdaten, Termine und Diagnoseeintraege sauber und enthaelt bewusst keine Pflichtverbindung zwischen Termin und Diagnoseeintrag."
+        },
+        {
+          "label": "Modell B",
+          "diagram": {
+            "type": "erm",
+            "width": 920,
+            "height": 480,
+            "entities": [
+              {
+                "id": "patient",
+                "title": "PATIENT",
+                "x": 40,
+                "y": 30,
+                "width": 160,
+                "fields": [
+                  "PK patient_id",
+                  "name"
+                ]
+              },
+              {
+                "id": "arzt",
+                "title": "ARZT",
+                "x": 260,
+                "y": 30,
+                "width": 160,
+                "fields": [
+                  "PK arzt_id",
+                  "name"
+                ]
+              },
+              {
+                "id": "raum",
+                "title": "RAUM",
+                "x": 480,
+                "y": 30,
+                "width": 160,
+                "fields": [
+                  "PK raum_id",
+                  "bezeichnung"
+                ]
+              },
+              {
+                "id": "termin",
+                "title": "UNTERSUCHUNG",
+                "x": 160,
+                "y": 220,
+                "width": 330,
+                "fields": [
+                  "PK screening_id",
+                  "datum_uhrzeit",
+                  "bemerkung",
+                  "icd_code",
+                  "FK patient_id",
+                  "FK arzt_id",
+                  "FK raum_id"
+                ]
+              }
+            ],
+            "relations": [
+              {
+                "from": "patient",
+                "to": "termin",
+                "label": "hat",
+                "fromCard": "1",
+                "toCard": "0..n"
+              },
+              {
+                "from": "arzt",
+                "to": "termin",
+                "label": "betreut",
+                "fromCard": "1",
+                "toCard": "0..n"
+              },
+              {
+                "from": "raum",
+                "to": "termin",
+                "label": "findet statt in",
+                "fromCard": "1",
+                "toCard": "0..n"
+              }
+            ]
+          },
+          "rationale": "Hier werden Diagnoseinformationen direkt in den Termin gepackt; die fachliche Unabhaengigkeit von Diagnose und Termin geht verloren."
+        },
+        {
+          "label": "Modell C",
+          "diagram": {
+            "type": "erm",
+            "width": 920,
+            "height": 480,
+            "entities": [
+              {
+                "id": "diagnose",
+                "title": "DIAGNOSE",
+                "x": 20,
+                "y": 30,
+                "width": 190,
+                "fields": [
+                  "PK diagnose_id",
+                  "icd_code",
+                  "kurzbeschreibung"
+                ]
+              },
+              {
+                "id": "termin",
+                "title": "SCREENINGTERMIN",
+                "x": 250,
+                "y": 30,
+                "width": 300,
+                "fields": [
+                  "PK screening_id",
+                  "datum_uhrzeit",
+                  "patient_name",
+                  "arzt_name",
+                  "raum_name"
+                ]
+              },
+              {
+                "id": "eintrag",
+                "title": "DIAGNOSEEINTRAG",
+                "x": 590,
+                "y": 30,
+                "width": 300,
+                "fields": [
+                  "PK eintrag_id",
+                  "datum",
+                  "patient_name",
+                  "arzt_name",
+                  "bemerkung",
+                  "FK diagnose_id"
+                ]
+              }
+            ],
+            "relations": [
+              {
+                "from": "diagnose",
+                "to": "eintrag",
+                "label": "klassifiziert",
+                "fromCard": "1",
+                "toCard": "0..n"
+              }
+            ]
+          },
+          "rationale": "Patienten-, Arzt- und Raumdaten werden hier nur als Namen gespeichert und nicht normalisiert."
+        },
+        {
+          "label": "Modell D",
+          "diagram": {
+            "type": "erm",
+            "width": 920,
+            "height": 500,
+            "entities": [
+              {
+                "id": "patient",
+                "title": "PATIENT",
+                "x": 30,
+                "y": 30,
+                "width": 160,
+                "fields": [
+                  "PK patient_id",
+                  "name"
+                ]
+              },
+              {
+                "id": "arzt",
+                "title": "ARZT",
+                "x": 250,
+                "y": 30,
+                "width": 160,
+                "fields": [
+                  "PK arzt_id",
+                  "name"
+                ]
+              },
+              {
+                "id": "diagnose",
+                "title": "DIAGNOSE",
+                "x": 470,
+                "y": 30,
+                "width": 190,
+                "fields": [
+                  "PK diagnose_id",
+                  "icd_code",
+                  "kurzbeschreibung"
+                ]
+              },
+              {
+                "id": "termin",
+                "title": "SCREENINGTERMIN",
+                "x": 120,
+                "y": 230,
+                "width": 280,
+                "fields": [
+                  "PK screening_id",
+                  "datum_uhrzeit",
+                  "FK patient_id",
+                  "FK arzt_id"
+                ]
+              },
+              {
+                "id": "eintrag",
+                "title": "DIAGNOSEEINTRAG",
+                "x": 490,
+                "y": 230,
+                "width": 290,
+                "fields": [
+                  "PK eintrag_id",
+                  "datum",
+                  "bemerkung",
+                  "FK screening_id",
+                  "FK diagnose_id"
+                ]
+              }
+            ],
+            "relations": [
+              {
+                "from": "patient",
+                "to": "termin",
+                "label": "hat",
+                "fromCard": "1",
+                "toCard": "0..n"
+              },
+              {
+                "from": "arzt",
+                "to": "termin",
+                "label": "betreut",
+                "fromCard": "1",
+                "toCard": "0..n"
+              },
+              {
+                "from": "diagnose",
+                "to": "eintrag",
+                "label": "klassifiziert",
+                "fromCard": "1",
+                "toCard": "0..n"
+              },
+              {
+                "from": "termin",
+                "to": "eintrag",
+                "label": "erzwingt",
+                "fromCard": "1",
+                "toCard": "0..n"
+              }
+            ]
+          },
+          "rationale": "Dieses Modell zwingt jede Diagnose an einen konkreten Termin und laesst Raum sowie ausstellenden Arzt im Diagnoseeintrag weg."
+        }
+      ],
+      "correctIndex": 0,
+      "feedback": {
+        "correct": "Das fachlich passende ERM-Diagramm ist korrekt ausgewaehlt.",
+        "wrong": "Pruefen Sie 3NF, die benoetigten Stammdaten und vor allem die fachliche Unabhaengigkeit von Termin und Diagnoseeintrag."
+      },
+      "progressLinks": [
+        "pv2fiae_erm_untersuchung_diagnose"
+      ]
+    },
+    {
+      "id": "q09",
+      "type": "multi_select",
+      "title": "Noetige Entitaeten fuer das Modell bestimmen",
+      "prompt": "Welche zusaetzlichen Entitaeten muessen neben der bereits vorhandenen Tabelle `Diagnose` im Modell auftauchen, damit die Beispieldaten sauber in 3NF abbildbar sind?",
+      "options": [
+        {
+          "text": "Patient",
+          "correct": true,
+          "rationale": "Patienten sind eigenstaendige Fachobjekte und duerfen nicht nur als Name in mehreren Tabellen auftauchen."
+        },
+        {
+          "text": "Arzt",
+          "correct": true,
+          "rationale": "Auch Aerztinnen und Aerzte muessen als eigene Entitaet modelliert werden."
+        },
+        {
+          "text": "Raum",
+          "correct": true,
+          "rationale": "Untersuchungsraeume gehoeren als eigenes Objekt ins Modell."
+        },
+        {
+          "text": "ScreeningTermin",
+          "correct": true,
+          "rationale": "Die eigentlichen Untersuchungstermine brauchen eine eigene Entitaet."
+        },
+        {
+          "text": "DiagnoseEintrag",
+          "correct": true,
+          "rationale": "Ein Diagnoseeintrag ist etwas anderes als der Diagnose-Stammdatensatz."
+        },
+        {
+          "text": "Wartezimmer",
+          "correct": false,
+          "rationale": "Aus den gegebenen Beispieldaten ergibt sich keine eigene Wartezimmer-Entitaet."
+        }
+      ],
+      "feedback": {
+        "correct": "Die benoetigten zusaetzlichen Entitaeten sind korrekt erkannt.",
+        "wrong": "Leiten Sie die Entitaeten direkt aus den vorhandenen Beispieldaten ab und trennen Sie Stammdaten von Ereignissen."
+      },
+      "progressLinks": [
+        "pv2fiae_erm_untersuchung_diagnose"
+      ]
+    },
+    {
+      "id": "q10",
+      "type": "single_choice",
+      "title": "Unabhaengigkeit von Termin und Diagnose begruenden",
+      "prompt": "Warum sollte `DiagnoseEintrag` keine Pflichtverknuepfung zu `ScreeningTermin` erhalten?",
+      "options": [
+        {
+          "text": "Weil Diagnosen fachlich unabhaengig von den gezeigten Untersuchungsterminen sind und auch von einer anderen Aerztin oder einem anderen Arzt stammen koennen.",
+          "rationale": "Genau diese Unabhaengigkeit wird in der Aufgabenstellung explizit betont."
+        },
+        {
+          "text": "Weil Diagnosen nie ein Datum benoetigen und deshalb losgeloest von allen anderen Daten bleiben muessen.",
+          "rationale": "Diagnoseeintraege benoetigen sehr wohl ein eigenes Datum."
+        },
+        {
+          "text": "Weil Untersuchungstermine nur fuer Privatpatienten gespeichert werden duerfen, Diagnosen aber fuer alle.",
+          "rationale": "Diese Einschraenkung steht fachlich nirgends im Kontext."
+        },
+        {
+          "text": "Weil Diagnosecodes direkt den Raum eines Termins bestimmen und deshalb keine eigene Beziehung benoetigen.",
+          "rationale": "Diagnosecodes bestimmen nicht den Raum."
+        }
+      ],
+      "correctIndex": 0,
+      "feedback": {
+        "correct": "Die fehlende Pflichtbeziehung ist fachlich richtig begruendet.",
+        "wrong": "Pruefen Sie den Hinweis, dass Diagnosen und Untersuchungstermine in diesem Modell unabhaengig voneinander behandelt werden sollen."
+      },
+      "progressLinks": [
+        "pv2fiae_erm_untersuchung_diagnose"
+      ]
+    },
+    {
+      "id": "f04",
+      "type": "followup_divider",
+      "title": "SQL fuer Medikamenten- und Wirkstoffdaten formulieren",
+      "from": "datenanalyse@medilane-systems.example",
+      "to": "projektteam@ausbildungsbetrieb.example",
+      "subject": "SQL-Anweisungen fuer Anbieter, Praeparate und Wirkstoffe abstimmen",
+      "date": "2026-03-20",
+      "body": "Hallo,\n\nfuer den Medikationsbereich steht ein eigener Datenbestand mit Praeparaten, Wirkstoffen und Anbietern bereit. Bitte nutzen Sie den folgenden Tabellenstand als fachliche Grundlage und leiten Sie daraus mehrere SQL-Anweisungen fuer Verwaltung und Auswertung ab.\n\nViele Gruesse\nDatenanalyse",
+      "visuals": [
+        {
+          "type": "table_group",
+          "eyebrow": "Tabellenstand",
+          "title": "Pseudonymisierte Struktur fuer die SQL-Aufgaben",
+          "caption": "Die sichtbaren Tabellen bilden nur die Struktur ab; Ausgabebeispiele spaeter beziehen sich auf den Vollbestand.",
+          "tableRows": [
+            [
+              {
+                "title": "Tabelle `Substanz`",
+                "columns": [
+                  "S_ID",
+                  "Bezeichnung"
+                ],
+                "rows": [
+                  [
+                    "PK",
+                    "Primarschluessel"
+                  ],
+                  [
+                    "100",
+                    "QX7"
+                  ],
+                  [
+                    "101",
+                    "LM2"
+                  ]
+                ]
+              },
+              {
+                "title": "Tabelle `PraeparatSubstanz`",
+                "columns": [
+                  "P_ID",
+                  "S_ID",
+                  "Menge"
+                ],
+                "rows": [
+                  [
+                    "PK/FK",
+                    "PK/FK",
+                    "Einheiten"
+                  ]
+                ]
+              }
+            ],
+            [
+              {
+                "title": "Tabelle `Praeparat`",
+                "columns": [
+                  "P_ID",
+                  "Bezeichnung",
+                  "AnbieterID",
+                  "Preis",
+                  "rezeptpflichtig"
+                ],
+                "rows": [
+                  [
+                    "PK",
+                    "Text",
+                    "FK",
+                    "Decimal",
+                    "Boolean"
+                  ]
+                ]
+              },
+              {
+                "title": "Tabelle `Anbieter`",
+                "columns": [
+                  "AnbieterID",
+                  "Name"
+                ],
+                "rows": [
+                  [
+                    "PK",
+                    "Text"
+                  ]
+                ]
+              }
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "id": "q11",
+      "type": "single_choice",
+      "title": "Tabelle `Anbieter` anlegen",
+      "prompt": "Welche SQL-Anweisung legt die Tabelle `Anbieter` passend zur gezeigten Struktur an?",
+      "options": [
+        {
+          "label": "Variante A",
+          "language": "sql",
+          "code": "CREATE TABLE Anbieter (\n    AnbieterID INT PRIMARY KEY,\n    Name VARCHAR(80) NOT NULL\n);",
+          "rationale": "Diese Definition bildet die sichtbare Tabelle mit Primarschluessel und Namen korrekt ab."
+        },
+        {
+          "label": "Variante B",
+          "language": "sql",
+          "code": "CREATE TABLE Anbieter (\n    AnbieterID BOOLEAN,\n    Name INT,\n    PRIMARY KEY (Name)\n);",
+          "rationale": "Datentypen und Schluesselfestlegung passen nicht zur Struktur."
+        },
+        {
+          "label": "Variante C",
+          "language": "sql",
+          "code": "INSERT INTO Anbieter (AnbieterID, Name)\nVALUES (1, 'NordPharm');",
+          "rationale": "Das fuegt nur Daten ein, legt aber keine Tabelle an."
+        },
+        {
+          "label": "Variante D",
+          "language": "sql",
+          "code": "ALTER TABLE Anbieter\nADD COLUMN Name VARCHAR(80);",
+          "rationale": "Auch das setzt eine bereits existierende Tabelle voraus."
+        }
+      ],
+      "correctIndex": 0,
+      "feedback": {
+        "correct": "Die CREATE-TABLE-Anweisung fuer `Anbieter` ist korrekt gewaehlt.",
+        "wrong": "Pruefen Sie, welche Datentypen und welche Primarschluesseldefinition zur gezeigten Struktur passen."
+      },
+      "progressLinks": [
+        "pv2fiae_sql_medikation"
+      ]
+    },
+    {
+      "id": "q12",
+      "type": "single_choice",
+      "title": "Rezeptpflicht fuer ein Praeparat abfragen",
+      "prompt": "Welche SQL-Anweisung zeigt, ob das Praeparat mit der Bezeichnung `Serava` rezeptpflichtig ist?",
+      "options": [
+        {
+          "label": "Variante A",
+          "language": "sql",
+          "code": "SELECT rezeptpflichtig\nFROM Praeparat\nWHERE Bezeichnung = 'Serava';",
+          "rationale": "Genau diese Anweisung liest das gewuenschte Boolean-Feld fuer das gesuchte Praeparat aus."
+        },
+        {
+          "label": "Variante B",
+          "language": "sql",
+          "code": "SELECT AnbieterID\nFROM Praeparat\nWHERE rezeptpflichtig = 'Serava';",
+          "rationale": "Hier werden Feld und Suchwert vertauscht."
+        },
+        {
+          "label": "Variante C",
+          "language": "sql",
+          "code": "UPDATE Praeparat\nSET rezeptpflichtig = TRUE\nWHERE Bezeichnung = 'Serava';",
+          "rationale": "Das veraendert Daten, statt den vorhandenen Wert anzuzeigen."
+        },
+        {
+          "label": "Variante D",
+          "language": "sql",
+          "code": "SELECT *\nFROM Anbieter\nWHERE Name = 'Serava';",
+          "rationale": "Die falsche Tabelle wird abgefragt."
+        }
+      ],
+      "correctIndex": 0,
+      "feedback": {
+        "correct": "Die Abfrage fuer das Feld `rezeptpflichtig` ist korrekt gewaehlt.",
+        "wrong": "Gesucht ist eine reine Ausleseoperation auf der Tabelle `Praeparat` mit Filter auf die Bezeichnung."
+      },
+      "progressLinks": [
+        "pv2fiae_sql_medikation"
+      ]
+    },
+    {
+      "id": "q13",
+      "type": "single_choice",
+      "title": "Preis einer Anbietergruppe erhoehen",
+      "prompt": "Welche SQL-Anweisung erhoeht den Preis aller Praeparate des Anbieters `NordPharm` um 5 Prozent?",
+      "options": [
+        {
+          "label": "Variante A",
+          "language": "sql",
+          "code": "UPDATE Praeparat\nSET Preis = Preis * 1.05\nWHERE AnbieterID IN (\n    SELECT AnbieterID\n    FROM Anbieter\n    WHERE Name = 'NordPharm'\n);",
+          "rationale": "Diese Anweisung aktualisiert genau die Preise der Praeparate, die dem gesuchten Anbieter zugeordnet sind."
+        },
+        {
+          "label": "Variante B",
+          "language": "sql",
+          "code": "SELECT Preis = Preis * 1.05\nFROM Praeparat\nWHERE Name = 'NordPharm';",
+          "rationale": "Das ist keine gueltige Aktualisierungslogik und nutzt zudem ein falsches Feld."
+        },
+        {
+          "label": "Variante C",
+          "language": "sql",
+          "code": "UPDATE Anbieter\nSET Name = Name * 1.05\nWHERE Name = 'NordPharm';",
+          "rationale": "Hier wird die falsche Tabelle und das falsche Feld veraendert."
+        },
+        {
+          "label": "Variante D",
+          "language": "sql",
+          "code": "UPDATE Praeparat\nSET Preis = 1.05\nWHERE AnbieterID = 'NordPharm';",
+          "rationale": "Es fehlt die Multiplikation des bisherigen Preises, und der Filter vergleicht ID und Namen falsch."
+        }
+      ],
+      "correctIndex": 0,
+      "feedback": {
+        "correct": "Die Preisaktualisierung fuer die Anbietergruppe ist korrekt gewaehlt.",
+        "wrong": "Achten Sie auf eine echte UPDATE-Anweisung, den Preisaufschlag per Multiplikation und die Verbindung ueber `AnbieterID`."
+      },
+      "progressLinks": [
+        "pv2fiae_sql_medikation"
+      ]
+    },
+    {
+      "id": "q14",
+      "type": "single_choice",
+      "title": "Anbieter mit vielen nicht rezeptpflichtigen Praeparaten listen",
+      "visuals": [
+        {
+          "type": "table",
+          "eyebrow": "Beispielausgabe",
+          "title": "Struktur der gewuenschten Liste",
+          "caption": "Die Beispielwerte sind nur eine Formatvorlage fuer die Ausgabe.",
+          "columns": [
+            "Anbieter",
+            "Anzahl"
+          ],
+          "rows": [
+            [
+              "NordPharm",
+              "234"
+            ],
+            [
+              "MediCore",
+              "96"
+            ],
+            [
+              "VitaNova",
+              "51"
+            ]
+          ]
+        }
+      ],
+      "prompt": "Welche SQL-Anweisung listet alle Anbieter auf, zu denen mehr als 50 nicht rezeptpflichtige Praeparate gespeichert sind?",
+      "options": [
+        {
+          "label": "Variante A",
+          "language": "sql",
+          "code": "SELECT a.Name AS Anbieter, COUNT(*) AS Anzahl\nFROM Anbieter a\nJOIN Praeparat p ON p.AnbieterID = a.AnbieterID\nWHERE p.rezeptpflichtig = FALSE\nGROUP BY a.AnbieterID, a.Name\nHAVING COUNT(*) > 50;",
+          "rationale": "Die Abfrage verbindet beide Tabellen, filtert auf nicht rezeptpflichtig und grenzt die Gruppen ueber `HAVING` ein."
+        },
+        {
+          "label": "Variante B",
+          "language": "sql",
+          "code": "SELECT a.Name AS Anbieter, COUNT(*) AS Anzahl\nFROM Anbieter a\nJOIN Praeparat p ON p.AnbieterID = a.AnbieterID\nWHERE COUNT(*) > 50 AND p.rezeptpflichtig = FALSE\nGROUP BY a.Name;",
+          "rationale": "Aggregatbedingungen gehoeren nicht in die WHERE-Klausel."
+        },
+        {
+          "label": "Variante C",
+          "language": "sql",
+          "code": "SELECT Name, Preis\nFROM Anbieter\nWHERE rezeptpflichtig = FALSE AND Anzahl > 50;",
+          "rationale": "Die benoetigten Felder existieren in dieser Form nicht in einer einzelnen Tabelle."
+        },
+        {
+          "label": "Variante D",
+          "language": "sql",
+          "code": "SELECT a.Name AS Anbieter, COUNT(*) AS Anzahl\nFROM Anbieter a\nJOIN Praeparat p ON p.AnbieterID = a.AnbieterID\nGROUP BY a.Name\nHAVING p.rezeptpflichtig = FALSE AND COUNT(*) > 50;",
+          "rationale": "Die Rezeptpflicht wird hier nicht korrekt vor der Aggregation gefiltert."
+        }
+      ],
+      "correctIndex": 0,
+      "feedback": {
+        "correct": "Die Aggregationsabfrage fuer nicht rezeptpflichtige Praeparate ist korrekt gewaehlt.",
+        "wrong": "Achten Sie auf die Trennung von Zeilenfilter (`WHERE`) und Gruppenfilter (`HAVING`)."
+      },
+      "progressLinks": [
+        "pv2fiae_sql_medikation"
+      ]
+    },
+    {
+      "id": "q15",
+      "type": "single_choice",
+      "title": "Wirkstoff- und Mengenfilter fuer die Ergebnisliste aufbauen",
+      "visuals": [
+        {
+          "type": "table",
+          "eyebrow": "Beispielausgabe",
+          "title": "Gewuenschte Sortierung der Trefferliste",
+          "caption": "Die Beispielwerte zeigen nur die Sortierlogik: zuerst Menge absteigend, bei gleicher Menge Preis aufsteigend.",
+          "columns": [
+            "Bezeichnung",
+            "Menge",
+            "Preis",
+            "Anbieter"
+          ],
+          "rows": [
+            [
+              "Serava 240",
+              "240",
+              "13.40",
+              "NordPharm"
+            ],
+            [
+              "Lumera 240",
+              "240",
+              "15.20",
+              "MediCore"
+            ],
+            [
+              "Serava 120",
+              "120",
+              "8.60",
+              "NordPharm"
+            ],
+            [
+              "Vitan 120",
+              "120",
+              "9.95",
+              "VitaNova"
+            ]
+          ]
+        }
+      ],
+      "prompt": "Welche SQL-Anweisung listet Bezeichnung, Menge, Preis und Anbieter aller Praeparate auf, die die Substanz `QX7` in der Menge `120` oder `240` enthalten, und sortiert wie gezeigt?",
+      "options": [
+        {
+          "label": "Variante A",
+          "language": "sql",
+          "code": "SELECT p.Bezeichnung, ps.Menge, p.Preis, a.Name AS Anbieter\nFROM Praeparat p\nJOIN PraeparatSubstanz ps ON ps.P_ID = p.P_ID\nJOIN Substanz s ON s.S_ID = ps.S_ID\nJOIN Anbieter a ON a.AnbieterID = p.AnbieterID\nWHERE s.Bezeichnung = 'QX7'\n  AND ps.Menge IN (120, 240)\nORDER BY ps.Menge DESC, p.Preis ASC;",
+          "rationale": "Die Abfrage verbindet alle benoetigten Tabellen, filtert auf Wirkstoff und Menge und setzt die geforderte Sortierung korrekt um."
+        },
+        {
+          "label": "Variante B",
+          "language": "sql",
+          "code": "SELECT p.Bezeichnung, ps.Menge, p.Preis, a.Name AS Anbieter\nFROM Praeparat p\nJOIN Anbieter a ON a.AnbieterID = p.AnbieterID\nWHERE p.Bezeichnung = 'QX7'\n  AND p.Preis IN (120, 240)\nORDER BY p.Preis DESC, ps.Menge ASC;",
+          "rationale": "Wirkstoff und Menge werden hier auf den falschen Feldern gesucht."
+        },
+        {
+          "label": "Variante C",
+          "language": "sql",
+          "code": "SELECT p.Bezeichnung, ps.Menge, p.Preis, a.Name AS Anbieter\nFROM Praeparat p\nJOIN PraeparatSubstanz ps ON ps.P_ID = p.P_ID\nJOIN Substanz s ON s.S_ID = ps.S_ID\nJOIN Anbieter a ON a.AnbieterID = p.AnbieterID\nWHERE s.Bezeichnung = 'QX7'\n  AND ps.Menge IN (120, 240)\nORDER BY ps.Menge ASC, p.Preis DESC;",
+          "rationale": "Die Sortierung laeuft genau entgegengesetzt zur Vorgabe."
+        },
+        {
+          "label": "Variante D",
+          "language": "sql",
+          "code": "SELECT p.Bezeichnung, p.Preis, a.Name AS Anbieter\nFROM Praeparat p\nJOIN Anbieter a ON a.AnbieterID = p.AnbieterID\nJOIN Substanz s ON s.S_ID = p.P_ID\nWHERE s.Bezeichnung = 'QX7';",
+          "rationale": "Die Mengeninformation fehlt, und die Tabellen werden fachlich falsch verbunden."
+        }
+      ],
+      "correctIndex": 0,
+      "feedback": {
+        "correct": "Die SQL-Abfrage fuer Wirkstoff, Mengenfilter und Sortierung ist korrekt gewaehlt.",
+        "wrong": "Pruefen Sie Tabellenverbindungen, Wirkstofffilter, Mengenbedingung und die Reihenfolge der Sortierung."
+      },
+      "progressLinks": [
+        "pv2fiae_sql_medikation"
+      ]
+    }
+  ]
+}

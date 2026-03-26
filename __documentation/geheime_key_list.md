@@ -1,6 +1,6 @@
 # Geheime Key List
 
-Stand: 2026-03-19
+Stand: 2026-03-26
 Quelle: `access-keys.json`
 
 ## Direkte Freischaltungen
@@ -22,6 +22,7 @@ Quelle: `access-keys.json`
 | `PV1FIAE_03_26` | `Pruefungsvorbereitung-1-FIAE-Scenarien` |
 | `PV2FIAE_03_26` | `Pruefungsvorbereitung-2-FIAE-Scenarien` |
 | `PV3WISO_03_26` | `Pruefungsvorbereitung-3-WISO-Scenarien` |
+| `QuS2_03_26` | `QuS2-Scenarien` |
 
 ## Sammel-Key
 

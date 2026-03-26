@@ -1,0 +1,1430 @@
+{
+  "scenario": {
+    "company": "CampusSphere Lernwelten GmbH",
+    "scale": "Bildungsdienstleister mit mehreren Standorten, 45 Seminarraeumen und stark ausgelasteter Raumplanung",
+    "context": "Pruefungsvorbereitung 2 FIAE im Stationsformat mit Sortierlogik, Rekursion, Datenmodellierung und SQL fuer einen Bildungsbetrieb.",
+    "mission": "Sie modellieren Sortier- und Vergleichslogik, pruefen Rekursion und Iteration, erweitern Buchungsmodelle und formulieren SQL-Auswertungen fuer Mitarbeitenden- und Fehlzeitdaten.",
+    "source": {
+      "kind": "Pseudonymisierte Pruefungsvorlage",
+      "reference": "AP2 FIAE Teil 2, Winter 2022/23",
+      "note": "Die fachliche Aufgabenreihenfolge bleibt erhalten; Namen, Werte und Betriebsbezug wurden in das Kursformat ueberfuehrt."
+    },
+    "station": {
+      "id": "PV2FIAE-ST-05",
+      "department": "Pruefungsvorbereitung Anwendungsentwicklung",
+      "profile": "Algorithmen, Rekursion, ERM und SQL",
+      "constraints": [
+        "Die vier Hauptaufgaben bleiben als fachlich zusammenhaengende Folgeauftraege sichtbar",
+        "Offene Pruefungsfragen werden moeglichst auto-auswertbar, aber fachlich gleichwertig umgesetzt",
+        "Code und SQL erhalten Syntaxhighlighting; Visuals entstehen nur bei fachlichem Anlass"
+      ]
+    },
+    "customerRequest": {
+      "from": "produktteam@campussphere.example",
+      "to": "projektteam@ausbildungsbetrieb.example",
+      "subject": "Raumplanung, Binaerlogik, Buchungsmodell und Fehlzeitberichte vorbereiten",
+      "date": "2026-03-20",
+      "body": "Guten Tag,\n\nunser Bildungsbetrieb plant mehrere Erweiterungen zugleich. Zum einen sollen Raeume und spaeter auch Mitarbeitende ueber flexible Sortierlogik geordnet werden. Parallel wird fuer ein Online-Lernmodul eine vorhandene rekursive Umrechnung geprueft und in eine iterative Variante ueberfuehrt. Fuer Buchungsbestaetigungen muessen wir unser Datenmodell erweitern, und fuer das Personalteam werden neue SQL-Auswertungen zu Urlaub und Fehlzeiten benoetigt.\n\nBitte bearbeiten Sie die Teilauftraege in der vorgegebenen Reihenfolge. Im Fokus stehen Sortieralgorithmen, generische Vergleichsfunktionen, Rekursion versus Iteration, saubere 3NF-Modellierung und belastbare SQL-Anweisungen.\n\nViele Gruesse\nProduktteam"
+    }
+  },
+  "questions": [
+    {
+      "id": "ctx01",
+      "type": "context_card",
+      "title": "Kontext zur flexiblen Sortierlogik",
+      "contentBlocks": [
+        {
+          "type": "text",
+          "text": "Im Bildungsbetrieb sollen Raumobjekte zuerst nach ihrer aktuellen Belegung sortiert werden. Spaeter soll dieselbe Sortierlogik auch fuer andere Objekttypen nutzbar sein. Fuer Raumobjekte steht die Methode `get_belegung()` bereit. Fuer Mitarbeitende soll spaeter eine Vergleichsfunktion ueber das Gehalt arbeiten.\n\nDie Rueckgabe von `compare_fn(a, b)` ist wie folgt definiert:\n- `0`, wenn beide Objekte gleich einzuordnen sind\n- ein positiver Wert, wenn `a` groesser als `b` ist\n- ein negativer Wert im verbleibenden Fall\n\nFuer die generische Variante stellt `list_t` die Methoden `size()`, `get(index)` und `set(index, element)` bereit."
+        }
+      ]
+    },
+    {
+      "id": "q01",
+      "type": "single_choice",
+      "title": "Raeume nach Belegung aufsteigend sortieren",
+      "prompt": "Welche Python-Variante sortiert ein Array `raeume` aufsteigend nach `get_belegung()`?",
+      "options": [
+        {
+          "label": "Variante A",
+          "language": "python",
+          "code": "for last in range(len(raeume) - 1, 0, -1):\n    for i in range(last):\n        if raeume[i].get_belegung() > raeume[i + 1].get_belegung():\n            raeume[i], raeume[i + 1] = raeume[i + 1], raeume[i]",
+          "rationale": "Diese Variante vergleicht benachbarte Elemente und tauscht sie genau dann, wenn das linke Objekt groesser ist als das rechte."
+        },
+        {
+          "label": "Variante B",
+          "language": "python",
+          "code": "for last in range(len(raeume) - 1, 0, -1):\n    for i in range(last):\n        if raeume[i].get_belegung() < raeume[i + 1].get_belegung():\n            raeume[i], raeume[i + 1] = raeume[i + 1], raeume[i]",
+          "rationale": "Damit entstuende eine absteigende statt aufsteigende Sortierung."
+        },
+        {
+          "label": "Variante C",
+          "language": "python",
+          "code": "for i in range(len(raeume) - 1):\n    if raeume[i].get_belegung() > raeume[i + 1].get_belegung():\n        raeume[i], raeume[i + 1] = raeume[i + 1], raeume[i]",
+          "rationale": "Ein einzelner Durchlauf reicht nicht, um das gesamte Array sicher zu sortieren."
+        },
+        {
+          "label": "Variante D",
+          "language": "python",
+          "code": "for last in range(len(raeume)):\n    for i in range(last):\n        if raeume[last].get_belegung() > raeume[i].get_belegung():\n            raeume[last], raeume[i] = raeume[i], raeume[last]",
+          "rationale": "Hier werden nicht systematisch benachbarte Elemente verglichen und die Logik entspricht nicht dem beschriebenen Sortierverfahren."
+        }
+      ],
+      "correctIndex": 0,
+      "feedback": {
+        "correct": "Die Sortierlogik fuer die Raumobjekte ist korrekt gewaehlt.",
+        "wrong": "Achten Sie auf benachbarte Vergleiche, die richtige Vergleichsrichtung und darauf, dass der Durchlauf mehrfach wiederholt wird."
+      },
+      "progressLinks": [
+        "pv2fiae_sortierlogik_generics"
+      ]
+    },
+    {
+      "id": "q02",
+      "type": "single_choice",
+      "title": "Mitarbeitende ueber das Gehalt vergleichen",
+      "prompt": "Welche Python-Funktion bildet die geforderte Vergleichslogik fuer Mitarbeitende ueber `get_gehalt()` korrekt ab?",
+      "options": [
+        {
+          "label": "Variante A",
+          "language": "python",
+          "code": "def vergleiche_mitarbeitende(m1, m2):\n    if m1.get_gehalt() == m2.get_gehalt():\n        return 0\n    if m1.get_gehalt() > m2.get_gehalt():\n        return 1\n    return -1",
+          "rationale": "Diese Funktion liefert `0`, `1` oder `-1` genau gemaess der fachlichen Vorgabe."
+        },
+        {
+          "label": "Variante B",
+          "language": "python",
+          "code": "def vergleiche_mitarbeitende(m1, m2):\n    if m1.get_gehalt() == m2.get_gehalt():\n        return 1\n    if m1.get_gehalt() > m2.get_gehalt():\n        return 0\n    return -1",
+          "rationale": "Gleichheit und Groesser-als-Fall werden hier falsch auf die Rueckgabewerte abgebildet."
+        },
+        {
+          "label": "Variante C",
+          "language": "python",
+          "code": "def vergleiche_mitarbeitende(m1, m2):\n    return m1.get_gehalt() + m2.get_gehalt()",
+          "rationale": "Hier entsteht keine Vergleichsfunktion mit den geforderten drei Rueckgabewerten."
+        },
+        {
+          "label": "Variante D",
+          "language": "python",
+          "code": "def vergleiche_mitarbeitende(m1, m2):\n    if m1.get_gehalt() < m2.get_gehalt():\n        return 1\n    return 0",
+          "rationale": "Der negative Fall fehlt, und die Rueckgabewerte entsprechen nicht der Vorgabe."
+        }
+      ],
+      "correctIndex": 0,
+      "feedback": {
+        "correct": "Die Vergleichsfunktion fuer Mitarbeitende ist korrekt gewaehlt.",
+        "wrong": "Pruefen Sie, welcher Rueckgabewert fuer Gleichheit, groesser und kleiner gefordert ist."
+      },
+      "progressLinks": [
+        "pv2fiae_sortierlogik_generics"
+      ]
+    },
+    {
+      "id": "q03",
+      "type": "single_choice",
+      "title": "Generische Klasse einordnen",
+      "prompt": "Welche Beschreibung trifft den Begriff `generische Klasse` am besten?",
+      "options": [
+        {
+          "text": "Eine Klasse mit Typplatzhaltern, damit dieselbe Struktur fuer verschiedene Datentypen wiederverwendet werden kann.",
+          "rationale": "Genau darin liegt der Zweck einer generischen Klasse."
+        },
+        {
+          "text": "Eine Klasse, die immer nur genau einen fest eingebauten Datentyp verarbeiten darf.",
+          "rationale": "Das waere gerade das Gegenteil von generisch."
+        },
+        {
+          "text": "Eine Klasse, die nur im Datenbankschema verwendet werden darf und nicht im Anwendungscode.",
+          "rationale": "Generische Klassen sind ein Sprach- und Entwurfskonzept, kein reines Datenbankthema."
+        },
+        {
+          "text": "Eine Klasse ohne Methoden, die nur Kommentare und Platzhalter enthaelt.",
+          "rationale": "Das beschreibt keine generische Klasse."
+        }
+      ],
+      "correctIndex": 0,
+      "feedback": {
+        "correct": "Der Begriff `generische Klasse` ist korrekt eingeordnet.",
+        "wrong": "Im Kern geht es darum, dieselbe Klassenlogik mit unterschiedlichen Typen nutzen zu koennen."
+      },
+      "progressLinks": [
+        "pv2fiae_sortierlogik_generics"
+      ]
+    },
+    {
+      "id": "q04",
+      "type": "single_choice",
+      "title": "Generischen Sortieralgorithmus mit Vergleichsfunktion nutzen",
+      "prompt": "Welche Python-Variante bildet den generischen Sortieransatz mit `list_t` und `compare_fn` fachlich korrekt ab?",
+      "options": [
+        {
+          "label": "Variante A",
+          "language": "python",
+          "code": "def sort(list_t, compare_fn):\n    for last in range(list_t.size() - 1, 0, -1):\n        for i in range(last):\n            if compare_fn(list_t.get(i), list_t.get(i + 1)) > 0:\n                tmp = list_t.get(i)\n                list_t.set(i, list_t.get(i + 1))\n                list_t.set(i + 1, tmp)",
+          "rationale": "Es wird ueber `compare_fn` entschieden, ob zwei benachbarte Eintraege vertauscht werden muessen."
+        },
+        {
+          "label": "Variante B",
+          "language": "python",
+          "code": "def sort(list_t, compare_fn):\n    for last in range(list_t.size() - 1, 0, -1):\n        for i in range(last):\n            if compare_fn(list_t.get(i), list_t.get(i + 1)) < 0:\n                tmp = list_t.get(i)\n                list_t.set(i, list_t.get(i + 1))\n                list_t.set(i + 1, tmp)",
+          "rationale": "Damit wuerde die Vergleichsrichtung fuer die aufsteigende Sortierung umgedreht."
+        },
+        {
+          "label": "Variante C",
+          "language": "python",
+          "code": "def sort(list_t, compare_fn):\n    for i in range(list_t.size()):\n        compare_fn(list_t.get(i), list_t.get(i + 1))",
+          "rationale": "Die Funktion vergleicht nur, sortiert aber nicht und laeuft zudem ueber den gueltigen Indexbereich hinaus."
+        },
+        {
+          "label": "Variante D",
+          "language": "python",
+          "code": "def sort(list_t, compare_fn):\n    if compare_fn(list_t.get(0), list_t.get(1)) > 0:\n        list_t = compare_fn",
+          "rationale": "Die Vergleichsfunktion wird hier falsch behandelt, und das Verfahren sortiert die Liste nicht."
+        }
+      ],
+      "correctIndex": 0,
+      "feedback": {
+        "correct": "Der generische Sortieralgorithmus mit Vergleichsfunktion ist korrekt gewaehlt.",
+        "wrong": "Achten Sie darauf, wann getauscht wird und wie `size()`, `get()` und `set()` gemeinsam genutzt werden."
+      },
+      "progressLinks": [
+        "pv2fiae_sortierlogik_generics"
+      ]
+    },
+    {
+      "id": "f02",
+      "type": "followup_divider",
+      "title": "Rekursive Umrechnung pruefen und iterativ ersetzen",
+      "from": "lernmodule@campussphere.example",
+      "to": "projektteam@ausbildungsbetrieb.example",
+      "subject": "Rekursive Dezimal-zu-Binaer-Logik pruefen und eine iterative Variante vorbereiten",
+      "date": "2026-03-20",
+      "body": "Hallo zusammen,\n\nfuer ein Lernmodul zur Zahlensystemumrechnung liegt bereits eine rekursive Logik vor. Sie soll zuerst per Schreibtischtest geprueft, fachlich verbessert und anschliessend durch eine iterative Variante ersetzt werden.\n\nBitte nutzen Sie den unten gezeigten Arbeitsstand als gemeinsame Grundlage.\n\nViele Gruesse\nLernmodule"
+    },
+    {
+      "id": "ctx02",
+      "type": "context_card",
+      "title": "Kontext zur Binaerumrechnung",
+      "contentBlocks": [
+        {
+          "type": "text",
+          "text": "Die vorhandene Logik soll eine Dezimalzahl in eine Binaerzahl umwandeln. Die Ausgabe wird Zeichen fuer Zeichen erzeugt. Fuer den Schreibtischtest sind zwei Beispielwerte relevant: `7` mit dem erwarteten Ergebnis `111` und `11` mit dem erwarteten Ergebnis `1011`."
+        },
+        {
+          "type": "code_block",
+          "eyebrow": "Arbeitsstand",
+          "codeTitle": "Vorliegende rekursive Logik",
+          "language": "python",
+          "code": "def umrechnung(dezimalzahl):\n    rest = dezimalzahl % 2\n    ausgabe(rest)\n    dezimalzahl = dezimalzahl // 2\n    if dezimalzahl > 0:\n        umrechnung(dezimalzahl)"
+        }
+      ]
+    },
+    {
+      "id": "q05",
+      "type": "match_pairs",
+      "title": "Schreibtischtest fuer die Rekursion auswerten",
+      "prompt": "Welches Ausgabemuster erzeugt die vorliegende rekursive Logik bei den beiden Beispielwerten tatsaechlich?",
+      "layout": "table",
+      "columns": [
+        "Testfall",
+        "Ausgabe des Schreibtischtests"
+      ],
+      "pairs": [
+        {
+          "key": "desk_1",
+          "left": "Dezimalzahl `7`",
+          "right": "111"
+        },
+        {
+          "key": "desk_2",
+          "left": "Dezimalzahl `11`",
+          "right": "1101"
+        }
+      ],
+      "options": [
+        "111",
+        "1011",
+        "1101",
+        "1110"
+      ],
+      "feedback": {
+        "correct": "Die tatsaechliche Ausgabe der rekursiven Logik ist korrekt abgeleitet.",
+        "wrong": "Verfolgen Sie die Reihenfolge von Restbildung, Ausgabe und rekursivem Aufruf Schritt fuer Schritt."
+      },
+      "progressLinks": [
+        "pv2fiae_rekursion_binaer"
+      ]
+    },
+    {
+      "id": "q06",
+      "type": "single_choice",
+      "title": "Fehler der rekursiven Loesung korrigieren",
+      "prompt": "Welche Korrektur behebt den fachlichen Fehler der rekursiven Umrechnung am treffendsten?",
+      "options": [
+        {
+          "text": "Die Ausgabe des Restes muss nach dem rekursiven Aufruf erfolgen, damit die Bits in der richtigen Reihenfolge erscheinen.",
+          "rationale": "Die aktuelle Logik gibt zuerst das niederwertigste Bit aus und kehrt dadurch die Reihenfolge um."
+        },
+        {
+          "text": "Die Modulo-Operation muss durch Addition ersetzt werden, damit kein Rest verloren geht.",
+          "rationale": "Der Fehler liegt nicht in der Modulo-Operation."
+        },
+        {
+          "text": "Die Division durch `2` muss durch Multiplikation mit `2` ersetzt werden.",
+          "rationale": "Das wuerde die Rekursion komplett verfaelschen."
+        },
+        {
+          "text": "Die Funktion darf grundsaetzlich keine rekursiven Aufrufe verwenden, weil Binaerzahlen nur iterativ berechnet werden koennen.",
+          "rationale": "Rekursion ist hier grundsaetzlich moeglich; die Reihenfolge der Ausgabe ist das Problem."
+        }
+      ],
+      "correctIndex": 0,
+      "feedback": {
+        "correct": "Die fachlich passende Korrektur der rekursiven Logik ist erkannt.",
+        "wrong": "Nicht die Division oder Modulo-Bildung ist das Problem, sondern wann die Ausgabe des Restes stattfindet."
+      },
+      "progressLinks": [
+        "pv2fiae_rekursion_binaer"
+      ]
+    },
+    {
+      "id": "q07",
+      "type": "single_choice",
+      "title": "Minimale Anzahl fuer Anweisungsueberdeckung bestimmen",
+      "prompt": "Wie viele Testfaelle sind mindestens notwendig, um bei der gegebenen rekursiven Logik Anweisungsueberdeckung zu erreichen?",
+      "options": [
+        {
+          "text": "1",
+          "rationale": "Ein einziger geeigneter Testfall mit einer Zahl groesser `1` durchlaeuft alle Anweisungen inklusive rekursivem Aufruf."
+        },
+        {
+          "text": "2",
+          "rationale": "Zwei Testfaelle waeren fuer diese reine Anweisungsueberdeckung nicht minimal."
+        },
+        {
+          "text": "3",
+          "rationale": "Dafuer gibt es keine fachliche Notwendigkeit."
+        },
+        {
+          "text": "4",
+          "rationale": "Das ist fuer die gegebene Logik deutlich zu viel."
+        }
+      ],
+      "correctIndex": 0,
+      "feedback": {
+        "correct": "Die minimale Anzahl der Testfaelle fuer Anweisungsueberdeckung ist korrekt bestimmt.",
+        "wrong": "Denken Sie daran, dass Anweisungsueberdeckung nur verlangt, jede Anweisung mindestens einmal auszufuehren."
+      },
+      "progressLinks": [
+        "pv2fiae_rekursion_binaer"
+      ]
+    },
+    {
+      "id": "q08",
+      "type": "single_choice",
+      "title": "Rekursion und Iteration gegeneinander abwaegen",
+      "prompt": "Welches Paar beschreibt einen typischen Vorteil der rekursiven Loesung und einen typischen Nachteil gegenueber der iterativen Loesung am treffendsten?",
+      "options": [
+        {
+          "text": "Vorteil: Der Ablauf ist oft kompakter und naeher an der Problemstruktur. Nachteil: Zusetzliche Aufrufe brauchen Stack-Speicher.",
+          "rationale": "Dieses Paar trifft die typische Gegenueberstellung rekursiver und iterativer Loesungen."
+        },
+        {
+          "text": "Vorteil: Rekursion benoetigt nie zusaetzlichen Speicher. Nachteil: Sie kann keine Schleifen ersetzen.",
+          "rationale": "Beides ist fachlich unzutreffend."
+        },
+        {
+          "text": "Vorteil: Rekursion ist immer schneller. Nachteil: Iteration kann keine Listen verwenden.",
+          "rationale": "Diese Aussagen stimmen so nicht."
+        },
+        {
+          "text": "Vorteil: Rekursion verhindert jede Form von Logikfehlern. Nachteil: Iteration ist fuer Zahlen unzulaessig.",
+          "rationale": "Auch diese Aussagen sind fachlich falsch."
+        }
+      ],
+      "correctIndex": 0,
+      "feedback": {
+        "correct": "Der typische Vorteil-Nachteil-Vergleich ist korrekt eingeordnet.",
+        "wrong": "Suchen Sie nach einem Paar aus Lesbarkeit/Naehe zur Problemstruktur und zusaetzlichem Speicherbedarf."
+      },
+      "progressLinks": [
+        "pv2fiae_rekursion_binaer"
+      ]
+    },
+    {
+      "id": "q09",
+      "type": "single_choice",
+      "title": "Iterative Binaerumrechnung aufbauen",
+      "prompt": "Welche Python-Variante ersetzt die rekursive Umrechnung fachlich korrekt durch eine iterative Loesung?",
+      "options": [
+        {
+          "label": "Variante A",
+          "language": "python",
+          "code": "def umrechnung_iterativ(dezimalzahl):\n    bits = []\n    while True:\n        bits.append(dezimalzahl % 2)\n        dezimalzahl = dezimalzahl // 2\n        if dezimalzahl == 0:\n            break\n    for index in range(len(bits) - 1, -1, -1):\n        ausgabe(bits[index])",
+          "rationale": "Die Reste werden gesammelt und anschliessend in umgekehrter Reihenfolge ausgegeben."
+        },
+        {
+          "label": "Variante B",
+          "language": "python",
+          "code": "def umrechnung_iterativ(dezimalzahl):\n    while dezimalzahl > 0:\n        ausgabe(dezimalzahl % 2)\n        dezimalzahl = dezimalzahl // 2",
+          "rationale": "Damit bleibt das urspruengliche Reihenfolgeproblem bestehen."
+        },
+        {
+          "label": "Variante C",
+          "language": "python",
+          "code": "def umrechnung_iterativ(dezimalzahl):\n    bits = []\n    while dezimalzahl > 0:\n        bits.append(dezimalzahl // 2)\n        dezimalzahl = dezimalzahl % 2\n    for bit in bits:\n        ausgabe(bit)",
+          "rationale": "Division und Modulo werden hier fachlich vertauscht."
+        },
+        {
+          "label": "Variante D",
+          "language": "python",
+          "code": "def umrechnung_iterativ(dezimalzahl):\n    bits = []\n    if dezimalzahl == 0:\n        return\n    while dezimalzahl > 1:\n        bits.append(1)\n    for bit in bits:\n        ausgabe(bit)",
+          "rationale": "Die Schleife reduziert die Zahl nicht sauber und erzeugt keine korrekte Binaerdarstellung."
+        }
+      ],
+      "correctIndex": 0,
+      "feedback": {
+        "correct": "Die iterative Ersatzloesung ist korrekt gewaehlt.",
+        "wrong": "Achten Sie darauf, die Reste in einer Struktur zu sammeln und danach in der richtigen Reihenfolge auszugeben."
+      },
+      "progressLinks": [
+        "pv2fiae_rekursion_binaer"
+      ]
+    },
+    {
+      "id": "f03",
+      "type": "followup_divider",
+      "title": "Raumbuchungen in ein Datenmodell ueberfuehren",
+      "from": "datenmodell@campussphere.example",
+      "to": "projektteam@ausbildungsbetrieb.example",
+      "subject": "Buchungsbestaetigung und Datenmodell fuer Kundenbuchungen abstimmen",
+      "date": "2026-03-20",
+      "body": "Hallo,\n\ndas bestehende ER-Modell enthaelt bereits Mitarbeitende und Serviceleistungen. Fuer Kundenbuchungen von Raeumen und Zusatzressourcen muessen wir das Modell jetzt erweitern und anschliessend teilweise in ein relationales Modell ueberfuehren.\n\nBitte nutzen Sie die folgende Buchungsbestaetigung als fachliche Grundlage.\n\nViele Gruesse\nDatenmodell"
+    },
+    {
+      "id": "ctx03",
+      "type": "context_card",
+      "title": "Kontext zur Buchungsbestaetigung",
+      "contentBlocks": [
+        {
+          "type": "document_card",
+          "layout": "letter_sheet",
+          "documentTitle": "Buchungsbestaetigung",
+          "identifier": {
+            "label": "Buchungsnummer:",
+            "value": "708154"
+          },
+          "leftSections": [
+            {
+              "label": "Kundin:",
+              "lines": [
+                "Meyer, Tabea",
+                "Hauptufer 23",
+                "01023 Dresden"
+              ]
+            },
+            {
+              "label": "Standort:",
+              "lines": [
+                "Berlin"
+              ]
+            },
+            {
+              "label": "Gebuchte Raeume am Standort:",
+              "lines": [
+                "1. Raum: 201 Art: Tagungsraum",
+                "2. Raum: 202 Art: Tagungsraum",
+                "3. Raum: 304 Art: Schulungsraum"
+              ]
+            },
+            {
+              "label": "Ressourcen:",
+              "lines": [
+                "1 x Laserdrucker",
+                "3 x Beamer",
+                "2 x Flipchart",
+                "1 x mobiles Whiteboard"
+              ]
+            }
+          ],
+          "rightSections": [
+            {
+              "label": "Buchungsdatum:",
+              "value": "19.09.2026"
+            },
+            {
+              "label": "Kundennummer:",
+              "value": "412"
+            },
+            {
+              "label": "Ansprechpartnerin:",
+              "lines": [
+                "Christin Wald",
+                "Durchwahl: 0300-45123",
+                "Mail: c.wald@campussphere.example"
+              ]
+            },
+            {
+              "label": "Mietzeitraum:",
+              "value": "04.10.2026 bis 07.10.2026"
+            }
+          ],
+          "salutation": "Guten Tag,",
+          "bodyLead": "vielen Dank fuer Ihre Buchung. Nachfolgend finden Sie alle Informationen zu Ihrer Reservierung.",
+          "entries": [],
+          "signoff": "Mit freundlichen Gruessen\nIhr Serviceteam"
+        },
+        {
+          "type": "text",
+          "text": "Zusaetzliche Anforderungen:\n- Die Buchung soll mit der betreuenden Mitarbeiterin oder dem betreuenden Mitarbeiter verknuepft sein.\n- Die Standorte der Raeume sollen im Datenmodell erfassbar bleiben."
+        }
+      ]
+    },
+    {
+      "id": "q10",
+      "type": "multi_select",
+      "title": "Noetige neue Entitaetstypen erkennen",
+      "prompt": "Welche neuen Entitaetstypen werden gegenueber dem bestehenden Modell mit `Mitarbeiter` und `Serviceleistung` fuer die gezeigte Buchungsbestaetigung mindestens benoetigt?",
+      "options": [
+        {
+          "text": "Kunde",
+          "correct": true,
+          "rationale": "Die buchende Person bzw. Organisation ist ein eigenes Fachobjekt."
+        },
+        {
+          "text": "Raum",
+          "correct": true,
+          "rationale": "Die gebuchten Raeume muessen als eigene Entitaet modelliert werden."
+        },
+        {
+          "text": "Standort",
+          "correct": true,
+          "rationale": "Die Standorte der Raeume sollen explizit erfasst werden."
+        },
+        {
+          "text": "Ressource",
+          "correct": true,
+          "rationale": "Zusatzressourcen wie Beamer oder Flipcharts tauchen als wiederverwendbare Fachobjekte auf."
+        },
+        {
+          "text": "Mietzeitraum",
+          "correct": false,
+          "rationale": "Der Mietzeitraum ist hier eher ein Attribut als ein eigener Entitaetstyp."
+        },
+        {
+          "text": "Ansprechpartnerin",
+          "correct": false,
+          "rationale": "Die betreuende Person wird bereits ueber `Mitarbeiter` abgedeckt."
+        }
+      ],
+      "feedback": {
+        "correct": "Die zusaetzlich benoetigten Entitaetstypen sind korrekt erkannt.",
+        "wrong": "Leiten Sie die neuen Entitaeten direkt aus Raeumen, Kunden, Ressourcen und Standorten der Buchungsbestaetigung ab."
+      },
+      "progressLinks": [
+        "pv2fiae_erm_buchungsdaten"
+      ]
+    },
+    {
+      "id": "q11",
+      "type": "single_choice",
+      "title": "Passende ERM-Erweiterung fuer die Buchung waehlen",
+      "prompt": "Welches ERM-Diagramm erweitert das bestehende Modell fachlich am passendsten fuer Kundenbuchungen von Raeumen und Ressourcen?",
+      "options": [
+        {
+          "label": "Modell A",
+          "diagram": {
+            "type": "erm",
+            "width": 920,
+            "height": 520,
+            "entities": [
+              {
+                "id": "mitarbeiter",
+                "title": "MITARBEITER",
+                "x": 20,
+                "y": 30,
+                "width": 150,
+                "fields": [
+                  "PK mitarbeiter_nr",
+                  "name"
+                ]
+              },
+              {
+                "id": "service",
+                "title": "SERVICELEISTUNG",
+                "x": 380,
+                "y": 30,
+                "width": 180,
+                "fields": [
+                  "PK slid",
+                  "bezeichnung"
+                ]
+              },
+              {
+                "id": "kunde",
+                "title": "KUNDE",
+                "x": 750,
+                "y": 30,
+                "width": 150,
+                "fields": [
+                  "PK kunde_id",
+                  "name"
+                ]
+              },
+              {
+                "id": "standort",
+                "title": "STANDORT",
+                "x": 80,
+                "y": 290,
+                "width": 150,
+                "fields": [
+                  "PK standort_id",
+                  "ort"
+                ]
+              },
+              {
+                "id": "raum",
+                "title": "RAUM",
+                "x": 320,
+                "y": 290,
+                "width": 160,
+                "fields": [
+                  "PK raum_id",
+                  "art"
+                ]
+              },
+              {
+                "id": "ressource",
+                "title": "RESSOURCE",
+                "x": 650,
+                "y": 290,
+                "width": 170,
+                "fields": [
+                  "PK ressource_id",
+                  "bezeichnung"
+                ]
+              }
+            ],
+            "relations": [
+              {
+                "from": "mitarbeiter",
+                "to": "service",
+                "label": "erbringt",
+                "fromCard": "0..n",
+                "toCard": "0..n"
+              },
+              {
+                "from": "kunde",
+                "to": "service",
+                "label": "bucht",
+                "fromCard": "1",
+                "toCard": "0..n"
+              },
+              {
+                "from": "standort",
+                "to": "raum",
+                "label": "hat",
+                "fromCard": "1",
+                "toCard": "0..n"
+              },
+              {
+                "from": "service",
+                "to": "raum",
+                "label": "nutzt",
+                "fromCard": "0..n",
+                "toCard": "0..n"
+              },
+              {
+                "from": "service",
+                "to": "ressource",
+                "label": "verwendet",
+                "fromCard": "0..n",
+                "toCard": "0..n"
+              }
+            ]
+          },
+          "rationale": "Dieses Modell ergaenzt Kunde, Raum, Standort und Ressource sinnvoll und behaelt `Mitarbeiter` sowie `Serviceleistung` als Kern des bestehenden Modells bei."
+        },
+        {
+          "label": "Modell B",
+          "diagram": {
+            "type": "erm",
+            "width": 920,
+            "height": 460,
+            "entities": [
+              {
+                "id": "service",
+                "title": "SERVICELEISTUNG",
+                "x": 120,
+                "y": 40,
+                "width": 240,
+                "fields": [
+                  "PK slid",
+                  "bezeichnung",
+                  "kundenname",
+                  "raumliste",
+                  "ressourcenliste",
+                  "standort"
+                ]
+              },
+              {
+                "id": "mitarbeiter",
+                "title": "MITARBEITER",
+                "x": 500,
+                "y": 40,
+                "width": 170,
+                "fields": [
+                  "PK mitarbeiter_nr",
+                  "name"
+                ]
+              }
+            ],
+            "relations": [
+              {
+                "from": "mitarbeiter",
+                "to": "service",
+                "label": "erbringt",
+                "fromCard": "1",
+                "toCard": "0..n"
+              }
+            ]
+          },
+          "rationale": "Kunde, Raum, Standort und Ressource werden hier unnormalisiert in einer einzigen Entitaet versteckt."
+        },
+        {
+          "label": "Modell C",
+          "diagram": {
+            "type": "erm",
+            "width": 920,
+            "height": 500,
+            "entities": [
+              {
+                "id": "mitarbeiter",
+                "title": "MITARBEITER",
+                "x": 20,
+                "y": 30,
+                "width": 160,
+                "fields": [
+                  "PK mitarbeiter_nr",
+                  "name"
+                ]
+              },
+              {
+                "id": "service",
+                "title": "SERVICELEISTUNG",
+                "x": 380,
+                "y": 30,
+                "width": 180,
+                "fields": [
+                  "PK slid",
+                  "bezeichnung"
+                ]
+              },
+              {
+                "id": "kunde",
+                "title": "KUNDE",
+                "x": 740,
+                "y": 30,
+                "width": 150,
+                "fields": [
+                  "PK kunde_id",
+                  "name"
+                ]
+              },
+              {
+                "id": "raum",
+                "title": "RAUM",
+                "x": 220,
+                "y": 280,
+                "width": 160,
+                "fields": [
+                  "PK raum_id",
+                  "standort",
+                  "art"
+                ]
+              },
+              {
+                "id": "ressource",
+                "title": "RESSOURCE",
+                "x": 560,
+                "y": 280,
+                "width": 170,
+                "fields": [
+                  "PK ressource_id",
+                  "bezeichnung"
+                ]
+              }
+            ],
+            "relations": [
+              {
+                "from": "mitarbeiter",
+                "to": "service",
+                "label": "erbringt",
+                "fromCard": "1",
+                "toCard": "0..n"
+              },
+              {
+                "from": "kunde",
+                "to": "service",
+                "label": "bucht",
+                "fromCard": "0..n",
+                "toCard": "1"
+              },
+              {
+                "from": "service",
+                "to": "raum",
+                "label": "nutzt",
+                "fromCard": "1",
+                "toCard": "1"
+              },
+              {
+                "from": "service",
+                "to": "ressource",
+                "label": "verwendet",
+                "fromCard": "1",
+                "toCard": "1"
+              }
+            ]
+          },
+          "rationale": "Standorte werden hier nicht als eigene Entitaet modelliert, und die 1:1-Beziehungen zu Raum und Ressource passen nicht zu Mehrfachbuchungen."
+        },
+        {
+          "label": "Modell D",
+          "diagram": {
+            "type": "erm",
+            "width": 920,
+            "height": 500,
+            "entities": [
+              {
+                "id": "mitarbeiter",
+                "title": "MITARBEITER",
+                "x": 40,
+                "y": 40,
+                "width": 160,
+                "fields": [
+                  "PK mitarbeiter_nr",
+                  "name"
+                ]
+              },
+              {
+                "id": "service",
+                "title": "SERVICELEISTUNG",
+                "x": 380,
+                "y": 40,
+                "width": 180,
+                "fields": [
+                  "PK slid",
+                  "bezeichnung"
+                ]
+              },
+              {
+                "id": "kunde",
+                "title": "KUNDE",
+                "x": 720,
+                "y": 40,
+                "width": 150,
+                "fields": [
+                  "PK kunde_id",
+                  "name"
+                ]
+              },
+              {
+                "id": "standort",
+                "title": "STANDORT",
+                "x": 120,
+                "y": 280,
+                "width": 150,
+                "fields": [
+                  "PK standort_id",
+                  "ort"
+                ]
+              },
+              {
+                "id": "raum",
+                "title": "RAUM",
+                "x": 330,
+                "y": 280,
+                "width": 160,
+                "fields": [
+                  "PK raum_id",
+                  "art"
+                ]
+              }
+            ],
+            "relations": [
+              {
+                "from": "mitarbeiter",
+                "to": "service",
+                "label": "erbringt",
+                "fromCard": "0..n",
+                "toCard": "0..n"
+              },
+              {
+                "from": "kunde",
+                "to": "service",
+                "label": "bucht",
+                "fromCard": "1",
+                "toCard": "0..n"
+              },
+              {
+                "from": "standort",
+                "to": "raum",
+                "label": "hat",
+                "fromCard": "1",
+                "toCard": "0..n"
+              },
+              {
+                "from": "service",
+                "to": "raum",
+                "label": "nutzt",
+                "fromCard": "0..n",
+                "toCard": "0..n"
+              }
+            ]
+          },
+          "rationale": "Die Buchungsressourcen fehlen hier vollstaendig, obwohl sie im Beleg klar gefordert sind."
+        }
+      ],
+      "correctIndex": 0,
+      "feedback": {
+        "correct": "Die fachlich passende ERM-Erweiterung fuer Kundenbuchungen ist korrekt gewaehlt.",
+        "wrong": "Pruefen Sie, ob Kunde, Raum, Standort und Ressource vollstaendig abgebildet sind und ob Mehrfachbuchungen fachlich moeglich bleiben."
+      },
+      "progressLinks": [
+        "pv2fiae_erm_buchungsdaten"
+      ]
+    },
+    {
+      "id": "q12",
+      "type": "single_choice",
+      "title": "Relationale 3NF-Struktur fuer den Kern des Ausgangsmodells waehlen",
+      "prompt": "Welches relationale Modell ueberfuehrt den bestehenden Kern aus `Mitarbeiter`, `Serviceleistung` und ihrer Beziehung `erbringt` in 3. Normalform am passendsten?",
+      "options": [
+        {
+          "text": "`Mitarbeiter(mitarbeiter_nr PK, name, vorname, telefon, anschrift)`; `Serviceleistung(slid PK, bezeichnung)`; `Erbringt(mitarbeiter_nr PK/FK, slid PK/FK, datum PK, dauer)`",
+          "rationale": "Die Entitaeten bleiben getrennt, und die Beziehungsattribute liegen in einer eigenen Beziehungstabelle."
+        },
+        {
+          "text": "`Mitarbeiter(mitarbeiter_nr PK, name, vorname, telefon, anschrift, slid, bezeichnung, datum, dauer)`",
+          "rationale": "Hier werden Serviceleistungs- und Beziehungsdaten unnormalisiert in die Mitarbeitertabelle gezogen."
+        },
+        {
+          "text": "`Serviceleistung(slid PK, bezeichnung, mitarbeiter_nr, name, vorname, datum, dauer)`",
+          "rationale": "Auch hier werden Mitarbeiterattribute in die falsche Tabelle gemischt."
+        },
+        {
+          "text": "`Mitarbeiter(mitarbeiter_nr PK, name, vorname)`; `Serviceleistung(slid PK, bezeichnung)`; `Erbringt(dauer PK)`",
+          "rationale": "Die Beziehungstabelle enthaelt nicht die notwendigen Fremdschluessel und kann die Beziehung nicht abbilden."
+        }
+      ],
+      "correctIndex": 0,
+      "feedback": {
+        "correct": "Die relationale 3NF-Struktur fuer den Kern des Ausgangsmodells ist korrekt erkannt.",
+        "wrong": "Achten Sie darauf, Entitaetsattribute von Beziehungsattributen zu trennen und die Verknuepfung ueber Schluessel sauber abzubilden."
+      },
+      "progressLinks": [
+        "pv2fiae_erm_buchungsdaten"
+      ]
+    },
+    {
+      "id": "q13",
+      "type": "match_pairs",
+      "title": "Sinnvolle Datentypen zuordnen",
+      "prompt": "Ordnen Sie den drei Attributen einen sinnvollen Datentyp zu.",
+      "layout": "table",
+      "columns": [
+        "Attribut",
+        "Datentyp"
+      ],
+      "pairs": [
+        {
+          "key": "dtype_1",
+          "left": "Dauer",
+          "right": "INT"
+        },
+        {
+          "key": "dtype_2",
+          "left": "PLZ",
+          "right": "VARCHAR(5)"
+        },
+        {
+          "key": "dtype_3",
+          "left": "Name",
+          "right": "VARCHAR(80)"
+        }
+      ],
+      "options": [
+        "INT",
+        "DATE",
+        "VARCHAR(5)",
+        "VARCHAR(80)",
+        "BOOLEAN"
+      ],
+      "feedback": {
+        "correct": "Die Datentypen sind sinnvoll zugeordnet.",
+        "wrong": "Pruefen Sie, ob Zahlenwerte, Postleitzahlen und Namen fachlich als numerisch oder textuell gespeichert werden sollten."
+      },
+      "progressLinks": [
+        "pv2fiae_erm_buchungsdaten"
+      ]
+    },
+    {
+      "id": "f04",
+      "type": "followup_divider",
+      "title": "SQL fuer Urlaub, Archivierung und PLZ-Filter formulieren",
+      "from": "personalcontrolling@campussphere.example",
+      "to": "projektteam@ausbildungsbetrieb.example",
+      "subject": "Mitarbeitenden- und Fehlzeitdaten fuer Berichte und Archiv vorbereiten",
+      "date": "2026-03-20",
+      "body": "Hallo,\n\nfuer das Personalcontrolling benoetigen wir auf Basis der Fehlzeitdaten mehrere SQL-Anweisungen: eine Jahresauswertung zu Urlaubstagen, einen Archivierungsschritt fuer einzelne Mitarbeitende und eine kleine Filterabfrage ueber Postleitzahlen.\n\nBitte nutzen Sie den folgenden Tabellenstand als gemeinsame Grundlage.\n\nViele Gruesse\nPersonalcontrolling",
+      "visuals": [
+        {
+          "type": "table_group",
+          "eyebrow": "Tabellenstand",
+          "title": "Pseudonymisierte Tabellen fuer die SQL-Aufgaben",
+          "caption": "Die gezeigten Datensaetze sind ein Ausschnitt; die Ergebnisbeispiele spaeter beziehen sich auf den Vollbestand.",
+          "tableRows": [
+            [
+              {
+                "title": "Tabelle `Mitarbeiter`",
+                "columns": [
+                  "Ma_ID",
+                  "Nachname",
+                  "Vorname",
+                  "Strasse",
+                  "PLZ",
+                  "Ort",
+                  "GebDat",
+                  "ArbeitszeitTag",
+                  "Abt_ID"
+                ],
+                "rows": [
+                  [
+                    "1",
+                    "Berger",
+                    "Leonie",
+                    "Musterstr. 22",
+                    "50733",
+                    "Koeln",
+                    "23.11.1997",
+                    "8",
+                    "3"
+                  ],
+                  [
+                    "2",
+                    "Hansen",
+                    "Mira",
+                    "Hauptstr. 33",
+                    "50737",
+                    "Koeln",
+                    "02.02.1964",
+                    "4",
+                    "3"
+                  ],
+                  [
+                    "3",
+                    "Nowak",
+                    "Timo",
+                    "Aachener Str. 5",
+                    "50968",
+                    "Koeln",
+                    "02.08.1996",
+                    "8",
+                    "2"
+                  ],
+                  [
+                    "4",
+                    "Fischer",
+                    "Erik",
+                    "Hauptstr. 155",
+                    "50734",
+                    "Koeln",
+                    "05.09.1977",
+                    "8",
+                    "1"
+                  ],
+                  [
+                    "5",
+                    "Vogt",
+                    "Sina",
+                    "Koelner Str. 221",
+                    "52063",
+                    "Aachen",
+                    "11.11.2001",
+                    "8",
+                    "3"
+                  ],
+                  [
+                    "6",
+                    "Klee",
+                    "Joris",
+                    "Lichstr. 3",
+                    "50969",
+                    "Koeln",
+                    "03.01.1979",
+                    "8",
+                    "1"
+                  ],
+                  [
+                    "7",
+                    "Urban",
+                    "Paula",
+                    "Von-Bern-Str. 5",
+                    "50999",
+                    "Koeln",
+                    "08.10.1956",
+                    "6",
+                    "1"
+                  ],
+                  [
+                    "8",
+                    "Rehm",
+                    "Nora",
+                    "Perterstr.",
+                    "50927",
+                    "Koeln",
+                    "19.12.1988",
+                    "8",
+                    "2"
+                  ]
+                ]
+              }
+            ],
+            [
+              {
+                "title": "Tabelle `Abteilung`",
+                "columns": [
+                  "Abt_ID",
+                  "Abteilung"
+                ],
+                "rows": [
+                  [
+                    "1",
+                    "Verwaltung"
+                  ],
+                  [
+                    "2",
+                    "Produktion"
+                  ],
+                  [
+                    "3",
+                    "Entwicklung"
+                  ]
+                ]
+              },
+              {
+                "title": "Tabelle `FehlzeitArt`",
+                "columns": [
+                  "FzA_ID",
+                  "Fehlzeitart"
+                ],
+                "rows": [
+                  [
+                    "1",
+                    "AU"
+                  ],
+                  [
+                    "2",
+                    "Urlaub"
+                  ],
+                  [
+                    "3",
+                    "Dienstreise"
+                  ]
+                ]
+              },
+              {
+                "title": "Tabelle `Fehlzeit`",
+                "columns": [
+                  "Fz_ID",
+                  "Ma_ID",
+                  "FzA_ID",
+                  "VonDat",
+                  "BisDat",
+                  "FehltageSum"
+                ],
+                "rows": [
+                  [
+                    "1",
+                    "2",
+                    "1",
+                    "10.05.2022",
+                    "20.05.2022",
+                    "9"
+                  ],
+                  [
+                    "2",
+                    "5",
+                    "2",
+                    "16.05.2022",
+                    "29.05.2022",
+                    "10"
+                  ],
+                  [
+                    "3",
+                    "3",
+                    "1",
+                    "18.05.2022",
+                    "22.05.2022",
+                    "3"
+                  ],
+                  [
+                    "4",
+                    "1",
+                    "1",
+                    "19.05.2022",
+                    "22.05.2022",
+                    "2"
+                  ],
+                  [
+                    "5",
+                    "1",
+                    "2",
+                    "23.05.2022",
+                    "29.05.2022",
+                    "5"
+                  ],
+                  [
+                    "6",
+                    "7",
+                    "2",
+                    "30.05.2022",
+                    "19.06.2022",
+                    "15"
+                  ],
+                  [
+                    "7",
+                    "6",
+                    "3",
+                    "25.05.2022",
+                    "26.05.2022",
+                    "2"
+                  ],
+                  [
+                    "8",
+                    "6",
+                    "3",
+                    "06.06.2022",
+                    "08.06.2022",
+                    "3"
+                  ],
+                  [
+                    "9",
+                    "1",
+                    "1",
+                    "27.06.2022",
+                    "29.06.2022",
+                    "3"
+                  ]
+                ]
+              }
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "id": "q14",
+      "type": "single_choice",
+      "title": "Urlaubstage und Urlaubseintraege fuer 2022 auswerten",
+      "visuals": [
+        {
+          "type": "table",
+          "eyebrow": "Erwartete Ausgabestruktur",
+          "title": "Jahresauswertung Urlaub 2022",
+          "caption": "Die Liste soll alle Mitarbeitenden enthalten, auch wenn fuer sie keine Urlaubseintraege vorhanden sind.",
+          "columns": [
+            "ID",
+            "Nachname",
+            "Vorname",
+            "Abteilung",
+            "Urlaubstage",
+            "Urlaubseintraege"
+          ],
+          "rows": [
+            [
+              "1",
+              "Berger",
+              "Leonie",
+              "Entwicklung",
+              "5",
+              "1"
+            ],
+            [
+              "2",
+              "Hansen",
+              "Mira",
+              "Entwicklung",
+              "0",
+              "0"
+            ],
+            [
+              "5",
+              "Vogt",
+              "Sina",
+              "Entwicklung",
+              "10",
+              "1"
+            ],
+            [
+              "7",
+              "Urban",
+              "Paula",
+              "Verwaltung",
+              "15",
+              "1"
+            ]
+          ]
+        }
+      ],
+      "prompt": "Welche SQL-Anweisung listet fuer das Jahr 2022 alle Mitarbeitenden mit Abteilung, summierten Urlaubstagen und Anzahl ihrer Urlaubseintraege auf?",
+      "options": [
+        {
+          "label": "Variante A",
+          "language": "sql",
+          "code": "SELECT m.Ma_ID AS ID, m.Nachname, m.Vorname, a.Abteilung,\n       COALESCE(SUM(CASE WHEN f.FzA_ID = 2 AND YEAR(f.VonDat) = 2022 THEN f.FehltageSum ELSE 0 END), 0) AS Urlaubstage,\n       COALESCE(SUM(CASE WHEN f.FzA_ID = 2 AND YEAR(f.VonDat) = 2022 THEN 1 ELSE 0 END), 0) AS Urlaubseintraege\nFROM Mitarbeiter m\nJOIN Abteilung a ON a.Abt_ID = m.Abt_ID\nLEFT JOIN Fehlzeit f ON f.Ma_ID = m.Ma_ID\nGROUP BY m.Ma_ID, m.Nachname, m.Vorname, a.Abteilung;",
+          "rationale": "Diese Abfrage enthaelt alle Mitarbeitenden per LEFT JOIN und trennt Summierung und Zaehlung korrekt ueber CASE-Ausdruecke."
+        },
+        {
+          "label": "Variante B",
+          "language": "sql",
+          "code": "SELECT m.Ma_ID, m.Nachname, m.Vorname, a.Abteilung,\n       SUM(f.FehltageSum) AS Urlaubstage,\n       COUNT(*) AS Urlaubseintraege\nFROM Mitarbeiter m\nJOIN Abteilung a ON a.Abt_ID = m.Abt_ID\nJOIN Fehlzeit f ON f.Ma_ID = m.Ma_ID\nWHERE f.FzA_ID = 2 AND YEAR(f.VonDat) = 2022\nGROUP BY m.Ma_ID, m.Nachname, m.Vorname, a.Abteilung;",
+          "rationale": "Mitarbeitende ohne Urlaubseintrag verschwinden durch den INNER JOIN und die WHERE-Bedingung aus der Liste."
+        },
+        {
+          "label": "Variante C",
+          "language": "sql",
+          "code": "SELECT m.Ma_ID, m.Nachname, m.Vorname, a.Abteilung,\n       SUM(f.FehltageSum) AS Urlaubstage,\n       COUNT(f.FzA_ID) AS Urlaubseintraege\nFROM Mitarbeiter m\nLEFT JOIN Fehlzeit f ON f.Ma_ID = m.Ma_ID\nLEFT JOIN Abteilung a ON a.Abt_ID = m.Ma_ID\nGROUP BY a.Abteilung;",
+          "rationale": "Hier wird die Abteilung ueber das falsche Feld verbunden und zu grob gruppiert."
+        },
+        {
+          "label": "Variante D",
+          "language": "sql",
+          "code": "SELECT m.Ma_ID, m.Nachname, m.Vorname, a.Abteilung,\n       f.FehltageSum AS Urlaubstage,\n       1 AS Urlaubseintraege\nFROM Mitarbeiter m\nJOIN Abteilung a ON a.Abt_ID = m.Abt_ID\nLEFT JOIN Fehlzeit f ON f.Ma_ID = m.Ma_ID\nWHERE YEAR(f.VonDat) = 2022;",
+          "rationale": "Die Daten werden hier nicht pro Mitarbeitenden aggregiert, und Mitarbeitende ohne Fehlzeit verlieren sich wieder in der WHERE-Klausel."
+        }
+      ],
+      "correctIndex": 0,
+      "feedback": {
+        "correct": "Die SQL-Auswertung fuer Urlaubstage und Urlaubseintraege ist korrekt gewaehlt.",
+        "wrong": "Achten Sie vor allem darauf, dass Mitarbeitende ohne Urlaubseintraege trotzdem in der Liste bleiben."
+      },
+      "progressLinks": [
+        "pv2fiae_sql_fehlzeiten_berichte"
+      ]
+    },
+    {
+      "id": "q15",
+      "type": "single_choice",
+      "title": "Fehlzeiten in ein Archiv verschieben",
+      "prompt": "Welche SQL-Loesung verschiebt die Fehlzeiten der Mitarbeiterin mit `Ma_ID = 1` aus `Fehlzeit` nach `Fehlzeit_Archiv`, wenn beide Tabellen dieselbe Struktur besitzen?",
+      "options": [
+        {
+          "label": "Variante A",
+          "language": "sql",
+          "code": "INSERT INTO Fehlzeit_Archiv\nSELECT *\nFROM Fehlzeit\nWHERE Ma_ID = 1;\n\nDELETE FROM Fehlzeit\nWHERE Ma_ID = 1;",
+          "rationale": "Zuerst werden die Datensaetze kopiert, danach im Ursprung geloescht."
+        },
+        {
+          "label": "Variante B",
+          "language": "sql",
+          "code": "DELETE FROM Fehlzeit\nWHERE Ma_ID = 1;\n\nINSERT INTO Fehlzeit_Archiv\nSELECT *\nFROM Fehlzeit\nWHERE Ma_ID = 1;",
+          "rationale": "Nach dem Loeschen stehen im Ursprung keine Datensaetze mehr fuer das Archiv bereit."
+        },
+        {
+          "label": "Variante C",
+          "language": "sql",
+          "code": "UPDATE Fehlzeit_Archiv\nSET Ma_ID = 1\nWHERE Ma_ID = 1;",
+          "rationale": "Hier wird nichts verschoben oder kopiert."
+        },
+        {
+          "label": "Variante D",
+          "language": "sql",
+          "code": "INSERT INTO Fehlzeit_Archiv (Ma_ID)\nVALUES (1);",
+          "rationale": "Damit werden weder alle Spalten noch die vorhandenen Datensaetze uebernommen."
+        }
+      ],
+      "correctIndex": 0,
+      "feedback": {
+        "correct": "Die Archivierungslogik fuer die Fehlzeiten ist korrekt gewaehlt.",
+        "wrong": "Beim Verschieben muss zuerst kopiert und erst danach im Ursprung geloescht werden."
+      },
+      "progressLinks": [
+        "pv2fiae_sql_fehlzeiten_berichte"
+      ]
+    },
+    {
+      "id": "q16",
+      "type": "single_choice",
+      "title": "Mitarbeitende ueber die vierte PLZ-Stelle filtern",
+      "visuals": [
+        {
+          "type": "table",
+          "eyebrow": "Erwartete Ausgabe",
+          "title": "Treffer fuer die vierte Stelle der Postleitzahl",
+          "columns": [
+            "Ma_ID",
+            "Nachname",
+            "PLZ",
+            "Ort"
+          ],
+          "rows": [
+            [
+              "1",
+              "Berger",
+              "50733",
+              "Koeln"
+            ],
+            [
+              "2",
+              "Hansen",
+              "50737",
+              "Koeln"
+            ],
+            [
+              "4",
+              "Fischer",
+              "50734",
+              "Koeln"
+            ]
+          ]
+        }
+      ],
+      "prompt": "Welche SQL-Anweisung gibt alle Mitarbeitenden aus, deren vierte Stelle der als Zeichenkette gespeicherten Postleitzahl die Ziffer `3` enthaelt?",
+      "options": [
+        {
+          "label": "Variante A",
+          "language": "sql",
+          "code": "SELECT Ma_ID, Nachname, PLZ, Ort\nFROM Mitarbeiter\nWHERE SUBSTRING(PLZ, 4, 1) = '3';",
+          "rationale": "Genau die vierte Zeichenposition wird als Zeichenkette geprueft."
+        },
+        {
+          "label": "Variante B",
+          "language": "sql",
+          "code": "SELECT Ma_ID, Nachname, PLZ, Ort\nFROM Mitarbeiter\nWHERE SUBSTRING(PLZ, 3, 1) = '3';",
+          "rationale": "Hier wird die dritte statt der vierten Position ausgewertet."
+        },
+        {
+          "label": "Variante C",
+          "language": "sql",
+          "code": "SELECT Ma_ID, Nachname, PLZ, Ort\nFROM Mitarbeiter\nWHERE PLZ = 3;",
+          "rationale": "Damit wird nicht die einzelne Position, sondern die ganze Postleitzahl falsch verglichen."
+        },
+        {
+          "label": "Variante D",
+          "language": "sql",
+          "code": "SELECT Ma_ID, Nachname, PLZ, Ort\nFROM Mitarbeiter\nWHERE RIGHT(PLZ, 1) = '3';",
+          "rationale": "Diese Variante prueft nur die letzte, nicht die vierte Stelle."
+        }
+      ],
+      "correctIndex": 0,
+      "feedback": {
+        "correct": "Die SQL-Abfrage fuer die vierte Stelle der Postleitzahl ist korrekt gewaehlt.",
+        "wrong": "Geprueft werden muss genau die vierte Position der als Zeichenkette gespeicherten Postleitzahl."
+      },
+      "progressLinks": [
+        "pv2fiae_sql_fehlzeiten_berichte"
+      ]
+    }
+  ]
+}

@@ -41,31 +41,18 @@
     },
     {
       "id": "q01",
-      "type": "single_choice",
-      "title": "Kategorien von Vorgehensmodellen erkennen",
-      "prompt": "Welche zwei Kategorien von Vorgehensmodellen sind fuer dieses Entwicklungsprojekt gemeint?",
-      "options": [
-        {
-          "text": "Klassisches Projektmanagement und agiles Projektmanagement",
-          "rationale": "Genau diese beiden Kategorien werden in der Aufgabenstellung angesprochen."
-        },
-        {
-          "text": "Zentrales und dezentrales Projektmanagement",
-          "rationale": "Das sind moegliche Organisationsformen, aber nicht die hier gemeinten Grundkategorien."
-        },
-        {
-          "text": "Objektorientiertes und relationales Projektmanagement",
-          "rationale": "Das sind keine passenden Kategorien von Vorgehensmodellen."
-        },
-        {
-          "text": "Synchrones und asynchrones Projektmanagement",
-          "rationale": "Diese Unterscheidung trifft den Projektmanagement-Kontext der Aufgabe nicht."
-        }
+      "type": "short_text",
+      "title": "Zwei Kategorien von Vorgehensmodellen benennen",
+      "prompt": "Nennen Sie die zwei Grundkategorien von Vorgehensmodellen, die in diesem Projekt gegenuebergestellt werden.",
+      "minChars": 35,
+      "requiredKeywords": [
+        "klassisch",
+        "agil"
       ],
-      "correctIndex": 0,
+      "expectedOutline": "Nennt klassisches Projektmanagement und agiles Projektmanagement als die zwei gesuchten Grundkategorien.",
       "feedback": {
-        "correct": "Die beiden gesuchten Kategorien von Vorgehensmodellen sind richtig erkannt.",
-        "wrong": "Gesucht sind die bekannten Grundrichtungen, die typischerweise als klassisch und agil gegenuebergestellt werden."
+        "correct": "Die zwei Grundkategorien von Vorgehensmodellen sind korrekt benannt.",
+        "wrong": "Gesucht sind die zwei bekannten Grundrichtungen, die hier gegeneinander gestellt werden."
       },
       "progressLinks": [
         "pv1fiae_vorgehensmodelle_datenschutz"
@@ -444,31 +431,66 @@
     },
     {
       "id": "q07",
-      "type": "single_choice",
-      "title": "MAC-Adresse fachlich erklaeren",
-      "prompt": "Welche Aussage beschreibt Aufbau und Bedeutung einer MAC-Adresse am treffendsten?",
-      "options": [
-        {
-          "text": "Eine MAC-Adresse ist 6 Byte lang; die ersten 3 Byte kennzeichnen den Hersteller, die letzten 3 Byte identifizieren das konkrete Geraet.",
-          "rationale": "Damit sind Laenge, OUI und geraeteindividueller Teil korrekt beschrieben."
-        },
-        {
-          "text": "Eine MAC-Adresse ist 4 Byte lang und entspricht immer exakt der IPv4-Adresse des Geraets.",
-          "rationale": "MAC- und IP-Adresse sind unterschiedliche Adressarten mit unterschiedlicher Laenge."
-        },
-        {
-          "text": "Die ersten 3 Byte beschreiben das Betriebssystem, die letzten 3 Byte den eingesetzten Browser.",
-          "rationale": "Das hat nichts mit dem Aufbau einer MAC-Adresse zu tun."
-        },
-        {
-          "text": "Eine MAC-Adresse wird nur im Rechenzentrum verwendet und spielt in LANs keine Rolle.",
-          "rationale": "MAC-Adressen sind gerade im LAN-Umfeld zentral."
-        }
+      "type": "table_fill",
+      "title": "Aufbau einer MAC-Adresse zerlegen",
+      "prompt": "Ordnen Sie den drei Aspekten der MAC-Adresse die passende Aussage zu.",
+      "columns": [
+        "Aspekt",
+        "Passende Aussage"
       ],
-      "correctIndex": 0,
+      "rows": [
+        [
+          "Gesamtlaenge der MAC-Adresse",
+          {
+            "key": "mac_length",
+            "label": "Gesamtlaenge",
+            "expected": "6 Byte",
+            "inputType": "select",
+            "placeholder": "Aussage waehlen",
+            "options": [
+              "6 Byte",
+              "4 Byte",
+              "8 Byte",
+              "32 Byte"
+            ]
+          }
+        ],
+        [
+          "Erste 3 Byte",
+          {
+            "key": "mac_vendor",
+            "label": "Erste 3 Byte",
+            "expected": "Herstellerkennung (OUI)",
+            "inputType": "select",
+            "placeholder": "Aussage waehlen",
+            "options": [
+              "Herstellerkennung (OUI)",
+              "geraeteindividueller Teil",
+              "IPv4-Netzadresse",
+              "Browser- und Betriebssystemprofil"
+            ]
+          }
+        ],
+        [
+          "Letzte 3 Byte",
+          {
+            "key": "mac_device",
+            "label": "Letzte 3 Byte",
+            "expected": "geraeteindividueller Teil",
+            "inputType": "select",
+            "placeholder": "Aussage waehlen",
+            "options": [
+              "geraeteindividueller Teil",
+              "Herstellerkennung (OUI)",
+              "Pruefsumme des Ethernet-Frames",
+              "Portnummer des Switches"
+            ]
+          }
+        ]
+      ],
       "feedback": {
-        "correct": "Die Struktur der MAC-Adresse ist korrekt beschrieben.",
-        "wrong": "Denken Sie an 6 Byte insgesamt sowie an die Aufteilung in Herstellerkennung und geraetespezifischen Teil."
+        "correct": "Laenge und Aufteilung der MAC-Adresse sind korrekt zugeordnet.",
+        "wrong": "Achten Sie auf 6 Byte insgesamt sowie auf die Trennung zwischen Herstellerkennung und geraeteindividuellem Teil."
       },
       "progressLinks": [
         "pv1fiae_netzwerkkonzepte_ethernet"
@@ -476,39 +498,26 @@
     },
     {
       "id": "q08",
-      "type": "single_choice",
+      "type": "ordering",
       "title": "Netzscan als Skript logisch aufbauen",
-      "prompt": "Welche Skriptvariante ermittelt alle Hostadressen im Netz `192.168.0.0/24`, fragt die MAC-Adresse ab, ignoriert `NULL` und sammelt das Ergebnis als JSON-nahe Objektliste?",
-      "options": [
-        {
-          "label": "Variante A",
-          "language": "powershell",
-          "code": "$networkPrefix = \"192.168.0\"\n$results = @()\nfor ($host = 1; $host -le 254; $host++) {\n  $ipAddress = \"$networkPrefix.$host\"\n  $macAddress = getMacAddress($ipAddress)\n  if ($macAddress -ne $null) {\n    $results += @{ \"IP-Adresse\" = $ipAddress; \"MAC-Adresse\" = $macAddress }\n  }\n}",
-          "rationale": "Diese Variante durchlaeuft den Hostbereich sauber, prueft auf `NULL` und fuegt nur gefundene Eintraege der Ergebnisliste hinzu."
-        },
-        {
-          "label": "Variante B",
-          "language": "powershell",
-          "code": "$networkPrefix = \"192.168.0\"\n$results = @()\nfor ($host = 0; $host -le 255; $host++) {\n  $ipAddress = \"$networkPrefix\"\n  $macAddress = getMacAddress($networkPrefix)\n  $results += @{ \"IP-Adresse\" = $ipAddress; \"MAC-Adresse\" = $macAddress }\n}",
-          "rationale": "Hier wird die Hostadresse nicht korrekt zusammengesetzt und `NULL` wird nicht herausgefiltert."
-        },
-        {
-          "label": "Variante C",
-          "language": "powershell",
-          "code": "$results = @()\n$macAddress = getMacAddress(\"192.168.0.0/24\")\n$results += @{ \"IP-Adresse\" = \"192.168.0.0/24\"; \"MAC-Adresse\" = $macAddress }",
-          "rationale": "Es wird kein Hostbereich durchlaufen, sondern nur ein einzelner Netzstring an die Funktion uebergeben."
-        },
-        {
-          "label": "Variante D",
-          "language": "powershell",
-          "code": "$networkPrefix = \"192.168.0\"\nfor ($host = 1; $host -le 254; $host++) {\n  $ipAddress = \"$networkPrefix.$host\"\n  $results += \"$ipAddress\"\n}",
-          "rationale": "Die MAC-Adresse wird hier gar nicht abgefragt und das Ergebnis wird nicht als Objektstruktur aufgebaut."
-        }
+      "prompt": "Ordnen Sie die zentralen Skriptschritte so, dass das Netz `192.168.0.0/24` korrekt gescannt und nur gefundene MAC-Adressen als JSON-nahe Objektliste gesammelt werden.",
+      "items": [
+        "Ergebnisliste initialisieren",
+        "Hostbereich `1..254` durchlaufen",
+        "IP-Adresse aus Netzwerkpraefix und Hostnummer zusammensetzen",
+        "MAC-Adresse mit `getMacAddress(ip)` abfragen",
+        "Nur bei einer gefundenen MAC-Adresse ein Objekt mit `IP-Adresse` und `MAC-Adresse` zur Ergebnisliste hinzufuegen"
       ],
-      "correctIndex": 0,
+      "correctOrder": [
+        "Ergebnisliste initialisieren",
+        "Hostbereich `1..254` durchlaufen",
+        "IP-Adresse aus Netzwerkpraefix und Hostnummer zusammensetzen",
+        "MAC-Adresse mit `getMacAddress(ip)` abfragen",
+        "Nur bei einer gefundenen MAC-Adresse ein Objekt mit `IP-Adresse` und `MAC-Adresse` zur Ergebnisliste hinzufuegen"
+      ],
       "feedback": {
-        "correct": "Die Schleife, der MAC-Abruf, die `NULL`-Pruefung und die JSON-nahe Ergebnisstruktur sind passend kombiniert.",
-        "wrong": "Achten Sie auf den Hostbereich `1..254`, den Aufruf `getMacAddress(ip)`, das Filtern von `NULL` und den Aufbau einer Objektliste."
+        "correct": "Die zentrale Skriptlogik ist in einer fachlich sauberen Reihenfolge aufgebaut.",
+        "wrong": "Achten Sie auf Initialisierung, Hostbereich, korrekte IP-Zusammensetzung, den MAC-Abruf und das Filtern von `NULL` vor dem Einfuegen in die Ergebnisliste."
       },
       "progressLinks": [
         "pv1fiae_scan_skripte_json"
@@ -628,30 +637,65 @@
     },
     {
       "id": "q11",
-      "type": "single_choice",
-      "title": "Beziehungslogik im Klassendiagramm verstehen",
-      "prompt": "Welche Aussage bildet die fachliche Beziehungslogik des Streckennetzes am treffendsten ab?",
-      "options": [
-        {
-          "text": "Eine Strecke verbindet genau zwei Haltestellen, eine Linie ist eine geordnete Folge von Strecken, und eine Fahrt nutzt eine ganze Linie oder einen Teil davon.",
-          "rationale": "Damit werden direkte Verbindung, Reihenfolge der Linie und Teilnutzung einer Fahrt korrekt kombiniert."
-        },
-        {
-          "text": "Eine Linie besteht aus einer ungeordneten Menge von Haltestellen, waehrend eine Fahrt immer die komplette Linie ohne Teilstrecke abfahren muss.",
-          "rationale": "Die Linie ist gerade als geordnete Folge von Strecken beschrieben und eine Fahrt darf auch nur einen Teil nutzen."
-        },
-        {
-          "text": "Eine Strecke verbindet beliebig viele Haltestellen gleichzeitig, damit Kreuzungen leichter modelliert werden koennen.",
-          "rationale": "Die Aufgabe beschreibt eine direkte Verbindung zwischen genau zwei Haltestellen."
-        },
-        {
-          "text": "Eine Fahrt besitzt keine Haltestellen, sondern nur eine Linie und eine Gesamtdauer.",
-          "rationale": "Starthaltestelle und Endhaltestelle werden explizit genannt."
-        }
+      "type": "table_fill",
+      "title": "Beziehungslogik des Streckennetzes aufteilen",
+      "prompt": "Ordnen Sie den drei Modellbestandteilen die passende fachliche Beziehungslogik zu.",
+      "columns": [
+        "Modellbestandteil",
+        "Passende Fachlogik"
       ],
-      "correctIndex": 0,
+      "rows": [
+        [
+          "Strecke",
+          {
+            "key": "uml_relation_route",
+            "label": "Strecke",
+            "expected": "verbindet genau zwei Haltestellen direkt",
+            "inputType": "select",
+            "placeholder": "Fachlogik waehlen",
+            "options": [
+              "verbindet genau zwei Haltestellen direkt",
+              "besteht aus einer ungeordneten Menge von Haltestellen",
+              "nutzt nur eine Gesamtdauer ohne Start- und Endpunkt",
+              "enthaelt immer alle Fahrten einer Linie"
+            ]
+          }
+        ],
+        [
+          "Linie",
+          {
+            "key": "uml_relation_line",
+            "label": "Linie",
+            "expected": "besteht aus einer geordneten Folge von Strecken",
+            "inputType": "select",
+            "placeholder": "Fachlogik waehlen",
+            "options": [
+              "besteht aus einer geordneten Folge von Strecken",
+              "verbindet beliebig viele Haltestellen gleichzeitig",
+              "enthaelt nur Fahrzeugtypen statt Strecken",
+              "ist identisch mit einer einzelnen Fahrt"
+            ]
+          }
+        ],
+        [
+          "Fahrt",
+          {
+            "key": "uml_relation_trip",
+            "label": "Fahrt",
+            "expected": "nutzt eine ganze Linie oder einen Teil davon",
+            "inputType": "select",
+            "placeholder": "Fachlogik waehlen",
+            "options": [
+              "nutzt eine ganze Linie oder einen Teil davon",
+              "muss immer die komplette Linie ohne Teilstrecke abfahren",
+              "besteht nur aus einer Liste aller Haltestellen",
+              "ersetzt die Klasse `Linie` vollstaendig"
+            ]
+          }
+        ]
+      ],
       "feedback": {
-        "correct": "Die zentrale Beziehungslogik zwischen Haltestelle, Strecke, Linie und Fahrt ist korrekt beschrieben.",
+        "correct": "Die zentrale Beziehungslogik zwischen Strecke, Linie und Fahrt ist sauber aufgeteilt.",
         "wrong": "Achten Sie auf direkte Verbindungen zwischen zwei Haltestellen, auf die geordnete Streckenfolge einer Linie und darauf, dass Fahrten auch Teillinien nutzen duerfen."
       },
       "progressLinks": [
@@ -660,31 +704,19 @@
     },
     {
       "id": "q12",
-      "type": "single_choice",
-      "title": "Aggregation zwischen Personalverwaltung und Fahrer",
-      "prompt": "Welche Bedeutung hat die Aggregation zwischen `Personalverwaltung` und `Fahrer` am treffendsten?",
-      "options": [
-        {
-          "text": "Die Personalverwaltung bildet ein Ganzes, das Fahrer als enthaltene Teile in einer Liste fuehrt.",
-          "rationale": "Genau diese Ganzes-Teil-Beziehung beschreibt die Aggregation in diesem Kontext."
-        },
-        {
-          "text": "Jeder Fahrer ist technisch identisch mit der Personalverwaltung und ersetzt diese bei Bedarf.",
-          "rationale": "Aggregation beschreibt keine Gleichsetzung zweier Klassen."
-        },
-        {
-          "text": "Fahrer duerfen nur existieren, solange genau eine bestimmte Personalverwaltung aktiv ist.",
-          "rationale": "Das waere eher eine starke Existenzabhaengigkeit wie bei Komposition, nicht die normale Aggregation."
-        },
-        {
-          "text": "Aggregation bedeutet hier ausschliesslich, dass Methoden vererbt werden.",
-          "rationale": "Vererbung und Aggregation sind unterschiedliche Modellierungsbeziehungen."
-        }
+      "type": "short_text",
+      "title": "Aggregation zwischen Personalverwaltung und Fahrer erklaeren",
+      "prompt": "Erlaeutern Sie in 2-4 Saetzen, was die Aggregation zwischen `Personalverwaltung` und `Fahrer` in diesem Klassendiagramm bedeutet.",
+      "minChars": 110,
+      "requiredKeywords": [
+        "personalverwaltung",
+        "fahrer",
+        "liste"
       ],
-      "correctIndex": 0,
+      "expectedOutline": "Beschreibt die Personalverwaltung als uebergeordnete Einheit, die Fahrer in einer Liste fuehrt; es handelt sich um eine Ganzes-Teil-Beziehung, ohne dass Fahrer mit der Verwaltung identisch werden.",
       "feedback": {
-        "correct": "Die Aggregation ist korrekt als Ganzes-Teil-Beziehung eingeordnet.",
-        "wrong": "Achten Sie darauf, dass Aggregation hier die Sammlung von Fahrern in einer uebergeordneten Personalverwaltung beschreibt."
+        "correct": "Die Aggregation ist fachlich nachvollziehbar erklaert.",
+        "wrong": "Arbeiten Sie klarer heraus, dass die Personalverwaltung Fahrer als Teile in einer Liste fuehrt und keine Vererbung oder Gleichsetzung gemeint ist."
       },
       "progressLinks": [
         "pv1fiae_klassendiagramme_beziehungen"
@@ -727,31 +759,50 @@
     },
     {
       "id": "q14",
-      "type": "single_choice",
-      "title": "Komposition statt Aggregation?",
-      "prompt": "Ist fuer die Beziehung zwischen `Personalverwaltung` und `Fahrer` statt Aggregation auch eine Komposition sinnvoll?",
-      "options": [
-        {
-          "text": "Nein, weil Fahrer auch ausserhalb genau dieser Personalverwaltung existieren koennen und damit nicht existenzabhaengig genug fuer eine Komposition sind.",
-          "rationale": "Die moegliche Eigenstaendigkeit der Fahrer spricht gegen eine Komposition."
-        },
-        {
-          "text": "Ja, weil jede Liste automatisch eine Komposition sein muss, sobald mindestens ein Eintrag enthalten ist.",
-          "rationale": "Eine Liste allein macht aus einer Beziehung noch keine Komposition."
-        },
-        {
-          "text": "Ja, weil Aggregation und Komposition im UML-Kontext immer dieselbe Bedeutung haben.",
-          "rationale": "Komposition ist die staerkere Form einer Ganzes-Teil-Beziehung und gerade nicht bedeutungsgleich."
-        },
-        {
-          "text": "Nein, weil Komposition nur fuer primitive Datentypen, aber nie fuer Klassen erlaubt ist.",
-          "rationale": "Komposition bezieht sich sehr wohl auf Klassenbeziehungen."
-        }
+      "type": "table_fill",
+      "title": "Aggregation und Komposition gegeneinander abgrenzen",
+      "prompt": "Ordnen Sie den beiden Faellen die passende Aussage zu.",
+      "columns": [
+        "Fall",
+        "Passende Aussage"
       ],
-      "correctIndex": 0,
+      "rows": [
+        [
+          "Warum passt im Diagramm Aggregation?",
+          {
+            "key": "uml_aggregation_fit",
+            "label": "Warum passt Aggregation?",
+            "expected": "Fahrer koennen auch ausserhalb genau dieser Personalverwaltung sinnvoll existieren und sind daher nicht stark genug existenzabhaengig.",
+            "inputType": "select",
+            "placeholder": "Aussage waehlen",
+            "options": [
+              "Fahrer koennen auch ausserhalb genau dieser Personalverwaltung sinnvoll existieren und sind daher nicht stark genug existenzabhaengig.",
+              "Jede Liste in UML bedeutet automatisch Komposition.",
+              "Aggregation und Komposition haben immer dieselbe Bedeutung.",
+              "Komposition ist nur fuer primitive Datentypen erlaubt."
+            ]
+          }
+        ],
+        [
+          "Wann waere stattdessen Komposition plausibel?",
+          {
+            "key": "uml_composition_fit",
+            "label": "Wann passt Komposition?",
+            "expected": "Wenn die Teile ohne das Ganze nicht sinnvoll eigenstaendig existieren und mit ihm entstehen oder verschwinden.",
+            "inputType": "select",
+            "placeholder": "Aussage waehlen",
+            "options": [
+              "Wenn die Teile ohne das Ganze nicht sinnvoll eigenstaendig existieren und mit ihm entstehen oder verschwinden.",
+              "Sobald mindestens zwei Klassen beteiligt sind.",
+              "Immer dann, wenn eine Suchfunktion im Ganzen vorkommt.",
+              "Schon dann, wenn mehrere Fahrzeugtypen in einer Liste stehen."
+            ]
+          }
+        ]
+      ],
       "feedback": {
-        "correct": "Die Abgrenzung zwischen Aggregation und Komposition ist hier fachlich korrekt getroffen.",
-        "wrong": "Achten Sie darauf, ob die Teile ohne das Ganze sinnvoll weiter existieren koennen."
+        "correct": "Aggregation und Komposition sind fuer diesen Fall fachlich sauber abgegrenzt.",
+        "wrong": "Achten Sie darauf, ob die Teile ohne das Ganze sinnvoll weiter existieren koennen oder gerade stark existenzabhaengig waeren."
       },
       "progressLinks": [
         "pv1fiae_klassendiagramme_beziehungen"
@@ -826,31 +877,66 @@
     },
     {
       "id": "q16",
-      "type": "single_choice",
-      "title": "Vereinfachung im Zustandsdiagramm beachten",
-      "prompt": "Welche Aussage muss im UML-Zustandsdiagramm unbedingt beruecksichtigt werden?",
-      "options": [
-        {
-          "text": "Die Bahn startet im Zustand `leer`, kann von dort in den Endzustand wechseln, und direkte Uebergaenge von `leer` nach `normal` oder `hoch` werden nicht modelliert.",
-          "rationale": "Damit sind Start-/Endlogik und die explizite Vereinfachungsregel korrekt zusammengefasst."
-        },
-        {
-          "text": "Die Bahn startet immer in `normal`, weil reale Auslastungen selten exakt bei 0 % liegen.",
-          "rationale": "Die Aufgabenstellung setzt den Beginn bzw. 0 % klar mit `leer` gleich."
-        },
-        {
-          "text": "Direkte Uebergaenge von `leer` nach `hoch` muessen auf jeden Fall enthalten sein, da sonst Spitzenlasten nicht sichtbar waeren.",
-          "rationale": "Gerade diese direkte Verbindung soll zur Vereinfachung nicht modelliert werden."
-        },
-        {
-          "text": "Ein Endzustand ist nicht zulaessig, solange mehr als zwei Zwischenzustaende existieren.",
-          "rationale": "Das ist keine Regel fuer Zustandsdiagramme."
-        }
+      "type": "table_fill",
+      "title": "Vereinfachungsregeln des Zustandsdiagramms festhalten",
+      "prompt": "Ordnen Sie den drei Modellaspekten die passende Regel aus dem Zustandsdiagramm zu.",
+      "columns": [
+        "Modellaspekt",
+        "Passende Regel"
       ],
-      "correctIndex": 0,
+      "rows": [
+        [
+          "Startzustand der Bahn",
+          {
+            "key": "state_rule_start",
+            "label": "Startzustand",
+            "expected": "Zu Fahrtbeginn bzw. bei 0 % Auslastung ist der Zustand `leer`.",
+            "inputType": "select",
+            "placeholder": "Regel waehlen",
+            "options": [
+              "Zu Fahrtbeginn bzw. bei 0 % Auslastung ist der Zustand `leer`.",
+              "Die Bahn startet immer in `normal`.",
+              "Die Bahn startet immer in `hoch`.",
+              "Ein Startzustand ist nicht vorgesehen."
+            ]
+          }
+        ],
+        [
+          "Zulaessige Endlogik",
+          {
+            "key": "state_rule_end",
+            "label": "Endlogik",
+            "expected": "Aus dem Zustand `leer` darf in den Endzustand gewechselt werden.",
+            "inputType": "select",
+            "placeholder": "Regel waehlen",
+            "options": [
+              "Aus dem Zustand `leer` darf in den Endzustand gewechselt werden.",
+              "Ein Endzustand ist bei mehr als zwei Zwischenzustaenden unzulaessig.",
+              "Nur aus `hoch` darf in den Endzustand gewechselt werden.",
+              "Der Endzustand ersetzt immer den Zustand `leer`."
+            ]
+          }
+        ],
+        [
+          "Bewusste Vereinfachung im Diagramm",
+          {
+            "key": "state_rule_simplify",
+            "label": "Vereinfachung",
+            "expected": "Direkte Uebergaenge von `leer` nach `normal` oder `hoch` werden nicht modelliert.",
+            "inputType": "select",
+            "placeholder": "Regel waehlen",
+            "options": [
+              "Direkte Uebergaenge von `leer` nach `normal` oder `hoch` werden nicht modelliert.",
+              "Direkte Uebergaenge von `leer` nach `hoch` muessen unbedingt enthalten sein.",
+              "Nur `leer` und `normal` duerfen im Diagramm vorkommen.",
+              "Alle direkten Uebergaenge zwischen allen Zustaenden sind verpflichtend."
+            ]
+          }
+        ]
+      ],
       "feedback": {
-        "correct": "Die Start-/Endlogik und die modellierte Vereinfachung sind richtig erkannt.",
-        "wrong": "Achten Sie vor allem auf den Zustand `leer` und die explizit ausgeschlossenen direkten Spruenge zu `normal` oder `hoch`."
+        "correct": "Startlogik, Endlogik und Vereinfachungsregel sind korrekt festgehalten.",
+        "wrong": "Achten Sie vor allem auf den Zustand `leer`, die erlaubte Endlogik und die explizit ausgeschlossenen direkten Spruenge zu `normal` oder `hoch`."
       },
       "progressLinks": [
         "pv1fiae_zustaende_entwurfsmuster"
@@ -938,31 +1024,19 @@
     },
     {
       "id": "q19",
-      "type": "single_choice",
-      "title": "Passendes Pattern fuer mehrere Anzeigen",
-      "prompt": "Welches Entwurfsmuster eignet sich am besten, wenn App, Haltestellenanzeige und Verwaltungssoftware bei jeder Aenderung der Bahnauslastung aktualisiert werden sollen?",
-      "options": [
-        {
-          "text": "Observer-Pattern, weil ein Subjekt mehrere abhaengige Anzeigen bei Zustandsaenderungen benachrichtigen kann.",
-          "rationale": "Genau diese Benachrichtigungsbeziehung zwischen einer Quelle und mehreren Beobachtern passt hier."
-        },
-        {
-          "text": "Singleton-Pattern, weil dadurch automatisch alle Anzeigen den gleichen Text anzeigen muessen.",
-          "rationale": "Ein Singleton adressiert globale Einzigartigkeit, nicht die Benachrichtigung mehrerer Anzeigen."
-        },
-        {
-          "text": "Facade-Pattern, weil dadurch keine Zustandsaenderungen mehr an einzelne Anzeigen gemeldet werden muessen.",
-          "rationale": "Eine Facade vereinfacht Schnittstellen, loest aber nicht das Beobachterproblem mehrerer Abhaengiger."
-        },
-        {
-          "text": "Factory-Pattern, weil neue Anzeigen dann leichter erzeugt statt aktualisiert werden koennen.",
-          "rationale": "Die Aufgabe dreht sich um das Reagieren auf Zustandsaenderungen, nicht um Objekterzeugung."
-        }
+      "type": "short_text",
+      "title": "Observer-Pattern fuer mehrere Anzeigen begruenden",
+      "prompt": "Begruenden Sie in 2-4 Saetzen, warum fuer App, Haltestellenanzeige und Verwaltungssoftware das Observer-Pattern passend ist.",
+      "minChars": 120,
+      "requiredKeywords": [
+        "anzeigen",
+        "zustand",
+        "beobachter"
       ],
-      "correctIndex": 0,
+      "expectedOutline": "Erklaert, dass eine Quelle bzw. ein Subjekt mehrere abhaengige Anzeigen als Beobachter fuehren kann und diese bei Zustandsaenderungen der Auslastung benachrichtigt werden.",
       "feedback": {
-        "correct": "Das Observer-Pattern passt fachlich am besten zur Aktualisierung mehrerer Anzeigen bei Zustandsaenderungen.",
-        "wrong": "Gesucht ist ein Muster, das mehrere abhaengige Anzeigen ueber Zustandsaenderungen informiert."
+        "correct": "Die Wahl des Observer-Patterns ist fachlich passend begruendet.",
+        "wrong": "Arbeiten Sie klarer heraus, dass mehrere abhaengige Anzeigen auf Aenderungen einer gemeinsamen Quelle reagieren muessen."
       },
       "progressLinks": [
         "pv1fiae_zustaende_entwurfsmuster"

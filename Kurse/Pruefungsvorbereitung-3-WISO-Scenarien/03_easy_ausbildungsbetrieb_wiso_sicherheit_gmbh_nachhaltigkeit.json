@@ -30,35 +30,88 @@
   "questions": [
     {
       "id": "q01",
-      "type": "single_choice",
-      "title": "Probezeit im Ausbildungsvertrag richtig einordnen",
-      "prompt": "Die Mainbogen Digital GmbH will in neue Ausbildungsvertraege wieder eine Probezeit aufnehmen. Welche Aussage trifft fuer Berufsausbildungsverhaeltnisse zu?",
-      "options": [
-        {
-          "text": "Eine Probezeit ist bei Ausbildungsvertraegen nicht erforderlich.",
-          "rationale": "Gerade im Ausbildungsverhaeltnis ist eine Probezeit vorgesehen."
-        },
-        {
-          "text": "Die Probezeit muss mindestens sechs Monate betragen.",
-          "rationale": "So lang darf die Probezeit im Ausbildungsverhaeltnis nicht dauern."
-        },
-        {
-          "text": "Eine Probezeit ist nur bei kaufmaennischen Berufen notwendig.",
-          "rationale": "Die Regel gilt nicht nur fuer bestimmte Berufsgruppen."
-        },
-        {
-          "text": "Die Probezeit muss mindestens einen und darf hoechstens vier Monate dauern.",
-          "rationale": "Das entspricht der gesetzlichen Vorgabe fuer Berufsausbildungsverhaeltnisse."
-        },
-        {
-          "text": "Eine Probezeit von einem Monat ist nur bei dreijaehriger Ausbildungsdauer vorgeschrieben.",
-          "rationale": "Die Probezeit haengt nicht so von der Gesamtdauer des Berufs ab."
-        }
+      "type": "table_fill",
+      "title": "Probezeitregeln im Ausbildungsvertrag einordnen",
+      "prompt": "Ordnen Sie zu, welche Aussagen fuer Berufsausbildungsverhaeltnisse zutreffen.",
+      "columns": [
+        "Aussage",
+        "Trifft zu?"
       ],
-      "correctIndex": 3,
+      "rows": [
+        [
+          "Eine Probezeit ist im Ausbildungsverhaeltnis vorgesehen.",
+          {
+            "key": "probezeit_a",
+            "label": "Probezeit ist vorgesehen",
+            "expected": "Ja",
+            "inputType": "select",
+            "placeholder": "Auswahl treffen",
+            "options": [
+              "Ja",
+              "Nein"
+            ]
+          }
+        ],
+        [
+          "Die Probezeit muss mindestens einen und darf hoechstens vier Monate dauern.",
+          {
+            "key": "probezeit_b",
+            "label": "Probezeit zwischen einem und vier Monaten",
+            "expected": "Ja",
+            "inputType": "select",
+            "placeholder": "Auswahl treffen",
+            "options": [
+              "Ja",
+              "Nein"
+            ]
+          }
+        ],
+        [
+          "Die Probezeit muss mindestens sechs Monate betragen.",
+          {
+            "key": "probezeit_c",
+            "label": "Probezeit mindestens sechs Monate",
+            "expected": "Nein",
+            "inputType": "select",
+            "placeholder": "Auswahl treffen",
+            "options": [
+              "Ja",
+              "Nein"
+            ]
+          }
+        ],
+        [
+          "Eine Probezeit gilt nur fuer kaufmaennische Berufe.",
+          {
+            "key": "probezeit_d",
+            "label": "Probezeit nur fuer kaufmaennische Berufe",
+            "expected": "Nein",
+            "inputType": "select",
+            "placeholder": "Auswahl treffen",
+            "options": [
+              "Ja",
+              "Nein"
+            ]
+          }
+        ],
+        [
+          "Die Dauer der Probezeit haengt zwingend von der Gesamtdauer des Ausbildungsberufs ab.",
+          {
+            "key": "probezeit_e",
+            "label": "Probezeitdauer haengt zwingend von Ausbildungsdauer ab",
+            "expected": "Nein",
+            "inputType": "select",
+            "placeholder": "Auswahl treffen",
+            "options": [
+              "Ja",
+              "Nein"
+            ]
+          }
+        ]
+      ],
       "feedback": {
-        "correct": "Die gesetzliche Probezeitregel wurde korrekt erkannt.",
-        "wrong": "Pruefen Sie noch einmal die Mindest- und Hoechstdauer der Probezeit im BBiG."
+        "correct": "Die gesetzlichen Probezeitregeln im Ausbildungsverhaeltnis wurden sauber eingeordnet.",
+        "wrong": "Achten Sie auf die gesetzliche Spanne von einem bis vier Monaten und darauf, dass die Probezeit nicht nur fuer bestimmte Berufe gilt."
       },
       "progressLinks": [
         "pv3wiso_arbeitsrecht_ausbildung"
@@ -382,35 +435,88 @@
     },
     {
       "id": "q10",
-      "type": "single_choice",
-      "title": "Pflicht zum Arbeitsschutzausschuss erkennen",
-      "prompt": "Die Mainbogen Digital GmbH ist verpflichtet, die Arbeitssicherheit im Unternehmen zu gewaehrleisten. Welche Aussage trifft zu?",
-      "options": [
-        {
-          "text": "Eine Mitbestimmung von Arbeitnehmern beim Arbeitsschutz ist ausgeschlossen, weil das Arbeitsschutzgesetz die Pflichten des Arbeitgebers abschliessend regelt.",
-          "rationale": "Die Beschaeftigtenvertretung ist beim Arbeitsschutz gerade nicht vollkommen ausgeschlossen."
-        },
-        {
-          "text": "Ein Unfallverhuetigungsteam ist nur bei mindestens 200 Beschaeftigten vorgeschrieben.",
-          "rationale": "So lautet die gesetzliche Pflicht nicht."
-        },
-        {
-          "text": "Ein Unternehmen mit mehr als 20 Beschaeftigten muss einen Arbeitsschutzausschuss bilden, in dem Arbeitsschutzthemen beraten werden.",
-          "rationale": "Genau diese Pflicht gilt nach dem Arbeitssicherheitsgesetz."
-        },
-        {
-          "text": "Die Ergonomie an Arbeitsplaetzen ist keine Anforderung der Arbeitssicherheit, sondern nur freiwillige Zusatzleistung des Arbeitgebers.",
-          "rationale": "Ergonomische Arbeitsbedingungen gehoeren durchaus zum Arbeitsschutz."
-        },
-        {
-          "text": "Fuer die betriebliche Arbeitssicherheit ist vorrangig die Gewerkschaft zustaendig.",
-          "rationale": "Die betriebliche Organisation des Arbeitsschutzes liegt nicht bei der Gewerkschaft."
-        }
+      "type": "table_fill",
+      "title": "Aussagen zum Arbeitsschutz einordnen",
+      "prompt": "Ordnen Sie zu, welche Aussagen zur betrieblichen Arbeitssicherheit zutreffen.",
+      "columns": [
+        "Aussage",
+        "Trifft zu?"
       ],
-      "correctIndex": 2,
+      "rows": [
+        [
+          "Mitbestimmung von Arbeitnehmern beim Arbeitsschutz ist ausgeschlossen.",
+          {
+            "key": "arbeitsschutz_a",
+            "label": "Mitbestimmung beim Arbeitsschutz ausgeschlossen",
+            "expected": "Nein",
+            "inputType": "select",
+            "placeholder": "Auswahl treffen",
+            "options": [
+              "Ja",
+              "Nein"
+            ]
+          }
+        ],
+        [
+          "Unternehmen mit mehr als 20 Beschaeftigten muessen einen Arbeitsschutzausschuss bilden.",
+          {
+            "key": "arbeitsschutz_b",
+            "label": "Arbeitsschutzausschuss ab mehr als 20 Beschaeftigten",
+            "expected": "Ja",
+            "inputType": "select",
+            "placeholder": "Auswahl treffen",
+            "options": [
+              "Ja",
+              "Nein"
+            ]
+          }
+        ],
+        [
+          "Ergonomische Arbeitsplaetze gehoeren zum Arbeitsschutz.",
+          {
+            "key": "arbeitsschutz_c",
+            "label": "Ergonomie gehoert zum Arbeitsschutz",
+            "expected": "Ja",
+            "inputType": "select",
+            "placeholder": "Auswahl treffen",
+            "options": [
+              "Ja",
+              "Nein"
+            ]
+          }
+        ],
+        [
+          "Ein Unfallverhuetigungsteam ist erst ab 200 Beschaeftigten gesetzlich vorgeschrieben.",
+          {
+            "key": "arbeitsschutz_d",
+            "label": "Unfallverhuetigungsteam erst ab 200 Beschaeftigten",
+            "expected": "Nein",
+            "inputType": "select",
+            "placeholder": "Auswahl treffen",
+            "options": [
+              "Ja",
+              "Nein"
+            ]
+          }
+        ],
+        [
+          "Vorrangig zustaendig fuer die betriebliche Arbeitssicherheit ist die Gewerkschaft.",
+          {
+            "key": "arbeitsschutz_e",
+            "label": "Gewerkschaft vorrangig zustaendig fuer Arbeitssicherheit",
+            "expected": "Nein",
+            "inputType": "select",
+            "placeholder": "Auswahl treffen",
+            "options": [
+              "Ja",
+              "Nein"
+            ]
+          }
+        ]
+      ],
       "feedback": {
-        "correct": "Die Pflicht zum Arbeitsschutzausschuss wurde korrekt erkannt.",
-        "wrong": "Pruefen Sie, welche organisatorische Struktur Unternehmen mit mehr als 20 Beschaeftigten im Arbeitsschutz vorhalten muessen."
+        "correct": "Arbeitsschutzausschuss, Mitbestimmung und ergonomische Anforderungen wurden fachlich passend eingeordnet.",
+        "wrong": "Wichtig sind die Pflicht zum Arbeitsschutzausschuss, die Beteiligung der Beschaeftigten und die Einordnung ergonomischer Anforderungen."
       },
       "progressLinks": [
         "pv3wiso_arbeitsschutz_umwelt_diversity"
@@ -735,35 +841,88 @@
     },
     {
       "id": "q17",
-      "type": "single_choice",
-      "title": "Zutreffende Aussage zur GmbH auswaehlen",
-      "prompt": "Welche Aussage trifft fuer die Mainbogen Digital GmbH zu?",
-      "options": [
-        {
-          "text": "Eine GmbH ist eine Personengesellschaft.",
-          "rationale": "Die GmbH gehoert zu den Kapitalgesellschaften."
-        },
-        {
-          "text": "Eine GmbH wird in das Handelsregister Abteilung A eingetragen.",
-          "rationale": "Kapitalgesellschaften werden nicht in Abteilung A gefuehrt."
-        },
-        {
-          "text": "Eine GmbH kann auch von nur einer Person gegruendet werden.",
-          "rationale": "Eine Ein-Personen-GmbH ist moeglich."
-        },
-        {
-          "text": "Das gesetzliche Mindeststammkapital betraegt 5.000 EUR.",
-          "rationale": "Das Mindeststammkapital liegt hoeher."
-        },
-        {
-          "text": "Eine GmbH darf grundsaetzlich nur einen Geschaeftsfuehrer haben.",
-          "rationale": "Mehrere Geschaeftsfuehrer sind sehr wohl moeglich."
-        }
+      "type": "table_fill",
+      "title": "Aussagen zur GmbH pruefen",
+      "prompt": "Ordnen Sie zu, welche Aussagen fuer eine GmbH zutreffen.",
+      "columns": [
+        "Aussage",
+        "Trifft zu?"
       ],
-      "correctIndex": 2,
+      "rows": [
+        [
+          "Eine GmbH gehoert zu den Kapitalgesellschaften.",
+          {
+            "key": "gmbh_a",
+            "label": "GmbH gehoert zu den Kapitalgesellschaften",
+            "expected": "Ja",
+            "inputType": "select",
+            "placeholder": "Auswahl treffen",
+            "options": [
+              "Ja",
+              "Nein"
+            ]
+          }
+        ],
+        [
+          "Eine GmbH kann auch von nur einer Person gegruendet werden.",
+          {
+            "key": "gmbh_b",
+            "label": "GmbH kann von nur einer Person gegruendet werden",
+            "expected": "Ja",
+            "inputType": "select",
+            "placeholder": "Auswahl treffen",
+            "options": [
+              "Ja",
+              "Nein"
+            ]
+          }
+        ],
+        [
+          "Eine GmbH wird in das Handelsregister Abteilung A eingetragen.",
+          {
+            "key": "gmbh_c",
+            "label": "GmbH in Handelsregister Abteilung A",
+            "expected": "Nein",
+            "inputType": "select",
+            "placeholder": "Auswahl treffen",
+            "options": [
+              "Ja",
+              "Nein"
+            ]
+          }
+        ],
+        [
+          "Das gesetzliche Mindeststammkapital betraegt 5.000 EUR.",
+          {
+            "key": "gmbh_d",
+            "label": "Mindeststammkapital 5000 EUR",
+            "expected": "Nein",
+            "inputType": "select",
+            "placeholder": "Auswahl treffen",
+            "options": [
+              "Ja",
+              "Nein"
+            ]
+          }
+        ],
+        [
+          "Eine GmbH darf grundsaetzlich nur einen Geschaeftsfuehrer haben.",
+          {
+            "key": "gmbh_e",
+            "label": "GmbH darf nur einen Geschaeftsfuehrer haben",
+            "expected": "Nein",
+            "inputType": "select",
+            "placeholder": "Auswahl treffen",
+            "options": [
+              "Ja",
+              "Nein"
+            ]
+          }
+        ]
+      ],
       "feedback": {
-        "correct": "Die zutreffende Aussage zur GmbH wurde richtig erkannt.",
-        "wrong": "Pruefen Sie Rechtsform, Registerabteilung, Gruendungsmoeglichkeiten und Stammkapital noch einmal getrennt."
+        "correct": "Rechtsform, Gruendung, Register und Stammkapital der GmbH wurden sauber getrennt.",
+        "wrong": "Pruefen Sie Kapitalgesellschaft, Ein-Personen-Gruendung, Registerabteilung und Mindeststammkapital noch einmal getrennt."
       },
       "progressLinks": [
         "pv3wiso_wirtschaftssektoren_unternehmensformen"
@@ -870,31 +1029,15 @@
     },
     {
       "id": "q20",
-      "type": "single_choice",
+      "type": "number",
       "title": "Wirtschaftlichsten Auftrag bestimmen",
-      "prompt": "Welcher Auftrag wurde am wirtschaftlichsten abgewickelt?",
-      "options": [
-        {
-          "text": "Auftrag 1",
-          "rationale": "720.000 / 600.000 = 1,20 und damit nicht der beste Wert."
-        },
-        {
-          "text": "Auftrag 2",
-          "rationale": "400.000 / 320.000 = 1,25 und damit besser als Auftrag 1, aber nicht am hoechsten."
-        },
-        {
-          "text": "Auftrag 3",
-          "rationale": "208.000 / 160.000 = 1,30 und damit der hoechste Wirtschaftlichkeitswert."
-        },
-        {
-          "text": "Auftrag 4",
-          "rationale": "248.000 / 200.000 = 1,24 und damit unter dem Wert von Auftrag 3."
-        }
-      ],
-      "correctIndex": 2,
+      "prompt": "Welche Auftragsnummer weist die hoechste Wirtschaftlichkeit auf?",
+      "expected": 3,
+      "toleranceAbs": 0,
+      "showExpectedFormula": "Ertrag / Aufwand: Auftrag 1 = 1,20; Auftrag 2 = 1,25; Auftrag 3 = 1,30; Auftrag 4 = 1,24.",
       "feedback": {
-        "correct": "Der wirtschaftlichste Auftrag wurde korrekt bestimmt.",
-        "wrong": "Vergleichen Sie die Wirtschaftlichkeit ueber das Verhaeltnis von Ertrag zu Aufwand."
+        "correct": "Der wirtschaftlichste Auftrag wurde korrekt berechnet und bestimmt.",
+        "wrong": "Vergleichen Sie die Wirtschaftlichkeit ueber das Verhaeltnis von Ertrag zu Aufwand und waehlen Sie danach die passende Auftragsnummer."
       },
       "progressLinks": [
         "pv3wiso_wirtschaftlichkeit_unternehmensanalyse"
@@ -1010,35 +1153,88 @@
     },
     {
       "id": "q24",
-      "type": "single_choice",
-      "title": "Typischen Inhalt eines Lohn- und Gehaltstarifvertrags bestimmen",
-      "prompt": "Im Rahmen von Tarifverhandlungen wird zwischen einem Lohn- und Gehaltstarifvertrag und einem Manteltarifvertrag unterschieden. Welcher Inhalt wird typischerweise in einem Lohn- und Gehaltstarifvertrag geregelt?",
-      "options": [
-        {
-          "text": "Kuendigungsfristen",
-          "rationale": "Solche Rahmenbedingungen gehoeren typischerweise in den Manteltarifvertrag."
-        },
-        {
-          "text": "Taegliche und woechentliche Arbeitszeit",
-          "rationale": "Auch das ist eher ein Inhalt des Manteltarifvertrags."
-        },
-        {
-          "text": "Mindesturlaubstage",
-          "rationale": "Urlaubsfragen finden sich typischerweise nicht im Lohn- und Gehaltstarifvertrag."
-        },
-        {
-          "text": "Gehaltssaetze fuer die einzelnen Gehaltsgruppen",
-          "rationale": "Genau das ist der typische Kern eines Lohn- und Gehaltstarifvertrags."
-        },
-        {
-          "text": "Arbeitsbefreiung fuer Pruefungstaetigkeit bei IHK-Pruefungen",
-          "rationale": "Das ist kein typischer Inhalt dieses Tarifvertragstyps."
-        }
+      "type": "table_fill",
+      "title": "Tarifinhalte dem Vertragstyp zuordnen",
+      "prompt": "Ordnen Sie die Inhalte dem typischen Tarifvertragstyp zu.",
+      "columns": [
+        "Regelungsinhalt",
+        "Typischer Vertragstyp"
       ],
-      "correctIndex": 3,
+      "rows": [
+        [
+          "Kuendigungsfristen",
+          {
+            "key": "tarif_a",
+            "label": "Kuendigungsfristen",
+            "expected": "Manteltarifvertrag",
+            "inputType": "select",
+            "placeholder": "Vertragstyp waehlen",
+            "options": [
+              "Lohn- und Gehaltstarifvertrag",
+              "Manteltarifvertrag"
+            ]
+          }
+        ],
+        [
+          "Taegliche und woechentliche Arbeitszeit",
+          {
+            "key": "tarif_b",
+            "label": "Taegliche und woechentliche Arbeitszeit",
+            "expected": "Manteltarifvertrag",
+            "inputType": "select",
+            "placeholder": "Vertragstyp waehlen",
+            "options": [
+              "Lohn- und Gehaltstarifvertrag",
+              "Manteltarifvertrag"
+            ]
+          }
+        ],
+        [
+          "Mindesturlaubstage",
+          {
+            "key": "tarif_c",
+            "label": "Mindesturlaubstage",
+            "expected": "Manteltarifvertrag",
+            "inputType": "select",
+            "placeholder": "Vertragstyp waehlen",
+            "options": [
+              "Lohn- und Gehaltstarifvertrag",
+              "Manteltarifvertrag"
+            ]
+          }
+        ],
+        [
+          "Gehaltssaetze fuer die einzelnen Gehaltsgruppen",
+          {
+            "key": "tarif_d",
+            "label": "Gehaltssaetze fuer Gehaltsgruppen",
+            "expected": "Lohn- und Gehaltstarifvertrag",
+            "inputType": "select",
+            "placeholder": "Vertragstyp waehlen",
+            "options": [
+              "Lohn- und Gehaltstarifvertrag",
+              "Manteltarifvertrag"
+            ]
+          }
+        ],
+        [
+          "Arbeitsbefreiung fuer Pruefungstaetigkeit bei IHK-Pruefungen",
+          {
+            "key": "tarif_e",
+            "label": "Arbeitsbefreiung fuer Pruefungstaetigkeit",
+            "expected": "Manteltarifvertrag",
+            "inputType": "select",
+            "placeholder": "Vertragstyp waehlen",
+            "options": [
+              "Lohn- und Gehaltstarifvertrag",
+              "Manteltarifvertrag"
+            ]
+          }
+        ]
+      ],
       "feedback": {
-        "correct": "Der typische Inhalt eines Lohn- und Gehaltstarifvertrags wurde korrekt erkannt.",
-        "wrong": "Trennen Sie Entgeltregelungen von allgemeinen Arbeitsbedingungen."
+        "correct": "Entgeltregelungen und allgemeine Arbeitsbedingungen wurden den Tarifvertragstypen sauber zugeordnet.",
+        "wrong": "Trennen Sie entgeltbezogene Regelungen von allgemeinen Rahmenbedingungen wie Arbeitszeit, Urlaub oder Kuendigungsfristen."
       },
       "progressLinks": [
         "pv3wiso_mitbestimmung_tarif_sozialversicherung"
@@ -1128,35 +1324,88 @@
     },
     {
       "id": "q27",
-      "type": "single_choice",
-      "title": "Nicht geschuetztes Merkmal im AGG finden",
-      "prompt": "Die Mainbogen Digital GmbH ueberprueft ihre Diversity-Regeln anhand des AGG. Welcher Punkt wird im AGG nicht als geschuetztes Merkmal beruecksichtigt?",
-      "options": [
-        {
-          "text": "Alter",
-          "rationale": "Das Alter ist im AGG ausdruecklich geschuetzt."
-        },
-        {
-          "text": "Religion",
-          "rationale": "Auch Religion ist ein geschuetztes Merkmal."
-        },
-        {
-          "text": "Sexuelle Orientierung oder Identitaet",
-          "rationale": "Auch dieser Bereich faellt in den Schutz des AGG."
-        },
-        {
-          "text": "Art des Abschlusses",
-          "rationale": "Die Art des Schul- oder Berufsabschlusses ist kein geschuetztes Merkmal des AGG."
-        },
-        {
-          "text": "Ethnische Herkunft",
-          "rationale": "Die ethnische Herkunft ist im AGG geschuetzt."
-        }
+      "type": "table_fill",
+      "title": "AGG-Merkmale einordnen",
+      "prompt": "Ordnen Sie zu, ob das jeweilige Merkmal im AGG als geschuetzt beruecksichtigt wird.",
+      "columns": [
+        "Merkmal",
+        "Im AGG geschuetzt?"
       ],
-      "correctIndex": 3,
+      "rows": [
+        [
+          "Alter",
+          {
+            "key": "agg_a",
+            "label": "Alter",
+            "expected": "Ja",
+            "inputType": "select",
+            "placeholder": "Auswahl treffen",
+            "options": [
+              "Ja",
+              "Nein"
+            ]
+          }
+        ],
+        [
+          "Religion",
+          {
+            "key": "agg_b",
+            "label": "Religion",
+            "expected": "Ja",
+            "inputType": "select",
+            "placeholder": "Auswahl treffen",
+            "options": [
+              "Ja",
+              "Nein"
+            ]
+          }
+        ],
+        [
+          "Sexuelle Orientierung oder Identitaet",
+          {
+            "key": "agg_c",
+            "label": "Sexuelle Orientierung oder Identitaet",
+            "expected": "Ja",
+            "inputType": "select",
+            "placeholder": "Auswahl treffen",
+            "options": [
+              "Ja",
+              "Nein"
+            ]
+          }
+        ],
+        [
+          "Art des Abschlusses",
+          {
+            "key": "agg_d",
+            "label": "Art des Abschlusses",
+            "expected": "Nein",
+            "inputType": "select",
+            "placeholder": "Auswahl treffen",
+            "options": [
+              "Ja",
+              "Nein"
+            ]
+          }
+        ],
+        [
+          "Ethnische Herkunft",
+          {
+            "key": "agg_e",
+            "label": "Ethnische Herkunft",
+            "expected": "Ja",
+            "inputType": "select",
+            "placeholder": "Auswahl treffen",
+            "options": [
+              "Ja",
+              "Nein"
+            ]
+          }
+        ]
+      ],
       "feedback": {
-        "correct": "Das nicht geschuetzte Merkmal wurde korrekt erkannt.",
-        "wrong": "Vergleichen Sie die aufzaehlten Punkte mit den ausdruecklich geschuetzten Merkmalen des AGG."
+        "correct": "Die geschuetzten und nicht geschuetzten Merkmale des AGG wurden sauber voneinander getrennt.",
+        "wrong": "Vergleichen Sie die Begriffe noch einmal mit den ausdruecklich geschuetzten Merkmalen des AGG."
       },
       "progressLinks": [
         "pv3wiso_arbeitsschutz_umwelt_diversity"

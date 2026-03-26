@@ -353,63 +353,80 @@
     },
     {
       "id": "q06",
-      "type": "single_choice",
-      "title": "Beziehungslogik im Use-Case-Diagramm",
-      "prompt": "Welche Aussage beschreibt die fachlich passendste Kombination aus Spezialisierung und Use-Case-Beziehung?",
-      "options": [
-        {
-          "text": "Der Akteur `Firmenkunde` spezialisiert `Kunde`, und `Sonderwuensche angeben` erweitert `Reservierung vornehmen`, weil dieser Schritt optional ist.",
-          "rationale": "Diese Kombination bildet die allgemeine Kundenrolle plus den optionalen Sonderwunsch korrekt ab."
-        },
-        {
-          "text": "`Reservierung stornieren` schliesst `Registrieren` zwingend ein, weil jede Stornierung eine Firmenregistrierung voraussetzt.",
-          "rationale": "Alle Kunden duerfen stornieren; eine Registrierung ist dafuer nicht generell erforderlich."
-        },
-        {
-          "text": "`Registrierungsnummer hinterlegen` ersetzt den Use Case `Reservierung vornehmen`, weil Firmenkunden keinen allgemeinen Reservierungsfall mehr brauchen.",
-          "rationale": "Die Registrierungsnummer ist eine Zusatzanforderung und ersetzt nicht den eigentlichen Reservierungsfall."
-        },
-        {
-          "text": "`E-Mail-Adresse angeben` erweitert `Mitarbeiter loggt sich ein`, weil beide Eingaben ueber Textfelder erfolgen.",
-          "rationale": "Die E-Mail-Adresse gehoert fachlich zur Kundenreservierung und nicht zum Mitarbeiterlogin."
-        }
+      "type": "table_fill",
+      "title": "Beziehungslogik im Use-Case-Diagramm festlegen",
+      "prompt": "Ordnen Sie den beiden Fachaussagen die passende Modellierungslogik im Use-Case-Diagramm zu.",
+      "columns": [
+        "Fachaussage",
+        "Passende Modellierung"
       ],
-      "correctIndex": 0,
+      "rows": [
+        [
+          "`Firmenkunde` ist ein Spezialfall von `Kunde`.",
+          {
+            "key": "uc_relation_actor",
+            "label": "Beziehung fuer Firmenkunde und Kunde",
+            "expected": "Spezialisierung / Generalisierung",
+            "inputType": "select",
+            "placeholder": "Modellierung waehlen",
+            "options": [
+              "Spezialisierung / Generalisierung",
+              "`<<extend>>`-Beziehung",
+              "`<<include>>`-Beziehung",
+              "Direkte Assoziation zwischen zwei Akteuren ohne Vererbung"
+            ]
+          }
+        ],
+        [
+          "`Sonderwuensche angeben` soll nur bei Bedarf Teil von `Reservierung vornehmen` sein.",
+          {
+            "key": "uc_relation_optional",
+            "label": "Beziehung fuer Sonderwuensche",
+            "expected": "`<<extend>>`-Beziehung",
+            "inputType": "select",
+            "placeholder": "Modellierung waehlen",
+            "options": [
+              "`<<extend>>`-Beziehung",
+              "`<<include>>`-Beziehung",
+              "Spezialisierung / Generalisierung",
+              "Keine Beziehung, weil optionale Schritte nie modelliert werden"
+            ]
+          }
+        ]
+      ],
       "feedback": {
-        "correct": "Spezialisierung und optionale Erweiterung sind fachlich passend eingeordnet.",
-        "wrong": "Pruefen Sie, welche Rolle ein Spezialfall von `Kunde` ist und welche Angaben nur optional zur Reservierung gehoeren."
+        "correct": "Spezialisierung und optionale Erweiterung sind fachlich passend modelliert.",
+        "wrong": "Pruefen Sie getrennt, welche Rolle ein Spezialfall von `Kunde` ist und welcher Use Case nur optional zur Reservierung gehoert."
       },
       "progressLinks": [
         "pv1fiae_uml_use_cases"
       ]
     },
     {
-      "id": "q07",
-      "type": "single_choice",
-      "title": "Hauptziel einer eRechnung",
-      "prompt": "Welcher Kerngedanke der eRechnung wird im Infotext am treffendsten hervorgehoben?",
-      "options": [
+      "id": "ctx03",
+      "type": "context_card",
+      "title": "Kurznotiz zur eRechnung",
+      "contentBlocks": [
         {
-          "text": "Die Rechnung soll vor allem automatisch und elektronisch verarbeitet werden koennen.",
-          "rationale": "Genau darauf zielt der strukturierte Charakter einer eRechnung ab."
-        },
-        {
-          "text": "Die Rechnung ist nur dann gueltig, wenn sie fuer Menschen optisch auf Papier gestaltet wurde.",
-          "rationale": "Die menschenlesbare Darstellung ist nachrangig und nicht das Hauptziel."
-        },
-        {
-          "text": "Die Rechnung dient primaer als Marketingflaeche fuer das Layout des Lieferanten.",
-          "rationale": "Gestaltung kann hilfreich sein, ist aber nicht der Kern einer eRechnung."
-        },
-        {
-          "text": "Die Rechnung muss vor allem moeglichst viele manuelle Bearbeitungsschritte erzwingen.",
-          "rationale": "Das Gegenteil ist beabsichtigt: strukturierte Daten sollen manuelle Arbeit reduzieren."
+          "type": "text",
+          "text": "Im Projektkontext steht die eRechnung nicht zuerst fuer ein schoenes Layout, sondern fuer strukturierte elektronische Daten. Diese Daten sollen von IT-Systemen moeglichst automatisch weiterverarbeitet werden koennen.\n\nDaneben gibt es weiterhin einen visuellen Aspekt fuer Menschen, zum Beispiel eine lesbare Darstellung. Fachlich ist dieser Darstellungsaspekt aber nachrangig gegenueber dem Datenaspekt der automatischen Verarbeitung."
         }
+      ]
+    },
+    {
+      "id": "q07",
+      "type": "short_text",
+      "title": "Hauptziel einer eRechnung kurz formulieren",
+      "prompt": "Formulieren Sie in 1-3 Saetzen das Hauptziel einer eRechnung in diesem Projektkontext.",
+      "minChars": 90,
+      "requiredKeywords": [
+        "automatisch",
+        "verarbeiten"
       ],
-      "correctIndex": 0,
+      "expectedOutline": "Beschreibt die eRechnung als strukturierte elektronische Rechnung, deren Hauptziel die automatische bzw. maschinelle Verarbeitung in IT-Systemen ist; eine lesbare Darstellung fuer Menschen bleibt nachrangig.",
       "feedback": {
-        "correct": "Die automatische maschinelle Verarbeitung ist richtig als Hauptziel erkannt.",
-        "wrong": "Achten Sie darauf, dass die eRechnung vor allem fuer strukturierte, automatische Verarbeitung gedacht ist."
+        "correct": "Das Hauptziel der eRechnung ist fachlich treffend formuliert.",
+        "wrong": "Arbeiten Sie klarer heraus, dass strukturierte Rechnungsdaten vor allem automatisch weiterverarbeitet werden sollen."
       },
       "progressLinks": [
         "pv1fiae_erechnung_grundlagen"
@@ -477,31 +494,50 @@
     },
     {
       "id": "q09",
-      "type": "single_choice",
-      "title": "Transportverschluesselung einordnen",
-      "prompt": "Welche Art von Verschluesselungsverfahren liegt der Transportverschluesselung bei der E-Mail-Uebertragung zugrunde?",
-      "options": [
-        {
-          "text": "Hybride Verschluesselung",
-          "rationale": "Die Transportverschluesselung kombiniert asymmetrische und symmetrische Anteile und wird deshalb als hybrid eingeordnet."
-        },
-        {
-          "text": "Ausschliesslich symmetrische Verschluesselung",
-          "rationale": "Das greift zu kurz, weil die Transportverschluesselung nicht nur auf einem vorab geteilten Geheimnis beruht."
-        },
-        {
-          "text": "Ausschliesslich asymmetrische Verschluesselung",
-          "rationale": "Asymmetrische Verfahren spielen mit hinein, die Einordnung lautet hier aber nicht rein asymmetrisch."
-        },
-        {
-          "text": "Steganografie",
-          "rationale": "Steganografie versteckt Informationen, beschreibt aber nicht das hier gemeinte Transportverschluesselungsverfahren."
-        }
+      "type": "table_fill",
+      "title": "Hybride Transportverschluesselung in zwei Phasen einordnen",
+      "prompt": "Ordnen Sie den beiden Phasen der geschuetzten E-Mail-Uebertragung den passenden kryptografischen Ansatz zu.",
+      "columns": [
+        "Phase der Uebertragung",
+        "Passender kryptografischer Ansatz"
       ],
-      "correctIndex": 0,
+      "rows": [
+        [
+          "Beim Verbindungsaufbau wird Material fuer die sichere Sitzung vorbereitet oder ausgetauscht.",
+          {
+            "key": "tls_phase_setup",
+            "label": "Ansatz beim Verbindungsaufbau",
+            "expected": "Asymmetrischer Anteil fuer Schluesselaustausch und Vertrauensaufbau",
+            "inputType": "select",
+            "placeholder": "Ansatz waehlen",
+            "options": [
+              "Asymmetrischer Anteil fuer Schluesselaustausch und Vertrauensaufbau",
+              "Symmetrischer Anteil fuer die eigentliche Nutzdatenuebertragung",
+              "Steganografie zum Verstecken der Rechnung im E-Mail-Text",
+              "Hashing ohne Schluessel als vollstaendiger Ersatz fuer Verschluesselung"
+            ]
+          }
+        ],
+        [
+          "Die eigentlichen Rechnungsdaten werden danach effizient uebertragen.",
+          {
+            "key": "tls_phase_data",
+            "label": "Ansatz bei der Nutzdatenuebertragung",
+            "expected": "Symmetrischer Anteil fuer die eigentliche Nutzdatenuebertragung",
+            "inputType": "select",
+            "placeholder": "Ansatz waehlen",
+            "options": [
+              "Symmetrischer Anteil fuer die eigentliche Nutzdatenuebertragung",
+              "Asymmetrischer Anteil fuer Schluesselaustausch und Vertrauensaufbau",
+              "Steganografie zum Verstecken der Rechnung im E-Mail-Text",
+              "Hashing ohne Schluessel als vollstaendiger Ersatz fuer Verschluesselung"
+            ]
+          }
+        ]
+      ],
       "feedback": {
-        "correct": "Die Transportverschluesselung ist fachlich korrekt als hybrid eingeordnet.",
-        "wrong": "Gesucht ist nicht das Protokoll selbst, sondern die Art des zugrunde liegenden Verschluesselungsverfahrens."
+        "correct": "Die zwei Phasen der Transportverschluesselung sind fachlich passend eingeordnet.",
+        "wrong": "Achten Sie darauf, dass hier asymmetrischer und symmetrischer Anteil zusammenwirken und damit ein hybrides Verfahren entsteht."
       },
       "progressLinks": [
         "pv1fiae_sicherheit_validierung_prototyping"
@@ -509,31 +545,19 @@
     },
     {
       "id": "q10",
-      "type": "single_choice",
-      "title": "Vorteil der hybriden/asymmetrischen Schluesselidee",
-      "prompt": "Welcher Vorteil wird gegenueber Verfahren mit gemeinsamem Geheimnis am treffendsten beschrieben?",
-      "options": [
-        {
-          "text": "Die Parteien muessen kein vorab geteiltes gemeinsames Geheimnis austauschen, weil mit dem Public Key der empfangenden Seite gearbeitet werden kann.",
-          "rationale": "Genau das ist der zentrale Vorteil gegenueber Verfahren mit Pre-Shared-Secret."
-        },
-        {
-          "text": "Die Nachricht wird automatisch kuerzer, weil alle Daten vor dem Versand komprimiert werden.",
-          "rationale": "Kompression ist nicht der hier beschriebene Schluesselvorteil."
-        },
-        {
-          "text": "Der Empfaenger braucht keinen privaten Schluessel mehr, sobald der Versand gestartet wurde.",
-          "rationale": "Gerade der private Schluessel bleibt fuer die sichere Entschluesselung wesentlich."
-        },
-        {
-          "text": "Das Verfahren ersetzt jede weitere Form von Zertifikats- oder Identitaetspruefung.",
-          "rationale": "Verschluesselung allein ersetzt keine vollstaendige Identitaets- und Vertrauenskette."
-        }
+      "type": "short_text",
+      "title": "Vorteil der hybriden/asymmetrischen Schluesselidee kurz begruenden",
+      "prompt": "Beschreiben Sie in 2-4 Saetzen, warum die hybride/asymmetrische Schluesselidee gegenueber Verfahren mit gemeinsamem Geheimnis ein Vorteil ist.",
+      "minChars": 120,
+      "requiredKeywords": [
+        "schluessel",
+        "geheimnis",
+        "oeffentlich"
       ],
-      "correctIndex": 0,
+      "expectedOutline": "Erklaert, dass kein vorab geteiltes gemeinsames Geheimnis ausgetauscht werden muss, weil mit dem oeffentlichen Schluessel des Empfaengers gearbeitet werden kann und der private Schluessel geheim bleibt.",
       "feedback": {
-        "correct": "Der Vorteil gegenueber einem vorab geteilten Geheimnis ist richtig beschrieben.",
-        "wrong": "Achten Sie auf den Unterschied zwischen Verfahren mit Pre-Shared-Secret und Verfahren, die ueber oeffentliche Schluessel starten koennen."
+        "correct": "Der Vorteil gegenueber einem vorab geteilten Geheimnis ist fachlich nachvollziehbar beschrieben.",
+        "wrong": "Arbeiten Sie klarer heraus, dass kein gemeinsames Geheimnis vorab verteilt werden muss und der Empfaenger ueber seinen Schluessel eingebunden wird."
       },
       "progressLinks": [
         "pv1fiae_sicherheit_validierung_prototyping"
@@ -666,31 +690,26 @@
     },
     {
       "id": "q14",
-      "type": "single_choice",
-      "title": "Prototyping in der Konzeptionsphase",
-      "prompt": "Welche Aussage beschreibt Prototyping in diesem Zusammenhang am treffendsten?",
-      "options": [
-        {
-          "text": "Eine vereinfachte Version moeglicher Loesungswege wird gebaut, um Aufwand, Risiken und Entscheidungsfolgen besser abschaetzen zu koennen.",
-          "rationale": "Das trifft sowohl die Idee des Prototypings als auch den Nutzen in der Konzeptionsphase."
-        },
-        {
-          "text": "Das fertige Endprodukt wird unmittelbar ohne Zwischenschritte produktiv geschaltet, damit echte Lastdaten entstehen.",
-          "rationale": "Das beschreibt keine Prototyping-Phase, sondern bereits eine Produktivsetzung."
-        },
-        {
-          "text": "Prototyping bedeutet, dass alle Anforderungen bewusst offenbleiben und erst nach dem Projektabschluss bewertet werden.",
-          "rationale": "Prototyping dient gerade dazu, frueher Klarheit ueber Loesungswege zu gewinnen."
-        },
-        {
-          "text": "Ein Prototyp ersetzt jede weitere Architektur- und Fachentscheidung, sobald er lauffaehig ist.",
-          "rationale": "Ein Prototyp hilft bei Entscheidungen, ersetzt aber keine saubere Gesamtbewertung."
-        }
+      "type": "ordering",
+      "title": "Prototyping sinnvoll in die Konzeptionsphase einbauen",
+      "prompt": "Ordnen Sie die Schritte so, dass ein Prototyp in der Konzeptionsphase fachlich sinnvoll genutzt wird.",
+      "items": [
+        "Vereinfachten Prototypen mit Kernfunktion bauen",
+        "Erkenntnisse zu Aufwand, Risiken und Grenzen dokumentieren",
+        "Unsicheren Loesungsbereich oder offene Fachfrage identifizieren",
+        "Mit Stakeholdern oder Fachseite pruefen und Rueckmeldung einholen",
+        "Naechste Architektur- oder Projektentscheidung aus den Ergebnissen ableiten"
       ],
-      "correctIndex": 0,
+      "correctOrder": [
+        "Unsicheren Loesungsbereich oder offene Fachfrage identifizieren",
+        "Vereinfachten Prototypen mit Kernfunktion bauen",
+        "Mit Stakeholdern oder Fachseite pruefen und Rueckmeldung einholen",
+        "Erkenntnisse zu Aufwand, Risiken und Grenzen dokumentieren",
+        "Naechste Architektur- oder Projektentscheidung aus den Ergebnissen ableiten"
+      ],
       "feedback": {
-        "correct": "Prototyping ist passend als vereinfachte Erprobung zur besseren Abschaetzung beschrieben.",
-        "wrong": "Denken Sie an eine vereinfachte Umsetzung, die Entscheidungen und Aufwand in der Konzeptionsphase absicherbar macht."
+        "correct": "Der Ablauf zeigt Prototyping als gezielte Erprobung vor einer belastbaren Entscheidung.",
+        "wrong": "Ein Prototyp ist kein Endprodukt. Ordnen Sie zuerst die offene Frage, dann Erprobung, Rueckmeldung, Dokumentation und erst danach die Entscheidung."
       },
       "progressLinks": [
         "pv1fiae_sicherheit_validierung_prototyping"
@@ -795,31 +814,50 @@
     },
     {
       "id": "q15",
-      "type": "single_choice",
-      "title": "Redundanz an einem Beispiel erklaeren",
-      "prompt": "Welche Aussage beschreibt Redundanz in der gezeigten Tabelle am treffendsten?",
-      "options": [
-        {
-          "text": "Identische Informationen werden mehrfach gespeichert, zum Beispiel dieselben Gastkontaktdaten bei mehreren Zeilen eines Besuchs.",
-          "rationale": "Genau diese Mehrfachspeicherung identischer Daten ist Redundanz."
-        },
-        {
-          "text": "Jede Zeile enthaelt unterschiedliche Informationen, daher liegt keine Redundanz vor.",
-          "rationale": "Die Tabelle wiederholt sichtbar Gast- und Mitarbeiterinformationen."
-        },
-        {
-          "text": "Redundanz bedeutet hier ausschliesslich, dass es mehr als drei Spalten in einer Tabelle gibt.",
-          "rationale": "Die Anzahl der Spalten beschreibt keine Redundanz im Datenbanksinn."
-        },
-        {
-          "text": "Redundanz liegt nur dann vor, wenn zwei verschiedene Tabellen exakt denselben Namen haben.",
-          "rationale": "Das ist kein fachlich passender Redundanzbegriff fuer relationale Daten."
-        }
+      "type": "table_fill",
+      "title": "Redundante Informationen im Tabellenexport benennen",
+      "prompt": "Ordnen Sie den beiden Beobachtungen ein passendes konkretes Beispiel aus dem gezeigten Datenexport zu.",
+      "columns": [
+        "Beobachtung",
+        "Beispiel aus dem Datenexport"
       ],
-      "correctIndex": 0,
+      "rows": [
+        [
+          "Gastdaten werden innerhalb desselben Besuchs mehrfach wiederholt.",
+          {
+            "key": "redundancy_guest",
+            "label": "Beispiel fuer wiederholte Gastdaten",
+            "expected": "`Gast_Kontakt` von `Mara Vogt` erscheint bei mehreren Zeilen desselben Besuchs erneut.",
+            "inputType": "select",
+            "placeholder": "Beispiel waehlen",
+            "options": [
+              "`Gast_Kontakt` von `Mara Vogt` erscheint bei mehreren Zeilen desselben Besuchs erneut.",
+              "`Bewertung` wechselt zwischen `5`, `3` und `4` und zeigt damit gerade unterschiedliche Informationen.",
+              "`Id_Leist` unterscheidet sich zwischen `301`, `488` und `793` und ist deshalb kein Wiederholungsbeispiel.",
+              "`Besuch_Zeit` ist ueber alle Gaeste hinweg immer verschieden und deshalb das staerkste Redundanzmerkmal."
+            ]
+          }
+        ],
+        [
+          "Mitarbeiterdaten tauchen in verschiedenen Bewertungszeilen erneut auf.",
+          {
+            "key": "redundancy_staff",
+            "label": "Beispiel fuer wiederholte Mitarbeiterdaten",
+            "expected": "Mitarbeiter `Jonas Feld` mit `040-3255` erscheint in mehreren Bewertungszeilen erneut.",
+            "inputType": "select",
+            "placeholder": "Beispiel waehlen",
+            "options": [
+              "Mitarbeiter `Jonas Feld` mit `040-3255` erscheint in mehreren Bewertungszeilen erneut.",
+              "Die Kombination aus `Leistung` und `Bewertung` ist immer einzigartig und deshalb das beste Redundanzbeispiel.",
+              "`Id_Gast` `73` kommt nur in zwei Zeilen vor und verhindert dadurch jede Redundanz.",
+              "`Mit_Telefon` darf in relationalen Tabellen niemals gespeichert werden und ist deshalb automatisch kein Wiederholungsproblem."
+            ]
+          }
+        ]
+      ],
       "feedback": {
-        "correct": "Redundanz ist korrekt als Mehrfachspeicherung identischer Informationen beschrieben.",
-        "wrong": "Achten Sie auf wiederholte Gast-, Leistungs- oder Mitarbeiterdaten ueber mehrere Zeilen hinweg."
+        "correct": "Die Redundanz ist ueber konkrete Wiederholungen im Export sauber erkannt.",
+        "wrong": "Schauen Sie gezielt auf Informationen, die in mehreren Zeilen erneut auftauchen, obwohl sie fachlich nur einmal gepflegt werden sollten."
       },
       "progressLinks": [
         "pv1fiae_datenmodell_normalisierung"

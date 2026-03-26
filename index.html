@@ -16,11 +16,10 @@
           <span class="icon-emoji" aria-hidden="true">📥</span>
         </button>
       </div>
-      <button id="btnHome" type="button" class="icon-button" aria-label="Fortschritte anzeigen" title="Fortschritte anzeigen">
-        <span class="icon-emoji" aria-hidden="true">📊</span>
-      </button>
     </div>
-    <div class="appbar-title">Die Wiederholung ist die Mutter des Lernens</div>
+    <button id="btnHome" type="button" class="appbar-title appbar-title-button" aria-label="Fortschritte anzeigen" title="Fortschritte anzeigen" aria-pressed="false">
+      Die Wiederholung ist die Mutter des Lernens
+    </button>
     <div class="appbar-right-tools appbar-icon-right">
       <button id="btnAccessManager" type="button" class="icon-button" aria-label="Schluessel verwalten" title="Schluessel verwalten">
         <span class="icon-emoji" aria-hidden="true">🔑</span>
@@ -111,7 +110,10 @@
     const ACCESS_KEY_STORAGE_KEY = "sr_access_key";
     const ACCESS_FOLDER_STORAGE_KEY = "sr_access_folder";
     const ACCESS_KEYS_CONFIG_PATH = "./access-keys.json";
+    const LOCALHOST_ADMIN_SELECTED_KEY_STORAGE_KEY = "sr_local_admin_selected_key";
     const HOME_SKILLS_FOLDER_STORAGE_KEY = "sr_home_skills_folder";
+    const SCENARIO_FOLDER_CATALOG_STORAGE_KEY = "sr_scenario_folder_catalog_v1";
+    const SCENARIO_TREE_CACHE_STORAGE_KEY = "sr_scenario_tree_cache_v1";
     const SKILL_PROGRESS_STORAGE_KEY_PREFIX = "sr_skill_progress_v1";
     const SCENARIO_RATING_STORAGE_KEY_PREFIX = "sr_scenario_rating_v1";
     const QUESTION_MARKER_STORAGE_KEY_PREFIX = "sr_question_marker_v1";
@@ -119,7 +121,7 @@
     const MANUAL_SHORTTEXT_CREDIT_BUTTON_LABEL = "So hab ich es gement";
     const DEFAULT_SKILL_TARGET_CORRECT = 8;
     const SUBMIT_BUTTON_READY_LABEL = "Abgeben und Auswertung anzeigen";
-    const QUESTION_MARKER_STATE_ORDER = ["none", "answered", "double_checked", "marked"];
+    const QUESTION_MARKER_STATE_ORDER = ["none", "answered", "marked"];
     const QUESTION_MARKER_META = Object.freeze({
       none: {
         label: "offen",
@@ -128,10 +130,6 @@
       answered: {
         label: "bearbeitet",
         uiLabel: "bearbeitet"
-      },
-      double_checked: {
-        label: "geprüft",
-        uiLabel: "geprüft"
       },
       marked: {
         label: "markiert",
@@ -150,7 +148,8 @@
       LF09_03_26: "LF09-Scenarien",
       LF10FIAE_03_26: "LF10FIAE-Scenarien",
       LF11FIAE_03_26: "LF11FIAE-Scenarien",
-      LF12FIAE_03_26: "LF12FIAE-Scenarien"
+      LF12FIAE_03_26: "LF12FIAE-Scenarien",
+      QUS2_03_26: "QuS2-Scenarien"
     });
     const GITHUB_REPO_OWNER_FALLBACK = "Thor-the-Dwarf";
     const GITHUB_REPO_NAME_FALLBACK = "FI_Skilltrainer";
@@ -179,10 +178,16 @@
     let accessKeyToFolders = Object.create(null);
     let accessKeyToFolderPrefixes = Object.create(null);
     let accessKeyToAllFolders = Object.create(null);
+    let accessKeyToScenarioItems = Object.create(null);
+    let accessKeyRawNameMap = Object.create(null);
     let accessKeyConfigLoaded = false;
+    let cachedScenarioFolders = [];
+    let cachedScenarioMenuGroups = [];
     let liveScenarioFolders = [];
     let liveScenarioFoldersLoaded = false;
     let liveScenarioFoldersPromise = null;
+    let scenarioTreeWarmupPromise = null;
+    let scenarioTreeRefreshPromise = null;
     let scenarioFolderSyncMetaByFolder = Object.create(null);
     let scenarioFolderCatalogState = {
       mode: "known_only",
@@ -192,8 +197,10 @@
       repoOnlyFolders: [],
       knownOnlyFolders: [],
       error: "",
-      checkedAt: ""
+      checkedAt: "",
+      source: ""
     };
+    let localhostAdminSelectedKey = "";
 
     function normalize(s) {
       return String(s || "").toLowerCase().trim().replace(/\s+/g, " ");
@@ -229,7 +236,17 @@
     }
 
     function normalizeQuestionMarkerState(value) {
-      return QUESTION_MARKER_STATE_ORDER.includes(value) ? value : "none";
+      const normalized = String(value || "")
+        .trim()
+        .toLowerCase()
+        .replace(/[\s-]+/g, "_");
+      if (normalized === "offen") return "none";
+      if (normalized === "bearbeitet") return "answered";
+      if (normalized === "markiert") return "marked";
+      if (normalized === "double_checked" || normalized === "doublechecked" || normalized === "geprueft" || normalized === "geprüft") {
+        return "marked";
+      }
+      return QUESTION_MARKER_STATE_ORDER.includes(normalized) ? normalized : "none";
     }
 
     function getQuestionMarkerMeta(state) {
@@ -318,7 +335,6 @@
       const q = question || getQuestionById(questionId, data);
       const storedState = normalizeQuestionMarkerState(questionMarkerState[String(questionId || "").trim()]);
       if (storedState === "marked") return "marked";
-      if (storedState === "double_checked" && q && isQuestionAnswered(q)) return "double_checked";
       return q && isQuestionAnswered(q) ? "answered" : "none";
     }
 
@@ -374,10 +390,7 @@
       const answered = isQuestionAnswered(q);
       let nextState = "none";
       if (answered) {
-        if (currentState === "answered") nextState = "double_checked";
-        else if (currentState === "double_checked") nextState = "marked";
-        else if (currentState === "marked") nextState = "none";
-        else nextState = "double_checked";
+        nextState = currentState === "marked" ? "none" : "marked";
       } else {
         nextState = currentState === "marked" ? "none" : "marked";
       }
@@ -448,6 +461,35 @@
       return prefixes;
     }
 
+    function normalizeAccessTicketMap(rawValue) {
+      const source = rawValue && typeof rawValue === "object" && !Array.isArray(rawValue)
+        ? rawValue
+        : {};
+      const normalized = {};
+      for (const [rawFolder, rawItems] of Object.entries(source)) {
+        const folder = sanitizeFolderName(rawFolder);
+        if (!folder) continue;
+        const files = [...new Set(
+          (Array.isArray(rawItems) ? rawItems : [rawItems])
+            .map((entry) => normalizeScenarioResourcePath(entry))
+            .filter(Boolean)
+        )].sort((a, b) => a.localeCompare(b, "de", { numeric: true, sensitivity: "base" }));
+        if (!files.length) continue;
+        normalized[folder] = files;
+      }
+      return normalized;
+    }
+
+    function applyAccessKeyConfigPayload(payload) {
+      const normalized = normalizeAccessKeyConfig(payload);
+      accessKeyToFolder = { ...FALLBACK_ACCESS_KEY_TO_FOLDER, ...normalized.singleFolderMap };
+      accessKeyToFolders = { ...normalized.multiFolderMap };
+      accessKeyToFolderPrefixes = { ...normalized.prefixMap };
+      accessKeyToAllFolders = { ...(normalized.allFoldersMap || {}) };
+      accessKeyToScenarioItems = { ...(normalized.ticketMap || {}) };
+      accessKeyRawNameMap = { ...(normalized.rawKeyMap || {}) };
+    }
+
     function normalizeAccessKeyConfig(payload) {
       const source = payload && typeof payload === "object"
         ? (payload.keys && typeof payload.keys === "object" ? payload.keys : payload)
@@ -456,11 +498,14 @@
         singleFolderMap: {},
         multiFolderMap: {},
         prefixMap: {},
-        allFoldersMap: {}
+        allFoldersMap: {},
+        ticketMap: {},
+        rawKeyMap: {}
       };
       for (const [rawKey, rawValue] of Object.entries(source || {})) {
         const key = normalizeAccessKey(rawKey);
         if (!key || rawValue == null) continue;
+        normalized.rawKeyMap[key] = String(rawKey);
 
         if (typeof rawValue === "string") {
           const folder = sanitizeFolderName(rawValue);
@@ -476,14 +521,23 @@
           ? []
           : normalizeAccessFolderPrefixes(rawValue.folderPrefixes || rawValue.prefixes || rawValue.folderPrefix || []);
         const allFolders = !Array.isArray(rawValue) && Boolean(rawValue.allFolders);
+        const ticketMap = Array.isArray(rawValue)
+          ? {}
+          : normalizeAccessTicketMap(rawValue.tickets || rawValue.ticketMap || rawValue.scenarios || rawValue.itemsByFolder || {});
+
+        Object.keys(ticketMap).forEach((folder) => {
+          if (singleFolder === folder) return;
+          if (!folderList.includes(folder)) folderList.push(folder);
+        });
 
         if (singleFolder) {
           normalized.singleFolderMap[key] = singleFolder;
           if (!folderList.includes(singleFolder)) folderList.unshift(singleFolder);
         }
-        if (folderList.length) normalized.multiFolderMap[key] = folderList;
+        if (folderList.length) normalized.multiFolderMap[key] = normalizeAccessFolderList(folderList);
         if (prefixes.length) normalized.prefixMap[key] = prefixes;
         if (allFolders) normalized.allFoldersMap[key] = true;
+        if (Object.keys(ticketMap).length) normalized.ticketMap[key] = ticketMap;
       }
       return normalized;
     }
@@ -495,11 +549,7 @@
         const res = await fetch(ACCESS_KEYS_CONFIG_PATH, { cache: "no-store" });
         if (!res.ok) return;
         const payload = await res.json();
-        const normalized = normalizeAccessKeyConfig(payload);
-        accessKeyToFolder = { ...FALLBACK_ACCESS_KEY_TO_FOLDER, ...normalized.singleFolderMap };
-        accessKeyToFolders = { ...normalized.multiFolderMap };
-        accessKeyToFolderPrefixes = { ...normalized.prefixMap };
-        accessKeyToAllFolders = { ...(normalized.allFoldersMap || {}) };
+        applyAccessKeyConfigPayload(payload);
       } catch {
       }
     }
@@ -529,7 +579,49 @@
       return folders.sort((a, b) => a.localeCompare(b, "de", { numeric: true, sensitivity: "base" }));
     }
 
-    function updateScenarioFolderCatalogState(knownFolders, liveFolders, error = "") {
+    function loadStoredScenarioFolders() {
+      try {
+        return sortScenarioFolderNames(JSON.parse(localStorage.getItem(SCENARIO_FOLDER_CATALOG_STORAGE_KEY) || "[]"));
+      } catch {
+      }
+      return [];
+    }
+
+    function saveStoredScenarioFolders(folders) {
+      cachedScenarioFolders = sortScenarioFolderNames(folders);
+      try {
+        localStorage.setItem(SCENARIO_FOLDER_CATALOG_STORAGE_KEY, JSON.stringify(cachedScenarioFolders));
+      } catch {
+      }
+    }
+
+    function loadStoredScenarioMenuGroups() {
+      try {
+        return normalizeStoredScenarioMenuGroups(JSON.parse(localStorage.getItem(SCENARIO_TREE_CACHE_STORAGE_KEY) || "[]"));
+      } catch {
+      }
+      return [];
+    }
+
+    function saveStoredScenarioMenuGroups(groups) {
+      const normalizedGroups = normalizeStoredScenarioMenuGroups(groups);
+      cachedScenarioMenuGroups = normalizedGroups;
+      try {
+        localStorage.setItem(SCENARIO_TREE_CACHE_STORAGE_KEY, JSON.stringify(normalizedGroups));
+      } catch {
+      }
+    }
+
+    function hydrateScenarioTreeCacheFromStorage() {
+      cachedScenarioFolders = loadStoredScenarioFolders();
+      cachedScenarioMenuGroups = loadStoredScenarioMenuGroups();
+      updateScenarioFolderCatalogState(
+        [...getConfiguredScenarioFolders(), ...cachedScenarioFolders],
+        liveScenarioFolders
+      );
+    }
+
+    function updateScenarioFolderCatalogState(knownFolders, liveFolders, error = "", source = "") {
       const known = sortScenarioFolderNames(knownFolders);
       const live = sortScenarioFolderNames(liveFolders);
       const knownSet = new Set(known);
@@ -538,7 +630,7 @@
       scenarioFolderCatalogState = {
         mode: error
           ? "repo_error"
-          : isHostedOnGithubPages()
+          : source
             ? "repo_compared"
             : "known_only",
         knownCount: known.length,
@@ -547,13 +639,15 @@
         repoOnlyFolders: live.filter((folder) => !knownSet.has(folder)),
         knownOnlyFolders: known.filter((folder) => !liveSet.has(folder)),
         error: String(error || ""),
-        checkedAt: new Date().toISOString()
+        checkedAt: new Date().toISOString(),
+        source: String(source || "")
       };
     }
 
     function getKnownScenarioFolders() {
       return sortScenarioFolderNames([
         ...getConfiguredScenarioFolders(),
+        ...cachedScenarioFolders,
         ...liveScenarioFolders
       ]);
     }
@@ -566,8 +660,31 @@
         .filter(Boolean);
     }
 
-    async function fetchLiveScenarioFolders() {
-      if (!isHostedOnGithubPages()) return [];
+    function extractScenarioFolderNamesFromDirectoryListingHtml(html) {
+      const parser = new DOMParser();
+      const doc = parser.parseFromString(String(html || ""), "text/html");
+      const folders = [];
+      const pushFolder = (rawValue) => {
+        let decoded = String(rawValue || "").split("?")[0].split("#")[0];
+        try {
+          decoded = decodeURIComponent(decoded);
+        } catch {
+        }
+        decoded = decoded.trim();
+        if (!decoded || decoded === "../") return;
+        const candidate = decoded.replace(/\/+$/, "").split("/").filter(Boolean).pop() || "";
+        if (!/-Scenarien$/i.test(candidate)) return;
+        const folder = sanitizeFolderName(candidate);
+        if (folder) folders.push(folder);
+      };
+      doc.querySelectorAll("a[href]").forEach((link) => {
+        pushFolder(link.getAttribute("href"));
+        pushFolder(link.textContent || "");
+      });
+      return sortScenarioFolderNames(folders);
+    }
+
+    async function fetchGithubScenarioFolders() {
       const res = await fetch(buildGithubRepoContentsUrlForParts(["Kurse"]), {
         cache: "no-store",
         headers: {
@@ -578,35 +695,59 @@
         throw new Error(`Repository-Abgleich fuer Kurse fehlgeschlagen (HTTP ${res.status})`);
       }
       const payload = await res.json();
-      return sortScenarioFolderNames(normalizeLiveScenarioFolderItems(payload));
+      return {
+        folders: sortScenarioFolderNames(normalizeLiveScenarioFolderItems(payload)),
+        source: "github_api"
+      };
+    }
+
+    async function fetchLocalScenarioFolders() {
+      const res = await fetch("./Kurse/", { cache: "no-store" });
+      if (!res.ok) {
+        throw new Error(`Lokaler Repo-Abgleich fuer Kurse fehlgeschlagen (HTTP ${res.status})`);
+      }
+      const payload = await res.text();
+      const folders = extractScenarioFolderNamesFromDirectoryListingHtml(payload);
+      if (!folders.length) {
+        throw new Error("Lokaler Repo-Abgleich liefert keine lesbare Ordnerliste.");
+      }
+      return {
+        folders,
+        source: "local_listing"
+      };
+    }
+
+    async function fetchLiveScenarioFolders() {
+      if (isHostedOnGithubPages()) return fetchGithubScenarioFolders();
+      return fetchLocalScenarioFolders();
     }
 
     async function ensureScenarioFolderCatalogLoaded(forceRefresh = false) {
-      const configuredFolders = getConfiguredScenarioFolders();
-      if (!isHostedOnGithubPages()) {
-        liveScenarioFolders = [];
-        liveScenarioFoldersLoaded = true;
-        updateScenarioFolderCatalogState(configuredFolders, []);
-        return scenarioFolderCatalogState;
-      }
+      const knownFolders = sortScenarioFolderNames([
+        ...getConfiguredScenarioFolders(),
+        ...cachedScenarioFolders
+      ]);
       if (liveScenarioFoldersLoaded && !forceRefresh) {
-        updateScenarioFolderCatalogState(configuredFolders, liveScenarioFolders);
+        updateScenarioFolderCatalogState(knownFolders, liveScenarioFolders, "", scenarioFolderCatalogState.source || "");
         return scenarioFolderCatalogState;
       }
       if (liveScenarioFoldersPromise && !forceRefresh) return liveScenarioFoldersPromise;
 
       liveScenarioFoldersPromise = (async () => {
         try {
-          liveScenarioFolders = await fetchLiveScenarioFolders();
+          const liveResult = await fetchLiveScenarioFolders();
+          liveScenarioFolders = sortScenarioFolderNames(liveResult?.folders || []);
           liveScenarioFoldersLoaded = true;
-          updateScenarioFolderCatalogState(configuredFolders, liveScenarioFolders);
+          saveStoredScenarioFolders(liveScenarioFolders);
+          updateScenarioFolderCatalogState(knownFolders, liveScenarioFolders, "", liveResult?.source || "");
         } catch (err) {
           liveScenarioFolders = [];
           liveScenarioFoldersLoaded = true;
           updateScenarioFolderCatalogState(
-            configuredFolders,
+            knownFolders,
             [],
-            err?.message || "Repository-Abgleich derzeit nicht verfuegbar."
+            err?.message || "Repository-Abgleich derzeit nicht verfuegbar.",
+            ""
           );
         } finally {
           liveScenarioFoldersPromise = null;
@@ -652,6 +793,30 @@
 
     function resolveFolderFromAccessKey(rawKey) {
       return resolveFoldersFromAccessKey(rawKey)[0] || "";
+    }
+
+    function doesAccessKeyAllowScenarioItem(rawKey, folder, filePath) {
+      const safeFolder = sanitizeFolderName(folder);
+      const safeFile = normalizeScenarioResourcePath(filePath);
+      const key = normalizeAccessKey(rawKey);
+      if (!safeFolder || !safeFile || !key) return false;
+      if (!resolveFoldersFromAccessKey(key).includes(safeFolder)) return false;
+      const ticketMap = accessKeyToScenarioItems[key] && typeof accessKeyToScenarioItems[key] === "object"
+        ? accessKeyToScenarioItems[key]
+        : null;
+      if (ticketMap && Object.prototype.hasOwnProperty.call(ticketMap, safeFolder)) {
+        return Array.isArray(ticketMap[safeFolder]) && ticketMap[safeFolder].includes(safeFile);
+      }
+      return true;
+    }
+
+    function filterScenarioItemsForEntries(items, folder, entries = unlockedAccessEntries) {
+      const safeFolder = sanitizeFolderName(folder);
+      if (!safeFolder) return [];
+      const relevantEntries = uniqueAccessEntries(entries).filter((entry) => entry.folder === safeFolder);
+      if (!relevantEntries.length) return [];
+      return (Array.isArray(items) ? items : [])
+        .filter((item) => relevantEntries.some((entry) => doesAccessKeyAllowScenarioItem(entry.key, safeFolder, item?.file || "")));
     }
 
     function sanitizeFolderName(folder) {
@@ -717,7 +882,7 @@
         .join("||");
       if (currentSignature === nextSignature) return false;
       const preferredActiveFolder = sanitizeFolderName(activeScenarioFolder || activeHomeSkillsFolder || expandedEntries[0]?.folder || "");
-      setUnlockedEntries(expandedEntries, preferredActiveFolder);
+      setUnlockedEntries(expandedEntries, preferredActiveFolder, { preserveRuntime: true });
       return true;
     }
 
@@ -740,12 +905,14 @@
       return unlockedAccessEntries.length > 0;
     }
 
-    function setUnlockedEntries(entries, activeFolderHint = "") {
+    function setUnlockedEntries(entries, activeFolderHint = "", options = {}) {
       const cleanedEntries = uniqueAccessEntries(entries);
       if (!cleanedEntries.length) {
         clearUnlockedAccess();
         return;
       }
+
+      const preserveRuntime = Boolean(options?.preserveRuntime);
 
       unlockedAccessEntries = cleanedEntries;
       const folders = getUnlockedFolders();
@@ -766,10 +933,12 @@
       }
 
       homeSkillsCache = Object.create(null);
-      availableScenarios = [];
-      scenarioData = null;
-      activeScenarioFile = "";
-      activeScenarioCountsTowardProgress = false;
+      if (!preserveRuntime) {
+        availableScenarios = [];
+        scenarioData = null;
+        activeScenarioFile = "";
+        activeScenarioCountsTowardProgress = false;
+      }
       try {
         localStorage.setItem(ACCESS_ENTRIES_STORAGE_KEY, JSON.stringify(unlockedAccessEntries));
         localStorage.setItem(ACCESS_ACTIVE_FOLDER_STORAGE_KEY, activeScenarioFolder);
@@ -860,6 +1029,43 @@
       return "";
     }
 
+    function loadStoredLocalhostAdminSelectedKey() {
+      try {
+        return normalizeAccessKey(localStorage.getItem(LOCALHOST_ADMIN_SELECTED_KEY_STORAGE_KEY) || "");
+      } catch {
+      }
+      return "";
+    }
+
+    function persistLocalhostAdminSelectedKey(key) {
+      try {
+        const normalized = normalizeAccessKey(key);
+        if (normalized) {
+          localStorage.setItem(LOCALHOST_ADMIN_SELECTED_KEY_STORAGE_KEY, normalized);
+        } else {
+          localStorage.removeItem(LOCALHOST_ADMIN_SELECTED_KEY_STORAGE_KEY);
+        }
+      } catch {
+      }
+    }
+
+    function getAccessKeyRawName(rawKey) {
+      const key = normalizeAccessKey(rawKey);
+      if (!key) return "";
+      return accessKeyRawNameMap[key] || key;
+    }
+
+    function getAdminEditableAccessKeys() {
+      return [...new Set([
+        ...Object.keys(accessKeyRawNameMap || {}),
+        ...Object.keys(accessKeyToFolder || {}),
+        ...Object.keys(accessKeyToFolders || {}),
+        ...Object.keys(accessKeyToAllFolders || {})
+      ])]
+        .filter(Boolean)
+        .sort((a, b) => getAccessKeyRawName(a).localeCompare(getAccessKeyRawName(b), "de", { numeric: true, sensitivity: "base" }));
+    }
+
     function getScenarioBasePath(folder = "") {
       const resolvedFolder = sanitizeFolderName(folder || activeScenarioFolder);
       if (!resolvedFolder) {
@@ -870,6 +1076,10 @@
 
     function getScenarioManifestPath(folder = "") {
       return `${getScenarioBasePath(folder)}/scenario-manifest.json`;
+    }
+
+    function getCourseManifestPath(folder = "") {
+      return `${getScenarioBasePath(folder)}/00_manifest.json`;
     }
 
     function getHomeSkillsPath(folder = "") {
@@ -1318,14 +1528,39 @@
       );
     }
 
+    async function activateLocalhostAdmin(rawKey) {
+      const key = normalizeAccessKey(rawKey);
+      if (!isLocalDevelopmentHost()) {
+        throw new Error("Lokale Schluesselauswahl ist nur auf localhost verfuegbar.");
+      }
+      if (!key) {
+        throw new Error("Bitte zuerst einen Schluessel auswaehlen.");
+      }
+      await ensureAccessKeyConfigLoaded();
+      await ensureScenarioFolderCatalogLoaded(true);
+      localhostAdminSelectedKey = key;
+      persistLocalhostAdminSelectedKey(key);
+      const mappedFolders = resolveFoldersFromAccessKey(key);
+      if (!mappedFolders.length) {
+        throw new Error("Dieser Schluessel gibt aktuell keinen Ordner frei.");
+      }
+      for (const folder of mappedFolders) {
+        await validateScenarioFolder(folder);
+      }
+      setUnlockedEntries(
+        mappedFolders.map((folder) => ({ key, folder })),
+        mappedFolders[0] || activeScenarioFolder
+      );
+      await initScenarioSelector();
+      await showHomeContent(mappedFolders[0]);
+    }
+
     async function validateScenarioFolder(folder) {
       const safeFolder = sanitizeFolderName(folder);
       if (!safeFolder) throw new Error("Ungueltiger Ordnername.");
-      const liveRepoItems = await fetchScenarioRepoItems(safeFolder);
-      if (liveRepoItems.length) return;
       try {
-        const manifestItems = await fetchScenarioManifestItems(safeFolder);
-        if (manifestItems.length) return;
+        const result = await loadScenarioManifestForFolder(safeFolder);
+        if (Array.isArray(result?.items) && result.items.length) return;
         throw new Error(`Ordner "${safeFolder}" enthaelt keine gueltigen Szenarien.`);
       } catch (err) {
         throw new Error(
@@ -1341,7 +1576,7 @@
       }
 
       await ensureAccessKeyConfigLoaded();
-      await ensureScenarioFolderCatalogLoaded();
+      await ensureScenarioFolderCatalogLoaded(true);
       const mappedFolders = resolveFoldersFromAccessKey(key);
       if (!mappedFolders.length) {
         throw new Error("Key ungueltig. Bitte erneut pruefen.");
@@ -1365,6 +1600,31 @@
       toggleScenarioMenu(false);
       setSubmitBarVisible(false);
       resetRuntimeState();
+      const adminKeys = isLocalDevelopmentHost() ? getAdminEditableAccessKeys() : [];
+      const selectedAdminKey = normalizeAccessKey(localhostAdminSelectedKey || loadStoredLocalhostAdminSelectedKey());
+      const adminKeyOptions = adminKeys.length
+        ? adminKeys
+          .map((key) => {
+            const rawLabel = getAccessKeyRawName(key) || key;
+            const selected = key === selectedAdminKey ? " selected" : "";
+            return `<option value="${esc(key)}"${selected}>${esc(rawLabel)}</option>`;
+          })
+          .join("")
+        : "<option value=''>Keine Schluessel gefunden</option>";
+      const localhostAdminHtml = isLocalDevelopmentHost()
+        ? (
+          "<section class='panel localhost-admin-panel'>" +
+          "<h3>Lokale Schluesselauswahl</h3>" +
+          "<p class='status-text'>Waehle einen vorhandenen Schluessel aus. Danach siehst du lokal genau den Stand, den dieser Key aktuell freigibt.</p>" +
+          "<div class='unlock-form localhost-admin-form'>" +
+          "<label for='localAdminKeySelect'>Schluessel</label>" +
+          `<select id="localAdminKeySelect" class="unlock-input">${adminKeyOptions}</select>` +
+          "<button id='btnLocalAdminActivate' class='btn-primary' type='button'>Key lokal oeffnen</button>" +
+          "<p id='localAdminStatus' class='status-text'></p>" +
+          "</div>" +
+          "</section>"
+        )
+        : "";
       workspaceLeft.innerHTML =
         "<section class='panel unlock-panel'>" +
         "<h2>Zugangsschluessel erforderlich</h2>" +
@@ -1375,7 +1635,8 @@
         "<button id='btnUnlockAccess' class='btn-primary' type='button'>Entsperren</button>" +
         "<p id='unlockStatus' class='status-text'></p>" +
         "</div>" +
-        "</section>";
+        "</section>" +
+        localhostAdminHtml;
 
       const input = document.getElementById("unlockKeyInput");
       const unlockButton = document.getElementById("btnUnlockAccess");
@@ -1410,6 +1671,38 @@
         }
       });
       input.focus();
+
+      if (isLocalDevelopmentHost()) {
+        const adminSelect = document.getElementById("localAdminKeySelect");
+        const adminButton = document.getElementById("btnLocalAdminActivate");
+        const adminStatus = document.getElementById("localAdminStatus");
+        if (adminStatus) {
+          adminStatus.textContent = localhostAdminSelectedKey
+            ? `Zuletzt gewaehlt: ${getAccessKeyRawName(localhostAdminSelectedKey)}`
+            : "Nur auf localhost sichtbar.";
+        }
+        const submitAdmin = async () => {
+          const selectedKey = normalizeAccessKey(adminSelect?.value || "");
+          if (!selectedKey) {
+            if (adminStatus) adminStatus.textContent = "Bitte zuerst einen Schluessel auswaehlen.";
+            return;
+          }
+          if (adminButton) adminButton.disabled = true;
+          if (adminStatus) adminStatus.textContent = "Schluesselansicht wird vorbereitet ...";
+          try {
+            await activateLocalhostAdmin(selectedKey);
+            if (adminStatus) adminStatus.textContent = `Bereit: ${getAccessKeyRawName(selectedKey)}.`;
+          } catch (err) {
+            if (adminStatus) adminStatus.textContent = err.message;
+          } finally {
+            if (adminButton) adminButton.disabled = false;
+          }
+        };
+        adminButton?.addEventListener("click", submitAdmin);
+        adminSelect?.addEventListener("change", () => {
+          persistLocalhostAdminSelectedKey(adminSelect.value || "");
+        });
+      }
     }
 
     function renderSelectionHint(message) {
@@ -1984,7 +2277,7 @@
         if (progressEnabledFiles && !progressEnabledFiles.has(scenarioId)) continue;
         let data = null;
         try {
-          data = await loadScenarioByFilename(scenarioId, safeFolder);
+          data = await loadScenarioJsonByPath(scenarioId, safeFolder);
         } catch {
           continue;
         }
@@ -2405,19 +2698,17 @@
       const currentlyOpen = scenarioMenu.classList.contains("is-open");
       const nextOpen = typeof forceOpen === "boolean" ? forceOpen : !currentlyOpen;
       if (nextOpen) toggleTaskNavDrawer(false);
-      if (nextOpen && hasUnlockedAccess()) {
-        await ensureScenarioFolderCatalogLoaded(true);
-        const accessChanged = refreshUnlockedEntriesFromCatalog();
-        if (accessChanged || !availableScenarios.length) {
-          await initScenarioSelector();
-          if (workspaceLeft.querySelector(".home-layout")) {
-            await showHomeContent(activeHomeSkillsFolder || activeScenarioFolder);
+      if (nextOpen) {
+        if (!availableScenarios.length) {
+          const restoredFromCache = primeScenarioMenuFromCache();
+          if (!restoredFromCache && hasUnlockedAccess()) {
+            warmScenarioTreeFromKnownState().catch(() => {});
           }
-        } else if (availableScenarios.length) {
-          renderScenarioMenu(availableScenarios);
         }
-      } else if (nextOpen && availableScenarios.length) {
         renderScenarioMenu(availableScenarios);
+        if (hasUnlockedAccess()) {
+          refreshScenarioTreeInBackground().catch(() => {});
+        }
       }
       window.clearTimeout(scenarioMenuCloseTimer);
       if (nextOpen) {
@@ -2451,7 +2742,9 @@
         }
       }
       if (activeScenarioFile) {
-        return buildScenarioLabelFromFilename(activeScenarioFile);
+        return normalizeScenarioItemFormat("", activeScenarioFile) === "markdown"
+          ? buildScenarioLabelFromPath(activeScenarioFile)
+          : buildScenarioLabelFromFilename(activeScenarioFile.split("/").pop() || activeScenarioFile);
       }
       return "";
     }
@@ -2472,15 +2765,181 @@
       scenarioMenuButton.title = baseLabel;
     }
 
+    function normalizeScenarioItemFormat(value, fileName = "") {
+      const explicit = String(value || "").trim().toLowerCase();
+      if (explicit === "markdown" || explicit === "md") return "markdown";
+      if (explicit === "quiz" || explicit === "json") return "quiz";
+      return /\.md$/i.test(String(fileName || "").trim()) ? "markdown" : "quiz";
+    }
+
+    function normalizeScenarioResourcePath(rawPath) {
+      const value = String(rawPath || "").trim().replace(/\\/g, "/");
+      if (!value || value.startsWith("/") || value.includes("..")) return "";
+      const parts = value.split("/").map((part) => String(part || "").trim()).filter(Boolean);
+      if (!parts.length) return "";
+      if (parts.some((part) => !/^[A-Za-z0-9._-]+$/.test(part))) return "";
+      return parts.join("/");
+    }
+
+    function assertScenarioResourcePath(rawPath, allowedExtensions = [".json"]) {
+      const value = normalizeScenarioResourcePath(rawPath);
+      if (!value) {
+        throw new Error("Ungueltiger Pfad im Manifest: " + rawPath);
+      }
+      const lowerValue = value.toLowerCase();
+      if (Array.isArray(allowedExtensions) && allowedExtensions.length) {
+        const allowed = allowedExtensions.map((entry) => String(entry || "").trim().toLowerCase()).filter(Boolean);
+        if (allowed.length && !allowed.some((ext) => lowerValue.endsWith(ext))) {
+          throw new Error("Ungueltiger Dateityp im Manifest: " + rawPath);
+        }
+      }
+      return value;
+    }
+
+    function buildScenarioLabelFromSlug(rawValue) {
+      const source = String(rawValue || "").trim().replace(/\.[^.]+$/i, "");
+      if (!source) return "Ticket";
+      const parts = source.split("_").filter(Boolean);
+      const ticketPart = parts[0] || "";
+      const words = parts.slice(1).map((part) => {
+        const lower = String(part || "").toLowerCase();
+        return lower ? lower.charAt(0).toUpperCase() + lower.slice(1) : "";
+      }).filter(Boolean);
+      const prefix = /^\d{2}$/.test(ticketPart) ? `Ticket ${ticketPart}` : "Ticket";
+      return words.length ? `${prefix} - ${words.join(" ")}` : prefix;
+    }
+
+    function buildScenarioLabelFromPath(filePath) {
+      const path = normalizeScenarioResourcePath(filePath);
+      if (!path) return "Ticket";
+      const parts = path.split("/");
+      const base = parts.length > 1 ? parts[parts.length - 2] : parts[parts.length - 1];
+      return buildScenarioLabelFromSlug(base);
+    }
+
+    function normalizeStoredScenarioMenuItem(rawItem, folderHint = "") {
+      if (!rawItem || typeof rawItem !== "object") return null;
+      const folder = sanitizeFolderName(rawItem.folder || folderHint);
+      const file = normalizeScenarioResourcePath(rawItem.file || "");
+      if (!folder || !file) return null;
+      const format = normalizeScenarioItemFormat(rawItem.format || "", file);
+      return {
+        file,
+        label: String(
+          rawItem.label ||
+          (format === "markdown"
+            ? buildScenarioLabelFromPath(file)
+            : buildScenarioLabelFromFilename(file.split("/").pop() || file))
+        ).trim() || "Ticket",
+        folder,
+        countsTowardProgress: typeof rawItem.countsTowardProgress === "boolean" ? rawItem.countsTowardProgress : format !== "markdown",
+        format
+      };
+    }
+
+    function normalizeStoredScenarioMenuGroups(payload) {
+      if (!Array.isArray(payload)) return [];
+      return payload
+        .map((rawGroup) => {
+          const folder = sanitizeFolderName(rawGroup?.folder || "");
+          if (!folder) return null;
+          const items = Array.isArray(rawGroup?.items)
+            ? rawGroup.items
+              .map((entry) => normalizeStoredScenarioMenuItem(entry, folder))
+              .filter(Boolean)
+            : [];
+          const sync = rawGroup?.sync && typeof rawGroup.sync === "object"
+            ? {
+              folder,
+              manifestCount: Math.max(0, Number(rawGroup.sync.manifestCount) || 0),
+              liveCount: Math.max(0, Number(rawGroup.sync.liveCount) || 0),
+              repoCompared: Boolean(rawGroup.sync.repoCompared),
+              repoOnlyCount: Math.max(0, Number(rawGroup.sync.repoOnlyCount) || 0),
+              knownOnlyCount: Math.max(0, Number(rawGroup.sync.knownOnlyCount) || 0),
+              manifestError: String(rawGroup.sync.manifestError || "")
+            }
+            : null;
+          const error = rawGroup?.error ? String(rawGroup.error) : "";
+          return { folder, items, sync, error };
+        })
+        .filter(Boolean)
+        .sort((a, b) => a.folder.localeCompare(b.folder, "de", { numeric: true, sensitivity: "base" }));
+    }
+
+    function getCachedScenarioGroupsForCurrentView() {
+      if (!hasUnlockedAccess()) return [];
+      const cachedGroups = normalizeStoredScenarioMenuGroups(cachedScenarioMenuGroups);
+      const unlockedFolderSet = new Set(getUnlockedFolders());
+      return cachedGroups
+        .filter((group) => unlockedFolderSet.has(group.folder))
+        .map((group) => ({
+          ...group,
+          items: filterScenarioItemsForEntries(group.items, group.folder)
+        }))
+        .filter((group) => group.error || group.items.length);
+    }
+
+    function primeScenarioMenuFromCache() {
+      const groups = getCachedScenarioGroupsForCurrentView();
+      if (!groups.length) return false;
+      availableScenarios = groups;
+      renderScenarioMenu(groups);
+      updateScenarioMenuButtonState(false);
+      return true;
+    }
+
+    async function warmScenarioTreeFromKnownState() {
+      if (!hasUnlockedAccess()) return null;
+      if (scenarioTreeWarmupPromise) return scenarioTreeWarmupPromise;
+      scenarioTreeWarmupPromise = initScenarioSelector({ skipCatalogRefresh: true })
+        .catch(() => {
+        })
+        .finally(() => {
+          scenarioTreeWarmupPromise = null;
+        });
+      return scenarioTreeWarmupPromise;
+    }
+
+    async function refreshScenarioTreeInBackground() {
+      if (scenarioTreeRefreshPromise) return scenarioTreeRefreshPromise;
+      scenarioTreeRefreshPromise = (async () => {
+        if (scenarioTreeWarmupPromise) {
+          await scenarioTreeWarmupPromise;
+        }
+        await ensureScenarioFolderCatalogLoaded(true);
+        const accessChanged = refreshUnlockedEntriesFromCatalog();
+        if (hasUnlockedAccess()) {
+          await initScenarioSelector({
+            skipCatalogRefresh: true
+          });
+          if (accessChanged && workspaceLeft.querySelector(".home-layout")) {
+            await showHomeContent(activeHomeSkillsFolder || activeScenarioFolder);
+          }
+        } else {
+          renderScenarioMenu([]);
+        }
+      })().catch(() => {
+      }).finally(() => {
+        scenarioTreeRefreshPromise = null;
+      });
+      return scenarioTreeRefreshPromise;
+    }
+
     function normalizeScenarioItem(raw) {
       if (typeof raw === "string") {
-        return { file: raw, label: raw.replace(/\.json$/i, ""), countsTowardProgress: null };
+        return {
+          file: raw,
+          label: raw.replace(/\.json$/i, ""),
+          countsTowardProgress: null,
+          format: normalizeScenarioItemFormat("", raw)
+        };
       }
       if (!raw || typeof raw !== "object" || !raw.file) return null;
       return {
         file: String(raw.file),
         label: String(raw.label || raw.file).replace(/\.json$/i, ""),
-        countsTowardProgress: typeof raw.countsTowardProgress === "boolean" ? raw.countsTowardProgress : null
+        countsTowardProgress: typeof raw.countsTowardProgress === "boolean" ? raw.countsTowardProgress : null,
+        format: normalizeScenarioItemFormat(raw.format || "", raw.file)
       };
     }
 
@@ -2511,7 +2970,8 @@
             file,
             label: entry.label || buildScenarioLabelFromFilename(entry.file),
             folder: safeFolder,
-            countsTowardProgress
+            countsTowardProgress,
+            format: "quiz"
           };
         });
     }
@@ -2523,6 +2983,38 @@
       if (!res.ok) throw new Error("Manifest konnte nicht geladen werden (HTTP " + res.status + ")");
       const payload = await res.json();
       return normalizeScenarioManifestItems(payload, safeFolder);
+    }
+
+    function normalizeCourseManifestItems(payload, folder) {
+      const safeFolder = sanitizeFolderName(folder);
+      const source = Array.isArray(payload?.scenario_order) ? payload.scenario_order : [];
+      if (!source.length) throw new Error("Kurs-Manifest ungueltig");
+      return source.map((entry) => {
+        if (!entry || typeof entry !== "object") return null;
+        const scenarioFolder = sanitizeFolderName(entry.folder || "");
+        const scenarioFile = normalizeScenarioResourcePath(entry.file || "");
+        if (!scenarioFolder || !scenarioFile) return null;
+        const file = assertScenarioResourcePath(`${scenarioFolder}/${scenarioFile}`, [".json", ".md"]);
+        const format = normalizeScenarioItemFormat(entry.format || "", file);
+        return {
+          file,
+          label: String(entry.title || "").trim() || buildScenarioLabelFromPath(file),
+          folder: safeFolder,
+          countsTowardProgress: typeof entry.countsTowardProgress === "boolean"
+            ? entry.countsTowardProgress
+            : format !== "markdown",
+          format
+        };
+      }).filter(Boolean);
+    }
+
+    async function fetchCourseManifestItems(folder) {
+      const safeFolder = sanitizeFolderName(folder);
+      if (!safeFolder) throw new Error("Ungueltiger Ordnername.");
+      const res = await fetch(getCourseManifestPath(safeFolder), { cache: "no-store" });
+      if (!res.ok) throw new Error("Kurs-Manifest konnte nicht geladen werden (HTTP " + res.status + ")");
+      const payload = await res.json();
+      return normalizeCourseManifestItems(payload, safeFolder);
     }
 
     async function fetchScenarioRepoItems(folder) {
@@ -2546,7 +3038,8 @@
               file,
               label: buildScenarioLabelFromFilename(file),
               folder: safeFolder,
-              countsTowardProgress: false
+              countsTowardProgress: false,
+              format: "quiz"
             };
           })
           .sort((a, b) => a.file.localeCompare(b.file, "de", { numeric: true, sensitivity: "base" }));
@@ -2568,7 +3061,8 @@
           ? {
             ...entry,
             label: manifestMatch.label || entry.label,
-            countsTowardProgress: Boolean(manifestMatch.countsTowardProgress)
+            countsTowardProgress: Boolean(manifestMatch.countsTowardProgress),
+            format: manifestMatch.format || entry.format || "quiz"
           }
           : entry;
       });
@@ -2600,30 +3094,30 @@
       const text = document.createElement("p");
       text.className = "scenario-tree-sync-text";
 
-      if (!isHostedOnGithubPages()) {
-        heading.textContent = "Bekannter Stand aktiv";
-        text.textContent = "Lokal wird zuerst der bekannte Stand aus der Seite genutzt. Auf GitHub Pages kommt zusaetzlich automatisch der Live-Abgleich gegen das Repository dazu.";
-        banner.append(heading, text);
-        return banner;
-      }
-
       if (state.mode === "repo_error") {
         heading.textContent = "Bekannter Stand geladen";
         text.textContent = state.error
-          ? `Der Live-Abgleich mit dem Repository ist gerade nicht verfuegbar. Die App nutzt deshalb voruebergehend nur den bekannten Stand. (${state.error})`
-          : "Der Live-Abgleich mit dem Repository ist gerade nicht verfuegbar. Die App nutzt deshalb voruebergehend nur den bekannten Stand.";
+          ? `Der aktuelle Repo-Ordnerbaum ist gerade nicht erreichbar. Die App nutzt deshalb voruebergehend nur den bekannten Stand. (${state.error})`
+          : "Der aktuelle Repo-Ordnerbaum ist gerade nicht erreichbar. Die App nutzt deshalb voruebergehend nur den bekannten Stand.";
         banner.append(heading, text);
         return banner;
       }
 
-      heading.textContent = "Repository-Abgleich aktiv";
+      if (state.mode !== "repo_compared") {
+        heading.textContent = "Bekannter Stand aktiv";
+        text.textContent = "Der zuletzt bekannte FolderTree ist sofort da. Der aktuelle Repo-Stand wird danach unauffaellig im Hintergrund nachgeladen.";
+        banner.append(heading, text);
+        return banner;
+      }
+
+      heading.textContent = "Repo-Stand geladen";
       if (state.repoOnlyFolders?.length) {
         const list = state.repoOnlyFolders.map((folder) => getFolderShortcutLabel(folder) || folder).join(", ");
-        text.textContent = `Bekannter Stand wurde geladen und anschliessend mit dem aktuellen Kurse-Ordner im Repository verglichen. Neu gegenueber dem bekannten Stand: ${list}.`;
+        text.textContent = `Der bekannte FolderTree wurde geladen und danach mit dem aktuellen Repo-Ordnerbaum abgeglichen. Neu sichtbar: ${list}.`;
       } else if (Number.isFinite(state.mergedCount)) {
-        text.textContent = `Bekannter Stand wurde geladen und mit dem aktuellen Kurse-Ordner im Repository abgeglichen. Aktuell sichtbar: ${state.mergedCount} Szenario-Ordner.`;
+        text.textContent = `Bekannter FolderTree und aktueller Repo-Stand sind abgeglichen. Aktuell sichtbar: ${state.mergedCount} Szenario-Ordner.`;
       } else {
-        text.textContent = "Bekannter Stand wurde geladen und anschliessend mit dem aktuellen Kurse-Ordner im Repository verglichen.";
+        text.textContent = "Bekannter FolderTree und aktueller Repo-Stand wurden abgeglichen.";
       }
       banner.append(heading, text);
       return banner;
@@ -2648,8 +3142,13 @@
       let manifestError = null;
       try {
         manifestItems = await fetchScenarioManifestItems(safeFolder);
-      } catch (err) {
-        manifestError = err;
+      } catch (legacyErr) {
+        try {
+          manifestItems = await fetchCourseManifestItems(safeFolder);
+          manifestError = null;
+        } catch (courseErr) {
+          manifestError = courseErr?.message ? courseErr : legacyErr;
+        }
       }
       const liveRepoItems = await fetchScenarioRepoItems(safeFolder);
       const syncMeta = buildScenarioFolderSyncMeta(safeFolder, manifestItems, liveRepoItems, manifestError);
@@ -2660,8 +3159,8 @@
       throw manifestError || new Error("Keine gueltigen Szenarien gefunden.");
     }
 
-    async function loadScenarioByFilename(fileName, folder = "") {
-      const safeFile = assertScenarioFilename(fileName);
+    async function loadScenarioJsonByPath(filePath, folder = "") {
+      const safeFile = assertScenarioResourcePath(filePath, [".json"]);
       const safeFolder = sanitizeFolderName(folder || activeScenarioFolder);
       const res = await fetch(`${getScenarioBasePath(safeFolder)}/${safeFile}`, { cache: "no-store" });
       if (!res.ok) throw new Error(`${safeFile} (HTTP ${res.status})`);
@@ -2670,6 +3169,122 @@
         throw new Error(`${safeFile} ist kein gueltiges Szenario-Prototyp-JSON (questions fehlt).`);
       }
       return data;
+    }
+
+    async function loadScenarioTextByPath(filePath, folder = "") {
+      const safeFile = assertScenarioResourcePath(filePath, [".md"]);
+      const safeFolder = sanitizeFolderName(folder || activeScenarioFolder);
+      const res = await fetch(`${getScenarioBasePath(safeFolder)}/${safeFile}`, { cache: "no-store" });
+      if (!res.ok) throw new Error(`${safeFile} (HTTP ${res.status})`);
+      return res.text();
+    }
+
+    function renderMarkdownDocument(markdown) {
+      const article = document.createElement("article");
+      article.className = "markdown-document";
+      const lines = String(markdown || "").replace(/\r\n/g, "\n").split("\n");
+      let paragraph = [];
+      let listItems = [];
+      let listType = "";
+
+      const flushParagraph = () => {
+        if (!paragraph.length) return;
+        const entry = document.createElement("p");
+        entry.className = "markdown-paragraph";
+        appendInlineText(entry, paragraph.join(" ").replace(/\s+/g, " ").trim());
+        article.appendChild(entry);
+        paragraph = [];
+      };
+
+      const flushList = () => {
+        if (!listItems.length) return;
+        const list = document.createElement(listType === "ol" ? "ol" : "ul");
+        list.className = "markdown-list";
+        listItems.forEach((item) => {
+          const li = document.createElement("li");
+          appendInlineText(li, item);
+          list.appendChild(li);
+        });
+        article.appendChild(list);
+        listItems = [];
+        listType = "";
+      };
+
+      const flushTextBlocks = () => {
+        flushParagraph();
+        flushList();
+      };
+
+      for (let index = 0; index < lines.length; index += 1) {
+        const rawLine = lines[index];
+        const line = String(rawLine || "");
+        const trimmed = line.trim();
+
+        const fenceMatch = trimmed.match(/^```([a-z0-9_-]+)?$/i);
+        if (fenceMatch) {
+          flushTextBlocks();
+          const codeLines = [];
+          index += 1;
+          while (index < lines.length && !String(lines[index] || "").trim().match(/^```$/)) {
+            codeLines.push(lines[index]);
+            index += 1;
+          }
+          article.appendChild(buildHighlightedCodeBlock(codeLines.join("\n"), fenceMatch[1] || "", "markdown-code"));
+          continue;
+        }
+
+        if (!trimmed) {
+          flushTextBlocks();
+          continue;
+        }
+
+        const headingMatch = trimmed.match(/^(#{1,6})\s+(.+)$/);
+        if (headingMatch) {
+          flushTextBlocks();
+          const level = Math.min(headingMatch[1].length, 6);
+          const heading = document.createElement(`h${level}`);
+          heading.className = `markdown-heading markdown-heading-${level}`;
+          appendInlineText(heading, headingMatch[2]);
+          article.appendChild(heading);
+          continue;
+        }
+
+        const orderedMatch = trimmed.match(/^\d+\.\s+(.+)$/);
+        const unorderedMatch = trimmed.match(/^-\s+(.+)$/);
+        if (orderedMatch || unorderedMatch) {
+          flushParagraph();
+          const nextType = orderedMatch ? "ol" : "ul";
+          if (listType && listType !== nextType) flushList();
+          listType = nextType;
+          listItems.push((orderedMatch || unorderedMatch)[1]);
+          continue;
+        }
+
+        if (listItems.length) flushList();
+        paragraph.push(trimmed);
+      }
+
+      flushTextBlocks();
+      return article;
+    }
+
+    function renderMarkdownScenarioPage(item, markdown) {
+      const panel = document.createElement("section");
+      panel.className = "panel markdown-scenario-panel";
+      const meta = document.createElement("div");
+      meta.className = "markdown-scenario-meta";
+      const typeBadge = document.createElement("span");
+      typeBadge.className = "pill";
+      typeBadge.textContent = "Kursfall";
+      const folderBadge = document.createElement("span");
+      folderBadge.className = "status-text markdown-scenario-folder";
+      folderBadge.textContent = getFolderShortcutLabel(item?.folder || "") || String(item?.folder || "");
+      meta.append(typeBadge, folderBadge);
+      panel.appendChild(meta);
+      panel.appendChild(renderMarkdownDocument(markdown));
+      workspaceLeft.innerHTML = "";
+      workspaceLeft.appendChild(panel);
+      toggleTaskNavDrawer(false);
     }
 
     async function selectScenario(item) {
@@ -2688,7 +3303,18 @@
           } catch {
           }
         }
-        const data = await loadScenarioByFilename(item.file, item.folder);
+        const scenarioFormat = normalizeScenarioItemFormat(item?.format || "", item?.file || "");
+        if (scenarioFormat === "markdown") {
+          const markdown = await loadScenarioTextByPath(item.file, item.folder);
+          scenarioData = null;
+          activeScenarioFile = item.file;
+          activeScenarioCountsTowardProgress = false;
+          resetRuntimeState();
+          renderMarkdownScenarioPage(item, markdown);
+          updateScenarioMenuButtonState(false);
+          return;
+        }
+        const data = await loadScenarioJsonByPath(item.file, item.folder);
         await validateScenarioProgressBindings(data, nextFolder || item.folder, item.file);
         scenarioData = data;
         activeScenarioFile = item.file;
@@ -2732,6 +3358,7 @@
           `<span class='scenario-tree-folder-name'>${esc(folderShortLabel)}</span>` +
           "</span>" +
           `<span class='scenario-tree-folder-count'>${ticketCount}</span>`;
+
         drawer.appendChild(title);
         updateScenarioTreeFolderEmoji(drawer);
         drawer.addEventListener("toggle", () => {
@@ -2780,9 +3407,10 @@
             option.classList.add("is-active");
             option.setAttribute("aria-current", "true");
           }
+          const ticketIcon = normalizeScenarioItemFormat(item?.format || "", item?.file || "") === "markdown" ? "📝" : "🎫";
           option.innerHTML =
             "<span class='scenario-tree-ticket-icon' aria-hidden='true'>" +
-            "🎫" +
+            ticketIcon +
             "</span>" +
             "<span class='scenario-tree-ticket-main'>" +
             `<span class='scenario-tree-ticket-title'>${esc(item.label)}</span>` +
@@ -2796,16 +3424,18 @@
       }
     }
 
-    async function initScenarioSelector() {
+    async function initScenarioSelector(options = {}) {
       if (!hasUnlockedAccess()) {
         availableScenarios = [];
         scenarioFolderSyncMetaByFolder = Object.create(null);
         renderScenarioMenu([]);
         return;
       }
-      await ensureScenarioFolderCatalogLoaded();
+      if (!options?.skipCatalogRefresh) {
+        await ensureScenarioFolderCatalogLoaded();
+      }
       const folders = getUnlockedFolders();
-      const groups = await Promise.all(folders.map(async (folder) => {
+      const loadedGroups = await Promise.all(folders.map(async (folder) => {
         try {
           const result = await loadScenarioManifestForFolder(folder);
           return { folder, items: result.items, sync: result.sync };
@@ -2813,8 +3443,15 @@
           return { folder, items: [], error: err.message };
         }
       }));
-      availableScenarios = groups;
-      renderScenarioMenu(groups);
+      saveStoredScenarioMenuGroups(loadedGroups);
+      const visibleGroups = loadedGroups
+        .map((group) => ({
+          ...group,
+          items: filterScenarioItemsForEntries(group.items, group.folder)
+        }))
+        .filter((group) => group.error || group.items.length);
+      availableScenarios = visibleGroups;
+      renderScenarioMenu(visibleGroups);
     }
 
     function initAppBar() {
@@ -5761,18 +6398,21 @@
     });
     (async () => {
       await ensureAccessKeyConfigLoaded();
-      await ensureScenarioFolderCatalogLoaded();
+      hydrateScenarioTreeCacheFromStorage();
       const storedAccess = loadStoredAccess();
       activeHomeSkillsFolder = loadStoredHomeSkillsFolder();
       if (!storedAccess) {
         renderUnlockScreen();
+        refreshScenarioTreeInBackground().catch(() => {});
         return;
       }
 
       try {
         setUnlockedEntries(storedAccess.entries, storedAccess.activeFolder);
-        await initScenarioSelector();
+        primeScenarioMenuFromCache();
+        warmScenarioTreeFromKnownState().catch(() => {});
         await showHomeContent();
+        refreshScenarioTreeInBackground().catch(() => {});
       } catch (err) {
         renderUnlockScreen(err.message);
       }

@@ -1,0 +1,421 @@
+{
+  "scenario": {
+    "company": "SecuBridge Service GmbH",
+    "scale": "IT-Dienstleister fuer Homeoffice, kommunale Arbeitsplaetze und Praxisumgebungen, 95 Mitarbeitende",
+    "context": "Eine Exportdatei aus dem Terminmodul wurde ueber einen offenen Freigabelink an einen falschen Verteiler gesendet.",
+    "mission": "Den Vorfall eingrenzen, Sofortmassnahmen abstimmen, Rollen fuer Meldung und Nachweise festlegen und den Exportweg gegen Wiederholung absichern.",
+    "source": {
+      "kind": "Interner Vorfallsbericht aus dem Pilotbetrieb",
+      "reference": "Vorfall Terminexport, 2026-03-26 09:12",
+      "note": "Grundlage sind Versandfehler, offene Linkfreigabe, protokollierte Downloads und die Vorbereitung eines belastbaren Incident-Standes."
+    },
+    "station": {
+      "id": "QUS2-ST-02",
+      "department": "Servicebetrieb und Datenschutzkoordination",
+      "profile": "Vorfallaufnahme, Sofortmassnahmen, Meldeweg, Nachweise und Wiederholungsschutz",
+      "constraints": [
+        "Gesicherter Sachstand, Annahmen und offene Punkte muessen sauber voneinander getrennt werden",
+        "Sofortmassnahmen, Kommunikation und Nachweise muessen parallel steuerbar bleiben",
+        "Fuer den Exportweg werden nur Massnahmen aufgenommen, die technisch und organisatorisch im Betrieb tragfaehig sind"
+      ]
+    },
+    "customerRequest": {
+      "from": "praxisbetrieb@secubridge-service.example",
+      "to": "incidentteam@ausbildungsbetrieb.example",
+      "subject": "Exportdatei aus dem Terminmodul versehentlich falsch freigegeben",
+      "date": "2026-03-26",
+      "body": "Guten Tag,\n\nim Pilotbetrieb fuer die Terminabstimmung wurde heute Vormittag eine CSV aus dem Terminmodul erstellt. Statt an den internen Projektverteiler ging der Freigabelink an einen externen Dienstleister und zwei weitere falsche Empfaenger.\n\nDie Datei enthaelt Namen, E-Mail-Adressen, Terminzeit, Standort, Sprechstundenart und ein internes Hinweisfeld. Der Link war nicht passwortgeschuetzt. Im System sind bisher drei Downloads sichtbar, der komplette Empfaengerkreis ist aber noch nicht abschliessend bestaetigt.\n\nBitte stellen Sie bis 13:00 einen belastbaren Incident-Stand her: Sofortmassnahmen, Rollen, Nachweise und den naechsten Schritt fuer die weitere Bewertung.\n\nViele Gruesse\nPraxisbetrieb"
+    }
+  },
+  "questions": [
+    {
+      "id": "ctx01",
+      "type": "context_card",
+      "title": "Gesicherter Sachstand",
+      "contentBlocks": [
+        {
+          "type": "text",
+          "text": "SecuBridge testet im Pilotbetrieb einen Export aus dem Terminmodul fuer die Abstimmung mit einer Praxisgemeinschaft. Kurz nach dem Versand faellt auf, dass der Freigabelink nicht nur intern, sondern auch an einen externen Dienstleister und zwei falsche Empfaenger gegangen ist."
+        },
+        {
+          "type": "table",
+          "columns": [
+            "Punkt",
+            "Aktueller Stand"
+          ],
+          "rows": [
+            [
+              "Datei",
+              "CSV-Export aus dem Terminmodul vom 2026-03-26"
+            ],
+            [
+              "Inhalt",
+              "Name, E-Mail, Terminzeit, Standort, Sprechstundenart, internes Hinweisfeld"
+            ],
+            [
+              "Zugriffsweg",
+              "offener Freigabelink in einer E-Mail"
+            ],
+            [
+              "Protokollierter Zugriff",
+              "drei Downloads, Empfaengerkreis noch nicht vollstaendig bestaetigt"
+            ],
+            [
+              "Erwartung bis 13:00",
+              "eingrenzbarer Incident-Stand mit Sofortmassnahmen, Rollen und Nachweisen"
+            ]
+          ]
+        },
+        {
+          "type": "text",
+          "text": "Im Mittelpunkt stehen jetzt nicht Diskussionen ueber Schuld, sondern Zugriff stoppen, Datenumfang einschaetzen, Empfaengerkreis sichern und einen nachvollziehbaren Meldeweg aufsetzen."
+        }
+      ]
+    },
+    {
+      "id": "q01",
+      "type": "multi_select",
+      "title": "Sofortmassnahmen nach dem Exportfehler",
+      "prompt": "Was muss unmittelbar angestossen werden, nachdem der offene Link entdeckt wurde? Mehrere Schritte koennen notwendig sein.",
+      "options": [
+        {
+          "text": "Freigabelink deaktivieren und weiteren Export ueber denselben Pfad vorlaeufig stoppen.",
+          "correct": true,
+          "rationale": "So wird weiterer Zugriff begrenzt und die naechste unkontrollierte Verteilung gestoppt."
+        },
+        {
+          "text": "Empfaengerkreis sichern und falsche Empfaenger um Loeschung sowie kurze Rueckmeldung bitten.",
+          "correct": true,
+          "rationale": "Das hilft, Reichweite und Reaktion schnell eingrenzen zu koennen."
+        },
+        {
+          "text": "Zeitpunkt, Dateiname, Datenumfang und bekannte Downloads sofort im Vorfallsprotokoll festhalten.",
+          "correct": true,
+          "rationale": "Ohne fruehe Dokumentation gehen spaeter die wichtigsten Fakten verloren."
+        },
+        {
+          "text": "Datenschutzkoordination und Serviceleitung direkt einbeziehen.",
+          "correct": true,
+          "rationale": "Bewertung, Kommunikation und formaler Meldeweg duerfen hier nicht nebeneinander herlaufen."
+        },
+        {
+          "text": "Erst die vollstaendige Ursachenanalyse abwarten, bevor der Fall intern eskaliert wird.",
+          "correct": false,
+          "rationale": "Die Eingrenzung muss sofort starten; auf die komplette Ursache kann man dabei nicht warten."
+        },
+        {
+          "text": "Die Datei mit korrigiertem Betreff erneut an denselben Verteiler schicken, damit keine Rueckfragen entstehen.",
+          "correct": false,
+          "rationale": "Das wuerde den Kreis unkontrollierter Empfaenger eher vergroessern als stabilisieren."
+        }
+      ],
+      "feedback": {
+        "correct": "Die unmittelbaren Sofortmassnahmen wurden stimmig erkannt.",
+        "wrong": "Achten Sie auf Zugriffsstopp, Eingrenzung, Dokumentation und fruehe Einbindung der richtigen Stellen."
+      },
+      "progressLinks": [
+        "qus2_vorfall_eingrenzen",
+        "qus2_sofortmassnahmen_absichern"
+      ]
+    },
+    {
+      "id": "q02",
+      "type": "single_choice",
+      "title": "Kritischsten Befund erkennen",
+      "prompt": "Welcher Befund macht den Fall im Moment am risikoreichsten?",
+      "options": [
+        {
+          "text": "Der Link war offen, die Datei enthielt neben Termin- und Kontaktdaten auch ein internes Hinweisfeld, und es sind bereits Downloads protokolliert.",
+          "rationale": "Hier kommen Datenumfang, unkontrollierter Zugriff und bestaetigte Abrufe zusammen."
+        },
+        {
+          "text": "Der Export stammt aus dem Pilotbetrieb und nicht aus dem Regelbetrieb.",
+          "rationale": "Das erklaert den Kontext, ist aber nicht der eigentliche Risikotreiber."
+        },
+        {
+          "text": "Der Versand ist am Vormittag und nicht erst am spaeten Nachmittag passiert.",
+          "rationale": "Der Zeitpunkt kann die Reaktion beeinflussen, nicht aber die fachliche Kritikalitaet selbst."
+        },
+        {
+          "text": "Der Dateiname ist technisch und fuer Empfaenger nicht besonders sprechend.",
+          "rationale": "Das ist kein tragender Faktor bei der Risikoabwaegung."
+        }
+      ],
+      "correctIndex": 0,
+      "feedback": {
+        "correct": "Der derzeit kritischste Befund wurde richtig priorisiert.",
+        "wrong": "Achten Sie darauf, wo Datenumfang, offener Zugriff und bestaetigte Downloads zusammenkommen."
+      },
+      "progressLinks": [
+        "qus2_vorfall_eingrenzen"
+      ]
+    },
+    {
+      "id": "f02",
+      "type": "followup_divider",
+      "title": "Vorfall bewerten und sauber melden",
+      "from": "datenschutzkoordination@secubridge-service.example",
+      "to": "incidentteam@ausbildungsbetrieb.example",
+      "subject": "Vorfallbewertung und Nachweise bis 13:00 vorbereiten",
+      "date": "2026-03-26",
+      "body": "Hallo zusammen,\n\nich brauche bis 13:00 einen belastbaren Stand dazu, was genau zugreifbar war, wer Zugriff gehabt haben koennte, welche Sofortmassnahmen bereits laufen und welche Punkte noch unbestaetigt sind. Bitte trennt gesicherten Sachstand, Annahmen und offene Punkte sauber voneinander.\n\nViele Gruesse\nDatenschutzkoordination"
+    },
+    {
+      "id": "q03",
+      "type": "table_fill",
+      "title": "Nachweise und erste Federfuehrung festlegen",
+      "prompt": "Ergaenzen Sie fuer jeden Vorfallsaspekt den passendsten Nachweis und die erste federfuehrende Rolle.",
+      "columns": [
+        "Vorfallsaspekt",
+        "Noetiger Nachweis",
+        "Erste federfuehrende Rolle"
+      ],
+      "rows": [
+        [
+          "Zugriffsweg ueber den Freigabelink",
+          {
+            "key": "evidence_row_1",
+            "label": "Freigabelink / Nachweis",
+            "expected": "Linkeinstellungen und Zugriffslog aus dem System.",
+            "inputType": "select",
+            "placeholder": "Nachweis waehlen",
+            "options": [
+              "Linkeinstellungen und Zugriffslog aus dem System.",
+              "Gesicherte Exportkopie mit Feldliste und Datensatzanzahl.",
+              "Versandprotokoll sowie Loesch- und Rueckmeldungen der Empfaenger.",
+              "Stimmungsbild aus dem Teamchat zum Vorfall."
+            ]
+          },
+          {
+            "key": "owner_row_1",
+            "label": "Freigabelink / Rolle",
+            "expected": "Plattformbetrieb",
+            "inputType": "select",
+            "placeholder": "Rolle waehlen",
+            "options": [
+              "Plattformbetrieb",
+              "Praxisbetrieb",
+              "Serviceleitung",
+              "Datenschutzkoordination"
+            ]
+          }
+        ],
+        [
+          "Umfang und Sensitivitaet der Datei",
+          {
+            "key": "evidence_row_2",
+            "label": "Datenumfang / Nachweis",
+            "expected": "Gesicherte Exportkopie mit Feldliste und Datensatzanzahl.",
+            "inputType": "select",
+            "placeholder": "Nachweis waehlen",
+            "options": [
+              "Linkeinstellungen und Zugriffslog aus dem System.",
+              "Gesicherte Exportkopie mit Feldliste und Datensatzanzahl.",
+              "Versandprotokoll sowie Loesch- und Rueckmeldungen der Empfaenger.",
+              "Allgemeine Projektpraesentation zum Pilotbetrieb."
+            ]
+          },
+          {
+            "key": "owner_row_2",
+            "label": "Datenumfang / Rolle",
+            "expected": "Praxisbetrieb",
+            "inputType": "select",
+            "placeholder": "Rolle waehlen",
+            "options": [
+              "Plattformbetrieb",
+              "Praxisbetrieb",
+              "Serviceleitung",
+              "Datenschutzkoordination"
+            ]
+          }
+        ],
+        [
+          "Empfaengerkreis und Reaktionen",
+          {
+            "key": "evidence_row_3",
+            "label": "Empfaengerkreis / Nachweis",
+            "expected": "Versandprotokoll sowie Loesch- und Rueckmeldungen der Empfaenger.",
+            "inputType": "select",
+            "placeholder": "Nachweis waehlen",
+            "options": [
+              "Linkeinstellungen und Zugriffslog aus dem System.",
+              "Gesicherte Exportkopie mit Feldliste und Datensatzanzahl.",
+              "Versandprotokoll sowie Loesch- und Rueckmeldungen der Empfaenger.",
+              "Kalendereinladung zum Abstimmungstermin."
+            ]
+          },
+          {
+            "key": "owner_row_3",
+            "label": "Empfaengerkreis / Rolle",
+            "expected": "Serviceleitung",
+            "inputType": "select",
+            "placeholder": "Rolle waehlen",
+            "options": [
+              "Plattformbetrieb",
+              "Praxisbetrieb",
+              "Serviceleitung",
+              "Datenschutzkoordination"
+            ]
+          }
+        ]
+      ],
+      "feedback": {
+        "correct": "Vorfallsaspekte, Nachweise und erste Federfuehrung wurden stimmig verbunden.",
+        "wrong": "Pruefen Sie, wer Zugriffsdaten, Datenumfang und Empfaengerreaktionen jeweils am besten belastbar sichern kann."
+      },
+      "progressLinks": [
+        "qus2_meldewege_rollen_nachweise"
+      ]
+    },
+    {
+      "id": "q04",
+      "type": "match_pairs",
+      "title": "Erste Verantwortung im Vorfall",
+      "prompt": "Welche Rolle uebernimmt im ersten Schritt welche Aufgabe?",
+      "layout": "table",
+      "columns": [
+        "Rolle",
+        "erste Aufgabe"
+      ],
+      "pairs": [
+        {
+          "key": "role_1",
+          "left": "Serviceleitung",
+          "right": "Kommunikation mit Praxisbetrieb und falschen Empfaengern koordinieren"
+        },
+        {
+          "key": "role_2",
+          "left": "Plattformbetrieb",
+          "right": "Link sperren, Exportpfad sichern und Zugriffslogs bereitstellen"
+        },
+        {
+          "key": "role_3",
+          "left": "Datenschutzkoordination",
+          "right": "Bewertung, Meldeweg und formale Vorfallsdokumentation steuern"
+        },
+        {
+          "key": "role_4",
+          "left": "Praxisbetrieb",
+          "right": "Datenumfang und fachliche Tragweite der Datei einschaetzen"
+        }
+      ],
+      "options": [
+        "Kommunikation mit Praxisbetrieb und falschen Empfaengern koordinieren",
+        "Link sperren, Exportpfad sichern und Zugriffslogs bereitstellen",
+        "Bewertung, Meldeweg und formale Vorfallsdokumentation steuern",
+        "Datenumfang und fachliche Tragweite der Datei einschaetzen"
+      ],
+      "feedback": {
+        "correct": "Die Rollen sind mit ihren ersten Verantwortungen passend verbunden.",
+        "wrong": "Achten Sie darauf, wer Kommunikation, Technik, Bewertung und fachliche Einordnung jeweils zuerst ziehen muss."
+      },
+      "progressLinks": [
+        "qus2_meldewege_rollen_nachweise"
+      ]
+    },
+    {
+      "id": "q05",
+      "type": "short_text",
+      "title": "Lageinfo fuer die Bereichsleitung",
+      "prompt": "Schreiben Sie eine kurze Lageinfo (4-6 Saetze) mit Status, gesichertem Sachstand, offenem Punkt und naechstem Schritt.",
+      "minChars": 170,
+      "requiredKeywords": [
+        "status",
+        "sachstand",
+        "naechster schritt"
+      ],
+      "expectedOutline": "Aktuelle Lage, was gesichert ist, welcher Punkt noch offen ist und wie es direkt weitergeht.",
+      "feedback": {
+        "correct": "Die Lageinfo ist knapp, belastbar und steuerbar formuliert.",
+        "wrong": "Bitte Status, gesicherten Sachstand, offenen Punkt und naechsten Schritt klarer voneinander trennen."
+      },
+      "progressLinks": [
+        "qus2_meldewege_rollen_nachweise"
+      ]
+    },
+    {
+      "id": "f03",
+      "type": "followup_divider",
+      "title": "Exportweg gegen Wiederholung absichern",
+      "from": "serviceleitung@secubridge-service.example",
+      "to": "incidentteam@ausbildungsbetrieb.example",
+      "subject": "Sofortschutz und Wiederholungsschutz fuer den Exportweg festlegen",
+      "date": "2026-03-26",
+      "body": "Hallo zusammen,\n\nsobald der Vorfallstand steht, brauche ich noch einen Vorschlag, wie wir denselben Fehler nicht in der naechsten Woche wiederholen. Relevant sind Linkfreigaben, Datensparsamkeit im Export und klare Freigaben fuer externe Empfaenger.\n\nViele Gruesse\nServiceleitung"
+    },
+    {
+      "id": "q06",
+      "type": "multi_select",
+      "title": "Wiederholungsschutz fuer den Exportweg",
+      "prompt": "Welche Massnahmen reduzieren das Risiko fuer denselben Fehler am wirksamsten?",
+      "options": [
+        {
+          "text": "Freigabelinks standardmaessig mit Ablaufdatum und rollenbezogener Freigabe erzeugen.",
+          "correct": true,
+          "rationale": "So wird offener Zugriff technisch begrenzt statt nur organisatorisch erhofft."
+        },
+        {
+          "text": "Die Exportvorlage um interne Hinweisfelder bereinigen und nur notwendige Daten ausgeben.",
+          "correct": true,
+          "rationale": "Datenminimierung reduziert den moeglichen Schaden schon vor jedem Versand."
+        },
+        {
+          "text": "Externe Empfaenger oder Verteiler fuer sensible Exporte nur nach zweiter Freigabe zulassen.",
+          "correct": true,
+          "rationale": "Damit wird der haeufige Fehlgriff beim Versand organisatorisch abgefangen."
+        },
+        {
+          "text": "Versand- und Downloadnachweise revisionssicher mit dem Vorfall und dem Exportweg verknuepfen.",
+          "correct": true,
+          "rationale": "Das verbessert nicht nur die Aufklaerung, sondern auch die spaetere Steuerung vergleichbarer Faelle."
+        },
+        {
+          "text": "Einmal monatlich an Sorgfalt erinnern, technische Grundeinstellungen aber unveraendert lassen.",
+          "correct": false,
+          "rationale": "Ohne technische und prozessuale Aenderung bleibt das Grundproblem bestehen."
+        },
+        {
+          "text": "Exportdateien zusaetzlich in mehrere Teamordner kopieren, damit alle dieselbe Version sehen.",
+          "correct": false,
+          "rationale": "Mehr Kopien vergroessern eher die Streuung als den Schutz."
+        }
+      ],
+      "feedback": {
+        "correct": "Die wirksamsten Schutzmassnahmen fuer denselben Exportweg wurden richtig erkannt.",
+        "wrong": "Achten Sie auf Kombinationen aus technischer Begrenzung, Datenminimierung, Freigabeprozess und Nachweisfuehrung."
+      },
+      "progressLinks": [
+        "qus2_sofortmassnahmen_absichern"
+      ]
+    },
+    {
+      "id": "q07",
+      "type": "ordering",
+      "title": "Vorfallbearbeitung sauber aufbauen",
+      "prompt": "Bringen Sie die Schritte in eine sinnvolle Reihenfolge, damit Eingrenzung, Bewertung und Nachweis zusammenpassen.",
+      "items": [
+        "Freigabelink deaktivieren und weiteren Zugriff stoppen.",
+        "Datenumfang, Empfaengerkreis und Logstand sichern.",
+        "Rollen fuer Bewertung, Kommunikation und Dokumentation festziehen.",
+        "Risiko fuer Betroffene und Betrieb einschaetzen.",
+        "Massnahmen, Rueckmeldungen und offenen Punkt im Vorfallsbericht festhalten."
+      ],
+      "correctOrder": [
+        "Freigabelink deaktivieren und weiteren Zugriff stoppen.",
+        "Datenumfang, Empfaengerkreis und Logstand sichern.",
+        "Rollen fuer Bewertung, Kommunikation und Dokumentation festziehen.",
+        "Risiko fuer Betroffene und Betrieb einschaetzen.",
+        "Massnahmen, Rueckmeldungen und offenen Punkt im Vorfallsbericht festhalten."
+      ],
+      "feedback": {
+        "correct": "Die Reihenfolge fuehrt sauber von der Eindammung zur bewertbaren Dokumentation.",
+        "wrong": "Erst Zugriff stoppen und Sachstand sichern, dann Rollen und Bewertung, erst danach den Bericht sauber schliessen."
+      },
+      "progressLinks": [
+        "qus2_vorfall_eingrenzen",
+        "qus2_meldewege_rollen_nachweise",
+        "qus2_sofortmassnahmen_absichern"
+      ]
+    }
+  ]
+}

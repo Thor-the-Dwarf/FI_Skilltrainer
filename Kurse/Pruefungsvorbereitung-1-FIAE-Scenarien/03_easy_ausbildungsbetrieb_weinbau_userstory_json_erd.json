@@ -136,31 +136,18 @@
     },
     {
       "id": "q03",
-      "type": "single_choice",
+      "type": "short_text",
       "title": "Green IT fachlich einordnen",
-      "prompt": "Welche Aussage beschreibt Green IT in diesem Projektkontext am treffendsten?",
-      "options": [
-        {
-          "text": "IT-Systeme und ihr Betrieb werden moeglichst energie- und ressourcenschonend ueber ihren Lebenszyklus geplant und genutzt.",
-          "rationale": "Das trifft die Grundidee von Green IT aus Planung, Betrieb und Ressourcenschonung am besten."
-        },
-        {
-          "text": "Alle Benutzeroberflaechen werden gruengefaerbt, damit Umweltbezug sichtbar wird.",
-          "rationale": "Die Farbgestaltung allein beschreibt keine Green-IT-Strategie."
-        },
-        {
-          "text": "Cloud-Server werden grundsaetzlich ueberdimensioniert, damit Lastreserven immer maximal sind.",
-          "rationale": "Dauerhafte Ueberdimensionierung widerspricht gerade dem Ziel eines sparsamen Ressourceneinsatzes."
-        },
-        {
-          "text": "Green IT bedeutet, dass nur noch papierbasierte Dokumentation erlaubt ist.",
-          "rationale": "Das hat mit der fachlichen Bedeutung von Green IT nichts zu tun."
-        }
+      "prompt": "Formulieren Sie in 1-3 Saetzen, was Green IT in diesem Projektkontext bedeutet.",
+      "minChars": 90,
+      "requiredKeywords": [
+        "energie",
+        "ressourcen"
       ],
-      "correctIndex": 0,
+      "expectedOutline": "Beschreibt Green IT als energie- und ressourcenschonende Planung, Nutzung und den Betrieb von IT-Systemen ueber ihren Lebenszyklus hinweg.",
       "feedback": {
-        "correct": "Green IT ist in diesem Zusammenhang fachlich passend beschrieben.",
-        "wrong": "Gesucht ist kein Marketingbegriff, sondern der ressourcen- und energieschonende Umgang mit IT ueber Planung und Betrieb hinweg."
+        "correct": "Green IT ist in diesem Zusammenhang fachlich treffend beschrieben.",
+        "wrong": "Arbeiten Sie klarer heraus, dass es um einen energie- und ressourcenschonenden Umgang mit IT geht und nicht um blosse Symbolik."
       },
       "progressLinks": [
         "pv1fiae_stakeholder_greenit_testkonzept"
@@ -284,31 +271,50 @@
     },
     {
       "id": "q06",
-      "type": "single_choice",
+      "type": "table_fill",
       "title": "User Stories initial anstossen",
-      "prompt": "Welche Aussage beschreibt am treffendsten, aus welcher Richtung User Stories am Projektanfang typischerweise angestossen werden?",
-      "options": [
-        {
-          "text": "Meist startet eine produktverantwortliche Rolle wie Product Owner oder fachliche Produktverantwortung die Sammlung; das Team kann anschliessend konkretisieren.",
-          "rationale": "Damit ist die uebliche fachliche Verantwortung fuer erste Story-Schnitte gut beschrieben."
-        },
-        {
-          "text": "User Stories duerfen erst nach kompletter Implementierung formuliert werden, damit der Umfang feststeht.",
-          "rationale": "User Stories dienen gerade dazu, Anforderungen frueh zu beschreiben und zu schneiden."
-        },
-        {
-          "text": "Ausschliesslich Netzwerkadministration und Rechenzentrumsbetrieb formulieren User Stories fuer Fachfunktionen.",
-          "rationale": "Fachliche Nutzerziele entstehen nicht nur aus Infrastrukturrollen."
-        },
-        {
-          "text": "User Stories werden nur dann geschrieben, wenn bereits ein ER-Diagramm fertig ist.",
-          "rationale": "Zwischen Story-Schnitt und ER-Modell besteht keine solche feste Reihenfolge."
-        }
+      "prompt": "Ordnen Sie den beiden Schritten im Story-Start die passende Rolle oder Richtung zu.",
+      "columns": [
+        "Schritt im Story-Start",
+        "Passende Rolle oder Richtung"
       ],
-      "correctIndex": 0,
+      "rows": [
+        [
+          "Erste User Stories fachlich anstossen und priorisieren",
+          {
+            "key": "story_start_owner",
+            "label": "Rolle fuer erstes Anstossen",
+            "expected": "Product Owner bzw. fachliche Produktverantwortung",
+            "inputType": "select",
+            "placeholder": "Rolle waehlen",
+            "options": [
+              "Product Owner bzw. fachliche Produktverantwortung",
+              "Nur Netzwerkadministration und Rechenzentrumsbetrieb",
+              "Erst nach vollstaendiger Implementierung",
+              "Erst nachdem ein ER-Diagramm fertig ist"
+            ]
+          }
+        ],
+        [
+          "Stories anschliessend fachlich und technisch konkretisieren",
+          {
+            "key": "story_start_team",
+            "label": "Richtung fuer die Konkretisierung",
+            "expected": "Team und fachliche Produktverantwortung gemeinsam",
+            "inputType": "select",
+            "placeholder": "Richtung waehlen",
+            "options": [
+              "Team und fachliche Produktverantwortung gemeinsam",
+              "Ausschliesslich spaeterer Rechenzentrumsbetrieb",
+              "Nur eine fertige ER-Modellierung ohne weitere Rueckfragen",
+              "Ausschliesslich nach Abschluss der Produktivsetzung"
+            ]
+          }
+        ]
+      ],
       "feedback": {
-        "correct": "Die typische fachliche Herkunft erster User Stories ist passend beschrieben.",
-        "wrong": "User Stories werden frueh aus fachlicher Produktverantwortung angestossen und nicht erst nach der vollstaendigen Umsetzung."
+        "correct": "Anstoss und spaetere Konkretisierung von User Stories sind fachlich passend zugeordnet.",
+        "wrong": "Achten Sie darauf, dass User Stories frueh aus der fachlichen Produktverantwortung kommen und anschliessend gemeinsam verfeinert werden."
       },
       "progressLinks": [
         "pv1fiae_userstories_invest_aktivitaeten"
@@ -546,31 +552,82 @@
     },
     {
       "id": "q10",
-      "type": "single_choice",
-      "title": "Ablauf beim Speichern der Messergebnisse",
-      "prompt": "Welche Beschreibung bildet die Speicherroutine fuer `Messergebnisse speichern` am treffendsten ab?",
-      "options": [
-        {
-          "text": "Zuerst wird die Internetverbindung geprueft. Ohne Internet werden Ergebnisse lokal gepuffert. Mit Internet werden aktuelle Daten an die Datenbank gesendet; scheitert das, werden sie lokal gespeichert. Erfolgreich uebertragene lokale Pufferdaten koennen anschliessend geloescht werden, danach wird das Ergebnis angezeigt.",
-          "rationale": "Diese Variante bildet Offline-Fall, Online-Senden, Fehlerbehandlung, Pufferbereinigung und Rueckmeldung korrekt ab."
-        },
-        {
-          "text": "Die App ignoriert den Verbindungsstatus und verwirft Messergebnisse, solange keine Datenbank erreichbar ist.",
-          "rationale": "Die Aufgabenlogik sieht gerade lokales Zwischenspeichern als Rueckfallpfad vor."
-        },
-        {
-          "text": "Bei Internetverbindung werden nur alte lokale Daten gesendet; die aktuelle Messung wird grundsaetzlich nie uebertragen.",
-          "rationale": "Das widerspricht der beschriebenen Reihenfolge mit Uebertragung der aktuellen Daten."
-        },
-        {
-          "text": "Lokale Pufferdaten werden sofort vor jeder Uebertragung geloescht, damit keine Dubletten entstehen koennen.",
-          "rationale": "Geloescht wird erst nach erfolgreicher Uebertragung, nicht davor."
-        }
+      "type": "table_fill",
+      "title": "Ablauf beim Speichern der Messergebnisse aufteilen",
+      "prompt": "Ordnen Sie den vier Faellen der Speicherroutine die passende Reaktion zu.",
+      "columns": [
+        "Fall der Speicherroutine",
+        "Passende Reaktion"
       ],
-      "correctIndex": 0,
+      "rows": [
+        [
+          "Es wird keine Internetverbindung festgestellt.",
+          {
+            "key": "save_case_offline",
+            "label": "Reaktion ohne Internet",
+            "expected": "Aktuelle Messergebnisse lokal zwischenspeichern",
+            "inputType": "select",
+            "placeholder": "Reaktion waehlen",
+            "options": [
+              "Aktuelle Messergebnisse lokal zwischenspeichern",
+              "Aktuelle Messergebnisse verwerfen",
+              "Nur alte Pufferdaten senden",
+              "Lokale Pufferdaten sofort loeschen"
+            ]
+          }
+        ],
+        [
+          "Internet ist verfuegbar und das Senden der aktuellen Daten gelingt.",
+          {
+            "key": "save_case_online_success",
+            "label": "Reaktion bei erfolgreichem Senden",
+            "expected": "Aktuelle Daten an die Datenbank senden und danach lokal gepufferte Daten bei erfolgreicher Uebertragung bereinigen",
+            "inputType": "select",
+            "placeholder": "Reaktion waehlen",
+            "options": [
+              "Aktuelle Daten an die Datenbank senden und danach lokal gepufferte Daten bei erfolgreicher Uebertragung bereinigen",
+              "Nur einen Fehlerdialog anzeigen und nichts speichern",
+              "Die aktuelle Messung niemals senden",
+              "Vor dem Senden alle lokalen Pufferdaten loeschen"
+            ]
+          }
+        ],
+        [
+          "Internet ist verfuegbar, aber das Senden der aktuellen Daten scheitert.",
+          {
+            "key": "save_case_online_fail",
+            "label": "Reaktion bei Sendefehler",
+            "expected": "Aktuelle Daten lokal speichern",
+            "inputType": "select",
+            "placeholder": "Reaktion waehlen",
+            "options": [
+              "Aktuelle Daten lokal speichern",
+              "Aktuelle Daten endgueltig verwerfen",
+              "Nur die Zeitzone erneut abfragen",
+              "Alle lokal gespeicherten Daten sofort loeschen"
+            ]
+          }
+        ],
+        [
+          "Die Speicherroutine ist fachlich abgeschlossen.",
+          {
+            "key": "save_case_feedback",
+            "label": "Abschluss der Routine",
+            "expected": "Ergebnis des Speichervorgangs in der App anzeigen",
+            "inputType": "select",
+            "placeholder": "Reaktion waehlen",
+            "options": [
+              "Ergebnis des Speichervorgangs in der App anzeigen",
+              "Die App kommentarlos schliessen",
+              "Nur die Standortfunktion deaktivieren",
+              "Sofort ein neues ER-Diagramm erzeugen"
+            ]
+          }
+        ]
+      ],
       "feedback": {
-        "correct": "Die Aktivitaetslogik fuer den Speichervorgang ist korrekt zusammengefasst.",
-        "wrong": "Achten Sie auf den Unterschied zwischen Offline-Pufferung, Online-Uebertragung, Fehlerfall und anschliessender Rueckmeldung."
+        "correct": "Die Aktivitaetslogik fuer den Speichervorgang ist sauber in ihre Faelle aufgeteilt.",
+        "wrong": "Achten Sie getrennt auf Offline-Pufferung, Online-Uebertragung, Fehlerfall, Bereinigung lokaler Pufferdaten und die Rueckmeldung in der App."
       },
       "progressLinks": [
         "pv1fiae_userstories_invest_aktivitaeten"
@@ -690,39 +747,66 @@
     },
     {
       "id": "q13",
-      "type": "single_choice",
-      "title": "Passende JSON-Struktur fuer ein Weingut auswaehlen",
-      "prompt": "Welche JSON-Struktur ueberfuehrt die gezeigten Beispieldaten fachlich am sinnvollsten in ein Dokument fuer `Hof Morgenhang`?",
-      "options": [
-        {
-          "label": "Variante A",
-          "language": "json",
-          "code": "{\n  \"id\": 1,\n  \"name\": \"Hof Morgenhang\",\n  \"leitbild\": \"Ressourcenschonender Weinbau ohne unnoetige Spritzmittel\",\n  \"verkaufsstellen\": [\n    {\n      \"id\": 1,\n      \"strasse\": \"Hauptstr. 12\",\n      \"plz\": \"23456\",\n      \"ort\": \"Hahne\"\n    },\n    {\n      \"id\": 2,\n      \"strasse\": \"Am Markt 2\",\n      \"plz\": \"23457\",\n      \"ort\": \"Buchheim\"\n    }\n  ]\n}",
-          "rationale": "Das Weingut bleibt das Hauptdokument, und die zugehoerigen Verkaufsstellen werden passend als eingebettetes Array modelliert."
-        },
-        {
-          "label": "Variante B",
-          "language": "json",
-          "code": "{\n  \"id\": 1,\n  \"name\": \"Hof Morgenhang\",\n  \"leitbild\": \"Ressourcenschonender Weinbau ohne unnoetige Spritzmittel\",\n  \"verkaufsstelle_1_strasse\": \"Hauptstr. 12\",\n  \"verkaufsstelle_1_plz\": \"23456\",\n  \"verkaufsstelle_2_strasse\": \"Am Markt 2\",\n  \"verkaufsstelle_2_plz\": \"23457\"\n}",
-          "rationale": "Die Verkaufsstellen werden hier unflexibel in Einzelattribute zerlegt statt als wiederholbare Struktur modelliert."
-        },
-        {
-          "label": "Variante C",
-          "language": "json",
-          "code": "{\n  \"weingut\": [\n    1,\n    \"Hof Morgenhang\",\n    \"Ressourcenschonender Weinbau ohne unnoetige Spritzmittel\"\n  ],\n  \"verkaufsstellen\": [\n    \"Hauptstr. 12\",\n    \"Am Markt 2\"\n  ]\n}",
-          "rationale": "Die Bedeutung der Werte bleibt zu unklar, weil strukturierte Schluessel in den Teilobjekten fehlen."
-        },
-        {
-          "label": "Variante D",
-          "language": "json",
-          "code": "{\n  \"id\": 1,\n  \"name\": \"Hof Morgenhang\",\n  \"leitbild\": \"Ressourcenschonender Weinbau ohne unnoetige Spritzmittel\",\n  \"verkaufsstellen\": {\n    \"id\": 1,\n    \"strasse\": \"Hauptstr. 12\",\n    \"plz\": \"23456\",\n    \"ort\": \"Hahne\"\n  }\n}",
-          "rationale": "Es gibt hier zwei Verkaufsstellen; ein einzelnes Objekt statt eines Arrays wuerde die Wiederholung nicht sauber abbilden."
-        }
+      "type": "table_fill",
+      "title": "JSON-Struktur fuer ein Weingut aufbauen",
+      "prompt": "Ordnen Sie den drei Strukturaspekten die passende JSON-Gestaltung fuer das Dokument `Hof Morgenhang` zu.",
+      "columns": [
+        "Strukturaspekt",
+        "Passende JSON-Gestaltung"
       ],
-      "correctIndex": 0,
+      "rows": [
+        [
+          "Weingut als Hauptdokument",
+          {
+            "key": "json_root",
+            "label": "Hauptdokument",
+            "expected": "Stammdaten wie `id`, `name` und `leitbild` liegen auf oberster Ebene des Weingut-Dokuments",
+            "inputType": "select",
+            "placeholder": "Gestaltung waehlen",
+            "options": [
+              "Stammdaten wie `id`, `name` und `leitbild` liegen auf oberster Ebene des Weingut-Dokuments",
+              "Alle Weingutwerte werden ohne Schluessel nur als Array gespeichert",
+              "Jede Verkaufsstelle wird zu einem eigenen Oberfeld wie `verkaufsstelle_1_strasse`",
+              "Das Hauptdokument enthaelt ausschliesslich die Postleitzahlen der Verkaufsstellen"
+            ]
+          }
+        ],
+        [
+          "Wiederholbare Verkaufsstellen",
+          {
+            "key": "json_sales_array",
+            "label": "Verkaufsstellen",
+            "expected": "Verkaufsstellen werden als Array eingebetteter Unterdokumente modelliert",
+            "inputType": "select",
+            "placeholder": "Gestaltung waehlen",
+            "options": [
+              "Verkaufsstellen werden als Array eingebetteter Unterdokumente modelliert",
+              "Verkaufsstellen werden in starre Einzelattribute zerlegt",
+              "Es darf nur genau eine Verkaufsstelle als einzelnes Objekt geben",
+              "Verkaufsstellen werden als unbeschriftete Liste einzelner Strings abgelegt"
+            ]
+          }
+        ],
+        [
+          "Eine einzelne Verkaufsstelle",
+          {
+            "key": "json_sales_entry",
+            "label": "Einzelne Verkaufsstelle",
+            "expected": "Jede Verkaufsstelle enthaelt strukturierte Felder wie `id`, `strasse`, `plz` und `ort`",
+            "inputType": "select",
+            "placeholder": "Gestaltung waehlen",
+            "options": [
+              "Jede Verkaufsstelle enthaelt strukturierte Felder wie `id`, `strasse`, `plz` und `ort`",
+              "Jede Verkaufsstelle besteht nur aus dem Ortsnamen ohne weitere Schluessel",
+              "Jede Verkaufsstelle wird als freie Textzeile ohne Feldstruktur abgelegt",
+              "Jede Verkaufsstelle ersetzt das gesamte Weingut-Dokument"
+            ]
+          }
+        ]
+      ],
       "feedback": {
-        "correct": "Die JSON-Struktur bildet Hauptdokument und eingebettete Verkaufsstellen fachlich passend ab.",
-        "wrong": "Achten Sie darauf, dass wiederholbare Verkaufsstellen als strukturierte Unterobjekte unter dem Weingut abgelegt werden."
+        "correct": "Hauptdokument, Verkaufsstellen-Array und Unterdokumente sind fachlich passend aufgebaut.",
+        "wrong": "Achten Sie auf das Weingut als Hauptdokument, wiederholbare Verkaufsstellen als Array und klar strukturierte Felder in jedem Unterdokument."
       },
       "progressLinks": [
         "pv1fiae_acid_json_dokumentdatenbanken"
@@ -730,31 +814,19 @@
     },
     {
       "id": "q14",
-      "type": "single_choice",
+      "type": "short_text",
       "title": "Einbettung der Verkaufsstellen begruenden",
-      "prompt": "Warum ist es hier fachlich sinnvoll, die Verkaufsstellen als Array in das Weingut-Dokument einzubetten?",
-      "options": [
-        {
-          "text": "Weingut und Verkaufsstellen werden haeufig gemeinsam gelesen, und die Anzahl der Verkaufsstellen pro Weingut bleibt ueberschaubar.",
-          "rationale": "Genau diese Zugriffssicht und die geringe Menge sprechen fuer eingebettete Unterdokumente."
-        },
-        {
-          "text": "Weil in Dokumentdatenbanken grundsaetzlich nur ein einziges Dokument pro Collection erlaubt ist.",
-          "rationale": "Das ist sachlich falsch; Collections enthalten viele Dokumente."
-        },
-        {
-          "text": "Weil eingebettete Daten automatisch alle ACID-Eigenschaften fuer das gesamte Rechenzentrum ersetzen.",
-          "rationale": "Die Modellierung eines Dokuments ersetzt keine allgemeinen Transaktionseigenschaften."
-        },
-        {
-          "text": "Weil Adressen in JSON niemals als eigene Objekte gespeichert werden duerfen.",
-          "rationale": "Adressen koennen sehr wohl auch separat oder anders modelliert werden."
-        }
+      "prompt": "Begruenden Sie in 2-4 Saetzen, warum die Verkaufsstellen hier als Array in das Weingut-Dokument eingebettet werden koennen.",
+      "minChars": 100,
+      "requiredKeywords": [
+        "weingut",
+        "verkaufsstellen",
+        "gemeinsam"
       ],
-      "correctIndex": 0,
+      "expectedOutline": "Begruendet die Einbettung damit, dass Weingut und Verkaufsstellen haeufig gemeinsam gelesen werden und die Anzahl der Verkaufsstellen pro Weingut ueberschaubar bleibt.",
       "feedback": {
-        "correct": "Die Begruendung fuer die eingebettete Struktur trifft Zugriffsmuster und Datenumfang korrekt.",
-        "wrong": "Denken Sie an den typischen gemeinsamen Zugriff auf Weingut und Verkaufsstellen sowie an die geringe Anzahl der Untereintraege."
+        "correct": "Die eingebettete Struktur ist fachlich nachvollziehbar begruendet.",
+        "wrong": "Arbeiten Sie klarer heraus, dass Weingut und Verkaufsstellen haeufig gemeinsam gelesen werden und die Anzahl der Untereintraege begrenzt bleibt."
       },
       "progressLinks": [
         "pv1fiae_acid_json_dokumentdatenbanken"
@@ -1250,31 +1322,18 @@
     },
     {
       "id": "q18",
-      "type": "single_choice",
+      "type": "short_text",
       "title": "Geeignete Anzeigeform bei lagebezogenen Sektoren waehlen",
-      "prompt": "Wenn die Lage der Sektoren fuer die Bearbeitung besonders wichtig ist, welche Anzeigeform ist dann am besten begruendbar?",
-      "options": [
-        {
-          "text": "Kartendarstellung, weil die geographische Einordnung das Arbeiten mit Gebieten direkt unterstuetzt",
-          "rationale": "Bei lagebezogenen Informationen macht eine Kartenansicht die raeumliche Struktur am schnellsten erfassbar."
-        },
-        {
-          "text": "Reine Textwueste ohne jede Struktur, weil Fachdaten dann am neutralsten wirken",
-          "rationale": "Ohne Struktur geht gerade der fachliche Ueberblick verloren."
-        },
-        {
-          "text": "Sequenzdiagramm, weil Sektoren immer als zeitliche Nachrichtenfolge dargestellt werden sollten",
-          "rationale": "Ein Sequenzdiagramm ist fuer Interaktionen gedacht, nicht fuer die Anzeige von Flaechen oder Bereichen."
-        },
-        {
-          "text": "Beliebige Farbliste ohne Lagebezug, weil Positionen fuer Weinberg-Sektoren nie relevant sind",
-          "rationale": "Die Lage ist hier gerade ein wichtiges Merkmal der Daten."
-        }
+      "prompt": "Begruenden Sie in 1-3 Saetzen, welche Anzeigeform bei lagebezogenen Sektoren am staerksten ist.",
+      "minChars": 80,
+      "requiredKeywords": [
+        "karte",
+        "lage"
       ],
-      "correctIndex": 0,
+      "expectedOutline": "Begruendet die Kartendarstellung damit, dass die Lage der Sektoren fachlich wichtig ist und die geographische Einordnung direkt sichtbar werden muss.",
       "feedback": {
-        "correct": "Die Kartenansicht ist fuer lagebezogene Sektordaten am besten begruendet.",
-        "wrong": "Wenn die Positionen der Sektoren fachlich relevant sind, sollte die Anzeigeform diesen Lagebezug direkt sichtbar machen."
+        "correct": "Die Anzeigeform fuer lagebezogene Sektoren ist fachlich treffend begruendet.",
+        "wrong": "Wenn die Positionen der Sektoren fachlich relevant sind, sollte Ihre Begruendung den Lagebezug und die Kartenansicht deutlicher machen."
       },
       "progressLinks": [
         "pv1fiae_erd_ui_weinbau"

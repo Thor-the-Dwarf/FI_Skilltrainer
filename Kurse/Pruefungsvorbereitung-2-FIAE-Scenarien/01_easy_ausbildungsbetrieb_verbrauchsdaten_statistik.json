@@ -2,8 +2,8 @@
   "scenario": {
     "company": "Sonnenbogen Energie GmbH",
     "scale": "Regionaler Energieversorger, 190 Mitarbeitende",
-    "context": "Pruefungsvorbereitung FIAE im Stationsformat mit Kundenanfragen und Folgeauftraegen.",
-    "mission": "Sie bearbeiten eine zusammenhaengende Fachsituation zu Algorithmik, Testen, Datenmodellierung und SQL.",
+    "context": "Pruefungsvorbereitung 2 FIAE im Stationsformat mit zusammenhaengenden Folgeauftraegen zu Algorithmik, Testen, Datenmodellierung und SQL.",
+    "mission": "Sie bearbeiten eine zusammenhaengende Fachsituation zur Verbrauchsauswertung, zu Unit-Tests, zur Tarifmodellierung und zu SQL-Aufgaben auf relationalen Energiedaten.",
     "source": {
       "kind": "Pseudonymisierte Pruefungsvorlage",
       "reference": "AP2 FIAE Teil 2, Sommer 2022",
@@ -165,7 +165,8 @@
         "wrong": "Achte auf Startspalte, Schleifengrenzen und darauf, wann `vorher` aktualisiert werden muss."
       },
       "progressLinks": [
-        "pv2fiae_algorithmen_pseudocode"
+        "pv2fiae_algorithmen_pseudocode",
+        "pv2fiae_datenstrukturen_listen"
       ]
     },
     {
@@ -207,7 +208,7 @@
         "wrong": "Achte darauf, dass ein Unit-Test eine kleine Softwareeinheit automatisiert prueft."
       },
       "progressLinks": [
-        "pv2fiae_algorithmen_pseudocode"
+        "pv2fiae_unit_tests_methodenlogik"
       ]
     },
     {
@@ -247,7 +248,7 @@
         "wrong": "Achte auf verlaessliche, klar auswertbare Eigenschaften statt auf Zufall oder manuelle Durchfuehrung."
       },
       "progressLinks": [
-        "pv2fiae_algorithmen_pseudocode"
+        "pv2fiae_unit_tests_methodenlogik"
       ]
     },
     {
@@ -329,7 +330,8 @@
         "wrong": "Bitte verfolgen Sie fuer jede Zeile die Bedingungen der Methode und waehlen Sie den tatsaechlichen Rueckgabewert von `berechneDifferenz(...)`."
       },
       "progressLinks": [
-        "pv2fiae_algorithmen_pseudocode"
+        "pv2fiae_unit_tests_methodenlogik",
+        "pv2fiae_testen_coverage"
       ]
     },
     {
@@ -356,7 +358,7 @@
         "wrong": "Bitte die Bedingungen so aendern, dass Testfall 2 und 3 ebenfalls erfolgreich werden."
       },
       "progressLinks": [
-        "pv2fiae_algorithmen_pseudocode"
+        "pv2fiae_unit_tests_methodenlogik"
       ]
     },
     {
@@ -461,7 +463,8 @@
         "wrong": "Waehlen Sie zwei weitere ungueltige Eingabeklassen aus und achten Sie darauf, dass die Methode jeweils `-1` zurueckgeben muss."
       },
       "progressLinks": [
-        "pv2fiae_algorithmen_pseudocode"
+        "pv2fiae_unit_tests_methodenlogik",
+        "pv2fiae_testen_coverage"
       ]
     },
     {
@@ -521,7 +524,7 @@
       "id": "q07",
       "type": "single_choice",
       "title": "Passendes ERM-Diagramm auswaehlen",
-      "prompt": "Welches ERM-Diagramm bildet die gezeigte Tarifuebersicht fachlich korrekt in 3. Normalform ab?",
+      "prompt": "Welches ERM-Diagramm bildet die gezeigte Tarifuebersicht mit fest zugeordnetem Ansprechpartner und tarifbezogenen Zeitraeumen fachlich korrekt in 3. Normalform ab?",
       "options": [
         {
           "label": "Modell A",
@@ -782,8 +785,7 @@
         "wrong": "Achte auf getrennte Entitaeten, korrekt markierte PK/FK, eine saubere Tarifzuordnung pro Zeitraum und passende Kardinalitaeten."
       },
       "progressLinks": [
-        "pv2fiae_datenstrukturen_listen",
-        "pv2fiae_sql_joins_aggregation"
+        "pv2fiae_erm_tarifdaten"
       ]
     },
     {
@@ -825,7 +827,7 @@
         "wrong": "Achte auf die serverseitig gespeicherte und wiederverwendbare Datenbankroutine."
       },
       "progressLinks": [
-        "pv2fiae_sql_abfragen_filter"
+        "pv2fiae_sql_datenbankobjekte"
       ]
     },
     {
@@ -857,7 +859,7 @@
         "wrong": "Wichtig ist der automatische Start durch ein Datenbankereignis."
       },
       "progressLinks": [
-        "pv2fiae_sql_abfragen_filter"
+        "pv2fiae_sql_datenbankobjekte"
       ]
     },
     {
@@ -898,7 +900,7 @@
         "wrong": "Achte auf schnellere Datenzugriffe bei Abfragen und darauf, dass Indizes kein Ersatz fuer Schluessel oder Modellierung sind."
       },
       "progressLinks": [
-        "pv2fiae_sql_abfragen_filter"
+        "pv2fiae_sql_datenbankobjekte"
       ]
     },
     {

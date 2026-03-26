@@ -264,7 +264,7 @@
       "id": "q06",
       "type": "single_choice",
       "title": "Voraussetzung fuer Ausbilder erkennen",
-      "prompt": "Welche Voraussetzung muessen künftige Ausbilderinnen oder Ausbilder nach den gesetzlichen Grundregeln erfuellen?",
+      "prompt": "Welche Voraussetzung muessen kuenftige Ausbilderinnen oder Ausbilder nach den gesetzlichen Grundregeln erfuellen?",
       "options": [
         {
           "text": "Sie muessen Mitglied im zustaendigen Pruefungsausschuss sein.",
@@ -415,35 +415,78 @@
     },
     {
       "id": "q09",
-      "type": "single_choice",
-      "title": "Formulierung fuer ein qualifiziertes Zeugnis erkennen",
-      "prompt": "Welche Formulierung macht aus einem Ausbildungszeugnis ein qualifiziertes Zeugnis?",
-      "options": [
-        {
-          "text": "Pamela Bornberg, geboren am 03.12.2004, ...",
-          "rationale": "Personendaten gehoeren auch in ein einfaches Zeugnis."
-        },
-        {
-          "text": "wohnhaft in Solingen, ...",
-          "rationale": "Die Wohnanschrift ist kein Merkmal des qualifizierten Zeugnisses."
-        },
-        {
-          "text": "Pamela Bornberg wurde seit dem 01.01.2021 in unserem Betrieb ausgebildet.",
-          "rationale": "Das beschreibt nur Art und Dauer der Ausbildung."
-        },
-        {
-          "text": "Sie erledigte die ihr uebertragenen Aufgaben stets zu unserer vollsten Zufriedenheit.",
-          "rationale": "Hier wird die Leistung bewertet; genau das kennzeichnet ein qualifiziertes Zeugnis."
-        },
-        {
-          "text": "Wir wuenschen ihr fuer die Zukunft alles Gute.",
-          "rationale": "Das ist eine Schlussformel, aber keine Leistungsbeurteilung."
-        }
+      "type": "table_fill",
+      "title": "Bausteine eines Ausbildungszeugnisses einordnen",
+      "prompt": "Ordnen Sie die Formulierungen dem passenden Bestandteil des Zeugnisses zu.",
+      "columns": [
+        "Formulierung",
+        "Bestandteil"
       ],
-      "correctIndex": 3,
+      "rows": [
+        [
+          "\"Pamela Bornberg wurde seit dem 01.01.2021 in unserem Betrieb ausgebildet.\"",
+          {
+            "key": "zeugnis_a",
+            "label": "Art und Dauer der Ausbildung",
+            "expected": "Einfaches Zeugnis",
+            "inputType": "select",
+            "placeholder": "Bestandteil waehlen",
+            "options": [
+              "Einfaches Zeugnis",
+              "Qualifiziertes Zeugnis",
+              "Schlussformel"
+            ]
+          }
+        ],
+        [
+          "\"Sie erledigte die ihr uebertragenen Aufgaben stets zu unserer vollsten Zufriedenheit.\"",
+          {
+            "key": "zeugnis_b",
+            "label": "Leistungsbewertung",
+            "expected": "Qualifiziertes Zeugnis",
+            "inputType": "select",
+            "placeholder": "Bestandteil waehlen",
+            "options": [
+              "Einfaches Zeugnis",
+              "Qualifiziertes Zeugnis",
+              "Schlussformel"
+            ]
+          }
+        ],
+        [
+          "\"Ihr Verhalten gegenueber Team und Kundschaft war jederzeit vorbildlich.\"",
+          {
+            "key": "zeugnis_c",
+            "label": "Verhaltensbewertung",
+            "expected": "Qualifiziertes Zeugnis",
+            "inputType": "select",
+            "placeholder": "Bestandteil waehlen",
+            "options": [
+              "Einfaches Zeugnis",
+              "Qualifiziertes Zeugnis",
+              "Schlussformel"
+            ]
+          }
+        ],
+        [
+          "\"Wir wuenschen ihr fuer die Zukunft alles Gute.\"",
+          {
+            "key": "zeugnis_d",
+            "label": "Abschlussformel",
+            "expected": "Schlussformel",
+            "inputType": "select",
+            "placeholder": "Bestandteil waehlen",
+            "options": [
+              "Einfaches Zeugnis",
+              "Qualifiziertes Zeugnis",
+              "Schlussformel"
+            ]
+          }
+        ]
+      ],
       "feedback": {
-        "correct": "Die leistungsbezogene Formulierung ist richtig erkannt.",
-        "wrong": "Ein qualifiziertes Zeugnis enthaelt insbesondere eine Bewertung von Leistung und Verhalten."
+        "correct": "Die Zeugnisbausteine sind fachlich korrekt eingeordnet.",
+        "wrong": "Achten Sie darauf, dass ein qualifiziertes Zeugnis Leistungs- und Verhaltensbewertungen enthaelt, waehrend ein einfaches Zeugnis vor allem Art und Dauer beschreibt."
       },
       "progressLinks": [
         "pv3wiso_arbeitsrecht_ausbildung"
@@ -642,44 +685,102 @@
     },
     {
       "id": "q15",
-      "type": "multi_select",
-      "title": "Beitrag des Arbeitnehmers zur Sozialversicherung abgrenzen",
-      "prompt": "Welche zwei Versicherungen sind nicht Bestandteil des regulaeren Arbeitnehmeranteils zur Sozialversicherung?",
-      "options": [
-        {
-          "text": "Krankenversicherung",
-          "correct": false,
-          "rationale": "Sie gehoert zu den regulaeren Beitragsbestandteilen."
-        },
-        {
-          "text": "Pflegeversicherung",
-          "correct": false,
-          "rationale": "Auch sie ist Teil der Sozialversicherung."
-        },
-        {
-          "text": "Lebensversicherung",
-          "correct": true,
-          "rationale": "Sie gehoert nicht zur gesetzlichen Sozialversicherung."
-        },
-        {
-          "text": "Rentenversicherung",
-          "correct": false,
-          "rationale": "Sie ist Teil der gesetzlichen Sozialversicherung."
-        },
-        {
-          "text": "Arbeitslosenversicherung",
-          "correct": false,
-          "rationale": "Auch diese wird regulaer mit abgefuehrt."
-        },
-        {
-          "text": "Unfallversicherung",
-          "correct": true,
-          "rationale": "Sie wird nicht ueber den Arbeitnehmeranteil finanziert."
-        }
+      "type": "table_fill",
+      "title": "Arbeitnehmeranteil zur Sozialversicherung abgrenzen",
+      "prompt": "Ordnen Sie zu, ob die jeweilige Versicherung typischerweise Bestandteil des regulaeren Arbeitnehmeranteils zur Sozialversicherung ist.",
+      "columns": [
+        "Versicherung",
+        "Regulaerer Arbeitnehmeranteil?"
+      ],
+      "rows": [
+        [
+          "Krankenversicherung",
+          {
+            "key": "sv_a",
+            "label": "Krankenversicherung",
+            "expected": "Ja",
+            "inputType": "select",
+            "placeholder": "Auswahl treffen",
+            "options": [
+              "Ja",
+              "Nein"
+            ]
+          }
+        ],
+        [
+          "Pflegeversicherung",
+          {
+            "key": "sv_b",
+            "label": "Pflegeversicherung",
+            "expected": "Ja",
+            "inputType": "select",
+            "placeholder": "Auswahl treffen",
+            "options": [
+              "Ja",
+              "Nein"
+            ]
+          }
+        ],
+        [
+          "Rentenversicherung",
+          {
+            "key": "sv_c",
+            "label": "Rentenversicherung",
+            "expected": "Ja",
+            "inputType": "select",
+            "placeholder": "Auswahl treffen",
+            "options": [
+              "Ja",
+              "Nein"
+            ]
+          }
+        ],
+        [
+          "Arbeitslosenversicherung",
+          {
+            "key": "sv_d",
+            "label": "Arbeitslosenversicherung",
+            "expected": "Ja",
+            "inputType": "select",
+            "placeholder": "Auswahl treffen",
+            "options": [
+              "Ja",
+              "Nein"
+            ]
+          }
+        ],
+        [
+          "Unfallversicherung",
+          {
+            "key": "sv_e",
+            "label": "Unfallversicherung",
+            "expected": "Nein",
+            "inputType": "select",
+            "placeholder": "Auswahl treffen",
+            "options": [
+              "Ja",
+              "Nein"
+            ]
+          }
+        ],
+        [
+          "Lebensversicherung",
+          {
+            "key": "sv_f",
+            "label": "Lebensversicherung",
+            "expected": "Nein",
+            "inputType": "select",
+            "placeholder": "Auswahl treffen",
+            "options": [
+              "Ja",
+              "Nein"
+            ]
+          }
+        ]
       ],
       "feedback": {
-        "correct": "Die beiden nicht enthaltenen Versicherungen sind richtig herausgefiltert.",
-        "wrong": "Pruefen Sie, welche Zweige Teil der gesetzlichen Sozialversicherung sind und wer sie finanziert."
+        "correct": "Die Versicherungen wurden fuer den Arbeitnehmeranteil korrekt eingeordnet.",
+        "wrong": "Pruefen Sie noch einmal, welche Zweige zur gesetzlichen Sozialversicherung gehoeren und welche Kosten nicht ueber den regulaeren Arbeitnehmeranteil laufen."
       },
       "progressLinks": [
         "pv3wiso_mitbestimmung_tarif_sozialversicherung"
@@ -827,35 +928,88 @@
     },
     {
       "id": "q18",
-      "type": "single_choice",
-      "title": "Typisches Merkmal einer GmbH erkennen",
-      "prompt": "Welche Aussage passt zu einer GmbH?",
-      "options": [
-        {
-          "text": "Ihre Anteile werden boersentaeglich wie Aktien gehandelt.",
-          "rationale": "Das trifft auf die GmbH so nicht zu."
-        },
-        {
-          "text": "Das gesetzliche Stammkapital betraegt zwingend 100.000 EUR.",
-          "rationale": "Diese Summe ist zu hoch angesetzt."
-        },
-        {
-          "text": "Alle Gesellschafter fuehren automatisch die Geschaefte.",
-          "rationale": "Gesellschafter und Geschaeftsfuehrung sind rechtlich zu trennen."
-        },
-        {
-          "text": "Die Gesellschafter haften grundsaetzlich mit ihrem Privatvermoegen.",
-          "rationale": "Genau das soll die Haftungsbeschraenkung gerade vermeiden."
-        },
-        {
-          "text": "Gewinne werden grundsaetzlich nach den Beteiligungsverhaeltnissen verteilt, wenn nichts anderes vereinbart ist.",
-          "rationale": "Das beschreibt ein typisches Grundprinzip der GmbH."
-        }
+      "type": "table_fill",
+      "title": "Aussagen zur GmbH pruefen",
+      "prompt": "Ordnen Sie zu, ob die jeweilige Aussage fuer eine GmbH typischerweise zutrifft.",
+      "columns": [
+        "Aussage",
+        "Trifft zu?"
       ],
-      "correctIndex": 4,
+      "rows": [
+        [
+          "Das gesetzliche Stammkapital betraegt mindestens 25.000 EUR.",
+          {
+            "key": "gmbh_a",
+            "label": "Stammkapital mindestens 25.000 EUR",
+            "expected": "Ja",
+            "inputType": "select",
+            "placeholder": "Auswahl treffen",
+            "options": [
+              "Ja",
+              "Nein"
+            ]
+          }
+        ],
+        [
+          "Ihre Anteile werden boersentaeglich wie Aktien gehandelt.",
+          {
+            "key": "gmbh_b",
+            "label": "Anteile boersentaeglich gehandelt",
+            "expected": "Nein",
+            "inputType": "select",
+            "placeholder": "Auswahl treffen",
+            "options": [
+              "Ja",
+              "Nein"
+            ]
+          }
+        ],
+        [
+          "Die Gesellschafter haften grundsaetzlich nicht unbeschraenkt mit ihrem Privatvermoegen.",
+          {
+            "key": "gmbh_c",
+            "label": "Haftung nicht unbeschraenkt privat",
+            "expected": "Ja",
+            "inputType": "select",
+            "placeholder": "Auswahl treffen",
+            "options": [
+              "Ja",
+              "Nein"
+            ]
+          }
+        ],
+        [
+          "Alle Gesellschafter fuehren automatisch die Geschaefte.",
+          {
+            "key": "gmbh_d",
+            "label": "Alle Gesellschafter fuehren automatisch die Geschaefte",
+            "expected": "Nein",
+            "inputType": "select",
+            "placeholder": "Auswahl treffen",
+            "options": [
+              "Ja",
+              "Nein"
+            ]
+          }
+        ],
+        [
+          "Gewinne werden grundsaetzlich nach den Beteiligungsverhaeltnissen verteilt, wenn nichts anderes vereinbart ist.",
+          {
+            "key": "gmbh_e",
+            "label": "Gewinnverteilung nach Beteiligungsverhaeltnissen",
+            "expected": "Ja",
+            "inputType": "select",
+            "placeholder": "Auswahl treffen",
+            "options": [
+              "Ja",
+              "Nein"
+            ]
+          }
+        ]
+      ],
       "feedback": {
-        "correct": "Das passende Merkmal der GmbH ist korrekt erkannt.",
-        "wrong": "Achten Sie auf Stammkapital, Haftung und die Rolle der Gesellschafter."
+        "correct": "Die Aussagen zur GmbH wurden fachlich sauber eingeordnet.",
+        "wrong": "Achten Sie auf Stammkapital, Haftungsbeschraenkung, Gewinnverteilung und die Trennung von Gesellschaftern und Geschaeftsfuehrung."
       },
       "progressLinks": [
         "pv3wiso_wirtschaftssektoren_unternehmensformen"
@@ -1253,35 +1407,88 @@
     },
     {
       "id": "q25",
-      "type": "single_choice",
-      "title": "Falsche Loeschregel erkennen",
-      "prompt": "Welche der folgenden Regeln zum Einsatz von Feuerloeschern beschreibt unzutreffendes Verhalten?",
-      "options": [
-        {
-          "text": "Die Brandstelle nach dem Loeschen beobachten und auf Wiederentzuendung achten.",
-          "rationale": "Das ist eine sinnvolle Verhaltensregel."
-        },
-        {
-          "text": "Moeglichst mehrere Feuerloescher gleichzeitig und nicht nacheinander einsetzen.",
-          "rationale": "Auch das entspricht der gaengigen Empfehlung."
-        },
-        {
-          "text": "Tropf- und Fliessbraende von unten nach oben loeschen und nie von oben beginnen.",
-          "rationale": "Genau diese Richtung ist fachlich falsch."
-        },
-        {
-          "text": "Flaechenbraende von vorne nach hinten abloeschen.",
-          "rationale": "Das ist eine uebliche Loeschregel."
-        },
-        {
-          "text": "Immer mit der Windrichtung arbeiten und nicht gegen den Wind loeschen.",
-          "rationale": "Auch das ist fachlich richtig."
-        }
+      "type": "table_fill",
+      "title": "Loeschregeln fachlich bewerten",
+      "prompt": "Ordnen Sie zu, ob die jeweilige Regel im Umgang mit Feuerloeschern fachlich richtig oder falsch ist.",
+      "columns": [
+        "Regel",
+        "Bewertung"
       ],
-      "correctIndex": 2,
+      "rows": [
+        [
+          "Die Brandstelle nach dem Loeschen beobachten und auf Wiederentzuendung achten.",
+          {
+            "key": "loesch_a",
+            "label": "Brandstelle beobachten",
+            "expected": "Richtig",
+            "inputType": "select",
+            "placeholder": "Bewertung waehlen",
+            "options": [
+              "Richtig",
+              "Falsch"
+            ]
+          }
+        ],
+        [
+          "Moeglichst mehrere Feuerloescher gleichzeitig und nicht nacheinander einsetzen.",
+          {
+            "key": "loesch_b",
+            "label": "Mehrere Loescher gleichzeitig einsetzen",
+            "expected": "Richtig",
+            "inputType": "select",
+            "placeholder": "Bewertung waehlen",
+            "options": [
+              "Richtig",
+              "Falsch"
+            ]
+          }
+        ],
+        [
+          "Tropf- und Fliessbraende von unten nach oben loeschen und nie von oben beginnen.",
+          {
+            "key": "loesch_c",
+            "label": "Tropf- und Fliessbraende von unten nach oben loeschen",
+            "expected": "Falsch",
+            "inputType": "select",
+            "placeholder": "Bewertung waehlen",
+            "options": [
+              "Richtig",
+              "Falsch"
+            ]
+          }
+        ],
+        [
+          "Flaechenbraende von vorne nach hinten abloeschen.",
+          {
+            "key": "loesch_d",
+            "label": "Flaechenbraende von vorne nach hinten abloeschen",
+            "expected": "Richtig",
+            "inputType": "select",
+            "placeholder": "Bewertung waehlen",
+            "options": [
+              "Richtig",
+              "Falsch"
+            ]
+          }
+        ],
+        [
+          "Immer mit der Windrichtung arbeiten und nicht gegen den Wind loeschen.",
+          {
+            "key": "loesch_e",
+            "label": "Mit Windrichtung arbeiten",
+            "expected": "Richtig",
+            "inputType": "select",
+            "placeholder": "Bewertung waehlen",
+            "options": [
+              "Richtig",
+              "Falsch"
+            ]
+          }
+        ]
+      ],
       "feedback": {
-        "correct": "Die unzutreffende Regel wurde erkannt.",
-        "wrong": "Pruefen Sie vor allem die richtige Loeschrichtung bei tropfenden oder fliessenden Braenden."
+        "correct": "Die Loeschregeln wurden fachlich korrekt bewertet.",
+        "wrong": "Achten Sie besonders auf die Loeschrichtung bei tropfenden oder fliessenden Braenden und auf das abgestimmte Vorgehen am Brandort."
       },
       "progressLinks": [
         "pv3wiso_arbeitsschutz_umwelt_diversity"
@@ -1384,35 +1591,88 @@
     },
     {
       "id": "q29",
-      "type": "single_choice",
-      "title": "Nicht beruecksichtigtes Merkmal der Charta der Vielfalt finden",
-      "prompt": "Welcher Punkt gehoert nicht zu den klassischen in der Charta der Vielfalt beruecksichtigten Merkmalen?",
-      "options": [
-        {
-          "text": "Alter",
-          "rationale": "Alter ist ein klassisches Diversity-Merkmal."
-        },
-        {
-          "text": "Religion oder Weltanschauung",
-          "rationale": "Auch das gehoert dazu."
-        },
-        {
-          "text": "Sexuelle Orientierung bzw. Identitaet",
-          "rationale": "Auch dieses Merkmal wird beruecksichtigt."
-        },
-        {
-          "text": "Ausbildungsstand oder Art des Abschlusses",
-          "rationale": "Das ist kein klassisches Kernmerkmal der Charta der Vielfalt."
-        },
-        {
-          "text": "Ethnische Herkunft und Nationalitaet",
-          "rationale": "Auch das gehoert dazu."
-        }
+      "type": "table_fill",
+      "title": "Merkmale der Charta der Vielfalt einordnen",
+      "prompt": "Ordnen Sie zu, ob das jeweilige Merkmal zu den klassischen Dimensionen der Charta der Vielfalt gehoert.",
+      "columns": [
+        "Merkmal",
+        "Gehoert dazu?"
       ],
-      "correctIndex": 3,
+      "rows": [
+        [
+          "Alter",
+          {
+            "key": "diversity_a",
+            "label": "Alter",
+            "expected": "Ja",
+            "inputType": "select",
+            "placeholder": "Auswahl treffen",
+            "options": [
+              "Ja",
+              "Nein"
+            ]
+          }
+        ],
+        [
+          "Religion oder Weltanschauung",
+          {
+            "key": "diversity_b",
+            "label": "Religion oder Weltanschauung",
+            "expected": "Ja",
+            "inputType": "select",
+            "placeholder": "Auswahl treffen",
+            "options": [
+              "Ja",
+              "Nein"
+            ]
+          }
+        ],
+        [
+          "Sexuelle Orientierung bzw. Identitaet",
+          {
+            "key": "diversity_c",
+            "label": "Sexuelle Orientierung bzw. Identitaet",
+            "expected": "Ja",
+            "inputType": "select",
+            "placeholder": "Auswahl treffen",
+            "options": [
+              "Ja",
+              "Nein"
+            ]
+          }
+        ],
+        [
+          "Ethnische Herkunft und Nationalitaet",
+          {
+            "key": "diversity_d",
+            "label": "Ethnische Herkunft und Nationalitaet",
+            "expected": "Ja",
+            "inputType": "select",
+            "placeholder": "Auswahl treffen",
+            "options": [
+              "Ja",
+              "Nein"
+            ]
+          }
+        ],
+        [
+          "Ausbildungsstand oder Art des Abschlusses",
+          {
+            "key": "diversity_e",
+            "label": "Ausbildungsstand oder Art des Abschlusses",
+            "expected": "Nein",
+            "inputType": "select",
+            "placeholder": "Auswahl treffen",
+            "options": [
+              "Ja",
+              "Nein"
+            ]
+          }
+        ]
+      ],
       "feedback": {
-        "correct": "Das nicht beruecksichtigte Merkmal wurde korrekt herausgefiltert.",
-        "wrong": "Orientieren Sie sich an den klassischen Diversity-Dimensionen der Charta der Vielfalt."
+        "correct": "Die Merkmale der Charta der Vielfalt wurden korrekt eingeordnet.",
+        "wrong": "Orientieren Sie sich an den klassischen Diversity-Dimensionen wie Alter, Herkunft, Religion, Geschlecht oder sexueller Identitaet."
       },
       "progressLinks": [
         "pv3wiso_arbeitsschutz_umwelt_diversity"

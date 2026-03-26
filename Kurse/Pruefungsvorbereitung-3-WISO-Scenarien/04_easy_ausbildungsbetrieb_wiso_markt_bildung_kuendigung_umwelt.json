@@ -14,7 +14,7 @@
       "department": "Pruefungsvorbereitung Wirtschafts- und Sozialkunde",
       "profile": "Markt, Berufsbildung, Kuendigung, AGG und Umwelt",
       "constraints": [
-        "Die 30 Originalaufgaben bleiben in thematischen Folgeauftraegen sichtbar",
+        "Die 30 Themenaufgaben bleiben in thematischen Folgeauftraegen sichtbar",
         "Kennzahlen, Rechtsquellen und Bildzeichen werden mit vorhandenen Aufgabentypen uebernommen",
         "Rechen-, Auswahl- und Zuordnungsaufgaben sollen moeglichst direkt auto-auswertbar bleiben"
       ]
@@ -214,35 +214,88 @@
     },
     {
       "id": "q05",
-      "type": "single_choice",
-      "title": "Typisches Merkmal einer Rezession erkennen",
-      "prompt": "Welches der folgenden Merkmale ist typisch fuer eine konjunkturelle Rezession?",
-      "options": [
-        {
-          "text": "Die Investitionen steigen stark an.",
-          "rationale": "In einer Rezession gehen Investitionen eher zurueck."
-        },
-        {
-          "text": "Das Bruttoinlandsprodukt waechst deutlich.",
-          "rationale": "Eine Rezession ist durch ruecklaeufige Wirtschaftsleistung gekennzeichnet."
-        },
-        {
-          "text": "Die gesamtwirtschaftliche Lohnsumme steigt stark an.",
-          "rationale": "Das ist kein typisches Kernmerkmal einer Rezession."
-        },
-        {
-          "text": "Die Kapazitaetsauslastung steigt weiter.",
-          "rationale": "In der Rezession sinkt die Auslastung typischerweise."
-        },
-        {
-          "text": "Die Lagerbestaende nehmen zu.",
-          "rationale": "Wenn die Nachfrage nachlaesst, wachsen haeufig die Lagerbestaende."
-        }
+      "type": "table_fill",
+      "title": "Merkmale einer Rezession einordnen",
+      "prompt": "Ordnen Sie zu, welche Aussagen typisch fuer eine konjunkturelle Rezession sind.",
+      "columns": [
+        "Aussage",
+        "Typisch fuer Rezession?"
       ],
-      "correctIndex": 4,
+      "rows": [
+        [
+          "Die Investitionen steigen stark an.",
+          {
+            "key": "rezession_a",
+            "label": "Investitionen steigen stark an",
+            "expected": "Nein",
+            "inputType": "select",
+            "placeholder": "Auswahl treffen",
+            "options": [
+              "Ja",
+              "Nein"
+            ]
+          }
+        ],
+        [
+          "Das Bruttoinlandsprodukt waechst deutlich.",
+          {
+            "key": "rezession_b",
+            "label": "Bruttoinlandsprodukt waechst deutlich",
+            "expected": "Nein",
+            "inputType": "select",
+            "placeholder": "Auswahl treffen",
+            "options": [
+              "Ja",
+              "Nein"
+            ]
+          }
+        ],
+        [
+          "Die gesamtwirtschaftliche Lohnsumme steigt stark an.",
+          {
+            "key": "rezession_c",
+            "label": "Gesamtwirtschaftliche Lohnsumme steigt stark an",
+            "expected": "Nein",
+            "inputType": "select",
+            "placeholder": "Auswahl treffen",
+            "options": [
+              "Ja",
+              "Nein"
+            ]
+          }
+        ],
+        [
+          "Die Kapazitaetsauslastung steigt weiter.",
+          {
+            "key": "rezession_d",
+            "label": "Kapazitaetsauslastung steigt weiter",
+            "expected": "Nein",
+            "inputType": "select",
+            "placeholder": "Auswahl treffen",
+            "options": [
+              "Ja",
+              "Nein"
+            ]
+          }
+        ],
+        [
+          "Die Lagerbestaende nehmen zu.",
+          {
+            "key": "rezession_e",
+            "label": "Lagerbestaende nehmen zu",
+            "expected": "Ja",
+            "inputType": "select",
+            "placeholder": "Auswahl treffen",
+            "options": [
+              "Ja",
+              "Nein"
+            ]
+          }
+        ]
+      ],
       "feedback": {
-        "correct": "Das typische Rezessionsmerkmal wurde korrekt erkannt.",
-        "wrong": "Achten Sie auf Folgen sinkender Nachfrage fuer Produktion und Absatz."
+        "correct": "Die Rezessionsmerkmale wurden fachlich passend eingeordnet.",
+        "wrong": "Achten Sie auf die Folgen sinkender Nachfrage fuer Investitionen, Auslastung und Lagerbestaende."
       },
       "progressLinks": [
         "pv3wiso_wirtschaftlichkeit_unternehmensanalyse"
@@ -471,35 +524,88 @@
     },
     {
       "id": "q10",
-      "type": "single_choice",
-      "title": "Pflichtunterlage des Berufsausbildungsvertrags bestimmen",
-      "prompt": "Welche der folgenden Unterlagen ist gemaess Berufsbildungsgesetz Teil des Berufsausbildungsvertrags?",
-      "options": [
-        {
-          "text": "Der fachlich gegliederte Stoffplan der Berufsschule",
-          "rationale": "Der Berufsschulstoffplan ist nicht der betriebliche Vertragsbestandteil."
-        },
-        {
-          "text": "Der gemeinsame Ausbildungsplan von Berufsschule und Betrieb",
-          "rationale": "Ein solcher gemeinsamer Plan ist nicht die gesuchte Pflichtunterlage."
-        },
-        {
-          "text": "Der Rahmenlehrplan der Berufsschule",
-          "rationale": "Auch der Rahmenlehrplan gehoert nicht direkt in den Ausbildungsvertrag."
-        },
-        {
-          "text": "Der Ausbildungsplan des Ausbildungsbetriebs",
-          "rationale": "Der betriebliche Ausbildungsplan gehoert zum Vertrag."
-        },
-        {
-          "text": "Der Einsatz- und der Pausenplan des jeweiligen Betriebs",
-          "rationale": "Das ist kein Bestandteil des Berufsausbildungsvertrags im engeren Sinn."
-        }
+      "type": "table_fill",
+      "title": "Unterlagen des Berufsausbildungsvertrags einordnen",
+      "prompt": "Ordnen Sie zu, welche Unterlagen typischerweise zum Berufsausbildungsvertrag gehoeren.",
+      "columns": [
+        "Unterlage",
+        "Gehoert dazu?"
       ],
-      "correctIndex": 3,
+      "rows": [
+        [
+          "Der fachlich gegliederte Stoffplan der Berufsschule",
+          {
+            "key": "vertrag_a",
+            "label": "Stoffplan der Berufsschule",
+            "expected": "Nein",
+            "inputType": "select",
+            "placeholder": "Auswahl treffen",
+            "options": [
+              "Ja",
+              "Nein"
+            ]
+          }
+        ],
+        [
+          "Der gemeinsame Ausbildungsplan von Berufsschule und Betrieb",
+          {
+            "key": "vertrag_b",
+            "label": "Gemeinsamer Ausbildungsplan von Schule und Betrieb",
+            "expected": "Nein",
+            "inputType": "select",
+            "placeholder": "Auswahl treffen",
+            "options": [
+              "Ja",
+              "Nein"
+            ]
+          }
+        ],
+        [
+          "Der Rahmenlehrplan der Berufsschule",
+          {
+            "key": "vertrag_c",
+            "label": "Rahmenlehrplan der Berufsschule",
+            "expected": "Nein",
+            "inputType": "select",
+            "placeholder": "Auswahl treffen",
+            "options": [
+              "Ja",
+              "Nein"
+            ]
+          }
+        ],
+        [
+          "Der Ausbildungsplan des Ausbildungsbetriebs",
+          {
+            "key": "vertrag_d",
+            "label": "Ausbildungsplan des Ausbildungsbetriebs",
+            "expected": "Ja",
+            "inputType": "select",
+            "placeholder": "Auswahl treffen",
+            "options": [
+              "Ja",
+              "Nein"
+            ]
+          }
+        ],
+        [
+          "Der Einsatz- und der Pausenplan des jeweiligen Betriebs",
+          {
+            "key": "vertrag_e",
+            "label": "Einsatz und Pausenplan des Betriebs",
+            "expected": "Nein",
+            "inputType": "select",
+            "placeholder": "Auswahl treffen",
+            "options": [
+              "Ja",
+              "Nein"
+            ]
+          }
+        ]
+      ],
       "feedback": {
-        "correct": "Die Pflichtunterlage wurde korrekt bestimmt.",
-        "wrong": "Denken Sie an den Plan, der die betriebliche Vermittlung der Ausbildungsinhalte konkretisiert."
+        "correct": "Betrieblicher Ausbildungsplan und schulische Unterlagen wurden sauber voneinander getrennt.",
+        "wrong": "Denken Sie an den Plan, der die betriebliche Vermittlung der Ausbildungsinhalte konkretisiert. Schulische Stoff- und Rahmenplaene gehoeren nicht direkt zum Vertrag."
       },
       "progressLinks": [
         "pv3wiso_arbeitsrecht_ausbildung"
@@ -615,35 +721,88 @@
     },
     {
       "id": "q14",
-      "type": "single_choice",
-      "title": "Zutreffende Regel des Jugendarbeitsschutzes auswaehlen",
-      "prompt": "Welche der folgenden Regeln trifft im Jugendarbeitsschutzgesetz zu?",
-      "options": [
-        {
-          "text": "Jugendliche duerfen bis zu acht Stunden ohne Unterbrechung beschaeftigt werden.",
-          "rationale": "Pausen duerfen bei Jugendlichen nicht entfallen."
-        },
-        {
-          "text": "Jugendliche muessen spaetestens nach 4,5 Stunden eine Ruhepause von acht Stunden einlegen.",
-          "rationale": "Die Pausenregel ist so nicht formuliert."
-        },
-        {
-          "text": "Jugendliche sollen vor jeder Gefaehrdung ihrer Gesundheit oder ihrer Entwicklung bewahrt werden.",
-          "rationale": "Genau dieser Schutzgedanke steht im Mittelpunkt des JArbSchG."
-        },
-        {
-          "text": "Jugendliche duerfen nach eigener Entscheidung auch auf Sonntage und in die Nachtarbeit ausweichen.",
-          "rationale": "Derartige Abweichungen sind nicht frei waehlbar."
-        },
-        {
-          "text": "Jugendliche muessen vor der Abschlusspruefung generell zwei Arbeitstage freigestellt werden.",
-          "rationale": "Die Freistellungsregeln sehen etwas anderes vor."
-        }
+      "type": "table_fill",
+      "title": "Regeln des Jugendarbeitsschutzes einordnen",
+      "prompt": "Ordnen Sie zu, welche Aussagen im Jugendarbeitsschutz zutreffen.",
+      "columns": [
+        "Aussage",
+        "Trifft zu?"
       ],
-      "correctIndex": 2,
+      "rows": [
+        [
+          "Jugendliche duerfen bis zu acht Stunden ohne Unterbrechung beschaeftigt werden.",
+          {
+            "key": "jarg_a",
+            "label": "Acht Stunden ohne Unterbrechung",
+            "expected": "Nein",
+            "inputType": "select",
+            "placeholder": "Auswahl treffen",
+            "options": [
+              "Ja",
+              "Nein"
+            ]
+          }
+        ],
+        [
+          "Jugendliche muessen spaetestens nach 4,5 Stunden eine Ruhepause von acht Stunden einlegen.",
+          {
+            "key": "jarg_b",
+            "label": "Ruhepause von acht Stunden nach 4,5 Stunden",
+            "expected": "Nein",
+            "inputType": "select",
+            "placeholder": "Auswahl treffen",
+            "options": [
+              "Ja",
+              "Nein"
+            ]
+          }
+        ],
+        [
+          "Jugendliche sollen vor jeder Gefaehrdung ihrer Gesundheit oder ihrer Entwicklung bewahrt werden.",
+          {
+            "key": "jarg_c",
+            "label": "Schutz von Gesundheit und Entwicklung",
+            "expected": "Ja",
+            "inputType": "select",
+            "placeholder": "Auswahl treffen",
+            "options": [
+              "Ja",
+              "Nein"
+            ]
+          }
+        ],
+        [
+          "Jugendliche duerfen nach eigener Entscheidung auf Sonntage und in die Nachtarbeit ausweichen.",
+          {
+            "key": "jarg_d",
+            "label": "Eigenstaendige Entscheidung fuer Sonntags oder Nachtarbeit",
+            "expected": "Nein",
+            "inputType": "select",
+            "placeholder": "Auswahl treffen",
+            "options": [
+              "Ja",
+              "Nein"
+            ]
+          }
+        ],
+        [
+          "Jugendliche muessen vor der Abschlusspruefung generell zwei Arbeitstage freigestellt werden.",
+          {
+            "key": "jarg_e",
+            "label": "Generell zwei Arbeitstage vor Abschlusspruefung freigestellt",
+            "expected": "Nein",
+            "inputType": "select",
+            "placeholder": "Auswahl treffen",
+            "options": [
+              "Ja",
+              "Nein"
+            ]
+          }
+        ]
+      ],
       "feedback": {
-        "correct": "Die zutreffende Regel des Jugendarbeitsschutzes wurde korrekt erkannt.",
-        "wrong": "Achten Sie auf den grundlegenden Schutz von Gesundheit und Entwicklung Jugendlicher."
+        "correct": "Der Schutzgedanke und die konkreten Grenzen des Jugendarbeitsschutzes wurden passend eingeordnet.",
+        "wrong": "Achten Sie auf den Schutz von Gesundheit und Entwicklung Jugendlicher sowie auf die Grenzen bei Arbeitszeit und Sonderzeiten."
       },
       "progressLinks": [
         "pv3wiso_jugendarbeitsschutz_urlaub"
@@ -745,39 +904,95 @@
       "feedback": {
         "correct": "Die Rechtsquellen wurden korrekt zugeordnet.",
         "wrong": "Vergleichen Sie betriebsverfassungsrechtliche Fragen mit zivilrechtlichen Regelungen zu Geschaeftsbedingungen."
-      }
+      },
+      "progressLinks": [
+        "pv3wiso_mitbestimmung_tarif_sozialversicherung"
+      ]
     },
     {
       "id": "q17",
-      "type": "single_choice",
-      "title": "Rechtsfolge eines unbefristeten Streiks erkennen",
-      "prompt": "Die Gewerkschaft plant nach Ablauf der Friedenspflicht Streikmassnahmen. Welche Aussage zu einem unbefristeten Streik trifft zu?",
-      "options": [
-        {
-          "text": "Ein unbefristeter Streik muss vom DGB genehmigt werden.",
-          "rationale": "Eine solche formale Genehmigung ist nicht die entscheidende Voraussetzung."
-        },
-        {
-          "text": "Ein unbefristeter Streik muss beim Bundesministerium fuer Arbeit und Soziales beantragt werden.",
-          "rationale": "Ein ministerieller Antrag ist dafuer nicht vorgesehen."
-        },
-        {
-          "text": "Ein unbefristeter Streik ist nur vor dem Ende eines Tarifvertrags moeglich.",
-          "rationale": "Gerade die Friedenspflicht waehrend eines laufenden Tarifvertrags steht dem entgegen."
-        },
-        {
-          "text": "Ein unbefristeter Streik wird immer nur parallel zu Tarifverhandlungen gefuehrt.",
-          "rationale": "Das ist zu pauschal und nicht die zentrale Rechtsfolge."
-        },
-        {
-          "text": "Ein unbefristeter Streik kann von den Arbeitgebern mit einer Aussperrung beantwortet werden.",
-          "rationale": "Die Aussperrung ist das typische Gegenmittel der Arbeitgeberseite."
-        }
+      "type": "table_fill",
+      "title": "Aussagen zum unbefristeten Streik einordnen",
+      "prompt": "Ordnen Sie zu, welche Aussagen zu einem unbefristeten Streik zutreffen.",
+      "columns": [
+        "Aussage",
+        "Trifft zu?"
       ],
-      "correctIndex": 4,
+      "rows": [
+        [
+          "Ein unbefristeter Streik kann von den Arbeitgebern mit einer Aussperrung beantwortet werden.",
+          {
+            "key": "streik_a",
+            "label": "Aussperrung als Reaktion der Arbeitgeber",
+            "expected": "Ja",
+            "inputType": "select",
+            "placeholder": "Auswahl treffen",
+            "options": [
+              "Ja",
+              "Nein"
+            ]
+          }
+        ],
+        [
+          "Vor Ablauf der Friedenspflicht darf nicht einfach zum unbefristeten Streik aufgerufen werden.",
+          {
+            "key": "streik_b",
+            "label": "Friedenspflicht begrenzt unbefristeten Streik",
+            "expected": "Ja",
+            "inputType": "select",
+            "placeholder": "Auswahl treffen",
+            "options": [
+              "Ja",
+              "Nein"
+            ]
+          }
+        ],
+        [
+          "Ein unbefristeter Streik muss vom DGB genehmigt werden.",
+          {
+            "key": "streik_c",
+            "label": "Genehmigung durch den DGB erforderlich",
+            "expected": "Nein",
+            "inputType": "select",
+            "placeholder": "Auswahl treffen",
+            "options": [
+              "Ja",
+              "Nein"
+            ]
+          }
+        ],
+        [
+          "Ein unbefristeter Streik muss beim Bundesministerium fuer Arbeit und Soziales beantragt werden.",
+          {
+            "key": "streik_d",
+            "label": "Antrag beim Bundesministerium erforderlich",
+            "expected": "Nein",
+            "inputType": "select",
+            "placeholder": "Auswahl treffen",
+            "options": [
+              "Ja",
+              "Nein"
+            ]
+          }
+        ],
+        [
+          "Ein unbefristeter Streik ist nur vor dem Ende eines Tarifvertrags moeglich.",
+          {
+            "key": "streik_e",
+            "label": "Nur vor Ende eines Tarifvertrags moeglich",
+            "expected": "Nein",
+            "inputType": "select",
+            "placeholder": "Auswahl treffen",
+            "options": [
+              "Ja",
+              "Nein"
+            ]
+          }
+        ]
+      ],
       "feedback": {
-        "correct": "Die Rechtsfolge des unbefristeten Streiks wurde korrekt erkannt.",
-        "wrong": "Pruefen Sie, welche Reaktionsmoeglichkeit die Arbeitgeberseite in einem Arbeitskampf hat."
+        "correct": "Friedenspflicht, Aussperrung und unzutreffende Formalannahmen wurden sauber getrennt.",
+        "wrong": "Achten Sie darauf, welche Grenzen aus der Friedenspflicht folgen und welche Reaktionsmoeglichkeit die Arbeitgeberseite in einem Arbeitskampf hat."
       },
       "progressLinks": [
         "pv3wiso_mitbestimmung_tarif_sozialversicherung"
@@ -995,35 +1210,88 @@
     },
     {
       "id": "q22",
-      "type": "single_choice",
-      "title": "Richtige Aussage zur GmbH auswaehlen",
-      "prompt": "Welche der folgenden Aussagen zur GmbH trifft zu?",
-      "options": [
-        {
-          "text": "Die Geschaeftsfuehrung muss zwingend von allen Gesellschaftern gemeinsam ausgeuebt werden.",
-          "rationale": "Eine GmbH kann ihre Geschaeftsfuehrung auch anders organisieren."
-        },
-        {
-          "text": "Ein Gesellschafter der GmbH kann zum Geschaeftsfuehrer bestellt werden.",
-          "rationale": "Genau das ist bei einer GmbH moeglich."
-        },
-        {
-          "text": "Die Gesellschafter haften mit ihrem Privatvermoegen fuer alle Verbindlichkeiten der GmbH.",
-          "rationale": "Gerade die Haftungsbeschraenkung unterscheidet die GmbH von Personengesellschaften."
-        },
-        {
-          "text": "Eine GmbH darf nicht in das Handelsregister eingetragen werden.",
-          "rationale": "Die GmbH wird gerade in das Handelsregister eingetragen."
-        },
-        {
-          "text": "Das Stammkapital muss in voller Hoehe von der Geschaeftsfuehrung geleistet werden.",
-          "rationale": "Die Einlagen werden nicht von der Geschaeftsfuehrung als Organ geleistet."
-        }
+      "type": "table_fill",
+      "title": "Aussagen zur GmbH einordnen",
+      "prompt": "Ordnen Sie zu, welche Aussagen zur GmbH zutreffen.",
+      "columns": [
+        "Aussage",
+        "Trifft zu?"
       ],
-      "correctIndex": 1,
+      "rows": [
+        [
+          "Ein Gesellschafter der GmbH kann zum Geschaeftsfuehrer bestellt werden.",
+          {
+            "key": "gmbh_a",
+            "label": "Gesellschafter kann Geschaeftsfuehrer werden",
+            "expected": "Ja",
+            "inputType": "select",
+            "placeholder": "Auswahl treffen",
+            "options": [
+              "Ja",
+              "Nein"
+            ]
+          }
+        ],
+        [
+          "Eine GmbH wird in das Handelsregister eingetragen.",
+          {
+            "key": "gmbh_b",
+            "label": "GmbH wird ins Handelsregister eingetragen",
+            "expected": "Ja",
+            "inputType": "select",
+            "placeholder": "Auswahl treffen",
+            "options": [
+              "Ja",
+              "Nein"
+            ]
+          }
+        ],
+        [
+          "Die Geschaeftsfuehrung muss zwingend von allen Gesellschaftern gemeinsam ausgeuebt werden.",
+          {
+            "key": "gmbh_c",
+            "label": "Geschaeftsfuehrung zwingend durch alle Gesellschafter gemeinsam",
+            "expected": "Nein",
+            "inputType": "select",
+            "placeholder": "Auswahl treffen",
+            "options": [
+              "Ja",
+              "Nein"
+            ]
+          }
+        ],
+        [
+          "Die Gesellschafter haften mit ihrem Privatvermoegen fuer alle Verbindlichkeiten der GmbH.",
+          {
+            "key": "gmbh_d",
+            "label": "Gesellschafter haften privat fuer alle Verbindlichkeiten",
+            "expected": "Nein",
+            "inputType": "select",
+            "placeholder": "Auswahl treffen",
+            "options": [
+              "Ja",
+              "Nein"
+            ]
+          }
+        ],
+        [
+          "Das Stammkapital muss in voller Hoehe von der Geschaeftsfuehrung geleistet werden.",
+          {
+            "key": "gmbh_e",
+            "label": "Stammkapital wird von der Geschaeftsfuehrung geleistet",
+            "expected": "Nein",
+            "inputType": "select",
+            "placeholder": "Auswahl treffen",
+            "options": [
+              "Ja",
+              "Nein"
+            ]
+          }
+        ]
+      ],
       "feedback": {
-        "correct": "Die richtige Aussage zur GmbH wurde korrekt erkannt.",
-        "wrong": "Trennen Sie Gesellschafterstellung, Geschaeftsfuehrung, Registereintragung und Haftung sauber voneinander."
+        "correct": "Gesellschafterrolle, Geschaeftsfuehrung, Registereintragung und Haftung wurden sauber voneinander getrennt.",
+        "wrong": "Trennen Sie Gesellschafterstellung, Geschaeftsfuehrung, Registereintragung und Haftung noch einmal systematisch."
       },
       "progressLinks": [
         "pv3wiso_wirtschaftssektoren_unternehmensformen"
@@ -1314,35 +1582,88 @@
     },
     {
       "id": "q29",
-      "type": "single_choice",
-      "title": "Massnahme ohne Beitrag zum Umweltschutz erkennen",
-      "prompt": "Die Auenwerk Digital GmbH will den Umweltschutz verbessern. Welche der folgenden Massnahmen traegt nicht zur Erreichung dieses Ziels bei?",
-      "options": [
-        {
-          "text": "Die Beleuchtung in den Buero- und Verkaufsraeumen wird auf LED-Leuchtmittel umgestellt.",
-          "rationale": "Das senkt typischerweise den Energieverbrauch."
-        },
-        {
-          "text": "In der Betriebskantine wird der Kaffee in Einwegbechern aus Kunststoff ausgegeben.",
-          "rationale": "Einwegbecher aus Kunststoff verschlechtern die Umweltbilanz statt sie zu verbessern."
-        },
-        {
-          "text": "Die Transportlogistik wird mithilfe einer geeigneten Software optimiert.",
-          "rationale": "Effizientere Logistik kann Wege und Emissionen reduzieren."
-        },
-        {
-          "text": "Die Reinigung der Gebaeudefenster erfolgt mit biologisch abbaubaren Reinigungsmitteln.",
-          "rationale": "Auch das unterstuetzt umweltschonendes Handeln."
-        },
-        {
-          "text": "In den Bueros wird ausschliesslich Recycling-Papier verwendet.",
-          "rationale": "Recycling-Papier ist eine typische Umweltmassnahme."
-        }
+      "type": "table_fill",
+      "title": "Umweltmassnahmen fachlich einordnen",
+      "prompt": "Ordnen Sie zu, welche Massnahmen zur Verbesserung des Umweltschutzes beitragen.",
+      "columns": [
+        "Massnahme",
+        "Traegt zum Umweltschutz bei?"
       ],
-      "correctIndex": 1,
+      "rows": [
+        [
+          "Die Beleuchtung in den Buero- und Verkaufsraeumen wird auf LED-Leuchtmittel umgestellt.",
+          {
+            "key": "umwelt_a",
+            "label": "LED Leuchtmittel in Buero und Verkauf",
+            "expected": "Ja",
+            "inputType": "select",
+            "placeholder": "Auswahl treffen",
+            "options": [
+              "Ja",
+              "Nein"
+            ]
+          }
+        ],
+        [
+          "In der Betriebskantine wird der Kaffee in Einwegbechern aus Kunststoff ausgegeben.",
+          {
+            "key": "umwelt_b",
+            "label": "Einwegbecher aus Kunststoff in der Kantine",
+            "expected": "Nein",
+            "inputType": "select",
+            "placeholder": "Auswahl treffen",
+            "options": [
+              "Ja",
+              "Nein"
+            ]
+          }
+        ],
+        [
+          "Die Transportlogistik wird mithilfe einer geeigneten Software optimiert.",
+          {
+            "key": "umwelt_c",
+            "label": "Transportlogistik softwaregestuetzt optimieren",
+            "expected": "Ja",
+            "inputType": "select",
+            "placeholder": "Auswahl treffen",
+            "options": [
+              "Ja",
+              "Nein"
+            ]
+          }
+        ],
+        [
+          "Die Reinigung der Gebaeudefenster erfolgt mit biologisch abbaubaren Reinigungsmitteln.",
+          {
+            "key": "umwelt_d",
+            "label": "Biologisch abbaubare Reinigungsmittel",
+            "expected": "Ja",
+            "inputType": "select",
+            "placeholder": "Auswahl treffen",
+            "options": [
+              "Ja",
+              "Nein"
+            ]
+          }
+        ],
+        [
+          "In den Bueros wird ausschliesslich Recycling-Papier verwendet.",
+          {
+            "key": "umwelt_e",
+            "label": "Recycling Papier in den Bueros",
+            "expected": "Ja",
+            "inputType": "select",
+            "placeholder": "Auswahl treffen",
+            "options": [
+              "Ja",
+              "Nein"
+            ]
+          }
+        ]
+      ],
       "feedback": {
-        "correct": "Die nicht umweltschonende Massnahme wurde korrekt erkannt.",
-        "wrong": "Achten Sie darauf, welche Massnahme Abfall und Ressourcenverbrauch eher erhoeht als senkt."
+        "correct": "Die Massnahmen wurden passend nach Umweltbeitrag und Umweltbelastung eingeordnet.",
+        "wrong": "Achten Sie darauf, welche Massnahmen Ressourcen schonen oder Emissionen senken und welche eher zusaetzlichen Abfall erzeugen."
       },
       "progressLinks": [
         "pv3wiso_arbeitsschutz_umwelt_diversity"

@@ -411,28 +411,63 @@
     },
     {
       "id": "q08",
-      "type": "single_choice",
+      "type": "table_fill",
       "title": "Pflicht- und Optionalschritte im Buchungssystem verstehen",
-      "prompt": "Welche Aussage beschreibt die fachliche Logik der Use Cases am treffendsten?",
-      "options": [
-        {
-          "text": "Der Login ist fuer die Nutzung des Systems Voraussetzung; die Auswahl einer speziellen Terminart ist optional, und die Ressourcenplanung wird nur beim Abschluss einer Anfrage relevant, wenn eine solche spezielle Terminart gewaehlt wurde.",
-          "rationale": "Damit sind Zugangsvoraussetzung, optionaler Spezialfall und bedingte Ressourcenplanung korrekt kombiniert."
-        },
-        {
-          "text": "Nur Patienten muessen sich einloggen; Praxisangestellte duerfen Anfragen ohne Anmeldung abschliessen.",
-          "rationale": "Die Aufgabenbeschreibung macht den Login zum Systemzugang allgemein erforderlich."
-        },
-        {
-          "text": "Ressourcen werden immer von Patienten geplant, noch bevor eine Terminanfrage erstellt wird.",
-          "rationale": "Die Ressourcenplanung ist Teil der Bearbeitung durch Praxisangestellte und nur im Spezialfall relevant."
-        },
-        {
-          "text": "Spezielle Terminarten muessen fuer jede Anfrage zwingend ausgewaehlt werden.",
-          "rationale": "Die Auswahl einer speziellen Terminart ist laut Beschreibung nur bei Bedarf vorgesehen."
-        }
+      "prompt": "Ordnen Sie den drei Schritten des Buchungssystems die fachlich passende Einordnung zu.",
+      "columns": [
+        "Schritt im Buchungssystem",
+        "Passende Einordnung"
       ],
-      "correctIndex": 0,
+      "rows": [
+        [
+          "Login in das Buchungssystem",
+          {
+            "key": "booking_login_logic",
+            "label": "Einordnung Login",
+            "expected": "Allgemeine Voraussetzung fuer die Nutzung des Systems",
+            "inputType": "select",
+            "placeholder": "Einordnung waehlen",
+            "options": [
+              "Allgemeine Voraussetzung fuer die Nutzung des Systems",
+              "Optionaler Schritt nur fuer Patienten",
+              "Zusatzschritt nur bei spezieller Terminart",
+              "Bearbeitungsschritt erst nach abgeschlossener Ressourcenplanung"
+            ]
+          }
+        ],
+        [
+          "Auswahl einer speziellen Terminart",
+          {
+            "key": "booking_special_type_logic",
+            "label": "Einordnung spezielle Terminart",
+            "expected": "Optionaler Schritt bei Bedarf",
+            "inputType": "select",
+            "placeholder": "Einordnung waehlen",
+            "options": [
+              "Optionaler Schritt bei Bedarf",
+              "Allgemeine Voraussetzung fuer jede Anfrage",
+              "Nur von Praxisangestellten nach der Anfrage auszufuehren",
+              "Nur nach dem Build des Clients moeglich"
+            ]
+          }
+        ],
+        [
+          "Ressourcenplanung durch Praxisangestellte",
+          {
+            "key": "booking_resource_logic",
+            "label": "Einordnung Ressourcenplanung",
+            "expected": "Zusaetzlicher Bearbeitungsschritt im Spezialfall",
+            "inputType": "select",
+            "placeholder": "Einordnung waehlen",
+            "options": [
+              "Zusaetzlicher Bearbeitungsschritt im Spezialfall",
+              "Pflichtschritt fuer jede Anfrage durch Patienten",
+              "Vorbedingung vor dem Login",
+              "Reine Darstellungsoption ohne Fachbezug"
+            ]
+          }
+        ]
+      ],
       "feedback": {
         "correct": "Die Pflicht- und Optionalschritte des Buchungssystems sind korrekt eingeordnet.",
         "wrong": "Achten Sie darauf, was allgemein Voraussetzung ist, was optional bleibt und welcher Schritt nur im Spezialfall zusaetzlich entsteht."
@@ -586,28 +621,15 @@
     },
     {
       "id": "q12",
-      "type": "single_choice",
+      "type": "short_text",
       "title": "Barrierefreiheit fachlich einordnen",
-      "prompt": "Welche Aussage beschreibt Barrierefreiheit in diesem Kontext am treffendsten?",
-      "options": [
-        {
-          "text": "Die Anwendung ist so gestaltet, dass auch Menschen mit unterschiedlichen Einschraenkungen sie moeglichst ohne fremde Hilfe nutzen koennen.",
-          "rationale": "Das trifft den Kern barrierefreier Nutzung am besten."
-        },
-        {
-          "text": "Barrierefreiheit bedeutet, dass nur noch Tastatureingaben erlaubt sind und die Maus generell deaktiviert wird.",
-          "rationale": "Barrierefreiheit schraenkt nicht auf genau eine Bedienform ein."
-        },
-        {
-          "text": "Eine barrierefreie Website darf keine Bilder oder Farben enthalten.",
-          "rationale": "Wichtig ist zugaengliche Gestaltung, nicht das pauschale Verbot bestimmter Gestaltungsmittel."
-        },
-        {
-          "text": "Barrierefreiheit ist nur fuer interne Verwaltungssoftware relevant, aber nicht fuer Webseiten.",
-          "rationale": "Gerade Webseiten sollen ebenfalls barrierefrei gestaltet werden."
-        }
+      "prompt": "Beschreiben Sie in 1-3 Saetzen, was Barrierefreiheit fuer diese Webanwendung bedeutet.",
+      "minChars": 90,
+      "requiredKeywords": [
+        "einschraenkungen",
+        "nutzen"
       ],
-      "correctIndex": 0,
+      "expectedOutline": "Erklaert, dass die Anwendung so gestaltet sein soll, dass Menschen mit unterschiedlichen Einschraenkungen sie moeglichst ohne fremde Hilfe bzw. ohne unnoetige Huerden nutzen koennen.",
       "feedback": {
         "correct": "Barrierefreiheit ist fachlich passend beschrieben.",
         "wrong": "Gesucht ist ein Ansatz, der moeglichst vielen Menschen den Zugang zur Anwendung erleichtert statt Nutzung kuenstlich einzuschraenken."
@@ -786,28 +808,15 @@
     },
     {
       "id": "q15",
-      "type": "single_choice",
+      "type": "short_text",
       "title": "HTTP Error 404 einordnen",
-      "prompt": "Welche Fehlerursache ist fuer einen HTTP Error 404 im Browsertest am naheliegendsten?",
-      "options": [
-        {
-          "text": "Die angeforderte URL bzw. Ressource wurde auf dem Server unter diesem Pfad nicht gefunden.",
-          "rationale": "404 steht typischerweise fuer eine nicht gefundene Ressource."
-        },
-        {
-          "text": "Der Browser hat zu viele Cookies gespeichert und muss neu installiert werden.",
-          "rationale": "Das beschreibt nicht die Bedeutung des Statuscodes 404."
-        },
-        {
-          "text": "Die Datenbank ist vollstaendig korrekt erreichbar, liefert aber absichtlich nur leere Tabellen zurueck.",
-          "rationale": "Ein 404-Fehler beschreibt primaer eine fehlende Ressource bzw. falschen Pfad."
-        },
-        {
-          "text": "Die Anwendung wurde erfolgreich geladen, aber das CSS ist noch nicht optimiert.",
-          "rationale": "Das hat nichts mit einem 404-Statuscode zu tun."
-        }
+      "prompt": "Erklaeren Sie in 1-3 Saetzen, was ein HTTP Error 404 im Browsertest in diesem Projektkontext am ehesten bedeutet.",
+      "minChars": 80,
+      "requiredKeywords": [
+        "ressource",
+        "nicht"
       ],
-      "correctIndex": 0,
+      "expectedOutline": "Erklaert, dass die angeforderte URL bzw. Ressource unter dem erwarteten Pfad auf dem Server nicht gefunden wurde und deshalb der 404-Status zurueckkommt.",
       "feedback": {
         "correct": "Die typische Ursache eines HTTP 404 ist korrekt erkannt.",
         "wrong": "Achten Sie auf die Bedeutung des Statuscodes: Angefordert wurde etwas, das unter der erwarteten Adresse nicht vorhanden ist."
@@ -827,29 +836,59 @@
       "body": "Hallo,\n\nfuer den Client muessen die verschluesselte Uebertragung, die Vertrauenswuerdigkeit der Anwendung und die Qualitaetssicherung vor dem Release sauber eingeordnet werden. Bitte bewerten Sie zuerst das vorgeschlagene Verschluesselungsverfahren, dann die Meldung zur nicht vertrauenswuerdigen Quelle und abschliessend die vorgesehenen QS-Massnahmen und Testarten.\n\nViele Gruesse\nArchitektur"
     },
     {
-      "id": "q16",
-      "type": "single_choice",
-      "title": "Verschluesselung mit Lizenzschluessel einordnen",
-      "prompt": "Wenn Daten zwischen Client und Server mit demselben Lizenzschluessel verschluesselt werden sollen, welche Art von Verschluesselungsverfahren ist das fachlich?",
-      "options": [
+      "id": "ctx04",
+      "type": "context_card",
+      "title": "Kurznotiz zu Transportverschluesselung und Vertrauenspruefung",
+      "contentBlocks": [
         {
-          "text": "Symmetrische Verschluesselung mit gemeinsamem Geheimnis",
-          "rationale": "Wenn beide Seiten denselben Schluessel verwenden, handelt es sich um ein symmetrisches Verfahren."
-        },
-        {
-          "text": "Reine asymmetrische Verschluesselung mit Public- und Private-Key-Paar",
-          "rationale": "Dafuer waeren unterschiedliche, aufeinander bezogene Schluessel noetig."
-        },
-        {
-          "text": "Steganografie",
-          "rationale": "Hier werden Informationen nicht versteckt, sondern mit einem gemeinsamen Schluessel verschluesselt."
-        },
-        {
-          "text": "Hashing ohne Rueckrechenbarkeit",
-          "rationale": "Hashing ist kein klassisches Verfahren fuer die beidseitige Transportverschluesselung von Nutzdaten."
+          "type": "text",
+          "text": "Wenn Client und Server denselben geheimen Schluessel verwenden, handelt es sich um ein symmetrisches Verfahren. Das Problem bei verteilter Client-Software ist dabei vor allem die sichere Verteilung und der Schutz dieses gemeinsamen Geheimnisses.\n\nFuer Client-Server-Verbindungen werden deshalb haeufig asymmetrische oder hybride Verfahren mit Zertifikat eingesetzt. Die Meldung, dass ein Programm aus einer nicht vertrauenswuerdigen Quelle stammt, betrifft dagegen nicht die Transportverschluesselung selbst, sondern die fehlende oder nicht vertrauenswuerdige Signatur des Programms."
         }
+      ]
+    },
+    {
+      "id": "q16",
+      "type": "table_fill",
+      "title": "Verschluesselung mit Lizenzschluessel einordnen",
+      "prompt": "Ordnen Sie den beiden Beobachtungen zum vorgeschlagenen Lizenzschluessel-Verfahren die passende fachliche Einordnung zu.",
+      "columns": [
+        "Beobachtung",
+        "Passende Einordnung"
       ],
-      "correctIndex": 0,
+      "rows": [
+        [
+          "Client und Server verwenden denselben Lizenzschluessel fuer die Uebertragung.",
+          {
+            "key": "crypto_same_key_type",
+            "label": "Einordnung gleicher Schluessel",
+            "expected": "Symmetrische Verschluesselung mit gemeinsamem Geheimnis",
+            "inputType": "select",
+            "placeholder": "Einordnung waehlen",
+            "options": [
+              "Symmetrische Verschluesselung mit gemeinsamem Geheimnis",
+              "Reine asymmetrische Verschluesselung mit Public- und Private-Key-Paar",
+              "Hashing ohne Rueckrechenbarkeit",
+              "Steganografie"
+            ]
+          }
+        ],
+        [
+          "Das gemeinsame Geheimnis muss auf beide Seiten verteilt und dort geschuetzt werden.",
+          {
+            "key": "crypto_same_key_consequence",
+            "label": "Einordnung Verteilproblem",
+            "expected": "Typisches Grundproblem eines symmetrischen Shared-Secret-Ansatzes im Client",
+            "inputType": "select",
+            "placeholder": "Einordnung waehlen",
+            "options": [
+              "Typisches Grundproblem eines symmetrischen Shared-Secret-Ansatzes im Client",
+              "Beweis fuer eine gueltige Code-Signatur des Release-Builds",
+              "Hinweis auf eine automatisch gefundene 404-Ressource",
+              "Merkmal einer rein visuellen Barrierefreiheitspruefung"
+            ]
+          }
+        ]
+      ],
       "feedback": {
         "correct": "Das Verfahren ist korrekt als symmetrische Verschluesselung mit gemeinsamem Geheimnis eingeordnet.",
         "wrong": "Achten Sie darauf, ob beide Seiten denselben Schluessel benutzen oder ein Schluesselpaar zum Einsatz kommt."
@@ -860,28 +899,16 @@
     },
     {
       "id": "q17",
-      "type": "single_choice",
+      "type": "short_text",
       "title": "Passende Alternative zur Schluesselweitergabe waehlen",
-      "prompt": "Welches alternative Verfahren loest das Grundproblem eines im Client hinterlegten gemeinsamen Lizenzschluessels am besten?",
-      "options": [
-        {
-          "text": "Eine asymmetrische bzw. hybride Transportverschluesselung mit Zertifikat und Public-Key-Verfahren",
-          "rationale": "Damit muss kein gemeinsames Geheimnis in derselben Form an beide Seiten verteilt werden; das ist fuer Client-Server-Verbindungen deutlich geeigneter."
-        },
-        {
-          "text": "Den Lizenzschluessel in mehrere Kommentare im Quellcode aufteilen",
-          "rationale": "Das veraendert die Unsicherheit des gemeinsamen Geheimnisses nicht."
-        },
-        {
-          "text": "Daten ueberhaupt nicht verschluesseln, solange das Netzwerk intern wirkt",
-          "rationale": "Das loest das Sicherheitsproblem nicht, sondern ignoriert es."
-        },
-        {
-          "text": "Den Lizenzschluessel monatlich per E-Mail an alle Clients verschicken",
-          "rationale": "Das verschlechtert die Schluesselverteilung eher noch."
-        }
+      "prompt": "Benennen Sie in 2-4 Saetzen die geeignetere Alternative fuer die Transportverschluesselung und begruenden Sie kurz, warum sie das Problem des gemeinsamen Lizenzschluessels besser loest.",
+      "minChars": 130,
+      "requiredKeywords": [
+        "asymmetrisch",
+        "zertifikat",
+        "geheimnis"
       ],
-      "correctIndex": 0,
+      "expectedOutline": "Nennt eine asymmetrische bzw. hybride Transportverschluesselung mit Zertifikat/Public-Key-Verfahren und erklaert, dass dadurch kein identisches gemeinsames Geheimnis offen an alle Clients verteilt werden muss.",
       "feedback": {
         "correct": "Die geeignetere Alternative fuer eine sichere Transportverschluesselung ist richtig gewaehlt.",
         "wrong": "Gesucht ist ein Verfahren, das nicht auf einem offen im Client wiederverwendbaren gemeinsamen Geheimnis beruht."
@@ -932,28 +959,15 @@
     },
     {
       "id": "q19",
-      "type": "single_choice",
+      "type": "short_text",
       "title": "Nicht vertrauenswuerdige Quelle deuten",
-      "prompt": "Was bedeutet die Meldung `Das Programm stammt aus einer nicht vertrauenswuerdigen Quelle` beim Start der Client-Anwendung am ehesten?",
-      "options": [
-        {
-          "text": "Die Anwendung ist nicht oder nicht mit einem vertrauenswuerdigen Zertifikat signiert, sodass Herausgeber und Integritaet aus Sicht des Systems nicht ausreichend verifiziert werden koennen.",
-          "rationale": "Das ist die naheliegende fachliche Deutung einer solchen Warnmeldung."
-        },
-        {
-          "text": "Die Anwendung hat zwangslaeufig einen HTTP 404 erzeugt und deshalb diese Meldung angezeigt.",
-          "rationale": "HTTP 404 betrifft Webressourcen, nicht die Vertrauenspruefung einer lokalen Anwendung."
-        },
-        {
-          "text": "Die Anwendung verwendet automatisch einen falschen Passwort-Hash-Algorithmus.",
-          "rationale": "Die Warnung bezieht sich nicht auf die Loginlogik."
-        },
-        {
-          "text": "Die Datenbankverbindung war zu langsam und das Betriebssystem stuft deshalb den Hersteller als unbekannt ein.",
-          "rationale": "Diese Schlussfolgerung passt nicht zur Meldung."
-        }
+      "prompt": "Erklaeren Sie in 1-3 Saetzen, was die Meldung `Das Programm stammt aus einer nicht vertrauenswuerdigen Quelle` beim Start der Client-Anwendung fachlich bedeutet.",
+      "minChars": 110,
+      "requiredKeywords": [
+        "signiert",
+        "zertifikat"
       ],
-      "correctIndex": 0,
+      "expectedOutline": "Erklaert, dass die Anwendung nicht oder nicht mit einem vertrauenswuerdigen Zertifikat signiert ist und Herausgeber bzw. Integritaet deshalb aus Sicht des Systems nicht ausreichend verifiziert werden koennen.",
       "feedback": {
         "correct": "Die Bedeutung der Vertrauenswarnung ist fachlich richtig eingeordnet.",
         "wrong": "Denken Sie an Signatur, Zertifikat und die Verifizierbarkeit des Herausgebers statt an Laufzeit- oder Loginprobleme."
@@ -964,28 +978,47 @@
     },
     {
       "id": "q20",
-      "type": "single_choice",
+      "type": "table_fill",
       "title": "Problem ueber Kompilierungs- oder Build-Einstellungen beheben",
-      "prompt": "Welche Massnahme in den Build- bzw. Release-Einstellungen hilft am ehesten gegen die Meldung zur nicht vertrauenswuerdigen Quelle?",
-      "options": [
-        {
-          "text": "Die Anwendung fuer den Release mit einer gueltigen Code-Signatur bzw. einem vertrauenswuerdigen Zertifikat signieren.",
-          "rationale": "Code Signing ist die passende Massnahme, um Herausgeber und Integritaet gegenueber dem System nachweisbar zu machen."
-        },
-        {
-          "text": "Die Anwendung nur im Debug-Modus kompilieren, damit Sicherheitsabfragen umgangen werden.",
-          "rationale": "Das waere keine fachlich saubere oder sichere Loesung."
-        },
-        {
-          "text": "Den Programmnamen in Grossbuchstaben schreiben, damit das Betriebssystem ihn besser erkennt.",
-          "rationale": "Der Dateiname behebt keine Vertrauens- oder Signaturprobleme."
-        },
-        {
-          "text": "Die CSS-Datei des Loginfensters minifizieren.",
-          "rationale": "Das hat keinen Bezug zu einer Vertrauenswarnung lokaler Anwendungen."
-        }
+      "prompt": "Ordnen Sie den beiden Release-Zielen die fachlich passende Massnahme zu.",
+      "columns": [
+        "Release-Ziel",
+        "Passende Massnahme"
       ],
-      "correctIndex": 0,
+      "rows": [
+        [
+          "Herausgeber und Integritaet des Release-Builds sollen fuer das Betriebssystem nachvollziehbar sein.",
+          {
+            "key": "release_trust_measure",
+            "label": "Massnahme fuer Release-Vertrauen",
+            "expected": "Release-Build mit gueltiger Code-Signatur bzw. vertrauenswuerdigem Zertifikat signieren",
+            "inputType": "select",
+            "placeholder": "Massnahme waehlen",
+            "options": [
+              "Release-Build mit gueltiger Code-Signatur bzw. vertrauenswuerdigem Zertifikat signieren",
+              "Nur im Debug-Modus kompilieren",
+              "Programmnamen in Grossbuchstaben schreiben",
+              "CSS-Datei des Loginfensters minifizieren"
+            ]
+          }
+        ],
+        [
+          "Eine Vertrauenswarnung soll mit einer Build-Aenderung fachlich sauber statt nur optisch uebergangen werden.",
+          {
+            "key": "release_trust_reasoning",
+            "label": "Massnahme gegen Vertrauenswarnung",
+            "expected": "Code Signing statt Debug- oder Oberflaechenanpassung",
+            "inputType": "select",
+            "placeholder": "Massnahme waehlen",
+            "options": [
+              "Code Signing statt Debug- oder Oberflaechenanpassung",
+              "Minifiziertes CSS statt Zertifikat",
+              "Nur Umbenennung der Programmdatei",
+              "Debug-Build ohne weitere Sicherheitsmassnahmen"
+            ]
+          }
+        ]
+      ],
       "feedback": {
         "correct": "Die passende Build-Massnahme gegen die Vertrauenswarnung ist korrekt erkannt.",
         "wrong": "Gesucht ist keine Oberflaechen- oder Debug-Aenderung, sondern eine saubere Signierung des Release-Builds."

@@ -1,0 +1,1798 @@
+{
+  "scenario": {
+    "company": "Lindwerk IT-Service GmbH",
+    "scale": "IT-Service-Unternehmen mit 25 Mitarbeitenden, Ausbildungs-, Infrastruktur- und Nachhaltigkeitsthemen",
+    "context": "Pruefungsvorbereitung WISO im Stationsformat mit Ausbildungsrecht, Mitbestimmung, Marktformen, GmbH, Arbeitsschutz und Nachhaltigkeit.",
+    "mission": "Sie bearbeiten eine zusammenhaengende Fachsituation zu Urlaub, Probezeit, Betriebsrat, Tarifrecht, Organisationsformen, Marktmodellen, GmbH, Umweltzielen, Arbeitsschutz und AGG.",
+    "source": {
+      "kind": "Pseudonymisierte Pruefungsvorlage",
+      "reference": "AP2 Wirtschafts- und Sozialkunde, Winter 2024/25",
+      "note": "Die fachliche Reihenfolge bleibt erhalten; Namen, Orte und Unternehmensbezug wurden in das Kursformat ueberfuehrt."
+    },
+    "station": {
+      "id": "PV3WISO-ST-08",
+      "department": "Pruefungsvorbereitung Wirtschafts- und Sozialkunde",
+      "profile": "Ausbildung, Mitbestimmung, Markt und Nachhaltigkeit",
+      "constraints": [
+        "Die 30 Themenaufgaben bleiben in thematischen Folgeauftraegen erkennbar",
+        "Tabellen, Gesetzesauszuege und Organigramme werden bei Bedarf textnah in vorhandene Aufgabenformate ueberfuehrt",
+        "Rechen-, Zuordnungs- und Auswahlaufgaben sollen moeglichst direkt auto-auswertbar bleiben"
+      ]
+    },
+    "customerRequest": {
+      "from": "qualitaet@ordnungsbetrieb.example",
+      "to": "projektteam@ausbildungsbetrieb.example",
+      "subject": "Bitte ein neues WISO-Trainingspaket zu Ausbildung, Mitbestimmung und Nachhaltigkeit aufsetzen",
+      "date": "2026-03-20",
+      "body": "Guten Tag,\n\nwir moechten ein weiteres WISO-Training im Stationsformat vorbereiten. Diesmal sollen vor allem Jugendarbeitsschutz, Ausbildungsvertrag, Probezeit, Betriebsrat, Tarifrecht, Betriebsvereinbarung, JAV, Organigramme, Konjunktur, Marktformen, Zielbeziehungen, betriebsbedingte Kuendigung, GmbH, Umweltziele, Arbeitsschutz, Stresspraevention und AGG vorkommen.\n\nBitte behalten Sie die Reihenfolge der Quelle erkennbar bei, formulieren Sie alles sauber pseudonymisiert und nutzen Sie vorhandene Aufgabenformate, damit die Antworten moeglichst direkt auswertbar bleiben.\n\nViele Gruesse\nQualitaet"
+    }
+  },
+  "questions": [
+    {
+      "id": "q01",
+      "type": "number",
+      "title": "Zusatzurlaub nach Jugendarbeitsschutz berechnen",
+      "prompt": "Ein 17-jaehriger Auszubildender erhaelt fuer das Kalenderjahr 30 Werktage Urlaub. Wie viele Werktage mehr sind das als der gesetzliche Mindesturlaub fuer Jugendliche, die zu Beginn des Kalenderjahres noch nicht 18 Jahre alt sind?",
+      "expected": 5,
+      "toleranceAbs": 0,
+      "showExpectedFormula": "Gesetzlicher Mindesturlaub fuer Jugendliche unter 18 Jahren: 25 Werktage; 30 - 25 = 5.",
+      "feedback": {
+        "correct": "Der Zusatzurlaub wurde korrekt berechnet.",
+        "wrong": "Pruefen Sie noch einmal den Mindesturlaub nach dem Jugendarbeitsschutzgesetz fuer Jugendliche unter 18 Jahren."
+      },
+      "progressLinks": [
+        "pv3wiso_jugendarbeitsschutz_urlaub"
+      ]
+    },
+    {
+      "id": "q02",
+      "type": "table_fill",
+      "title": "Vertragsinhalte des Ausbildungsvertrags einordnen",
+      "prompt": "Ordnen Sie zu, welche Angaben in einem Berufsausbildungsvertrag zwingend festgehalten werden muessen.",
+      "columns": [
+        "Vertragsinhalt",
+        "Zwingend festzuhalten?"
+      ],
+      "rows": [
+        [
+          "Art, sachliche und zeitliche Gliederung sowie Ziel der Berufsausbildung",
+          {
+            "key": "contract_a",
+            "label": "Gliederung und Ziel der Berufsausbildung",
+            "expected": "Ja",
+            "inputType": "select",
+            "placeholder": "Auswahl treffen",
+            "options": [
+              "Ja",
+              "Nein"
+            ]
+          }
+        ],
+        [
+          "Beginn und Dauer der Berufsausbildung",
+          {
+            "key": "contract_b",
+            "label": "Beginn und Dauer",
+            "expected": "Ja",
+            "inputType": "select",
+            "placeholder": "Auswahl treffen",
+            "options": [
+              "Ja",
+              "Nein"
+            ]
+          }
+        ],
+        [
+          "Dauer der regelmaessigen taeglichen Ausbildungszeit",
+          {
+            "key": "contract_c",
+            "label": "Taegliche Ausbildungszeit",
+            "expected": "Ja",
+            "inputType": "select",
+            "placeholder": "Auswahl treffen",
+            "options": [
+              "Ja",
+              "Nein"
+            ]
+          }
+        ],
+        [
+          "Regelungen zur Gleitzeit",
+          {
+            "key": "contract_d",
+            "label": "Gleitzeitregelungen",
+            "expected": "Nein",
+            "inputType": "select",
+            "placeholder": "Auswahl treffen",
+            "options": [
+              "Ja",
+              "Nein"
+            ]
+          }
+        ],
+        [
+          "Ausbildungsmassnahmen ausserhalb der Ausbildungsstaette",
+          {
+            "key": "contract_e",
+            "label": "Massnahmen ausserhalb der Ausbildungsstaette",
+            "expected": "Ja",
+            "inputType": "select",
+            "placeholder": "Auswahl treffen",
+            "options": [
+              "Ja",
+              "Nein"
+            ]
+          }
+        ]
+      ],
+      "feedback": {
+        "correct": "Die Vertragsinhalte wurden rechtlich sauber eingeordnet.",
+        "wrong": "Pruefen Sie noch einmal, welche Pflichtangaben das BBiG fuer einen Ausbildungsvertrag verlangt und welche Zusatzregelungen nicht zu den zwingenden Mindestinhalten gehoeren."
+      },
+      "progressLinks": [
+        "pv3wiso_arbeitsrecht_ausbildung"
+      ]
+    },
+    {
+      "id": "q03",
+      "type": "single_choice",
+      "title": "Mindestdauer der Probezeit bestimmen",
+      "prompt": "Wie lang muss die Probezeit in einem Berufsausbildungsverhaeltnis mindestens sein?",
+      "options": [
+        {
+          "text": "1 Monat",
+          "rationale": "Genau diese Mindestdauer schreibt das BBiG vor."
+        },
+        {
+          "text": "2 Monate",
+          "rationale": "Das liegt ueber der gesetzlichen Mindestdauer."
+        },
+        {
+          "text": "3 Monate",
+          "rationale": "Auch das ist laenger als die gesetzliche Mindestdauer."
+        },
+        {
+          "text": "4 Monate",
+          "rationale": "Vier Monate sind die gesetzliche Hoechstdauer, nicht die Mindestdauer."
+        },
+        {
+          "text": "Eine Probezeit ist nicht zwingend notwendig",
+          "rationale": "Im Ausbildungsverhaeltnis ist die Probezeit zwingend vorgeschrieben."
+        }
+      ],
+      "correctIndex": 0,
+      "feedback": {
+        "correct": "Die Mindestdauer der Probezeit wurde korrekt bestimmt.",
+        "wrong": "Denken Sie an die gesetzliche Spanne der Probezeit im Berufsausbildungsverhaeltnis."
+      },
+      "progressLinks": [
+        "pv3wiso_arbeitsrecht_ausbildung"
+      ]
+    },
+    {
+      "id": "q04",
+      "type": "single_choice",
+      "title": "Kuendigung waehrend der Probezeit richtig einordnen",
+      "prompt": "Welche Aussage zur Kuendigung eines Ausbildungsverhaeltnisses waehrend der Probezeit trifft zu?",
+      "options": [
+        {
+          "text": "Die Kuendigung kann muendlich erfolgen.",
+          "rationale": "Auch in der Probezeit ist fuer die Kuendigung die Schriftform erforderlich."
+        },
+        {
+          "text": "Beide Seiten koennen nur in der ersten Haelfte der Probezeit und nur mit Frist kuendigen.",
+          "rationale": "Eine solche Einschraenkung gibt es nicht."
+        },
+        {
+          "text": "Beide Seiten koennen in der Probezeit ohne Angabe von Gruenden und ohne Einhaltung einer Kuendigungsfrist kuendigen.",
+          "rationale": "Genau das sieht das BBiG fuer die Probezeit vor."
+        },
+        {
+          "text": "Bei bestehendem Betriebsrat muss dieser jeder Kuendigung in der Probezeit zustimmen.",
+          "rationale": "Eine solche Zustimmungspflicht besteht nicht."
+        },
+        {
+          "text": "Der Arbeitgeber darf waehrend der Berufsausbildung auch in der Probezeit nicht kuendigen.",
+          "rationale": "In der Probezeit darf auch der Arbeitgeber kuendigen."
+        }
+      ],
+      "correctIndex": 2,
+      "feedback": {
+        "correct": "Die Probezeitkuendigung wurde korrekt eingeordnet.",
+        "wrong": "Achten Sie auf den Sonderfall der Probezeit im Ausbildungsverhaeltnis."
+      },
+      "progressLinks": [
+        "pv3wiso_arbeitsrecht_ausbildung"
+      ]
+    },
+    {
+      "id": "f02",
+      "type": "followup_divider",
+      "title": "Mitbestimmung und Tarifrecht",
+      "from": "personalservice@ordnungsbetrieb.example",
+      "to": "projektteam@ausbildungsbetrieb.example",
+      "subject": "Bitte den naechsten Block zu Betriebsrat, Gewerkschaften und JAV vorbereiten",
+      "date": "2026-03-20",
+      "body": "Hallo,\n\nim zweiten Themenblock brauchen wir Aufgaben zu Betriebsrat, Gewerkschaften, Tarifvertrag, Betriebsvereinbarung und Jugend- und Auszubildendenvertretung. Bitte halten Sie passives Wahlrecht, Zustaendigkeiten und guenstigere Tarifregelungen klar auseinander.\n\nViele Gruesse\nPersonalservice"
+    },
+    {
+      "id": "q05",
+      "type": "table_fill",
+      "title": "Voraussetzungen fuer die Waehlbarkeit im Betriebsrat einordnen",
+      "prompt": "Ordnen Sie zu, welche Aussagen die Waehlbarkeit fuer den Betriebsrat korrekt beschreiben.",
+      "columns": [
+        "Aussage",
+        "Trifft zu?"
+      ],
+      "rows": [
+        [
+          "Wahlberechtigung und ein Alter ueber 16 Jahre reichen fuer die Waehlbarkeit aus.",
+          {
+            "key": "works_council_a",
+            "label": "Ueber 16 Jahre reicht aus",
+            "expected": "Nein",
+            "inputType": "select",
+            "placeholder": "Auswahl treffen",
+            "options": [
+              "Ja",
+              "Nein"
+            ]
+          }
+        ],
+        [
+          "Alle Betriebsangehoerigen sind automatisch waehlbar.",
+          {
+            "key": "works_council_b",
+            "label": "Alle Betriebsangehoerigen automatisch waehlbar",
+            "expected": "Nein",
+            "inputType": "select",
+            "placeholder": "Auswahl treffen",
+            "options": [
+              "Ja",
+              "Nein"
+            ]
+          }
+        ],
+        [
+          "Waehlbar sind Wahlberechtigte, die das 18. Lebensjahr vollendet haben und mindestens sechs Monate im Betrieb beschaeftigt sind.",
+          {
+            "key": "works_council_c",
+            "label": "18 Jahre und sechs Monate im Betrieb",
+            "expected": "Ja",
+            "inputType": "select",
+            "placeholder": "Auswahl treffen",
+            "options": [
+              "Ja",
+              "Nein"
+            ]
+          }
+        ],
+        [
+          "Ein Mindestalter von 21 Jahren bei nur einem Monat Betriebszugehoerigkeit ist ausreichend.",
+          {
+            "key": "works_council_d",
+            "label": "21 Jahre und ein Monat",
+            "expected": "Nein",
+            "inputType": "select",
+            "placeholder": "Auswahl treffen",
+            "options": [
+              "Ja",
+              "Nein"
+            ]
+          }
+        ],
+        [
+          "Sechs Wochen Betriebszugehoerigkeit genuegen fuer die Waehlbarkeit.",
+          {
+            "key": "works_council_e",
+            "label": "Sechs Wochen genuegen",
+            "expected": "Nein",
+            "inputType": "select",
+            "placeholder": "Auswahl treffen",
+            "options": [
+              "Ja",
+              "Nein"
+            ]
+          }
+        ]
+      ],
+      "feedback": {
+        "correct": "Die Voraussetzungen fuer die Waehlbarkeit wurden korrekt eingeordnet.",
+        "wrong": "Pruefen Sie Mindestalter und Mindestdauer der Betriebszugehoerigkeit noch einmal und trennen Sie Waehlbarkeit von der reinen Wahlberechtigung."
+      },
+      "progressLinks": [
+        "pv3wiso_mitbestimmung_tarif_sozialversicherung"
+      ]
+    },
+    {
+      "id": "q06",
+      "type": "single_choice",
+      "title": "Zutreffende Darstellung von Gewerkschaften auswaehlen",
+      "prompt": "Welche Aussage ueber Gewerkschaften trifft zu?",
+      "options": [
+        {
+          "text": "Sie sind in den Betrieben fuer die Schlichtung von Auseinandersetzungen zwischen Arbeitnehmern und Arbeitgebern zustaendig.",
+          "rationale": "Das ist nicht ihre zentrale betriebliche Aufgabe."
+        },
+        {
+          "text": "Sie handeln mit Arbeitgeberverbaenden Betriebsvereinbarungen aus.",
+          "rationale": "Betriebsvereinbarungen werden nicht von Gewerkschaften geschlossen."
+        },
+        {
+          "text": "Sie koennen organisierten Arbeitnehmern bei Streitigkeiten mit Arbeitgebern Rechtsbeistand leisten.",
+          "rationale": "Genau das gehoert zu den typischen Leistungen von Gewerkschaften."
+        },
+        {
+          "text": "Sie kontrollieren die Betriebsratswahlen.",
+          "rationale": "Betriebsratswahlen werden nicht von Gewerkschaften kontrolliert."
+        },
+        {
+          "text": "Sie muessen bei Tarifverhandlungen die Belange aller Arbeitnehmer vertreten.",
+          "rationale": "Gewerkschaften vertreten in erster Linie ihre organisierten Mitglieder."
+        }
+      ],
+      "correctIndex": 2,
+      "feedback": {
+        "correct": "Die Rolle der Gewerkschaften wurde korrekt eingeordnet.",
+        "wrong": "Trennen Sie Tarifverhandlungen, Betriebsvereinbarungen und innerbetriebliche Mitbestimmung sauber."
+      },
+      "progressLinks": [
+        "pv3wiso_mitbestimmung_tarif_sozialversicherung"
+      ]
+    },
+    {
+      "id": "q07",
+      "type": "multi_select",
+      "title": "Vertauschte Schritte im Tarifablauf erkennen",
+      "prompt": "In einem Ablaufplan zum Zustandekommen eines Tarifvertrags wurden zwei Schritte vertauscht. Welche beiden Schritte sind das?",
+      "options": [
+        {
+          "text": "Fristgerechte Kuendigung des bestehenden Tarifvertrags",
+          "correct": false,
+          "rationale": "Dieser Schritt steht am Anfang des Ablaufs."
+        },
+        {
+          "text": "Aufnahme der Tarifverhandlungen durch die Tarifparteien",
+          "correct": false,
+          "rationale": "Auch dieser Schritt ist an seiner Stelle plausibel."
+        },
+        {
+          "text": "Urabstimmung ueber einen Arbeitskampf mit nachfolgendem Streik",
+          "correct": true,
+          "rationale": "Dieser Schritt kommt erst nach dem Scheitern der Tarifverhandlungen."
+        },
+        {
+          "text": "Erklaerung des Scheiterns der Tarifverhandlungen durch eine Tarifpartei",
+          "correct": true,
+          "rationale": "Dieses Scheitern muss vor Urabstimmung und Streik kommen."
+        },
+        {
+          "text": "Neue Verhandlungen bei Aussetzung des Streiks",
+          "correct": false,
+          "rationale": "Dieser Schritt liegt spaeter im Ablauf."
+        },
+        {
+          "text": "Urabstimmung ueber die Verhandlungsergebnisse",
+          "correct": false,
+          "rationale": "Diese Abstimmung steht gegen Ende des Prozesses."
+        },
+        {
+          "text": "Zustimmung der Tarifparteien zum Ergebnis",
+          "correct": false,
+          "rationale": "Die Zustimmung kommt erst nach den Verhandlungen und Abstimmungen."
+        }
+      ],
+      "feedback": {
+        "correct": "Die vertauschten Tarifschritte wurden korrekt erkannt.",
+        "wrong": "Pruefen Sie, was zuerst kommen muss: das Scheitern der Verhandlungen oder die Urabstimmung ueber einen Arbeitskampf."
+      },
+      "progressLinks": [
+        "pv3wiso_mitbestimmung_tarif_sozialversicherung"
+      ]
+    },
+    {
+      "id": "q08",
+      "type": "single_choice",
+      "title": "Zulaessige Aenderung tariflicher Arbeitsbedingungen bestimmen",
+      "prompt": "Wann duerfen tariflich festgelegte Arbeitsbedingungen einzelvertraglich geaendert werden?",
+      "options": [
+        {
+          "text": "Wenn die Aenderung zugunsten der Arbeitnehmer erfolgt",
+          "rationale": "Genau das ermoeglicht das Guenstigkeitsprinzip."
+        },
+        {
+          "text": "Wenn die Berufsgenossenschaft zustimmt",
+          "rationale": "Die Berufsgenossenschaft entscheidet darueber nicht."
+        },
+        {
+          "text": "Wenn die Landesregierung zustimmt",
+          "rationale": "Eine solche Zustimmung ist nicht massgeblich."
+        },
+        {
+          "text": "Wenn die Aenderung zugunsten des Unternehmens erfolgt",
+          "rationale": "Zum Nachteil der Arbeitnehmer sind solche Aenderungen gerade nicht zulaessig."
+        },
+        {
+          "text": "Wenn sie von der Bundesagentur fuer Arbeit genehmigt wird",
+          "rationale": "Auch diese Genehmigung spielt hier keine Rolle."
+        }
+      ],
+      "correctIndex": 0,
+      "feedback": {
+        "correct": "Die zulaessige Aenderung tariflicher Bedingungen wurde korrekt erkannt.",
+        "wrong": "Achten Sie auf das Guenstigkeitsprinzip zugunsten der Arbeitnehmer."
+      },
+      "progressLinks": [
+        "pv3wiso_mitbestimmung_tarif_sozialversicherung"
+      ]
+    },
+    {
+      "id": "q09",
+      "type": "table_fill",
+      "title": "Beteiligte an Betriebsvereinbarungen einordnen",
+      "prompt": "Ordnen Sie zu, welche Akteurspaare im Betrieb Betriebsvereinbarungen abschliessen.",
+      "columns": [
+        "Akteurspaar",
+        "Schliesst Betriebsvereinbarungen ab?"
+      ],
+      "rows": [
+        [
+          "Arbeitgeberverband und Industrie- und Handelskammer",
+          {
+            "key": "agreement_a",
+            "label": "Arbeitgeberverband und IHK",
+            "expected": "Nein",
+            "inputType": "select",
+            "placeholder": "Auswahl treffen",
+            "options": [
+              "Ja",
+              "Nein"
+            ]
+          }
+        ],
+        [
+          "Industrie- und Handelskammer und Betriebsrat",
+          {
+            "key": "agreement_b",
+            "label": "IHK und Betriebsrat",
+            "expected": "Nein",
+            "inputType": "select",
+            "placeholder": "Auswahl treffen",
+            "options": [
+              "Ja",
+              "Nein"
+            ]
+          }
+        ],
+        [
+          "Betriebsrat und Arbeitsagentur",
+          {
+            "key": "agreement_c",
+            "label": "Betriebsrat und Arbeitsagentur",
+            "expected": "Nein",
+            "inputType": "select",
+            "placeholder": "Auswahl treffen",
+            "options": [
+              "Ja",
+              "Nein"
+            ]
+          }
+        ],
+        [
+          "Betriebsrat und Industrie- und Handelskammer",
+          {
+            "key": "agreement_d",
+            "label": "Betriebsrat und IHK",
+            "expected": "Nein",
+            "inputType": "select",
+            "placeholder": "Auswahl treffen",
+            "options": [
+              "Ja",
+              "Nein"
+            ]
+          }
+        ],
+        [
+          "Geschaeftsleitung und Betriebsrat",
+          {
+            "key": "agreement_e",
+            "label": "Geschaeftsleitung und Betriebsrat",
+            "expected": "Ja",
+            "inputType": "select",
+            "placeholder": "Auswahl treffen",
+            "options": [
+              "Ja",
+              "Nein"
+            ]
+          }
+        ]
+      ],
+      "feedback": {
+        "correct": "Die Beteiligten an Betriebsvereinbarungen wurden korrekt eingeordnet.",
+        "wrong": "Trennen Sie betriebliche Vereinbarungen noch einmal von Tarifvertraegen und von Aufgaben externer Stellen wie Kammern oder Arbeitsagentur."
+      },
+      "progressLinks": [
+        "pv3wiso_mitbestimmung_tarif_sozialversicherung"
+      ]
+    },
+    {
+      "id": "q10",
+      "type": "table_fill",
+      "title": "Anliegen den passenden Rechtsgrundlagen zuordnen",
+      "prompt": "Ordnen Sie den Anliegen die passende Rechtsgrundlage zu.",
+      "columns": [
+        "Anliegen",
+        "Rechtsgrundlage"
+      ],
+      "rows": [
+        [
+          "Eine Auszubildende moechte wissen, ob das Berufsausbildungsverhaeltnis gekuendigt werden kann.",
+          {
+            "key": "law_a",
+            "label": "Kuendigung des Ausbildungsverhaeltnisses",
+            "expected": "Berufsbildungsgesetz",
+            "inputType": "select",
+            "placeholder": "Rechtsgrundlage waehlen",
+            "options": [
+              "Jugendarbeitsschutzgesetz",
+              "Berufsbildungsgesetz",
+              "Kuendigungsschutzgesetz",
+              "Betriebsverfassungsgesetz",
+              "Buergerliches Gesetzbuch"
+            ]
+          }
+        ],
+        [
+          "Eine 17-jaehrige Auszubildende moechte wissen, wie viel Pausenzeit ihr zusteht.",
+          {
+            "key": "law_b",
+            "label": "Pausenzeiten fuer Jugendliche",
+            "expected": "Jugendarbeitsschutzgesetz",
+            "inputType": "select",
+            "placeholder": "Rechtsgrundlage waehlen",
+            "options": [
+              "Jugendarbeitsschutzgesetz",
+              "Berufsbildungsgesetz",
+              "Kuendigungsschutzgesetz",
+              "Betriebsverfassungsgesetz",
+              "Buergerliches Gesetzbuch"
+            ]
+          }
+        ],
+        [
+          "Eine Auszubildende moechte wissen, welche Aufgaben die Jugend- und Auszubildendenvertretung hat.",
+          {
+            "key": "law_c",
+            "label": "Aufgaben der JAV",
+            "expected": "Betriebsverfassungsgesetz",
+            "inputType": "select",
+            "placeholder": "Rechtsgrundlage waehlen",
+            "options": [
+              "Jugendarbeitsschutzgesetz",
+              "Berufsbildungsgesetz",
+              "Kuendigungsschutzgesetz",
+              "Betriebsverfassungsgesetz",
+              "Buergerliches Gesetzbuch"
+            ]
+          }
+        ]
+      ],
+      "feedback": {
+        "correct": "Die Anliegen wurden den passenden Rechtsgrundlagen korrekt zugeordnet.",
+        "wrong": "Achten Sie darauf, ob es um Ausbildung, Jugendarbeitsschutz oder betriebliche Mitbestimmung geht."
+      },
+      "progressLinks": [
+        "pv3wiso_arbeitsrecht_ausbildung",
+        "pv3wiso_jugendarbeitsschutz_urlaub",
+        "pv3wiso_mitbestimmung_tarif_sozialversicherung"
+      ]
+    },
+    {
+      "id": "q11",
+      "type": "table_fill",
+      "title": "Aussagen zur JAV einordnen",
+      "prompt": "Ordnen Sie zu, welche Aussagen zur Jugend- und Auszubildendenvertretung zutreffen.",
+      "columns": [
+        "Aussage",
+        "Trifft zu?"
+      ],
+      "rows": [
+        [
+          "Die regelmaessige Amtszeit der JAV betraegt vier Jahre.",
+          {
+            "key": "jav_a",
+            "label": "Amtszeit vier Jahre",
+            "expected": "Nein",
+            "inputType": "select",
+            "placeholder": "Auswahl treffen",
+            "options": [
+              "Ja",
+              "Nein"
+            ]
+          }
+        ],
+        [
+          "Das passive Wahlrecht fuer die JAV endet mit Vollendung des 18. Lebensjahres.",
+          {
+            "key": "jav_b",
+            "label": "Passives Wahlrecht endet mit 18",
+            "expected": "Nein",
+            "inputType": "select",
+            "placeholder": "Auswahl treffen",
+            "options": [
+              "Ja",
+              "Nein"
+            ]
+          }
+        ],
+        [
+          "Das Mindestalter fuer das aktive Wahlrecht betraegt 16 Jahre.",
+          {
+            "key": "jav_c",
+            "label": "Mindestalter 16 Jahre",
+            "expected": "Nein",
+            "inputType": "select",
+            "placeholder": "Auswahl treffen",
+            "options": [
+              "Ja",
+              "Nein"
+            ]
+          }
+        ],
+        [
+          "Das aktive Wahlrecht fuer die JAV endet immer mit Vollendung des 18. Lebensjahres.",
+          {
+            "key": "jav_d",
+            "label": "Aktives Wahlrecht endet immer mit 18",
+            "expected": "Nein",
+            "inputType": "select",
+            "placeholder": "Auswahl treffen",
+            "options": [
+              "Ja",
+              "Nein"
+            ]
+          }
+        ],
+        [
+          "Eine JAV kann nur gewaehlt werden, wenn bereits ein Betriebsrat besteht.",
+          {
+            "key": "jav_e",
+            "label": "Betriebsrat als Voraussetzung",
+            "expected": "Ja",
+            "inputType": "select",
+            "placeholder": "Auswahl treffen",
+            "options": [
+              "Ja",
+              "Nein"
+            ]
+          }
+        ]
+      ],
+      "feedback": {
+        "correct": "Die Aussagen zur JAV wurden korrekt eingeordnet.",
+        "wrong": "Pruefen Sie noch einmal das Verhaeltnis zwischen Betriebsrat und JAV sowie die Alters- und Amtszeitangaben."
+      },
+      "progressLinks": [
+        "pv3wiso_mitbestimmung_tarif_sozialversicherung"
+      ]
+    },
+    {
+      "id": "q12",
+      "type": "single_choice",
+      "title": "Voraussetzung fuer eine JAV-Kandidatur bestimmen",
+      "prompt": "Welche Voraussetzung muss ein Auszubildender erfuellen, um sich als Kandidat fuer die JAV aufstellen lassen zu koennen?",
+      "options": [
+        {
+          "text": "Er darf nicht Mitglied des Betriebsrats sein.",
+          "rationale": "Genau diese Voraussetzung trifft zu."
+        },
+        {
+          "text": "Er muss die deutsche Staatsangehoerigkeit besitzen.",
+          "rationale": "Die Staatsangehoerigkeit ist dafuer nicht ausschlaggebend."
+        },
+        {
+          "text": "Er muss im zweiten Ausbildungsjahr sein.",
+          "rationale": "Eine solche Mindeststufe gibt es nicht."
+        },
+        {
+          "text": "Er darf waehrend der Amtszeit das 25. Lebensjahr nicht ueberschreiten.",
+          "rationale": "Diese Aussage beschreibt die Voraussetzung nicht korrekt."
+        },
+        {
+          "text": "Er muss bereits seit mindestens drei Monaten im Betrieb beschaeftigt sein.",
+          "rationale": "Eine solche Mindestdauer ist hier nicht verlangt."
+        }
+      ],
+      "correctIndex": 0,
+      "feedback": {
+        "correct": "Die Voraussetzung fuer die JAV-Kandidatur wurde korrekt erkannt.",
+        "wrong": "Achten Sie auf die Abgrenzung zwischen Betriebsrat und JAV."
+      },
+      "progressLinks": [
+        "pv3wiso_mitbestimmung_tarif_sozialversicherung"
+      ]
+    },
+    {
+      "id": "ctx13",
+      "type": "context_card",
+      "title": "Organisationsstruktur des Betriebs auswerten",
+      "contentBlocks": [
+        {
+          "type": "text",
+          "text": "Die Geschaeftsleitung arbeitet mit einer Linienorganisation, unter der die Bereiche `Sales/Vertrieb`, `Personal` und `Organisation/IT` angeordnet sind. Unter `Sales/Vertrieb` liegen `Public Relations` und `Versand`, unter `Personal` die Bereiche `Verwaltung` und `Buchhaltung`, unter `Organisation/IT` die Einheiten `Nachhaltigkeitsmanagement` und `IT-Service`. Zusaetzlich ist eine `Rechtsabteilung` direkt an die Geschaeftsleitung angebunden und beraet diese."
+        }
+      ]
+    },
+    {
+      "id": "q13",
+      "type": "single_choice",
+      "title": "Leitungssystem des Organigramms erkennen",
+      "prompt": "Welches Leitungssystem liegt dieser Organisationsstruktur zugrunde?",
+      "options": [
+        {
+          "text": "Liniensystem",
+          "rationale": "Die zusaetzliche Rechtsabteilung als beratende Stabsstelle spricht gegen ein reines Liniensystem."
+        },
+        {
+          "text": "Stabliniensystem",
+          "rationale": "Genau das passt zu einer Linienorganisation mit zusaetzlicher beratender Stabsstelle."
+        },
+        {
+          "text": "Mehrliniensystem",
+          "rationale": "Mehrfachweisungen werden hier nicht beschrieben."
+        },
+        {
+          "text": "Matrixorganisation",
+          "rationale": "Es fehlen die fuer eine Matrix typischen gleichrangigen Achsen."
+        },
+        {
+          "text": "Spartenorganisation",
+          "rationale": "Die Struktur ist funktional und nicht nach Geschaeftssparten gegliedert."
+        }
+      ],
+      "correctIndex": 1,
+      "feedback": {
+        "correct": "Das Leitungssystem wurde korrekt erkannt.",
+        "wrong": "Achten Sie auf die Kombination aus Linienorganisation und beratender Rechtsabteilung."
+      },
+      "progressLinks": [
+        "pv3wiso_wirtschaftssektoren_unternehmensformen"
+      ]
+    },
+    {
+      "id": "q14",
+      "type": "table_fill",
+      "title": "Aussagen zur Organisationsstruktur einordnen",
+      "prompt": "Ordnen Sie zu, welche Aussagen die dargestellte Organisationsstruktur korrekt beschreiben.",
+      "columns": [
+        "Aussage",
+        "Trifft zu?"
+      ],
+      "rows": [
+        [
+          "Die IT-Abteilung ist als Stabsstelle organisiert.",
+          {
+            "key": "org_a",
+            "label": "IT-Abteilung als Stabsstelle",
+            "expected": "Nein",
+            "inputType": "select",
+            "placeholder": "Auswahl treffen",
+            "options": [
+              "Ja",
+              "Nein"
+            ]
+          }
+        ],
+        [
+          "Die Rechtsabteilung ist als Stabsstelle organisiert.",
+          {
+            "key": "org_b",
+            "label": "Rechtsabteilung als Stabsstelle",
+            "expected": "Ja",
+            "inputType": "select",
+            "placeholder": "Auswahl treffen",
+            "options": [
+              "Ja",
+              "Nein"
+            ]
+          }
+        ],
+        [
+          "Das Nachhaltigkeitsmanagement ist dem Bereich Organisation/IT zugeordnet.",
+          {
+            "key": "org_c",
+            "label": "Nachhaltigkeitsmanagement bei Organisation/IT",
+            "expected": "Ja",
+            "inputType": "select",
+            "placeholder": "Auswahl treffen",
+            "options": [
+              "Ja",
+              "Nein"
+            ]
+          }
+        ],
+        [
+          "Die Leitung Personalmanagement gehoert zur Linienorganisation und ist an Weisungen der Geschaeftsfuehrung gebunden.",
+          {
+            "key": "org_d",
+            "label": "Personalmanagement in Linienorganisation",
+            "expected": "Ja",
+            "inputType": "select",
+            "placeholder": "Auswahl treffen",
+            "options": [
+              "Ja",
+              "Nein"
+            ]
+          }
+        ],
+        [
+          "Die Rechtsabteilung beraet die Geschaeftsleitung, ist gegenueber den Mitarbeitenden aber nicht weisungsbefugt.",
+          {
+            "key": "org_e",
+            "label": "Rechtsabteilung beratend ohne Linienweisung",
+            "expected": "Ja",
+            "inputType": "select",
+            "placeholder": "Auswahl treffen",
+            "options": [
+              "Ja",
+              "Nein"
+            ]
+          }
+        ]
+      ],
+      "feedback": {
+        "correct": "Die Aussagen zur Organisationsstruktur wurden korrekt eingeordnet.",
+        "wrong": "Achten Sie besonders auf den Unterschied zwischen Linienorganisation und Stabsstelle sowie auf die Zuordnung des Nachhaltigkeitsmanagements."
+      },
+      "progressLinks": [
+        "pv3wiso_wirtschaftssektoren_unternehmensformen"
+      ]
+    },
+    {
+      "id": "ctx15",
+      "type": "context_card",
+      "title": "Wirtschaftslage ueber vier Quartale vergleichen",
+      "contentBlocks": [
+        {
+          "type": "table",
+          "columns": [
+            "Indikator",
+            "1. Quartal",
+            "2. Quartal",
+            "3. Quartal",
+            "4. Quartal"
+          ],
+          "rows": [
+            [
+              "Bruttoinlandsprodukt in Billionen EUR",
+              "3,87",
+              "3,7",
+              "3,5",
+              "3,3"
+            ],
+            [
+              "Arbeitslosenquote",
+              "8,5 %",
+              "9 %",
+              "10 %",
+              "11,5 %"
+            ],
+            [
+              "Wirtschaftswachstum",
+              "1 %",
+              "-1,1 %",
+              "-1,5 %",
+              "-2 %"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "id": "q15",
+      "type": "single_choice",
+      "title": "Gesamtwirtschaftliche Situation des Jahres bestimmen",
+      "prompt": "Mit welchem Begriff laesst sich die gesamtwirtschaftliche Situation bezogen auf das ganze Jahr am besten beschreiben?",
+      "options": [
+        {
+          "text": "Aufschwung",
+          "rationale": "Die Indikatoren zeigen gerade keinen Aufschwung."
+        },
+        {
+          "text": "Stillstand (Stagnation)",
+          "rationale": "Die Entwicklung ist deutlicher negativ als eine reine Stagnation."
+        },
+        {
+          "text": "Hoechststand (Boom)",
+          "rationale": "Von einem Boom kann bei sinkendem BIP und steigender Arbeitslosigkeit keine Rede sein."
+        },
+        {
+          "text": "Inflation",
+          "rationale": "Inflation beschreibt nicht die gesamte Konjunkturphase."
+        },
+        {
+          "text": "Abschwung (Rezession)",
+          "rationale": "Sinkendes BIP, negatives Wachstum und steigende Arbeitslosigkeit sprechen fuer einen Abschwung."
+        }
+      ],
+      "correctIndex": 4,
+      "feedback": {
+        "correct": "Die gesamtwirtschaftliche Lage wurde korrekt eingeordnet.",
+        "wrong": "Beziehen Sie sinkendes BIP, negatives Wachstum und steigende Arbeitslosigkeit gemeinsam in die Bewertung ein."
+      },
+      "progressLinks": [
+        "pv3wiso_wirtschaftssektoren_unternehmensformen"
+      ]
+    },
+    {
+      "id": "ctx16",
+      "type": "context_card",
+      "title": "Zwei unterschiedliche Maerkte vergleichen",
+      "contentBlocks": [
+        {
+          "type": "text",
+          "text": "Das Unternehmen ist in zwei Maerkten taetig. Im ersten Markt bietet es spezialisierte IT-Dienstleistungen fuer Medikamentenabrechnungen an; dort gibt es nur vier Mitbewerber. Im zweiten Markt verkauft es allgemeine IT-Dienstleistungen fuer Steuerabrechnungen an zahlreiche Privathaushalte und Unternehmen; dort treten viele Konkurrenten auf."
+        }
+      ]
+    },
+    {
+      "id": "q16",
+      "type": "single_choice",
+      "title": "Marktform korrekt beschreiben",
+      "prompt": "Welche Aussage beschreibt die vorliegenden Marktformen korrekt?",
+      "options": [
+        {
+          "text": "Bei den Medikamentenabrechnungen liegt ein Polypol vor, weil viele Unternehmen und Haushalte als Nachfrager auftreten.",
+          "rationale": "Die Aussage beschreibt die Marktform nicht treffend."
+        },
+        {
+          "text": "Der Markt fuer allgemeine IT-Dienstleistungen fuer Steuerabrechnungen weist auf ein Polypol hin, weil viele Anbieter auf eine Vielzahl von Nachfragern treffen.",
+          "rationale": "Genau diese Beschreibung passt zum zweiten Markt."
+        },
+        {
+          "text": "Der Markt fuer Steuerabrechnungen ist ein Nachfrageoligopol, weil es Unternehmen und Haushalte als zwei grosse Nachfragergruppen gibt.",
+          "rationale": "Zwei Nachfragergruppen reichen hier nicht fuer diese Marktform."
+        },
+        {
+          "text": "Bei den Medikamentenabrechnungen liegt ein Angebotsmonopol vor, weil nur wenige Anbieter vorhanden sind.",
+          "rationale": "Wenige Anbieter bedeuten nicht automatisch ein Monopol."
+        },
+        {
+          "text": "Es liegt ein Quasi-Monopol vor, weil vier Anbieter automatisch marktbeherrschend sind.",
+          "rationale": "Auch das ist fachlich nicht zutreffend."
+        }
+      ],
+      "correctIndex": 1,
+      "feedback": {
+        "correct": "Die Marktform wurde korrekt beschrieben.",
+        "wrong": "Achten Sie auf die Zahl der Anbieter und Nachfrager in beiden Maerkten."
+      },
+      "progressLinks": [
+        "pv3wiso_wirtschaftssektoren_unternehmensformen"
+      ]
+    },
+    {
+      "id": "q17",
+      "type": "single_choice",
+      "title": "Unterschied zum vollkommenen Markt erkennen",
+      "prompt": "Welchen Unterschied weist der Markt fuer Steuerabrechnungen im Vergleich zum Modell des vollkommenen Marktes auf?",
+      "options": [
+        {
+          "text": "Im vollkommenen Markt kann der Staat Mindest- und Hoechstpreise festlegen; das ist fuer Steuerabrechnungen nicht moeglich.",
+          "rationale": "Das beschreibt nicht den Kernunterschied."
+        },
+        {
+          "text": "Der Markt fuer Steuerabrechnungen ist immer ein Verkaeufermarkt; im vollkommenen Markt liegt nur ein Kaeufermarkt vor.",
+          "rationale": "Diese Gegenueberstellung ist unzutreffend."
+        },
+        {
+          "text": "Im vollkommenen Markt betreibt jeder Anbieter eine eigenstaendige und unabhaengige Preispolitik.",
+          "rationale": "Das widerspricht den Annahmen des vollkommenen Marktes."
+        },
+        {
+          "text": "Im Markt fuer Steuerabrechnungen herrscht vollstaendige Markttransparenz; diese fehlt im vollkommenen Markt.",
+          "rationale": "Auch das ist gerade umgekehrt."
+        },
+        {
+          "text": "Das Modell des vollkommenen Marktes unterstellt homogene Gueter; bei Steuerabrechnungssoftware unterscheiden sich die Angebote aber durch unterschiedliche Merkmale und Eigenschaften.",
+          "rationale": "Genau diese fehlende Homogenitaet ist der entscheidende Unterschied."
+        }
+      ],
+      "correctIndex": 4,
+      "feedback": {
+        "correct": "Der Unterschied zum vollkommenen Markt wurde korrekt erkannt.",
+        "wrong": "Denken Sie an die Annahme homogener Gueter im vollkommenen Markt."
+      },
+      "progressLinks": [
+        "pv3wiso_wirtschaftssektoren_unternehmensformen"
+      ]
+    },
+    {
+      "id": "f03",
+      "type": "followup_divider",
+      "title": "Ziele, Kuendigung und GmbH",
+      "from": "betriebsorganisation@ordnungsbetrieb.example",
+      "to": "projektteam@ausbildungsbetrieb.example",
+      "subject": "Bitte den dritten Block zu Zielbeziehungen, Kuendigung und Rechtsform vorbereiten",
+      "date": "2026-03-20",
+      "body": "Hallo,\n\nim dritten Themenblock sollen Zielbeziehungen, soziale Ziele, betriebsbedingte Kuendigung und die Gruendung einer GmbH vorkommen. Bitte halten Sie Zielarten, Kuendigungsgruende und Haftungsfragen klar auseinander.\n\nViele Gruesse\nBetriebsorganisation"
+    },
+    {
+      "id": "q18",
+      "type": "table_fill",
+      "title": "Zielsetzungspaare den Zielarten zuordnen",
+      "prompt": "Ordnen Sie den Zielsetzungspaaren die passende Zielart zu.",
+      "columns": [
+        "Zielsetzungspaar",
+        "Zielart"
+      ],
+      "rows": [
+        [
+          "Mitarbeiterzufriedenheit erhoehen und gleichzeitig erhoehte Ausgaben fuer Verpackungen vermeiden",
+          {
+            "key": "goal_a",
+            "label": "Mitarbeiterzufriedenheit und Verpackungskosten",
+            "expected": "Indifferente Ziele",
+            "inputType": "select",
+            "placeholder": "Zielart waehlen",
+            "options": [
+              "Komplementaere Ziele",
+              "Konkurrierende Ziele",
+              "Indifferente Ziele"
+            ]
+          }
+        ],
+        [
+          "Ausschliesslich preisguenstige Produkte einkaufen und zugleich ein Guetesiegel in der Produktion erlangen",
+          {
+            "key": "goal_b",
+            "label": "Preisguenstig einkaufen und Guetesiegel",
+            "expected": "Konkurrierende Ziele",
+            "inputType": "select",
+            "placeholder": "Zielart waehlen",
+            "options": [
+              "Komplementaere Ziele",
+              "Konkurrierende Ziele",
+              "Indifferente Ziele"
+            ]
+          }
+        ],
+        [
+          "Gutes Arbeitsklima sichern und Verpackungen recyceln",
+          {
+            "key": "goal_c",
+            "label": "Arbeitsklima und Recycling",
+            "expected": "Indifferente Ziele",
+            "inputType": "select",
+            "placeholder": "Zielart waehlen",
+            "options": [
+              "Komplementaere Ziele",
+              "Konkurrierende Ziele",
+              "Indifferente Ziele"
+            ]
+          }
+        ],
+        [
+          "Kundenzufriedenheit durch kompetente Mitarbeitende sichern und Mitarbeiterqualifikationen durch Fortbildungen erhoehen",
+          {
+            "key": "goal_d",
+            "label": "Kompetenz und Fortbildung",
+            "expected": "Komplementaere Ziele",
+            "inputType": "select",
+            "placeholder": "Zielart waehlen",
+            "options": [
+              "Komplementaere Ziele",
+              "Konkurrierende Ziele",
+              "Indifferente Ziele"
+            ]
+          }
+        ],
+        [
+          "Bezugskosten minimieren und Gewinn maximieren",
+          {
+            "key": "goal_e",
+            "label": "Bezugskosten und Gewinn",
+            "expected": "Komplementaere Ziele",
+            "inputType": "select",
+            "placeholder": "Zielart waehlen",
+            "options": [
+              "Komplementaere Ziele",
+              "Konkurrierende Ziele",
+              "Indifferente Ziele"
+            ]
+          }
+        ]
+      ],
+      "feedback": {
+        "correct": "Die Zielsetzungspaare wurden den passenden Zielarten korrekt zugeordnet.",
+        "wrong": "Pruefen Sie noch einmal, welche Ziele sich ergaenzen, welche sich behindern und welche voneinander unabhaengig sind."
+      },
+      "progressLinks": [
+        "pv3wiso_arbeitsschutz_umwelt_diversity"
+      ]
+    },
+    {
+      "id": "q19",
+      "type": "single_choice",
+      "title": "Massnahme ohne soziales Ziel erkennen",
+      "prompt": "Welche Massnahme orientiert sich nicht an sozialen Zielen?",
+      "options": [
+        {
+          "text": "Verwendung von fair gehandelten Produkten",
+          "rationale": "Diese Massnahme hat einen sozialen Bezug."
+        },
+        {
+          "text": "Strenge Diversity- und Compliance-Regelungen verfolgen",
+          "rationale": "Auch das gehoert zu sozialen Zielsetzungen."
+        },
+        {
+          "text": "Arbeitende am Unternehmenserfolg beteiligen",
+          "rationale": "Dies ist ebenfalls ein soziales Ziel."
+        },
+        {
+          "text": "Einen betrieblichen Kindergarten einrichten",
+          "rationale": "Auch das dient sozialen Unternehmenszielen."
+        },
+        {
+          "text": "Verpackungsabfaelle aus dem Wareneingang sammeln",
+          "rationale": "Das ist vor allem eine oekologische und keine soziale Massnahme."
+        }
+      ],
+      "correctIndex": 4,
+      "feedback": {
+        "correct": "Die nicht soziale Massnahme wurde korrekt erkannt.",
+        "wrong": "Achten Sie darauf, ob die Massnahme Menschen und Arbeitsbedingungen oder eher Umweltaspekte betrifft."
+      },
+      "progressLinks": [
+        "pv3wiso_arbeitsschutz_umwelt_diversity"
+      ]
+    },
+    {
+      "id": "q20",
+      "type": "single_choice",
+      "title": "Betriebsbedingten Kuendigungsgrund bestimmen",
+      "prompt": "Welcher Grund kann eine betriebsbedingte Kuendigung rechtfertigen?",
+      "options": [
+        {
+          "text": "Zeitablauf eines befristeten Arbeitsvertrags",
+          "rationale": "Das ist keine betriebsbedingte Kuendigung."
+        },
+        {
+          "text": "Trunkenheit am Arbeitsplatz",
+          "rationale": "Das waere ein verhaltensbedingter Fall."
+        },
+        {
+          "text": "Wegfall des Arbeitsplatzes durch Standortschliessung",
+          "rationale": "Genau das ist ein klassischer betriebsbedingter Kuendigungsgrund."
+        },
+        {
+          "text": "Mangelndes Fachwissen",
+          "rationale": "Das faellt eher in den personenbedingten Bereich."
+        },
+        {
+          "text": "Grobe Beleidigung eines Vorgesetzten",
+          "rationale": "Das ist typischerweise verhaltensbedingt."
+        }
+      ],
+      "correctIndex": 2,
+      "feedback": {
+        "correct": "Der betriebsbedingte Kuendigungsgrund wurde korrekt erkannt.",
+        "wrong": "Trennen Sie betriebliche Ursachen von persoenlichem Verhalten oder fachlicher Eignung."
+      },
+      "progressLinks": [
+        "pv3wiso_arbeitsrecht_ausbildung"
+      ]
+    },
+    {
+      "id": "ctx21",
+      "type": "context_card",
+      "title": "GmbH-Gruendung mit drei Gesellschaftern",
+      "contentBlocks": [
+        {
+          "type": "text",
+          "text": "Drei ehemalige Mitarbeitende wollen gemeinsam eine GmbH gruenden. Die Einlagen verteilen sich auf 50.000,00 EUR, 20.000,00 EUR und 15.000,00 EUR. Als Geschaeftsfuehrerin soll eine externe Person bestellt werden. Im Gesellschaftsvertrag wird auf die gesetzlichen Bestimmungen zu Haftung und Vertretung Bezug genommen."
+        }
+      ]
+    },
+    {
+      "id": "q21",
+      "type": "table_fill",
+      "title": "Aussagen zur GmbH-Gruendung einordnen",
+      "prompt": "Ordnen Sie zu, welche Aussagen den gesetzlichen Regelungen zur GmbH-Gruendung entsprechen.",
+      "columns": [
+        "Aussage",
+        "Trifft zu?"
+      ],
+      "rows": [
+        [
+          "Die Eintragung der GmbH ins Handelsregister ist erforderlich.",
+          {
+            "key": "gmbh_foundation_a",
+            "label": "Handelsregistereintrag erforderlich",
+            "expected": "Ja",
+            "inputType": "select",
+            "placeholder": "Auswahl treffen",
+            "options": [
+              "Ja",
+              "Nein"
+            ]
+          }
+        ],
+        [
+          "Der Name des neuen Unternehmens darf auf den Namen eines bereits bestehenden Unternehmens lauten.",
+          {
+            "key": "gmbh_foundation_b",
+            "label": "Verwechselbarer Firmenname zulaessig",
+            "expected": "Nein",
+            "inputType": "select",
+            "placeholder": "Auswahl treffen",
+            "options": [
+              "Ja",
+              "Nein"
+            ]
+          }
+        ],
+        [
+          "Auch ein Gesellschafter kann die Geschaeftsfuehrung der GmbH uebernehmen.",
+          {
+            "key": "gmbh_foundation_c",
+            "label": "Gesellschafter als Geschaeftsfuehrer moeglich",
+            "expected": "Ja",
+            "inputType": "select",
+            "placeholder": "Auswahl treffen",
+            "options": [
+              "Ja",
+              "Nein"
+            ]
+          }
+        ],
+        [
+          "Die Einlagen der drei Gesellschafter uebersteigen zusammen das gesetzlich geforderte Mindestkapital.",
+          {
+            "key": "gmbh_foundation_d",
+            "label": "Einlagen ueber Mindestkapital",
+            "expected": "Ja",
+            "inputType": "select",
+            "placeholder": "Auswahl treffen",
+            "options": [
+              "Ja",
+              "Nein"
+            ]
+          }
+        ],
+        [
+          "Der Gesellschaftsvertrag kann fuer die Gruendung muendlich abgeschlossen werden.",
+          {
+            "key": "gmbh_foundation_e",
+            "label": "Muendlicher Gesellschaftsvertrag",
+            "expected": "Nein",
+            "inputType": "select",
+            "placeholder": "Auswahl treffen",
+            "options": [
+              "Ja",
+              "Nein"
+            ]
+          }
+        ]
+      ],
+      "feedback": {
+        "correct": "Die Aussagen zur GmbH-Gruendung wurden fachlich sauber eingeordnet.",
+        "wrong": "Achten Sie auf Handelsregistereintrag, Firmenname, Mindestkapital und Formvorschriften der GmbH-Gruendung."
+      },
+      "progressLinks": [
+        "pv3wiso_wirtschaftssektoren_unternehmensformen"
+      ]
+    },
+    {
+      "id": "q22",
+      "type": "single_choice",
+      "title": "Haftung der GmbH gegenueber einem Verkaeufer einordnen",
+      "prompt": "Die neu gegruendete GmbH kauft einen Server. Wie haftet sie gegenueber dem Verkaeufer?",
+      "options": [
+        {
+          "text": "Nur der Gesellschafter mit der hoechsten Einlage haftet dem Verkaeufer gegenueber.",
+          "rationale": "Die Haftung liegt nicht bei einem einzelnen Gesellschafter."
+        },
+        {
+          "text": "Die GmbH haftet mit ihrem Stammkapital und die Gesellschafter zusaetzlich mit ihrem Privatvermoegen.",
+          "rationale": "Eine solche zusaetzliche Privatvermoegenshaftung besteht gerade nicht."
+        },
+        {
+          "text": "Die GmbH haftet gegenueber dem Verkaeufer mit ihrem gesamten Betriebsvermoegen.",
+          "rationale": "Genau das ist die Haftungsfolge der GmbH."
+        },
+        {
+          "text": "Die GmbH haftet nur bis zur Hoehe des gesetzlichen Mindestkapitals.",
+          "rationale": "Die Haftung ist nicht auf das Mindestkapital begrenzt."
+        },
+        {
+          "text": "Die GmbH haftet nur mit den liquiden Mitteln der Gesellschaft.",
+          "rationale": "Die Haftung umfasst das gesamte Gesellschaftsvermoegen."
+        }
+      ],
+      "correctIndex": 2,
+      "feedback": {
+        "correct": "Die Haftung der GmbH wurde korrekt eingeordnet.",
+        "wrong": "Denken Sie an die Haftungsbeschraenkung auf das Gesellschaftsvermoegen."
+      },
+      "progressLinks": [
+        "pv3wiso_wirtschaftssektoren_unternehmensformen"
+      ]
+    },
+    {
+      "id": "q23",
+      "type": "single_choice",
+      "title": "Oekologisches Unternehmensziel erkennen",
+      "prompt": "Welche Aussage stellt ein oekologisches Ziel des Unternehmens dar?",
+      "options": [
+        {
+          "text": "Produkte nur von oekologisch zertifizierten Lieferanten beziehen, ohne Abstriche bei Qualitaet und Funktionalitaet hinzunehmen",
+          "rationale": "Genau diese Zielsetzung richtet sich klar auf oekologische Nachhaltigkeit aus."
+        },
+        {
+          "text": "Hohe Investitionen in neue Produktionsanlagen",
+          "rationale": "Das ist in dieser Form kein spezifisch oekologisches Ziel."
+        },
+        {
+          "text": "Verbesserung der Kundenzufriedenheit und Kundenbindung",
+          "rationale": "Das ist eher ein markt- bzw. absatzbezogenes Ziel."
+        },
+        {
+          "text": "Umstellung des Fuhrparks der Geschaeftsfuehrung auf groessere Fahrzeuge mit Verbrennungsmotor",
+          "rationale": "Das widerspricht eher oekologischen Zielsetzungen."
+        },
+        {
+          "text": "Umsatzsteigerung durch Erweiterung des Sortiments",
+          "rationale": "Auch das ist primaer ein oekonomisches Ziel."
+        }
+      ],
+      "correctIndex": 0,
+      "feedback": {
+        "correct": "Das oekologische Unternehmensziel wurde korrekt erkannt.",
+        "wrong": "Suchen Sie nach einer Zielsetzung mit direktem Umwelt- und Lieferkettenbezug."
+      },
+      "progressLinks": [
+        "pv3wiso_arbeitsschutz_umwelt_diversity"
+      ]
+    },
+    {
+      "id": "q24",
+      "type": "table_fill",
+      "title": "Aussagen zu Emissionen einordnen",
+      "prompt": "Ordnen Sie zu, welche Aussagen zu umweltbelastenden Emissionen zutreffen.",
+      "columns": [
+        "Aussage",
+        "Trifft zu?"
+      ],
+      "rows": [
+        [
+          "Zu umweltbelastenden Emissionen koennen neben schaedlichen Abgasen auch Schallemissionen gehoeren.",
+          {
+            "key": "emission_a",
+            "label": "Schallemissionen gehoeren dazu",
+            "expected": "Ja",
+            "inputType": "select",
+            "placeholder": "Auswahl treffen",
+            "options": [
+              "Ja",
+              "Nein"
+            ]
+          }
+        ],
+        [
+          "Emissionen entstehen ausschliesslich durch den Transport zwischen Lagerorten.",
+          {
+            "key": "emission_b",
+            "label": "Ausschliesslich Transport",
+            "expected": "Nein",
+            "inputType": "select",
+            "placeholder": "Auswahl treffen",
+            "options": [
+              "Ja",
+              "Nein"
+            ]
+          }
+        ],
+        [
+          "Hoehere Schornsteine vermeiden Emissionen vollstaendig.",
+          {
+            "key": "emission_c",
+            "label": "Hoehere Schornsteine vermeiden Emissionen",
+            "expected": "Nein",
+            "inputType": "select",
+            "placeholder": "Auswahl treffen",
+            "options": [
+              "Ja",
+              "Nein"
+            ]
+          }
+        ],
+        [
+          "Die Verringerung von Emissionen unterliegt gesetzlichen Regelungen.",
+          {
+            "key": "emission_d",
+            "label": "Gesetzliche Regelungen zu Emissionen",
+            "expected": "Ja",
+            "inputType": "select",
+            "placeholder": "Auswahl treffen",
+            "options": [
+              "Ja",
+              "Nein"
+            ]
+          }
+        ],
+        [
+          "Fuer die Luftreinhaltung ist allein die Sicherheitsbeauftragte des Unternehmens zustaendig.",
+          {
+            "key": "emission_e",
+            "label": "Alleinzustaendigkeit Sicherheitsbeauftragte",
+            "expected": "Nein",
+            "inputType": "select",
+            "placeholder": "Auswahl treffen",
+            "options": [
+              "Ja",
+              "Nein"
+            ]
+          }
+        ]
+      ],
+      "feedback": {
+        "correct": "Die Aussagen zu Emissionen wurden korrekt eingeordnet.",
+        "wrong": "Achten Sie darauf, dass auch Laerm zu Emissionen gehoeren kann, Emissionen rechtlich geregelt sind und technische Massnahmen sie nicht einfach verschwinden lassen."
+      },
+      "progressLinks": [
+        "pv3wiso_arbeitsschutz_umwelt_diversity"
+      ]
+    },
+    {
+      "id": "q25",
+      "type": "single_choice",
+      "title": "Aussage zum Umweltzeichen Blauer Engel bestimmen",
+      "prompt": "Welche Aussage ueber eine Ware mit dem Umweltzeichen `Blauer Engel` trifft zu?",
+      "options": [
+        {
+          "text": "Sie ist besonders haltbar.",
+          "rationale": "Das ist nicht die Kernaussage des Umweltzeichens."
+        },
+        {
+          "text": "Sie ist besonders sicher in der Handhabung.",
+          "rationale": "Auch das ist nicht der zentrale Bedeutungsinhalt."
+        },
+        {
+          "text": "Sie wurde aus schadstoffarmen Rohstoffen und umweltschonend produziert.",
+          "rationale": "Genau diese Aussage passt zum Umweltzeichen."
+        },
+        {
+          "text": "Sie hat bereits mehrere Umweltpreise gewonnen.",
+          "rationale": "Das folgt aus dem Zeichen nicht."
+        },
+        {
+          "text": "Sie darf nach Benutzung nur ueber das Duale System entsorgt werden.",
+          "rationale": "Eine solche Entsorgungsregel ist damit nicht verbunden."
+        }
+      ],
+      "correctIndex": 2,
+      "feedback": {
+        "correct": "Die Aussage zum Blauen Engel wurde korrekt erkannt.",
+        "wrong": "Denken Sie an schadstoffarme Rohstoffe und umweltschonende Herstellung."
+      },
+      "progressLinks": [
+        "pv3wiso_arbeitsschutz_umwelt_diversity"
+      ]
+    },
+    {
+      "id": "f04",
+      "type": "followup_divider",
+      "title": "Arbeitsschutz, Gesundheit und Gleichbehandlung",
+      "from": "qualitaetsboard@ordnungsbetrieb.example",
+      "to": "projektteam@ausbildungsbetrieb.example",
+      "subject": "Bitte den Abschlussblock zu Sicherheit, Gesundheit und AGG vorbereiten",
+      "date": "2026-03-20",
+      "body": "Hallo,\n\nzum Abschluss brauchen wir Aufgaben zu Arbeitsschutzbeauftragten, Sofortmassnahmen im Brandfall, Stressreduzierung am Arbeitsplatz sowie zum AGG im Betrieb und in Stellenanzeigen. Bitte halten Sie sichere Sofortmassnahmen und diskriminierende Formulierungen eindeutig auseinander.\n\nViele Gruesse\nQualitaetsboard"
+    },
+    {
+      "id": "q26",
+      "type": "single_choice",
+      "title": "Aufgabe eines Arbeitsschutzbeauftragten richtig einordnen",
+      "prompt": "Welche Aufgabe hat ein Arbeitsschutzbeauftragter im Unternehmen?",
+      "options": [
+        {
+          "text": "Er ist fuer die Sicherheit im Betrieb allein verantwortlich.",
+          "rationale": "Die Verantwortung fuer Arbeitsschutz liegt nicht allein bei ihm."
+        },
+        {
+          "text": "Er unterstuetzt den Arbeitgeber bei der Durchfuehrung des Unfallschutzes.",
+          "rationale": "Genau diese unterstuetzende Aufgabe trifft zu."
+        },
+        {
+          "text": "Er ist ein selbststaendiges Organ des Betriebsverfassungsrechts.",
+          "rationale": "Das beschreibt seine Stellung nicht korrekt."
+        },
+        {
+          "text": "Er ist fuer die Installation von Schliesssystemen verantwortlich.",
+          "rationale": "Das ist keine typische Kernaufgabe eines Arbeitsschutzbeauftragten."
+        },
+        {
+          "text": "Er ist automatisch Mitglied im Arbeitssicherheitsausschuss des Betriebsrats.",
+          "rationale": "Auch diese Aussage trifft nicht zu."
+        }
+      ],
+      "correctIndex": 1,
+      "feedback": {
+        "correct": "Die Aufgabe des Arbeitsschutzbeauftragten wurde korrekt erkannt.",
+        "wrong": "Denken Sie an die unterstuetzende Rolle beim Unfallschutz, nicht an eine Alleinverantwortung."
+      },
+      "progressLinks": [
+        "pv3wiso_arbeitsschutz_umwelt_diversity"
+      ]
+    },
+    {
+      "id": "q27",
+      "type": "multi_select",
+      "title": "Sofortmassnahmen im Brandfall auswaehlen",
+      "prompt": "Welche zwei Massnahmen muessen im Falle eines Brandes sofort ergriffen werden?",
+      "options": [
+        {
+          "text": "Alle Fenster oeffnen, damit der Rauch abziehen kann",
+          "correct": false,
+          "rationale": "Das kann das Feuer weiter anfachen."
+        },
+        {
+          "text": "Den Notruf absetzen",
+          "correct": true,
+          "rationale": "Der Notruf gehoert zu den zentralen Sofortmassnahmen."
+        },
+        {
+          "text": "Nur den Sicherheitsbeauftragten informieren",
+          "correct": false,
+          "rationale": "Das ersetzt weder Rettungskette noch Evakuierung."
+        },
+        {
+          "text": "Nur den Vorgesetzten informieren",
+          "correct": false,
+          "rationale": "Auch das reicht allein nicht aus."
+        },
+        {
+          "text": "Alle gefaehrdeten Personen evakuieren",
+          "correct": true,
+          "rationale": "Die Evakuierung gefaehrdeter Personen ist sofort erforderlich."
+        },
+        {
+          "text": "Alle erreichbaren Wasserstellen oeffnen",
+          "correct": false,
+          "rationale": "Das ist keine allgemeine Sofortmassnahme im Brandfall."
+        }
+      ],
+      "feedback": {
+        "correct": "Die richtigen Sofortmassnahmen im Brandfall wurden korrekt ausgewaehlt.",
+        "wrong": "Achten Sie auf Alarmierung und Schutz von Menschen, nicht auf unkoordinierte Zusatzhandlungen."
+      },
+      "progressLinks": [
+        "pv3wiso_arbeitsschutz_umwelt_diversity"
+      ]
+    },
+    {
+      "id": "q28",
+      "type": "multi_select",
+      "title": "Nicht geeignete Massnahmen zur Stressreduzierung erkennen",
+      "prompt": "Welche zwei Massnahmen sind zur Reduzierung von Stress am Arbeitsplatz nicht geeignet?",
+      "options": [
+        {
+          "text": "Kundenbeschwerden nur noch telefonisch bearbeiten und anschliessend am schwarzen Brett veroeffentlichen",
+          "correct": true,
+          "rationale": "Das erzeugt zusaetzlichen Druck und ist fuer Stressreduktion ungeeignet."
+        },
+        {
+          "text": "Workshops zur Work-Life-Balance anbieten",
+          "correct": false,
+          "rationale": "Das kann bei Stressreduktion hilfreich sein."
+        },
+        {
+          "text": "Eine angenehme Arbeitsatmosphaere schaffen",
+          "correct": false,
+          "rationale": "Auch das ist eine geeignete Massnahme."
+        },
+        {
+          "text": "Das Betriebssportangebot stark erweitern",
+          "correct": false,
+          "rationale": "Bewegung und Ausgleich koennen Stress abbauen."
+        },
+        {
+          "text": "Misserfolge aller Mitarbeitenden fuer alle sichtbar bekanntgeben",
+          "correct": true,
+          "rationale": "Oeffentliche Bloesstellung foerdert Stress statt ihn zu verringern."
+        },
+        {
+          "text": "Homeoffice offener und flexibler gestalten",
+          "correct": false,
+          "rationale": "Flexibilitaet kann die Belastung reduzieren."
+        }
+      ],
+      "feedback": {
+        "correct": "Die ungeeigneten Massnahmen zur Stressreduzierung wurden korrekt erkannt.",
+        "wrong": "Suchen Sie nach Massnahmen, die Druck und Bloesstellung verstaerken statt Stress abzubauen."
+      },
+      "progressLinks": [
+        "pv3wiso_arbeitsschutz_umwelt_diversity"
+      ]
+    },
+    {
+      "id": "q29",
+      "type": "table_fill",
+      "title": "Aussagen zum AGG einordnen",
+      "prompt": "Ordnen Sie zu, welche Aussagen den Regelungen des Allgemeinen Gleichbehandlungsgesetzes entsprechen.",
+      "columns": [
+        "Aussage",
+        "Trifft zu?"
+      ],
+      "rows": [
+        [
+          "Das AGG gilt auch fuer Auszubildende.",
+          {
+            "key": "agg_a",
+            "label": "AGG gilt auch fuer Auszubildende",
+            "expected": "Ja",
+            "inputType": "select",
+            "placeholder": "Auswahl treffen",
+            "options": [
+              "Ja",
+              "Nein"
+            ]
+          }
+        ],
+        [
+          "Benachteiligungen wegen Geschlecht, Religion oder Weltanschauung sind unzulaessig.",
+          {
+            "key": "agg_b",
+            "label": "Geschlecht, Religion, Weltanschauung geschuetzt",
+            "expected": "Ja",
+            "inputType": "select",
+            "placeholder": "Auswahl treffen",
+            "options": [
+              "Ja",
+              "Nein"
+            ]
+          }
+        ],
+        [
+          "Stellenausschreibungen muessen AGG-konform und grundsaetzlich geschlechtsneutral formuliert sein.",
+          {
+            "key": "agg_c",
+            "label": "Stellenanzeigen AGG-konform formulieren",
+            "expected": "Ja",
+            "inputType": "select",
+            "placeholder": "Auswahl treffen",
+            "options": [
+              "Ja",
+              "Nein"
+            ]
+          }
+        ],
+        [
+          "Die Benachteiligungsverbote des AGG gelten nicht fuer Aufstieg und Arbeitsbedingungen.",
+          {
+            "key": "agg_d",
+            "label": "Keine Geltung fuer Aufstieg und Arbeitsbedingungen",
+            "expected": "Nein",
+            "inputType": "select",
+            "placeholder": "Auswahl treffen",
+            "options": [
+              "Ja",
+              "Nein"
+            ]
+          }
+        ],
+        [
+          "Bei Verstoessen gegen das AGG haben Betroffene niemals Anspruch auf Schadenersatz.",
+          {
+            "key": "agg_e",
+            "label": "Niemals Schadenersatz bei AGG-Verstoss",
+            "expected": "Nein",
+            "inputType": "select",
+            "placeholder": "Auswahl treffen",
+            "options": [
+              "Ja",
+              "Nein"
+            ]
+          }
+        ]
+      ],
+      "feedback": {
+        "correct": "Die Aussagen zum AGG wurden korrekt eingeordnet.",
+        "wrong": "Achten Sie auf geschuetzte Merkmale, den Anwendungsbereich im Betrieb und die Anforderungen an AGG-konforme Stellenanzeigen."
+      },
+      "progressLinks": [
+        "pv3wiso_arbeitsschutz_umwelt_diversity"
+      ]
+    },
+    {
+      "id": "q30",
+      "type": "table_fill",
+      "title": "Formulierungen in Stellenanzeigen auf AGG-Konformitaet pruefen",
+      "prompt": "Ordnen Sie zu, welche Formulierungen in einer Stellenanzeige AGG-konform sind.",
+      "columns": [
+        "Formulierung",
+        "AGG-konform?"
+      ],
+      "rows": [
+        [
+          "Sie verfuegen ueber hervorragende Kenntnisse in Webprogrammierung.",
+          {
+            "key": "job_posting_a",
+            "label": "Kenntnisse in Webprogrammierung",
+            "expected": "Ja",
+            "inputType": "select",
+            "placeholder": "Auswahl treffen",
+            "options": [
+              "Ja",
+              "Nein"
+            ]
+          }
+        ],
+        [
+          "Sie passen in unser junges dynamisches Team, wenn Sie juenger als 30 Jahre sind.",
+          {
+            "key": "job_posting_b",
+            "label": "Juenger als 30 Jahre",
+            "expected": "Nein",
+            "inputType": "select",
+            "placeholder": "Auswahl treffen",
+            "options": [
+              "Ja",
+              "Nein"
+            ]
+          }
+        ],
+        [
+          "Sie sind mobil und bereit, auch mehrtaegige Geschaeftsreisen zu unternehmen.",
+          {
+            "key": "job_posting_c",
+            "label": "Reisebereitschaft",
+            "expected": "Ja",
+            "inputType": "select",
+            "placeholder": "Auswahl treffen",
+            "options": [
+              "Ja",
+              "Nein"
+            ]
+          }
+        ],
+        [
+          "Sie sind an flexible Arbeitszeiten gewoehnt und koennen gelegentlich abends laenger arbeiten.",
+          {
+            "key": "job_posting_d",
+            "label": "Flexible Arbeitszeiten",
+            "expected": "Ja",
+            "inputType": "select",
+            "placeholder": "Auswahl treffen",
+            "options": [
+              "Ja",
+              "Nein"
+            ]
+          }
+        ],
+        [
+          "Sie beherrschen die englische Sprache verhandlungssicher in Wort und Schrift.",
+          {
+            "key": "job_posting_e",
+            "label": "Verhandlungssicheres Englisch",
+            "expected": "Ja",
+            "inputType": "select",
+            "placeholder": "Auswahl treffen",
+            "options": [
+              "Ja",
+              "Nein"
+            ]
+          }
+        ]
+      ],
+      "feedback": {
+        "correct": "Die Formulierungen wurden AGG-konform eingeordnet.",
+        "wrong": "Achten Sie besonders auf unzulaessige Altersvorgaben und trennen Sie diese von sachlichen Qualifikations- oder Mobilitaetsanforderungen."
+      },
+      "progressLinks": [
+        "pv3wiso_arbeitsschutz_umwelt_diversity"
+      ]
+    }
+  ]
+}

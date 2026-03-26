@@ -70,7 +70,7 @@
     const DEFAULT_SCENARIO_FOLDER = "LF02-Scenarien";
     const DEFAULT_SCENARIO_FILE = "01_easy_ausbildungsbetrieb_hardwareprofil.json";
     const SUBMIT_BUTTON_READY_LABEL = "Abgeben und Auswertung anzeigen";
-    const QUESTION_MARKER_STATE_ORDER = ["none", "answered", "double_checked", "marked"];
+    const QUESTION_MARKER_STATE_ORDER = ["none", "answered", "marked"];
     const QUESTION_MARKER_META = Object.freeze({
       none: {
         label: "offen",
@@ -79,10 +79,6 @@
       answered: {
         label: "bearbeitet",
         uiLabel: "bearbeitet"
-      },
-      double_checked: {
-        label: "geprüft",
-        uiLabel: "geprüft"
       },
       marked: {
         label: "markiert",
@@ -134,7 +130,17 @@
     }
 
     function normalizeQuestionMarkerState(value) {
-      return QUESTION_MARKER_STATE_ORDER.includes(value) ? value : "none";
+      const normalized = String(value || "")
+        .trim()
+        .toLowerCase()
+        .replace(/[\s-]+/g, "_");
+      if (normalized === "offen") return "none";
+      if (normalized === "bearbeitet") return "answered";
+      if (normalized === "markiert") return "marked";
+      if (normalized === "double_checked" || normalized === "doublechecked" || normalized === "geprueft" || normalized === "geprüft") {
+        return "marked";
+      }
+      return QUESTION_MARKER_STATE_ORDER.includes(normalized) ? normalized : "none";
     }
 
     function getQuestionMarkerMeta(state) {
@@ -223,7 +229,6 @@
       const q = question || getQuestionById(questionId, data);
       const storedState = normalizeQuestionMarkerState(questionMarkerState[String(questionId || "").trim()]);
       if (storedState === "marked") return "marked";
-      if (storedState === "double_checked" && q && isQuestionAnswered(q)) return "double_checked";
       return q && isQuestionAnswered(q) ? "answered" : "none";
     }
 
@@ -279,10 +284,7 @@
       const answered = isQuestionAnswered(q);
       let nextState = "none";
       if (answered) {
-        if (currentState === "answered") nextState = "double_checked";
-        else if (currentState === "double_checked") nextState = "marked";
-        else if (currentState === "marked") nextState = "none";
-        else nextState = "double_checked";
+        nextState = currentState === "marked" ? "none" : "marked";
       } else {
         nextState = currentState === "marked" ? "none" : "marked";
       }
