@@ -151,6 +151,13 @@
       LF12FIAE_03_26: "LF12FIAE-Scenarien",
       QUS2_03_26: "QuS2-Scenarien"
     });
+    const FALLBACK_ACCESS_KEY_TO_SCENARIO_ITEMS = Object.freeze({
+      QUS2_03_26: Object.freeze({
+        "QuS2-Scenarien": Object.freeze([
+          "01_easy_ausbildungsbetrieb_ticketstau_rollenchaos_fehlende_abnahme.json"
+        ])
+      })
+    });
     const GITHUB_REPO_OWNER_FALLBACK = "Thor-the-Dwarf";
     const GITHUB_REPO_NAME_FALLBACK = "FI_Skilltrainer";
     const SCENARIO_FILENAME_CONVENTION = /^\d{2}_(easy|medium|hard)_[a-z0-9_]+\.json$/i;
@@ -178,7 +185,7 @@
     let accessKeyToFolders = Object.create(null);
     let accessKeyToFolderPrefixes = Object.create(null);
     let accessKeyToAllFolders = Object.create(null);
-    let accessKeyToScenarioItems = Object.create(null);
+    let accessKeyToScenarioItems = { ...FALLBACK_ACCESS_KEY_TO_SCENARIO_ITEMS };
     let accessKeyRawNameMap = Object.create(null);
     let accessKeyConfigLoaded = false;
     let cachedScenarioFolders = [];
@@ -486,7 +493,7 @@
       accessKeyToFolders = { ...normalized.multiFolderMap };
       accessKeyToFolderPrefixes = { ...normalized.prefixMap };
       accessKeyToAllFolders = { ...(normalized.allFoldersMap || {}) };
-      accessKeyToScenarioItems = { ...(normalized.ticketMap || {}) };
+      accessKeyToScenarioItems = { ...FALLBACK_ACCESS_KEY_TO_SCENARIO_ITEMS, ...(normalized.ticketMap || {}) };
       accessKeyRawNameMap = { ...(normalized.rawKeyMap || {}) };
     }
 
