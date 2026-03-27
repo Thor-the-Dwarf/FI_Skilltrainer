@@ -28,6 +28,7 @@ QUIZ_DB_PATH = ROOT / "Kurse" / "QuS2-Quiz.db"
 SCHEMA_PATH = ROOT / "QuizMaster" / "sql" / "quiz_db_schema_v1.sql"
 DERIVED_QUESTION_BUDGET_PER_SCENARIO = 10
 ADDITIONAL_VARIANT_BATCH_SIZE = 100
+DEFAULT_QUESTION_LIMIT = 1000
 
 QUESTION_META_BY_TYPE = {
     "single_choice": {
@@ -357,6 +358,23 @@ def base_source_ref(source_ref: str) -> str:
     return re.sub(r"::alt\d+$", "", normalize_visible_text(source_ref))
 
 
+def variant_refinement_phrase(source_ref: str) -> str:
+    match = re.search(r"::(alt\d+)$", normalize_visible_text(source_ref))
+    if not match:
+        return "im beschriebenen Fall"
+
+    return {
+        "alt1": "im ersten Zugriff",
+        "alt2": "in der nächsten Abwägung",
+        "alt3": "in der Vertiefung",
+        "alt4": "im Folgecheck",
+        "alt5": "in der erneuten Prüfung",
+        "alt6": "im Abgleich",
+        "alt7": "in der Schlussbetrachtung",
+        "alt8": "bei der letzten Abwägung",
+    }.get(match.group(1), "im beschriebenen Fall")
+
+
 def build_alternate_badge(question: dict[str, Any], variant_suffix: str = "alt1") -> str:
     interaction_type = str(question.get("interaction_type", "")).strip()
     variants = ALT_BADGE_VARIANTS_BY_INTERACTION.get(interaction_type, ())
@@ -366,80 +384,116 @@ def build_alternate_badge(question: dict[str, Any], variant_suffix: str = "alt1"
 
 def build_alternate_prompt(question: dict[str, Any], variant_suffix: str = "alt1") -> str:
     source_ref = base_source_ref(str(question.get("source_ref", "")).strip())
-    variant_key = f"{source_ref}::{variant_suffix}"
     variant_round = int(variant_suffix.removeprefix("alt") or "1")
-    use_primary_family = variant_round % 2 == 1
     title = normalize_visible_text(question.get("title", "diesem Punkt"))
     interaction_type = str(question.get("interaction_type", "")).strip()
 
     if interaction_type == "gap_fill_text":
-        if use_primary_family:
+        if variant_round == 1:
             return NUMBER_ALT_PROMPT_OVERRIDES.get(
                 source_ref,
-                choose_text_variant(
-                    f"{variant_key}::alt_prompt",
-                    [
-                        f"Berechnen Sie den fehlenden Wert zu „{title}“.",
-                        f"Leiten Sie den passenden Zahlenwert für „{title}“ her.",
-                    ],
-                ),
+                f"Berechnen Sie den fehlenden Wert zu „{title}“.",
             )
+        if variant_round == 2:
+            return f"Welche Zahl ergibt sich bei „{title}“?"
+        if variant_round == 3:
+            return f"Welcher Zahlenwert ist für „{title}“ rechnerisch richtig?"
+        if variant_round == 4:
+            return f"Bestimmen Sie den passenden Rechenwert zu „{title}“."
+        if variant_round == 5:
+            return f"Wie hoch fällt der richtige Zahlenwert bei „{title}“ aus?"
+        if variant_round == 6:
+            return f"Welche Zahl muss bei „{title}“ fachlich richtig eingesetzt werden?"
+        if variant_round == 7:
+            return f"Leiten Sie für „{title}“ den zutreffenden Zahlenwert her."
+        if variant_round == 8:
+            return f"Welche rechnerische Lösung passt zu „{title}“?"
         return choose_text_variant(
-            f"{variant_key}::alt_prompt",
+            f"{source_ref}::{variant_suffix}::alt_prompt",
             [
-                f"Welche Zahl ergibt sich bei „{title}“?",
-                f"Wie hoch fällt der passende Wert zu „{title}“ aus?",
-                f"Bestimmen Sie für „{title}“ den rechnerisch richtigen Zahlenwert.",
+                f"Bestimmen Sie für „{title}“ den belastbaren Zahlenwert.",
+                f"Welche Zahl vervollständigt „{title}“ rechnerisch richtig?",
+                f"Welcher Rechenwert gehört bei „{title}“ an die fehlende Stelle?",
             ],
         )
 
     if interaction_type == "sequence":
-        templates = (
+        if variant_round == 1:
+            return f"Ordnen Sie die Schritte zu „{title}“ in die passende Reihenfolge."
+        if variant_round == 2:
+            return f"Bringen Sie „{title}“ in die sachgerechte Reihenfolge."
+        if variant_round == 3:
+            return f"Wie läuft „{title}“ in einer fachlich stimmigen Abfolge ab?"
+        if variant_round == 4:
+            return f"Welche Abfolge passt für „{title}“ am besten?"
+        if variant_round == 5:
+            return f"Wie ordnet sich „{title}“ Schritt für Schritt fachlich richtig ein?"
+        if variant_round == 6:
+            return f"Welche Reihenfolge trägt „{title}“ sachlich am besten?"
+        if variant_round == 7:
+            return f"In welcher Reihenfolge sollte „{title}“ sauber abgearbeitet werden?"
+        if variant_round == 8:
+            return f"Wie greifen die Schritte bei „{title}“ sinnvoll ineinander?"
+        return choose_text_variant(
+            f"{source_ref}::{variant_suffix}::alt_prompt",
             [
-                f"Ordnen Sie die Schritte zu „{title}“ in die passende Reihenfolge.",
-                f"Wie läuft „{title}“ in einer sachgerechten Abfolge ab?",
-                f"Welche Reihenfolge passt für „{title}“ fachlich?",
-            ]
-            if use_primary_family
-            else [
-                f"Bringen Sie „{title}“ in die sachgerechte Reihenfolge.",
-                f"Welche Abfolge passt für „{title}“ am besten?",
-                f"Wie ordnet sich „{title}“ Schritt für Schritt richtig ein?",
-            ]
+                f"Welche Reihenfolge bildet „{title}“ fachlich am verlässlichsten ab?",
+                f"Ordnen Sie „{title}“ in die belastbarste Schrittfolge.",
+                f"Wie sieht für „{title}“ die sachlich richtige Schrittkette aus?",
+            ],
         )
-        return choose_text_variant(f"{variant_key}::alt_prompt", templates)
 
     if interaction_type == "multi":
-        templates = (
+        if variant_round == 1:
+            return f"Welche Aussagen treffen bei „{title}“ zu?"
+        if variant_round == 2:
+            return f"Welche Aussagen sind bei „{title}“ belastbar?"
+        if variant_round == 3:
+            return f"Prüfen Sie den Punkt „{title}“ und markieren Sie die zutreffenden Aussagen."
+        if variant_round == 4:
+            return f"Markieren Sie bei „{title}“ die fachlich zutreffenden Punkte."
+        if variant_round == 5:
+            return f"Welche Punkte gehören bei „{title}“ fachlich dazu?"
+        if variant_round == 6:
+            return f"Welche Aspekte gehören bei „{title}“ sachlich dazu?"
+        if variant_round == 7:
+            return f"Welche Aussagen lassen sich bei „{title}“ fachlich halten?"
+        if variant_round == 8:
+            return f"Welche Punkte sind für „{title}“ sachlich richtig?"
+        return choose_text_variant(
+            f"{source_ref}::{variant_suffix}::alt_prompt",
             [
-                f"Welche Aussagen treffen bei „{title}“ zu?",
-                f"Prüfen Sie den Punkt „{title}“ und markieren Sie die zutreffenden Aussagen.",
-                f"Welche Punkte gehören bei „{title}“ fachlich dazu?",
-            ]
-            if use_primary_family
-            else [
-                f"Welche Aussagen sind bei „{title}“ belastbar?",
-                f"Markieren Sie bei „{title}“ die fachlich zutreffenden Punkte.",
-                f"Welche Aspekte gehören bei „{title}“ sachlich dazu?",
-            ]
+                f"Welche Aussagen passen bei „{title}“ fachlich sauber zusammen?",
+                f"Welche Punkte treffen bei „{title}“ belastbar zu?",
+                f"Welche Aussagen gehören bei „{title}“ sachlich in die richtige Auswahl?",
+            ],
         )
-        return choose_text_variant(f"{variant_key}::alt_prompt", templates)
 
     if interaction_type == "single":
-        templates = (
+        if variant_round == 1:
+            return f"Welche Auswahl passt zu „{title}“ fachlich am besten?"
+        if variant_round == 2:
+            return f"Welche Antwort trägt „{title}“ fachlich am besten?"
+        if variant_round == 3:
+            return f"Bestimmen Sie für „{title}“ die tragfähigste Antwort."
+        if variant_round == 4:
+            return f"Welche Auswahl ist für „{title}“ am tragfähigsten?"
+        if variant_round == 5:
+            return f"Welche Entscheidung trägt „{title}“ hier am besten?"
+        if variant_round == 6:
+            return f"Welche Entscheidung passt bei „{title}“ hier am besten?"
+        if variant_round == 7:
+            return f"Welche Antwort ist für „{title}“ sachlich am belastbarsten?"
+        if variant_round == 8:
+            return f"Welche Option erklärt „{title}“ hier am verlässlichsten?"
+        return choose_text_variant(
+            f"{source_ref}::{variant_suffix}::alt_prompt",
             [
-                f"Welche Auswahl passt zu „{title}“ fachlich am besten?",
-                f"Bestimmen Sie für „{title}“ die tragfähigste Antwort.",
-                f"Welche Entscheidung trägt „{title}“ hier am besten?",
-            ]
-            if use_primary_family
-            else [
-                f"Welche Antwort trägt „{title}“ fachlich am besten?",
-                f"Welche Auswahl ist für „{title}“ am tragfähigsten?",
-                f"Welche Entscheidung passt bei „{title}“ hier am besten?",
-            ]
+                f"Welche Auswahl stützt „{title}“ fachlich am saubersten?",
+                f"Welche Antwort passt für „{title}“ hier am verlässlichsten?",
+                f"Welche Option trägt „{title}“ sachlich am besten?",
+            ],
         )
-        return choose_text_variant(f"{variant_key}::alt_prompt", templates)
 
     return normalize_visible_text(question.get("prompt", ""))
 
@@ -1262,6 +1316,73 @@ def add_additional_variants(
     return len(selected)
 
 
+def build_dedupe_prompt(question: dict[str, Any], pool_label: str, occurrence_index: int) -> str:
+    focus = shorten_visible_title(question.get("title") or pool_label, limit=88)
+    source_ref = str(question.get("source_ref", "")).strip()
+    interaction_type = str(question.get("interaction_type", "")).strip()
+
+    if interaction_type == "gap_fill_text":
+        templates = [
+            f"Für „{focus}“ ist der passende Zahlenwert zu bestimmen.",
+            f"Bei „{focus}“ soll der rechnerisch stimmige Wert ermittelt werden.",
+            f"Ermitteln Sie für „{focus}“ den fehlenden Zahlenwert.",
+        ]
+    elif interaction_type == "sequence":
+        templates = [
+            f"Für „{focus}“ ist die sachgerechte Schrittfolge festzulegen.",
+            f"Bei „{focus}“ soll die Ablaufkette in eine stimmige Reihenfolge gebracht werden.",
+            f"Ordnen Sie für „{focus}“ die Schritte in fachlich passender Folge.",
+        ]
+    elif interaction_type == "multi":
+        templates = [
+            f"Für „{focus}“ sind die fachlich tragenden Aussagen herauszuarbeiten.",
+            f"Bei „{focus}“ sollen die zutreffenden Punkte belastbar markiert werden.",
+            f"Arbeiten Sie für „{focus}“ die fachlich passenden Aussagen heraus.",
+        ]
+    else:
+        templates = [
+            f"Für „{focus}“ ist die tragfähigste Antwort fachlich einzuordnen.",
+            f"Bei „{focus}“ soll die fachlich stimmigste Auswahl bestimmt werden.",
+            f"Entscheiden Sie für „{focus}“, welche Antwort den Fall am besten trägt.",
+        ]
+
+    return choose_text_variant(f"{source_ref}::dedupe::{occurrence_index}", templates)
+
+
+def uniquify_prompts(pools: list[dict[str, Any]]) -> None:
+    for _ in range(4):
+        grouped: dict[str, list[tuple[str, dict[str, Any]]]] = {}
+        for pool in pools:
+            for question in pool["questions"]:
+                prompt = normalize_visible_text(question.get("prompt", ""))
+                question["prompt"] = prompt
+                grouped.setdefault(prompt, []).append((pool["label"], question))
+
+        duplicate_groups = {prompt: entries for prompt, entries in grouped.items() if len(entries) > 1}
+        if not duplicate_groups:
+            return
+
+        for prompt, entries in duplicate_groups.items():
+            for occurrence_index, (pool_label, question) in enumerate(entries[1:], start=1):
+                adjusted = normalize_visible_text(build_dedupe_prompt(question, pool_label, occurrence_index))
+                if not adjusted or adjusted == prompt:
+                    focus = shorten_visible_title(question.get("title") or pool_label, limit=72)
+                    source_ref = str(question.get("source_ref", "")).strip()
+                    adjusted = normalize_visible_text(
+                        choose_text_variant(
+                            f"{source_ref}::fallback_dedupe::{occurrence_index}",
+                            [
+                                f"Für „{focus}“ gilt {variant_refinement_phrase(source_ref)}: {lowercase_first(prompt)}",
+                                f"Für den Fall „{focus}“ ist {variant_refinement_phrase(source_ref)} ausschlaggebend: {lowercase_first(prompt)}",
+                                f"Auf „{focus}“ bezogen gilt {variant_refinement_phrase(source_ref)} fachlich: {lowercase_first(prompt)}",
+                                f"Für „{focus}“ ist {variant_refinement_phrase(source_ref)} entscheidend: {lowercase_first(prompt)}",
+                            ],
+                        )
+                    )
+                question["prompt"] = adjusted
+                validate_visible_texts([question["prompt"]])
+
+
 def rebuild_database(pools: list[dict[str, Any]]) -> tuple[int, int, int, int]:
     question_count = sum(len(pool["questions"]) for pool in pools)
     option_count = sum(len(question["options"]) for pool in pools for question in pool["questions"])
@@ -1485,7 +1606,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument(
         "--question-limit",
         type=int,
-        default=None,
+        default=DEFAULT_QUESTION_LIMIT,
         help="Zielstand der importierten Fragen nach Hinzufügen weiterer Varianten.",
     )
     return parser.parse_args()
@@ -1533,7 +1654,7 @@ def main() -> None:
         )
 
     direct_question_count = sum(len(pool["questions"]) for pool in pools)
-    target_question_count = args.question_limit or (direct_question_count + ADDITIONAL_VARIANT_BATCH_SIZE)
+    target_question_count = args.question_limit
     if target_question_count < direct_question_count:
         raise ValueError(f"Question-Limit unterschreitet den Direktbestand: {target_question_count} < {direct_question_count}")
 
@@ -1556,6 +1677,7 @@ def main() -> None:
         additional_needed -= added_count
         stage_index += 1
 
+    uniquify_prompts(pools)
     question_count, option_count, sequence_item_count, accepted_answer_count = rebuild_database(pools)
 
     print(f"db={QUIZ_DB_PATH.relative_to(ROOT)}")
