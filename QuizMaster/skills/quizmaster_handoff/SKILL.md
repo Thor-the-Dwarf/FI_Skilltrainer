@@ -18,6 +18,7 @@ Use this workflow for quiz-database package work such as PV1, PV2, PV3, LF12 or 
    - clean `concept_id` and `variant_id` handling
    - `badge_label` filled, `is_new = 0`
 4. Before replying to the user, notify the QuizMaster reviewer `019d2ae2-8525-7792-a341-161adc031e73`.
+   Use `/Users/thor/JetBrains/WebstormProjects/easyPV/databases/entwicklung/project_tickets_v01/QuizMaster/scripts/notify_quizmaster_handoff.py` for the handoff so failed direct delivery is not silent.
 5. Use a delegated agent for the review loop when available. Include:
    - target database path
    - new total question count
@@ -36,6 +37,7 @@ Use this workflow for quiz-database package work such as PV1, PV2, PV3, LF12 or 
 ## Notes
 
 - Prefer deterministic import scripts over manual SQLite edits.
+- If direct `codex exec resume` delivery fails, keep the handoff durable in `QuizMaster/output/quizmaster_handoffs.ndjson` and `QuizMaster/output/handoffs/` and report the blocker honestly.
 - Keep package progress additive: the next run should raise the total by another 100 when source material allows it.
 - If the current source material cannot realistically reach the requested target, say so clearly after the review loop.
 - Treat your current database assignment as sticky: do not switch away just because other agents also report progress.
