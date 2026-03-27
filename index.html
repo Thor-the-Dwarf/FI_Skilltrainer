@@ -4996,6 +4996,10 @@
       return document.getElementById("doomscrollQuestionFeed");
     }
 
+    function getTrainingFeedbackHost() {
+      return document.getElementById("doomscrollFeedbackHost");
+    }
+
     function updateTrainingProgressUi() {
       const deck = trainingSession?.deck || getActiveTrainingDeck();
       const total = trainingSession?.questions?.length || deck?.questions?.length || 0;
@@ -5121,7 +5125,8 @@
       cardState.feedbackComposerOpen = nextOpen;
       elements.panel.classList.toggle("hidden", !nextOpen);
       elements.commentButton.setAttribute("aria-pressed", String(nextOpen));
-      elements.cancelButton.classList.toggle("hidden", !nextOpen);
+      elements.commentButton.classList.toggle("is-active", nextOpen);
+      elements.section.classList.toggle("is-open", nextOpen);
       if (nextOpen) {
         window.setTimeout(() => {
           if (!cardState?.isDisposed) {
@@ -5262,9 +5267,6 @@
       section.className = "doomscroll-feedback";
       section.setAttribute("aria-label", "Fragenfeedback");
 
-      const bar = document.createElement("div");
-      bar.className = "doomscroll-feedback-bar";
-
       const actions = document.createElement("div");
       actions.className = "doomscroll-feedback-actions";
 
@@ -5274,6 +5276,7 @@
       likeButton.dataset.feedbackAction = "like";
       likeButton.setAttribute("aria-pressed", "false");
       likeButton.innerHTML =
+        "<span class='doomscroll-feedback-action-icon' aria-hidden='true'>+</span>" +
         "<span class='doomscroll-feedback-action-label'>Like</span>" +
         "<span class='doomscroll-feedback-action-count' data-feedback-count='like'>0</span>";
       likeButton.addEventListener("click", () => {
@@ -5286,6 +5289,7 @@
       dislikeButton.dataset.feedbackAction = "dislike";
       dislikeButton.setAttribute("aria-pressed", "false");
       dislikeButton.innerHTML =
+        "<span class='doomscroll-feedback-action-icon' aria-hidden='true'>-</span>" +
         "<span class='doomscroll-feedback-action-label'>Dislike</span>" +
         "<span class='doomscroll-feedback-action-count' data-feedback-count='dislike'>0</span>";
       dislikeButton.addEventListener("click", () => {
@@ -5298,6 +5302,7 @@
       commentButton.dataset.feedbackAction = "comment";
       commentButton.setAttribute("aria-pressed", "false");
       commentButton.innerHTML =
+        "<span class='doomscroll-feedback-action-icon' aria-hidden='true'>...</span>" +
         "<span class='doomscroll-feedback-action-label'>Comment</span>" +
         "<span class='doomscroll-feedback-action-count' data-feedback-count='comment'>0</span>";
       commentButton.addEventListener("click", () => {
@@ -5306,14 +5311,29 @@
 
       actions.append(likeButton, dislikeButton, commentButton);
 
+      const panel = document.createElement("div");
+      panel.className = "doomscroll-feedback-panel hidden";
+
+      const panelHead = document.createElement("div");
+      panelHead.className = "doomscroll-feedback-panel-head";
+
+      const panelTitle = document.createElement("p");
+      panelTitle.className = "doomscroll-feedback-panel-title";
+      panelTitle.textContent = "Feedback zur Karte";
+
+      const closeButton = document.createElement("button");
+      closeButton.type = "button";
+      closeButton.className = "doomscroll-feedback-close";
+      closeButton.textContent = "Schliessen";
+      closeButton.addEventListener("click", () => {
+        toggleTrainingFeedbackComposer(cardState, false);
+      });
+
+      panelHead.append(panelTitle, closeButton);
+
       const status = document.createElement("p");
       status.className = "doomscroll-feedback-status";
       status.textContent = "Feedback wird vorbereitet ...";
-
-      bar.append(actions, status);
-
-      const panel = document.createElement("div");
-      panel.className = "doomscroll-feedback-panel hidden";
 
       const textareaId = `doomscrollFeedback_${normalizeProgressId(cardState.question.id || "question") || "question"}`;
 
@@ -5343,25 +5363,17 @@
         handleTrainingCommentSubmit(cardState);
       });
 
-      const cancelButton = document.createElement("button");
-      cancelButton.type = "button";
-      cancelButton.className = "doomscroll-feedback-cancel hidden";
-      cancelButton.textContent = "Schliessen";
-      cancelButton.addEventListener("click", () => {
-        toggleTrainingFeedbackComposer(cardState, false);
-      });
-
       const counter = document.createElement("span");
       counter.className = "doomscroll-feedback-counter";
       counter.textContent = `${DOOM_SCROLL_COMMENT_MAX_LENGTH} Zeichen frei`;
 
-      composeActions.append(sendButton, cancelButton, counter);
+      composeActions.append(sendButton, counter);
 
       const comments = document.createElement("ul");
       comments.className = "doomscroll-feedback-comments";
 
-      panel.append(label, textarea, composeActions, comments);
-      section.append(bar, panel);
+      panel.append(panelHead, status, label, textarea, composeActions, comments);
+      section.append(panel, actions);
 
       cardState.feedbackElements = {
         section,
@@ -5375,7 +5387,7 @@
         panel,
         textarea,
         sendButton,
-        cancelButton,
+        closeButton,
         counter,
         comments
       };
@@ -5439,6 +5451,9 @@
         }
       }
       cardState.feedbackCleanup = null;
+      if (cardState.feedbackElements?.section?.isConnected) {
+        cardState.feedbackElements.section.remove();
+      }
       if (cardState.card) {
         cardState.card.__destroy = null;
       }
@@ -5721,8 +5736,14 @@
       cardState.actions = actions;
 
       if (isDoomScrollFeedbackEnabled()) {
+        card.classList.add("has-floating-feedback");
         const feedbackSection = createTrainingFeedbackSection(cardState);
-        mainPanel.appendChild(feedbackSection);
+        const feedbackHost = getTrainingFeedbackHost();
+        if (feedbackHost) {
+          feedbackHost.replaceChildren(feedbackSection);
+        } else {
+          mainPanel.appendChild(feedbackSection);
+        }
       }
 
       card.append(mainPanel);
@@ -5789,6 +5810,9 @@
       workspaceLeft.innerHTML =
         "<section class='doomscroll-shell'>" +
         "<div class='doomscroll-swipe-stage' id='doomscrollQuestionFeed'></div>" +
+        (isDoomScrollFeedbackEnabled()
+          ? "<div class='doomscroll-feedback-host' id='doomscrollFeedbackHost'></div>"
+          : "") +
         "</section>";
 
       syncTrainingSessionCounts();

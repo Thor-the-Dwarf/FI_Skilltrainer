@@ -654,6 +654,11 @@ body {
   min-height: 34rem;
 }
 
+.doomscroll-feedback-host {
+  position: relative;
+  z-index: 41;
+}
+
 .doomscroll-panel {
   width: 100%;
   transition:
@@ -853,42 +858,45 @@ body {
 }
 
 .doomscroll-feedback {
+  position: fixed;
+  right: max(18px, calc(env(safe-area-inset-right, 0px) + 18px));
+  bottom: max(18px, calc(env(safe-area-inset-bottom, 0px) + 18px));
+  z-index: 42;
+  width: min(calc(100vw - 24px), 360px);
   display: grid;
+  justify-items: end;
   gap: 14px;
-  padding: 16px 18px 18px;
-  border-radius: 20px;
-  border: 1px solid hsl(var(--glass-border) / 0.62);
-  background:
-    linear-gradient(135deg, hsl(var(--primary) / 0.08), transparent 58%),
-    hsl(var(--surface-soft) / 0.3);
-}
-
-.doomscroll-feedback-bar {
-  display: grid;
-  gap: 12px;
+  pointer-events: none;
 }
 
 .doomscroll-feedback-actions {
   display: flex;
-  flex-wrap: wrap;
+  flex-direction: column;
+  align-items: end;
   gap: 10px;
+  pointer-events: auto;
 }
 
 .doomscroll-feedback-action {
-  flex: 1 1 150px;
-  min-height: 48px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-  padding: 11px 14px;
-  border-radius: 16px;
+  position: relative;
+  width: 82px;
+  min-height: 72px;
+  display: grid;
+  justify-items: center;
+  align-content: center;
+  gap: 6px;
+  padding: 10px 8px 12px;
+  border-radius: 22px;
   border: 1px solid hsl(var(--glass-border) / 0.72);
   background:
-    linear-gradient(135deg, hsl(var(--primary) / 0.12), transparent 60%),
-    hsl(var(--surface) / 0.34);
+    linear-gradient(160deg, hsl(var(--primary) / 0.18), hsl(var(--neon-secondary) / 0.12)),
+    hsl(var(--surface) / 0.74);
   color: hsl(var(--txt));
+  backdrop-filter: blur(18px);
   cursor: pointer;
+  box-shadow:
+    0 14px 32px rgba(2, 6, 23, 0.3),
+    inset 0 1px 0 hsl(0 0% 100% / 0.06);
   transition:
     transform 180ms ease,
     border-color 180ms ease,
@@ -897,7 +905,7 @@ body {
 }
 
 .doomscroll-feedback-action:hover {
-  transform: translateY(-2px);
+  transform: translateY(-3px) scale(1.01);
   border-color: hsl(var(--primary) / 0.52);
 }
 
@@ -905,28 +913,39 @@ body {
   border-color: hsl(var(--primary));
   box-shadow: 0 0 0 1px hsl(var(--primary) / 0.24);
   background:
-    linear-gradient(135deg, hsl(var(--primary) / 0.24), hsl(var(--neon-secondary) / 0.14)),
-    hsl(var(--surface) / 0.5);
+    linear-gradient(145deg, hsl(var(--primary) / 0.34), hsl(var(--neon-secondary) / 0.2)),
+    hsl(var(--surface) / 0.92);
+}
+
+.doomscroll-feedback-action-icon {
+  font-size: 22px;
+  font-weight: 900;
+  line-height: 1;
 }
 
 .doomscroll-feedback-action-label {
-  font-size: 14px;
+  font-size: 11px;
   font-weight: 800;
-  letter-spacing: 0.04em;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
 }
 
 .doomscroll-feedback-action-count {
-  min-width: 32px;
-  height: 32px;
+  position: absolute;
+  top: -6px;
+  right: -6px;
+  min-width: 30px;
+  height: 30px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   border-radius: 999px;
-  background: hsl(var(--surface) / 0.72);
-  border: 1px solid hsl(var(--glass-border) / 0.72);
-  font-size: 14px;
+  background: linear-gradient(135deg, hsl(210 100% 68%), hsl(191 96% 61%));
+  color: hsl(205 100% 10%);
+  border: 1px solid hsl(210 100% 96% / 0.5);
+  font-size: 13px;
   font-weight: 800;
+  box-shadow: 0 10px 18px rgba(15, 23, 42, 0.24);
 }
 
 .doomscroll-feedback-status {
@@ -941,8 +960,38 @@ body {
 }
 
 .doomscroll-feedback-panel {
+  width: min(calc(100vw - 24px), 360px);
   display: grid;
   gap: 12px;
+  padding: 18px 18px 18px;
+  border-radius: 24px;
+  border: 1px solid hsl(var(--glass-border) / 0.68);
+  background:
+    linear-gradient(145deg, hsl(var(--primary) / 0.16), transparent 60%),
+    hsl(var(--surface) / 0.94);
+  backdrop-filter: blur(18px);
+  box-shadow:
+    0 24px 48px rgba(2, 6, 23, 0.38),
+    inset 0 1px 0 hsl(0 0% 100% / 0.05);
+  pointer-events: auto;
+  max-height: min(58vh, 520px);
+  overflow: auto;
+}
+
+.doomscroll-feedback-panel-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.doomscroll-feedback-panel-title {
+  margin: 0;
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: hsl(var(--txt));
 }
 
 .doomscroll-feedback-label {
@@ -977,7 +1026,7 @@ body {
 }
 
 .doomscroll-feedback-send,
-.doomscroll-feedback-cancel {
+.doomscroll-feedback-close {
   border: 0;
   cursor: pointer;
   transition:
@@ -1001,16 +1050,18 @@ body {
   transform: none;
 }
 
-.doomscroll-feedback-cancel {
-  padding: 11px 14px;
-  border-radius: 14px;
+.doomscroll-feedback-close {
+  padding: 8px 12px;
+  border-radius: 999px;
   border: 1px solid hsl(var(--glass-border) / 0.72);
   background: hsl(var(--surface) / 0.52);
   color: hsl(var(--txt));
+  font-size: 12px;
+  font-weight: 700;
 }
 
 .doomscroll-feedback-send:hover:not(:disabled),
-.doomscroll-feedback-cancel:hover {
+.doomscroll-feedback-close:hover {
   transform: translateY(-2px);
 }
 
@@ -1054,6 +1105,10 @@ body {
   margin: 0;
   font-size: 14px;
   line-height: 1.55;
+}
+
+.doomscroll-question-card.has-floating-feedback {
+  padding-bottom: 116px;
 }
 
 .doomscroll-review-slot {
@@ -3479,8 +3534,7 @@ textarea.mark-bad {
   }
 
   .doomscroll-feedback-actions {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 8px;
   }
 
   .doomscroll-feedback-compose-actions {
@@ -3488,13 +3542,34 @@ textarea.mark-bad {
   }
 
   .doomscroll-feedback-send,
-  .doomscroll-feedback-cancel {
+  .doomscroll-feedback-close {
     width: 100%;
     justify-content: center;
   }
 
   .doomscroll-feedback-counter {
     margin-left: 0;
+  }
+
+  .doomscroll-feedback {
+    right: max(12px, calc(env(safe-area-inset-right, 0px) + 12px));
+    bottom: max(12px, calc(env(safe-area-inset-bottom, 0px) + 12px));
+    width: min(calc(100vw - 18px), 340px);
+  }
+
+  .doomscroll-feedback-panel {
+    width: min(calc(100vw - 18px), 340px);
+    max-height: min(52vh, 420px);
+  }
+
+  .doomscroll-feedback-action {
+    width: 76px;
+    min-height: 68px;
+    border-radius: 20px;
+  }
+
+  .doomscroll-question-card.has-floating-feedback {
+    padding-bottom: 132px;
   }
 
   .question-marker-button {
