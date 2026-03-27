@@ -2,7 +2,9 @@
 
 from __future__ import annotations
 
+import argparse
 from collections import Counter
+from copy import deepcopy
 import json
 import re
 import sqlite3
@@ -25,7 +27,13 @@ SCENARIO_MANIFEST_PATH = SCENARIO_ROOT / "scenario-manifest.json"
 POSSIBLE_SKILLS_PATH = SCENARIO_ROOT / "possible_skills.json"
 QUIZ_DB_PATH = ROOT / "Kurse" / "LF12FIAE-Quiz.db"
 SCHEMA_PATH = ROOT / "QuizMaster" / "sql" / "quiz_db_schema_v1.sql"
-TARGET_QUESTION_COUNT = 200
+BASE_QUESTION_COUNT = 200
+BATCH_SIZE = 100
+DEFAULT_QUESTION_LIMIT = BASE_QUESTION_COUNT + (2 * BATCH_SIZE)
+MAX_STAGE_COUNT = 8
+MAX_QUESTION_LIMIT = BASE_QUESTION_COUNT + (MAX_STAGE_COUNT * BATCH_SIZE)
+TARGET_QUESTION_COUNT = BASE_QUESTION_COUNT + (4 * BATCH_SIZE)
+PROMPT_CHAR_LIMIT = 250
 
 QUESTION_META_BY_TYPE = {
     "single_choice": {
@@ -62,6 +70,10 @@ LF12_VISIBLE_REPLACEMENTS = (
     ("Dokuabschluss", "Dokumentationsabschluss"),
     ("Dokuumfang", "Dokumentationsumfang"),
     ("Doku ", "Dokumentations-"),
+    ("Tickets", "Anfragen"),
+    ("Ticket", "Anfrage"),
+    ("tickets", "anfragen"),
+    ("ticket", "anfrage"),
 )
 
 LF12_POST_TRANSLITERATION_FIXES = (
@@ -115,6 +127,189 @@ NUMBER_INTERPRETATION_PROMPTS = (
     "Welche Aussage deutet das Ergebnis von „{title}“ fachlich richtig?",
     "Welche Formulierung beschreibt bei „{title}“ den berechneten Wert korrekt?",
     "Welche Aussage fasst bei „{title}“ die Bedeutung des Ergebnisses am besten zusammen?",
+)
+
+STAGE2_SINGLE_PROMPTS = (
+    "Bei „{title}“ ist fachlich zu entscheiden: {prompt}",
+    "Fuer „{title}“ soll belastbar geklaert werden: {prompt}",
+    "Im Fall „{title}“ ist zu pruefen: {prompt}",
+    "Rund um „{title}“ kommt es darauf an: {prompt}",
+)
+
+STAGE2_MULTI_PROMPTS = (
+    "Bei „{title}“ soll sauber herausgearbeitet werden: {prompt}",
+    "Fuer „{title}“ ist fachlich zu klaeren: {prompt}",
+    "Im Kontext von „{title}“ kommt es darauf an: {prompt}",
+    "Bei „{title}“ stehen die passenden Punkte im Fokus: {prompt}",
+)
+
+STAGE3_SINGLE_PROMPTS = (
+    "Pruefen Sie bei „{title}“ gezielt: {prompt}",
+    "Klaeren Sie fuer „{title}“: {prompt}",
+    "Leiten Sie fuer „{title}“ fachlich ab: {prompt}",
+    "Fokussieren Sie bei „{title}“ den tragfaehigen Weg: {prompt}",
+)
+
+STAGE3_MULTI_PROMPTS = (
+    "Pruefen Sie bei „{title}“ gezielt: {prompt}",
+    "Klaeren Sie fuer „{title}“: {prompt}",
+    "Leiten Sie fuer „{title}“ fachlich ab: {prompt}",
+    "Fokussieren Sie bei „{title}“ die passenden Punkte: {prompt}",
+)
+
+STAGE4_SINGLE_PROMPTS = (
+    "Ordnen Sie fuer „{title}“ fachlich ein: {prompt}",
+    "Arbeiten Sie bei „{title}“ gezielt heraus: {prompt}",
+    "Beurteilen Sie bei „{title}“ belastbar: {prompt}",
+    "Fassen Sie fuer „{title}“ die tragfaehige Entscheidung: {prompt}",
+)
+
+STAGE4_MULTI_PROMPTS = (
+    "Ordnen Sie fuer „{title}“ fachlich ein: {prompt}",
+    "Arbeiten Sie bei „{title}“ gezielt heraus: {prompt}",
+    "Beurteilen Sie bei „{title}“ belastbar: {prompt}",
+    "Fassen Sie fuer „{title}“ die passenden Punkte: {prompt}",
+)
+
+STAGE5_SINGLE_PROMPTS = (
+    "Fokussieren Sie „{title}“: {prompt}",
+    "Verdichten Sie „{title}“: {prompt}",
+    "Pruefen Sie „{title}“: {prompt}",
+    "Kurzcheck „{title}“: {prompt}",
+)
+
+STAGE5_MULTI_PROMPTS = (
+    "Fokussieren Sie „{title}“: {prompt}",
+    "Verdichten Sie „{title}“: {prompt}",
+    "Pruefen Sie „{title}“: {prompt}",
+    "Kurzcheck „{title}“: {prompt}",
+)
+
+STAGE6_SINGLE_PROMPTS = (
+    "Praxischeck „{title}“: {prompt}",
+    "Transferblick „{title}“: {prompt}",
+    "Einordnung „{title}“: {prompt}",
+    "Kernfrage „{title}“: {prompt}",
+)
+
+STAGE6_MULTI_PROMPTS = (
+    "Praxischeck „{title}“: {prompt}",
+    "Transferblick „{title}“: {prompt}",
+    "Einordnung „{title}“: {prompt}",
+    "Punktecheck „{title}“: {prompt}",
+)
+
+STAGE7_SINGLE_PROMPTS = (
+    "Fokus „{title}“: {prompt}",
+    "Kurzpruefung „{title}“: {prompt}",
+    "Praxisblick „{title}“: {prompt}",
+    "Leitfrage „{title}“: {prompt}",
+)
+
+STAGE7_MULTI_PROMPTS = (
+    "Fokus „{title}“: {prompt}",
+    "Kurzpruefung „{title}“: {prompt}",
+    "Praxisblick „{title}“: {prompt}",
+    "Leitpunkte „{title}“: {prompt}",
+)
+
+STAGE8_SINGLE_PROMPTS = (
+    "Klartext „{title}“: {prompt}",
+    "Fachcheck „{title}“: {prompt}",
+    "Kompakt „{title}“: {prompt}",
+    "Check „{title}“: {prompt}",
+)
+
+STAGE8_MULTI_PROMPTS = (
+    "Klartext „{title}“: {prompt}",
+    "Fachcheck „{title}“: {prompt}",
+    "Kompakt „{title}“: {prompt}",
+    "Punkte „{title}“: {prompt}",
+)
+
+STAGE9_SINGLE_PROMPTS = (
+    "Transfercheck „{title}“: {prompt}",
+    "Praxislinie „{title}“: {prompt}",
+    "Kernpunkt „{title}“: {prompt}",
+    "Schlusscheck „{title}“: {prompt}",
+)
+
+STAGE9_MULTI_PROMPTS = (
+    "Transfercheck „{title}“: {prompt}",
+    "Praxislinie „{title}“: {prompt}",
+    "Kernpunkte „{title}“: {prompt}",
+    "Schlusscheck „{title}“: {prompt}",
+)
+
+COMPACT_STAGE_SINGLE_PROMPTS = (
+    "Fokus „{title}“: {prompt}",
+    "Kern „{title}“: {prompt}",
+    "Linie „{title}“: {prompt}",
+)
+
+COMPACT_STAGE_MULTI_PROMPTS = (
+    "Fokus „{title}“: {prompt}",
+    "Kerne „{title}“: {prompt}",
+    "Linie „{title}“: {prompt}",
+)
+
+STAGE_VARIANT_CONFIGS = (
+    {
+        "stage_label": "stage2",
+        "stage_suffix": "fokus_v2",
+        "prompt_key": "stage2_prompt",
+        "single_templates": STAGE2_SINGLE_PROMPTS,
+        "multi_templates": STAGE2_MULTI_PROMPTS,
+    },
+    {
+        "stage_label": "stage3",
+        "stage_suffix": "transfer_v3",
+        "prompt_key": "stage3_prompt",
+        "single_templates": STAGE3_SINGLE_PROMPTS,
+        "multi_templates": STAGE3_MULTI_PROMPTS,
+    },
+    {
+        "stage_label": "stage4",
+        "stage_suffix": "einordnung_v4",
+        "prompt_key": "stage4_prompt",
+        "single_templates": STAGE4_SINGLE_PROMPTS,
+        "multi_templates": STAGE4_MULTI_PROMPTS,
+    },
+    {
+        "stage_label": "stage5",
+        "stage_suffix": "praxis_v5",
+        "prompt_key": "stage5_prompt",
+        "single_templates": STAGE5_SINGLE_PROMPTS,
+        "multi_templates": STAGE5_MULTI_PROMPTS,
+    },
+    {
+        "stage_label": "stage6",
+        "stage_suffix": "entscheidung_v6",
+        "prompt_key": "stage6_prompt",
+        "single_templates": STAGE6_SINGLE_PROMPTS,
+        "multi_templates": STAGE6_MULTI_PROMPTS,
+    },
+    {
+        "stage_label": "stage7",
+        "stage_suffix": "steuerung_v7",
+        "prompt_key": "stage7_prompt",
+        "single_templates": STAGE7_SINGLE_PROMPTS,
+        "multi_templates": STAGE7_MULTI_PROMPTS,
+    },
+    {
+        "stage_label": "stage8",
+        "stage_suffix": "zwischenstand_v8",
+        "prompt_key": "stage8_prompt",
+        "single_templates": STAGE8_SINGLE_PROMPTS,
+        "multi_templates": STAGE8_MULTI_PROMPTS,
+    },
+    {
+        "stage_label": "stage9",
+        "stage_suffix": "fazit_v9",
+        "prompt_key": "stage9_prompt",
+        "single_templates": STAGE9_SINGLE_PROMPTS,
+        "multi_templates": STAGE9_MULTI_PROMPTS,
+    },
 )
 
 SHORT_TEXT_DISTRACTORS: tuple[tuple[str, str], ...] = (
@@ -1228,6 +1423,174 @@ def reorder_option_specs(source_key: str, option_specs: list[dict[str, Any]]) ->
     return reassemble_options(option_specs, list(order))
 
 
+def build_stage2_prompt(question: dict[str, Any]) -> str:
+    return build_choice_stage_prompt(
+        question=question,
+        single_templates=STAGE2_SINGLE_PROMPTS,
+        multi_templates=STAGE2_MULTI_PROMPTS,
+        prompt_key="stage2_prompt",
+    )
+
+
+def build_choice_stage_prompt(
+    *,
+    question: dict[str, Any],
+    single_templates: tuple[str, ...],
+    multi_templates: tuple[str, ...],
+    prompt_key: str,
+) -> str:
+    title = normalize_visible_text(question.get("title", "diesem Punkt"))
+    prompt_body = normalize_prompt(question.get("prompt", ""))
+    if not prompt_body:
+        prompt_body = "Welche fachliche Entscheidung trägt hier am besten?"
+
+    templates = multi_templates if question["interaction_type"] == "multi" else single_templates
+    prompt = normalize_visible_text(
+        pick_template(f"{question['source_ref']}::{prompt_key}", templates).format(
+            title=title,
+            prompt=prompt_body,
+        )
+    )
+    if len(prompt) <= PROMPT_CHAR_LIMIT:
+        return prompt
+
+    compact_templates = (
+        COMPACT_STAGE_MULTI_PROMPTS if question["interaction_type"] == "multi" else COMPACT_STAGE_SINGLE_PROMPTS
+    )
+    prompt = normalize_visible_text(
+        pick_template(f"{question['source_ref']}::{prompt_key}::compact", compact_templates).format(
+            title=title,
+            prompt=prompt_body,
+        )
+    )
+    if len(prompt) <= PROMPT_CHAR_LIMIT:
+        return prompt
+
+    prompt = normalize_visible_text(f"{title}: {prompt_body}")
+    if len(prompt) <= PROMPT_CHAR_LIMIT:
+        return prompt
+
+    return normalize_visible_text(prompt_body)
+
+
+def reorder_existing_options(source_key: str, options: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    orders = OPTION_ORDER_VARIANTS.get(len(options))
+    if not orders:
+        return [deepcopy(option) for option in options]
+
+    order = orders[sum(ord(char) for char in source_key) % len(orders)]
+    reordered: list[dict[str, Any]] = []
+    for new_sort_order, old_index in enumerate(order, start=1):
+        option = deepcopy(options[old_index])
+        option["sort_order"] = new_sort_order
+        reordered.append(option)
+    return reordered
+
+
+def build_choice_variant_suffix(question: dict[str, Any], stage_suffix: str) -> str:
+    current_suffix = str(question["variant_key"]).split("::")[-1]
+    if current_suffix.endswith("_v1"):
+        current_suffix = current_suffix[:-3]
+    return f"{current_suffix}_{stage_suffix}"
+
+
+def clone_choice_stage_variant(
+    question: dict[str, Any],
+    *,
+    stage_suffix: str,
+    single_templates: tuple[str, ...],
+    multi_templates: tuple[str, ...],
+    prompt_key: str,
+) -> dict[str, Any]:
+    if question["interaction_type"] not in {"single", "multi"}:
+        raise ValueError(f"Stufenvariante ist nur fuer Choice-Fragen gedacht: {question['source_ref']}")
+
+    variant_suffix = build_choice_variant_suffix(question, stage_suffix)
+    cloned = deepcopy(question)
+    cloned["source_ref"] = f"{question['source_ref']}::{variant_suffix}"
+    cloned["variant_key"] = f"{question['concept_key']}::{variant_suffix}"
+    cloned["prompt"] = build_choice_stage_prompt(
+        question=question,
+        single_templates=single_templates,
+        multi_templates=multi_templates,
+        prompt_key=prompt_key,
+    )
+    cloned["options"] = reorder_existing_options(cloned["source_ref"], question["options"])
+    cloned["is_new"] = 0
+    validate_visible_texts([cloned["title"], cloned["prompt"], cloned["context"], cloned["badge_label"]])
+    return cloned
+
+
+def build_choice_candidate_cycle(pools: list[dict[str, Any]]) -> list[tuple[dict[str, Any], dict[str, Any]]]:
+    by_concept: dict[str, list[tuple[dict[str, Any], dict[str, Any]]]] = {}
+
+    for pool in pools:
+        for question in pool["questions"]:
+            if question["interaction_type"] not in {"single", "multi"}:
+                continue
+            by_concept.setdefault(question["concept_key"], []).append((pool, question))
+
+    concept_keys = sorted(by_concept)
+    for concept_key in concept_keys:
+        by_concept[concept_key].sort(key=lambda entry: entry[1]["source_ref"])
+
+    selected: list[tuple[dict[str, Any], dict[str, Any]]] = []
+    round_index = 0
+    while True:
+        progressed = False
+        for concept_key in concept_keys:
+            candidates = by_concept[concept_key]
+            if round_index >= len(candidates):
+                continue
+            selected.append(candidates[round_index])
+            progressed = True
+        if not progressed:
+            break
+        round_index += 1
+
+    return selected
+
+
+def select_stage_candidates(
+    candidate_cycle: list[tuple[dict[str, Any], dict[str, Any]]],
+    *,
+    offset: int,
+    target: int,
+) -> list[tuple[dict[str, Any], dict[str, Any]]]:
+    if not candidate_cycle:
+        raise ValueError("Keine Choice-Kandidaten fuer LF12-Stufenvarianten gefunden.")
+
+    return [candidate_cycle[(offset + index) % len(candidate_cycle)] for index in range(target)]
+
+
+def add_choice_stage_variants(
+    pools: list[dict[str, Any]],
+    *,
+    candidate_cycle: list[tuple[dict[str, Any], dict[str, Any]]],
+    offset: int,
+    target: int,
+    stage_suffix: str,
+    single_templates: tuple[str, ...],
+    multi_templates: tuple[str, ...],
+    prompt_key: str,
+) -> int:
+    _ = pools
+    selected = select_stage_candidates(candidate_cycle, offset=offset, target=target)
+
+    for pool, question in selected:
+        pool["questions"].append(
+            clone_choice_stage_variant(
+                question,
+                stage_suffix=stage_suffix,
+                single_templates=single_templates,
+                multi_templates=multi_templates,
+                prompt_key=prompt_key,
+            )
+        )
+
+    return len(selected)
+
+
 def split_outline_components(outline: Any) -> list[str]:
     text = normalize_visible_text(outline).strip().rstrip(".")
     if not text:
@@ -2201,7 +2564,7 @@ def collapse_single_value(values: list[str]) -> str | None:
     return None
 
 
-def collect_pools() -> list[dict[str, Any]]:
+def collect_pools(target_question_count: int) -> tuple[list[dict[str, Any]], list[tuple[str, int]]]:
     manifest = json.loads(SCENARIO_MANIFEST_PATH.read_text(encoding="utf-8"))
     topic_titles = load_topic_titles()
     pools: list[dict[str, Any]] = []
@@ -2240,13 +2603,62 @@ def collect_pools() -> list[dict[str, Any]]:
             }
         )
 
-    total_questions = sum(len(pool["questions"]) for pool in pools)
-    if total_questions != TARGET_QUESTION_COUNT:
+    base_question_count = sum(len(pool["questions"]) for pool in pools)
+    if base_question_count != BASE_QUESTION_COUNT:
         raise ValueError(
-            f"LF12-Import erzeugt {total_questions} Fragen statt {TARGET_QUESTION_COUNT}."
+            f"LF12-Basisimport erzeugt {base_question_count} Fragen statt {BASE_QUESTION_COUNT}."
         )
 
-    return pools
+    if target_question_count < BASE_QUESTION_COUNT:
+        raise ValueError(
+            f"LF12-Ziel {target_question_count} liegt unter dem Basisstand {BASE_QUESTION_COUNT}."
+        )
+    if target_question_count > MAX_QUESTION_LIMIT:
+        raise ValueError(
+            f"LF12-Ziel {target_question_count} ueberschreitet das Maximalziel {MAX_QUESTION_LIMIT}."
+        )
+
+    candidate_cycle = build_choice_candidate_cycle(pools)
+    stage_results: list[tuple[str, int]] = []
+    additional_needed = target_question_count - base_question_count
+    offset = 0
+
+    for config in STAGE_VARIANT_CONFIGS:
+        if additional_needed <= 0:
+            break
+
+        stage_target = min(BATCH_SIZE, additional_needed)
+        added_questions = add_choice_stage_variants(
+            pools,
+            candidate_cycle=candidate_cycle,
+            offset=offset,
+            target=stage_target,
+            stage_suffix=config["stage_suffix"],
+            single_templates=config["single_templates"],
+            multi_templates=config["multi_templates"],
+            prompt_key=config["prompt_key"],
+        )
+        if added_questions != stage_target:
+            raise ValueError(
+                f"LF12-{config['stage_label']} erzeugt {added_questions} Fragen statt {stage_target}."
+            )
+
+        stage_results.append((config["stage_label"], added_questions))
+        additional_needed -= added_questions
+        offset += BATCH_SIZE
+
+    if additional_needed > 0:
+        raise ValueError(
+            f"LF12 fehlen noch {additional_needed} Fragen bis {target_question_count}."
+        )
+
+    total_questions = sum(len(pool["questions"]) for pool in pools)
+    if total_questions != target_question_count:
+        raise ValueError(
+            f"LF12-Import erzeugt {total_questions} Fragen statt {target_question_count}."
+        )
+
+    return pools, stage_results
 
 
 def load_course_description() -> str:
@@ -2391,7 +2803,7 @@ def rebuild_database(pools: list[dict[str, Any]]) -> tuple[int, int, int, int]:
                         question["badge_label"],
                         question["prompt"],
                         question["title"],
-                        question["context"],
+                        "",
                         question["max_selections"],
                         question["is_new"],
                         "",
@@ -2480,8 +2892,34 @@ def rebuild_database(pools: list[dict[str, Any]]) -> tuple[int, int, int, int]:
     return question_count, option_count, sequence_item_count, accepted_answer_count
 
 
+def get_existing_question_count() -> int:
+    if not QUIZ_DB_PATH.exists():
+        return 0
+    with sqlite3.connect(QUIZ_DB_PATH) as conn:
+        row = conn.execute("SELECT COUNT(*) FROM quiz_question").fetchone()
+    return int(row[0] if row else 0)
+
+
+def parse_args() -> argparse.Namespace:
+    parser = argparse.ArgumentParser(description="Importiert LF12-FIAE-Trainingsfragen in die SQLite-Quizdatenbank.")
+    parser.add_argument("--question-limit", type=int, default=None)
+    return parser.parse_args()
+
+
+def resolve_target_question_count(question_limit: int | None) -> int:
+    if question_limit is not None:
+        return question_limit
+
+    existing_count = get_existing_question_count()
+    if existing_count <= 0:
+        return DEFAULT_QUESTION_LIMIT
+    return min(max(existing_count + BATCH_SIZE, DEFAULT_QUESTION_LIMIT), MAX_QUESTION_LIMIT)
+
+
 def main() -> None:
-    pools = collect_pools()
+    args = parse_args()
+    target_question_count = resolve_target_question_count(args.question_limit)
+    pools, stage_results = collect_pools(target_question_count)
     question_count, option_count, sequence_item_count, accepted_answer_count = rebuild_database(pools)
 
     print(f"db={QUIZ_DB_PATH.relative_to(ROOT)}")
@@ -2490,6 +2928,8 @@ def main() -> None:
     print(f"options={option_count}")
     print(f"sequence_items={sequence_item_count}")
     print(f"accepted_answers={accepted_answer_count}")
+    for stage_label, added_questions in stage_results:
+        print(f"{stage_label}_questions={added_questions}")
 
 
 if __name__ == "__main__":

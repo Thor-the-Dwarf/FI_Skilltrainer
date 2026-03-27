@@ -177,10 +177,6 @@
     const SCENARIO_TREE_CACHE_STORAGE_KEY = "sr_scenario_tree_cache_v1";
     const TRAINING_DECK_CATALOG_STORAGE_KEY = "sr_training_deck_catalog_v1";
     const TRAINING_DECK_CACHE_STORAGE_KEY = "sr_training_deck_cache_v1";
-    const TRAINING_SQLITE_ENABLED_FOLDERS = new Set([
-      "Pruefungsvorbereitung-2-FIAE-Quiz",
-      "QuS2-Quiz"
-    ]);
     const SQLJS_LOCAL_BASE_PATH = "./tool/vendor/sqljs";
     const SQLJS_CDN_BASE_PATH = "https://cdnjs.cloudflare.com/ajax/libs/sql.js/1.13.0";
     const SQLJS_LOCAL_SCRIPT_PATH = `${SQLJS_LOCAL_BASE_PATH}/sql-wasm.min.js`;
@@ -1208,7 +1204,7 @@
 
     function isTrainingSqliteEnabledForFolder(folder = "") {
       const quizFolder = getQuizFolderName(folder);
-      return Boolean(quizFolder && TRAINING_SQLITE_ENABLED_FOLDERS.has(quizFolder));
+      return Boolean(quizFolder);
     }
 
     function hasUnlockedAccess() {
