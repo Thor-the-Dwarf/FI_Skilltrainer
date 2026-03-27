@@ -641,6 +641,8 @@ body {
 }
 
 .doomscroll-shell {
+  --doomscroll-stage-height: calc(100svh - 162px);
+  --doomscroll-panel-min-height: calc(var(--doomscroll-stage-height) - 8px);
   width: min(100%, calc(100vw - 36px));
   max-width: 1560px;
   margin: 0 auto;
@@ -650,8 +652,27 @@ body {
 
 .doomscroll-swipe-stage {
   position: relative;
-  overflow: hidden;
-  min-height: 34rem;
+  display: grid;
+  gap: 18px;
+  min-height: max(34rem, var(--doomscroll-stage-height));
+  max-height: var(--doomscroll-stage-height);
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: 4px 0 30px;
+  scroll-behavior: smooth;
+  scroll-snap-type: y proximity;
+  overscroll-behavior-y: contain;
+}
+
+.doomscroll-swipe-stage::-webkit-scrollbar {
+  width: 12px;
+}
+
+.doomscroll-swipe-stage::-webkit-scrollbar-thumb {
+  border: 3px solid transparent;
+  border-radius: 999px;
+  background: linear-gradient(180deg, hsl(var(--primary) / 0.5), hsl(var(--neon-secondary) / 0.42));
+  background-clip: padding-box;
 }
 
 .doomscroll-feedback-host {
@@ -661,32 +682,38 @@ body {
 
 .doomscroll-panel {
   width: 100%;
+  min-height: max(32rem, var(--doomscroll-panel-min-height));
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
   transition:
-    transform 260ms ease,
-    opacity 260ms ease;
+    transform 320ms ease,
+    opacity 320ms ease,
+    box-shadow 220ms ease,
+    border-color 220ms ease;
 }
 
 .doomscroll-panel.is-entering {
   opacity: 0;
-  transform: translateX(56px) scale(0.985);
+  transform: translateY(72px) scale(0.985);
 }
 
 .doomscroll-panel.is-active {
   opacity: 1;
-  transform: translateX(0) scale(1);
+  transform: translateY(0) scale(1);
 }
 
-.doomscroll-panel.is-leaving {
-  position: absolute;
-  inset: 0;
-  opacity: 0;
-  transform: translateX(-56px) scale(0.985);
-  pointer-events: none;
+.doomscroll-panel.is-current {
+  border-color: hsl(var(--primary) / 0.7);
+  box-shadow:
+    0 18px 42px rgba(2, 6, 23, 0.46),
+    inset 0 0 0 1px hsl(var(--primary) / 0.22),
+    0 0 0 1px hsl(var(--primary) / 0.1);
 }
 
 .doomscroll-question-card,
 .doomscroll-summary-card {
   border-radius: 24px;
+  min-height: max(32rem, var(--doomscroll-panel-min-height));
 }
 
 .doomscroll-question-card {
@@ -3511,8 +3538,15 @@ textarea.mark-bad {
   }
 
   .doomscroll-shell {
+    --doomscroll-stage-height: calc(100svh - 148px);
+    --doomscroll-panel-min-height: calc(var(--doomscroll-stage-height) - 10px);
     width: 100%;
     max-width: 100%;
+  }
+
+  .doomscroll-swipe-stage {
+    gap: 14px;
+    padding-bottom: 24px;
   }
 
   .doomscroll-question-card.has-review {

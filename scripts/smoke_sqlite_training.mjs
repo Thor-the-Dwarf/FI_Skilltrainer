@@ -16,6 +16,7 @@ const accessKey = String(process.env.ACCESS_KEY || "PV2FIAE_03_26").trim();
 const expectedMinCount = Math.max(1, Number(process.env.EXPECTED_MIN_COUNT || 500));
 const enableFeedback = process.env.ENABLE_FEEDBACK === "1";
 const expectFeedback = process.env.EXPECT_FEEDBACK === "1";
+const reportOnly = process.env.REPORT_ONLY === "1";
 const execFileAsync = promisify(execFile);
 
 function sleep(ms) {
@@ -199,13 +200,48 @@ const evaluationExpression = `
       feedbackTextarea.dispatchEvent(new Event("input", { bubbles: true }));
     }
     document.querySelector(".doomscroll-feedback-send")?.click();
-    await new Promise((resolve) => setTimeout(resolve, 350));
+    const feedbackDeadline = Date.now() + 2200;
+    while (Date.now() < feedbackDeadline) {
+      const liveLikePressed = document.querySelector("[data-feedback-action='like']")?.getAttribute("aria-pressed") === "true";
+      const liveCommentCount = Number.parseInt(document.querySelector("[data-feedback-count='comment']")?.textContent?.trim() || "0", 10) || 0;
+      const liveRenderedComments = document.querySelectorAll(".doomscroll-feedback-comment").length;
+      if (liveLikePressed && liveCommentCount >= 1 && liveRenderedComments >= 1) {
+        break;
+      }
+      await new Promise((resolve) => setTimeout(resolve, 120));
+    }
   }
   document.querySelector(".doomscroll-lock-button")?.click();
-  await new Promise((resolve) => setTimeout(resolve, 700));
+  const reviewDeadline = Date.now() + 2200;
+  while (Date.now() < reviewDeadline) {
+    const liveReviewNodeCount = document.querySelectorAll(".doomscroll-review-slot .review-node").length;
+    if (liveReviewNodeCount >= 2) {
+      break;
+    }
+    await new Promise((resolve) => setTimeout(resolve, 120));
+  }
+  const feedbackPanel = document.querySelector(".doomscroll-feedback-panel");
+  const feedbackMode = document.querySelector(".doomscroll-feedback")?.dataset.feedbackMode || "";
+  const feedbackStatus = document.querySelector(".doomscroll-feedback-status")?.textContent?.trim() || "";
+  const likePressed = document.querySelector("[data-feedback-action='like']")?.getAttribute("aria-pressed") === "true";
+  const commentCount = Number.parseInt(document.querySelector("[data-feedback-count='comment']")?.textContent?.trim() || "0", 10) || 0;
+  const renderedCommentCount = document.querySelectorAll(".doomscroll-feedback-comment").length;
+  const feedbackComposerOpen = Boolean(feedbackPanel && !feedbackPanel.classList.contains("hidden"));
+  const firstTitle = document.querySelector(".doomscroll-question-title")?.textContent?.trim() || "";
+  document.querySelector(".doomscroll-secondary-button:not(.hidden)")?.click();
+  await new Promise((resolve) => setTimeout(resolve, 900));
+  const feed = document.getElementById("doomscrollQuestionFeed");
+  const panels = [...document.querySelectorAll(".doomscroll-panel")];
+  const panelTitles = [...document.querySelectorAll(".doomscroll-question-title")]
+    .map((element) => element.textContent?.trim() || "")
+    .filter(Boolean);
+  const scrollTopAfterContinue = Math.round(Number(feed?.scrollTop || 0));
+  if (feed) {
+    feed.scrollTop = 0;
+  }
+  await new Promise((resolve) => setTimeout(resolve, 260));
   const reviewSlot = document.querySelector(".doomscroll-review-slot");
   const actions = document.querySelector(".doomscroll-question-actions");
-  const feedbackPanel = document.querySelector(".doomscroll-feedback-panel");
   return {
     menuCount,
     menuSubtitle,
@@ -213,16 +249,27 @@ const evaluationExpression = `
     title: document.querySelector(".doomscroll-question-title")?.textContent?.trim() || "",
     badge: document.querySelector(".doomscroll-question-mode-pill")?.textContent?.trim() || "",
     optionCount: document.querySelectorAll(".doomscroll-option-button").length,
+    panelCount: panels.length,
+    uniquePanelTitles: panelTitles.length,
+    firstTitle,
+    latestTitle: panelTitles[panelTitles.length - 1] || "",
+    scrollTopAfterContinue,
+    historyReturnedToTop: Number(feed?.scrollTop || 0) < 10,
+    feedClientHeight: Math.round(Number(feed?.clientHeight || 0)),
+    feedScrollHeight: Math.round(Number(feed?.scrollHeight || 0)),
+    secondPanelOffsetTop: Math.round(Number(panels[1]?.offsetTop || 0)),
+    firstPanelHeight: Math.round(Number(panels[0]?.getBoundingClientRect?.().height || 0)),
+    secondPanelHeight: Math.round(Number(panels[1]?.getBoundingClientRect?.().height || 0)),
     reviewNodeCount: document.querySelectorAll(".doomscroll-review-slot .review-node").length,
     hasReviewSplit: document.querySelector(".doomscroll-question-card")?.classList.contains("has-review") || false,
     reviewParentIsMainPanel: reviewSlot?.parentElement?.classList.contains("doomscroll-question-main") || false,
     reviewBeforeActions: Boolean(reviewSlot && actions && reviewSlot.nextElementSibling === actions),
-    feedbackMode: document.querySelector(".doomscroll-feedback")?.dataset.feedbackMode || "",
-    feedbackStatus: document.querySelector(".doomscroll-feedback-status")?.textContent?.trim() || "",
-    likePressed: document.querySelector("[data-feedback-action='like']")?.getAttribute("aria-pressed") === "true",
-    commentCount: Number.parseInt(document.querySelector("[data-feedback-count='comment']")?.textContent?.trim() || "0", 10) || 0,
-    renderedCommentCount: document.querySelectorAll(".doomscroll-feedback-comment").length,
-    feedbackComposerOpen: Boolean(feedbackPanel && !feedbackPanel.classList.contains("hidden"))
+    feedbackMode,
+    feedbackStatus,
+    likePressed,
+    commentCount,
+    renderedCommentCount,
+    feedbackComposerOpen
   };
 })()
 `;
@@ -266,12 +313,31 @@ async function main() {
   await fs.writeFile(outputPath, Buffer.from(String(screenshot.data || ""), "base64"));
   client.close();
 
+  if (reportOnly) {
+    console.log(JSON.stringify({
+      ok: true,
+      deckFolder,
+      accessKey,
+      expectedMinCount,
+      mobilePortrait,
+      result,
+      screenshot: outputPath
+    }, null, 2));
+    return;
+  }
+
   const countValue = Number.parseInt(String(result.menuCount || "").replace(/[^\d]/g, ""), 10);
   if (!Number.isFinite(countValue) || countValue < expectedMinCount) {
     throw new Error(`Erwartete Deck-Groesse nicht erreicht. Menue zeigte: ${result.menuCount || "leer"}`);
   }
   if (!result.title || Number(result.optionCount || 0) < 2) {
     throw new Error("Training startete nicht mit einer nutzbaren Karte.");
+  }
+  if (Number(result.panelCount || 0) < 2 || Number(result.uniquePanelTitles || 0) < 2) {
+    throw new Error("Der DoomScroll-Feed baut keine Verlaufshistorie aus mehreren Karten auf.");
+  }
+  if (Number(result.feedScrollHeight || 0) <= Number(result.feedClientHeight || 0) + 40 || Number(result.secondPanelOffsetTop || 0) < 100) {
+    throw new Error("Der DoomScroll-Feed scrollt nicht wie ein vertikaler Verlauf zwischen alten und neuen Karten.");
   }
   if (expectFeedback) {
     if (!result.feedbackMode || !result.feedbackStatus || !result.likePressed) {

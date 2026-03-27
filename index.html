@@ -2487,6 +2487,10 @@
         exactMatches: 0,
         currentQuestionIndex: 0,
         activeCardState: null,
+        feedCardStates: [],
+        feedViewportCleanup: null,
+        feedViewportSyncRaf: 0,
+        summaryAppended: false,
         openWrongReviewIn: randomIntegerBetween(3, 5),
         openCorrectReviewIn: randomIntegerBetween(12, 16),
         closedCorrectReviewIn: randomIntegerBetween(12, 16),
@@ -2601,6 +2605,7 @@
     }
 
     function clearTrainingSession() {
+      disposeTrainingFeedState(trainingSession);
       activeTrainingDeckKey = "";
       activeTrainingFolder = "";
       trainingSession = null;
@@ -2658,10 +2663,9 @@
       courseMenuButton.title = baseLabel;
     }
 
-    function resetRuntimeState() {
-      disposeTrainingCardState(trainingSession?.activeCardState || null);
-      if (trainingSession) {
-        trainingSession.activeCardState = null;
+    function resetRuntimeState(options = {}) {
+      if (!options.preserveTrainingSession) {
+        disposeTrainingFeedState(trainingSession);
       }
       for (const key of Object.keys(answers)) delete answers[key];
       touchedQuestionIds.clear();
@@ -5000,6 +5004,125 @@
       return document.getElementById("doomscrollFeedbackHost");
     }
 
+    function scrollTrainingPanelIntoView(panel, behavior = "smooth") {
+      if (!panel) return;
+      const feed = getTrainingQuestionFeed();
+      if (!feed || panel.parentElement !== feed) {
+        panel.scrollIntoView({ behavior, block: "start" });
+        return;
+      }
+      feed.scrollTo({
+        top: Math.max(0, Number(panel.offsetTop) || 0),
+        behavior
+      });
+    }
+
+    function mountTrainingFeedbackForCard(cardState) {
+      const host = getTrainingFeedbackHost();
+      if (!host) return;
+      const section = cardState?.feedbackElements?.section || null;
+      host.classList.toggle("hidden", !section);
+      host.setAttribute("aria-hidden", String(!section));
+      if (!section) {
+        if (host.childElementCount) {
+          host.replaceChildren();
+        }
+        return;
+      }
+      if (host.firstElementChild !== section || host.childElementCount !== 1) {
+        host.replaceChildren(section);
+      }
+    }
+
+    function queueTrainingFeedViewportSync() {
+      if (!trainingSession || trainingSession.feedViewportSyncRaf) return;
+      trainingSession.feedViewportSyncRaf = window.requestAnimationFrame(() => {
+        if (!trainingSession) return;
+        trainingSession.feedViewportSyncRaf = 0;
+        syncTrainingFeedViewportState();
+      });
+    }
+
+    function syncTrainingFeedViewportState() {
+      const feed = getTrainingQuestionFeed();
+      if (!feed) {
+        setTrainingActiveCardState(null);
+        return;
+      }
+      const panels = [...feed.querySelectorAll(".doomscroll-panel")];
+      if (!panels.length) {
+        setTrainingActiveCardState(null);
+        return;
+      }
+      const feedRect = feed.getBoundingClientRect();
+      const feedCenter = feedRect.top + (feedRect.height / 2);
+      let bestPanel = null;
+      let bestScore = Number.NEGATIVE_INFINITY;
+
+      panels.forEach((panel) => {
+        const rect = panel.getBoundingClientRect();
+        const visibleHeight = Math.min(feedRect.bottom, rect.bottom) - Math.max(feedRect.top, rect.top);
+        if (visibleHeight <= 0) return;
+        const panelCenter = rect.top + (rect.height / 2);
+        const distancePenalty = Math.abs(panelCenter - feedCenter) * 0.35;
+        const score = visibleHeight - distancePenalty;
+        if (score > bestScore) {
+          bestScore = score;
+          bestPanel = panel;
+        }
+      });
+
+      setTrainingActiveCardState(bestPanel && bestPanel.__cardState ? bestPanel.__cardState : null);
+    }
+
+    function attachTrainingFeedViewportTracking() {
+      const feed = getTrainingQuestionFeed();
+      if (!trainingSession || !feed) return;
+      if (typeof trainingSession.feedViewportCleanup === "function") {
+        try {
+          trainingSession.feedViewportCleanup();
+        } catch {
+        }
+      }
+      const handleScroll = () => {
+        queueTrainingFeedViewportSync();
+      };
+      const handleResize = () => {
+        queueTrainingFeedViewportSync();
+        refreshActiveTrainingReviewLayout();
+      };
+      feed.addEventListener("scroll", handleScroll, { passive: true });
+      window.addEventListener("resize", handleResize);
+      trainingSession.feedViewportCleanup = () => {
+        feed.removeEventListener("scroll", handleScroll);
+        window.removeEventListener("resize", handleResize);
+      };
+      queueTrainingFeedViewportSync();
+    }
+
+    function disposeTrainingFeedState(session = trainingSession) {
+      if (!session) return;
+      if (session.feedViewportSyncRaf) {
+        window.cancelAnimationFrame(session.feedViewportSyncRaf);
+      }
+      session.feedViewportSyncRaf = 0;
+      if (typeof session.feedViewportCleanup === "function") {
+        try {
+          session.feedViewportCleanup();
+        } catch {
+        }
+      }
+      session.feedViewportCleanup = null;
+      const cardStates = Array.isArray(session.feedCardStates) ? [...session.feedCardStates] : [];
+      cardStates.forEach((cardState) => {
+        disposeTrainingCardState(cardState);
+      });
+      session.feedCardStates = [];
+      session.activeCardState = null;
+      session.summaryAppended = false;
+      mountTrainingFeedbackForCard(null);
+    }
+
     function updateTrainingProgressUi() {
       const deck = trainingSession?.deck || getActiveTrainingDeck();
       const total = trainingSession?.questions?.length || deck?.questions?.length || 0;
@@ -5018,37 +5141,35 @@
       }
     }
 
-    function showTrainingPanel(panel) {
+    function showTrainingPanel(panel, options = {}) {
       const feed = getTrainingQuestionFeed();
-      if (!feed || !panel) return;
-      const currentPanel = feed.querySelector(".doomscroll-panel");
+      if (!feed || !panel) return null;
+      const shouldScroll = options.scrollIntoView !== false;
+      const scrollBehavior = options.scrollBehavior || "smooth";
       panel.classList.add("doomscroll-panel");
-
-      if (!currentPanel) {
-        panel.classList.add("is-active");
-        feed.replaceChildren(panel);
-        return;
-      }
-
-      if (typeof currentPanel.__destroy === "function") {
-        try {
-          currentPanel.__destroy();
-        } catch {
+      if (!panel.isConnected) {
+        panel.classList.add("is-entering");
+        feed.appendChild(panel);
+        const panelCardState = panel.__cardState || null;
+        if (panelCardState && trainingSession) {
+          const feedCardStates = Array.isArray(trainingSession.feedCardStates)
+            ? trainingSession.feedCardStates
+            : (trainingSession.feedCardStates = []);
+          if (!feedCardStates.includes(panelCardState)) {
+            feedCardStates.push(panelCardState);
+          }
         }
-        currentPanel.__destroy = null;
+        window.requestAnimationFrame(() => {
+          panel.classList.add("is-active");
+          queueTrainingFeedViewportSync();
+        });
       }
-
-      panel.classList.add("is-entering");
-      feed.appendChild(panel);
-
-      window.requestAnimationFrame(() => {
-        currentPanel.classList.add("is-leaving");
-        panel.classList.add("is-active");
-      });
-
-      currentPanel.addEventListener("transitionend", () => {
-        currentPanel.remove();
-      }, { once: true });
+      if (shouldScroll) {
+        window.requestAnimationFrame(() => {
+          scrollTrainingPanelIntoView(panel, scrollBehavior);
+        });
+      }
+      return panel;
     }
 
     function getTrainingSelectionLabel(question) {
@@ -5073,7 +5194,16 @@
 
     function setTrainingActiveCardState(cardState) {
       if (!trainingSession) return;
+      const previousCardState = trainingSession.activeCardState || null;
+      if (previousCardState?.card && previousCardState !== cardState) {
+        previousCardState.card.classList.remove("is-current");
+      }
       trainingSession.activeCardState = cardState || null;
+      if (cardState?.card) {
+        cardState.card.classList.add("is-current");
+        trainingSession.currentQuestionIndex = Number(cardState.question?.sessionIndex) || trainingSession.currentQuestionIndex;
+      }
+      mountTrainingFeedbackForCard(cardState || null);
     }
 
     function buildTrainingFeedbackEntry(question) {
@@ -5454,6 +5584,17 @@
       if (cardState.feedbackElements?.section?.isConnected) {
         cardState.feedbackElements.section.remove();
       }
+      const feedCardStates = Array.isArray(trainingSession?.feedCardStates) ? trainingSession.feedCardStates : null;
+      if (feedCardStates) {
+        const cardIndex = feedCardStates.indexOf(cardState);
+        if (cardIndex >= 0) {
+          feedCardStates.splice(cardIndex, 1);
+        }
+      }
+      if (trainingSession?.activeCardState === cardState) {
+        trainingSession.activeCardState = null;
+        mountTrainingFeedbackForCard(null);
+      }
       if (cardState.card) {
         cardState.card.__destroy = null;
       }
@@ -5567,17 +5708,39 @@
       setTrainingActiveCardState(cardState);
     }
 
-    function goToNextTrainingStep(cardState) {
-      if (!trainingSession || !cardState || cardState.movedOn) return;
-      cardState.movedOn = true;
-      cardState.continueButton.disabled = true;
+    function ensureTrainingNextPanel(cardState) {
+      if (!trainingSession || !cardState) return null;
+      if (cardState.nextPanel?.isConnected) {
+        return cardState.nextPanel;
+      }
       const nextQuestion = selectNextTrainingQuestion(cardState.question?.id || "");
       if (nextQuestion) {
-        showTrainingQuestionCard(nextQuestion, Number(nextQuestion.sessionIndex) || 0);
-        return;
+        const nextPanel = showTrainingQuestionCard(nextQuestion, Number(nextQuestion.sessionIndex) || 0, {
+          activate: false,
+          scrollIntoView: false
+        });
+        cardState.nextPanel = nextPanel || null;
+        return cardState.nextPanel;
       }
-      trainingSession.activeCardState = null;
-      trainingSession.currentQuestionIndex = trainingSession.questions.length;
+      if (!trainingSession.summaryAppended) {
+        trainingSession.summaryAppended = true;
+        cardState.nextPanel = showTrainingSummaryCard({ scrollIntoView: false });
+        return cardState.nextPanel;
+      }
+      cardState.nextPanel = document.getElementById("doomscrollSummary");
+      return cardState.nextPanel;
+    }
+
+    function goToNextTrainingStep(cardState) {
+      if (!trainingSession || !cardState || !cardState.locked) return;
+      const nextPanel = ensureTrainingNextPanel(cardState);
+      if (!nextPanel) return;
+      cardState.movedOn = true;
+      cardState.continueButton.disabled = false;
+      scrollTrainingPanelIntoView(nextPanel, "smooth");
+      window.setTimeout(() => {
+        queueTrainingFeedViewportSync();
+      }, 260);
     }
 
     function lockTrainingQuestion(cardState) {
@@ -5601,56 +5764,14 @@
       renderTrainingReview(cardState);
       updateTrainingProgressUi();
       setTrainingActiveCardState(cardState);
+      const nextPanel = ensureTrainingNextPanel(cardState);
+      cardState.continueButton.textContent = nextPanel?.id === "doomscrollSummary"
+        ? "Zum Abschluss"
+        : "Weiter nach unten";
     }
 
-    function attachTrainingSwipeGesture(card, cardState) {
-      let touchStartX = 0;
-      let touchStartY = 0;
-      let dragX = 0;
-      let dragging = false;
-
-      function resetDrag() {
-        dragging = false;
-        dragX = 0;
-        card.style.transform = "";
-        card.style.opacity = "";
-      }
-
-      card.addEventListener("touchstart", (event) => {
-        if (!cardState.locked || cardState.movedOn || event.touches.length !== 1) return;
-        touchStartX = event.touches[0].clientX;
-        touchStartY = event.touches[0].clientY;
-        dragX = 0;
-        dragging = true;
-      }, { passive: true });
-
-      card.addEventListener("touchmove", (event) => {
-        if (!dragging || !cardState.locked || cardState.movedOn || event.touches.length !== 1) return;
-        const deltaX = event.touches[0].clientX - touchStartX;
-        const deltaY = event.touches[0].clientY - touchStartY;
-        if (Math.abs(deltaY) > Math.abs(deltaX)) {
-          resetDrag();
-          return;
-        }
-        dragX = Math.max(-180, Math.min(36, deltaX));
-        card.style.transform = `translateX(${dragX}px)`;
-        card.style.opacity = `${1 - Math.min(Math.abs(dragX) / 260, 0.34)}`;
-        event.preventDefault();
-      }, { passive: false });
-
-      card.addEventListener("touchend", () => {
-        if (!dragging) return;
-        const shouldAdvance = dragX < -90 && cardState.locked && !cardState.movedOn;
-        resetDrag();
-        if (shouldAdvance) {
-          goToNextTrainingStep(cardState);
-        }
-      });
-
-      card.addEventListener("touchcancel", resetDrag);
-    }
-
-    function createTrainingQuestionCard(question, index = 0) {
+    function createTrainingQuestionCard(question, index = 0, options = {}) {
+      const shouldActivate = options.activate !== false;
       const card = document.createElement("article");
       card.className = "panel doomscroll-question-card";
       card.dataset.trainingCard = question.id;
@@ -5679,8 +5800,10 @@
         feedbackElements: null,
         feedbackState: null,
         feedbackBusy: false,
-        feedbackComposerOpen: false
+        feedbackComposerOpen: false,
+        nextPanel: null
       };
+      card.__cardState = cardState;
 
       mainPanel.innerHTML =
         "<div class='doomscroll-question-head'>" +
@@ -5738,10 +5861,7 @@
       if (isDoomScrollFeedbackEnabled()) {
         card.classList.add("has-floating-feedback");
         const feedbackSection = createTrainingFeedbackSection(cardState);
-        const feedbackHost = getTrainingFeedbackHost();
-        if (feedbackHost) {
-          feedbackHost.replaceChildren(feedbackSection);
-        } else {
+        if (!getTrainingFeedbackHost()) {
           mainPanel.appendChild(feedbackSection);
         }
       }
@@ -5754,9 +5874,10 @@
 
       cardState.lockButton = lockButton;
       cardState.continueButton = continueButton;
-      trainingSession.currentQuestionIndex = index;
-      setTrainingActiveCardState(cardState);
-      attachTrainingSwipeGesture(card, cardState);
+      if (shouldActivate) {
+        trainingSession.currentQuestionIndex = index;
+        setTrainingActiveCardState(cardState);
+      }
       if (cardState.feedbackElements) {
         activateTrainingFeedback(cardState).catch((error) => {
           updateTrainingFeedbackUi(cardState, {
@@ -5789,11 +5910,19 @@
         const chooserButton = document.getElementById("btnOpenTrainingChooser");
         if (chooserButton) chooserButton.addEventListener("click", () => toggleTrainingMenu(true).catch(() => {}));
       }, 0);
+      card.__panelRole = "summary";
       return card;
     }
 
-    function showTrainingQuestionCard(question, index = 0) {
-      showTrainingPanel(createTrainingQuestionCard(question, index));
+    function showTrainingSummaryCard(options = {}) {
+      return showTrainingPanel(createTrainingSummaryCard(), options);
+    }
+
+    function showTrainingQuestionCard(question, index = 0, options = {}) {
+      return showTrainingPanel(createTrainingQuestionCard(question, index, options), {
+        scrollIntoView: options.scrollIntoView !== false,
+        scrollBehavior: options.scrollBehavior || "smooth"
+      });
     }
 
     function renderDoomScrollQuiz() {
@@ -5811,26 +5940,37 @@
         "<section class='doomscroll-shell'>" +
         "<div class='doomscroll-swipe-stage' id='doomscrollQuestionFeed'></div>" +
         (isDoomScrollFeedbackEnabled()
-          ? "<div class='doomscroll-feedback-host' id='doomscrollFeedbackHost'></div>"
+          ? "<div class='doomscroll-feedback-host hidden' id='doomscrollFeedbackHost'></div>"
           : "") +
         "</section>";
 
+      attachTrainingFeedViewportTracking();
       syncTrainingSessionCounts();
       updateTrainingProgressUi();
       const nextQuestion = selectNextTrainingQuestion();
       if (nextQuestion) {
-        showTrainingQuestionCard(nextQuestion, Number(nextQuestion.sessionIndex) || 0);
+        showTrainingQuestionCard(nextQuestion, Number(nextQuestion.sessionIndex) || 0, {
+          scrollIntoView: false,
+          scrollBehavior: "auto"
+        });
       }
-      window.scrollTo({ top: 0, behavior: "smooth" });
+      const feed = getTrainingQuestionFeed();
+      if (feed) {
+        feed.scrollTo({ top: 0, behavior: "auto" });
+      }
+      window.scrollTo({ top: 0, behavior: "auto" });
+      queueTrainingFeedViewportSync();
     }
 
     async function startTrainingDeck(folder) {
       const safeFolder = sanitizeFolderName(folder);
       try {
+        const previousTrainingSession = trainingSession;
         const deck = await loadTrainingDeck(safeFolder, false);
         if (!deck?.questions?.length) {
           throw new Error(`Fuer ${safeFolder} sind noch keine Trainingsfragen verfuegbar.`);
         }
+        disposeTrainingFeedState(previousTrainingSession);
         activeTrainingDeckKey = deck.deckKey;
         activeTrainingFolder = deck.folder;
         trainingSession = createTrainingSessionFromDeck(deck);
@@ -5839,7 +5979,7 @@
         toggleCourseMenu(false);
         toggleScenarioMenu(false);
         setSubmitBarVisible(false);
-        resetRuntimeState();
+        resetRuntimeState({ preserveTrainingSession: true });
         renderTrainingMenu(getVisibleTrainingDecks());
         renderDoomScrollQuiz();
         if (trainingDeckCacheSourceByFolder[safeFolder] === "cache") {
