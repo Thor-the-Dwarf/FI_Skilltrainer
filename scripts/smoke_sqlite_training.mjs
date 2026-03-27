@@ -14,8 +14,16 @@ const mobilePortrait = process.env.MOBILE_PORTRAIT === "1" || rawArgs.includes("
 const deckFolder = String(process.env.DECK_FOLDER || "Pruefungsvorbereitung-2-FIAE-Scenarien").trim();
 const accessKey = String(process.env.ACCESS_KEY || "PV2FIAE_03_26").trim();
 const expectedMinCount = Math.max(1, Number(process.env.EXPECTED_MIN_COUNT || 500));
-const enableFeedback = process.env.ENABLE_FEEDBACK === "1";
-const expectFeedback = process.env.EXPECT_FEEDBACK === "1";
+const targetHost = (() => {
+  try {
+    return String(new URL(targetUrl).hostname || "").trim().toLowerCase();
+  } catch {
+    return "";
+  }
+})();
+const localTarget = targetHost === "localhost" || targetHost === "127.0.0.1";
+const enableFeedback = process.env.ENABLE_FEEDBACK === "1" || (process.env.ENABLE_FEEDBACK !== "0" && localTarget);
+const expectFeedback = process.env.EXPECT_FEEDBACK === "1" || (process.env.EXPECT_FEEDBACK !== "0" && localTarget);
 const reportOnly = process.env.REPORT_ONLY === "1";
 const execFileAsync = promisify(execFile);
 

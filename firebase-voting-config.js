@@ -1,6 +1,7 @@
 (() => {
   const defaults = {
     enabled: false,
+    enableOnLocalhost: true,
     allowLocalOverride: true,
     mode: "preview",
     sdkVersion: "12.7.0",
@@ -27,6 +28,7 @@
 
   window.__FI_SKILLTRAINER_FIREBASE__ = {
     enabled: typeof current.enabled === "boolean" ? current.enabled : defaults.enabled,
+    enableOnLocalhost: typeof current.enableOnLocalhost === "boolean" ? current.enableOnLocalhost : defaults.enableOnLocalhost,
     allowLocalOverride: typeof current.allowLocalOverride === "boolean" ? current.allowLocalOverride : defaults.allowLocalOverride,
     mode: typeof current.mode === "string" ? current.mode : defaults.mode,
     sdkVersion: typeof current.sdkVersion === "string" ? current.sdkVersion : defaults.sdkVersion,

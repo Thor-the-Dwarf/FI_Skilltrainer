@@ -12,6 +12,7 @@ function readRuntimeConfig() {
   const firestore = source.firestore && typeof source.firestore === "object" ? source.firestore : {};
   return {
     enabled: Boolean(source.enabled),
+    enableOnLocalhost: source.enableOnLocalhost !== false,
     allowLocalOverride: source.allowLocalOverride !== false,
     mode: String(source.mode || "preview").trim().toLowerCase() === "firebase" ? "firebase" : "preview",
     sdkVersion: String(source.sdkVersion || DEFAULT_SDK_VERSION).trim() || DEFAULT_SDK_VERSION,
@@ -44,7 +45,9 @@ function isFeatureLocallyOverridden(config) {
 }
 
 function isFeatureEnabled(config) {
-  return Boolean(config.enabled) || isFeatureLocallyOverridden(config);
+  if (Boolean(config.enabled)) return true;
+  if (Boolean(config.enableOnLocalhost) && isLocalDevelopmentHost()) return true;
+  return isFeatureLocallyOverridden(config);
 }
 
 function isFirebaseConfigComplete(appConfig) {

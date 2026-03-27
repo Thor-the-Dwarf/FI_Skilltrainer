@@ -5237,6 +5237,7 @@
         ? window.__FI_SKILLTRAINER_FIREBASE__
         : {};
       if (config.enabled === true) return true;
+      if (isLocalDevelopmentHost() && config.enableOnLocalhost !== false) return true;
       if (config.allowLocalOverride === false) return false;
       if (!isLocalDevelopmentHost()) return false;
       try {
