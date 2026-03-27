@@ -2490,6 +2490,9 @@
         feedCardStates: [],
         feedViewportCleanup: null,
         feedViewportSyncRaf: 0,
+        feedSnapTimeout: 0,
+        feedSnapLocked: false,
+        feedSnapReleaseTimeout: 0,
         summaryAppended: false,
         openWrongReviewIn: randomIntegerBetween(3, 5),
         openCorrectReviewIn: randomIntegerBetween(12, 16),
@@ -5000,10 +5003,6 @@
       return document.getElementById("doomscrollQuestionFeed");
     }
 
-    function getTrainingFeedbackHost() {
-      return document.getElementById("doomscrollFeedbackHost");
-    }
-
     function scrollTrainingPanelIntoView(panel, behavior = "smooth") {
       if (!panel) return;
       const feed = getTrainingQuestionFeed();
@@ -5011,27 +5010,22 @@
         panel.scrollIntoView({ behavior, block: "start" });
         return;
       }
+      if (trainingSession) {
+        trainingSession.feedSnapLocked = true;
+        if (trainingSession.feedSnapReleaseTimeout) {
+          window.clearTimeout(trainingSession.feedSnapReleaseTimeout);
+        }
+        trainingSession.feedSnapReleaseTimeout = window.setTimeout(() => {
+          if (!trainingSession) return;
+          trainingSession.feedSnapLocked = false;
+          trainingSession.feedSnapReleaseTimeout = 0;
+          queueTrainingFeedViewportSync();
+        }, behavior === "auto" ? 40 : 420);
+      }
       feed.scrollTo({
         top: Math.max(0, Number(panel.offsetTop) || 0),
         behavior
       });
-    }
-
-    function mountTrainingFeedbackForCard(cardState) {
-      const host = getTrainingFeedbackHost();
-      if (!host) return;
-      const section = cardState?.feedbackElements?.section || null;
-      host.classList.toggle("hidden", !section);
-      host.setAttribute("aria-hidden", String(!section));
-      if (!section) {
-        if (host.childElementCount) {
-          host.replaceChildren();
-        }
-        return;
-      }
-      if (host.firstElementChild !== section || host.childElementCount !== 1) {
-        host.replaceChildren(section);
-      }
     }
 
     function queueTrainingFeedViewportSync() {
@@ -5041,6 +5035,38 @@
         trainingSession.feedViewportSyncRaf = 0;
         syncTrainingFeedViewportState();
       });
+    }
+
+    function queueTrainingFeedSnap() {
+      if (!trainingSession) return;
+      if (trainingSession.feedSnapTimeout) {
+        window.clearTimeout(trainingSession.feedSnapTimeout);
+      }
+      trainingSession.feedSnapTimeout = window.setTimeout(() => {
+        if (!trainingSession) return;
+        trainingSession.feedSnapTimeout = 0;
+        snapTrainingFeedToNearestPanel();
+      }, 120);
+    }
+
+    function snapTrainingFeedToNearestPanel(force = false) {
+      const feed = getTrainingQuestionFeed();
+      if (!trainingSession || !feed || trainingSession.feedSnapLocked) return;
+      const panels = [...feed.querySelectorAll(".doomscroll-panel")];
+      if (!panels.length) return;
+      const nearestPanel = panels.reduce((best, panel) => {
+        if (!best) return panel;
+        const bestDistance = Math.abs((Number(best.offsetTop) || 0) - feed.scrollTop);
+        const panelDistance = Math.abs((Number(panel.offsetTop) || 0) - feed.scrollTop);
+        return panelDistance < bestDistance ? panel : best;
+      }, null);
+      if (!nearestPanel) return;
+      const targetTop = Math.max(0, Number(nearestPanel.offsetTop) || 0);
+      if (Math.abs(feed.scrollTop - targetTop) <= 2) {
+        queueTrainingFeedViewportSync();
+        return;
+      }
+      scrollTrainingPanelIntoView(nearestPanel, force ? "auto" : "smooth");
     }
 
     function syncTrainingFeedViewportState() {
@@ -5086,8 +5112,12 @@
       }
       const handleScroll = () => {
         queueTrainingFeedViewportSync();
+        if (!trainingSession?.feedSnapLocked) {
+          queueTrainingFeedSnap();
+        }
       };
       const handleResize = () => {
+        snapTrainingFeedToNearestPanel(true);
         queueTrainingFeedViewportSync();
         refreshActiveTrainingReviewLayout();
       };
@@ -5106,6 +5136,15 @@
         window.cancelAnimationFrame(session.feedViewportSyncRaf);
       }
       session.feedViewportSyncRaf = 0;
+      if (session.feedSnapTimeout) {
+        window.clearTimeout(session.feedSnapTimeout);
+      }
+      session.feedSnapTimeout = 0;
+      if (session.feedSnapReleaseTimeout) {
+        window.clearTimeout(session.feedSnapReleaseTimeout);
+      }
+      session.feedSnapReleaseTimeout = 0;
+      session.feedSnapLocked = false;
       if (typeof session.feedViewportCleanup === "function") {
         try {
           session.feedViewportCleanup();
@@ -5120,7 +5159,6 @@
       session.feedCardStates = [];
       session.activeCardState = null;
       session.summaryAppended = false;
-      mountTrainingFeedbackForCard(null);
     }
 
     function updateTrainingProgressUi() {
@@ -5203,7 +5241,6 @@
         cardState.card.classList.add("is-current");
         trainingSession.currentQuestionIndex = Number(cardState.question?.sessionIndex) || trainingSession.currentQuestionIndex;
       }
-      mountTrainingFeedbackForCard(cardState || null);
     }
 
     function buildTrainingFeedbackEntry(question) {
@@ -5395,8 +5432,11 @@
 
     function createTrainingFeedbackSection(cardState) {
       const section = document.createElement("section");
-      section.className = "doomscroll-feedback";
+      section.className = "doomscroll-feedback hidden";
       section.setAttribute("aria-label", "Fragenfeedback");
+      section.setAttribute("aria-hidden", "true");
+      section.dataset.questionId = String(cardState?.question?.id || "").trim();
+      section.dataset.questionPrompt = String(cardState?.question?.prompt || "").trim();
 
       const actions = document.createElement("div");
       actions.className = "doomscroll-feedback-actions";
@@ -5504,7 +5544,7 @@
       comments.className = "doomscroll-feedback-comments";
 
       panel.append(panelHead, status, label, textarea, composeActions, comments);
-      section.append(panel, actions);
+      section.append(actions, panel);
 
       cardState.feedbackElements = {
         section,
@@ -5543,6 +5583,11 @@
       }
 
       cardState.feedbackEntry = buildTrainingFeedbackEntry(cardState.question);
+      if (cardState.feedbackElements?.section) {
+        cardState.feedbackElements.section.dataset.questionKey = String(cardState.feedbackEntry.questionKey || "").trim();
+        cardState.feedbackElements.section.dataset.deckKey = String(cardState.feedbackEntry.deckKey || "").trim();
+        cardState.feedbackElements.section.dataset.badgeLabel = String(cardState.feedbackEntry.badgeLabel || "").trim();
+      }
       updateTrainingFeedbackUi(cardState, {
         mode: "preview",
         likes: 0,
@@ -5594,7 +5639,6 @@
       }
       if (trainingSession?.activeCardState === cardState) {
         trainingSession.activeCardState = null;
-        mountTrainingFeedbackForCard(null);
       }
       if (cardState.card) {
         cardState.card.__destroy = null;
@@ -5762,6 +5806,10 @@
       cardState.lockButton.textContent = exact ? "Sauber eingeloggt" : "Ausgewertet";
       cardState.continueButton.classList.remove("hidden");
       cardState.continueButton.disabled = false;
+      if (cardState.feedbackElements?.section) {
+        cardState.feedbackElements.section.classList.remove("hidden");
+        cardState.feedbackElements.section.setAttribute("aria-hidden", "false");
+      }
       renderTrainingReview(cardState);
       updateTrainingProgressUi();
       setTrainingActiveCardState(cardState);
@@ -5860,11 +5908,8 @@
       cardState.actions = actions;
 
       if (isDoomScrollFeedbackEnabled()) {
-        card.classList.add("has-floating-feedback");
         const feedbackSection = createTrainingFeedbackSection(cardState);
-        if (!getTrainingFeedbackHost()) {
-          mainPanel.appendChild(feedbackSection);
-        }
+        mainPanel.appendChild(feedbackSection);
       }
 
       card.append(mainPanel);
@@ -5940,9 +5985,6 @@
       workspaceLeft.innerHTML =
         "<section class='doomscroll-shell'>" +
         "<div class='doomscroll-swipe-stage' id='doomscrollQuestionFeed'></div>" +
-        (isDoomScrollFeedbackEnabled()
-          ? "<div class='doomscroll-feedback-host hidden' id='doomscrollFeedbackHost'></div>"
-          : "") +
         "</section>";
 
       attachTrainingFeedViewportTracking();

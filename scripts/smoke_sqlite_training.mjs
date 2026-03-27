@@ -197,6 +197,17 @@ const evaluationExpression = `
   await new Promise((resolve) => setTimeout(resolve, 1200));
   document.querySelector(".doomscroll-option-button")?.click();
   await new Promise((resolve) => setTimeout(resolve, 150));
+  const feedbackVisibleBeforeLock = !document.querySelector(".doomscroll-feedback")?.classList.contains("hidden");
+  document.querySelector(".doomscroll-lock-button")?.click();
+  const reviewDeadline = Date.now() + 2200;
+  while (Date.now() < reviewDeadline) {
+    const liveReviewNodeCount = document.querySelectorAll(".doomscroll-review-slot .review-node").length;
+    if (liveReviewNodeCount >= 2) {
+      break;
+    }
+    await new Promise((resolve) => setTimeout(resolve, 120));
+  }
+  const feedbackVisibleAfterLock = !document.querySelector(".doomscroll-feedback")?.classList.contains("hidden");
   if (${JSON.stringify(enableFeedback)}) {
     document.querySelector("[data-feedback-action='like']")?.click();
     await new Promise((resolve) => setTimeout(resolve, 250));
@@ -218,15 +229,6 @@ const evaluationExpression = `
       }
       await new Promise((resolve) => setTimeout(resolve, 120));
     }
-  }
-  document.querySelector(".doomscroll-lock-button")?.click();
-  const reviewDeadline = Date.now() + 2200;
-  while (Date.now() < reviewDeadline) {
-    const liveReviewNodeCount = document.querySelectorAll(".doomscroll-review-slot .review-node").length;
-    if (liveReviewNodeCount >= 2) {
-      break;
-    }
-    await new Promise((resolve) => setTimeout(resolve, 120));
   }
   const feedbackPanel = document.querySelector(".doomscroll-feedback-panel");
   const feedbackMode = document.querySelector(".doomscroll-feedback")?.dataset.feedbackMode || "";
@@ -272,6 +274,8 @@ const evaluationExpression = `
     hasReviewSplit: document.querySelector(".doomscroll-question-card")?.classList.contains("has-review") || false,
     reviewParentIsMainPanel: reviewSlot?.parentElement?.classList.contains("doomscroll-question-main") || false,
     reviewBeforeActions: Boolean(reviewSlot && actions && reviewSlot.nextElementSibling === actions),
+    feedbackVisibleBeforeLock,
+    feedbackVisibleAfterLock,
     feedbackMode,
     feedbackStatus,
     likePressed,
@@ -344,17 +348,32 @@ async function main() {
   if (Number(result.panelCount || 0) < 2 || Number(result.uniquePanelTitles || 0) < 2) {
     throw new Error("Der DoomScroll-Feed baut keine Verlaufshistorie aus mehreren Karten auf.");
   }
-  if (Number(result.feedScrollHeight || 0) <= Number(result.feedClientHeight || 0) + 40 || Number(result.secondPanelOffsetTop || 0) < 100) {
+  if (
+    Number(result.feedScrollHeight || 0) <= Number(result.feedClientHeight || 0) + 40 ||
+    Math.abs(Number(result.secondPanelOffsetTop || 0) - Number(result.feedClientHeight || 0)) > 80 ||
+    Math.abs(Number(result.firstPanelHeight || 0) - Number(result.feedClientHeight || 0)) > 80
+  ) {
     throw new Error("Der DoomScroll-Feed scrollt nicht wie ein vertikaler Verlauf zwischen alten und neuen Karten.");
   }
   if (expectFeedback) {
+    if (result.feedbackVisibleBeforeLock || !result.feedbackVisibleAfterLock) {
+      throw new Error("Die Feedback-Sektion ist nicht erst nach dem Auswerten der Aufgabe sichtbar.");
+    }
     if (!result.feedbackMode || !result.feedbackStatus || !result.likePressed) {
       throw new Error("Die neue Voting-Leiste im DoomScrollQuiz wurde nicht sauber aktiviert.");
     }
     if (Number(result.commentCount || 0) < 1 || Number(result.renderedCommentCount || 0) < 1 || !result.feedbackComposerOpen) {
       throw new Error("Das Kommentar-System im DoomScrollQuiz reagiert nicht wie erwartet.");
     }
-  } else if (result.feedbackMode || result.feedbackStatus || result.likePressed || Number(result.commentCount || 0) > 0 || Number(result.renderedCommentCount || 0) > 0) {
+  } else if (
+    result.feedbackVisibleBeforeLock ||
+    result.feedbackVisibleAfterLock ||
+    result.feedbackMode ||
+    result.feedbackStatus ||
+    result.likePressed ||
+    Number(result.commentCount || 0) > 0 ||
+    Number(result.renderedCommentCount || 0) > 0
+  ) {
     throw new Error("Das Feedback-Feature ist ohne lokalen Freischalter sichtbar.");
   }
   if (!result.hasReviewSplit || Number(result.reviewNodeCount || 0) < 2) {
