@@ -1,0 +1,129 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "./doomscroll-quiz.schema.json",
+  "title": "DoomScrollQuiz File",
+  "type": "object",
+  "required": ["ticketId", "versionId", "questions"],
+  "properties": {
+    "scenarioFolder": { "type": "string" },
+    "quizFolder": { "type": "string" },
+    "scenarioFile": { "type": "string" },
+    "quizFile": { "type": "string" },
+    "ticketId": { "type": "string" },
+    "versionId": { "type": "string" },
+    "title": { "type": "string" },
+    "description": { "type": "string" },
+    "topics": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "defaultInteractionType": { "$ref": "#/$defs/interactionType" },
+    "defaultQuestionKind": { "$ref": "#/$defs/questionKind" },
+    "defaultBadgeLabel": { "type": "string" },
+    "questions": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "#/$defs/question" }
+    }
+  },
+  "$defs": {
+    "interactionType": {
+      "type": "string",
+      "enum": [
+        "binary",
+        "single",
+        "multi",
+        "best",
+        "sequence",
+        "gap_fill_choice",
+        "gap_fill_text"
+      ]
+    },
+    "questionKind": {
+      "type": "string",
+      "enum": [
+        "aussage_bewerten",
+        "eine_richtige_antwort_waehlen",
+        "mehrere_richtige_antworten_waehlen",
+        "beste_option_im_mini_szenario",
+        "begriff_zu_definition",
+        "definition_zu_begriff",
+        "beispiel_erkennen",
+        "gegenbeispiel_erkennen",
+        "kategorie_zuordnen",
+        "reihenfolge_bestimmen",
+        "fehler_finden",
+        "luecke_fuellen",
+        "vergleich_treffen",
+        "prioritaet_setzen",
+        "ursache_folge_erkennen",
+        "was_fehlt",
+        "passende_massnahme_auswaehlen",
+        "ziel_mittel_zuordnung"
+      ]
+    },
+    "option": {
+      "type": "object",
+      "required": ["id", "text"],
+      "properties": {
+        "id": { "type": "string" },
+        "text": { "type": "string" },
+        "label": { "type": "string" },
+        "correct": { "type": "boolean" },
+        "explanation": { "type": "string" }
+      },
+      "additionalProperties": true
+    },
+    "sequenceItem": {
+      "type": "object",
+      "required": ["id", "text"],
+      "properties": {
+        "id": { "type": "string" },
+        "text": { "type": "string" }
+      },
+      "additionalProperties": true
+    },
+    "question": {
+      "type": "object",
+      "required": ["id", "conceptId", "variantId", "prompt"],
+      "properties": {
+        "id": { "type": "string" },
+        "conceptId": { "type": "string" },
+        "variantId": { "type": "string" },
+        "interactionType": { "$ref": "#/$defs/interactionType" },
+        "questionKind": { "$ref": "#/$defs/questionKind" },
+        "badgeLabel": { "type": "string" },
+        "prompt": { "type": "string" },
+        "instructions": { "type": "string" },
+        "context": { "type": "string" },
+        "isNew": { "type": "boolean" },
+        "maxSelections": { "type": "integer", "minimum": 1 },
+        "options": {
+          "type": "array",
+          "minItems": 2,
+          "items": { "$ref": "#/$defs/option" }
+        },
+        "correctIndex": { "type": "integer", "minimum": 0 },
+        "sentenceTemplate": { "type": "string" },
+        "gapKey": { "type": "string" },
+        "acceptedAnswers": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "type": "string" }
+        },
+        "sequenceItems": {
+          "type": "array",
+          "minItems": 2,
+          "items": { "$ref": "#/$defs/sequenceItem" }
+        },
+        "expectedOrder": {
+          "type": "array",
+          "minItems": 2,
+          "items": { "type": "string" }
+        }
+      },
+      "additionalProperties": true
+    }
+  },
+  "additionalProperties": true
+}

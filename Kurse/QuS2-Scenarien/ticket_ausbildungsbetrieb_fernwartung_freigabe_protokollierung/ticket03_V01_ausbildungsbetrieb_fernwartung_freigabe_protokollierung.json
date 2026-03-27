@@ -1,0 +1,418 @@
+{
+  "scenario": {
+    "company": "SecuBridge Service GmbH",
+    "scale": "IT-Dienstleister fuer Homeoffice, kommunale Arbeitsplaetze und Praxisumgebungen, 95 Mitarbeitende",
+    "context": "Ein externer Wartungspartner benoetigt fuer ein Update am Dokumenten-Gateway eines Buergerbueros einen zeitlich begrenzten Fernzugang.",
+    "mission": "Zugangspfad, Minimalrechte, Freigaben, Wartungsfenster und Abschlussnachweise fuer die Fernwartung sauber festlegen.",
+    "source": {
+      "kind": "Interner Change- und Wartungsauftrag",
+      "reference": "Fernwartung Dokumenten-Gateway, 2026-03-28",
+      "note": "Grundlage sind ein geplantes Wartungsfenster, ein externer Partner, fruehere Schwachstellen bei Zugangsfreigaben und die Pflicht zu nachvollziehbaren Abschlussnachweisen."
+    },
+    "station": {
+      "id": "QUS2-ST-03",
+      "department": "Betrieb, Sicherheit und Zugangskoordination",
+      "profile": "Fernwartung, Minimalrechte, Freigaben, Wartungsfenster und Protokollierung",
+      "constraints": [
+        "Zugang darf nur so breit und so lange offen sein, wie es die freigegebene Arbeit wirklich braucht",
+        "Freigabe, Rueckfallweg und Protokollierung muessen vor dem Wartungsfenster belastbar feststehen",
+        "Aktivierung, Nutzung und Abschaltung des Zugangs muessen klar verantwortet und nachweisbar sein"
+      ]
+    },
+    "customerRequest": {
+      "from": "kommunalbetrieb@secubridge-service.example",
+      "to": "zugangskoordination@ausbildungsbetrieb.example",
+      "subject": "Fernwartungszugang fuer Dokumenten-Gateway am Samstag vorbereiten",
+      "date": "2026-03-26",
+      "body": "Guten Tag,\n\nunser externer Partner Nordwart Systems muss am Samstag zwischen 21:30 und 23:00 ein Zertifikat am Dokumenten-Gateway des Buergerbueros erneuern, den Scan-Dienst neu starten und anschliessend den Verbindungsweg testen.\n\nDas System verarbeitet Termin- und Dokumentenuploads aus dem Buergerbuero. In frueheren Wartungsfenstern hatten wir zu breite VPN-Freigaben, ein gemeinsames Dienstleisterkonto und unvollstaendige Sitzungsprotokolle.\n\nBitte bereiten Sie fuer dieses Fenster einen belastbaren Stand vor: Zugangspfad, Freigaben, Minimalrechte, Rueckfallweg und die Nachweise, die am Montag vorliegen muessen.\n\nViele Gruesse\nKommunalbetrieb"
+    }
+  },
+  "questions": [
+    {
+      "id": "ctx01",
+      "type": "context_card",
+      "title": "Rahmen fuer die Fernwartung",
+      "contentBlocks": [
+        {
+          "type": "text",
+          "text": "SecuBridge betreibt fuer ein Buergerbuero ein Dokumenten-Gateway zwischen Scannern, Terminportal und Fachverfahren. Fuer Samstag ist ein eng begrenztes Wartungsfenster geplant, in dem ein externer Partner nur die freigegebenen Aenderungen am Gateway ausfuehren soll."
+        },
+        {
+          "type": "table",
+          "columns": [
+            "Punkt",
+            "Aktueller Stand"
+          ],
+          "rows": [
+            [
+              "Partner",
+              "Nordwart Systems"
+            ],
+            [
+              "Arbeiten",
+              "Zertifikat erneuern, Scan-Dienst neu starten, Verbindungsweg testen"
+            ],
+            [
+              "Fenster",
+              "Samstag 21:30 bis 23:00"
+            ],
+            [
+              "Fruehere Schwachstellen",
+              "gemeinsames Konto, zu breite Freigaben, unvollstaendige Sitzungsprotokolle"
+            ],
+            [
+              "Erwartung nach dem Fenster",
+              "deaktivierter Zugang, nachvollziehbarer Aenderungsstand und klare Restpunkte"
+            ]
+          ]
+        },
+        {
+          "type": "text",
+          "text": "Gesucht ist kein bequemer Dauerzugang, sondern ein kontrollierter Zugriff mit Minimalrechten, klarer Verantwortung und einem Abschluss, der auch am Montag noch belastbar nachvollzogen werden kann."
+        }
+      ]
+    },
+    {
+      "id": "q01",
+      "type": "single_choice",
+      "title": "Zugangsmodell fuer das Wartungsfenster",
+      "prompt": "Welches Zugangsmodell passt fuer diesen Fall am besten?",
+      "options": [
+        {
+          "text": "Ein dauerhaft aktives gemeinsames Admin-Konto mit allgemeinem VPN-Zugang fuer den Partner.",
+          "rationale": "Das vereinfacht zwar den Zugang, widerspricht aber Minimalrechten, Personenbezug und sauberer Abschaltung."
+        },
+        {
+          "text": "Ein personengebundenes, zeitlich begrenztes Konto mit freigegebenem Zielsystem, aktiver Protokollierung und automatischer Deaktivierung nach dem Fenster.",
+          "rationale": "Dieses Modell verbindet Minimalrechte, Nachvollziehbarkeit und kontrolliertes Ende des Zugangs."
+        },
+        {
+          "text": "Eine spontane Fernwartung ueber Chat-ID und telefonisch genanntes Passwort, solange der Partner bekannt ist.",
+          "rationale": "Das ist weder stabil freigegeben noch sauber dokumentierbar."
+        },
+        {
+          "text": "Ein generisches Dienstleisterkonto, das nach jeder Wartung nur das Passwort wechselt.",
+          "rationale": "Ohne Personenbezug und zeitliche Begrenzung bleibt der Zugang zu grob."
+        }
+      ],
+      "correctIndex": 1,
+      "feedback": {
+        "correct": "Das passende Zugangsmodell wurde sauber erkannt.",
+        "wrong": "Achten Sie auf Personenbezug, Zeitbegrenzung, Zielsystem und nachvollziehbare Abschaltung."
+      },
+      "progressLinks": [
+        "qus2_freigaben_minimalrechte"
+      ]
+    },
+    {
+      "id": "q02",
+      "type": "multi_select",
+      "title": "Vor dem Wartungsfenster festzurren",
+      "prompt": "Welche Punkte muessen vor Start des Fensters geklaert und dokumentiert sein? Mehrere Punkte koennen gleichzeitig zwingend sein.",
+      "options": [
+        {
+          "text": "Welche Arbeiten genau freigegeben sind und welche Systeme betroffen sein duerfen.",
+          "correct": true,
+          "rationale": "Ohne klaren Arbeitsumfang laesst sich Minimalzugriff kaum sinnvoll abgrenzen."
+        },
+        {
+          "text": "Wer intern und extern waehrend des Fensters verantwortlich ansprechbar ist.",
+          "correct": true,
+          "rationale": "Wartung, Rueckfragen und eventueller Abbruch brauchen klar benannte Personen."
+        },
+        {
+          "text": "Wann der Zugang beginnt, spaetestens endet und wie die Deaktivierung ausgelost wird.",
+          "correct": true,
+          "rationale": "Zeitliche Begrenzung ohne definierten Abschaltpunkt bleibt nur ein Vorsatz."
+        },
+        {
+          "text": "Welcher Rueckfallweg gilt, falls Zertifikatstausch oder Dienststart fehlschlagen.",
+          "correct": true,
+          "rationale": "Gerade bei produktiven Wartungen entscheidet der Rueckfallweg ueber die Betriebssicherheit."
+        },
+        {
+          "text": "Dass der Partner im Zweifel selbst entscheiden kann, welche weiteren Systeme noch praktisch waeren.",
+          "correct": false,
+          "rationale": "Der Zugriff darf nicht nach situativem Ermessen ausgeweitet werden."
+        },
+        {
+          "text": "Ob der Partner die Umgebung schon lange kennt und deshalb weniger Vorgaben braucht.",
+          "correct": false,
+          "rationale": "Vertrauen ersetzt weder Minimalrechte noch dokumentierte Freigabe."
+        }
+      ],
+      "feedback": {
+        "correct": "Die tragenden Punkte vor dem Wartungsfenster wurden richtig erkannt.",
+        "wrong": "Achten Sie auf Arbeitsumfang, Verantwortliche, Zeitbegrenzung und Rueckfallweg statt auf bloes Vertrauen."
+      },
+      "progressLinks": [
+        "qus2_freigaben_minimalrechte",
+        "qus2_wartungsfenster_steuern"
+      ]
+    },
+    {
+      "id": "f02",
+      "type": "followup_divider",
+      "title": "Freigabe und Minimalrechte absichern",
+      "from": "sicherheitsteam@secubridge-service.example",
+      "to": "zugangskoordination@ausbildungsbetrieb.example",
+      "subject": "Freigabe und Minimalrechte fuer Samstag festlegen",
+      "date": "2026-03-26",
+      "body": "Hallo zusammen,\n\nbevor ich die Sicherheitsfreigabe gebe, brauche ich eine klare Aussage dazu, welches Konto genutzt wird, auf welche Systeme zugegriffen werden darf, wie der Zugang automatisch endet und wo die Sitzungs- oder Systemprotokolle landen. Bitte haltet Freigabe, Minimalrechte und Protokollierung als zusammenhaengenden Stand fest.\n\nViele Gruesse\nSicherheitsteam"
+    },
+    {
+      "id": "q03",
+      "type": "table_fill",
+      "title": "Vorgaben und Nachweise sauber verbinden",
+      "prompt": "Ergaenzen Sie pro Anforderung die passende Vorgabe und das wichtigste Nachweisartefakt.",
+      "columns": [
+        "Anforderung",
+        "Noetige Vorgabe",
+        "Wichtigstes Nachweisartefakt"
+      ],
+      "rows": [
+        [
+          "Der Partner soll nur am Dokumenten-Gateway arbeiten.",
+          {
+            "key": "rule_row_1",
+            "label": "Gateway / Vorgabe",
+            "expected": "Personengebundenes Konto nur fuer Gateway und freigegebene Admin-Rechte waehrend des Fensters.",
+            "inputType": "select",
+            "placeholder": "Vorgabe waehlen",
+            "options": [
+              "Personengebundenes Konto nur fuer Gateway und freigegebene Admin-Rechte waehrend des Fensters.",
+              "Allgemeines Administratorkonto fuer mehrere Systeme, solange das Fenster kurz bleibt.",
+              "Freie Systemwahl, wenn der Partner die noetige Loesung schneller findet.",
+              "Zugang nur ueber gemeinsamen Team-Account, damit Rueckfragen einfacher sind."
+            ]
+          },
+          {
+            "key": "proof_row_1",
+            "label": "Gateway / Nachweis",
+            "expected": "Freigabeprotokoll mit Konto, Zeitfenster und Zielsystem.",
+            "inputType": "select",
+            "placeholder": "Nachweis waehlen",
+            "options": [
+              "Freigabeprotokoll mit Konto, Zeitfenster und Zielsystem.",
+              "Screenshot des Messenger-Chats mit der Terminbestaetigung.",
+              "Allgemeine Partnerpraesentation mit Leistungsuebersicht.",
+              "Vermerk, dass der Partner die Umgebung bereits kennt."
+            ]
+          }
+        ],
+        [
+          "Die Sitzung soll spaeter nachvollziehbar sein.",
+          {
+            "key": "rule_row_2",
+            "label": "Protokollierung / Vorgabe",
+            "expected": "Sitzungs- oder Befehlsprotokollierung ist aktiviert und der Ablageort vorab festgelegt.",
+            "inputType": "select",
+            "placeholder": "Vorgabe waehlen",
+            "options": [
+              "Sitzungs- oder Befehlsprotokollierung ist aktiviert und der Ablageort vorab festgelegt.",
+              "Der Partner notiert am Ende frei, was aus seiner Sicht passiert ist.",
+              "Protokollierung kann entfallen, wenn die Wartung erfolgreich aussieht.",
+              "Nur der Startzeitpunkt wird erfasst, weitere Schritte sind nicht noetig."
+            ]
+          },
+          {
+            "key": "proof_row_2",
+            "label": "Protokollierung / Nachweis",
+            "expected": "Session-Log oder Systemprotokoll mit Zeitstempeln und Bezug zum Wartungsfenster.",
+            "inputType": "select",
+            "placeholder": "Nachweis waehlen",
+            "options": [
+              "Session-Log oder Systemprotokoll mit Zeitstempeln und Bezug zum Wartungsfenster.",
+              "Kurzinfo im Kalender, dass die Arbeit vermutlich erledigt ist.",
+              "Offene Aufgabenliste ohne Bezug zum Wartungsfenster.",
+              "Nur die Rueckmeldung des Partners per Telefon."
+            ]
+          }
+        ],
+        [
+          "Die Wartung scheitert mitten im Zertifikatswechsel.",
+          {
+            "key": "rule_row_3",
+            "label": "Rueckfall / Vorgabe",
+            "expected": "Rueckfallweg mit verantwortlicher Person, Abbruchkriterium und Wiederherstellungsschritt ist vorab festgelegt.",
+            "inputType": "select",
+            "placeholder": "Vorgabe waehlen",
+            "options": [
+              "Rueckfallweg mit verantwortlicher Person, Abbruchkriterium und Wiederherstellungsschritt ist vorab festgelegt.",
+              "Im Problemfall entscheidet der Partner spontan, was technisch am einfachsten wirkt.",
+              "Ein Rueckfallweg ist nur noetig, wenn bereits beim Start Fehler sichtbar sind.",
+              "Die Rueckfallentscheidung wird erst am Montag nach dem Fenster dokumentiert."
+            ]
+          },
+          {
+            "key": "proof_row_3",
+            "label": "Rueckfall / Nachweis",
+            "expected": "Rollback-Plan mit Ansprechpartner, Go/No-Go-Punkt und Ruecksetzschritten.",
+            "inputType": "select",
+            "placeholder": "Nachweis waehlen",
+            "options": [
+              "Rollback-Plan mit Ansprechpartner, Go/No-Go-Punkt und Ruecksetzschritten.",
+              "Allgemeine Betriebsordnung ohne Systembezug.",
+              "Logo und Kontaktdaten des Partners im Ticket.",
+              "Muendliche Absprache ohne dokumentierte Kriterien."
+            ]
+          }
+        ]
+      ],
+      "feedback": {
+        "correct": "Vorgaben und Nachweise wurden fuer die Fernwartung stimmig verbunden.",
+        "wrong": "Pruefen Sie, welche Regel wirklich Minimalrechte, Protokollierung und Rueckfallweg absichert und welcher Nachweis das spaeter traegt."
+      },
+      "progressLinks": [
+        "qus2_freigaben_minimalrechte",
+        "qus2_abschlussnachweise_fernwartung"
+      ]
+    },
+    {
+      "id": "q04",
+      "type": "match_pairs",
+      "title": "Verantwortungen im Wartungsfenster",
+      "prompt": "Welche Rolle uebernimmt welche erste Aufgabe?",
+      "layout": "table",
+      "columns": [
+        "Rolle",
+        "erste Aufgabe"
+      ],
+      "pairs": [
+        {
+          "key": "role_1",
+          "left": "Zugangskoordination",
+          "right": "Temporaeren Zugang aktivieren, pruefen und nach dem Fenster wieder entziehen"
+        },
+        {
+          "key": "role_2",
+          "left": "Sicherheitsteam",
+          "right": "Minimalrechte, Protokollierung und Sicherheitsfreigabe absichern"
+        },
+        {
+          "key": "role_3",
+          "left": "Kommunalbetrieb",
+          "right": "Betriebliches Zeitfenster, Tests und fachliche Freigabe begleiten"
+        },
+        {
+          "key": "role_4",
+          "left": "Nordwart Systems",
+          "right": "Nur die freigegebenen Arbeiten im Fenster ausfuehren und Befunde rueckmelden"
+        }
+      ],
+      "options": [
+        "Temporaeren Zugang aktivieren, pruefen und nach dem Fenster wieder entziehen",
+        "Minimalrechte, Protokollierung und Sicherheitsfreigabe absichern",
+        "Betriebliches Zeitfenster, Tests und fachliche Freigabe begleiten",
+        "Nur die freigegebenen Arbeiten im Fenster ausfuehren und Befunde rueckmelden"
+      ],
+      "feedback": {
+        "correct": "Die Verantwortungen im Wartungsfenster wurden stimmig zugeordnet.",
+        "wrong": "Achten Sie darauf, wer Zugang steuert, wer Sicherheit freigibt, wer den Betrieb begleitet und wer die Wartung selbst ausfuehrt."
+      },
+      "progressLinks": [
+        "qus2_freigaben_minimalrechte",
+        "qus2_wartungsfenster_steuern"
+      ]
+    },
+    {
+      "id": "q05",
+      "type": "number",
+      "title": "Nettowartungszeit im Fenster",
+      "prompt": "Das Wartungsfenster dauert von 21:30 bis 23:00. 15 Minuten entfallen auf Vorpruefung und 20 Minuten auf Abschlusskontrolle. Wie viele Minuten bleiben fuer die eigentliche Wartung?",
+      "expected": 55,
+      "toleranceAbs": 0,
+      "showExpectedFormula": "90 - 15 - 20 = 55 Minuten",
+      "feedback": {
+        "correct": "Die Nettowartungszeit wurde richtig berechnet.",
+        "wrong": "Bitte zuerst die Gesamtzeit des Fensters bestimmen und danach Vorpruefung sowie Abschlusskontrolle abziehen."
+      },
+      "progressLinks": [
+        "qus2_wartungsfenster_steuern"
+      ]
+    },
+    {
+      "id": "f03",
+      "type": "followup_divider",
+      "title": "Abschluss fuer Montag vorbereiten",
+      "from": "betrieb@secubridge-service.example",
+      "to": "zugangskoordination@ausbildungsbetrieb.example",
+      "subject": "Abschlussnachweis nach der Fernwartung sichern",
+      "date": "2026-03-26",
+      "body": "Hallo zusammen,\n\nfuer Montag brauche ich einen Stand, der nicht nur sagt, dass die Wartung lief, sondern auch zeigt, wer Zugriff hatte, was geaendert wurde, ob das Gateway wieder sauber arbeitet und ob der temporaere Zugang wirklich geschlossen ist. Bitte denkt dabei auch an offene Restpunkte.\n\nViele Gruesse\nBetrieb"
+    },
+    {
+      "id": "q06",
+      "type": "multi_select",
+      "title": "Abschlussnachweise nach der Fernwartung",
+      "prompt": "Welche Unterlagen oder Protokolle muessen nach dem Fenster vorliegen, damit die Wartung sauber abgeschlossen werden kann?",
+      "options": [
+        {
+          "text": "Session- oder Systemlog mit Zeitstempeln fuer den Wartungszeitraum",
+          "correct": true,
+          "rationale": "So bleibt nachvollziehbar, wann und wie der Zugang genutzt wurde."
+        },
+        {
+          "text": "Kurze Aenderungs- und Testergebnisnotiz zum Gateway",
+          "correct": true,
+          "rationale": "Der fachliche und technische Abschluss braucht einen lesbaren Befund."
+        },
+        {
+          "text": "Nachweis, dass der temporaere Zugang deaktiviert oder automatisch abgelaufen ist",
+          "correct": true,
+          "rationale": "Ohne Schliessung des Zugangs bleibt das Hauptrisiko ungeklaert."
+        },
+        {
+          "text": "Offener Punkt oder Restrisiko mit naechster Aktion",
+          "correct": true,
+          "rationale": "Ein sauberer Abschluss verschweigt Restpunkte nicht."
+        },
+        {
+          "text": "Eine kurze Chat-Nachricht mit dem Inhalt 'laeuft wieder'",
+          "correct": false,
+          "rationale": "Das ist ein Signal, aber kein belastbarer Abschlussnachweis."
+        },
+        {
+          "text": "Ein Screenshot mit dem Logo des Partners im Fernwartungstool",
+          "correct": false,
+          "rationale": "Das beweist weder Aenderungsstand noch Abschaltung oder Testlage."
+        }
+      ],
+      "feedback": {
+        "correct": "Die tragenden Abschlussnachweise wurden richtig erkannt.",
+        "wrong": "Achten Sie auf Zugriffsnachweis, Aenderungsbefund, Deaktivierung und sichtbare Restpunkte."
+      },
+      "progressLinks": [
+        "qus2_abschlussnachweise_fernwartung"
+      ]
+    },
+    {
+      "id": "q07",
+      "type": "ordering",
+      "title": "Ablauf des Wartungsfensters",
+      "prompt": "Bringen Sie die Schritte in eine sinnvolle Reihenfolge, damit Zugang, Wartung und Abschluss sauber zusammenpassen.",
+      "items": [
+        "Freigaben, Konto, Zeitfenster und Rueckfallweg final bestaetigen.",
+        "Temporaeren Zugang zum Start des Fensters aktivieren und Protokollierung pruefen.",
+        "Freigegebene Wartungsarbeiten am Gateway durchfuehren.",
+        "Funktionstest, Abschlusskontrolle und Deaktivierung des Zugangs durchziehen.",
+        "Aenderungsstand, Logs und Restpunkte dokumentieren."
+      ],
+      "correctOrder": [
+        "Freigaben, Konto, Zeitfenster und Rueckfallweg final bestaetigen.",
+        "Temporaeren Zugang zum Start des Fensters aktivieren und Protokollierung pruefen.",
+        "Freigegebene Wartungsarbeiten am Gateway durchfuehren.",
+        "Funktionstest, Abschlusskontrolle und Deaktivierung des Zugangs durchziehen.",
+        "Aenderungsstand, Logs und Restpunkte dokumentieren."
+      ],
+      "feedback": {
+        "correct": "Die Reihenfolge fuehrt sauber von der Freigabe ueber die Wartung zum belastbaren Abschluss.",
+        "wrong": "Erst muessen Freigaben und Zugang stehen, dann die Wartung, danach Test, Abschaltung und Dokumentation."
+      },
+      "progressLinks": [
+        "qus2_wartungsfenster_steuern",
+        "qus2_abschlussnachweise_fernwartung"
+      ]
+    }
+  ]
+}

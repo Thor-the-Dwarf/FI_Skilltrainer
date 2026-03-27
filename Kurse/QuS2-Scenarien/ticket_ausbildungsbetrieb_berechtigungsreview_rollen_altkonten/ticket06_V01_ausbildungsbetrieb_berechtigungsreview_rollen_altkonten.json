@@ -1,0 +1,419 @@
+{
+  "scenario": {
+    "company": "SecuBridge Service GmbH",
+    "scale": "IT-Dienstleister fuer Homeoffice, kommunale Arbeitsplaetze und Praxisumgebungen, 95 Mitarbeitende",
+    "context": "Vor dem naechsten externen Audit steht ein turnusmaessiges Berechtigungsreview fuer Serviceportal, Dokumentenablage und Supportpostfach an, weil Rollenwechsel, Vertretungen und Alt-Konten nur teilweise nachgezogen wurden.",
+    "mission": "Review-Umfang, kritische Konten, Ausnahmen, Rechteentzug und Nachweise fuer den aktuellen Berechtigungsstand sauber festlegen.",
+    "source": {
+      "kind": "Interner Review- und Berechtigungsauftrag",
+      "reference": "Quartalsreview Zugriffe Serviceportal, 2026-03-31",
+      "note": "Grundlage sind aktuelle Rollenwechsel im Support, zeitweise Vertretungen, noch aktive Alt-Konten und die Anforderung, den freigegebenen Zugriff je System nachvollziehbar zu bestaetigen."
+    },
+    "station": {
+      "id": "QUS2-ST-06",
+      "department": "Identity, Betrieb und Fachkoordination",
+      "profile": "Berechtigungsreview, Rollenwechsel, Ausnahmen und Nachweise",
+      "constraints": [
+        "Personenbezug, Rollenbedarf und Systemzugriff muessen je Konto bestaetigt, angepasst oder entzogen werden",
+        "Vertretungen und Ausnahmen duerfen nur mit Grund, Enddatum oder Wiedervorlage bestehen bleiben",
+        "Fuer Audit und Teamleitung wird ein lesbarer Abschluss mit Entscheidungen, Umsetzung und Restpunkten benoetigt"
+      ]
+    },
+    "customerRequest": {
+      "from": "fachbereich@secubridge-service.example",
+      "to": "zugriffsreview@ausbildungsbetrieb.example",
+      "subject": "Berechtigungsreview fuer Serviceportal und DMS bis Freitag vorbereiten",
+      "date": "2026-03-26",
+      "body": "Guten Tag,\n\nvor dem externen Audit muessen wir den Zugriffsstand fuer Serviceportal, Dokumentenablage und Supportpostfach einmal sauber geradeziehen. In den letzten Wochen gab es Rollenwechsel im Support, mehrere Vertretungen ohne klares Enddatum und noch aktive Konten aus einem ausgelaufenen Partnerprojekt.\n\nBitte bereiten Sie bis Freitag einen belastbaren Stand vor: Welche Konten muessen sofort geklaert werden, welche Berechtigungen koennen entzogen oder herabgestuft werden, welche Ausnahmen sind fachlich begruendet und welche Nachweise legen wir dazu ab.\n\nViele Gruesse\nFachbereich"
+    }
+  },
+  "questions": [
+    {
+      "id": "ctx01",
+      "type": "context_card",
+      "title": "Rahmen fuer das Berechtigungsreview",
+      "contentBlocks": [
+        {
+          "type": "text",
+          "text": "SecuBridge prueft vor dem Audit den aktuellen Zugriffsstand fuer mehrere Betriebsbereiche. Der kritische Punkt ist nicht die Menge der Konten, sondern die Frage, ob aktuelle Rolle, fachlicher Bedarf und technische Berechtigung pro Person noch wirklich zusammenpassen."
+        },
+        {
+          "type": "table",
+          "columns": [
+            "Bereich",
+            "Aktueller Befund"
+          ],
+          "rows": [
+            [
+              "Serviceportal",
+              "Rollenwechsel im Support, alte Profile teils noch parallel aktiv"
+            ],
+            [
+              "Dokumentenablage",
+              "ehemalige Projektkonten und ausgelaufene Partnerzugriffe noch sichtbar"
+            ],
+            [
+              "Supportpostfach",
+              "Leserechte nach Vertretungen nicht vollstaendig bereinigt"
+            ],
+            [
+              "Admin-Zugang Dokumenten-Gateway",
+              "erhoehte Rechte aus frueheren Wartungen stehen zur Pruefung"
+            ],
+            [
+              "Erwartung fuer Freitag",
+              "je Konto oder Zugriff eine klare Entscheidung mit Nachweis und Restpunkt"
+            ]
+          ]
+        },
+        {
+          "type": "text",
+          "text": "Gesucht ist kein grosser Listenexport, sondern ein Review, das Standardfaelle, Sonderrechte, Ausnahmen und technische Umsetzung in einem nachvollziehbaren Arbeitsstand zusammenzieht."
+        }
+      ]
+    },
+    {
+      "id": "q01",
+      "type": "multi_select",
+      "title": "Prioritaeten im Review",
+      "prompt": "Welche Konten oder Situationen muessen im Berechtigungsreview zuerst geklaert werden? Mehrere Punkte koennen gleichzeitig kritisch sein.",
+      "options": [
+        {
+          "text": "Konten ausgeschiedener Personen oder ausgelaufener Projektpartner, die noch aktiv sind.",
+          "correct": true,
+          "rationale": "Gerade Alt-Konten ohne aktuellen Bedarf gehoeren zu den ersten Review-Faellen."
+        },
+        {
+          "text": "Vertretungs- oder Notfallrechte ohne Enddatum oder klare Freigabe.",
+          "correct": true,
+          "rationale": "Befristete Zusatzrechte verlieren ohne Begrenzung schnell ihre Legitimation."
+        },
+        {
+          "text": "Rollenwechsel, bei denen alte und neue Berechtigungen parallel bestehen geblieben sind.",
+          "correct": true,
+          "rationale": "Parallele Alt- und Neurollen vergroessern den Zugriff oft unbemerkt."
+        },
+        {
+          "text": "Gemeinsame oder nicht mehr eindeutig zuordenbare Konten im Supportumfeld.",
+          "correct": true,
+          "rationale": "Ohne sauberen Personenbezug bleibt spaeter keine belastbare Verantwortung uebrig."
+        },
+        {
+          "text": "Konten im unveraenderten Standardprofil sollten zuerst vertieft geprueft werden; Sonderrechte und Alt-Konten koennen danach folgen.",
+          "correct": false,
+          "rationale": "Prioritaet haben hier auffaellige oder ueberbreite Berechtigungen und nicht die ruhigen Standardfaelle."
+        },
+        {
+          "text": "Ein gemeinsames Postfach kann im Review entfallen, solange mindestens eine fachlich zustaendige Person Zugriff hat.",
+          "correct": false,
+          "rationale": "Auch gemeinsame Zugriffe brauchen eine klare und aktuelle Berechtigungslogik."
+        }
+      ],
+      "feedback": {
+        "correct": "Die kritischen Faelle fuer den Review-Start wurden passend priorisiert.",
+        "wrong": "Achten Sie besonders auf Alt-Konten, Sonderrechte, Rollenwechsel und fehlenden Personenbezug."
+      },
+      "progressLinks": [
+        "qus2_berechtigungsreview_und_scope"
+      ]
+    },
+    {
+      "id": "q02",
+      "type": "single_choice",
+      "title": "Review-Ansatz fuer Freitag",
+      "prompt": "Woran erkennt man hier am ehesten ein belastbares Berechtigungsreview?",
+      "options": [
+        {
+          "text": "Alle Rechte einmal exportieren und die Liste als Nachweis ablegen; fachliche Bestaetigungen koennen spaeter folgen.",
+          "rationale": "Ein Export allein zeigt weder aktuellen Bedarf noch die getroffene Entscheidung je Konto."
+        },
+        {
+          "text": "Je System Konten, aktuelle Rolle, tatsaechlichen Bedarf, Sonderrechte und Ausnahmen gegeneinander pruefen und die Entscheidung pro Zugriff dokumentieren.",
+          "rationale": "Genau so werden technische Liste, Fachbedarf und belastbare Entscheidung miteinander verbunden."
+        },
+        {
+          "text": "Nur Admin- und Partnerkonten betrachten, weil Standardrollen fuer das Audit meist keine Rolle spielen.",
+          "rationale": "Auch Standardrollen gehoeren zum Review, wenn Rolle und Bedarf geprueft werden muessen."
+        },
+        {
+          "text": "Vorsorglich erst alle Konten deaktivieren und danach im Tagesgeschaeft klaeren, wer wieder Zugriff bekommen soll.",
+          "rationale": "Das erzeugt unkontrollierte Stoerung statt eines gesteuerten und nachvollziehbaren Reviews."
+        }
+      ],
+      "correctIndex": 1,
+      "feedback": {
+        "correct": "Der belastbare Review-Ansatz wurde richtig erkannt.",
+        "wrong": "Gesucht ist ein Vorgehen, das Systemliste, Rollenbedarf, Sonderrechte und dokumentierte Entscheidungen zusammenhaelt."
+      },
+      "progressLinks": [
+        "qus2_berechtigungsreview_und_scope",
+        "qus2_rollenrezertifizierung_und_ausnahmen"
+      ]
+    },
+    {
+      "id": "f02",
+      "type": "followup_divider",
+      "title": "Systeme, Rollen und Nachweise sauber abgleichen",
+      "from": "zugangssteuerung@secubridge-service.example",
+      "to": "zugriffsreview@ausbildungsbetrieb.example",
+      "subject": "Review-Matrix fuer kritische Bereiche aufbauen",
+      "date": "2026-03-26",
+      "body": "Hallo zusammen,\n\nbevor ich den Stand an die Teamleitung gebe, brauche ich pro Bereich eine klare Aussage dazu, was genau geprueft wird und welcher erste Nachweis die Entscheidung spaeter tragen soll. Bitte zieht Serviceportal, Dokumentenablage und erhoehte Zugriffe nicht getrennt auseinander, sondern in einem gemeinsamen Review-Bild zusammen.\n\nViele Gruesse\nZugangssteuerung"
+    },
+    {
+      "id": "q03",
+      "type": "table_fill",
+      "title": "Prueffokus und Nachweis je Bereich",
+      "prompt": "Ergaenzen Sie pro Bereich den wichtigsten Prueffokus und den ersten passenden Nachweis.",
+      "columns": [
+        "Bereich",
+        "Wichtigster Prueffokus",
+        "Erster passender Nachweis"
+      ],
+      "rows": [
+        [
+          "Serviceportal Sachbearbeitung",
+          {
+            "key": "focus_row_1",
+            "label": "Serviceportal / Prueffokus",
+            "expected": "Aktuelle Teamrolle, noetiger Zugriffsumfang und verbliebene Altrechte nach Rollenwechsel pruefen.",
+            "inputType": "select",
+            "placeholder": "Prueffokus waehlen",
+            "options": [
+              "Aktuelle Teamrolle, noetiger Zugriffsumfang und verbliebene Altrechte nach Rollenwechsel pruefen.",
+              "Nur kontrollieren, ob das Passwort kuerzlich geaendert wurde.",
+              "Die letzten Buergeranliegen nach Dringlichkeit sortieren.",
+              "Nur zaehlen, wie lange das Konto bereits existiert."
+            ]
+          },
+          {
+            "key": "proof_row_1",
+            "label": "Serviceportal / Nachweis",
+            "expected": "Rollenexport mit Kontoinhaber, aktuellem Profil und fachlicher Bestaetigung der Teamleitung.",
+            "inputType": "select",
+            "placeholder": "Nachweis waehlen",
+            "options": [
+              "Rollenexport mit Kontoinhaber, aktuellem Profil und fachlicher Bestaetigung der Teamleitung.",
+              "Screenshot eines Chatverlaufs ueber spontane Vertretungen.",
+              "Kalendereintrag zur Teamrunde ohne Kontobezug.",
+              "Allgemeine Organigrammfolie ohne Berechtigungsstand."
+            ]
+          }
+        ],
+        [
+          "Dokumentenablage Projektordner",
+          {
+            "key": "focus_row_2",
+            "label": "Dokumentenablage / Prueffokus",
+            "expected": "Ehemalige Projektkonten, ausgelaufene Partnerzugriffe und befristete Vertretungen gegen den aktuellen Projektstand pruefen.",
+            "inputType": "select",
+            "placeholder": "Prueffokus waehlen",
+            "options": [
+              "Ehemalige Projektkonten, ausgelaufene Partnerzugriffe und befristete Vertretungen gegen den aktuellen Projektstand pruefen.",
+              "Nur den belegten Speicherplatz der Ordner vergleichen.",
+              "Ausschliesslich die Dateinamen der letzten Woche sichten.",
+              "Die Ordnerfarbe der wichtigsten Projekte vereinheitlichen."
+            ]
+          },
+          {
+            "key": "proof_row_2",
+            "label": "Dokumentenablage / Nachweis",
+            "expected": "Berechtigungsliste des Ordners mit Abgleich zur Projektbesetzung und markierten Alt-Konten.",
+            "inputType": "select",
+            "placeholder": "Nachweis waehlen",
+            "options": [
+              "Berechtigungsliste des Ordners mit Abgleich zur Projektbesetzung und markierten Alt-Konten.",
+              "Nur eine Dateiuebersicht mit Sortierung nach Datum.",
+              "Ein Foto vom Whiteboard der letzten Projektbesprechung.",
+              "Eine allgemeine Liste aller offenen Aufgaben ohne Ordnungsbezug."
+            ]
+          }
+        ],
+        [
+          "Admin-Zugang Dokumenten-Gateway",
+          {
+            "key": "focus_row_3",
+            "label": "Gateway / Prueffokus",
+            "expected": "Erhoehte Rechte duerfen nur personengebunden, freigegeben und zeitlich begrenzt bestehen.",
+            "inputType": "select",
+            "placeholder": "Prueffokus waehlen",
+            "options": [
+              "Erhoehte Rechte duerfen nur personengebunden, freigegeben und zeitlich begrenzt bestehen.",
+              "Es reicht, wenn die Konten technisch noch funktionsfaehig sind.",
+              "Entscheidend ist vor allem, ob die letzte Wartung erfolgreich wirkte.",
+              "Die Anzahl aller Administratoren sollte ueber mehrere Monate konstant bleiben."
+            ]
+          },
+          {
+            "key": "proof_row_3",
+            "label": "Gateway / Nachweis",
+            "expected": "Freigabedokument oder Ticket mit Kontoname, Zweck, Zeitgrenze und technischer Umsetzung.",
+            "inputType": "select",
+            "placeholder": "Nachweis waehlen",
+            "options": [
+              "Freigabedokument oder Ticket mit Kontoname, Zweck, Zeitgrenze und technischer Umsetzung.",
+              "Kurzinfo, dass der Partner schon laenger mit dem System arbeitet.",
+              "Screenshot der Startseite des Gateways.",
+              "Allgemeine Wartungsplanung ohne Bezug zu einzelnen Konten."
+            ]
+          }
+        ]
+      ],
+      "feedback": {
+        "correct": "Prueffokus und erster Nachweis wurden je Bereich stimmig verbunden.",
+        "wrong": "Pruefen Sie, welcher Fokus wirklich Berechtigungen klaert und welcher Nachweis mehr ist als nur Umfeld oder Gewohnheit."
+      },
+      "progressLinks": [
+        "qus2_berechtigungsreview_und_scope",
+        "qus2_rollenrezertifizierung_und_ausnahmen"
+      ]
+    },
+    {
+      "id": "q04",
+      "type": "match_pairs",
+      "title": "Zustaendigkeiten im Review",
+      "prompt": "Welche Rolle uebernimmt welche erste Verantwortung im Berechtigungsreview?",
+      "layout": "table",
+      "columns": [
+        "Rolle",
+        "erste Verantwortung"
+      ],
+      "pairs": [
+        {
+          "key": "role_1",
+          "left": "Teamleitung Support",
+          "right": "Aktuellen Fachbedarf und benoetigte Standardrollen pro Person bestaetigen"
+        },
+        {
+          "key": "role_2",
+          "left": "IAM-Betrieb",
+          "right": "Konto- und Rollenexporte vorbereiten und Entzug oder Herabstufung technisch umsetzen"
+        },
+        {
+          "key": "role_3",
+          "left": "Informationssicherheit",
+          "right": "Sonderrechte, Partnerzugriffe und gemeinsame Konten mit hohem Risiko bewerten"
+        },
+        {
+          "key": "role_4",
+          "left": "Qualitaetssicherung",
+          "right": "Entscheidungen, Ausnahmen, Restpunkte und Nachweisablage im Abschluss zusammenziehen"
+        }
+      ],
+      "options": [
+        "Aktuellen Fachbedarf und benoetigte Standardrollen pro Person bestaetigen",
+        "Konto- und Rollenexporte vorbereiten und Entzug oder Herabstufung technisch umsetzen",
+        "Sonderrechte, Partnerzugriffe und gemeinsame Konten mit hohem Risiko bewerten",
+        "Entscheidungen, Ausnahmen, Restpunkte und Nachweisablage im Abschluss zusammenziehen"
+      ],
+      "feedback": {
+        "correct": "Die Rollen wurden mit ihren ersten Verantwortungen passend verbunden.",
+        "wrong": "Achten Sie darauf, wer Bedarf bestaetigt, wer technisch umsetzt, wer Risiken bewertet und wer den Abschluss zieht."
+      },
+      "progressLinks": [
+        "qus2_rollenrezertifizierung_und_ausnahmen"
+      ]
+    },
+    {
+      "id": "q05",
+      "type": "number",
+      "title": "Direktmassnahmen im Zahlenbild",
+      "prompt": "Im Serviceportal werden 41 aktive Konten geprueft. 28 bleiben unveraendert, 4 bleiben als befristete Vertretung mit Enddatum bestehen und 3 muessen fachlich noch geklaert werden. Wie viele Konten koennen im Review direkt entzogen oder herabgestuft werden?",
+      "expected": 6,
+      "toleranceAbs": 0,
+      "showExpectedFormula": "41 - 28 - 4 - 3 = 6 Konten",
+      "feedback": {
+        "correct": "Die direkt umsetzbare Menge wurde korrekt berechnet.",
+        "wrong": "Bitte von allen aktiven Konten die bestaetigten, befristet weitergefuehrten und noch offenen Faelle abziehen."
+      },
+      "progressLinks": [
+        "qus2_rechteentzug_und_nachweise"
+      ]
+    },
+    {
+      "id": "f03",
+      "type": "followup_divider",
+      "title": "Abschluss fuer Audit und Teamleitung vorbereiten",
+      "from": "revision@secubridge-service.example",
+      "to": "zugriffsreview@ausbildungsbetrieb.example",
+      "subject": "Berechtigungsreview bis Freitag belastbar abschliessen",
+      "date": "2026-03-26",
+      "body": "Hallo zusammen,\n\nfuer das Audit brauche ich keinen grossen Rechteexport, sondern einen lesbaren Abschluss dazu, welche Konten bestaetigt, entzogen, herabgestuft oder als Ausnahme befristet weitergefuehrt werden. Bitte macht im Stand auch sichtbar, welche offenen Punkte geblieben sind und wann diese erneut geprueft werden.\n\nViele Gruesse\nRevision"
+    },
+    {
+      "id": "q06",
+      "type": "multi_select",
+      "title": "Abschlussunterlagen fuer Audit",
+      "prompt": "Welche Unterlagen oder Ergebnisse muessen nach dem Berechtigungsreview vorliegen, damit Audit und Teamleitung den Stand nachvollziehen koennen?",
+      "options": [
+        {
+          "text": "Eine Reviewliste je Konto oder Zugriff mit Entscheidung und kurzer Begruendung.",
+          "correct": true,
+          "rationale": "Ohne dokumentierte Entscheidung bleibt der Stand spaeter nicht nachvollziehbar."
+        },
+        {
+          "text": "Ein Nachweis, welche Entzuege oder Herabstufungen technisch bereits umgesetzt wurden.",
+          "correct": true,
+          "rationale": "Der Abschluss muss Umsetzung zeigen und nicht nur Absicht."
+        },
+        {
+          "text": "Eine Ausnahmenliste mit Grund, verantwortlicher Person und Enddatum oder Wiedervorlage.",
+          "correct": true,
+          "rationale": "Befristete Abweichungen duerfen nicht still in den Regelbetrieb rutschen."
+        },
+        {
+          "text": "Offene Restpunkte mit Verantwortlichen und erneutem Prueftermin.",
+          "correct": true,
+          "rationale": "Gerade offene Faelle muessen fuer Audit und Leitung sichtbar bleiben."
+        },
+        {
+          "text": "Ein kompletter Screenshot aller Benutzerlisten ohne weitere Bewertung.",
+          "correct": false,
+          "rationale": "Ohne Entscheidung, Umsetzung und Begruendung fehlt dem Screenshot die Aussagekraft."
+        },
+        {
+          "text": "Eine kurze Mail, dass der Zugriff jetzt insgesamt sauber aussieht.",
+          "correct": false,
+          "rationale": "Ein Eindruck ersetzt keinen belastbaren Review-Abschluss."
+        }
+      ],
+      "feedback": {
+        "correct": "Die noetigen Abschlussunterlagen wurden vollstaendig erkannt.",
+        "wrong": "Achten Sie auf Entscheidungen, technische Umsetzung, Ausnahmen und offene Restpunkte statt auf reine Listen oder Eindruecke."
+      },
+      "progressLinks": [
+        "qus2_rollenrezertifizierung_und_ausnahmen",
+        "qus2_rechteentzug_und_nachweise"
+      ]
+    },
+    {
+      "id": "q07",
+      "type": "ordering",
+      "title": "Sauberer Review-Ablauf",
+      "prompt": "Bringen Sie die Schritte in eine sinnvolle Reihenfolge, damit das Berechtigungsreview belastbar abgeschlossen werden kann.",
+      "items": [
+        "Betroffene Systeme, Kontotypen und Referenzlisten fuer den Review zusammenziehen.",
+        "Auffaellige Konten, Rollenwechsel, Partnerzugriffe und Ausnahmen fachlich pruefen.",
+        "Je Konto Entzug, Herabstufung, Bestaetigung oder befristeten Beibehalt entscheiden.",
+        "Technische Umsetzung und Nachweisablage kontrollieren.",
+        "Abschluss mit Restpunkten und Wiedervorlage fuer Audit und Teamleitung freigeben."
+      ],
+      "correctOrder": [
+        "Betroffene Systeme, Kontotypen und Referenzlisten fuer den Review zusammenziehen.",
+        "Auffaellige Konten, Rollenwechsel, Partnerzugriffe und Ausnahmen fachlich pruefen.",
+        "Je Konto Entzug, Herabstufung, Bestaetigung oder befristeten Beibehalt entscheiden.",
+        "Technische Umsetzung und Nachweisablage kontrollieren.",
+        "Abschluss mit Restpunkten und Wiedervorlage fuer Audit und Teamleitung freigeben."
+      ],
+      "feedback": {
+        "correct": "Die Reihenfolge fuehrt sauber vom Scope bis zum auditfaehigen Abschluss.",
+        "wrong": "Erst muessen Scope und Prueffall stehen, dann die Entscheidung je Konto, danach Umsetzung und erst zum Schluss der Abschluss."
+      },
+      "progressLinks": [
+        "qus2_berechtigungsreview_und_scope",
+        "qus2_rollenrezertifizierung_und_ausnahmen",
+        "qus2_rechteentzug_und_nachweise"
+      ]
+    }
+  ]
+}

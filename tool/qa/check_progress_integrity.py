@@ -90,6 +90,18 @@ def scenario_progress_ticket_files(folder: Path) -> set[str] | None:
     return result
 
 
+def iter_disk_scenario_paths(folder: Path) -> dict[str, Path]:
+    result: dict[str, Path] = {}
+    for path in sorted(folder.rglob("*.json")):
+        if not path.is_file():
+            continue
+        relative = path.relative_to(folder).as_posix()
+        if relative in {"possible_skills.json", "scenario-manifest.json"}:
+            continue
+        result[relative] = path
+    return result
+
+
 def iter_scenario_folders(folder_filter: set[str]) -> list[Path]:
     folders = sorted(
         path for path in KURSE_DIR.iterdir()
@@ -136,43 +148,43 @@ def main() -> int:
 
         manifest_files = scenario_manifest_files(folder)
         progress_ticket_files = scenario_progress_ticket_files(folder)
-        disk_scenario_files = sorted(
-            path for path in folder.glob("*.json")
-            if path.name not in {"possible_skills.json", "scenario-manifest.json"}
-        )
-        disk_file_names = {path.name for path in disk_scenario_files}
+        disk_scenario_paths = iter_disk_scenario_paths(folder)
+        disk_file_names = set(disk_scenario_paths)
 
         for file_name in sorted(manifest_files - disk_file_names):
             problems.append(f"{folder.name}: manifest references missing scenario file '{file_name}'")
 
         if manifest_files:
-            scenario_files = [path for path in disk_scenario_files if path.name in manifest_files]
+            scenario_files = [
+                (relative_path, disk_scenario_paths[relative_path])
+                for relative_path in sorted(manifest_files & disk_file_names)
+            ]
         else:
-            scenario_files = disk_scenario_files
+            scenario_files = sorted(disk_scenario_paths.items())
 
-        for scenario_path in scenario_files:
+        for scenario_relative_path, scenario_path in scenario_files:
             checked_scenarios += 1
-            if progress_ticket_files is not None and scenario_path.name not in progress_ticket_files:
+            if progress_ticket_files is not None and scenario_relative_path not in progress_ticket_files:
                 continue
             payload = load_json(scenario_path)
             questions = payload.get("questions", [])
             if not isinstance(questions, list):
-                problems.append(f"{folder.name}/{scenario_path.name}: questions is not a list")
+                problems.append(f"{folder.name}/{scenario_relative_path}: questions is not a list")
                 continue
 
             question_ids: set[str] = set()
             for question in questions:
                 if not isinstance(question, dict):
-                    problems.append(f"{folder.name}/{scenario_path.name}: invalid question entry {question!r}")
+                    problems.append(f"{folder.name}/{scenario_relative_path}: invalid question entry {question!r}")
                     continue
 
                 qid = str(question.get("id") or "").strip()
                 qtype = str(question.get("type") or "").strip()
                 if not qid:
-                    problems.append(f"{folder.name}/{scenario_path.name}: question without id")
+                    problems.append(f"{folder.name}/{scenario_relative_path}: question without id")
                     continue
                 if qid in question_ids:
-                    problems.append(f"{folder.name}/{scenario_path.name}: duplicate question id '{qid}'")
+                    problems.append(f"{folder.name}/{scenario_relative_path}: duplicate question id '{qid}'")
                 question_ids.add(qid)
 
                 if qtype in STRUCTURAL_TYPES:
@@ -183,24 +195,24 @@ def main() -> int:
 
                 links = question.get("progressLinks")
                 if not isinstance(links, list) or not links:
-                    problems.append(f"{folder.name}/{scenario_path.name}/{qid}: missing progressLinks")
+                    problems.append(f"{folder.name}/{scenario_relative_path}/{qid}: missing progressLinks")
                 else:
                     for raw_link in links:
                         progress_id = str(raw_link or "").strip().lower()
                         if not progress_id:
-                            problems.append(f"{folder.name}/{scenario_path.name}/{qid}: empty progressLink")
+                            problems.append(f"{folder.name}/{scenario_relative_path}/{qid}: empty progressLink")
                             continue
                         if progress_id not in known_skill_ids:
                             problems.append(
-                                f"{folder.name}/{scenario_path.name}/{qid}: unknown progressLink '{progress_id}'"
+                                f"{folder.name}/{scenario_relative_path}/{qid}: unknown progressLink '{progress_id}'"
                             )
 
                 if qtype not in supported_by_eval:
-                    problems.append(f"{folder.name}/{scenario_path.name}/{qid}: no evaluateQuestion support for '{qtype}'")
+                    problems.append(f"{folder.name}/{scenario_relative_path}/{qid}: no evaluateQuestion support for '{qtype}'")
                 if qtype not in supported_by_render:
-                    problems.append(f"{folder.name}/{scenario_path.name}/{qid}: no renderQuestion support for '{qtype}'")
+                    problems.append(f"{folder.name}/{scenario_relative_path}/{qid}: no renderQuestion support for '{qtype}'")
                 if qtype not in supported_by_answered:
-                    problems.append(f"{folder.name}/{scenario_path.name}/{qid}: no completion-state support for '{qtype}'")
+                    problems.append(f"{folder.name}/{scenario_relative_path}/{qid}: no completion-state support for '{qtype}'")
 
     if problems:
         print(f"FAIL - {len(problems)} problem(s) found")

@@ -1,0 +1,74 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "./doomscroll-quiz-manifest.schema.json",
+  "title": "DoomScrollQuiz Manifest",
+  "type": "object",
+  "required": ["items"],
+  "properties": {
+    "scenarioFolder": { "type": "string" },
+    "quizFolder": { "type": "string" },
+    "items": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["file", "label", "ticketId", "versionId", "questionCount"],
+        "properties": {
+          "file": { "type": "string" },
+          "label": { "type": "string" },
+          "ticketId": { "type": "string" },
+          "versionId": { "type": "string" },
+          "questionCount": { "type": "integer", "minimum": 0 },
+          "topics": {
+            "type": "array",
+            "items": { "type": "string" }
+          },
+          "interactionTypes": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "binary",
+                "single",
+                "multi",
+                "best",
+                "sequence",
+                "gap_fill_choice",
+                "gap_fill_text"
+              ]
+            }
+          },
+          "questionKinds": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "aussage_bewerten",
+                "eine_richtige_antwort_waehlen",
+                "mehrere_richtige_antworten_waehlen",
+                "beste_option_im_mini_szenario",
+                "begriff_zu_definition",
+                "definition_zu_begriff",
+                "beispiel_erkennen",
+                "gegenbeispiel_erkennen",
+                "kategorie_zuordnen",
+                "reihenfolge_bestimmen",
+                "fehler_finden",
+                "luecke_fuellen",
+                "vergleich_treffen",
+                "prioritaet_setzen",
+                "ursache_folge_erkennen",
+                "was_fehlt",
+                "passende_massnahme_auswaehlen",
+                "ziel_mittel_zuordnung"
+              ]
+            }
+          },
+          "dominantBadge": { "type": "string" }
+        },
+        "additionalProperties": true
+      }
+    }
+  },
+  "additionalProperties": true
+}

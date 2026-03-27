@@ -1,0 +1,393 @@
+{
+  "scenario": {
+    "company": "SecuBridge Service GmbH",
+    "scale": "IT-Dienstleister fuer Homeoffice, kommunale Arbeitsplaetze und Praxisumgebungen, 95 Mitarbeitende",
+    "context": "Fuer das Buergerportal steht ein geplanter Restore-Test an, weil die Sicherungen zwar gruene Jobmeldungen liefern, der letzte dokumentierte Wiederanlauftest aber mehrere Monate zurueckliegt.",
+    "mission": "Restore-Umfang, Prioritaeten, Abhaengigkeiten, Erfolgskriterien und Nachweise fuer den Wiederanlauftest sauber festlegen.",
+    "source": {
+      "kind": "Interner Wiederanlauf- und Nachweisauftrag",
+      "reference": "Restore-Test Buergerportal, 2026-03-29",
+      "note": "Grundlage sind produktive Sicherungen fuer Termin- und Dokumentendaten, ein veralteter Nachweis zum letzten Restore-Test und die Anforderung, den Wiederanlauf in einer Testumgebung belastbar zu belegen."
+    },
+    "station": {
+      "id": "QUS2-ST-05",
+      "department": "Betrieb, Qualitaetssicherung und Fachkoordination",
+      "profile": "Restore-Test, Wiederanlauf, Abhaengigkeiten, Erfolgskriterien und Abschlussnachweise",
+      "constraints": [
+        "Restore-Test und Produktivbetrieb muessen strikt getrennt bleiben",
+        "Ein erfolgreicher Wiederanlauf braucht technische und fachliche Nachweise, nicht nur gruenen Backup-Status",
+        "Komponenten, Reihenfolge und Restpunkte muessen fuer den Montagstermin lesbar dokumentiert werden"
+      ]
+    },
+    "customerRequest": {
+      "from": "betrieb@secubridge-service.example",
+      "to": "wiederanlauf@ausbildungsbetrieb.example",
+      "subject": "Restore-Test fuer Termin- und Dokumentendaten vorbereiten",
+      "date": "2026-03-26",
+      "body": "Guten Tag,\n\nvor der naechsten internen Revision brauchen wir einen belastbaren Restore-Test fuer das Buergerportal. Die Sicherungsjobs laufen zwar ohne sichtbaren Fehler, aber der letzte dokumentierte Wiederanlaufstest fuer Termin- und Dokumentendaten ist deutlich aelter als unsere aktuelle Betriebsbasis.\n\nIm Test sollen mindestens die Termindatenbank, der Upload-Speicher und die Rechtekonfiguration in einer getrennten Umgebung wiederhergestellt und fachlich geprueft werden. Bitte bereiten Sie dafuer Testumfang, Prioritaeten, Erfolgskriterien, Rollen und Nachweise vor.\n\nViele Gruesse\nBetrieb"
+    }
+  },
+  "questions": [
+    {
+      "id": "ctx01",
+      "type": "context_card",
+      "title": "Rahmen fuer den Restore-Test",
+      "contentBlocks": [
+        {
+          "type": "text",
+          "text": "SecuBridge betreibt fuer das Buergerportal mehrere Komponenten, die im Wiederanlauf zusammenspielen muessen. Ein gruener Sicherungsjob allein reicht deshalb nicht aus, wenn nie geprueft wurde, ob Daten, Rollen und Dokumentzugriffe im Restore-Fall wirklich zusammen funktionieren."
+        },
+        {
+          "type": "table",
+          "columns": [
+            "Komponente",
+            "Aktueller Stand"
+          ],
+          "rows": [
+            [
+              "Termindatenbank",
+              "naechliches Datenbank-Backup"
+            ],
+            [
+              "Upload-Speicher",
+              "regelmaessiger Snapshot fuer Dokumentkopien"
+            ],
+            [
+              "Rechtekonfiguration",
+              "taeglicher Export der Rollenzuordnungen"
+            ],
+            [
+              "Letzter dokumentierter Test",
+              "mehrere Monate alt"
+            ],
+            [
+              "Erwartung fuer Montag",
+              "belastbarer Nachweis zum Restore-Umfang, Testbefund und Restpunkt"
+            ]
+          ]
+        },
+        {
+          "type": "text",
+          "text": "Im Mittelpunkt stehen jetzt Testumgebung, Wiederherstellungsreihenfolge, fachliche Stichproben und ein Abschluss, der spaeter nicht nur behauptet, sondern belegt werden kann."
+        }
+      ]
+    },
+    {
+      "id": "q01",
+      "type": "multi_select",
+      "title": "Restore-Test belastbar vorbereiten",
+      "prompt": "Welche Punkte muessen vor dem Restore-Test sauber feststehen? Mehrere Punkte koennen gleichzeitig zwingend sein.",
+      "options": [
+        {
+          "text": "Welche Sicherungsstaende fuer die einzelnen Komponenten verwendet werden.",
+          "correct": true,
+          "rationale": "Ohne klaren Stand bleibt der Test spaeter nicht reproduzierbar."
+        },
+        {
+          "text": "In welcher getrennten Umgebung die Wiederherstellung durchgefuehrt wird.",
+          "correct": true,
+          "rationale": "Restore-Test und Produktivbetrieb duerfen nicht vermischt werden."
+        },
+        {
+          "text": "Welche fachlichen Stichproben den Erfolg fuer Termine, Dokumente und Rechte zeigen sollen.",
+          "correct": true,
+          "rationale": "Technischer Restore ohne fachlichen Nachweis bleibt unvollstaendig."
+        },
+        {
+          "text": "Wer waehrend des Tests Betrieb, Technik und Fachsicht verantwortet.",
+          "correct": true,
+          "rationale": "Die Rollen muessen vor dem Test klar verteilt sein."
+        },
+        {
+          "text": "Dass die Sicherungsjobs in der Uebersicht gruen markiert sind, ohne weitere Pruefung.",
+          "correct": false,
+          "rationale": "Ein Jobstatus ersetzt keine Wiederherstellung und keine fachliche Pruefung."
+        },
+        {
+          "text": "Im Zweifel die Produktivumgebung kurz fuer den Restore mitbenutzen.",
+          "correct": false,
+          "rationale": "Das wuerde Test und Produktivbetrieb unsauber vermischen."
+        }
+      ],
+      "feedback": {
+        "correct": "Die tragenden Voraussetzungen fuer den Restore-Test wurden korrekt erkannt.",
+        "wrong": "Achten Sie auf Sicherungsstand, Testumgebung, fachliche Stichprobe und klare Rollen statt nur auf Backup-Status."
+      },
+      "progressLinks": [
+        "qus2_restoreumfang_priorisieren",
+        "qus2_wiederanlauf_und_abhangigkeiten"
+      ]
+    },
+    {
+      "id": "q02",
+      "type": "single_choice",
+      "title": "Belastbares Erfolgskriterium erkennen",
+      "prompt": "Welcher Nachweis zeigt am besten, dass der Restore-Test wirklich erfolgreich war?",
+      "options": [
+        {
+          "text": "Die Dateien wurden technisch eingespielt; weitere Pruefungen koennen spaeter folgen.",
+          "rationale": "Ohne fachliche und rollenbezogene Pruefung bleibt der Test zu schmal."
+        },
+        {
+          "text": "Datenbank, Uploads und Rechtekonfiguration wurden in der Testumgebung wiederhergestellt, eine fachliche Stichprobe ist dokumentiert und der Abschlussbefund benennt Restpunkte.",
+          "rationale": "Genau diese Kombination verbindet Technik, Fachsicht und nachvollziehbaren Abschluss."
+        },
+        {
+          "text": "Der Betrieb hat nach dem Test das Gefuehl, dass die Sicherungen wahrscheinlich ausreichen.",
+          "rationale": "Ein Eindruck ersetzt keinen reproduzierbaren Nachweis."
+        },
+        {
+          "text": "Es gibt einen Screenshot der Backup-Konsole mit aktuellem Tagesdatum.",
+          "rationale": "Das beweist nur einen Jobstatus, nicht den Wiederanlauf."
+        }
+      ],
+      "correctIndex": 1,
+      "feedback": {
+        "correct": "Das belastbarste Erfolgskriterium wurde richtig erkannt.",
+        "wrong": "Achten Sie auf den Unterschied zwischen Backup-Status und einem wirklich geprueften Wiederanlauf."
+      },
+      "progressLinks": [
+        "qus2_restore_nachweise_und_freigabe"
+      ]
+    },
+    {
+      "id": "f02",
+      "type": "followup_divider",
+      "title": "Komponenten, Reihenfolge und Nachweise festziehen",
+      "from": "qualitaetssicherung@secubridge-service.example",
+      "to": "wiederanlauf@ausbildungsbetrieb.example",
+      "subject": "Restore-Umfang und Reihenfolge fuer den Test abstimmen",
+      "date": "2026-03-26",
+      "body": "Hallo zusammen,\n\nbevor ich den Test freigebe, brauche ich einen Stand dazu, welche Komponenten in welcher Reihenfolge wiederhergestellt werden, welcher Sicherungsstand jeweils gilt und woran wir den Erfolg spaeter erkennen. Bitte haltet Technik, Fachsicht und Abschlussnachweise in einem gemeinsamen Testbild zusammen.\n\nViele Gruesse\nQualitaetssicherung"
+    },
+    {
+      "id": "q03",
+      "type": "table_fill",
+      "title": "Wiederherstellungsquelle und erster Nachweis",
+      "prompt": "Ergaenzen Sie pro Komponente die naheliegendste Wiederherstellungsquelle und den ersten passenden Erfolgsnachweis.",
+      "columns": [
+        "Komponente",
+        "Wiederherstellungsquelle",
+        "Erster Erfolgsnachweis"
+      ],
+      "rows": [
+        [
+          "Termindatenbank",
+          {
+            "key": "source_row_1",
+            "label": "Termindatenbank / Quelle",
+            "expected": "Naechliches Datenbank-Backup fuer den freigegebenen Stand.",
+            "inputType": "select",
+            "placeholder": "Quelle waehlen",
+            "options": [
+              "Naechliches Datenbank-Backup fuer den freigegebenen Stand.",
+              "Beliebiger Export aus einer Praesentationsdatei.",
+              "Nur der Vermerk, dass die Daten frueher einmal vorhanden waren.",
+              "Eine manuell nachgebaute Beispieltabelle ohne Bezug zum Sicherungsstand."
+            ]
+          },
+          {
+            "key": "proof_row_1",
+            "label": "Termindatenbank / Nachweis",
+            "expected": "Stichprobe auf wiederhergestellte Termine und Statuswerte in der Testumgebung.",
+            "inputType": "select",
+            "placeholder": "Nachweis waehlen",
+            "options": [
+              "Stichprobe auf wiederhergestellte Termine und Statuswerte in der Testumgebung.",
+              "Nur die Aussage, dass sich die Datenbankinstanz starten liess.",
+              "Ein Screenshot des Teamkalenders ohne Systembezug.",
+              "Eine Liste offener Fragen ohne Testreferenz."
+            ]
+          }
+        ],
+        [
+          "Upload-Speicher",
+          {
+            "key": "source_row_2",
+            "label": "Upload-Speicher / Quelle",
+            "expected": "Snapshot des Upload-Speichers fuer den freigegebenen Teststand.",
+            "inputType": "select",
+            "placeholder": "Quelle waehlen",
+            "options": [
+              "Snapshot des Upload-Speichers fuer den freigegebenen Teststand.",
+              "Beliebige lokale Kopien aus privaten Arbeitsordnern.",
+              "Nur die Dateinamenliste ohne eigentliche Dateien.",
+              "Ein Messenger-Anhang aus einem frueheren Supportfall."
+            ]
+          },
+          {
+            "key": "proof_row_2",
+            "label": "Upload-Speicher / Nachweis",
+            "expected": "Stichprobe, dass ausgewaehlte Dokumente in der Testumgebung oeffnen und zuordenbar sind.",
+            "inputType": "select",
+            "placeholder": "Nachweis waehlen",
+            "options": [
+              "Stichprobe, dass ausgewaehlte Dokumente in der Testumgebung oeffnen und zuordenbar sind.",
+              "Der Ordner ist groessenmaessig sichtbar vorhanden.",
+              "Ein kurzer Chat-Hinweis des Betriebs, dass Uploads frueher einmal funktioniert haben.",
+              "Nur die Zaehldifferenz zwischen zwei Ordnern."
+            ]
+          }
+        ],
+        [
+          "Rechtekonfiguration",
+          {
+            "key": "source_row_3",
+            "label": "Rechtekonfiguration / Quelle",
+            "expected": "Export der Rollenzuordnungen fuer den freigegebenen Stand.",
+            "inputType": "select",
+            "placeholder": "Quelle waehlen",
+            "options": [
+              "Export der Rollenzuordnungen fuer den freigegebenen Stand.",
+              "Eine muendliche Erinnerung daran, wie die Rechte frueher gesetzt waren.",
+              "Ein allgemeines Organigramm ohne Systemrollen.",
+              "Beliebige Vorjahreswerte ohne Bezug zum aktuellen Betrieb."
+            ]
+          },
+          {
+            "key": "proof_row_3",
+            "label": "Rechtekonfiguration / Nachweis",
+            "expected": "Testkonto mit dokumentierter Rolle kann die freigegebenen Funktionen in der Testumgebung nutzen.",
+            "inputType": "select",
+            "placeholder": "Nachweis waehlen",
+            "options": [
+              "Testkonto mit dokumentierter Rolle kann die freigegebenen Funktionen in der Testumgebung nutzen.",
+              "Nur der Export liegt als Datei im Projektordner.",
+              "Eine handschriftliche Liste der frueheren Ansprechpartner.",
+              "Das Ticket wurde intern als wichtig markiert."
+            ]
+          }
+        ]
+      ],
+      "feedback": {
+        "correct": "Wiederherstellungsquelle und erster Erfolgsnachweis wurden stimmig verbunden.",
+        "wrong": "Pruefen Sie, welche Quelle wirklich zum Teststand passt und welcher Nachweis mehr ist als nur ein technisches Lebenszeichen."
+      },
+      "progressLinks": [
+        "qus2_restoreumfang_priorisieren",
+        "qus2_restore_nachweise_und_freigabe"
+      ]
+    },
+    {
+      "id": "q04",
+      "type": "match_pairs",
+      "title": "Verantwortungen im Wiederanlauftest",
+      "prompt": "Welche Rolle uebernimmt welche erste Aufgabe im Restore-Test?",
+      "layout": "table",
+      "columns": [
+        "Rolle",
+        "erste Aufgabe"
+      ],
+      "pairs": [
+        {
+          "key": "role_1",
+          "left": "Plattformbetrieb",
+          "right": "Sicherungsstaende bereitstellen und den technischen Restore in der Testumgebung starten"
+        },
+        {
+          "key": "role_2",
+          "left": "Fachkoordination Buergerportal",
+          "right": "Fachliche Stichprobe fuer Termine und Dokumentzugriffe begleiten"
+        },
+        {
+          "key": "role_3",
+          "left": "Qualitaetssicherung",
+          "right": "Erfolgskriterien, Restpunkte und Abschlussbefund zusammenziehen"
+        },
+        {
+          "key": "role_4",
+          "left": "Serviceleitung",
+          "right": "Testfenster, Kommunikation und Freigabestand koordinieren"
+        }
+      ],
+      "options": [
+        "Sicherungsstaende bereitstellen und den technischen Restore in der Testumgebung starten",
+        "Fachliche Stichprobe fuer Termine und Dokumentzugriffe begleiten",
+        "Erfolgskriterien, Restpunkte und Abschlussbefund zusammenziehen",
+        "Testfenster, Kommunikation und Freigabestand koordinieren"
+      ],
+      "feedback": {
+        "correct": "Die Rollen wurden mit ihren ersten Aufgaben passend verbunden.",
+        "wrong": "Achten Sie darauf, wer Technik, Fachsicht, Nachweis und Testkoordination zuerst ziehen muss."
+      },
+      "progressLinks": [
+        "qus2_wiederanlauf_und_abhangigkeiten"
+      ]
+    },
+    {
+      "id": "q05",
+      "type": "number",
+      "title": "Reserve im Testfenster",
+      "prompt": "Das Testfenster umfasst 180 Minuten. 45 Minuten entfallen auf die Termindatenbank, 35 Minuten auf den Upload-Speicher, 20 Minuten auf die Rechtekonfiguration und 30 Minuten auf fachliche Stichproben. Wie viele Minuten Reserve bleiben?",
+      "expected": 50,
+      "toleranceAbs": 0,
+      "showExpectedFormula": "180 - 45 - 35 - 20 - 30 = 50 Minuten",
+      "feedback": {
+        "correct": "Die Reserve im Testfenster wurde richtig berechnet.",
+        "wrong": "Bitte vom Gesamtfenster alle eingeplanten Wiederherstellungs- und Pruefzeiten abziehen."
+      },
+      "progressLinks": [
+        "qus2_wiederanlauf_und_abhangigkeiten"
+      ]
+    },
+    {
+      "id": "f03",
+      "type": "followup_divider",
+      "title": "Abschluss fuer Montag vorbereiten",
+      "from": "revision@secubridge-service.example",
+      "to": "wiederanlauf@ausbildungsbetrieb.example",
+      "subject": "Nachweis zum Restore-Test fuer Montag liefern",
+      "date": "2026-03-26",
+      "body": "Hallo zusammen,\n\nfuer Montag brauche ich keine allgemeine Beruhigung, sondern einen klaren Nachweis dazu, welche Komponenten wiederhergestellt wurden, welche fachlichen Stichproben erfolgreich waren und welche Restpunkte geblieben sind. Bitte macht im Abschluss auch sichtbar, wenn der Wiederanlauf technisch lief, aber fachlich noch etwas offen ist.\n\nViele Gruesse\nRevision"
+    },
+    {
+      "id": "q06",
+      "type": "short_text",
+      "title": "Kurznotiz zum Restore-Stand",
+      "prompt": "Erstellen Sie eine kurze Notiz (4-6 Saetze) mit Testumfang, Erfolgskriterium, offenem Risiko und naechstem Schritt.",
+      "minChars": 170,
+      "requiredKeywords": [
+        "erfolgskriterium",
+        "risiko",
+        "naechster schritt"
+      ],
+      "expectedOutline": "Kurz darlegen, was getestet wurde, woran Erfolg gemessen wird, welcher Restpunkt bleibt und wie es weitergeht.",
+      "feedback": {
+        "correct": "Die Restore-Notiz ist knapp, belastbar und anschlussfaehig formuliert.",
+        "wrong": "Bitte Testumfang, Erfolgskriterium, offenes Risiko und naechsten Schritt klarer trennen."
+      },
+      "progressLinks": [
+        "qus2_restore_nachweise_und_freigabe"
+      ]
+    },
+    {
+      "id": "q07",
+      "type": "ordering",
+      "title": "Wiederanlauf sauber aufbauen",
+      "prompt": "Bringen Sie die Schritte in eine sinnvolle Reihenfolge, damit der Restore-Test belastbar wird.",
+      "items": [
+        "Testumgebung, Sicherungsstand und Umfang final festziehen.",
+        "Komponenten und Abhaengigkeiten fuer die Wiederherstellung ordnen.",
+        "Restore technisch durchfuehren und Logstand sichern.",
+        "Fachliche Stichprobe fuer Termine, Dokumente und Rechte pruefen.",
+        "Abschlussbefund, Restpunkte und Wiedervorlage dokumentieren."
+      ],
+      "correctOrder": [
+        "Testumgebung, Sicherungsstand und Umfang final festziehen.",
+        "Komponenten und Abhaengigkeiten fuer die Wiederherstellung ordnen.",
+        "Restore technisch durchfuehren und Logstand sichern.",
+        "Fachliche Stichprobe fuer Termine, Dokumente und Rechte pruefen.",
+        "Abschlussbefund, Restpunkte und Wiedervorlage dokumentieren."
+      ],
+      "feedback": {
+        "correct": "Die Reihenfolge fuehrt sauber von der Testvorbereitung zum belastbaren Abschluss.",
+        "wrong": "Erst muessen Umfang und Reihenfolge stehen, dann der technische Restore, danach die fachliche Stichprobe und erst am Ende der Abschluss."
+      },
+      "progressLinks": [
+        "qus2_restoreumfang_priorisieren",
+        "qus2_wiederanlauf_und_abhangigkeiten",
+        "qus2_restore_nachweise_und_freigabe"
+      ]
+    }
+  ]
+}

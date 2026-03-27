@@ -1606,6 +1606,55 @@
       return block;
     }
 
+    function splitQuestionPromptContext(q) {
+      const rawContext = String(q?.context || "").trim();
+      const rawPrompt = String(q?.prompt || "").trim();
+      if (!rawContext) {
+        return {
+          contextText: "",
+          promptText: rawPrompt
+        };
+      }
+      if (!rawPrompt) {
+        return {
+          contextText: rawContext,
+          promptText: ""
+        };
+      }
+
+      const normalize = (value) => String(value || "").replace(/\s+/g, " ").trim();
+      const normalizedContext = normalize(rawContext);
+      const normalizedPrompt = normalize(rawPrompt);
+      if (!normalizedContext) {
+        return {
+          contextText: "",
+          promptText: rawPrompt
+        };
+      }
+      if (normalizedPrompt === normalizedContext) {
+        return {
+          contextText: rawContext,
+          promptText: ""
+        };
+      }
+      if (rawPrompt.startsWith(rawContext)) {
+        return {
+          contextText: rawContext,
+          promptText: rawPrompt.slice(rawContext.length).replace(/^[\s:.-]+/, "").trim()
+        };
+      }
+      if (normalizedPrompt.startsWith(normalizedContext)) {
+        return {
+          contextText: rawContext,
+          promptText: normalizedPrompt.slice(normalizedContext.length).replace(/^[\s:.-]+/, "").trim()
+        };
+      }
+      return {
+        contextText: rawContext,
+        promptText: rawPrompt
+      };
+    }
+
     function renderQuestionContent(q) {
       const stack = document.createElement("div");
       stack.className = "question-content";
@@ -1627,7 +1676,13 @@
       }
       const visuals = renderVisuals(q?.visuals);
       if (visuals) stack.appendChild(visuals);
-      const prompt = renderPromptText(q?.prompt || "");
+      const { contextText, promptText } = splitQuestionPromptContext(q);
+      const context = renderPromptText(contextText);
+      if (context) {
+        context.classList.add("question-context");
+        stack.appendChild(context);
+      }
+      const prompt = renderPromptText(promptText);
       if (prompt) stack.appendChild(prompt);
       return stack.childElementCount ? stack : null;
     }

@@ -12,6 +12,16 @@
   <div class="appbar" role="toolbar" aria-label="App-Leiste">
     <div class="appbar-left-tools appbar-icon-left">
       <div class="appbar-action appbar-action-left">
+        <button id="btnTrainingMenu" type="button" class="icon-button" aria-label="Training oeffnen" title="Training oeffnen" aria-haspopup="dialog" aria-controls="trainingMenu" aria-expanded="false" aria-pressed="false">
+          <span class="icon-emoji" aria-hidden="true">🧠</span>
+        </button>
+      </div>
+      <div class="appbar-action appbar-action-left">
+        <button id="btnCourseMenu" type="button" class="icon-button" aria-label="Kursauswahl oeffnen" title="Kursauswahl oeffnen" aria-haspopup="dialog" aria-controls="courseMenu" aria-expanded="false">
+          <span class="icon-emoji" aria-hidden="true">📚</span>
+        </button>
+      </div>
+      <div class="appbar-action appbar-action-left">
         <button id="btnScenarioMenu" type="button" class="icon-button" aria-label="Posteingang oeffnen" title="Posteingang oeffnen" aria-haspopup="dialog" aria-controls="scenarioMenu" aria-expanded="false">
           <span class="icon-emoji" aria-hidden="true">📥</span>
         </button>
@@ -29,6 +39,14 @@
       </button>
     </div>
   </div>
+
+  <section id="trainingProgressRail" class="training-progress-rail hidden" aria-hidden="true">
+    <div id="trainingProgressRailTrack" class="training-progress-rail-track" role="img" aria-label="Training noch nicht gestartet">
+      <span id="trainingProgressRailCorrect" class="training-progress-rail-segment is-correct"></span>
+      <span id="trainingProgressRailWrong" class="training-progress-rail-segment is-wrong"></span>
+      <span id="trainingProgressRailOpen" class="training-progress-rail-segment is-open"></span>
+    </div>
+  </section>
 
   <main id="app">
     <section id="workspaceLeft"></section>
@@ -56,8 +74,34 @@
     </button>
   </div>
 
-  <button id="scenarioNavBackdrop" type="button" class="task-nav-backdrop scenario-nav-backdrop hidden" aria-label="Szenario Ordnerbaum schliessen"></button>
-  <aside id="scenarioMenu" class="scenario-nav-drawer hidden" aria-hidden="true" aria-label="Szenario Ordnerbaum">
+  <button id="scenarioNavBackdrop" type="button" class="task-nav-backdrop scenario-nav-backdrop hidden" aria-label="Posteingang schliessen"></button>
+  <button id="trainingNavBackdrop" type="button" class="task-nav-backdrop scenario-nav-backdrop hidden" aria-label="Training schliessen"></button>
+  <button id="courseNavBackdrop" type="button" class="task-nav-backdrop scenario-nav-backdrop hidden" aria-label="Kursauswahl schliessen"></button>
+  <aside id="trainingMenu" class="scenario-nav-drawer hidden" aria-hidden="true" aria-label="Training">
+    <div class="scenario-nav-drawer-head">
+      <h3>Training</h3>
+      <button id="btnTrainingMenuClose" type="button" class="icon-button" aria-label="Training schliessen" title="Training schliessen">
+        <span class="icon-emoji" aria-hidden="true">✖️</span>
+      </button>
+    </div>
+    <div class="scenario-nav-drawer-body">
+      <div id="trainingMenuOptions" class="training-menu" aria-label="Training Kursauswahl"></div>
+    </div>
+  </aside>
+
+  <aside id="courseMenu" class="scenario-nav-drawer hidden" aria-hidden="true" aria-label="Kursauswahl">
+    <div class="scenario-nav-drawer-head">
+      <h3>Kurse</h3>
+      <button id="btnCourseMenuClose" type="button" class="icon-button" aria-label="Kursauswahl schliessen" title="Kursauswahl schliessen">
+        <span class="icon-emoji" aria-hidden="true">✖️</span>
+      </button>
+    </div>
+    <div class="scenario-nav-drawer-body">
+      <div id="courseMenuOptions" class="scenario-tree" aria-label="Kursauswahl"></div>
+    </div>
+  </aside>
+
+  <aside id="scenarioMenu" class="scenario-nav-drawer hidden" aria-hidden="true" aria-label="Posteingang">
     <div class="scenario-nav-drawer-head">
       <h3>Posteingang</h3>
       <button id="btnScenarioMenuClose" type="button" class="icon-button" aria-label="Posteingang schliessen" title="Posteingang schliessen">
@@ -65,7 +109,7 @@
       </button>
     </div>
     <div class="scenario-nav-drawer-body">
-      <div id="scenarioMenuOptions" class="scenario-tree" aria-label="Szenario FolderTree"></div>
+      <div id="scenarioMenuOptions" class="scenario-tree" aria-label="Posteingang Tickets"></div>
     </div>
   </aside>
 
@@ -95,11 +139,26 @@
     const taskNavDrawerToggleBtn = document.getElementById("btnTaskDrawerToggle");
     const taskNavDrawerCloseBtn = document.getElementById("btnTaskDrawerClose");
     const taskNavBackdrop = document.getElementById("taskNavBackdrop");
+    const trainingProgressRail = document.getElementById("trainingProgressRail");
+    const trainingProgressRailTrack = document.getElementById("trainingProgressRailTrack");
+    const trainingProgressRailCorrect = document.getElementById("trainingProgressRailCorrect");
+    const trainingProgressRailWrong = document.getElementById("trainingProgressRailWrong");
+    const trainingProgressRailOpen = document.getElementById("trainingProgressRailOpen");
+    const trainingNavBackdrop = document.getElementById("trainingNavBackdrop");
+    const courseNavBackdrop = document.getElementById("courseNavBackdrop");
     const scenarioNavBackdrop = document.getElementById("scenarioNavBackdrop");
+    const trainingMenuButton = document.getElementById("btnTrainingMenu");
+    const trainingMenuCloseButton = document.getElementById("btnTrainingMenuClose");
+    const courseMenuButton = document.getElementById("btnCourseMenu");
+    const courseMenuCloseButton = document.getElementById("btnCourseMenuClose");
     const scenarioMenuButton = document.getElementById("btnScenarioMenu");
     const scenarioMenuCloseButton = document.getElementById("btnScenarioMenuClose");
     const homeButton = document.getElementById("btnHome");
     const accessManagerButton = document.getElementById("btnAccessManager");
+    const trainingMenu = document.getElementById("trainingMenu");
+    const trainingMenuOptions = document.getElementById("trainingMenuOptions");
+    const courseMenu = document.getElementById("courseMenu");
+    const courseMenuOptions = document.getElementById("courseMenuOptions");
     const scenarioMenu = document.getElementById("scenarioMenu");
     const scenarioMenuOptions = document.getElementById("scenarioMenuOptions");
     const themeToggleBtn = document.getElementById("btnThemeToggle");
@@ -114,6 +173,17 @@
     const HOME_SKILLS_FOLDER_STORAGE_KEY = "sr_home_skills_folder";
     const SCENARIO_FOLDER_CATALOG_STORAGE_KEY = "sr_scenario_folder_catalog_v1";
     const SCENARIO_TREE_CACHE_STORAGE_KEY = "sr_scenario_tree_cache_v1";
+    const TRAINING_DECK_CATALOG_STORAGE_KEY = "sr_training_deck_catalog_v1";
+    const TRAINING_DECK_CACHE_STORAGE_KEY = "sr_training_deck_cache_v1";
+    const TRAINING_SQLITE_ENABLED_FOLDERS = new Set([
+      "Pruefungsvorbereitung-2-FIAE-Quiz"
+    ]);
+    const SQLJS_LOCAL_BASE_PATH = "./tool/vendor/sqljs";
+    const SQLJS_CDN_BASE_PATH = "https://cdnjs.cloudflare.com/ajax/libs/sql.js/1.13.0";
+    const SQLJS_LOCAL_SCRIPT_PATH = `${SQLJS_LOCAL_BASE_PATH}/sql-wasm.min.js`;
+    const SQLJS_LOCAL_WASM_PATH = `${SQLJS_LOCAL_BASE_PATH}/sql-wasm.wasm`;
+    const SQLJS_CDN_SCRIPT_PATH = `${SQLJS_CDN_BASE_PATH}/sql-wasm.min.js`;
+    const SQLJS_CDN_WASM_PATH = `${SQLJS_CDN_BASE_PATH}/sql-wasm.wasm`;
     const SKILL_PROGRESS_STORAGE_KEY_PREFIX = "sr_skill_progress_v1";
     const SCENARIO_RATING_STORAGE_KEY_PREFIX = "sr_scenario_rating_v1";
     const QUESTION_MARKER_STORAGE_KEY_PREFIX = "sr_question_marker_v1";
@@ -158,9 +228,134 @@
         ])
       })
     });
+    const DOOM_SCROLL_PSEUDO_QUESTION_TEMPLATES = Object.freeze([
+      Object.freeze({
+        prompt: "Die Kommunikation muss kanalgebunden, transparent und friktionsarm erfolgen.",
+        options: Object.freeze([
+          "Wir brauchen einen klaren Chat fuer Rueckfragen und Absprachen.",
+          "Alle reden einfach gleichzeitig, Hauptsache schnell.",
+          "Nur die Teamleitung darf ueberhaupt noch schreiben.",
+          "Wir warten erstmal, bis das Problem von selbst verschwindet."
+        ]),
+        correctIndex: 0,
+        explanation: "Der Fachsatz meint hier schlicht: ein gemeinsamer, klarer Kommunikationskanal hilft dem Team.",
+        isNew: true
+      }),
+      Object.freeze({
+        prompt: "Die Rollenverteilung bleibt diffus, solange Ownership nicht explizit benannt wird.",
+        options: Object.freeze([
+          "Niemand weiss so genau, wer was wirklich uebernimmt.",
+          "Alle Rollen sind bereits perfekt dokumentiert.",
+          "Es gibt zu viele Monitore im Raum.",
+          "Das Ticket ist automatisch abgeschlossen."
+        ]),
+        correctIndex: 0,
+        explanation: "Ownership meint hier Verantwortung. Ohne klare Zuständigkeit bleibt die Arbeit liegen.",
+        isNew: true
+      }),
+      Object.freeze({
+        prompt: "Vor einer Entscheidung braucht das Team einen konsistenten Abgleich des aktuellen Stands.",
+        options: Object.freeze([
+          "Wir sollten erst alle auf denselben Stand bringen.",
+          "Jede Person entscheidet einfach fuer sich allein.",
+          "Wir loeschen vorsichtshalber alle bisherigen Notizen.",
+          "Neue Tickets sind grundsaetzlich wichtiger als alte."
+        ]),
+        correctIndex: 0,
+        explanation: "Gemeint ist: erst gemeinsamen Kontext herstellen, dann entscheiden.",
+        isNew: false
+      }),
+      Object.freeze({
+        prompt: "Die Rueckmeldung sollte zeitnah, konkret und anschlussfaehig sein.",
+        options: Object.freeze([
+          "Feedback soll schnell kommen und direkt helfen, weiterzuarbeiten.",
+          "Rueckmeldung hilft am meisten nach mehreren Wochen.",
+          "Am besten sagt man nur, dass alles kompliziert ist.",
+          "Feedback sollte moeglichst gar keinen naechsten Schritt nennen."
+        ]),
+        correctIndex: 0,
+        explanation: "Anschlussfaehig heisst hier: so konkret, dass die andere Person direkt weiterarbeiten kann.",
+        isNew: false
+      })
+    ]);
+    const TRAINING_QUESTION_KIND_META = Object.freeze({
+      aussage_bewerten: Object.freeze({
+        badgeLabel: "Stimmt diese Aussage?",
+        defaultInteractionType: "binary"
+      }),
+      eine_richtige_antwort_waehlen: Object.freeze({
+        badgeLabel: "Welche Antwort trifft am besten zu?",
+        defaultInteractionType: "single"
+      }),
+      mehrere_richtige_antworten_waehlen: Object.freeze({
+        badgeLabel: "Welche Aussagen sind korrekt?",
+        defaultInteractionType: "multi"
+      }),
+      beste_option_im_mini_szenario: Object.freeze({
+        badgeLabel: "Was waere hier der beste naechste Schritt?",
+        defaultInteractionType: "best"
+      }),
+      begriff_zu_definition: Object.freeze({
+        badgeLabel: "Welcher Begriff passt zu dieser Beschreibung?",
+        defaultInteractionType: "single"
+      }),
+      definition_zu_begriff: Object.freeze({
+        badgeLabel: "Was bedeutet dieser Begriff?",
+        defaultInteractionType: "single"
+      }),
+      beispiel_erkennen: Object.freeze({
+        badgeLabel: "Welches Beispiel passt zu X?",
+        defaultInteractionType: "single"
+      }),
+      gegenbeispiel_erkennen: Object.freeze({
+        badgeLabel: "Welches Beispiel passt gerade nicht zu X?",
+        defaultInteractionType: "single"
+      }),
+      kategorie_zuordnen: Object.freeze({
+        badgeLabel: "Wozu gehoert dieser Fall / Begriff / Schritt?",
+        defaultInteractionType: "single"
+      }),
+      reihenfolge_bestimmen: Object.freeze({
+        badgeLabel: "Was kommt zuerst / danach / zuletzt?",
+        defaultInteractionType: "sequence"
+      }),
+      fehler_finden: Object.freeze({
+        badgeLabel: "Welche Option enthaelt den Denkfehler / Regelverstoss / Bruch?",
+        defaultInteractionType: "single"
+      }),
+      luecke_fuellen: Object.freeze({
+        badgeLabel: "Welche Antwort ergaenzt den Satz sinnvoll?",
+        defaultInteractionType: "gap_fill_choice"
+      }),
+      vergleich_treffen: Object.freeze({
+        badgeLabel: "Worin liegt der wichtigste Unterschied?",
+        defaultInteractionType: "single"
+      }),
+      prioritaet_setzen: Object.freeze({
+        badgeLabel: "Was ist hier am wichtigsten?",
+        defaultInteractionType: "best"
+      }),
+      ursache_folge_erkennen: Object.freeze({
+        badgeLabel: "Welche Folge ergibt sich am ehesten daraus?",
+        defaultInteractionType: "single"
+      }),
+      was_fehlt: Object.freeze({
+        badgeLabel: "Welcher Punkt fehlt noch, damit es vollstaendig ist?",
+        defaultInteractionType: "single"
+      }),
+      passende_massnahme_auswaehlen: Object.freeze({
+        badgeLabel: "Welche Massnahme passt am besten zur Situation?",
+        defaultInteractionType: "best"
+      }),
+      ziel_mittel_zuordnung: Object.freeze({
+        badgeLabel: "Welche Option hilft am ehesten, dieses Ziel zu erreichen?",
+        defaultInteractionType: "single"
+      })
+    });
     const GITHUB_REPO_OWNER_FALLBACK = "Thor-the-Dwarf";
     const GITHUB_REPO_NAME_FALLBACK = "FI_Skilltrainer";
     const SCENARIO_FILENAME_CONVENTION = /^\d{2}_(easy|medium|hard)_[a-z0-9_]+\.json$/i;
+    const SCENARIO_VERSIONED_FILENAME_CONVENTION = /^ticket\d{2}_v\d{2}_[a-z0-9_]+\.json$/i;
     const THEME_ORDER = ["light", "dark", "system"];
     const THEME_ICONS = {
       light: "☀️",
@@ -173,6 +368,8 @@
     let inlineSummary = null;
     let lastResults = null;
     let questionMarkerState = Object.create(null);
+    let trainingMenuCloseTimer = 0;
+    let courseMenuCloseTimer = 0;
     let scenarioMenuCloseTimer = 0;
     let availableScenarios = [];
     let homeSkillsCache = Object.create(null);
@@ -208,6 +405,17 @@
       source: ""
     };
     let localhostAdminSelectedKey = "";
+    let activeTrainingDeckKey = "";
+    let activeTrainingFolder = "";
+    let trainingSession = null;
+    let trainingDeckCatalog = [];
+    let trainingDeckCatalogPromise = null;
+    let trainingDeckCatalogRefreshPromise = null;
+    let trainingDeckCacheByFolder = Object.create(null);
+    let trainingDeckCacheSourceByFolder = Object.create(null);
+    let trainingDeckRefreshPromisesByFolder = Object.create(null);
+    let sqlJsRuntimePromise = null;
+    const externalScriptPromisesBySrc = Object.create(null);
 
     function normalize(s) {
       return String(s || "").toLowerCase().trim().replace(/\s+/g, " ");
@@ -261,7 +469,7 @@
     }
 
     function getQuestionMarkerScenarioKey(data = scenarioData) {
-      const fromFile = String(activeScenarioFile || "").trim();
+      const fromFile = getScenarioStorageFileKey(activeScenarioFile);
       if (fromFile) return fromFile;
       const fromStation = normalizeProgressId(data?.scenario?.station?.id || "");
       if (fromStation) return `station_${fromStation}`;
@@ -619,6 +827,38 @@
       }
     }
 
+    function loadStoredTrainingDeckCatalog() {
+      try {
+        return normalizeStoredTrainingDeckCatalog(JSON.parse(localStorage.getItem(TRAINING_DECK_CATALOG_STORAGE_KEY) || "[]"));
+      } catch {
+      }
+      return [];
+    }
+
+    function saveStoredTrainingDeckCatalog(decks) {
+      const normalizedDecks = normalizeStoredTrainingDeckCatalog(decks);
+      try {
+        localStorage.setItem(TRAINING_DECK_CATALOG_STORAGE_KEY, JSON.stringify(normalizedDecks));
+      } catch {
+      }
+    }
+
+    function loadStoredTrainingDeckCache() {
+      try {
+        return normalizeStoredTrainingDeckCache(JSON.parse(localStorage.getItem(TRAINING_DECK_CACHE_STORAGE_KEY) || "{}"));
+      } catch {
+      }
+      return Object.create(null);
+    }
+
+    function saveStoredTrainingDeckCache(decks) {
+      const normalizedDecks = normalizeStoredTrainingDeckCache(decks);
+      try {
+        localStorage.setItem(TRAINING_DECK_CACHE_STORAGE_KEY, JSON.stringify(normalizedDecks));
+      } catch {
+      }
+    }
+
     function hydrateScenarioTreeCacheFromStorage() {
       cachedScenarioFolders = loadStoredScenarioFolders();
       cachedScenarioMenuGroups = loadStoredScenarioMenuGroups();
@@ -626,6 +866,15 @@
         [...getConfiguredScenarioFolders(), ...cachedScenarioFolders],
         liveScenarioFolders
       );
+    }
+
+    function hydrateTrainingCacheFromStorage() {
+      trainingDeckCatalog = loadStoredTrainingDeckCatalog();
+      trainingDeckCacheByFolder = loadStoredTrainingDeckCache();
+      trainingDeckCacheSourceByFolder = Object.create(null);
+      Object.keys(trainingDeckCacheByFolder).forEach((folder) => {
+        trainingDeckCacheSourceByFolder[folder] = "cache";
+      });
     }
 
     function updateScenarioFolderCatalogState(knownFolders, liveFolders, error = "", source = "") {
@@ -812,7 +1061,9 @@
         ? accessKeyToScenarioItems[key]
         : null;
       if (ticketMap && Object.prototype.hasOwnProperty.call(ticketMap, safeFolder)) {
-        return Array.isArray(ticketMap[safeFolder]) && ticketMap[safeFolder].includes(safeFile);
+        const allowedFiles = Array.isArray(ticketMap[safeFolder]) ? ticketMap[safeFolder] : [];
+        const aliases = getScenarioFileAliases(safeFile);
+        return allowedFiles.some((entry) => aliases.includes(normalizeScenarioResourcePath(entry)));
       }
       return true;
     }
@@ -908,6 +1159,27 @@
       return `./Kurse/${folder}`;
     }
 
+    function getQuizFolderName(folder = "") {
+      const resolvedFolder = sanitizeFolderName(folder || activeTrainingFolder || activeScenarioFolder || activeHomeSkillsFolder);
+      if (!resolvedFolder) return "";
+      return sanitizeFolderName(resolvedFolder.replace(/-Scenarien$/i, "-Quiz"));
+    }
+
+    function getQuizBasePath(folder = "") {
+      const quizFolder = getQuizFolderName(folder);
+      return quizFolder ? buildScenarioBasePath(quizFolder) : "";
+    }
+
+    function getQuizDatabasePath(folder = "") {
+      const quizFolder = getQuizFolderName(folder);
+      return quizFolder ? `./Kurse/${quizFolder}.db` : "";
+    }
+
+    function isTrainingSqliteEnabledForFolder(folder = "") {
+      const quizFolder = getQuizFolderName(folder);
+      return Boolean(quizFolder && TRAINING_SQLITE_ENABLED_FOLDERS.has(quizFolder));
+    }
+
     function hasUnlockedAccess() {
       return unlockedAccessEntries.length > 0;
     }
@@ -937,6 +1209,9 @@
         activeHomeSkillsFolder = activeScenarioFolder;
       } else {
         activeHomeSkillsFolder = folders[0];
+      }
+      if (activeTrainingFolder && !folders.includes(activeTrainingFolder)) {
+        clearTrainingSession();
       }
 
       homeSkillsCache = Object.create(null);
@@ -979,6 +1254,7 @@
       scenarioData = null;
       homeSkillsCache = Object.create(null);
       availableScenarios = [];
+      clearTrainingSession();
       try {
         localStorage.removeItem(ACCESS_ENTRIES_STORAGE_KEY);
         localStorage.removeItem(ACCESS_ACTIVE_FOLDER_STORAGE_KEY);
@@ -1093,6 +1369,120 @@
       return `${getScenarioBasePath(folder)}/possible_skills.json`;
     }
 
+    function getQuizManifestPath(folder = "") {
+      const basePath = getQuizBasePath(folder);
+      if (!basePath) {
+        throw new Error("Kein passender Quiz-Ordner gefunden.");
+      }
+      return `${basePath}/quiz-manifest.json`;
+    }
+
+    function ensureExternalScriptLoaded(src) {
+      const safeSrc = String(src || "").trim();
+      if (!safeSrc) {
+        return Promise.reject(new Error("Kein Scriptpfad angegeben."));
+      }
+      if (externalScriptPromisesBySrc[safeSrc]) {
+        return externalScriptPromisesBySrc[safeSrc];
+      }
+      externalScriptPromisesBySrc[safeSrc] = new Promise((resolve, reject) => {
+        const existing = Array.from(document.scripts || []).find((script) => String(script?.src || "").trim() === safeSrc);
+        if (existing?.dataset?.loaded === "true") {
+          resolve();
+          return;
+        }
+        const script = existing || document.createElement("script");
+        function handleLoad() {
+          script.dataset.loaded = "true";
+          script.dataset.failed = "false";
+          resolve();
+        }
+        function handleError() {
+          script.dataset.failed = "true";
+          reject(new Error(`Script konnte nicht geladen werden: ${safeSrc}`));
+        }
+        if (!existing) {
+          script.src = safeSrc;
+          script.async = true;
+          script.dataset.loaded = "false";
+          script.dataset.failed = "false";
+          script.addEventListener("load", handleLoad, { once: true });
+          script.addEventListener("error", handleError, { once: true });
+          document.head.appendChild(script);
+          return;
+        }
+        existing.addEventListener("load", handleLoad, { once: true });
+        existing.addEventListener("error", handleError, { once: true });
+      });
+      return externalScriptPromisesBySrc[safeSrc];
+    }
+
+    async function ensureSqlJsFactoryLoaded() {
+      if (typeof window.initSqlJs === "function") return window.initSqlJs;
+      try {
+        await ensureExternalScriptLoaded(SQLJS_LOCAL_SCRIPT_PATH);
+      } catch {
+        await ensureExternalScriptLoaded(SQLJS_CDN_SCRIPT_PATH);
+      }
+      if (typeof window.initSqlJs !== "function") {
+        throw new Error("SQLite-Laufzeit konnte nicht initialisiert werden.");
+      }
+      return window.initSqlJs;
+    }
+
+    async function ensureSqlJsRuntime() {
+      if (sqlJsRuntimePromise) return sqlJsRuntimePromise;
+      sqlJsRuntimePromise = (async () => {
+        const initSqlJs = await ensureSqlJsFactoryLoaded();
+        try {
+          return await initSqlJs({
+            locateFile: () => SQLJS_LOCAL_WASM_PATH
+          });
+        } catch {
+          return initSqlJs({
+            locateFile: () => SQLJS_CDN_WASM_PATH
+          });
+        }
+      })().catch((error) => {
+        sqlJsRuntimePromise = null;
+        throw error;
+      });
+      return sqlJsRuntimePromise;
+    }
+
+    function querySqliteRows(database, sql, params = []) {
+      if (!database || !sql) return [];
+      const statement = database.prepare(sql);
+      try {
+        if (Array.isArray(params) && params.length) {
+          statement.bind(params);
+        }
+        const rows = [];
+        while (statement.step()) {
+          rows.push(statement.getAsObject());
+        }
+        return rows;
+      } finally {
+        statement.free();
+      }
+    }
+
+    async function openTrainingDatabase(folder) {
+      const safeFolder = sanitizeFolderName(folder);
+      if (!safeFolder) throw new Error("Ungültiger Trainingsordner.");
+      const dbPath = getQuizDatabasePath(safeFolder);
+      if (!dbPath) throw new Error("Kein passender Quiz-Datenbankpfad gefunden.");
+      const [SQL, response] = await Promise.all([
+        ensureSqlJsRuntime(),
+        fetch(dbPath, { cache: "no-store" })
+      ]);
+      if (!response.ok) {
+        throw new Error(`Quiz-Datenbank für ${safeFolder} konnte nicht geladen werden (HTTP ${response.status})`);
+      }
+      const buffer = await response.arrayBuffer();
+      return new SQL.Database(new Uint8Array(buffer));
+    }
+
     function isHostedOnGithubPages() {
       return /\.github\.io$/i.test(String(location.hostname || "").trim());
     }
@@ -1138,18 +1528,78 @@
       return buildGithubRepoContentsUrlForParts(["Kurse", safeFolder]);
     }
 
+    function getScenarioResourceBasename(fileName = "") {
+      const normalizedPath = normalizeScenarioResourcePath(fileName);
+      const fallback = String(fileName || "").trim().replace(/\\/g, "/");
+      const source = normalizedPath || fallback;
+      if (!source) return "";
+      const parts = source.split("/").filter(Boolean);
+      return parts[parts.length - 1] || "";
+    }
+
+    function parseScenarioBasename(fileName = "") {
+      const base = getScenarioResourceBasename(fileName).replace(/\.(json|md)$/i, "");
+      if (!base) return null;
+      const legacyMatch = base.match(/^(\d{2})_(easy|medium|hard)_([a-z0-9_]+)$/i);
+      if (legacyMatch) {
+        return {
+          ticketNumber: legacyMatch[1],
+          difficulty: legacyMatch[2].toLowerCase(),
+          slug: legacyMatch[3],
+          version: "01",
+          kind: "legacy"
+        };
+      }
+      const versionedMatch = base.match(/^ticket(\d{2})_v(\d{2})_([a-z0-9_]+)$/i);
+      if (versionedMatch) {
+        return {
+          ticketNumber: versionedMatch[1],
+          difficulty: "easy",
+          slug: versionedMatch[3],
+          version: versionedMatch[2],
+          kind: "versioned"
+        };
+      }
+      return null;
+    }
+
+    function getScenarioStorageFileKey(fileName = "") {
+      const normalizedPath = normalizeScenarioResourcePath(fileName);
+      if (!normalizedPath) return "";
+      const parsed = parseScenarioBasename(normalizedPath);
+      if (!parsed) return normalizedPath;
+      return `${parsed.ticketNumber}_${parsed.difficulty}_${parsed.slug}.json`;
+    }
+
+    function getScenarioFileAliases(fileName = "") {
+      const exactPath = normalizeScenarioResourcePath(fileName);
+      const baseName = getScenarioResourceBasename(fileName);
+      const storageKey = getScenarioStorageFileKey(fileName);
+      return [...new Set([exactPath, baseName, storageKey].filter(Boolean))];
+    }
+
     function buildScenarioLabelFromFilename(fileName) {
-      const raw = String(fileName || "").trim().replace(/\.json$/i, "");
+      const parsed = parseScenarioBasename(fileName);
+      if (parsed) {
+        const words = parsed.slug.split("_").map((part) => {
+          const lower = String(part || "").toLowerCase();
+          if (!lower) return "";
+          return lower.charAt(0).toUpperCase() + lower.slice(1);
+        }).filter(Boolean);
+        const stationPrefix = `Ticket ${parsed.ticketNumber}`;
+        return words.length ? `${stationPrefix} - ${words.join(" ")}` : stationPrefix;
+      }
+      const raw = getScenarioResourceBasename(fileName).replace(/\.json$/i, "");
       if (!raw) return "Ticket";
       const parts = raw.split("_");
-      const stationPart = parts[0] || "";
-      const words = parts.slice(2).map((part) => {
+      const ticketPart = parts[0] || "";
+      const words = parts.slice(1).map((part) => {
         const lower = String(part || "").toLowerCase();
         if (!lower) return "";
         return lower.charAt(0).toUpperCase() + lower.slice(1);
       }).filter(Boolean);
-      const stationPrefix = /^\d{2}$/.test(stationPart) ? `Ticket ${stationPart}` : "Ticket";
-      return words.length ? `${stationPrefix} - ${words.join(" ")}` : stationPrefix;
+      const prefix = /^\d{2}$/.test(ticketPart) ? `Ticket ${ticketPart}` : "Ticket";
+      return words.length ? `${prefix} - ${words.join(" ")}` : prefix;
     }
 
     function getFolderShortcutLabel(folder) {
@@ -1211,8 +1661,974 @@
     function setAppBarSelection(view = "") {
       const normalized = String(view || "").trim().toLowerCase();
       const isHome = normalized === "home";
+      const isTraining = normalized === "training";
       homeButton.classList.toggle("is-active", isHome);
       homeButton.setAttribute("aria-pressed", isHome ? "true" : "false");
+      if (trainingMenuButton) {
+        trainingMenuButton.classList.toggle("is-active", isTraining);
+        trainingMenuButton.setAttribute("aria-pressed", isTraining ? "true" : "false");
+      }
+      setTrainingProgressRailVisible(isTraining && Boolean(trainingSession?.questions?.length));
+    }
+
+    function buildPseudoDoomScrollDeck(folder) {
+      const safeFolder = sanitizeFolderName(folder);
+      const shortLabel = getFolderShortcutLabel(safeFolder) || safeFolder || "Kurs";
+      return {
+        deckKey: `doomscroll_${normalizeProgressId(safeFolder || shortLabel)}`,
+        folder: safeFolder,
+        title: `DoomScrollQuiz ${shortLabel}`,
+        description: `Pseudo-Daten-Prototyp fuer ein schnelles Training im Stil "Was hat er gesagt?" fuer ${shortLabel}.`,
+        topics: ["Was hat er gesagt?", "Kurzfeedback", "Alltagssprache"],
+        questions: DOOM_SCROLL_PSEUDO_QUESTION_TEMPLATES.map((template, index) => ({
+          id: `${normalizeProgressId(safeFolder || shortLabel) || "kurs"}_doom_${index + 1}`,
+          type: "single",
+          maxSelections: 1,
+          prompt: template.prompt,
+          options: template.options.map((optionText, optionIndex) => ({
+            id: `${normalizeProgressId(safeFolder || shortLabel) || "kurs"}_doom_${index + 1}_opt_${optionIndex + 1}`,
+            text: optionText,
+            correct: optionIndex === template.correctIndex,
+            explanation: optionIndex === template.correctIndex
+              ? template.explanation
+              : "Diese Antwort klingt moeglich, trifft den Fachsatz aber nicht praezise."
+          })),
+          isNew: Boolean(template.isNew)
+        }))
+      };
+    }
+
+    function shuffleArray(list) {
+      const clone = Array.isArray(list) ? [...list] : [];
+      for (let index = clone.length - 1; index > 0; index -= 1) {
+        const randomIndex = Math.floor(Math.random() * (index + 1));
+        [clone[index], clone[randomIndex]] = [clone[randomIndex], clone[index]];
+      }
+      return clone;
+    }
+
+    function normalizeTrainingQuestions(deck) {
+      const questions = Array.isArray(deck?.questions) ? deck.questions : [];
+      const fresh = questions.filter((question) => question?.isNew);
+      const established = questions.filter((question) => !question?.isNew);
+      const ordered = [...shuffleArray(fresh), ...shuffleArray(established)];
+      return ordered.map((question, sessionIndex) => ({
+        ...question,
+        sessionIndex,
+        options: shuffleArray(question.options || []).map((option) => ({ ...option }))
+      }));
+    }
+
+    function normalizeTrainingInteractionType(value = "") {
+      const normalized = String(value || "").trim().toLowerCase().replace(/[\s-]+/g, "_");
+      switch (normalized) {
+        case "binary":
+        case "true_false":
+          return "binary";
+        case "single":
+        case "single_choice":
+          return "single";
+        case "multi":
+        case "multi_select":
+        case "multiple":
+          return "multi";
+        case "best":
+        case "best_option":
+          return "best";
+        case "sequence":
+        case "ordering":
+          return "sequence";
+        case "gap_fill_choice":
+        case "cloze_choice":
+          return "gap_fill_choice";
+        case "gap_fill_text":
+        case "cloze_text":
+          return "gap_fill_text";
+        default:
+          return "";
+      }
+    }
+
+    function normalizeTrainingQuestionKind(value = "") {
+      const normalized = String(value || "").trim().toLowerCase().replace(/[\s-]+/g, "_");
+      if (!normalized || !Object.prototype.hasOwnProperty.call(TRAINING_QUESTION_KIND_META, normalized)) {
+        return "";
+      }
+      return normalized;
+    }
+
+    function getTrainingQuestionKindMeta(questionKind = "") {
+      const normalizedKind = normalizeTrainingQuestionKind(questionKind);
+      return normalizedKind ? TRAINING_QUESTION_KIND_META[normalizedKind] || null : null;
+    }
+
+    function normalizeTrainingDbMeta(rawMeta, folder = "") {
+      if (!rawMeta || typeof rawMeta !== "object") return null;
+      const safeFolder = sanitizeFolderName(folder);
+      const dbKey = String(rawMeta.dbKey || rawMeta.db_key || getQuizFolderName(safeFolder) || "").trim();
+      const courseKey = String(rawMeta.courseKey || rawMeta.course_key || safeFolder || "").trim();
+      const title = String(rawMeta.title || "").trim();
+      const description = String(rawMeta.description || "").trim();
+      const defaultBadgeLabel = String(rawMeta.defaultBadgeLabel || rawMeta.default_badge_label || "").trim();
+      if (!dbKey && !courseKey && !title && !description && !defaultBadgeLabel) return null;
+      return {
+        dbKey,
+        courseKey,
+        title,
+        description,
+        defaultBadgeLabel,
+        languageCode: String(rawMeta.languageCode || rawMeta.language_code || "de").trim() || "de"
+      };
+    }
+
+    function normalizeTrainingDbPoolMeta(rawPool) {
+      if (!rawPool || typeof rawPool !== "object") return null;
+      const id = String(rawPool.id || "").trim();
+      if (!id) return null;
+      const sortOrder = Number(rawPool.sortOrder ?? rawPool.sort_order);
+      const defaultInteractionType = normalizeTrainingInteractionType(rawPool.defaultInteractionType || rawPool.default_interaction_type || "");
+      const defaultQuestionKind = normalizeTrainingQuestionKind(rawPool.defaultQuestionKind || rawPool.default_question_kind || "");
+      return {
+        id,
+        slug: String(rawPool.slug || "").trim(),
+        label: String(rawPool.label || rawPool.title || "Trainingspool").trim() || "Trainingspool",
+        description: String(rawPool.description || "").trim(),
+        sortOrder: Number.isFinite(sortOrder) ? sortOrder : 0,
+        defaultInteractionType,
+        defaultQuestionKind,
+        defaultBadgeLabel: String(rawPool.defaultBadgeLabel || rawPool.default_badge_label || "").trim(),
+        sourceRef: String(rawPool.sourceRef || rawPool.source_ref || "").trim(),
+        questionCount: Math.max(0, Number(rawPool.questionCount ?? rawPool.question_count) || 0),
+        topics: uniqueStringArray((Array.isArray(rawPool.topics) ? rawPool.topics : []).map((entry) => String(entry || "").trim()).filter(Boolean)),
+        interactionTypes: uniqueStringArray((Array.isArray(rawPool.interactionTypes) ? rawPool.interactionTypes : []).map((entry) => normalizeTrainingInteractionType(entry)).filter(Boolean)),
+        questionKinds: uniqueStringArray((Array.isArray(rawPool.questionKinds) ? rawPool.questionKinds : []).map((entry) => normalizeTrainingQuestionKind(entry)).filter(Boolean))
+      };
+    }
+
+    function resolveTrainingRuntimeType(interactionType, correctCount = 0) {
+      const normalizedType = normalizeTrainingInteractionType(interactionType);
+      switch (normalizedType) {
+        case "binary":
+        case "multi":
+        case "best":
+        case "single":
+          return normalizedType;
+        default:
+          return correctCount > 1 ? "multi" : "single";
+      }
+    }
+
+    function extractTrainingQuestionDefaults(payload = {}) {
+      const questionKind = normalizeTrainingQuestionKind(payload?.defaultQuestionKind || payload?.questionKind || "");
+      const questionKindMeta = getTrainingQuestionKindMeta(questionKind);
+      const interactionType = normalizeTrainingInteractionType(
+        payload?.defaultInteractionType ||
+        payload?.interactionType ||
+        questionKindMeta?.defaultInteractionType ||
+        ""
+      );
+      const badgeLabel = String(
+        payload?.defaultBadgeLabel ||
+        payload?.badgeLabel ||
+        questionKindMeta?.badgeLabel ||
+        ""
+      ).trim();
+      return {
+        questionKind,
+        interactionType,
+        badgeLabel
+      };
+    }
+
+    function getTrainingQuestionBadgeLabel(question = null) {
+      const explicitLabel = String(question?.badgeLabel || "").trim();
+      if (explicitLabel) return explicitLabel;
+      const questionKindMeta = getTrainingQuestionKindMeta(question?.questionKind || "");
+      if (questionKindMeta?.badgeLabel) return questionKindMeta.badgeLabel;
+      switch (normalizeTrainingInteractionType(question?.interactionType || question?.type || "")) {
+        case "binary":
+          return "Stimmt diese Aussage?";
+        case "multi":
+          return "Welche Aussagen sind korrekt?";
+        case "best":
+          return "Was waere hier der beste naechste Schritt?";
+        case "single":
+          return "Welche Antwort trifft am besten zu?";
+        default:
+          return "Was hat er gesagt?";
+      }
+    }
+
+    function normalizeStoredTrainingDeckMeta(rawDeck) {
+      if (!rawDeck || typeof rawDeck !== "object") return null;
+      const safeFolder = sanitizeFolderName(rawDeck.folder || rawDeck.scenarioFolder || "");
+      if (!safeFolder) return null;
+      const quizItems = (Array.isArray(rawDeck.quizItems) ? rawDeck.quizItems : [])
+        .map((item) => normalizeTrainingManifestItem(item, safeFolder))
+        .filter(Boolean);
+      const dbPools = (Array.isArray(rawDeck.dbPools) ? rawDeck.dbPools : [])
+        .map((pool) => normalizeTrainingDbPoolMeta(pool))
+        .filter(Boolean);
+      if (!quizItems.length && !dbPools.length) return null;
+      const sourceType = String(rawDeck.dataSource || (dbPools.length ? "sqlite" : "manifest")).trim().toLowerCase();
+      return buildTrainingDeckMeta(safeFolder, {
+        dataSource: sourceType === "sqlite" ? "sqlite" : "manifest",
+        quizItems,
+        dbPools,
+        dbMeta: sourceType === "sqlite" ? (rawDeck.dbMeta || rawDeck) : null,
+        questionCount: Math.max(0, Number(rawDeck.questionCount) || 0),
+        dominantBadge: String(rawDeck.dominantBadge || "").trim()
+      });
+    }
+
+    function normalizeStoredTrainingDeckCatalog(payload) {
+      const source = Array.isArray(payload) ? payload : [];
+      const seen = new Set();
+      return source
+        .map(normalizeStoredTrainingDeckMeta)
+        .filter((deck) => {
+          const folder = sanitizeFolderName(deck?.folder);
+          if (!folder || seen.has(folder)) return false;
+          seen.add(folder);
+          return true;
+        });
+    }
+
+    function normalizeStoredTrainingQuestion(rawQuestion, folder = "", questionIndex = 0) {
+      if (!rawQuestion || typeof rawQuestion !== "object") return null;
+      const prompt = String(rawQuestion.prompt || rawQuestion.title || rawQuestion.question || "").trim();
+      if (!prompt) return null;
+      const sourceFile = normalizeScenarioResourcePath(rawQuestion.sourceFile || rawQuestion.file || "");
+      const questionBaseId = normalizeProgressId(
+        rawQuestion.id || buildTrainingQuestionId(folder, sourceFile, rawQuestion.id, questionIndex)
+      ) || buildTrainingQuestionId(folder, sourceFile, rawQuestion.id, questionIndex);
+      const options = (Array.isArray(rawQuestion.options) ? rawQuestion.options : [])
+        .map((option, optionIndex) => normalizeTrainingOption(option, questionBaseId, optionIndex))
+        .filter((option) => option && option.text);
+      const correctCount = options.filter((option) => option.correct).length;
+      if (options.length < 2 || correctCount < 1) return null;
+      const questionKind = normalizeTrainingQuestionKind(rawQuestion.questionKind || rawQuestion.kind || "");
+      const questionKindMeta = getTrainingQuestionKindMeta(questionKind);
+      const interactionType = normalizeTrainingInteractionType(
+        rawQuestion.interactionType ||
+        rawQuestion.type ||
+        questionKindMeta?.defaultInteractionType ||
+        ""
+      );
+      return {
+        id: questionBaseId,
+        conceptId: normalizeProgressId(rawQuestion.conceptId || questionBaseId) || questionBaseId,
+        variantId: normalizeProgressId(rawQuestion.variantId || sourceFile || questionBaseId) || questionBaseId,
+        type: resolveTrainingRuntimeType(rawQuestion.type || interactionType, correctCount),
+        interactionType: interactionType || resolveTrainingRuntimeType(rawQuestion.type || "", correctCount),
+        questionKind,
+        badgeLabel: String(rawQuestion.badgeLabel || rawQuestion.modeLabel || questionKindMeta?.badgeLabel || "").trim(),
+        maxSelections: Math.max(1, Number(rawQuestion.maxSelections) || (correctCount > 1 ? correctCount : 1)),
+        prompt,
+        options,
+        isNew: Boolean(rawQuestion.isNew),
+        ticketId: getScenarioStorageFileKey(rawQuestion.ticketId || sourceFile || "") || "",
+        sourceFile
+      };
+    }
+
+    function normalizeStoredTrainingDeck(rawDeck, folderHint = "") {
+      if (!rawDeck || typeof rawDeck !== "object") return null;
+      const safeFolder = sanitizeFolderName(rawDeck.folder || folderHint || "");
+      if (!safeFolder) return null;
+      const metaDeck = normalizeStoredTrainingDeckMeta({
+        ...rawDeck,
+        folder: safeFolder
+      });
+      if (!metaDeck) return null;
+      const questions = (Array.isArray(rawDeck.questions) ? rawDeck.questions : [])
+        .map((question, questionIndex) => normalizeStoredTrainingQuestion(question, safeFolder, questionIndex))
+        .filter(Boolean);
+      if (!questions.length) return null;
+      return {
+        ...metaDeck,
+        questions,
+        questionCount: Math.max(questions.length, Number(metaDeck.questionCount) || 0)
+      };
+    }
+
+    function normalizeStoredTrainingDeckCache(payload) {
+      const source = payload && typeof payload === "object" ? payload : {};
+      const decks = Object.create(null);
+      Object.entries(source).forEach(([folder, rawDeck]) => {
+        const normalized = normalizeStoredTrainingDeck(rawDeck, folder);
+        if (!normalized) return;
+        decks[normalized.folder] = normalized;
+      });
+      return decks;
+    }
+
+    function normalizeTrainingManifestItem(rawItem, folder = "") {
+      if (!rawItem) return null;
+      const safeFolder = sanitizeFolderName(folder);
+      const source = typeof rawItem === "string" ? { file: rawItem } : rawItem;
+      const file = assertScenarioResourcePath(source.file || "", [".json"]);
+      const parsed = parseScenarioBasename(file);
+      const label = String(source.label || buildScenarioLabelFromPath(file)).trim() || "Quiz";
+      return {
+        file,
+        label,
+        folder: safeFolder,
+        ticketId: getScenarioStorageFileKey(source.ticketId || source.scenarioFile || file) || "",
+        versionId: String(source.versionId || (parsed ? `V${parsed.version}` : "")).trim().toUpperCase(),
+        questionCount: Math.max(0, Number(source.questionCount) || 0),
+        topics: uniqueStringArray((Array.isArray(source.topics) ? source.topics : []).map((entry) => String(entry || "").trim()).filter(Boolean)),
+        interactionTypes: uniqueStringArray((Array.isArray(source.interactionTypes) ? source.interactionTypes : []).map((entry) => normalizeTrainingInteractionType(entry)).filter(Boolean)),
+        questionKinds: uniqueStringArray((Array.isArray(source.questionKinds) ? source.questionKinds : []).map((entry) => normalizeTrainingQuestionKind(entry)).filter(Boolean)),
+        dominantBadge: String(source.dominantBadge || source.badgeLabel || "").trim()
+      };
+    }
+
+    function normalizeTrainingManifest(payload, folder = "") {
+      const source = Array.isArray(payload)
+        ? payload
+        : (Array.isArray(payload?.items) ? payload.items : (Array.isArray(payload?.quizzes) ? payload.quizzes : []));
+      if (!source.length) throw new Error("Quiz-Manifest enthaelt keine Eintraege.");
+      return source
+        .map((entry) => normalizeTrainingManifestItem(entry, folder))
+        .filter(Boolean);
+    }
+
+    async function fetchTrainingManifest(folder) {
+      const safeFolder = sanitizeFolderName(folder);
+      if (!safeFolder) throw new Error("Ungueltiger Trainingsordner.");
+      const res = await fetch(getQuizManifestPath(safeFolder), { cache: "no-store" });
+      if (!res.ok) throw new Error(`Quiz-Manifest fuer ${safeFolder} konnte nicht geladen werden (HTTP ${res.status})`);
+      const payload = await res.json();
+      return normalizeTrainingManifest(payload, safeFolder);
+    }
+
+    function buildTrainingDeckMeta(folder, config = []) {
+      const safeFolder = sanitizeFolderName(folder);
+      const shortLabel = getFolderShortcutLabel(safeFolder) || safeFolder || "Kurs";
+      const sourceConfig = Array.isArray(config) ? { quizItems: config } : (config && typeof config === "object" ? config : {});
+      const items = Array.isArray(sourceConfig.quizItems) ? sourceConfig.quizItems : [];
+      const dbPools = (Array.isArray(sourceConfig.dbPools) ? sourceConfig.dbPools : [])
+        .map((pool) => normalizeTrainingDbPoolMeta(pool))
+        .filter(Boolean);
+      const dbMeta = normalizeTrainingDbMeta(sourceConfig.dbMeta || null, safeFolder);
+      const dataSource = String(sourceConfig.dataSource || (dbPools.length ? "sqlite" : "manifest")).trim().toLowerCase() === "sqlite"
+        ? "sqlite"
+        : "manifest";
+      const title = String(sourceConfig.title || dbMeta?.title || `DoomScrollQuiz ${shortLabel}`).trim() || `DoomScrollQuiz ${shortLabel}`;
+      const description = String(sourceConfig.description || dbMeta?.description || `Training für ${shortLabel}.`).trim() || `Training für ${shortLabel}.`;
+      const dominantBadge = String(
+        sourceConfig.dominantBadge ||
+        dbMeta?.defaultBadgeLabel ||
+        items.find((item) => String(item?.dominantBadge || "").trim())?.dominantBadge ||
+        dbPools.find((pool) => String(pool?.defaultBadgeLabel || "").trim())?.defaultBadgeLabel ||
+        ""
+      ).trim();
+      const questionCount = Math.max(
+        0,
+        Number(sourceConfig.questionCount) ||
+        (dbPools.length
+          ? dbPools.reduce((sum, pool) => sum + Math.max(0, Number(pool?.questionCount) || 0), 0)
+          : items.reduce((sum, item) => sum + Math.max(0, Number(item?.questionCount) || 0), 0))
+      );
+      return {
+        deckKey: `doomscroll_${normalizeProgressId(safeFolder || shortLabel)}`,
+        folder: safeFolder,
+        quizFolder: getQuizFolderName(safeFolder),
+        title,
+        description,
+        menuSubtitle: "Trainingspool des Kurses",
+        dataSource,
+        dbMeta,
+        dbPools,
+        topics: uniqueStringArray([
+          ...items.flatMap((item) => item.topics || []),
+          ...dbPools.flatMap((pool) => pool.topics || [])
+        ]),
+        interactionTypes: uniqueStringArray([
+          ...items.flatMap((item) => item.interactionTypes || []),
+          ...dbPools.flatMap((pool) => [
+            ...(pool.interactionTypes || []),
+            pool.defaultInteractionType || ""
+          ]).filter(Boolean)
+        ]),
+        questionKinds: uniqueStringArray([
+          ...items.flatMap((item) => item.questionKinds || []),
+          ...dbPools.flatMap((pool) => [
+            ...(pool.questionKinds || []),
+            pool.defaultQuestionKind || ""
+          ]).filter(Boolean)
+        ]),
+        dominantBadge,
+        quizItems: items,
+        questionCount,
+        questions: []
+      };
+    }
+
+    async function fetchTrainingDeckMetaFromSqlite(folder) {
+      const safeFolder = sanitizeFolderName(folder);
+      if (!safeFolder || !isTrainingSqliteEnabledForFolder(safeFolder)) return null;
+      const database = await openTrainingDatabase(safeFolder);
+      try {
+        const dbMetaRow = querySqliteRows(
+          database,
+          `SELECT id, schema_version, db_key, course_key, title, description, language_code, default_badge_label
+           FROM quiz_db_meta
+           WHERE id = 1
+           LIMIT 1`
+        )[0] || null;
+        const poolRows = querySqliteRows(
+          database,
+          `SELECT
+             p.id,
+             p.slug,
+             p.label,
+             p.description,
+             p.sort_order,
+             p.default_interaction_type,
+             p.default_question_kind,
+             p.default_badge_label,
+             p.source_ref,
+             COUNT(q.id) AS question_count
+           FROM quiz_pool p
+           LEFT JOIN quiz_question q
+             ON q.pool_id = p.id
+            AND q.is_active = 1
+           WHERE p.is_active = 1
+           GROUP BY
+             p.id,
+             p.slug,
+             p.label,
+             p.description,
+             p.sort_order,
+             p.default_interaction_type,
+             p.default_question_kind,
+             p.default_badge_label,
+             p.source_ref
+           ORDER BY p.sort_order, p.label COLLATE NOCASE, p.id`
+        );
+        if (!poolRows.length) return null;
+        const topicRows = querySqliteRows(
+          database,
+          `SELECT pool_id, topic
+           FROM quiz_pool_topic
+           ORDER BY topic COLLATE NOCASE, pool_id`
+        );
+        const topicsByPoolId = new Map();
+        topicRows.forEach((row) => {
+          const poolId = String(row.pool_id || "").trim();
+          const topic = String(row.topic || "").trim();
+          if (!poolId || !topic) return;
+          const collection = topicsByPoolId.get(poolId) || [];
+          collection.push(topic);
+          topicsByPoolId.set(poolId, collection);
+        });
+        const dbPools = poolRows
+          .map((row) => normalizeTrainingDbPoolMeta({
+            ...row,
+            topics: topicsByPoolId.get(String(row.id || "").trim()) || []
+          }))
+          .filter(Boolean);
+        if (!dbPools.length) return null;
+        return buildTrainingDeckMeta(safeFolder, {
+          dataSource: "sqlite",
+          dbMeta: dbMetaRow,
+          dbPools,
+          questionCount: dbPools.reduce((sum, pool) => sum + Math.max(0, Number(pool?.questionCount) || 0), 0)
+        });
+      } finally {
+        database.close();
+      }
+    }
+
+    async function fetchTrainingDeckMeta(folder) {
+      const safeFolder = sanitizeFolderName(folder);
+      if (!safeFolder) throw new Error("Ungültiger Trainingsordner.");
+      if (isTrainingSqliteEnabledForFolder(safeFolder)) {
+        const sqliteDeck = await fetchTrainingDeckMetaFromSqlite(safeFolder).catch(() => null);
+        if (sqliteDeck) return sqliteDeck;
+      }
+      const quizItems = await fetchTrainingManifest(safeFolder);
+      if (!quizItems.length) return null;
+      return buildTrainingDeckMeta(safeFolder, {
+        dataSource: "manifest",
+        quizItems
+      });
+    }
+
+    async function ensureTrainingDeckCatalogLoaded(forceRefresh = false) {
+      if (!forceRefresh && getVisibleTrainingDecks().length) return getVisibleTrainingDecks();
+      if (trainingDeckCatalogPromise && !forceRefresh) return trainingDeckCatalogPromise;
+      trainingDeckCatalogPromise = (async () => {
+        const folders = getUnlockedFolders();
+        const existingDecksByFolder = new Map(
+          (Array.isArray(trainingDeckCatalog) ? trainingDeckCatalog : [])
+            .map((deck) => [sanitizeFolderName(deck?.folder), deck])
+            .filter(([folder]) => Boolean(folder))
+        );
+        const decks = await Promise.all(folders.map(async (folder) => {
+          try {
+            return await fetchTrainingDeckMeta(folder);
+          } catch {
+            return existingDecksByFolder.get(sanitizeFolderName(folder)) || null;
+          }
+        }));
+        trainingDeckCatalog = decks.filter((deck) => deck && (deck.questionCount > 0 || deck.quizItems.length > 0));
+        saveStoredTrainingDeckCatalog(trainingDeckCatalog);
+        return getVisibleTrainingDecks();
+      })().finally(() => {
+        trainingDeckCatalogPromise = null;
+      });
+      return trainingDeckCatalogPromise;
+    }
+
+    function buildTrainingQuestionId(folder, itemFile, questionId, questionIndex) {
+      return normalizeProgressId(`${folder}::${itemFile}::${questionId || `q${questionIndex + 1}`}`) || `training_q_${questionIndex + 1}`;
+    }
+
+    function normalizeTrainingOption(rawOption, questionBaseId, optionIndex, correctIndex = -1) {
+      if (typeof rawOption === "string") {
+        return {
+          id: `${questionBaseId}_opt_${optionIndex + 1}`,
+          text: rawOption,
+          correct: optionIndex === correctIndex,
+          explanation: optionIndex === correctIndex
+            ? "Diese Antwort trifft die beabsichtigte Aussage."
+            : "Diese Antwort klingt moeglich, passt aber nicht zur Quiz-Idee."
+        };
+      }
+      if (!rawOption || typeof rawOption !== "object") return null;
+      return {
+        id: normalizeProgressId(rawOption.id || `${questionBaseId}_opt_${optionIndex + 1}`) || `${questionBaseId}_opt_${optionIndex + 1}`,
+        text: String(rawOption.text || rawOption.label || "").trim(),
+        correct: Boolean(rawOption.correct),
+        explanation: String(
+          rawOption.explanation ||
+          rawOption.rationale ||
+          (rawOption.correct ? "Diese Antwort trifft die beabsichtigte Aussage." : "Diese Antwort klingt moeglich, passt aber nicht zur Quiz-Idee.")
+        ).trim()
+      };
+    }
+
+    function normalizeTrainingQuestionEntry(rawQuestion, item, folder = "", questionIndex = 0, defaults = null) {
+      if (!rawQuestion || typeof rawQuestion !== "object") return null;
+      const prompt = String(rawQuestion.prompt || rawQuestion.title || rawQuestion.question || "").trim();
+      if (!prompt) return null;
+      const questionBaseId = buildTrainingQuestionId(folder, item?.file || "", rawQuestion.id, questionIndex);
+      const rawOptions = Array.isArray(rawQuestion.options) ? rawQuestion.options : [];
+      const correctIndex = Number.isInteger(rawQuestion.correctIndex) ? Number(rawQuestion.correctIndex) : -1;
+      const options = rawOptions
+        .map((option, optionIndex) => normalizeTrainingOption(option, questionBaseId, optionIndex, correctIndex))
+        .filter((option) => option && option.text);
+      if (options.length < 2) return null;
+      const correctCount = options.filter((option) => option.correct).length;
+      const questionKind = normalizeTrainingQuestionKind(rawQuestion.questionKind || rawQuestion.kind || defaults?.questionKind || "");
+      const questionKindMeta = getTrainingQuestionKindMeta(questionKind);
+      const interactionType = normalizeTrainingInteractionType(
+        rawQuestion.interactionType ||
+        rawQuestion.type ||
+        defaults?.interactionType ||
+        questionKindMeta?.defaultInteractionType ||
+        ""
+      );
+      return {
+        id: questionBaseId,
+        conceptId: normalizeProgressId(rawQuestion.conceptId || `${item?.ticketId || item?.file || "ticket"}::${rawQuestion.id || `q${questionIndex + 1}`}`) || questionBaseId,
+        variantId: normalizeProgressId(rawQuestion.variantId || item?.file || questionBaseId) || questionBaseId,
+        type: resolveTrainingRuntimeType(interactionType, correctCount),
+        interactionType: interactionType || resolveTrainingRuntimeType("", correctCount),
+        questionKind,
+        badgeLabel: String(rawQuestion.badgeLabel || rawQuestion.modeLabel || defaults?.badgeLabel || questionKindMeta?.badgeLabel || "").trim(),
+        maxSelections: Math.max(1, Number(rawQuestion.maxSelections) || (correctCount > 1 ? correctCount : 1)),
+        prompt,
+        options,
+        isNew: Boolean(rawQuestion.isNew),
+        ticketId: item?.ticketId || "",
+        sourceFile: item?.file || ""
+      };
+    }
+
+    async function loadTrainingQuizJsonByPath(filePath, folder = "") {
+      const safeFile = assertScenarioResourcePath(filePath, [".json"]);
+      const basePath = getQuizBasePath(folder);
+      if (!basePath) throw new Error("Kein Quiz-Pfad verfuegbar.");
+      const res = await fetch(`${basePath}/${safeFile}`, { cache: "no-store" });
+      if (!res.ok) throw new Error(`${safeFile} (HTTP ${res.status})`);
+      return res.json();
+    }
+
+    async function loadTrainingDeck(folder, forceRefresh = false) {
+      const safeFolder = sanitizeFolderName(folder);
+      if (!safeFolder) throw new Error("Ungueltiger Trainingsordner.");
+      const cachedDeck = trainingDeckCacheByFolder[safeFolder] || null;
+      if (!forceRefresh && cachedDeck) {
+        return cachedDeck;
+      }
+      try {
+        const catalog = await ensureTrainingDeckCatalogLoaded(forceRefresh);
+        const metaDeck = catalog.find((deck) => sanitizeFolderName(deck?.folder) === safeFolder);
+        if (!metaDeck || !metaDeck.quizItems.length) {
+          if (!metaDeck || metaDeck.dataSource !== "sqlite" || !Array.isArray(metaDeck.dbPools) || !metaDeck.dbPools.length) {
+            throw new Error(`Für ${safeFolder} sind noch keine Trainingsfragen verfügbar.`);
+          }
+        }
+        let normalizedQuestions = [];
+        if (metaDeck.dataSource === "sqlite" && Array.isArray(metaDeck.dbPools) && metaDeck.dbPools.length) {
+          const database = await openTrainingDatabase(safeFolder);
+          try {
+            const dbMeta = normalizeTrainingDbMeta(metaDeck.dbMeta || null, safeFolder);
+            const poolIds = metaDeck.dbPools
+              .map((pool) => String(pool?.id || "").trim())
+              .filter(Boolean);
+            if (!poolIds.length) {
+              throw new Error(`Für ${safeFolder} sind noch keine Trainingsfragen verfügbar.`);
+            }
+            const placeholders = poolIds.map(() => "?").join(", ");
+            const questionRows = querySqliteRows(
+              database,
+              `SELECT
+                 q.id,
+                 q.pool_id,
+                 q.concept_id,
+                 q.variant_id,
+                 q.sort_order,
+                 q.interaction_type,
+                 q.question_kind,
+                 q.badge_label,
+                 q.prompt,
+                 q.instructions,
+                 q.context,
+                 q.max_selections,
+                 q.is_new,
+                 q.sentence_template,
+                 q.gap_key,
+                 q.source_ref
+               FROM quiz_question q
+               JOIN quiz_pool p
+                 ON p.id = q.pool_id
+              WHERE p.is_active = 1
+                AND q.is_active = 1
+                AND q.pool_id IN (${placeholders})
+              ORDER BY p.sort_order, p.label COLLATE NOCASE, q.sort_order, q.created_at, q.id`,
+              poolIds
+            );
+            if (!questionRows.length) {
+              throw new Error(`Für ${safeFolder} sind noch keine Trainingsfragen verfügbar.`);
+            }
+            const optionRows = querySqliteRows(
+              database,
+              `SELECT
+                 o.id,
+                 o.question_id,
+                 o.option_key,
+                 o.sort_order,
+                 o.short_label,
+                 o.text,
+                 o.explanation,
+                 o.is_correct
+               FROM quiz_option o
+               JOIN quiz_question q
+                 ON q.id = o.question_id
+               JOIN quiz_pool p
+                 ON p.id = q.pool_id
+              WHERE p.is_active = 1
+                AND q.is_active = 1
+                AND o.is_active = 1
+                AND q.pool_id IN (${placeholders})
+              ORDER BY o.question_id, o.sort_order, o.id`,
+              poolIds
+            );
+            const optionsByQuestionId = new Map();
+            optionRows.forEach((row) => {
+              const questionId = String(row.question_id || "").trim();
+              if (!questionId) return;
+              const collection = optionsByQuestionId.get(questionId) || [];
+              collection.push({
+                id: String(row.id || "").trim(),
+                label: String(row.short_label || "").trim(),
+                text: String(row.text || "").trim(),
+                correct: Boolean(Number(row.is_correct)),
+                explanation: String(row.explanation || "").trim()
+              });
+              optionsByQuestionId.set(questionId, collection);
+            });
+            const poolById = new Map(
+              metaDeck.dbPools
+                .map((pool) => normalizeTrainingDbPoolMeta(pool))
+                .filter(Boolean)
+                .map((pool) => [pool.id, pool])
+            );
+            normalizedQuestions = questionRows
+              .map((row, questionIndex) => {
+                const questionId = String(row.id || "").trim();
+                const poolId = String(row.pool_id || "").trim();
+                const poolMeta = poolById.get(poolId) || null;
+                return normalizeTrainingQuestionEntry(
+                  {
+                    id: questionId,
+                    conceptId: String(row.concept_id || "").trim(),
+                    variantId: String(row.variant_id || "").trim(),
+                    interactionType: String(row.interaction_type || "").trim(),
+                    questionKind: String(row.question_kind || "").trim(),
+                    badgeLabel: String(row.badge_label || "").trim(),
+                    prompt: String(row.prompt || "").trim(),
+                    instructions: String(row.instructions || "").trim(),
+                    context: String(row.context || "").trim(),
+                    maxSelections: Math.max(1, Number(row.max_selections) || 1),
+                    isNew: Boolean(Number(row.is_new)),
+                    sentenceTemplate: String(row.sentence_template || "").trim(),
+                    gapKey: String(row.gap_key || "").trim(),
+                    sourceRef: String(row.source_ref || "").trim(),
+                    options: optionsByQuestionId.get(questionId) || []
+                  },
+                  {
+                    ticketId: "",
+                    file: `db/${poolMeta?.slug || poolId || "pool"}`,
+                    label: poolMeta?.label || "Trainingspool"
+                  },
+                  safeFolder,
+                  questionIndex,
+                  {
+                    interactionType: poolMeta?.defaultInteractionType || dbMeta?.defaultInteractionType || "",
+                    questionKind: poolMeta?.defaultQuestionKind || dbMeta?.defaultQuestionKind || "",
+                    badgeLabel: poolMeta?.defaultBadgeLabel || dbMeta?.defaultBadgeLabel || ""
+                  }
+                );
+              })
+              .filter(Boolean);
+          } finally {
+            database.close();
+          }
+        } else {
+          for (const item of metaDeck.quizItems) {
+            const payload = await loadTrainingQuizJsonByPath(item.file, safeFolder);
+            const questionDefaults = extractTrainingQuestionDefaults(payload);
+            const rawQuestions = Array.isArray(payload?.questions) ? payload.questions : [];
+            rawQuestions.forEach((rawQuestion, questionIndex) => {
+              const normalizedQuestion = normalizeTrainingQuestionEntry(rawQuestion, item, safeFolder, questionIndex, questionDefaults);
+              if (normalizedQuestion) normalizedQuestions.push(normalizedQuestion);
+            });
+          }
+        }
+        const deck = {
+          ...metaDeck,
+          questions: normalizeTrainingQuestions({
+            ...metaDeck,
+            questions: normalizedQuestions
+          }),
+          questionCount: normalizedQuestions.length
+        };
+        trainingDeckCacheByFolder[safeFolder] = deck;
+        trainingDeckCacheSourceByFolder[safeFolder] = "live";
+        saveStoredTrainingDeckCache(trainingDeckCacheByFolder);
+        trainingDeckCatalog = trainingDeckCatalog.map((entry) => sanitizeFolderName(entry?.folder) === safeFolder ? { ...entry, questionCount: deck.questionCount } : entry);
+        saveStoredTrainingDeckCatalog(trainingDeckCatalog);
+        return deck;
+      } catch (error) {
+        if (cachedDeck) return cachedDeck;
+        throw error;
+      }
+    }
+
+    function getVisibleTrainingDecks() {
+      const source = Array.isArray(trainingDeckCatalog) ? trainingDeckCatalog : [];
+      const unlockedFolders = new Set(getUnlockedFolders());
+      return source.filter((deck) => unlockedFolders.has(sanitizeFolderName(deck?.folder)));
+    }
+
+    function getActiveTrainingDeck(decks = getVisibleTrainingDecks()) {
+      if (trainingSession?.deck) return trainingSession.deck;
+      const source = Array.isArray(decks) ? decks : [];
+      if (!source.length) return null;
+      const preferredFolder = sanitizeFolderName(activeTrainingFolder || activeScenarioFolder || activeHomeSkillsFolder);
+      return source.find((deck) => sanitizeFolderName(deck?.folder) === preferredFolder) || source[0] || null;
+    }
+
+    function randomIntegerBetween(min, max) {
+      const lower = Math.max(0, Math.min(min, max));
+      const upper = Math.max(lower, Math.max(min, max));
+      return lower + Math.floor(Math.random() * (upper - lower + 1));
+    }
+
+    function createTrainingSessionFromDeck(deck) {
+      return {
+        deck,
+        questions: normalizeTrainingQuestions(deck),
+        questionStateById: Object.create(null),
+        answered: 0,
+        exactMatches: 0,
+        currentQuestionIndex: 0,
+        activeCardState: null,
+        openWrongReviewIn: randomIntegerBetween(3, 5),
+        openCorrectReviewIn: randomIntegerBetween(12, 16),
+        closedCorrectReviewIn: randomIntegerBetween(12, 16),
+        lowWrongCorrectIn: 3
+      };
+    }
+
+    function getTrainingQuestionBuckets() {
+      const questions = Array.isArray(trainingSession?.questions) ? trainingSession.questions : [];
+      const stateMap = trainingSession?.questionStateById || Object.create(null);
+      const open = [];
+      const wrong = [];
+      const correct = [];
+      for (const question of questions) {
+        const questionState = String(stateMap[question.id] || "open");
+        if (questionState === "correct") {
+          correct.push(question);
+        } else if (questionState === "wrong") {
+          wrong.push(question);
+        } else {
+          open.push(question);
+        }
+      }
+      return { open, wrong, correct };
+    }
+
+    function syncTrainingSessionCounts() {
+      if (!trainingSession) return;
+      const buckets = getTrainingQuestionBuckets();
+      trainingSession.answered = buckets.wrong.length + buckets.correct.length;
+      trainingSession.exactMatches = buckets.correct.length;
+    }
+
+    function pickTrainingQuestionFromPool(pool, excludedQuestionId = "") {
+      const source = Array.isArray(pool) ? pool.filter(Boolean) : [];
+      if (!source.length) return null;
+      const filtered = source.filter((question) => question.id !== excludedQuestionId);
+      const candidates = filtered.length ? filtered : source;
+      return candidates[Math.floor(Math.random() * candidates.length)] || null;
+    }
+
+    function selectNextTrainingQuestion(excludedQuestionId = "") {
+      if (!trainingSession) return null;
+      const buckets = getTrainingQuestionBuckets();
+      const hasOpen = buckets.open.length > 0;
+      const wrongCount = buckets.wrong.length;
+      const correctCount = buckets.correct.length;
+
+      let nextQuestion = null;
+      let selectedPool = "open";
+
+      if (hasOpen) {
+        const shouldShowCorrect = correctCount > 0 && trainingSession.openCorrectReviewIn <= 1;
+        const shouldShowWrong = wrongCount > 0 && trainingSession.openWrongReviewIn <= 1;
+
+        if (shouldShowWrong) {
+          nextQuestion = pickTrainingQuestionFromPool(buckets.wrong, excludedQuestionId);
+          selectedPool = nextQuestion ? "wrong" : "open";
+        }
+        if (!nextQuestion && shouldShowCorrect) {
+          nextQuestion = pickTrainingQuestionFromPool(buckets.correct, excludedQuestionId);
+          selectedPool = nextQuestion ? "correct" : "open";
+        }
+        if (!nextQuestion) {
+          nextQuestion = pickTrainingQuestionFromPool(buckets.open, excludedQuestionId) ||
+            pickTrainingQuestionFromPool(buckets.wrong, excludedQuestionId) ||
+            pickTrainingQuestionFromPool(buckets.correct, excludedQuestionId);
+          selectedPool = buckets.open.length ? "open" : (buckets.wrong.length ? "wrong" : "correct");
+        }
+
+        trainingSession.openWrongReviewIn = selectedPool === "wrong"
+          ? randomIntegerBetween(3, 5)
+          : Math.max(1, Number(trainingSession.openWrongReviewIn || randomIntegerBetween(3, 5)) - 1);
+        trainingSession.openCorrectReviewIn = selectedPool === "correct"
+          ? randomIntegerBetween(12, 16)
+          : Math.max(1, Number(trainingSession.openCorrectReviewIn || randomIntegerBetween(12, 16)) - 1);
+        return nextQuestion;
+      }
+
+      if (wrongCount > 0) {
+        const lowWrongPool = wrongCount < 17;
+        const shouldShowCorrect = correctCount > 0 && (
+          lowWrongPool
+            ? trainingSession.lowWrongCorrectIn <= 1
+            : trainingSession.closedCorrectReviewIn <= 1
+        );
+
+        if (shouldShowCorrect) {
+          nextQuestion = pickTrainingQuestionFromPool(buckets.correct, excludedQuestionId);
+          selectedPool = nextQuestion ? "correct" : "wrong";
+        }
+        if (!nextQuestion) {
+          nextQuestion = pickTrainingQuestionFromPool(buckets.wrong, excludedQuestionId) ||
+            pickTrainingQuestionFromPool(buckets.correct, excludedQuestionId);
+          selectedPool = buckets.wrong.length ? "wrong" : "correct";
+        }
+
+        if (lowWrongPool) {
+          trainingSession.lowWrongCorrectIn = selectedPool === "correct"
+            ? 3
+            : Math.max(1, Number(trainingSession.lowWrongCorrectIn || 3) - 1);
+        } else {
+          trainingSession.closedCorrectReviewIn = selectedPool === "correct"
+            ? randomIntegerBetween(12, 16)
+            : Math.max(1, Number(trainingSession.closedCorrectReviewIn || randomIntegerBetween(12, 16)) - 1);
+        }
+        return nextQuestion;
+      }
+
+      return pickTrainingQuestionFromPool(buckets.correct, excludedQuestionId) ||
+        pickTrainingQuestionFromPool(buckets.open, excludedQuestionId);
+    }
+
+    function clearTrainingSession() {
+      activeTrainingDeckKey = "";
+      activeTrainingFolder = "";
+      trainingSession = null;
+      setTrainingProgressRailVisible(false);
+    }
+
+    function updateTrainingMenuButtonState(isOpen = false) {
+      if (!trainingMenuButton) return;
+      if (isOpen) {
+        trainingMenuButton.setAttribute("aria-label", "Training schliessen");
+        trainingMenuButton.title = "Training schliessen";
+        return;
+      }
+      const activeDeck = getActiveTrainingDeck();
+      const activeLabel = getFolderShortcutLabel(activeDeck?.folder || activeTrainingFolder) || String(activeDeck?.folder || activeTrainingFolder || "").trim();
+      const baseLabel = activeLabel
+        ? `Training oeffnen (aktuell: ${activeLabel})`
+        : "Training oeffnen";
+      trainingMenuButton.setAttribute("aria-label", baseLabel);
+      trainingMenuButton.title = baseLabel;
+    }
+
+    function setTrainingProgressRailVisible(visible) {
+      if (!trainingProgressRail) return;
+      const nextVisible = Boolean(visible);
+      trainingProgressRail.classList.toggle("hidden", !nextVisible);
+      trainingProgressRail.setAttribute("aria-hidden", String(!nextVisible));
+    }
+
+    function getActiveScenarioGroup(groups = availableScenarios) {
+      const source = Array.isArray(groups) ? groups : [];
+      if (!source.length) return null;
+      const activeFolder = sanitizeFolderName(activeScenarioFolder);
+      return source.find((group) => sanitizeFolderName(group?.folder) === activeFolder) || source[0] || null;
+    }
+
+    function getActiveCourseMenuLabel() {
+      const activeGroup = getActiveScenarioGroup(availableScenarios);
+      const labelSource = activeGroup?.folder || activeScenarioFolder;
+      return getFolderShortcutLabel(labelSource) || String(labelSource || "").trim();
+    }
+
+    function updateCourseMenuButtonState(isOpen = false) {
+      if (!courseMenuButton) return;
+      if (isOpen) {
+        courseMenuButton.setAttribute("aria-label", "Kursauswahl schliessen");
+        courseMenuButton.title = "Kursauswahl schliessen";
+        return;
+      }
+      const activeLabel = getActiveCourseMenuLabel();
+      const baseLabel = activeLabel
+        ? `Kursauswahl oeffnen (aktuell: ${activeLabel})`
+        : "Kursauswahl oeffnen";
+      courseMenuButton.setAttribute("aria-label", baseLabel);
+      courseMenuButton.title = baseLabel;
     }
 
     function resetRuntimeState() {
@@ -1524,7 +2940,11 @@
       if (!taskNavDrawer || !taskNavDrawerToggleBtn || !taskNavBackdrop) return;
       const currentlyOpen = !taskNavDrawer.classList.contains("hidden");
       const nextOpen = typeof forceOpen === "boolean" ? forceOpen : !currentlyOpen;
-      if (nextOpen) toggleScenarioMenu(false);
+      if (nextOpen) {
+        toggleTrainingMenu(false);
+        toggleCourseMenu(false);
+        toggleScenarioMenu(false);
+      }
       taskNavDrawer.classList.toggle("hidden", !nextOpen);
       taskNavBackdrop.classList.toggle("hidden", !nextOpen);
       taskNavDrawer.setAttribute("aria-hidden", String(!nextOpen));
@@ -1560,6 +2980,7 @@
       );
       await initScenarioSelector();
       await showHomeContent(mappedFolders[0]);
+      refreshTrainingCatalogInBackground().catch(() => {});
     }
 
     async function validateScenarioFolder(folder) {
@@ -1600,10 +3021,13 @@
       setUnlockedEntries(nextEntries, mappedFolders[0] || activeScenarioFolder);
       await initScenarioSelector();
       await showHomeContent();
+      refreshTrainingCatalogInBackground().catch(() => {});
     }
 
     function renderUnlockScreen(message) {
       setAppBarSelection("");
+      toggleTrainingMenu(false);
+      toggleCourseMenu(false);
       toggleScenarioMenu(false);
       setSubmitBarVisible(false);
       resetRuntimeState();
@@ -1962,7 +3386,7 @@
     }
 
     function resolveScenarioRatingId(data) {
-      const fromFile = normalizeScenarioRatingId(activeScenarioFile);
+      const fromFile = normalizeScenarioRatingId(getScenarioStorageFileKey(activeScenarioFile));
       if (fromFile) return fromFile;
       const stationId = normalizeScenarioRatingId(data?.scenario?.station?.id || data?.scenario?.id || "");
       if (stationId) return stationId;
@@ -2145,7 +3569,7 @@
 
     function buildQuestionProgressKey(questionId, scenarioKeySource = "") {
       const filePart = normalizeProgressId(
-        scenarioKeySource || activeScenarioFile || scenarioData?.scenario?.station?.id || "scenario"
+        getScenarioStorageFileKey(scenarioKeySource || activeScenarioFile || "") || scenarioData?.scenario?.station?.id || "scenario"
       );
       const qPart = normalizeProgressId(questionId || "") || String(questionId || "q");
       return `${filePart || "scenario"}::${qPart}`;
@@ -2261,11 +3685,14 @@
       let progressEnabledFiles = null;
       try {
         const manifest = await loadScenarioManifestForFolder(safeFolder);
-        progressEnabledFiles = new Set(
+        progressEnabledFiles = new Map(
           (manifest?.items || [])
             .filter((item) => item?.countsTowardProgress)
-            .map((item) => String(item.file || "").trim())
-            .filter(Boolean)
+            .map((item) => [
+              normalizeScenarioRatingId(getScenarioStorageFileKey(item.file)),
+              String(item.file || "").trim()
+            ])
+            .filter(([scenarioId, filePath]) => scenarioId && filePath)
         );
       } catch {
       }
@@ -2282,16 +3709,17 @@
 
         if (!matchesScenarioNamingConvention(scenarioId)) continue;
         if (progressEnabledFiles && !progressEnabledFiles.has(scenarioId)) continue;
+        const scenarioFilePath = progressEnabledFiles?.get(scenarioId) || scenarioId;
         let data = null;
         try {
-          data = await loadScenarioJsonByPath(scenarioId, safeFolder);
+          data = await loadScenarioJsonByPath(scenarioFilePath, safeFolder);
         } catch {
           continue;
         }
         for (const question of data?.questions || []) {
           if (!question || isStructuralQuestion(question)) continue;
           const questionUpdate = awardQuestionProgressToState(skillState, question, data, {
-            scenarioKeySource: scenarioId
+            scenarioKeySource: scenarioFilePath
           });
           if (questionUpdate.gainedPoints > 0) {
             gainedPoints += questionUpdate.gainedPoints;
@@ -2677,6 +4105,8 @@
         localStorage.setItem(HOME_SKILLS_FOLDER_STORAGE_KEY, activeHomeSkillsFolder);
       } catch {
       }
+      toggleTrainingMenu(false);
+      toggleCourseMenu(false);
       toggleScenarioMenu(false);
       setSubmitBarVisible(false);
       resetRuntimeState();
@@ -2700,12 +4130,95 @@
       }
     }
 
+    async function toggleTrainingMenu(forceOpen) {
+      if (!trainingMenu || !trainingMenuButton || !trainingNavBackdrop) return;
+      const currentlyOpen = trainingMenu.classList.contains("is-open");
+      const nextOpen = typeof forceOpen === "boolean" ? forceOpen : !currentlyOpen;
+      if (nextOpen) {
+        toggleCourseMenu(false);
+        toggleScenarioMenu(false);
+        toggleTaskNavDrawer(false);
+        const restoredFromCache = primeTrainingMenuFromCache();
+        if (!restoredFromCache) {
+          trainingMenuOptions.innerHTML = "<p class='status-text scenario-tree-empty'>Training wird geladen ...</p>";
+          const decks = await ensureTrainingDeckCatalogLoaded(false).catch(() => []);
+          renderTrainingMenu(decks);
+        }
+        if (hasUnlockedAccess()) {
+          refreshTrainingCatalogInBackground().catch(() => {});
+        }
+      }
+      window.clearTimeout(trainingMenuCloseTimer);
+      if (nextOpen) {
+        trainingMenu.classList.remove("hidden");
+        trainingNavBackdrop.classList.remove("hidden");
+        window.requestAnimationFrame(() => {
+          trainingMenu.classList.add("is-open");
+          trainingNavBackdrop.classList.add("is-open");
+        });
+      } else {
+        trainingMenu.classList.remove("is-open");
+        trainingNavBackdrop.classList.remove("is-open");
+        trainingMenuCloseTimer = window.setTimeout(() => {
+          if (trainingMenu.classList.contains("is-open")) return;
+          trainingMenu.classList.add("hidden");
+          trainingNavBackdrop.classList.add("hidden");
+        }, 220);
+      }
+      trainingMenu.setAttribute("aria-hidden", String(!nextOpen));
+      trainingMenuButton.setAttribute("aria-expanded", String(nextOpen));
+      updateTrainingMenuButtonState(nextOpen);
+    }
+
+    async function toggleCourseMenu(forceOpen) {
+      if (!courseMenu || !courseMenuButton || !courseNavBackdrop) return;
+      const currentlyOpen = courseMenu.classList.contains("is-open");
+      const nextOpen = typeof forceOpen === "boolean" ? forceOpen : !currentlyOpen;
+      if (nextOpen) {
+        toggleTrainingMenu(false);
+        toggleScenarioMenu(false);
+        toggleTaskNavDrawer(false);
+        if (!availableScenarios.length) {
+          const restoredFromCache = primeScenarioMenuFromCache();
+          if (!restoredFromCache && hasUnlockedAccess()) {
+            warmScenarioTreeFromKnownState().catch(() => {});
+          }
+        }
+        renderCourseMenu(availableScenarios);
+        if (hasUnlockedAccess()) {
+          refreshScenarioTreeInBackground().catch(() => {});
+        }
+      }
+      window.clearTimeout(courseMenuCloseTimer);
+      if (nextOpen) {
+        courseMenu.classList.remove("hidden");
+        courseNavBackdrop.classList.remove("hidden");
+        window.requestAnimationFrame(() => {
+          courseMenu.classList.add("is-open");
+          courseNavBackdrop.classList.add("is-open");
+        });
+      } else {
+        courseMenu.classList.remove("is-open");
+        courseNavBackdrop.classList.remove("is-open");
+        courseMenuCloseTimer = window.setTimeout(() => {
+          if (courseMenu.classList.contains("is-open")) return;
+          courseMenu.classList.add("hidden");
+          courseNavBackdrop.classList.add("hidden");
+        }, 220);
+      }
+      courseMenu.setAttribute("aria-hidden", String(!nextOpen));
+      courseMenuButton.setAttribute("aria-expanded", String(nextOpen));
+      updateCourseMenuButtonState(nextOpen);
+    }
+
     async function toggleScenarioMenu(forceOpen) {
       if (!scenarioMenu || !scenarioMenuButton || !scenarioNavBackdrop) return;
       const currentlyOpen = scenarioMenu.classList.contains("is-open");
       const nextOpen = typeof forceOpen === "boolean" ? forceOpen : !currentlyOpen;
-      if (nextOpen) toggleTaskNavDrawer(false);
       if (nextOpen) {
+        toggleTrainingMenu(false);
+        toggleCourseMenu(false);
+        toggleTaskNavDrawer(false);
         if (!availableScenarios.length) {
           const restoredFromCache = primeScenarioMenuFromCache();
           if (!restoredFromCache && hasUnlockedAccess()) {
@@ -2759,15 +4272,17 @@
     function updateScenarioMenuButtonState(isOpen = false) {
       if (!scenarioMenuButton) return;
       if (isOpen) {
-        scenarioMenuButton.setAttribute("aria-label", "Szenario Ordnerbaum schliessen");
-        scenarioMenuButton.title = "Szenario Ordnerbaum schliessen";
+        scenarioMenuButton.setAttribute("aria-label", "Posteingang schliessen");
+        scenarioMenuButton.title = "Posteingang schliessen";
         return;
       }
       const activeLabel = getActiveScenarioMenuLabel();
-      const folderSuffix = activeScenarioFolder ? ` | ${activeScenarioFolder}` : "";
+      const courseLabel = getActiveCourseMenuLabel();
       const baseLabel = activeLabel
-        ? `Szenario Ordnerbaum oeffnen (aktuell: ${activeLabel}${folderSuffix})`
-        : "Szenario Ordnerbaum oeffnen";
+        ? `Posteingang oeffnen (Kurs: ${courseLabel || "unbekannt"}, aktuell: ${activeLabel})`
+        : courseLabel
+          ? `Posteingang oeffnen (Kurs: ${courseLabel})`
+          : "Posteingang oeffnen";
       scenarioMenuButton.setAttribute("aria-label", baseLabel);
       scenarioMenuButton.title = baseLabel;
     }
@@ -2819,8 +4334,12 @@
     function buildScenarioLabelFromPath(filePath) {
       const path = normalizeScenarioResourcePath(filePath);
       if (!path) return "Ticket";
+      const fileName = getScenarioResourceBasename(path);
+      if (matchesScenarioNamingConvention(fileName)) {
+        return buildScenarioLabelFromFilename(fileName);
+      }
       const parts = path.split("/");
-      const base = parts.length > 1 ? parts[parts.length - 2] : parts[parts.length - 1];
+      const base = parts.length > 1 ? parts[parts.length - 2] : fileName;
       return buildScenarioLabelFromSlug(base);
     }
 
@@ -2890,8 +4409,14 @@
       const groups = getCachedScenarioGroupsForCurrentView();
       if (!groups.length) return false;
       availableScenarios = groups;
-      renderScenarioMenu(groups);
-      updateScenarioMenuButtonState(false);
+      renderScenarioNavigation(groups);
+      return true;
+    }
+
+    function primeTrainingMenuFromCache() {
+      const decks = getVisibleTrainingDecks();
+      if (!decks.length) return false;
+      renderTrainingMenu(decks);
       return true;
     }
 
@@ -2923,13 +4448,63 @@
             await showHomeContent(activeHomeSkillsFolder || activeScenarioFolder);
           }
         } else {
-          renderScenarioMenu([]);
+          renderScenarioNavigation([]);
         }
       })().catch(() => {
       }).finally(() => {
         scenarioTreeRefreshPromise = null;
       });
       return scenarioTreeRefreshPromise;
+    }
+
+    async function refreshTrainingCatalogInBackground() {
+      if (trainingDeckCatalogRefreshPromise) return trainingDeckCatalogRefreshPromise;
+      trainingDeckCatalogRefreshPromise = (async () => {
+        const decks = await ensureTrainingDeckCatalogLoaded(true);
+        if (trainingMenu.classList.contains("is-open")) {
+          renderTrainingMenu(decks);
+        }
+        updateTrainingMenuButtonState(false);
+        return decks;
+      })().catch(() => {
+        return getVisibleTrainingDecks();
+      }).finally(() => {
+        trainingDeckCatalogRefreshPromise = null;
+      });
+      return trainingDeckCatalogRefreshPromise;
+    }
+
+    async function refreshTrainingDeckInBackground(folder) {
+      const safeFolder = sanitizeFolderName(folder || activeTrainingFolder);
+      if (!safeFolder) return null;
+      if (trainingDeckRefreshPromisesByFolder[safeFolder]) {
+        return trainingDeckRefreshPromisesByFolder[safeFolder];
+      }
+      trainingDeckRefreshPromisesByFolder[safeFolder] = (async () => {
+        const freshDeck = await loadTrainingDeck(safeFolder, true);
+        if (trainingMenu.classList.contains("is-open")) {
+          renderTrainingMenu(getVisibleTrainingDecks());
+        }
+        const canReplaceActiveSession = Boolean(
+          trainingSession &&
+          sanitizeFolderName(trainingSession?.deck?.folder || activeTrainingFolder) === safeFolder &&
+          Number(trainingSession?.answered || 0) === 0 &&
+          !trainingSession?.activeCardState?.locked &&
+          !trainingSession?.activeCardState?.selectedIds?.size
+        );
+        if (canReplaceActiveSession) {
+          activeTrainingDeckKey = freshDeck.deckKey;
+          activeTrainingFolder = freshDeck.folder;
+          trainingSession = createTrainingSessionFromDeck(freshDeck);
+          renderDoomScrollQuiz();
+        }
+        return freshDeck;
+      })().catch(() => {
+        return trainingDeckCacheByFolder[safeFolder] || null;
+      }).finally(() => {
+        delete trainingDeckRefreshPromisesByFolder[safeFolder];
+      });
+      return trainingDeckRefreshPromisesByFolder[safeFolder];
     }
 
     function normalizeScenarioItem(raw) {
@@ -2953,10 +4528,9 @@
     function extractManifestProgressTicketSet(payload) {
       if (!payload || typeof payload !== "object" || !Array.isArray(payload.progressTickets)) return null;
       const files = payload.progressTickets
-        .map((entry) => String(entry || "").trim())
-        .filter((entry) => entry.toLowerCase().endsWith(".json"))
+        .map((entry) => assertScenarioResourcePath(entry, [".json"]))
         .filter((entry) => matchesScenarioNamingConvention(entry));
-      return new Set(files.map((entry) => assertScenarioFilename(entry)));
+      return new Set(files.map((entry) => getScenarioStorageFileKey(entry)).filter(Boolean));
     }
 
     function normalizeScenarioManifestItems(payload, folder) {
@@ -2969,13 +4543,14 @@
         .filter((entry) => entry && entry.file.toLowerCase().endsWith(".json"))
         .filter((entry) => matchesScenarioNamingConvention(entry.file))
         .map((entry) => {
-          const file = assertScenarioFilename(entry.file);
+          const file = assertScenarioResourcePath(entry.file, [".json"]);
+          const storageKey = getScenarioStorageFileKey(file);
           const countsTowardProgress = typeof entry.countsTowardProgress === "boolean"
             ? entry.countsTowardProgress
-            : (progressTicketSet ? progressTicketSet.has(file) : true);
+            : (progressTicketSet ? progressTicketSet.has(storageKey) : true);
           return {
             file,
-            label: entry.label || buildScenarioLabelFromFilename(entry.file),
+            label: entry.label || buildScenarioLabelFromPath(file),
             folder: safeFolder,
             countsTowardProgress,
             format: "quiz"
@@ -3028,28 +4603,44 @@
       const safeFolder = sanitizeFolderName(folder);
       if (!safeFolder || !isHostedOnGithubPages()) return [];
       try {
-        const res = await fetch(buildGithubRepoContentsUrl(safeFolder), {
-          cache: "no-store",
-          headers: {
-            Accept: "application/vnd.github+json"
-          }
-        });
-        if (!res.ok) return [];
-        const payload = await res.json();
-        if (!Array.isArray(payload)) return [];
-        return payload
-          .filter((entry) => entry && entry.type === "file" && matchesScenarioNamingConvention(entry.name))
-          .map((entry) => {
-            const file = assertScenarioFilename(entry.name);
-            return {
-              file,
-              label: buildScenarioLabelFromFilename(file),
+        const collectedItems = [];
+        const seenFiles = new Set();
+
+        async function walk(parts = []) {
+          const res = await fetch(buildGithubRepoContentsUrlForParts(["Kurse", safeFolder, ...parts]), {
+            cache: "no-store",
+            headers: {
+              Accept: "application/vnd.github+json"
+            }
+          });
+          if (!res.ok) return;
+          const payload = await res.json();
+          if (!Array.isArray(payload)) return;
+          for (const entry of payload) {
+            if (!entry || typeof entry !== "object") continue;
+            if (entry.type === "dir") {
+              const dirName = String(entry.name || "").trim();
+              if (!dirName) continue;
+              await walk([...parts, dirName]);
+              continue;
+            }
+            if (entry.type !== "file") continue;
+            const fileName = String(entry.name || "").trim();
+            const relativePath = assertScenarioResourcePath([...parts, fileName].filter(Boolean).join("/"), [".json"]);
+            if (!matchesScenarioNamingConvention(relativePath) || seenFiles.has(relativePath)) continue;
+            seenFiles.add(relativePath);
+            collectedItems.push({
+              file: relativePath,
+              label: buildScenarioLabelFromPath(relativePath),
               folder: safeFolder,
               countsTowardProgress: false,
               format: "quiz"
-            };
-          })
-          .sort((a, b) => a.file.localeCompare(b.file, "de", { numeric: true, sensitivity: "base" }));
+            });
+          }
+        }
+
+        await walk();
+        return collectedItems.sort((a, b) => a.file.localeCompare(b.file, "de", { numeric: true, sensitivity: "base" }));
       } catch {
         return [];
       }
@@ -3092,44 +4683,6 @@
       };
     }
 
-    function buildScenarioTreeSyncBanner() {
-      const state = scenarioFolderCatalogState || {};
-      const banner = document.createElement("section");
-      banner.className = "scenario-tree-sync-banner";
-      const heading = document.createElement("strong");
-      heading.className = "scenario-tree-sync-title";
-      const text = document.createElement("p");
-      text.className = "scenario-tree-sync-text";
-
-      if (state.mode === "repo_error") {
-        heading.textContent = "Bekannter Stand geladen";
-        text.textContent = state.error
-          ? `Der aktuelle Repo-Ordnerbaum ist gerade nicht erreichbar. Die App nutzt deshalb voruebergehend nur den bekannten Stand. (${state.error})`
-          : "Der aktuelle Repo-Ordnerbaum ist gerade nicht erreichbar. Die App nutzt deshalb voruebergehend nur den bekannten Stand.";
-        banner.append(heading, text);
-        return banner;
-      }
-
-      if (state.mode !== "repo_compared") {
-        heading.textContent = "Bekannter Stand aktiv";
-        text.textContent = "Der zuletzt bekannte FolderTree ist sofort da. Der aktuelle Repo-Stand wird danach unauffaellig im Hintergrund nachgeladen.";
-        banner.append(heading, text);
-        return banner;
-      }
-
-      heading.textContent = "Repo-Stand geladen";
-      if (state.repoOnlyFolders?.length) {
-        const list = state.repoOnlyFolders.map((folder) => getFolderShortcutLabel(folder) || folder).join(", ");
-        text.textContent = `Der bekannte FolderTree wurde geladen und danach mit dem aktuellen Repo-Ordnerbaum abgeglichen. Neu sichtbar: ${list}.`;
-      } else if (Number.isFinite(state.mergedCount)) {
-        text.textContent = `Bekannter FolderTree und aktueller Repo-Stand sind abgeglichen. Aktuell sichtbar: ${state.mergedCount} Szenario-Ordner.`;
-      } else {
-        text.textContent = "Bekannter FolderTree und aktueller Repo-Stand wurden abgeglichen.";
-      }
-      banner.append(heading, text);
-      return banner;
-    }
-
     function assertScenarioFilename(name) {
       const val = String(name || "").trim();
       if (!/^[a-z0-9._-]+\.json$/i.test(val)) {
@@ -3139,7 +4692,8 @@
     }
 
     function matchesScenarioNamingConvention(fileName) {
-      return SCENARIO_FILENAME_CONVENTION.test(String(fileName || "").trim());
+      const baseName = getScenarioResourceBasename(fileName);
+      return SCENARIO_FILENAME_CONVENTION.test(baseName) || SCENARIO_VERSIONED_FILENAME_CONVENTION.test(baseName);
     }
 
     async function loadScenarioManifestForFolder(folder) {
@@ -3294,19 +4848,55 @@
       toggleTaskNavDrawer(false);
     }
 
+    async function selectScenarioFolder(folder) {
+      const safeFolder = sanitizeFolderName(folder);
+      const unlockedFolders = getUnlockedFolders();
+      if (!safeFolder || !unlockedFolders.includes(safeFolder)) return;
+      const folderChanged = safeFolder !== activeScenarioFolder;
+      activeScenarioFolder = safeFolder;
+      activeHomeSkillsFolder = safeFolder;
+      if (folderChanged) {
+        scenarioData = null;
+        activeScenarioFile = "";
+        activeScenarioCountsTowardProgress = false;
+      }
+      try {
+        localStorage.setItem(ACCESS_ACTIVE_FOLDER_STORAGE_KEY, activeScenarioFolder);
+        localStorage.setItem(ACCESS_FOLDER_STORAGE_KEY, activeScenarioFolder);
+        localStorage.setItem(HOME_SKILLS_FOLDER_STORAGE_KEY, activeHomeSkillsFolder);
+        const activeEntry = unlockedAccessEntries.find((entry) => entry.folder === activeScenarioFolder) || unlockedAccessEntries[0];
+        if (activeEntry) {
+          localStorage.setItem(ACCESS_KEY_STORAGE_KEY, activeEntry.key);
+        }
+      } catch {
+      }
+      renderScenarioNavigation(availableScenarios);
+      if (folderChanged || !activeScenarioFile || workspaceLeft.querySelector(".home-layout")) {
+        await showHomeContent(safeFolder);
+        return;
+      }
+      toggleCourseMenu(false);
+    }
+
     async function selectScenario(item) {
       setAppBarSelection("");
+      toggleTrainingMenu(false);
+      toggleCourseMenu(false);
       toggleScenarioMenu(false);
       setSubmitBarVisible(false);
       renderSelectionHint(`Lade ${item.label} ...`);
       try {
         const nextFolder = sanitizeFolderName(item.folder || "");
+        if (nextFolder) {
+          activeHomeSkillsFolder = nextFolder;
+        }
         if (nextFolder && nextFolder !== activeScenarioFolder) {
           activeScenarioFolder = nextFolder;
           homeSkillsCache = Object.create(null);
           try {
             localStorage.setItem(ACCESS_ACTIVE_FOLDER_STORAGE_KEY, activeScenarioFolder);
             localStorage.setItem(ACCESS_FOLDER_STORAGE_KEY, activeScenarioFolder);
+            localStorage.setItem(HOME_SKILLS_FOLDER_STORAGE_KEY, activeHomeSkillsFolder);
           } catch {
           }
         }
@@ -3318,7 +4908,7 @@
           activeScenarioCountsTowardProgress = false;
           resetRuntimeState();
           renderMarkdownScenarioPage(item, markdown);
-          updateScenarioMenuButtonState(false);
+          renderScenarioNavigation(availableScenarios);
           return;
         }
         const data = await loadScenarioJsonByPath(item.file, item.folder);
@@ -3329,113 +4919,622 @@
         resetRuntimeState();
         buildPage(data);
         setSubmitBarVisible(true);
-        updateScenarioMenuButtonState(false);
+        renderScenarioNavigation(availableScenarios);
       } catch (err) {
         scenarioData = null;
         activeScenarioFile = "";
         activeScenarioCountsTowardProgress = false;
         resetRuntimeState();
-        updateScenarioMenuButtonState(false);
+        renderScenarioNavigation(availableScenarios);
         renderSelectionHint(`Fehler beim Laden: ${err.message}`);
       }
     }
 
+    function renderTrainingMenu(decks = getVisibleTrainingDecks()) {
+      if (!trainingMenuOptions) return;
+      const source = Array.isArray(decks) ? decks : [];
+      trainingMenuOptions.innerHTML = "";
+      if (!source.length) {
+        trainingMenuOptions.innerHTML = "<p class='status-text scenario-tree-empty'>Noch kein Training fuer diesen Zugriff verfuegbar.</p>";
+        return;
+      }
+
+      for (const deck of source) {
+        const option = document.createElement("button");
+        option.type = "button";
+        option.className = "training-menu-card";
+        if (deck.deckKey === activeTrainingDeckKey || sanitizeFolderName(deck.folder) === sanitizeFolderName(activeTrainingFolder)) {
+          option.classList.add("is-active");
+          option.setAttribute("aria-current", "true");
+        }
+        option.innerHTML =
+          "<span class='training-menu-icon' aria-hidden='true'>🧠</span>" +
+          "<span class='training-menu-main'>" +
+          `<span class='training-menu-title'>${esc(getFolderShortcutLabel(deck.folder) || deck.folder)}</span>` +
+          `<span class='training-menu-subtitle'>${esc(String(deck.menuSubtitle || "Trainingspool des Kurses"))}</span>` +
+          "</span>" +
+          `<span class='training-menu-count'>${Math.max(0, Number(deck.questionCount) || 0)}</span>`;
+        option.addEventListener("click", async () => {
+          await startTrainingDeck(deck.folder);
+        });
+        trainingMenuOptions.appendChild(option);
+      }
+    }
+
+    function getTrainingQuestionFeed() {
+      return document.getElementById("doomscrollQuestionFeed");
+    }
+
+    function updateTrainingProgressUi() {
+      const deck = trainingSession?.deck || getActiveTrainingDeck();
+      const total = trainingSession?.questions?.length || deck?.questions?.length || 0;
+      const answered = Math.max(0, Number(trainingSession?.answered) || 0);
+      const exact = Math.max(0, Number(trainingSession?.exactMatches) || 0);
+      const wrong = Math.max(0, answered - exact);
+      const open = Math.max(0, total - answered);
+      const correctPct = total ? (exact / total) * 100 : 0;
+      if (trainingProgressRailCorrect) trainingProgressRailCorrect.style.width = `${correctPct}%`;
+      if (trainingProgressRailWrong) trainingProgressRailWrong.style.width = "0%";
+      if (trainingProgressRailOpen) trainingProgressRailOpen.style.width = "0%";
+      if (trainingProgressRailTrack) {
+        const label = `${exact} korrekt, ${wrong} nicht korrekt, ${open} noch nicht beantwortet`;
+        trainingProgressRailTrack.setAttribute("aria-label", label);
+        trainingProgressRailTrack.title = label;
+      }
+    }
+
+    function showTrainingPanel(panel) {
+      const feed = getTrainingQuestionFeed();
+      if (!feed || !panel) return;
+      const currentPanel = feed.querySelector(".doomscroll-panel");
+      panel.classList.add("doomscroll-panel");
+
+      if (!currentPanel) {
+        panel.classList.add("is-active");
+        feed.replaceChildren(panel);
+        return;
+      }
+
+      panel.classList.add("is-entering");
+      feed.appendChild(panel);
+
+      window.requestAnimationFrame(() => {
+        currentPanel.classList.add("is-leaving");
+        panel.classList.add("is-active");
+      });
+
+      currentPanel.addEventListener("transitionend", () => {
+        currentPanel.remove();
+      }, { once: true });
+    }
+
+    function getTrainingSelectionLabel(question) {
+      switch (normalizeTrainingInteractionType(question?.interactionType || question?.type || "")) {
+        case "binary":
+          return "Richtig oder falsch";
+        case "multi":
+          return "Mehrere Antworten moeglich";
+        case "best":
+          return "Beste Antwort";
+        case "sequence":
+          return "Reihenfolge festlegen";
+        case "gap_fill_choice":
+          return "Luecke per Auswahl fuellen";
+        case "gap_fill_text":
+          return "Luecke frei fuellen";
+        case "single":
+        default:
+          return "Eine Antwort";
+      }
+    }
+
+    function setTrainingActiveCardState(cardState) {
+      if (!trainingSession) return;
+      trainingSession.activeCardState = cardState || null;
+    }
+
+    function getTrainingOptionStateClass(option, selectedIds) {
+      const selected = selectedIds.has(option.id);
+      if (selected && option.correct) return "is-correct";
+      if (selected && !option.correct) return "is-wrong";
+      if (!selected && option.correct) return "is-missed";
+      return "is-neutral";
+    }
+
+    function getTrainingReviewStatus(option, selectedIds) {
+      const selected = selectedIds.has(option.id);
+      if (selected && option.correct) return "ok";
+      if (selected && !option.correct) return "bad";
+      if (!selected && option.correct) return "miss";
+      return "neutral";
+    }
+
+    function buildTrainingReviewAssessments(cardState) {
+      if (!cardState || !Array.isArray(cardState.optionButtons)) return [];
+      return cardState.optionButtons.map(({ element, option }, optionIndex) => ({
+        status: getTrainingReviewStatus(option, cardState.selectedIds),
+        title: `Option ${String.fromCharCode(65 + optionIndex)}`,
+        detail: String(option?.text || "").trim(),
+        explain: String(option?.explanation || "").trim(),
+        sourceEl: element,
+        anchorEl: element
+      }));
+    }
+
+    function shouldInlineTrainingReviewBelowAnswers() {
+      return Boolean(window.matchMedia?.("(max-width: 980px) and (orientation: portrait)")?.matches);
+    }
+
+    function syncTrainingReviewSlotPlacement(cardState) {
+      const card = cardState?.card || null;
+      const slot = cardState?.reviewSlot || null;
+      const mainPanel = cardState?.mainPanel || null;
+      const actions = cardState?.actions || null;
+      if (!card || !slot || !mainPanel || !actions) return;
+      if (shouldInlineTrainingReviewBelowAnswers()) {
+        if (slot.parentElement !== mainPanel || slot.nextElementSibling !== actions) {
+          mainPanel.insertBefore(slot, actions);
+        }
+        return;
+      }
+      if (slot.parentElement !== card) {
+        card.appendChild(slot);
+      }
+    }
+
+    function refreshActiveTrainingReviewLayout() {
+      const cardState = trainingSession?.activeCardState || null;
+      if (!cardState?.card?.isConnected) return;
+      syncTrainingReviewSlotPlacement(cardState);
+      if (!cardState.locked || cardState.reviewSlot?.classList.contains("hidden")) return;
+      const assessments = buildTrainingReviewAssessments(cardState);
+      if (!assessments.length) return;
+      layoutReviewGraph(cardState.card, cardState.reviewSlot, assessments);
+      window.requestAnimationFrame(() => {
+        if (cardState.card?.isConnected && !cardState.reviewSlot?.classList.contains("hidden")) {
+          layoutReviewGraph(cardState.card, cardState.reviewSlot, assessments);
+        }
+      });
+    }
+
+    function renderTrainingReview(cardState) {
+      const card = cardState?.card || null;
+      const slot = cardState?.reviewSlot || null;
+      if (!card || !slot) return;
+      const assessments = buildTrainingReviewAssessments(cardState);
+      if (!assessments.length) return;
+      card.classList.add("has-review");
+      slot.classList.remove("hidden");
+      syncTrainingReviewSlotPlacement(cardState);
+      window.requestAnimationFrame(() => {
+        layoutReviewGraph(card, slot, assessments);
+      });
+    }
+
+    function wasTrainingAnswerExact(question, selectedIds) {
+      const correctIds = new Set((question.options || []).filter((option) => option.correct).map((option) => option.id));
+      if (correctIds.size !== selectedIds.size) return false;
+      return [...correctIds].every((id) => selectedIds.has(id));
+    }
+
+    function toggleTrainingOption(cardState, optionId, element, question) {
+      if (!cardState || cardState.locked) return;
+      const maxSelections = Number(question?.maxSelections) || 1;
+      const isSingle = maxSelections === 1;
+
+      if (isSingle) {
+        cardState.selectedIds.clear();
+        cardState.optionButtons.forEach(({ element: optionEl }) => {
+          optionEl.classList.remove("is-selected");
+        });
+        cardState.selectedIds.add(optionId);
+        element.classList.add("is-selected");
+      } else if (cardState.selectedIds.has(optionId)) {
+        cardState.selectedIds.delete(optionId);
+        element.classList.remove("is-selected");
+      } else if (cardState.selectedIds.size < maxSelections) {
+        cardState.selectedIds.add(optionId);
+        element.classList.add("is-selected");
+      }
+
+      cardState.lockButton.disabled = cardState.selectedIds.size === 0;
+      setTrainingActiveCardState(cardState);
+    }
+
+    function goToNextTrainingStep(cardState) {
+      if (!trainingSession || !cardState || cardState.movedOn) return;
+      cardState.movedOn = true;
+      cardState.continueButton.disabled = true;
+      const nextQuestion = selectNextTrainingQuestion(cardState.question?.id || "");
+      if (nextQuestion) {
+        showTrainingQuestionCard(nextQuestion, Number(nextQuestion.sessionIndex) || 0);
+        return;
+      }
+      trainingSession.activeCardState = null;
+      trainingSession.currentQuestionIndex = trainingSession.questions.length;
+    }
+
+    function lockTrainingQuestion(cardState) {
+      if (!trainingSession || !cardState || cardState.locked || cardState.selectedIds.size === 0) return;
+      cardState.locked = true;
+      const exact = wasTrainingAnswerExact(cardState.question, cardState.selectedIds);
+      if (cardState.question?.id) {
+        trainingSession.questionStateById[cardState.question.id] = exact ? "correct" : "wrong";
+      }
+      syncTrainingSessionCounts();
+
+      cardState.optionButtons.forEach(({ element, option }) => {
+        element.classList.add("is-locked", "is-revealed", getTrainingOptionStateClass(option, cardState.selectedIds));
+        element.setAttribute("aria-disabled", "true");
+      });
+
+      cardState.lockButton.disabled = true;
+      cardState.lockButton.textContent = exact ? "Sauber eingeloggt" : "Ausgewertet";
+      cardState.continueButton.classList.remove("hidden");
+      cardState.continueButton.disabled = false;
+      renderTrainingReview(cardState);
+      updateTrainingProgressUi();
+      setTrainingActiveCardState(cardState);
+    }
+
+    function attachTrainingSwipeGesture(card, cardState) {
+      let touchStartX = 0;
+      let touchStartY = 0;
+      let dragX = 0;
+      let dragging = false;
+
+      function resetDrag() {
+        dragging = false;
+        dragX = 0;
+        card.style.transform = "";
+        card.style.opacity = "";
+      }
+
+      card.addEventListener("touchstart", (event) => {
+        if (!cardState.locked || cardState.movedOn || event.touches.length !== 1) return;
+        touchStartX = event.touches[0].clientX;
+        touchStartY = event.touches[0].clientY;
+        dragX = 0;
+        dragging = true;
+      }, { passive: true });
+
+      card.addEventListener("touchmove", (event) => {
+        if (!dragging || !cardState.locked || cardState.movedOn || event.touches.length !== 1) return;
+        const deltaX = event.touches[0].clientX - touchStartX;
+        const deltaY = event.touches[0].clientY - touchStartY;
+        if (Math.abs(deltaY) > Math.abs(deltaX)) {
+          resetDrag();
+          return;
+        }
+        dragX = Math.max(-180, Math.min(36, deltaX));
+        card.style.transform = `translateX(${dragX}px)`;
+        card.style.opacity = `${1 - Math.min(Math.abs(dragX) / 260, 0.34)}`;
+        event.preventDefault();
+      }, { passive: false });
+
+      card.addEventListener("touchend", () => {
+        if (!dragging) return;
+        const shouldAdvance = dragX < -90 && cardState.locked && !cardState.movedOn;
+        resetDrag();
+        if (shouldAdvance) {
+          goToNextTrainingStep(cardState);
+        }
+      });
+
+      card.addEventListener("touchcancel", resetDrag);
+    }
+
+    function createTrainingQuestionCard(question, index = 0) {
+      const card = document.createElement("article");
+      card.className = "panel doomscroll-question-card";
+      card.dataset.trainingCard = question.id;
+
+      const mainPanel = document.createElement("div");
+      mainPanel.className = "question-main doomscroll-question-main";
+
+      const reviewSlot = document.createElement("div");
+      reviewSlot.className = "review-slot doomscroll-review-slot hidden";
+
+      const cardState = {
+        question,
+        locked: false,
+        movedOn: false,
+        selectedIds: new Set(),
+        optionButtons: [],
+        lockButton: null,
+        continueButton: null,
+        card,
+        reviewSlot,
+        mainPanel,
+        actions: null
+      };
+
+      mainPanel.innerHTML =
+        "<div class='doomscroll-question-head'>" +
+        "<div class='doomscroll-question-head-main'>" +
+        `<p class='doomscroll-question-kicker'>${esc(getFolderShortcutLabel(activeTrainingFolder) || activeTrainingFolder || "Training")}</p>` +
+        `<h3 class='doomscroll-question-title'>${esc(question.prompt)}</h3>` +
+        "</div>" +
+        `<span class='doomscroll-question-mode-pill'>${esc(getTrainingQuestionBadgeLabel(question))}</span>` +
+        "</div>";
+
+      const optionList = document.createElement("div");
+      optionList.className = "doomscroll-option-list";
+      (question.options || []).forEach((option, optionIndex) => {
+        const button = document.createElement("button");
+        button.type = "button";
+        button.className = "doomscroll-option-button";
+        button.innerHTML =
+          "<div class='doomscroll-option-topline'>" +
+          `<span class='doomscroll-option-marker'>${String.fromCharCode(65 + optionIndex)}</span>` +
+          `<p class='doomscroll-option-text'>${esc(option.text)}</p>` +
+          "</div>";
+        button.addEventListener("click", () => {
+          setTrainingActiveCardState(cardState);
+          toggleTrainingOption(cardState, option.id, button, question);
+        });
+        optionList.appendChild(button);
+        cardState.optionButtons.push({ element: button, option });
+      });
+      mainPanel.appendChild(optionList);
+
+      const actions = document.createElement("div");
+      actions.className = "doomscroll-question-actions";
+      const lockButton = document.createElement("button");
+      lockButton.type = "button";
+      lockButton.className = "doomscroll-lock-button";
+      lockButton.textContent = "Antworten einloggen";
+      lockButton.disabled = true;
+      lockButton.addEventListener("click", () => {
+        setTrainingActiveCardState(cardState);
+        lockTrainingQuestion(cardState);
+      });
+      const continueButton = document.createElement("button");
+      continueButton.type = "button";
+      continueButton.className = "doomscroll-secondary-button hidden";
+      continueButton.textContent = "Weiter";
+      continueButton.disabled = true;
+      continueButton.addEventListener("click", () => {
+        setTrainingActiveCardState(cardState);
+        goToNextTrainingStep(cardState);
+      });
+      actions.append(lockButton, continueButton);
+      mainPanel.appendChild(actions);
+      cardState.actions = actions;
+
+      card.append(mainPanel);
+      syncTrainingReviewSlotPlacement(cardState);
+
+      cardState.lockButton = lockButton;
+      cardState.continueButton = continueButton;
+      trainingSession.currentQuestionIndex = index;
+      setTrainingActiveCardState(cardState);
+      attachTrainingSwipeGesture(card, cardState);
+      return card;
+    }
+
+    function createTrainingSummaryCard() {
+      const total = trainingSession?.questions?.length || 0;
+      const exact = Math.max(0, Number(trainingSession?.exactMatches) || 0);
+      const ratio = total ? Math.round((exact / total) * 100) : 0;
+      const card = document.createElement("article");
+      card.id = "doomscrollSummary";
+      card.className = "panel doomscroll-summary-card";
+      card.innerHTML =
+        "<p class='eyebrow'>Quiz beendet</p>" +
+        `<h2>${exact} von ${total} Fragen komplett getroffen</h2>` +
+        `<p class='status-text'>Du bist mit ${ratio}% durch dieses Deck geswipet. Starte dasselbe Training neu oder waehle ein anderes Deck.</p>` +
+        "<div class='doomscroll-summary-actions'>" +
+        "<button id='btnRestartTrainingDeck' type='button' class='btn-primary'>Noch mal mit diesem Deck</button>" +
+        "<button id='btnOpenTrainingChooser' type='button' class='btn-secondary'>Anderes Training</button>" +
+        "</div>";
+      window.setTimeout(() => {
+        const restartButton = document.getElementById("btnRestartTrainingDeck");
+        if (restartButton) restartButton.addEventListener("click", () => startTrainingDeck(activeTrainingFolder));
+        const chooserButton = document.getElementById("btnOpenTrainingChooser");
+        if (chooserButton) chooserButton.addEventListener("click", () => toggleTrainingMenu(true).catch(() => {}));
+      }, 0);
+      return card;
+    }
+
+    function showTrainingQuestionCard(question, index = 0) {
+      showTrainingPanel(createTrainingQuestionCard(question, index));
+    }
+
+    function renderDoomScrollQuiz() {
+      const deck = getActiveTrainingDeck();
+      if (!deck?.questions?.length) {
+        workspaceLeft.innerHTML =
+          "<section class='panel'>" +
+          "<h2>Training</h2>" +
+          "<p class='status-text'>Fuer diesen Kurs ist aktuell noch kein Trainingsdeck verfuegbar.</p>" +
+          "</section>";
+        return;
+      }
+
+      workspaceLeft.innerHTML =
+        "<section class='doomscroll-shell'>" +
+        "<div class='doomscroll-swipe-stage' id='doomscrollQuestionFeed'></div>" +
+        "</section>";
+
+      syncTrainingSessionCounts();
+      updateTrainingProgressUi();
+      const nextQuestion = selectNextTrainingQuestion();
+      if (nextQuestion) {
+        showTrainingQuestionCard(nextQuestion, Number(nextQuestion.sessionIndex) || 0);
+      }
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+
+    async function startTrainingDeck(folder) {
+      const safeFolder = sanitizeFolderName(folder);
+      try {
+        const deck = await loadTrainingDeck(safeFolder, false);
+        if (!deck?.questions?.length) {
+          throw new Error(`Fuer ${safeFolder} sind noch keine Trainingsfragen verfuegbar.`);
+        }
+        activeTrainingDeckKey = deck.deckKey;
+        activeTrainingFolder = deck.folder;
+        trainingSession = createTrainingSessionFromDeck(deck);
+        setAppBarSelection("training");
+        toggleTrainingMenu(false);
+        toggleCourseMenu(false);
+        toggleScenarioMenu(false);
+        setSubmitBarVisible(false);
+        resetRuntimeState();
+        renderTrainingMenu(getVisibleTrainingDecks());
+        renderDoomScrollQuiz();
+        if (trainingDeckCacheSourceByFolder[safeFolder] === "cache") {
+          refreshTrainingDeckInBackground(safeFolder).catch(() => {});
+        }
+      } catch (err) {
+        trainingSession = null;
+        activeTrainingDeckKey = "";
+        activeTrainingFolder = safeFolder;
+        setAppBarSelection("training");
+        setSubmitBarVisible(false);
+        workspaceLeft.innerHTML =
+          "<section class='panel'>" +
+          "<h2>Training</h2>" +
+          `<p class='status-text'>${esc(err?.message || "Training konnte nicht geladen werden.")}</p>` +
+          "</section>";
+      }
+    }
+
+    function renderCourseMenu(groups) {
+      if (!courseMenuOptions) return;
+      courseMenuOptions.innerHTML = "";
+      if (!groups.length) {
+        courseMenuOptions.innerHTML = "<p class='status-text scenario-tree-empty'>Keine Kurse gefunden.</p>";
+        return;
+      }
+
+      for (const group of groups) {
+        const item = document.createElement("div");
+        item.className = "scenario-tree-folder-entry";
+        const option = document.createElement("button");
+        option.type = "button";
+        option.className = "scenario-tree-folder-button";
+        if (group.folder === activeScenarioFolder) {
+          option.classList.add("is-active");
+          option.setAttribute("aria-current", "true");
+        }
+        const folderShortLabel = getFolderShortcutLabel(group.folder) || group.folder;
+        const ticketCount = Array.isArray(group.items) ? group.items.length : 0;
+        option.innerHTML =
+          "<span class='scenario-tree-folder-icon' aria-hidden='true'>" +
+          "📚" +
+          "</span>" +
+          "<span class='scenario-tree-folder-main'>" +
+          `<span class='scenario-tree-folder-name'>${esc(folderShortLabel)}</span>` +
+          "</span>" +
+          `<span class='scenario-tree-folder-count'>${ticketCount}</span>`;
+        option.addEventListener("click", () => {
+          selectScenarioFolder(group.folder).catch(() => {});
+        });
+        item.appendChild(option);
+
+        const noteText = group.error
+          ? `Ordnerfehler: ${group.error}`
+          : group.sync?.repoCompared && group.sync.repoOnlyCount > 0
+            ? `Repo-Abgleich: ${group.sync.repoOnlyCount} weiteres ${group.sync.repoOnlyCount === 1 ? "Ticket" : "Tickets"} im aktuellen Stand.`
+            : group.sync?.manifestError
+              ? "Manifest lokal nicht lesbar. Der Kurs wird direkt aus dem Repository ergaenzt."
+              : "";
+        if (noteText) {
+          const note = document.createElement("p");
+          note.className = "status-text scenario-tree-folder-note";
+          note.textContent = noteText;
+          item.appendChild(note);
+        }
+        courseMenuOptions.appendChild(item);
+      }
+    }
+
     function renderScenarioMenu(groups) {
+      if (!scenarioMenuOptions) return;
       scenarioMenuOptions.innerHTML = "";
       if (!groups.length) {
         scenarioMenuOptions.innerHTML = "<p class='status-text scenario-tree-empty'>Keine Tickets gefunden.</p>";
         return;
       }
 
-      scenarioMenuOptions.appendChild(buildScenarioTreeSyncBanner());
-
-      for (const group of groups) {
-        const drawer = document.createElement("details");
-        drawer.className = "scenario-tree-folder";
-        drawer.open = group.folder === activeScenarioFolder;
-        const title = document.createElement("summary");
-        title.className = "scenario-tree-folder-summary";
-        const folderShortLabel = getFolderShortcutLabel(group.folder) || group.folder;
-        const ticketCount = Array.isArray(group.items) ? group.items.length : 0;
-        title.innerHTML =
-          "<span class='scenario-tree-folder-icon' aria-hidden='true'>" +
-          "📁" +
-          "</span>" +
-          "<span class='scenario-tree-folder-main'>" +
-          `<span class='scenario-tree-folder-name'>${esc(folderShortLabel)}</span>` +
-          "</span>" +
-          `<span class='scenario-tree-folder-count'>${ticketCount}</span>`;
-
-        drawer.appendChild(title);
-        updateScenarioTreeFolderEmoji(drawer);
-        drawer.addEventListener("toggle", () => {
-          updateScenarioTreeFolderEmoji(drawer);
-        });
-        const content = document.createElement("div");
-        content.className = "scenario-tree-ticket-list";
-        drawer.appendChild(content);
-
-        if (group.sync?.repoCompared) {
-          const syncText = document.createElement("p");
-          syncText.className = "status-text scenario-tree-sync-note";
-          if (group.sync.repoOnlyCount > 0) {
-            syncText.textContent = `Live-Repo erweitert diesen Ordner aktuell um ${group.sync.repoOnlyCount} weiteres ${group.sync.repoOnlyCount === 1 ? "Ticket" : "Tickets"}.`;
-          } else if (group.sync.manifestError) {
-            syncText.textContent = "Manifest lokal nicht lesbar. Anzeige wird direkt aus dem Repository ergaenzt.";
-          } else {
-            syncText.textContent = "Bekannter Stand und Live-Repo wurden fuer diesen Ordner abgeglichen.";
-          }
-          content.appendChild(syncText);
-        }
-
-        if (group.error) {
-          const errorText = document.createElement("p");
-          errorText.className = "status-text scenario-tree-empty";
-          errorText.textContent = `Ordnerfehler: ${group.error}`;
-          content.appendChild(errorText);
-          scenarioMenuOptions.appendChild(drawer);
-          continue;
-        }
-
-        if (!group.items.length) {
-          const emptyText = document.createElement("p");
-          emptyText.className = "status-text scenario-tree-empty";
-          emptyText.textContent = "Keine Tickets im Manifest.";
-          content.appendChild(emptyText);
-          scenarioMenuOptions.appendChild(drawer);
-          continue;
-        }
-
-        for (const item of group.items) {
-          const option = document.createElement("button");
-          option.type = "button";
-          option.className = "scenario-tree-ticket";
-          if (item.folder === activeScenarioFolder && item.file === activeScenarioFile) {
-            option.classList.add("is-active");
-            option.setAttribute("aria-current", "true");
-          }
-          const ticketIcon = normalizeScenarioItemFormat(item?.format || "", item?.file || "") === "markdown" ? "📝" : "🎫";
-          option.innerHTML =
-            "<span class='scenario-tree-ticket-icon' aria-hidden='true'>" +
-            ticketIcon +
-            "</span>" +
-            "<span class='scenario-tree-ticket-main'>" +
-            `<span class='scenario-tree-ticket-title'>${esc(item.label)}</span>` +
-            "</span>";
-          option.addEventListener("click", () => {
-            selectScenario(item);
-          });
-          content.appendChild(option);
-        }
-        scenarioMenuOptions.appendChild(drawer);
+      const activeGroup = getActiveScenarioGroup(groups);
+      if (!activeGroup) {
+        scenarioMenuOptions.innerHTML = "<p class='status-text scenario-tree-empty'>Bitte zuerst einen Kurs auswaehlen.</p>";
+        return;
       }
+
+      const content = document.createElement("div");
+      content.className = "scenario-tree-ticket-list";
+      scenarioMenuOptions.appendChild(content);
+
+      if (activeGroup.sync?.repoCompared) {
+        const syncText = document.createElement("p");
+        syncText.className = "status-text scenario-tree-sync-note";
+        if (activeGroup.sync.repoOnlyCount > 0) {
+          syncText.textContent = `Live-Repo erweitert diesen Kurs aktuell um ${activeGroup.sync.repoOnlyCount} weiteres ${activeGroup.sync.repoOnlyCount === 1 ? "Ticket" : "Tickets"}.`;
+        } else if (activeGroup.sync.manifestError) {
+          syncText.textContent = "Manifest lokal nicht lesbar. Anzeige wird direkt aus dem Repository ergaenzt.";
+        } else {
+          syncText.textContent = "Bekannter Stand und Live-Repo wurden fuer diesen Kurs abgeglichen.";
+        }
+        content.appendChild(syncText);
+      }
+
+      if (activeGroup.error) {
+        const errorText = document.createElement("p");
+        errorText.className = "status-text scenario-tree-empty";
+        errorText.textContent = `Ordnerfehler: ${activeGroup.error}`;
+        content.appendChild(errorText);
+        return;
+      }
+
+      if (!activeGroup.items.length) {
+        const emptyText = document.createElement("p");
+        emptyText.className = "status-text scenario-tree-empty";
+        emptyText.textContent = "Keine Tickets im ausgewaehlten Kurs.";
+        content.appendChild(emptyText);
+        return;
+      }
+
+      for (const item of activeGroup.items) {
+        const option = document.createElement("button");
+        option.type = "button";
+        option.className = "scenario-tree-ticket";
+        if (item.folder === activeScenarioFolder && item.file === activeScenarioFile) {
+          option.classList.add("is-active");
+          option.setAttribute("aria-current", "true");
+        }
+        const ticketIcon = normalizeScenarioItemFormat(item?.format || "", item?.file || "") === "markdown" ? "📝" : "🎫";
+        option.innerHTML =
+          "<span class='scenario-tree-ticket-icon' aria-hidden='true'>" +
+          ticketIcon +
+          "</span>" +
+          "<span class='scenario-tree-ticket-main'>" +
+          `<span class='scenario-tree-ticket-title'>${esc(item.label)}</span>` +
+          "</span>";
+        option.addEventListener("click", () => {
+          selectScenario(item);
+        });
+        content.appendChild(option);
+      }
+    }
+
+    function renderScenarioNavigation(groups) {
+      renderTrainingMenu();
+      renderCourseMenu(groups);
+      renderScenarioMenu(groups);
+      updateTrainingMenuButtonState(false);
+      updateCourseMenuButtonState(false);
+      updateScenarioMenuButtonState(false);
     }
 
     async function initScenarioSelector(options = {}) {
       if (!hasUnlockedAccess()) {
         availableScenarios = [];
         scenarioFolderSyncMetaByFolder = Object.create(null);
-        renderScenarioMenu([]);
+        renderScenarioNavigation([]);
         return;
       }
       if (!options?.skipCatalogRefresh) {
@@ -3458,12 +5557,14 @@
         }))
         .filter((group) => group.error || group.items.length);
       availableScenarios = visibleGroups;
-      renderScenarioMenu(visibleGroups);
+      renderScenarioNavigation(visibleGroups);
     }
 
     function initAppBar() {
       applyThemeMode(loadThemeMode());
       setAppBarSelection("");
+      updateTrainingMenuButtonState(false);
+      updateCourseMenuButtonState(false);
       updateScenarioMenuButtonState(false);
       themeToggleBtn.addEventListener("click", cycleThemeMode);
       accessManagerButton.addEventListener("click", () => {
@@ -3477,6 +5578,24 @@
         showHomeContent();
       });
 
+      trainingMenuButton.addEventListener("click", async (ev) => {
+        ev.stopPropagation();
+        if (!hasUnlockedAccess()) {
+          renderUnlockScreen("Bitte zuerst gueltigen Key eingeben.");
+          return;
+        }
+        await toggleTrainingMenu();
+      });
+
+      courseMenuButton.addEventListener("click", async (ev) => {
+        ev.stopPropagation();
+        if (!hasUnlockedAccess()) {
+          renderUnlockScreen("Bitte zuerst gueltigen Key eingeben.");
+          return;
+        }
+        await toggleCourseMenu();
+      });
+
       scenarioMenuButton.addEventListener("click", async (ev) => {
         ev.stopPropagation();
         if (!hasUnlockedAccess()) {
@@ -3484,6 +5603,30 @@
           return;
         }
         await toggleScenarioMenu();
+      });
+
+      trainingNavBackdrop.addEventListener("click", () => {
+        toggleTrainingMenu(false).catch(() => {});
+      });
+
+      trainingMenuCloseButton.addEventListener("click", () => {
+        toggleTrainingMenu(false).catch(() => {});
+      });
+
+      trainingMenu.addEventListener("click", (ev) => {
+        ev.stopPropagation();
+      });
+
+      courseNavBackdrop.addEventListener("click", () => {
+        toggleCourseMenu(false).catch(() => {});
+      });
+
+      courseMenuCloseButton.addEventListener("click", () => {
+        toggleCourseMenu(false).catch(() => {});
+      });
+
+      courseMenu.addEventListener("click", (ev) => {
+        ev.stopPropagation();
       });
 
       scenarioNavBackdrop.addEventListener("click", () => {
@@ -3517,11 +5660,15 @@
       });
 
       document.addEventListener("click", () => {
+        toggleTrainingMenu(false).catch(() => {});
+        toggleCourseMenu(false).catch(() => {});
         toggleScenarioMenu(false).catch(() => {});
       });
 
       document.addEventListener("keydown", (ev) => {
         if (ev.key === "Escape") {
+          toggleTrainingMenu(false).catch(() => {});
+          toggleCourseMenu(false).catch(() => {});
           toggleScenarioMenu(false).catch(() => {});
           toggleTaskNavDrawer(false);
         }
@@ -4485,6 +6632,55 @@
       return block;
     }
 
+    function splitQuestionPromptContext(q) {
+      const rawContext = String(q?.context || "").trim();
+      const rawPrompt = String(q?.prompt || "").trim();
+      if (!rawContext) {
+        return {
+          contextText: "",
+          promptText: rawPrompt
+        };
+      }
+      if (!rawPrompt) {
+        return {
+          contextText: rawContext,
+          promptText: ""
+        };
+      }
+
+      const normalize = (value) => String(value || "").replace(/\s+/g, " ").trim();
+      const normalizedContext = normalize(rawContext);
+      const normalizedPrompt = normalize(rawPrompt);
+      if (!normalizedContext) {
+        return {
+          contextText: "",
+          promptText: rawPrompt
+        };
+      }
+      if (normalizedPrompt === normalizedContext) {
+        return {
+          contextText: rawContext,
+          promptText: ""
+        };
+      }
+      if (rawPrompt.startsWith(rawContext)) {
+        return {
+          contextText: rawContext,
+          promptText: rawPrompt.slice(rawContext.length).replace(/^[\s:.-]+/, "").trim()
+        };
+      }
+      if (normalizedPrompt.startsWith(normalizedContext)) {
+        return {
+          contextText: rawContext,
+          promptText: normalizedPrompt.slice(normalizedContext.length).replace(/^[\s:.-]+/, "").trim()
+        };
+      }
+      return {
+        contextText: rawContext,
+        promptText: rawPrompt
+      };
+    }
+
     function renderQuestionContent(q) {
       const stack = document.createElement("div");
       stack.className = "question-content";
@@ -4506,7 +6702,13 @@
       }
       const visuals = renderVisuals(q?.visuals);
       if (visuals) stack.appendChild(visuals);
-      const prompt = renderPromptText(q?.prompt || "");
+      const { contextText, promptText } = splitQuestionPromptContext(q);
+      const context = renderPromptText(contextText);
+      if (context) {
+        context.classList.add("question-context");
+        stack.appendChild(context);
+      }
+      const prompt = renderPromptText(promptText);
       if (prompt) stack.appendChild(prompt);
       return stack.childElementCount ? stack : null;
     }
@@ -6390,6 +8592,12 @@
     }
     window.addEventListener("resize", () => {
       if (lastResults) renderInlineReview(lastResults);
+      refreshActiveTrainingReviewLayout();
+    });
+    window.addEventListener("orientationchange", () => {
+      window.setTimeout(() => {
+        refreshActiveTrainingReviewLayout();
+      }, 80);
     });
     window.addEventListener("storage", (ev) => {
       const key = String(ev?.key || "");
@@ -6406,6 +8614,7 @@
     (async () => {
       await ensureAccessKeyConfigLoaded();
       hydrateScenarioTreeCacheFromStorage();
+      hydrateTrainingCacheFromStorage();
       const storedAccess = loadStoredAccess();
       activeHomeSkillsFolder = loadStoredHomeSkillsFolder();
       if (!storedAccess) {
@@ -6420,6 +8629,7 @@
         warmScenarioTreeFromKnownState().catch(() => {});
         await showHomeContent();
         refreshScenarioTreeInBackground().catch(() => {});
+        refreshTrainingCatalogInBackground().catch(() => {});
       } catch (err) {
         renderUnlockScreen(err.message);
       }
