@@ -6,6 +6,8 @@
   <title>FI Skilltrainer</title>
   <link rel="icon" href="data:," />
   <link rel="stylesheet" href="./styles.css" />
+  <script src="./firebase-voting-config.js"></script>
+  <script type="module" src="./firebase-voting.js"></script>
   <script src="./halo-background.js" defer></script>
 </head>
 <body>
@@ -188,7 +190,9 @@
     const SCENARIO_RATING_STORAGE_KEY_PREFIX = "sr_scenario_rating_v1";
     const QUESTION_MARKER_STORAGE_KEY_PREFIX = "sr_question_marker_v1";
     const QUESTION_MARKER_INTERACTION_STORAGE_KEY_PREFIX = "sr_question_marker_touch_v1";
+    const DOOM_SCROLL_FEEDBACK_LOCAL_FLAG_STORAGE_KEY = "sr_enable_doomscroll_feedback";
     const MANUAL_SHORTTEXT_CREDIT_BUTTON_LABEL = "So hab ich es gement";
+    const DOOM_SCROLL_COMMENT_MAX_LENGTH = 600;
     const DEFAULT_SKILL_TARGET_CORRECT = 8;
     const SUBMIT_BUTTON_READY_LABEL = "Abgeben und Auswertung anzeigen";
     const QUESTION_MARKER_STATE_ORDER = ["none", "answered", "marked"];
@@ -448,6 +452,32 @@
         .replaceAll("<", "&lt;")
         .replaceAll(">", "&gt;")
         .replaceAll('"', "&quot;");
+    }
+
+    function formatDoomScrollFeedbackTimestamp(timestampMs, iso = "") {
+      const numericValue = Number(timestampMs);
+      if (Number.isFinite(numericValue) && numericValue > 0) {
+        try {
+          return new Intl.DateTimeFormat("de-DE", {
+            dateStyle: "short",
+            timeStyle: "short"
+          }).format(new Date(numericValue));
+        } catch {
+          return new Date(numericValue).toLocaleString("de-DE");
+        }
+      }
+      const fallback = String(iso || "").trim();
+      if (!fallback) return "";
+      const parsed = Date.parse(fallback);
+      if (!Number.isFinite(parsed)) return fallback;
+      try {
+        return new Intl.DateTimeFormat("de-DE", {
+          dateStyle: "short",
+          timeStyle: "short"
+        }).format(new Date(parsed));
+      } catch {
+        return new Date(parsed).toLocaleString("de-DE");
+      }
     }
 
     function normalizeQuestionMarkerState(value) {
@@ -2632,6 +2662,10 @@
     }
 
     function resetRuntimeState() {
+      disposeTrainingCardState(trainingSession?.activeCardState || null);
+      if (trainingSession) {
+        trainingSession.activeCardState = null;
+      }
       for (const key of Object.keys(answers)) delete answers[key];
       touchedQuestionIds.clear();
       questionMarkerState = Object.create(null);
@@ -4995,6 +5029,14 @@
         return;
       }
 
+      if (typeof currentPanel.__destroy === "function") {
+        try {
+          currentPanel.__destroy();
+        } catch {
+        }
+        currentPanel.__destroy = null;
+      }
+
       panel.classList.add("is-entering");
       feed.appendChild(panel);
 
@@ -5031,6 +5073,378 @@
     function setTrainingActiveCardState(cardState) {
       if (!trainingSession) return;
       trainingSession.activeCardState = cardState || null;
+    }
+
+    function buildTrainingFeedbackEntry(question) {
+      const deck = trainingSession?.deck || getActiveTrainingDeck();
+      const folder = sanitizeFolderName(deck?.folder || activeTrainingFolder || activeScenarioFolder || activeHomeSkillsFolder || "");
+      const deckKey = String(deck?.deckKey || `doomscroll_${normalizeProgressId(folder || "training")}`).trim();
+      const baseQuestionId = String(question?.id || normalizeProgressId(question?.prompt || "question") || "question").trim();
+      const questionKey = normalizeProgressId(`${deckKey}::${baseQuestionId}`) || baseQuestionId;
+      return {
+        questionKey,
+        questionId: baseQuestionId,
+        deckKey,
+        folder,
+        prompt: String(question?.prompt || "").trim(),
+        badgeLabel: String(getTrainingQuestionBadgeLabel(question) || "").trim(),
+        sourceFile: String(question?.sourceFile || "").trim(),
+        ticketId: String(question?.ticketId || "").trim(),
+        conceptId: String(question?.conceptId || "").trim(),
+        variantId: String(question?.variantId || "").trim()
+      };
+    }
+
+    function getDoomScrollVotingBridge() {
+      return window.DoomScrollVotingBridge && typeof window.DoomScrollVotingBridge === "object"
+        ? window.DoomScrollVotingBridge
+        : null;
+    }
+
+    function isDoomScrollFeedbackEnabled() {
+      const config = window.__FI_SKILLTRAINER_FIREBASE__ && typeof window.__FI_SKILLTRAINER_FIREBASE__ === "object"
+        ? window.__FI_SKILLTRAINER_FIREBASE__
+        : {};
+      if (config.enabled === true) return true;
+      if (config.allowLocalOverride === false) return false;
+      if (!isLocalDevelopmentHost()) return false;
+      try {
+        return String(localStorage.getItem(DOOM_SCROLL_FEEDBACK_LOCAL_FLAG_STORAGE_KEY) || "").trim() === "1";
+      } catch {
+        return false;
+      }
+    }
+
+    function toggleTrainingFeedbackComposer(cardState, forceOpen = null) {
+      const elements = cardState?.feedbackElements || null;
+      if (!elements) return;
+      const nextOpen = typeof forceOpen === "boolean"
+        ? forceOpen
+        : !Boolean(cardState.feedbackComposerOpen);
+      cardState.feedbackComposerOpen = nextOpen;
+      elements.panel.classList.toggle("hidden", !nextOpen);
+      elements.commentButton.setAttribute("aria-pressed", String(nextOpen));
+      elements.cancelButton.classList.toggle("hidden", !nextOpen);
+      if (nextOpen) {
+        window.setTimeout(() => {
+          if (!cardState?.isDisposed) {
+            elements.textarea.focus();
+          }
+        }, 0);
+      }
+    }
+
+    function syncTrainingFeedbackComposerState(cardState) {
+      const elements = cardState?.feedbackElements || null;
+      if (!elements) return;
+      const value = String(elements.textarea.value || "").trim();
+      const remaining = Math.max(0, DOOM_SCROLL_COMMENT_MAX_LENGTH - value.length);
+      elements.sendButton.disabled = !value || Boolean(cardState.feedbackBusy);
+      elements.counter.textContent = `${remaining} Zeichen frei`;
+    }
+
+    function renderTrainingFeedbackComments(cardState) {
+      const elements = cardState?.feedbackElements || null;
+      const state = cardState?.feedbackState || null;
+      if (!elements || !state) return;
+      const comments = Array.isArray(state.comments) ? state.comments : [];
+      elements.comments.innerHTML = "";
+      if (!comments.length) {
+        const emptyItem = document.createElement("li");
+        emptyItem.className = "doomscroll-feedback-empty";
+        emptyItem.textContent = "Noch keine Kommentare fuer diese Karte.";
+        elements.comments.appendChild(emptyItem);
+        return;
+      }
+      comments.forEach((comment) => {
+        const item = document.createElement("li");
+        item.className = "doomscroll-feedback-comment";
+        const meta = document.createElement("div");
+        meta.className = "doomscroll-feedback-comment-meta";
+        const author = document.createElement("strong");
+        author.textContent = String(comment.authorLabel || "Kommentar").trim() || "Kommentar";
+        const timestamp = document.createElement("span");
+        timestamp.textContent = formatDoomScrollFeedbackTimestamp(comment.createdAtMs, comment.createdAtIso);
+        meta.append(author, timestamp);
+        const body = document.createElement("p");
+        body.className = "doomscroll-feedback-comment-body";
+        body.textContent = String(comment.body || "").trim();
+        item.append(meta, body);
+        elements.comments.appendChild(item);
+      });
+    }
+
+    function updateTrainingFeedbackUi(cardState, nextState = null) {
+      if (!cardState?.feedbackElements) return;
+      if (nextState && typeof nextState === "object") {
+        cardState.feedbackState = nextState;
+      }
+      const state = cardState.feedbackState || {
+        mode: "preview",
+        likes: 0,
+        dislikes: 0,
+        userVote: 0,
+        comments: [],
+        statusText: "Feedback wird vorbereitet ...",
+        error: ""
+      };
+      const elements = cardState.feedbackElements;
+      const commentCount = Array.isArray(state.comments) ? state.comments.length : 0;
+      elements.likeCount.textContent = String(Math.max(0, Number(state.likes) || 0));
+      elements.dislikeCount.textContent = String(Math.max(0, Number(state.dislikes) || 0));
+      elements.commentCount.textContent = String(commentCount);
+      elements.likeButton.classList.toggle("is-active", Number(state.userVote) === 1);
+      elements.dislikeButton.classList.toggle("is-active", Number(state.userVote) === -1);
+      elements.likeButton.setAttribute("aria-pressed", String(Number(state.userVote) === 1));
+      elements.dislikeButton.setAttribute("aria-pressed", String(Number(state.userVote) === -1));
+      elements.likeButton.disabled = Boolean(cardState.feedbackBusy);
+      elements.dislikeButton.disabled = Boolean(cardState.feedbackBusy);
+      elements.commentButton.disabled = false;
+      elements.section.dataset.feedbackMode = String(state.mode || "preview");
+      elements.status.textContent = String(state.error || state.statusText || "").trim() || "Feedback bereit.";
+      elements.status.classList.toggle("is-error", Boolean(state.error));
+      renderTrainingFeedbackComments(cardState);
+      syncTrainingFeedbackComposerState(cardState);
+    }
+
+    async function handleTrainingVote(cardState, value) {
+      const bridge = getDoomScrollVotingBridge();
+      const feedbackEntry = cardState?.feedbackEntry || null;
+      if (!bridge || !feedbackEntry || cardState?.feedbackBusy) return;
+      const currentVote = Number(cardState?.feedbackState?.userVote || 0);
+      const nextVote = currentVote === value ? 0 : value;
+      cardState.feedbackBusy = true;
+      updateTrainingFeedbackUi(cardState, {
+        ...(cardState.feedbackState || {}),
+        statusText: "Vote wird gespeichert ...",
+        error: ""
+      });
+      try {
+        await bridge.setVote(feedbackEntry, nextVote);
+      } catch (error) {
+        updateTrainingFeedbackUi(cardState, {
+          ...(cardState.feedbackState || {}),
+          error: error instanceof Error ? error.message : "Vote konnte nicht gespeichert werden."
+        });
+      } finally {
+        cardState.feedbackBusy = false;
+        syncTrainingFeedbackComposerState(cardState);
+      }
+    }
+
+    async function handleTrainingCommentSubmit(cardState) {
+      const bridge = getDoomScrollVotingBridge();
+      const feedbackEntry = cardState?.feedbackEntry || null;
+      const elements = cardState?.feedbackElements || null;
+      if (!bridge || !feedbackEntry || !elements || cardState?.feedbackBusy) return;
+      const body = String(elements.textarea.value || "").trim();
+      if (!body) return;
+      cardState.feedbackBusy = true;
+      updateTrainingFeedbackUi(cardState, {
+        ...(cardState.feedbackState || {}),
+        statusText: "Kommentar wird gesendet ...",
+        error: ""
+      });
+      try {
+        await bridge.addComment(feedbackEntry, body);
+        elements.textarea.value = "";
+        toggleTrainingFeedbackComposer(cardState, true);
+      } catch (error) {
+        updateTrainingFeedbackUi(cardState, {
+          ...(cardState.feedbackState || {}),
+          error: error instanceof Error ? error.message : "Kommentar konnte nicht gespeichert werden."
+        });
+      } finally {
+        cardState.feedbackBusy = false;
+        syncTrainingFeedbackComposerState(cardState);
+      }
+    }
+
+    function createTrainingFeedbackSection(cardState) {
+      const section = document.createElement("section");
+      section.className = "doomscroll-feedback";
+      section.setAttribute("aria-label", "Fragenfeedback");
+
+      const bar = document.createElement("div");
+      bar.className = "doomscroll-feedback-bar";
+
+      const actions = document.createElement("div");
+      actions.className = "doomscroll-feedback-actions";
+
+      const likeButton = document.createElement("button");
+      likeButton.type = "button";
+      likeButton.className = "doomscroll-feedback-action";
+      likeButton.dataset.feedbackAction = "like";
+      likeButton.setAttribute("aria-pressed", "false");
+      likeButton.innerHTML =
+        "<span class='doomscroll-feedback-action-label'>Like</span>" +
+        "<span class='doomscroll-feedback-action-count' data-feedback-count='like'>0</span>";
+      likeButton.addEventListener("click", () => {
+        handleTrainingVote(cardState, 1);
+      });
+
+      const dislikeButton = document.createElement("button");
+      dislikeButton.type = "button";
+      dislikeButton.className = "doomscroll-feedback-action";
+      dislikeButton.dataset.feedbackAction = "dislike";
+      dislikeButton.setAttribute("aria-pressed", "false");
+      dislikeButton.innerHTML =
+        "<span class='doomscroll-feedback-action-label'>Dislike</span>" +
+        "<span class='doomscroll-feedback-action-count' data-feedback-count='dislike'>0</span>";
+      dislikeButton.addEventListener("click", () => {
+        handleTrainingVote(cardState, -1);
+      });
+
+      const commentButton = document.createElement("button");
+      commentButton.type = "button";
+      commentButton.className = "doomscroll-feedback-action";
+      commentButton.dataset.feedbackAction = "comment";
+      commentButton.setAttribute("aria-pressed", "false");
+      commentButton.innerHTML =
+        "<span class='doomscroll-feedback-action-label'>Comment</span>" +
+        "<span class='doomscroll-feedback-action-count' data-feedback-count='comment'>0</span>";
+      commentButton.addEventListener("click", () => {
+        toggleTrainingFeedbackComposer(cardState);
+      });
+
+      actions.append(likeButton, dislikeButton, commentButton);
+
+      const status = document.createElement("p");
+      status.className = "doomscroll-feedback-status";
+      status.textContent = "Feedback wird vorbereitet ...";
+
+      bar.append(actions, status);
+
+      const panel = document.createElement("div");
+      panel.className = "doomscroll-feedback-panel hidden";
+
+      const textareaId = `doomscrollFeedback_${normalizeProgressId(cardState.question.id || "question") || "question"}`;
+
+      const label = document.createElement("label");
+      label.className = "doomscroll-feedback-label";
+      label.textContent = "Kommentar zur Frage";
+      label.setAttribute("for", textareaId);
+
+      const textarea = document.createElement("textarea");
+      textarea.id = textareaId;
+      textarea.className = "doomscroll-feedback-textarea";
+      textarea.maxLength = DOOM_SCROLL_COMMENT_MAX_LENGTH;
+      textarea.placeholder = "Was war hilfreich, unklar oder falsch formuliert?";
+      textarea.addEventListener("input", () => {
+        syncTrainingFeedbackComposerState(cardState);
+      });
+
+      const composeActions = document.createElement("div");
+      composeActions.className = "doomscroll-feedback-compose-actions";
+
+      const sendButton = document.createElement("button");
+      sendButton.type = "button";
+      sendButton.className = "doomscroll-feedback-send";
+      sendButton.textContent = "Kommentar senden";
+      sendButton.disabled = true;
+      sendButton.addEventListener("click", () => {
+        handleTrainingCommentSubmit(cardState);
+      });
+
+      const cancelButton = document.createElement("button");
+      cancelButton.type = "button";
+      cancelButton.className = "doomscroll-feedback-cancel hidden";
+      cancelButton.textContent = "Schliessen";
+      cancelButton.addEventListener("click", () => {
+        toggleTrainingFeedbackComposer(cardState, false);
+      });
+
+      const counter = document.createElement("span");
+      counter.className = "doomscroll-feedback-counter";
+      counter.textContent = `${DOOM_SCROLL_COMMENT_MAX_LENGTH} Zeichen frei`;
+
+      composeActions.append(sendButton, cancelButton, counter);
+
+      const comments = document.createElement("ul");
+      comments.className = "doomscroll-feedback-comments";
+
+      panel.append(label, textarea, composeActions, comments);
+      section.append(bar, panel);
+
+      cardState.feedbackElements = {
+        section,
+        likeButton,
+        dislikeButton,
+        commentButton,
+        likeCount: likeButton.querySelector("[data-feedback-count='like']"),
+        dislikeCount: dislikeButton.querySelector("[data-feedback-count='dislike']"),
+        commentCount: commentButton.querySelector("[data-feedback-count='comment']"),
+        status,
+        panel,
+        textarea,
+        sendButton,
+        cancelButton,
+        counter,
+        comments
+      };
+      syncTrainingFeedbackComposerState(cardState);
+      return section;
+    }
+
+    async function activateTrainingFeedback(cardState) {
+      if (!cardState || !cardState.feedbackElements) return;
+      const bridge = getDoomScrollVotingBridge();
+      if (!bridge || typeof bridge.subscribeQuestion !== "function") {
+        updateTrainingFeedbackUi(cardState, {
+          mode: "preview",
+          likes: 0,
+          dislikes: 0,
+          userVote: 0,
+          comments: [],
+          statusText: "Voting-Bridge wurde noch nicht geladen.",
+          error: ""
+        });
+        return;
+      }
+
+      cardState.feedbackEntry = buildTrainingFeedbackEntry(cardState.question);
+      updateTrainingFeedbackUi(cardState, {
+        mode: "preview",
+        likes: 0,
+        dislikes: 0,
+        userVote: 0,
+        comments: [],
+        statusText: "Feedback verbindet sich ...",
+        error: ""
+      });
+
+      let disposed = false;
+      const unsubscribe = await bridge.subscribeQuestion(cardState.feedbackEntry, (state) => {
+        if (disposed || cardState.isDisposed) return;
+        updateTrainingFeedbackUi(cardState, state);
+      });
+
+      if (disposed || cardState.isDisposed) {
+        if (typeof unsubscribe === "function") unsubscribe();
+        return;
+      }
+
+      cardState.feedbackCleanup = () => {
+        disposed = true;
+        if (typeof unsubscribe === "function") {
+          unsubscribe();
+        }
+      };
+    }
+
+    function disposeTrainingCardState(cardState) {
+      if (!cardState || cardState.isDisposed) return;
+      cardState.isDisposed = true;
+      if (typeof cardState.feedbackCleanup === "function") {
+        try {
+          cardState.feedbackCleanup();
+        } catch {
+        }
+      }
+      cardState.feedbackCleanup = null;
+      if (cardState.card) {
+        cardState.card.__destroy = null;
+      }
     }
 
     function getTrainingOptionStateClass(option, selectedIds) {
@@ -5239,6 +5653,7 @@
         question,
         locked: false,
         movedOn: false,
+        isDisposed: false,
         selectedIds: new Set(),
         optionButtons: [],
         lockButton: null,
@@ -5246,7 +5661,13 @@
         card,
         reviewSlot,
         mainPanel,
-        actions: null
+        actions: null,
+        feedbackEntry: null,
+        feedbackCleanup: null,
+        feedbackElements: null,
+        feedbackState: null,
+        feedbackBusy: false,
+        feedbackComposerOpen: false
       };
 
       mainPanel.innerHTML =
@@ -5302,7 +5723,15 @@
       mainPanel.appendChild(actions);
       cardState.actions = actions;
 
+      if (isDoomScrollFeedbackEnabled()) {
+        const feedbackSection = createTrainingFeedbackSection(cardState);
+        mainPanel.appendChild(feedbackSection);
+      }
+
       card.append(mainPanel);
+      card.__destroy = () => {
+        disposeTrainingCardState(cardState);
+      };
       syncTrainingReviewSlotPlacement(cardState);
 
       cardState.lockButton = lockButton;
@@ -5310,6 +5739,14 @@
       trainingSession.currentQuestionIndex = index;
       setTrainingActiveCardState(cardState);
       attachTrainingSwipeGesture(card, cardState);
+      if (cardState.feedbackElements) {
+        activateTrainingFeedback(cardState).catch((error) => {
+          updateTrainingFeedbackUi(cardState, {
+            ...(cardState.feedbackState || {}),
+            error: error instanceof Error ? error.message : "Feedback konnte nicht initialisiert werden."
+          });
+        });
+      }
       return card;
     }
 

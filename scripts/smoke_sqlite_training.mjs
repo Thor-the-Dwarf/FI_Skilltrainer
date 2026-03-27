@@ -1,23 +1,77 @@
 import fs from "node:fs/promises";
+import { execFile } from "node:child_process";
+import http from "node:http";
+import https from "node:https";
+import { URL } from "node:url";
+import { promisify } from "node:util";
 
-const targetUrl = process.argv[2] || "http://127.0.0.1:4175/index.html";
-const outputPath = process.argv[3] || "/tmp/project_tickets_v01_sqlite_smoke.png";
+const rawArgs = process.argv.slice(2);
+const positionalArgs = rawArgs.filter((arg) => arg !== "--mobile");
+const targetUrl = positionalArgs[0] || "http://127.0.0.1:4175/index.html";
+const outputPath = positionalArgs[1] || "/tmp/project_tickets_v01_sqlite_smoke.png";
 const remotePort = Number(process.env.CDP_PORT || 9222);
-const mobilePortrait = process.env.MOBILE_PORTRAIT === "1";
+const mobilePortrait = process.env.MOBILE_PORTRAIT === "1" || rawArgs.includes("--mobile");
 const deckFolder = String(process.env.DECK_FOLDER || "Pruefungsvorbereitung-2-FIAE-Scenarien").trim();
 const accessKey = String(process.env.ACCESS_KEY || "PV2FIAE_03_26").trim();
 const expectedMinCount = Math.max(1, Number(process.env.EXPECTED_MIN_COUNT || 500));
+const enableFeedback = process.env.ENABLE_FEEDBACK === "1";
+const expectFeedback = process.env.EXPECT_FEEDBACK === "1";
+const execFileAsync = promisify(execFile);
 
 function sleep(ms) {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
 async function fetchJson(url, options = {}) {
-  const response = await fetch(url, options);
-  if (!response.ok) {
-    throw new Error(`HTTP ${response.status} fuer ${url}`);
+  const target = new URL(url);
+  const transport = target.protocol === "https:" ? https : http;
+  const method = String(options.method || "GET").toUpperCase();
+  try {
+    return await new Promise((resolve, reject) => {
+      const request = transport.request(target, {
+        method,
+        headers: {
+          Accept: "application/json",
+          ...(options.headers || {})
+        }
+      }, (response) => {
+        let body = "";
+        response.setEncoding("utf8");
+        response.on("data", (chunk) => {
+          body += chunk;
+        });
+        response.on("end", () => {
+          if ((response.statusCode || 500) >= 400) {
+            reject(new Error(`HTTP ${response.statusCode} fuer ${url}`));
+            return;
+          }
+          try {
+            resolve(JSON.parse(body || "{}"));
+          } catch (error) {
+            reject(error instanceof Error ? error : new Error("Antwort war kein JSON."));
+          }
+        });
+      });
+      request.on("error", reject);
+      request.end();
+    });
+  } catch (error) {
+    const message = error instanceof Error ? error.message : String(error);
+    const shouldFallbackToCurl = /EPERM|EACCES|ECONNREFUSED|fetch failed/i.test(message);
+    if (!shouldFallbackToCurl) {
+      throw error;
+    }
+    const args = [
+      "-sS",
+      "-X",
+      method,
+      "-H",
+      "Accept: application/json",
+      url
+    ];
+    const { stdout } = await execFileAsync("curl", args);
+    return JSON.parse(stdout || "{}");
   }
-  return response.json();
 }
 
 async function waitForDebugger(timeoutMs = 15000) {
@@ -115,6 +169,12 @@ const preloadStorageScript = `
   localStorage.setItem("sr_access_key", ${JSON.stringify(accessKey)});
   localStorage.setItem("sr_access_folder", ${JSON.stringify(deckFolder)});
   localStorage.setItem("sr_home_skills_folder", ${JSON.stringify(deckFolder)});
+  localStorage.removeItem("sr_doomscroll_feedback_preview_v1");
+  if (${JSON.stringify(enableFeedback)}) {
+    localStorage.setItem("sr_enable_doomscroll_feedback", "1");
+  } else {
+    localStorage.removeItem("sr_enable_doomscroll_feedback");
+  }
 })();
 `;
 
@@ -128,10 +188,24 @@ const evaluationExpression = `
   await new Promise((resolve) => setTimeout(resolve, 1200));
   document.querySelector(".doomscroll-option-button")?.click();
   await new Promise((resolve) => setTimeout(resolve, 150));
+  if (${JSON.stringify(enableFeedback)}) {
+    document.querySelector("[data-feedback-action='like']")?.click();
+    await new Promise((resolve) => setTimeout(resolve, 250));
+    document.querySelector("[data-feedback-action='comment']")?.click();
+    await new Promise((resolve) => setTimeout(resolve, 120));
+    const feedbackTextarea = document.querySelector(".doomscroll-feedback-textarea");
+    if (feedbackTextarea) {
+      feedbackTextarea.value = "Smoke-Test Kommentar";
+      feedbackTextarea.dispatchEvent(new Event("input", { bubbles: true }));
+    }
+    document.querySelector(".doomscroll-feedback-send")?.click();
+    await new Promise((resolve) => setTimeout(resolve, 350));
+  }
   document.querySelector(".doomscroll-lock-button")?.click();
   await new Promise((resolve) => setTimeout(resolve, 700));
   const reviewSlot = document.querySelector(".doomscroll-review-slot");
   const actions = document.querySelector(".doomscroll-question-actions");
+  const feedbackPanel = document.querySelector(".doomscroll-feedback-panel");
   return {
     menuCount,
     menuSubtitle,
@@ -142,7 +216,13 @@ const evaluationExpression = `
     reviewNodeCount: document.querySelectorAll(".doomscroll-review-slot .review-node").length,
     hasReviewSplit: document.querySelector(".doomscroll-question-card")?.classList.contains("has-review") || false,
     reviewParentIsMainPanel: reviewSlot?.parentElement?.classList.contains("doomscroll-question-main") || false,
-    reviewBeforeActions: Boolean(reviewSlot && actions && reviewSlot.nextElementSibling === actions)
+    reviewBeforeActions: Boolean(reviewSlot && actions && reviewSlot.nextElementSibling === actions),
+    feedbackMode: document.querySelector(".doomscroll-feedback")?.dataset.feedbackMode || "",
+    feedbackStatus: document.querySelector(".doomscroll-feedback-status")?.textContent?.trim() || "",
+    likePressed: document.querySelector("[data-feedback-action='like']")?.getAttribute("aria-pressed") === "true",
+    commentCount: Number.parseInt(document.querySelector("[data-feedback-count='comment']")?.textContent?.trim() || "0", 10) || 0,
+    renderedCommentCount: document.querySelectorAll(".doomscroll-feedback-comment").length,
+    feedbackComposerOpen: Boolean(feedbackPanel && !feedbackPanel.classList.contains("hidden"))
   };
 })()
 `;
@@ -192,6 +272,16 @@ async function main() {
   }
   if (!result.title || Number(result.optionCount || 0) < 2) {
     throw new Error("Training startete nicht mit einer nutzbaren Karte.");
+  }
+  if (expectFeedback) {
+    if (!result.feedbackMode || !result.feedbackStatus || !result.likePressed) {
+      throw new Error("Die neue Voting-Leiste im DoomScrollQuiz wurde nicht sauber aktiviert.");
+    }
+    if (Number(result.commentCount || 0) < 1 || Number(result.renderedCommentCount || 0) < 1 || !result.feedbackComposerOpen) {
+      throw new Error("Das Kommentar-System im DoomScrollQuiz reagiert nicht wie erwartet.");
+    }
+  } else if (result.feedbackMode || result.feedbackStatus || result.likePressed || Number(result.commentCount || 0) > 0 || Number(result.renderedCommentCount || 0) > 0) {
+    throw new Error("Das Feedback-Feature ist ohne lokalen Freischalter sichtbar.");
   }
   if (!result.hasReviewSplit || Number(result.reviewNodeCount || 0) < 2) {
     throw new Error("Die neue Review-Darstellung im DoomScrollQuiz wurde nicht aufgebaut.");

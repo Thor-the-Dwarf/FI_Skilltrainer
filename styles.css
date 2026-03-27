@@ -852,6 +852,210 @@ body {
   gap: 12px;
 }
 
+.doomscroll-feedback {
+  display: grid;
+  gap: 14px;
+  padding: 16px 18px 18px;
+  border-radius: 20px;
+  border: 1px solid hsl(var(--glass-border) / 0.62);
+  background:
+    linear-gradient(135deg, hsl(var(--primary) / 0.08), transparent 58%),
+    hsl(var(--surface-soft) / 0.3);
+}
+
+.doomscroll-feedback-bar {
+  display: grid;
+  gap: 12px;
+}
+
+.doomscroll-feedback-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.doomscroll-feedback-action {
+  flex: 1 1 150px;
+  min-height: 48px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 11px 14px;
+  border-radius: 16px;
+  border: 1px solid hsl(var(--glass-border) / 0.72);
+  background:
+    linear-gradient(135deg, hsl(var(--primary) / 0.12), transparent 60%),
+    hsl(var(--surface) / 0.34);
+  color: hsl(var(--txt));
+  cursor: pointer;
+  transition:
+    transform 180ms ease,
+    border-color 180ms ease,
+    background 180ms ease,
+    box-shadow 180ms ease;
+}
+
+.doomscroll-feedback-action:hover {
+  transform: translateY(-2px);
+  border-color: hsl(var(--primary) / 0.52);
+}
+
+.doomscroll-feedback-action.is-active {
+  border-color: hsl(var(--primary));
+  box-shadow: 0 0 0 1px hsl(var(--primary) / 0.24);
+  background:
+    linear-gradient(135deg, hsl(var(--primary) / 0.24), hsl(var(--neon-secondary) / 0.14)),
+    hsl(var(--surface) / 0.5);
+}
+
+.doomscroll-feedback-action-label {
+  font-size: 14px;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.doomscroll-feedback-action-count {
+  min-width: 32px;
+  height: 32px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  background: hsl(var(--surface) / 0.72);
+  border: 1px solid hsl(var(--glass-border) / 0.72);
+  font-size: 14px;
+  font-weight: 800;
+}
+
+.doomscroll-feedback-status {
+  margin: 0;
+  font-size: 13px;
+  line-height: 1.45;
+  color: hsl(var(--txt-muted));
+}
+
+.doomscroll-feedback-status.is-error {
+  color: hsl(12 92% 66%);
+}
+
+.doomscroll-feedback-panel {
+  display: grid;
+  gap: 12px;
+}
+
+.doomscroll-feedback-label {
+  font-size: 13px;
+  font-weight: 700;
+  color: hsl(var(--txt-muted));
+}
+
+.doomscroll-feedback-textarea {
+  min-height: 112px;
+  width: 100%;
+  padding: 14px 15px;
+  border-radius: 16px;
+  border: 1px solid hsl(var(--glass-border) / 0.72);
+  background: hsl(var(--surface) / 0.52);
+  color: hsl(var(--txt));
+  font: inherit;
+  line-height: 1.5;
+  resize: vertical;
+}
+
+.doomscroll-feedback-textarea:focus {
+  outline: 2px solid hsl(var(--primary) / 0.45);
+  outline-offset: 2px;
+}
+
+.doomscroll-feedback-compose-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+}
+
+.doomscroll-feedback-send,
+.doomscroll-feedback-cancel {
+  border: 0;
+  cursor: pointer;
+  transition:
+    transform 180ms ease,
+    box-shadow 180ms ease,
+    border-color 180ms ease,
+    background 180ms ease;
+}
+
+.doomscroll-feedback-send {
+  padding: 11px 14px;
+  border-radius: 14px;
+  background: linear-gradient(135deg, hsl(210 100% 68%), hsl(191 96% 61%));
+  color: hsl(205 100% 10%);
+  font-weight: 800;
+}
+
+.doomscroll-feedback-send:disabled {
+  opacity: 0.55;
+  cursor: default;
+  transform: none;
+}
+
+.doomscroll-feedback-cancel {
+  padding: 11px 14px;
+  border-radius: 14px;
+  border: 1px solid hsl(var(--glass-border) / 0.72);
+  background: hsl(var(--surface) / 0.52);
+  color: hsl(var(--txt));
+}
+
+.doomscroll-feedback-send:hover:not(:disabled),
+.doomscroll-feedback-cancel:hover {
+  transform: translateY(-2px);
+}
+
+.doomscroll-feedback-counter {
+  margin-left: auto;
+  font-size: 12px;
+  color: hsl(var(--txt-muted));
+}
+
+.doomscroll-feedback-comments {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 10px;
+}
+
+.doomscroll-feedback-comment,
+.doomscroll-feedback-empty {
+  padding: 13px 14px;
+  border-radius: 16px;
+  border: 1px solid hsl(var(--glass-border) / 0.58);
+  background: hsl(var(--surface) / 0.38);
+}
+
+.doomscroll-feedback-empty {
+  color: hsl(var(--txt-muted));
+}
+
+.doomscroll-feedback-comment-meta {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 8px;
+  font-size: 12px;
+  color: hsl(var(--txt-muted));
+}
+
+.doomscroll-feedback-comment-body {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.55;
+}
+
 .doomscroll-review-slot {
   min-width: 0;
   min-height: 100%;
@@ -3272,6 +3476,25 @@ textarea.mark-bad {
 
   .doomscroll-review-slot {
     padding-top: 4px;
+  }
+
+  .doomscroll-feedback-actions {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  }
+
+  .doomscroll-feedback-compose-actions {
+    align-items: stretch;
+  }
+
+  .doomscroll-feedback-send,
+  .doomscroll-feedback-cancel {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .doomscroll-feedback-counter {
+    margin-left: 0;
   }
 
   .question-marker-button {
