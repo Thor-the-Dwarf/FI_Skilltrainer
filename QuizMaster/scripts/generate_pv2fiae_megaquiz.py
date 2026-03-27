@@ -34,11 +34,16 @@ def concept(
     }
 
 
-ROOT = Path(__file__).resolve().parents[1]
+ROOT = Path(__file__).resolve().parents[2]
 QUIZ_DIR = ROOT / "Kurse" / "Pruefungsvorbereitung-2-FIAE-Quiz"
 QUIZ_SUBDIR = QUIZ_DIR / "quiz_ap2_fiae_gesamtpool"
 QUIZ_FILE = QUIZ_SUBDIR / "quiz01_V01_ap2_fiae_gesamtpool.json"
 MANIFEST_FILE = QUIZ_DIR / "quiz-manifest.json"
+MIRROR_QUIZ_DIR = ROOT / "QuizMaster" / "Kurse" / "Pruefungsvorbereitung-2-FIAE-Quiz"
+MIRROR_QUIZ_SUBDIR = MIRROR_QUIZ_DIR / "quiz_ap2_fiae_gesamtpool"
+MIRROR_QUIZ_FILE = MIRROR_QUIZ_SUBDIR / "quiz01_V01_ap2_fiae_gesamtpool.json"
+MIRROR_MANIFEST_FILE = MIRROR_QUIZ_DIR / "quiz-manifest.json"
+BONUS_QUESTION_COUNT = 100
 
 ROOT_TOPICS = [
     "Algorithmen und Pseudocode",
@@ -148,7 +153,7 @@ CONCEPTS = [
     concept("alg_schreibtischtest", "Algorithmen", "Schreibtischtest", "eine manuelle Schritt-fuer-Schritt-Pruefung eines Ablaufs mit konkreten Eingabedaten", "Ein Team verfolgt fuer Beispielwerte jede Schleifenrunde und notiert Zwischenstaende von Variablen.", "Ein automatischer Testlauf in der CI-Pipeline.", "Mit reprasentativen Testdaten jeden Entscheidungspfad und jede Schleifeniteration nachvollziehen.", "Fehler in Zweigen oder Zwischenwerten bleiben bis spaet in der Umsetzung unsichtbar.", "Unit-Test", "Beim Schreibtischtest wird der Ablauf manuell verfolgt, ein Unit-Test wird automatisiert ausgefuehrt.", "Ein Schreibtischtest ist nur sinnvoll, wenn der Code bereits kompiliert werden kann."),
     concept("alg_rekursion", "Algorithmen", "Rekursion", "eine Technik, bei der eine Funktion sich mit einem kleineren Teilproblem selbst aufruft", "Eine Routine zerlegt eine Zahl wiederholt in Quotient und Rest und ruft sich fuer den Quotienten erneut auf.", "Eine Schleife, die denselben Block ohne Selbstaufruf wiederholt.", "Einen klaren Basisfall und eine garantierte Verringerung des Problems definieren.", "Ohne Basisfall drohen Endlosaufrufe oder Stapelueberlaeufe.", "Iteration", "Rekursion arbeitet ueber Selbstaufrufe, Iteration ueber Schleifenstrukturen.", "Rekursion benoetigt keinen Basisfall, wenn die Eingabe klein genug ist."),
     concept("alg_iteration", "Algorithmen", "Iteration", "die wiederholte Ausfuehrung eines Schritts ueber Schleifen statt ueber Selbstaufrufe", "Eine Liste wird in einer for-Schleife von links nach rechts abgearbeitet.", "Eine Methode ruft sich wiederholt selbst auf.", "Startwert, Schleifenbedingung und Schrittfolge sauber trennen.", "Fehlerhafte Schleifenbedingungen fuehren zu ausgelassenen oder unendlichen Durchlaeufen.", "Rekursion", "Iteration nutzt Schleifen, Rekursion nutzt Selbstaufrufe.", "Iteration bedeutet, dass eine Funktion sich in jeder Runde selbst aufruft."),
-    concept("alg_greedy", "Algorithmen", "Greedy-Algorithmus", "ein Verfahren, das in jedem Schritt die lokal beste Option waehlt", "Bei einer Flugroute wird immer zuerst der naechstgelegene noch offene Flughafen gewaehlt.", "Es werden alle moeglichen Gesamtrouten vollstaendig durchgerechnet, bevor entschieden wird.", "Pruefen, ob lokale Teilentscheidungen fuer das Zielproblem tatsaechlich geeignet sind.", "Eine lokal gute Wahl kann global zu einer schlechteren Gesamtlossung fuehren.", "Globale Optimierung", "Ein Greedy-Verfahren entscheidet schrittweise lokal, eine globale Optimierung betrachtet den Gesamtraum der Loesungen.", "Ein Greedy-Algorithmus liefert automatisch immer die weltweit beste Gesamtlossung."),
+    concept("alg_greedy", "Algorithmen", "Greedy-Algorithmus", "ein Verfahren, das in jedem Schritt die lokal beste Option waehlt", "Bei einer Flugroute wird immer zuerst der naechstgelegene noch offene Flughafen gewaehlt.", "Es werden alle moeglichen Gesamtrouten vollstaendig durchgerechnet, bevor entschieden wird.", "Pruefen, ob lokale Teilentscheidungen fuer das Zielproblem tatsaechlich geeignet sind.", "Eine lokal gute Wahl kann global zu einer schlechteren Gesamtloesung fuehren.", "Globale Optimierung", "Ein Greedy-Verfahren entscheidet schrittweise lokal, eine globale Optimierung betrachtet den Gesamtraum der Loesungen.", "Ein Greedy-Algorithmus liefert automatisch immer die weltweit beste Gesamtloesung."),
     concept("alg_sortieralgorithmus", "Algorithmen", "Sortieralgorithmus", "ein Verfahren, das Elemente nach einer Vergleichsregel in eine gewuenschte Reihenfolge bringt", "Kursdaten werden nach Name oder Wert geordnet, weil eine Vergleichsfunktion groesser, kleiner oder gleich meldet.", "Eine Suche, die nur prueft, ob ein einzelnes Element existiert.", "Vergleichsregel, Abbruch und Tauschlogik sauber aufeinander abstimmen.", "Bei falscher Vergleichslogik entstehen instabile oder unvollstaendige Reihenfolgen.", "Suchalgorithmus", "Sortieralgorithmen ordnen eine Menge neu, Suchalgorithmen finden gezielt Elemente.", "Ein Sortieralgorithmus muss die Daten immer nach ihrer Eingabereihenfolge belassen."),
     concept("alg_binaersuche", "Algorithmen", "Binaersuche", "ein Suchverfahren, das in einer sortierten Menge den Suchraum schrittweise halbiert", "In einer geordneten Liste wird der mittlere Wert geprueft und danach nur links oder rechts weitergesucht.", "Eine unsortierte Liste wird Element fuer Element von vorne nach hinten untersucht.", "Vor dem Einsatz sicherstellen, dass die Daten sortiert und die Grenzen korrekt gesetzt sind.", "Auf unsortierten Daten oder mit falschen Grenzen liefert die Suche unzuverlaessige Ergebnisse.", "Lineare Suche", "Die Binaersuche halbiert den Suchraum in sortierten Daten, die lineare Suche prueft Element fuer Element.", "Die Binaersuche funktioniert auch dann unveraendert korrekt, wenn die Liste nicht sortiert ist."),
     concept("alg_doppelschleife", "Algorithmen", "Doppelschleife", "eine verschachtelte Schleifenstruktur, bei der eine Schleife innerhalb einer anderen ausgefuehrt wird", "Fuer jeden Monat werden in einer inneren Schleife alle Messwerte dieses Monats ausgewertet.", "Eine einzelne Schleife, die nur einen Zaehler hochzaehlt.", "Aeusseren und inneren Schleifenzweck eindeutig trennen und Indizes sauber benennen.", "Indexfehler oder unnoetige Mehrfachdurchlaeufe faelschen Ergebnisse und Laufzeit.", "Einfache Schleife", "Eine Doppelschleife verarbeitet zwei Ebenen verschachtelt, eine einfache Schleife nur eine Ebene.", "Eine Doppelschleife ist nur eine andere Schreibweise fuer eine einzelne Schleife."),
@@ -662,6 +667,14 @@ def bare(text: str) -> str:
     return text.strip().rstrip(".!?")
 
 
+def emphasized_line(text: str) -> str:
+    return f'Wichtig ist vor allem: {bare(text)}.'
+
+
+def risk_line(text: str) -> str:
+    return f'Dann droht vor allem: {bare(text)}.'
+
+
 def stable_index(key: str, size: int) -> int:
     if size <= 0:
         return 0
@@ -747,6 +760,27 @@ def build_questions() -> list[dict[str, object]]:
             "Welche Reaktion bringt {term} in {scenario} am ehesten voran?",
             "In {scenario} hakt es bei {term}. Was sollte als Nächstes passieren?",
         ]
+        bonus_prompt_templates = [
+            "Praxischeck zu {term} in {scenario}: Welche Linie trägt fachlich am weitesten?",
+            "Welche Aussage hält {term} in {scenario} am ehesten auf Kurs?",
+            "Im Fall {scenario}: Welche Option passt fachlich am besten zu {term}?",
+            "Welche Entscheidung ist in {scenario} für {term} am tragfähigsten?",
+            "Worauf sollte das Team in {scenario} bei {term} am ehesten setzen?",
+        ]
+        bonus_risk_prompt_templates = [
+            "Worauf muss das Team in {scenario} bei {term} besonders achten?",
+            "Welches Risiko liegt in {scenario} bei {term} am ehesten nahe?",
+            "Welche Folge droht in {scenario}, wenn {term} unsauber bleibt?",
+            "Was kann in {scenario} bei {term} am schnellsten schiefgehen?",
+            "Welches Problem steht bei {term} in {scenario} am ehesten im Raum?",
+        ]
+        bonus_prevent_prompt_templates = [
+            "Was hält in {scenario} das Risiko bei {term} am ehesten klein?",
+            "Welche Maßnahme schützt {term} in {scenario} am wirksamsten vor Problemen?",
+            "Womit beugt das Team in {scenario} typischen Fehlern bei {term} am besten vor?",
+            "Welche Reaktion stabilisiert {term} in {scenario} am ehesten?",
+            "Was hilft in {scenario} am meisten, {term} sauber abzusichern?",
+        ]
         consequence_prompt_templates = [
             "Welche Folge liegt am nächsten, wenn {term} bei {scenario} unsauber behandelt wird?",
             "Womit ist bei {scenario} am ehesten zu rechnen, wenn {term} missachtet wird?",
@@ -755,7 +789,7 @@ def build_questions() -> list[dict[str, object]]:
             "Wenn {term} bei {scenario} untergeht, welches Risiko drängt sich auf?",
         ]
         missing_prompt_templates = [
-            "Ein Team hat in {scenario} bereits Folgendes im Blick: {example} Was fehlt noch, damit {term} vollständig mitgedacht ist?",
+            "In {scenario} gilt schon: {example} Was ergänzt {term} jetzt am besten?",
             "Bei {scenario} wurde schon erkannt: {example} Welche Ergänzung ist für {term} jetzt am wichtigsten?",
             "Aus {example} ist schon etwas klar. Welcher Baustein fehlt bei {term} noch?",
             "In {scenario} ist folgendes Teilwissen vorhanden: {example} Was vervollständigt {term} am besten?",
@@ -1150,11 +1184,100 @@ def build_questions() -> list[dict[str, object]]:
             )
         )
 
+        if index < BONUS_QUESTION_COUNT:
+            bonus_prompt = choose_by_key(bonus_prompt_templates, f'{item["id"]}:bonus').format(
+                scenario=scenario, term=pretty_term
+            )
+            bonus_options = [
+                option(
+                    emphasized_line(item["best_practice"]),
+                    True,
+                    f'Richtig, weil diese Linie {item["term"]} in {scenario} fachlich sauber trägt: {bare(item["best_practice"])}.',
+                )
+            ] + [
+                option(
+                    emphasized_line(peer["best_practice"]),
+                    False,
+                    f'Falsch, weil die Linie eher zu {peer["term"]} passt. Für {item["term"]} wäre tragfähiger: {bare(item["best_practice"])}.',
+                )
+                for peer in peers[:3]
+            ]
+            questions.append(
+                question(
+                    f'{item["id"]}_bonus',
+                    item["id"],
+                    f'{item["id"]}_bonus_v1',
+                    "best",
+                    "beste_option_im_mini_szenario",
+                    bonus_prompt,
+                    with_option_ids(bonus_options, index + 12),
+                )
+            )
+
+            bonus_risk_prompt = choose_by_key(bonus_risk_prompt_templates, f'{item["id"]}:bonus_risk').format(
+                scenario=scenario, term=pretty_term
+            )
+            bonus_risk_options = [
+                option(
+                    risk_line(item["risk"]),
+                    True,
+                    f'Richtig, weil dieses Problem bei unsauberem {item["term"]} in {scenario} am ehesten entsteht: {bare(item["risk"])}.',
+                )
+            ] + [
+                option(
+                    risk_line(peer["risk"]),
+                    False,
+                    f'Falsch, weil dieses Risiko eher zu {peer["term"]} passt. Für {item["term"]} wäre typischer: {bare(item["risk"])}.',
+                )
+                for peer in peers[:3]
+            ]
+            questions.append(
+                question(
+                    f'{item["id"]}_bonus_risk',
+                    item["id"],
+                    f'{item["id"]}_bonus_risk_v1',
+                    "single",
+                    "ursache_folge_erkennen",
+                    bonus_risk_prompt,
+                    with_option_ids(bonus_risk_options, index + 13),
+                )
+            )
+
+            bonus_prevent_prompt = choose_by_key(
+                bonus_prevent_prompt_templates, f'{item["id"]}:bonus_prevent'
+            ).format(scenario=scenario, term=pretty_term)
+            bonus_prevent_options = [
+                option(
+                    emphasized_line(item["best_practice"]),
+                    True,
+                    f'Richtig, weil diese Maßnahme das Risiko bei {item["term"]} in {scenario} am besten klein hält: {bare(item["best_practice"])}.',
+                )
+            ] + [
+                option(
+                    emphasized_line(peer["best_practice"]),
+                    False,
+                    f'Falsch, weil die Maßnahme eher {peer["term"]} stabilisiert. Für {item["term"]} wäre wirksamer: {bare(item["best_practice"])}.',
+                )
+                for peer in peers[:3]
+            ]
+            questions.append(
+                question(
+                    f'{item["id"]}_bonus_prevent',
+                    item["id"],
+                    f'{item["id"]}_bonus_prevent_v1',
+                    "best",
+                    "passende_massnahme_auswaehlen",
+                    bonus_prevent_prompt,
+                    with_option_ids(bonus_prevent_options, index + 14),
+                )
+            )
+
     return questions
 
 
 def cleanup_existing_quizzes() -> None:
     QUIZ_SUBDIR.mkdir(parents=True, exist_ok=True)
+    MIRROR_QUIZ_SUBDIR.mkdir(parents=True, exist_ok=True)
     for path in QUIZ_DIR.rglob("quiz*.json"):
         if path in {QUIZ_FILE, MANIFEST_FILE}:
             continue
@@ -1166,6 +1289,15 @@ def cleanup_existing_quizzes() -> None:
             directory.rmdir()
         except OSError:
             pass
+
+
+def write_quiz_package(quiz: dict[str, object], manifest: dict[str, object]) -> None:
+    payload = json.dumps(quiz, indent=2, ensure_ascii=False) + "\n"
+    manifest_payload = json.dumps(manifest, indent=2, ensure_ascii=False) + "\n"
+    QUIZ_FILE.write_text(payload, encoding="utf-8")
+    MANIFEST_FILE.write_text(manifest_payload, encoding="utf-8")
+    MIRROR_QUIZ_FILE.write_text(payload, encoding="utf-8")
+    MIRROR_MANIFEST_FILE.write_text(manifest_payload, encoding="utf-8")
 
 
 def main() -> None:
@@ -1208,8 +1340,7 @@ def main() -> None:
         ],
     }
 
-    QUIZ_FILE.write_text(json.dumps(quiz, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
-    MANIFEST_FILE.write_text(json.dumps(manifest, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
+    write_quiz_package(quiz, manifest)
 
     print(f"Wrote {len(questions)} questions to {QUIZ_FILE}")
 
