@@ -1,0 +1,159 @@
+{
+  "scenario": {
+    "company": "Ausbildungsbetrieb IT-Service",
+    "scale": "Regional, 120 Mitarbeitende",
+    "context": "Station 8 des Tageslaufs: Abnahme, Übergabe und Reflexion.",
+    "mission": "Sie bewerten die technische Abnahme und formulieren eine kurze Übergabeinformation.",
+    "station": {
+      "id": "NS-ST-08",
+      "department": "Rollout",
+      "profile": "Abnahmeschritt vor produktiver Nutzung",
+      "constraints": [
+        "Abnahmekriterien messbar halten",
+        "Übergabe knapp und klar formulieren",
+        "Restrisiko benennen"
+      ]
+    },
+    "customerRequest": {
+      "from": "it.leitung@ausbildungsbetrieb.example",
+      "to": "rollout.team@systemhaus.example",
+      "subject": "Abnahme und Übergabe für Station NS-ST-08",
+      "date": "2026-03-13",
+      "body": "Bitte führen Sie für NS-ST-08 die technische Abnahme durch und formulieren Sie ein kurzes Übergabeprotokoll mit Status, Restrisiko und nächstem Schritt."
+    }
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "type": "multi_select",
+      "title": "Technische Abnahmekriterien",
+      "prompt": "Welche Kriterien gehören in eine technische Abnahme? (Mehrfachauswahl)",
+      "options": [
+        {
+          "text": "Login mit Testkonto erfolgreich",
+          "correct": true,
+          "rationale": "Grundlegende Nutzbarkeit prüfbar nachgewiesen."
+        },
+        {
+          "text": "Netzwerkzugriff und zentrale Anwendungen funktionieren",
+          "correct": true,
+          "rationale": "Kernfunktion für den Arbeitsplatzbetrieb."
+        },
+        {
+          "text": "Nur ein Foto vom Arbeitsplatz",
+          "correct": false,
+          "rationale": "Allein kein technischer Abnahmenachweis."
+        },
+        {
+          "text": "Kurzer dokumentierter Funktionstest liegt vor",
+          "correct": true,
+          "rationale": "Nachweis der Prüfung und Ergebnisse."
+        },
+        {
+          "text": "Private Nutzerwünsche ohne Rücksprache umgesetzt",
+          "correct": false,
+          "rationale": "Nicht standardkonform."
+        }
+      ],
+      "feedback": {
+        "correct": "Richtig: Abnahme basiert auf messbaren technischen Kriterien.",
+        "wrong": "Teilweise unpassend: Bitte Nachweis und Kernfunktion stärker gewichten."
+      },
+      "progressLinks": [
+        "lf02_arbeitsplatzbereitstellung"
+      ]
+    },
+    {
+      "id": "q2",
+      "type": "ordering",
+      "title": "Übergabeprozess",
+      "prompt": "Ordnen Sie den Übergabeprozess sinnvoll.",
+      "items": [
+        "Kurzes Übergabeprotokoll erstellen",
+        "Abnahmekriterien vorbereiten",
+        "Tests durchführen und Ergebnisse notieren",
+        "Offene Punkte und Restrisiken benennen",
+        "Arbeitsplatz freigeben"
+      ],
+      "correctOrder": [
+        "Abnahmekriterien vorbereiten",
+        "Tests durchführen und Ergebnisse notieren",
+        "Offene Punkte und Restrisiken benennen",
+        "Kurzes Übergabeprotokoll erstellen",
+        "Arbeitsplatz freigeben"
+      ],
+      "feedback": {
+        "correct": "Richtig: So wird die Freigabe transparent und belastbar.",
+        "wrong": "Nicht optimal: Erst Kriterien und Tests, dann Protokoll und Freigabe."
+      },
+      "progressLinks": [
+        "lf02_arbeitsplatzbereitstellung"
+      ]
+    },
+    {
+      "id": "q3",
+      "type": "single_choice",
+      "title": "Umgang mit Restrisiko",
+      "prompt": "Ein Test ist knapp innerhalb der Grenzwerte, aber auffällig. Was ist der beste Schritt?",
+      "options": [
+        {
+          "text": "Ignorieren und direkt freigeben",
+          "rationale": "Risiko bleibt unadressiert."
+        },
+        {
+          "text": "Restrisiko dokumentieren, Monitoring vereinbaren und nächsten Prüftermin setzen",
+          "rationale": "Verantwortungsvoller Umgang mit grenzwertigem Ergebnis."
+        },
+        {
+          "text": "Gesamte Lieferung verwerfen",
+          "rationale": "Unverhältnismässig ohne weitere Bewertung."
+        }
+      ],
+      "correctIndex": 1,
+      "feedback": {
+        "correct": "Richtig: Risiko transparent behandeln und steuern.",
+        "wrong": "Nicht passend: Restrisiken müssen aktiv dokumentiert und verfolgt werden."
+      },
+      "progressLinks": [
+        "lf02_qualitaet_bewertung"
+      ]
+    },
+    {
+      "id": "q4",
+      "type": "number",
+      "title": "Abnahmequote",
+      "prompt": "Von 16 geprüften Geräten bestehen 14 die Abnahme sofort. Wie hoch ist die Abnahmequote in Prozent?",
+      "expected": 87.5,
+      "toleranceAbs": 0.5,
+      "showExpectedFormula": "14 / 16 * 100 = 87,5 %",
+      "feedback": {
+        "correct": "Richtig gerechnet.",
+        "wrong": "Bitte Anteil berechnen und in Prozent umwandeln."
+      },
+      "progressLinks": [
+        "lf02_rechnen_abschaetzen"
+      ]
+    },
+    {
+      "id": "q5",
+      "type": "short_text",
+      "title": "Übergabe-Notiz",
+      "prompt": "Formulieren Sie eine kurze Übergabe-Notiz (4-6 Sätze) mit Status, Restrisiko und nächstem Schritt.",
+      "minChars": 130,
+      "requiredKeywords": [
+        "status",
+        "risiko",
+        "nächster schritt"
+      ],
+      "expectedOutline": "Klarer Status, benanntes Restrisiko, konkrete Anschlussaktion.",
+      "feedback": {
+        "correct": "Richtig: Die Notiz ist für Betrieb und Nachverfolgung nutzbar.",
+        "wrong": "Bitte Status, Risiko und Folgeaktion konkreter formulieren."
+      },
+      "progressLinks": [
+        "lf02_dokumentation",
+        "lf02_benutzer_kundenkommunikation"
+      ]
+    }
+  ]
+}

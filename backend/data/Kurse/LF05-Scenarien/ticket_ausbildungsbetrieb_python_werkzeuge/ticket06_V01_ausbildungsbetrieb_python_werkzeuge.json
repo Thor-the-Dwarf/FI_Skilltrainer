@@ -1,0 +1,160 @@
+{
+  "scenario": {
+    "company": "Ausbildungsbetrieb IT-Service",
+    "scale": "Mittelstand, 160 Mitarbeitende",
+    "context": "Station 6 des Tageslaufs: Programmiersprachen und Python-Werkzeuge praktisch einordnen.",
+    "mission": "Sie begründen die Werkzeugwahl und skizzieren eine kleine Python-Lösung für die Datenverwaltung.",
+    "station": {
+      "id": "LF05-ST-06",
+      "department": "Entwicklung",
+      "profile": "Python, Entwicklungsumgebung, Validierungsschritte und Dateiverarbeitung",
+      "constraints": [
+        "Werkzeugwahl begründen",
+        "Logik schrittweise aufbauen",
+        "Wartbarkeit mitdenken"
+      ]
+    },
+    "customerRequest": {
+      "from": "dev.teamlead@ausbildungsbetrieb.example",
+      "to": "dev.team@ausbildungsbetrieb.example",
+      "subject": "Station 06: Python-Ansatz für die Importprüfung absichern",
+      "date": "2026-03-13",
+      "body": "Bitte begründen Sie den Einsatz einer kleinen Python-Lösung für die Importprüfung und beschreiben Sie den strukturierten Ablauf der Logik."
+    }
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "type": "single_choice",
+      "title": "Sinnvolle Sprachwahl",
+      "prompt": "Welche Begründung passt für eine kleine interne Validierungsroutine am besten?",
+      "options": [
+        {
+          "text": "Gut lesbare Sprache mit schneller Entwicklungszeit und passenden Dateibibliotheken",
+          "rationale": "Das passt zu kleinen Automatisierungsaufgaben im Team."
+        },
+        {
+          "text": "Ausschliesslich eine Sprache, die niemand im Team kennt",
+          "rationale": "Das erhöht Einarbeitung und Risiko unnötig."
+        },
+        {
+          "text": "Direktes Editieren produktiver Daten ohne Werkzeug",
+          "rationale": "Das ist weder reproduzierbar noch sicher."
+        }
+      ],
+      "correctIndex": 0,
+      "feedback": {
+        "correct": "Richtig: Werkzeugwahl sollte Aufgabenfit und Teamfähigkeit verbinden.",
+        "wrong": "Nicht passend: Bitte Lesbarkeit, Entwicklungstempo und Teamfit berücksichtigen."
+      },
+      "progressLinks": [
+        "lf05_sprachen_werkzeuge"
+      ]
+    },
+    {
+      "id": "q2",
+      "type": "multi_select",
+      "title": "Python-Grundbausteine",
+      "prompt": "Welche Bausteine sind für eine kleine Validierungsroutine sinnvoll? (Mehrfachauswahl)",
+      "options": [
+        {
+          "text": "Funktionen für einzelne Prüfschritte",
+          "correct": true,
+          "rationale": "Das verbessert Struktur und Wiederverwendbarkeit."
+        },
+        {
+          "text": "Exceptions für ungültige Eingaben",
+          "correct": true,
+          "rationale": "So werden Fehler kontrolliert behandelt."
+        },
+        {
+          "text": "Schleifen für die Datensatzverarbeitung",
+          "correct": true,
+          "rationale": "Sie sind bei Dateiverarbeitung zentral."
+        },
+        {
+          "text": "Unstrukturierter globaler Zustand für alles",
+          "correct": false,
+          "rationale": "Das erschwert Wartung und Fehlersuche."
+        },
+        {
+          "text": "Direktes Löschen von Fehlerdaten ohne Protokoll",
+          "correct": false,
+          "rationale": "Nachvollziehbarkeit ist betrieblich wichtig."
+        }
+      ],
+      "feedback": {
+        "correct": "Richtig: Sie verbinden Struktur, Stabilität und Nachvollziehbarkeit.",
+        "wrong": "Teilweise falsch: Bitte saubere Struktur und kontrollierte Fehlerbehandlung stärker priorisieren."
+      },
+      "progressLinks": [
+        "lf05_python_grundlagen"
+      ]
+    },
+    {
+      "id": "q3",
+      "type": "ordering",
+      "title": "Logik einer kleinen Validierungsroutine",
+      "prompt": "Ordnen Sie die Schritte sinnvoll.",
+      "items": [
+        "Ergebnis markieren und Protokoll schreiben",
+        "Datei einlesen und Datensätze durchlaufen",
+        "Prüfregeln auf Felder anwenden",
+        "Ausnahmen und Grenzfälle abfangen",
+        "Fehler sammeln"
+      ],
+      "correctOrder": [
+        "Datei einlesen und Datensätze durchlaufen",
+        "Prüfregeln auf Felder anwenden",
+        "Ausnahmen und Grenzfälle abfangen",
+        "Fehler sammeln",
+        "Ergebnis markieren und Protokoll schreiben"
+      ],
+      "feedback": {
+        "correct": "Richtig: Die Routine führt sauber von der Eingabe zum Nachweis.",
+        "wrong": "Nicht optimal: Bitte Einlesen, Regeln, Ausnahmebehandlung und Protokoll sauber staffeln."
+      },
+      "progressLinks": [
+        "lf05_python_grundlagen",
+        "lf05_sprachen_werkzeuge"
+      ]
+    },
+    {
+      "id": "q4",
+      "type": "number",
+      "title": "Anzahl der Pflichtprüfungen",
+      "prompt": "2.800 Datensätze werden jeweils mit 4 Pflichtprüfungen kontrolliert. Wie viele Einzelprüfungen ergeben sich?",
+      "expected": 11200,
+      "toleranceAbs": 0,
+      "showExpectedFormula": "2.800 * 4 = 11.200",
+      "feedback": {
+        "correct": "Richtig gerechnet.",
+        "wrong": "Bitte Datensätze mit der Zahl der Prüfungen pro Datensatz multiplizieren."
+      },
+      "progressLinks": [
+        "lf05_python_grundlagen"
+      ]
+    },
+    {
+      "id": "q5",
+      "type": "short_text",
+      "title": "Werkzeugwahl kurz begründen",
+      "prompt": "Formulieren Sie in 4-6 Sätzen eine Werkzeugempfehlung mit Sprache, Entwicklungsumgebung und Wartbarkeitsaspekt.",
+      "minChars": 160,
+      "requiredKeywords": [
+        "sprache",
+        "entwicklungsumgebung",
+        "wartbarkeit"
+      ],
+      "expectedOutline": "Werkzeugwahl begründen, Teamfit benennen und Wartbarkeit mitdenken.",
+      "feedback": {
+        "correct": "Richtig: Die Empfehlung ist technisch und organisatorisch schlüssig.",
+        "wrong": "Bitte Sprache, Umgebung und Wartbarkeit klarer zusammendenken."
+      },
+      "progressLinks": [
+        "lf05_sprachen_werkzeuge",
+        "lf05_python_grundlagen"
+      ]
+    }
+  ]
+}

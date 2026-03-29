@@ -1,0 +1,712 @@
+{
+  "scenario": {
+    "company": "Training Company IT Service",
+    "scale": "Mid-sized company, 90 employees",
+    "context": "Station 01: Onboarding wave with multiple follow-up tasks on role, rights and team behavior.",
+    "mission": "You handle the initial task and several follow-up tasks along the first training day with increasing responsibility.",
+    "station": {
+      "id": "LF01-ST-01",
+      "department": "IT Service",
+      "profile": "Onboarding, role understanding, rights and duties, team communication",
+      "constraints": [
+        "argue professionally and transparently",
+        "keep role clarity as an apprentice",
+        "document results briefly and reliably"
+      ]
+    },
+    "customerRequest": {
+      "from": "ausbildung@ausbildungsbetrieb.example",
+      "to": "klasse.fiae@berufsschule.example",
+      "subject": "Station 01: First day at the company with follow-up tasks",
+      "date": "2026-03-13",
+      "body": "Please work on several tasks for the first day at the training company that build on each other.\n\nFocus: stakeholders in the dual system, role in the team, rights and duties, co-determination, career planning and a clean day closure."
+    }
+  },
+  "questions": [
+    {
+      "id": "q01",
+      "type": "single_choice",
+      "title": "Classify learning locations correctly",
+      "prompt": "Which combination best describes the dual system?",
+      "options": [
+        {
+          "text": "Only vocational school and self-study",
+          "rationale": "The company as a central learning location is missing."
+        },
+        {
+          "text": "Training company and vocational school, supported by responsible institutions",
+          "rationale": "That correctly reflects the dual structure."
+        },
+        {
+          "text": "Only the training company and the exam day",
+          "rationale": "Vocational school and ongoing support are missing."
+        }
+      ],
+      "correctIndex": 1,
+      "feedback": {
+        "correct": "Correct: company and vocational school are the core learning locations.",
+        "wrong": "Incomplete: please classify the dual structure correctly."
+      },
+      "progressLinks": [
+        "lf01_duales_system_beteiligte"
+      ]
+    },
+    {
+      "id": "q02",
+      "type": "multi_select",
+      "title": "Stakeholders and roles",
+      "prompt": "Which statements about stakeholders in the dual system are correct? (Multiple selection)",
+      "options": [
+        {
+          "text": "Trainers provide professional guidance and feedback",
+          "correct": true,
+          "rationale": "This is part of the core training task."
+        },
+        {
+          "text": "Vocational school teaches the theoretical foundations",
+          "correct": true,
+          "rationale": "School and company are intertwined in content."
+        },
+        {
+          "text": "Apprentices do not need to ask questions",
+          "correct": false,
+          "rationale": "Questions are part of professional learning."
+        },
+        {
+          "text": "Responsible institutions help secure the legal framework",
+          "correct": true,
+          "rationale": "They are part of the overall structure."
+        },
+        {
+          "text": "Team colleagues have no influence on learning progress",
+          "correct": false,
+          "rationale": "Practical learning in the team is central."
+        }
+      ],
+      "feedback": {
+        "correct": "Correct: the roles are properly classified.",
+        "wrong": "Partially wrong: please separate learning locations and responsibilities more clearly."
+      },
+      "progressLinks": [
+        "lf01_duales_system_beteiligte"
+      ]
+    },
+    {
+      "id": "q03",
+      "type": "ordering",
+      "title": "Start sequence on the first day",
+      "prompt": "Put the sequence in order for a professional start at the company.",
+      "items": [
+        "Take on tasks with expectation clarification",
+        "Get to know the team and responsibilities",
+        "Go through workplace and safety rules",
+        "Document results",
+        "Note open questions and learning points"
+      ],
+      "correctOrder": [
+        "Get to know the team and responsibilities",
+        "Go through workplace and safety rules",
+        "Take on tasks with expectation clarification",
+        "Document results",
+        "Note open questions and learning points"
+      ],
+      "feedback": {
+        "correct": "Correct: this cleanly combines orientation, work and reflection.",
+        "wrong": "Not optimal: please start with orientation, then tasks and reflection."
+      },
+      "progressLinks": [
+        "lf01_duales_system_beteiligte",
+        "lf01_reflexion_verbesserung"
+      ]
+    },
+    {
+      "id": "q04",
+      "type": "short_text",
+      "title": "Your role in the team",
+      "prompt": "Describe in 4-6 sentences your role as an apprentice in the IT team.",
+      "minChars": 150,
+      "requiredKeywords": [
+        "learning",
+        "responsibility",
+        "question"
+      ],
+      "expectedOutline": "Role between learning and contributing, clear responsibility boundaries, active question behavior.",
+      "feedback": {
+        "correct": "Correct: the role description is reflective and practical.",
+        "wrong": "Please elaborate learning task, responsibility and questions more clearly."
+      },
+      "progressLinks": [
+        "lf01_rechte_pflichten_ausbildung",
+        "lf01_reflexion_verbesserung"
+      ]
+    },
+    {
+      "id": "q05",
+      "type": "number",
+      "title": "Calculate onboarding time",
+      "prompt": "Four introductory blocks take 35 minutes each, plus 30 minutes of team round. How many minutes should be planned in total?",
+      "expected": 170,
+      "toleranceAbs": 1,
+      "showExpectedFormula": "4 * 35 + 30 = 170 minutes",
+      "feedback": {
+        "correct": "Correct calculation.",
+        "wrong": "Please add block times and team round correctly."
+      },
+      "progressLinks": [
+        "lf01_reflexion_verbesserung"
+      ]
+    },
+    {
+      "id": "sep_f1",
+      "type": "followup_divider",
+      "title": "Follow-up task 1 - Rights and duties in daily work",
+      "from": "ausbildung@ausbildungsbetrieb.example",
+      "to": "klasse.fiae@berufsschule.example",
+      "subject": "Reporting paths, diligence and accountability",
+      "date": "2026-03-13",
+      "body": "Please review typical daily situations regarding rights and duties and make justified decisions."
+    },
+    {
+      "id": "q06",
+      "type": "multi_select",
+      "title": "Duties in training daily work",
+      "prompt": "Which behaviors comply with duties? (Multiple selection)",
+      "options": [
+        {
+          "text": "Handle work assignments carefully and document them",
+          "correct": true,
+          "rationale": "Diligence and traceability are part of it."
+        },
+        {
+          "text": "Provide early feedback when issues arise",
+          "correct": true,
+          "rationale": "Transparency lowers operational risks."
+        },
+        {
+          "text": "Suspend safety rules under time pressure",
+          "correct": false,
+          "rationale": "Safety rules apply consistently."
+        },
+        {
+          "text": "Actively use learning opportunities",
+          "correct": true,
+          "rationale": "Initiative is part of training."
+        },
+        {
+          "text": "Skip documentation when stressed",
+          "correct": false,
+          "rationale": "Documentation remains mandatory."
+        }
+      ],
+      "feedback": {
+        "correct": "Correct: this shows a professional understanding of duties.",
+        "wrong": "Partially wrong: please weigh accountability and safety more strongly."
+      },
+      "progressLinks": [
+        "lf01_rechte_pflichten_ausbildung"
+      ]
+    },
+    {
+      "id": "q07",
+      "type": "single_choice",
+      "title": "Uncertainty about a task",
+      "prompt": "How do you respond professionally when you are not yet confident about a task?",
+      "options": [
+        {
+          "text": "Ask a question, clarify the goal and align the implementation",
+          "rationale": "This reduces errors and shows professionalism."
+        },
+        {
+          "text": "Submit something without coordination",
+          "rationale": "Often leads to poor results."
+        },
+        {
+          "text": "Silently ignore the task",
+          "rationale": "Not team-oriented and not reliable."
+        }
+      ],
+      "correctIndex": 0,
+      "feedback": {
+        "correct": "Correct: clarifying the goal and aligning are the right path.",
+        "wrong": "Not appropriate: when unsure, transparency and consultation are required."
+      },
+      "progressLinks": [
+        "lf01_rechte_pflichten_ausbildung"
+      ]
+    },
+    {
+      "id": "q08",
+      "type": "short_text",
+      "title": "Formulate a critical clarification question",
+      "prompt": "Formulate a short clarification question (4-6 sentences) when a task is unclear and time-critical.",
+      "minChars": 140,
+      "requiredKeywords": [
+        "task",
+        "unclear",
+        "proposal"
+      ],
+      "expectedOutline": "State the issue factually, ask a concrete question, offer a practical proposal.",
+      "feedback": {
+        "correct": "Correct: the question is professional and solution-oriented.",
+        "wrong": "Please separate task, uncertainty and proposal more clearly."
+      },
+      "progressLinks": [
+        "lf01_rechte_pflichten_ausbildung",
+        "lf01_reflexion_verbesserung"
+      ]
+    },
+    {
+      "id": "q09",
+      "type": "number",
+      "title": "Secure the reporting chain in time",
+      "prompt": "An incident must be reported internally within 20 minutes. 6 minutes pass for analysis, 4 for documentation. How many minutes remain for the report?",
+      "expected": 10,
+      "toleranceAbs": 1,
+      "showExpectedFormula": "20 - 6 - 4 = 10 minutes",
+      "feedback": {
+        "correct": "Correct calculation.",
+        "wrong": "Please calculate the remaining time after analysis and documentation correctly."
+      },
+      "progressLinks": [
+        "lf01_rechte_pflichten_ausbildung"
+      ]
+    },
+    {
+      "id": "q10",
+      "type": "ordering",
+      "title": "Forward an incident correctly",
+      "prompt": "Order the sequence for a clean report in an operational incident.",
+      "items": [
+        "Send the report to the responsible unit",
+        "Briefly verify the facts",
+        "Document the incident in a structured way",
+        "Align feedback and next steps",
+        "Schedule follow-up"
+      ],
+      "correctOrder": [
+        "Briefly verify the facts",
+        "Document the incident in a structured way",
+        "Send the report to the responsible unit",
+        "Align feedback and next steps",
+        "Schedule follow-up"
+      ],
+      "feedback": {
+        "correct": "Correct: the sequence is traceable and reliable.",
+        "wrong": "Not optimal: please sequence verification, documentation and reporting cleanly."
+      },
+      "progressLinks": [
+        "lf01_rechte_pflichten_ausbildung",
+        "lf01_reflexion_verbesserung"
+      ]
+    },
+    {
+      "id": "sep_f2",
+      "type": "followup_divider",
+      "title": "Follow-up task 2 - Labor rights and co-determination",
+      "from": "personal@ausbildungsbetrieb.example",
+      "to": "klasse.fiae@berufsschule.example",
+      "subject": "Address concerns correctly and use escalation paths",
+      "date": "2026-03-13",
+      "body": "Please handle situations around co-determination, conflict communication and proper escalation in daily team work."
+    },
+    {
+      "id": "q11",
+      "type": "single_choice",
+      "title": "Place a concern correctly",
+      "prompt": "A team process affects several colleagues negatively on a recurring basis. What is the best first step?",
+      "options": [
+        {
+          "text": "Prepare the concern factually and submit it through the designated co-determination channel",
+          "rationale": "This is structured and procedural."
+        },
+        {
+          "text": "Ignore the problem as long as no customer is affected",
+          "rationale": "Risks remain."
+        },
+        {
+          "text": "Escalate publicly immediately without prior clarification",
+          "rationale": "Can unnecessarily harden the clarification."
+        }
+      ],
+      "correctIndex": 0,
+      "feedback": {
+        "correct": "Correct: factual, appropriate channel selection is professional.",
+        "wrong": "Not appropriate: concerns need an orderly path."
+      },
+      "progressLinks": [
+        "lf01_arbeitsrechte_mitbestimmung"
+      ]
+    },
+    {
+      "id": "q12",
+      "type": "multi_select",
+      "title": "Co-determination in practice",
+      "prompt": "Which points support effective co-determination in the company? (Multiple selection)",
+      "options": [
+        {
+          "text": "Prepare topics with robust examples",
+          "correct": true,
+          "rationale": "Factual clarity improves decision quality."
+        },
+        {
+          "text": "Show impacts on team and processes",
+          "correct": true,
+          "rationale": "Practical relevance makes concerns understandable."
+        },
+        {
+          "text": "Handle conflicts only personally and without documentation",
+          "correct": false,
+          "rationale": "Without evidence there is no commitment."
+        },
+        {
+          "text": "Name responsible persons and deadlines clearly",
+          "correct": true,
+          "rationale": "Increases likelihood of implementation."
+        },
+        {
+          "text": "Ignore feedback when it is critical",
+          "correct": false,
+          "rationale": "Learning and improvement opportunities are lost."
+        }
+      ],
+      "feedback": {
+        "correct": "Correct: this promotes reliable co-determination.",
+        "wrong": "Partially wrong: please include procedural clarity and traceability more strongly."
+      },
+      "progressLinks": [
+        "lf01_arbeitsrechte_mitbestimmung"
+      ]
+    },
+    {
+      "id": "q13",
+      "type": "ordering",
+      "title": "Structure a conflict conversation",
+      "prompt": "Order the sequence for a professional conflict conversation.",
+      "items": [
+        "Propose a concrete solution option",
+        "Describe the situation with examples",
+        "Take in questions and counterpositions",
+        "Agree on a joint approach",
+        "Schedule a follow-up meeting"
+      ],
+      "correctOrder": [
+        "Describe the situation with examples",
+        "Take in questions and counterpositions",
+        "Propose a concrete solution option",
+        "Agree on a joint approach",
+        "Schedule a follow-up meeting"
+      ],
+      "feedback": {
+        "correct": "Correct: objectivity and commitment are well combined.",
+        "wrong": "Not optimal: please clarify first, then solve and formalize."
+      },
+      "progressLinks": [
+        "lf01_arbeitsrechte_mitbestimmung"
+      ]
+    },
+    {
+      "id": "q14",
+      "type": "short_text",
+      "title": "Write factual feedback",
+      "prompt": "Formulate factual feedback (4-6 sentences) on an unclear team rule.",
+      "minChars": 140,
+      "requiredKeywords": [
+        "situation",
+        "impact",
+        "proposal"
+      ],
+      "expectedOutline": "Briefly name situation and impact, make a practical proposal.",
+      "feedback": {
+        "correct": "Correct: the feedback is professional and constructive.",
+        "wrong": "Please separate situation, impact and proposal more clearly."
+      },
+      "progressLinks": [
+        "lf01_arbeitsrechte_mitbestimmung"
+      ]
+    },
+    {
+      "id": "q15",
+      "type": "number",
+      "title": "Time window for clarification",
+      "prompt": "A clarification meeting is planned for 45 minutes. 18 minutes are already used for describing the facts and 12 minutes for questions. How much time remains for agreeing on a solution?",
+      "expected": 15,
+      "toleranceAbs": 1,
+      "showExpectedFormula": "45 - 18 - 12 = 15 minutes",
+      "feedback": {
+        "correct": "Correct calculation.",
+        "wrong": "Please calculate the remaining time correctly."
+      },
+      "progressLinks": [
+        "lf01_arbeitsrechte_mitbestimmung"
+      ]
+    },
+    {
+      "id": "sep_f3",
+      "type": "followup_divider",
+      "title": "Follow-up task 3 - Career and life planning",
+      "from": "ausbildungsleitung@ausbildungsbetrieb.example",
+      "to": "klasse.fiae@berufsschule.example",
+      "subject": "Plan development goals and learning time in a structured way",
+      "date": "2026-03-13",
+      "body": "Please create a realistic development framework for the next months and prioritize learning goals in a traceable way."
+    },
+    {
+      "id": "q16",
+      "type": "multi_select",
+      "title": "Elements of a development plan",
+      "prompt": "Which elements belong in a solid career and learning plan? (Multiple selection)",
+      "options": [
+        {
+          "text": "Clear learning goals with a timeframe",
+          "correct": true,
+          "rationale": "Makes progress measurable."
+        },
+        {
+          "text": "Practical tasks to apply what was learned",
+          "correct": true,
+          "rationale": "Transfer ensures sustainability."
+        },
+        {
+          "text": "Only random tasks without goal alignment",
+          "correct": false,
+          "rationale": "Without a goal, there is no development line."
+        },
+        {
+          "text": "Regular reflection points with feedback",
+          "correct": true,
+          "rationale": "Supports course corrections."
+        },
+        {
+          "text": "Filter out critical feedback",
+          "correct": false,
+          "rationale": "Hinders development."
+        }
+      ],
+      "feedback": {
+        "correct": "Correct: this is a sustainable development basis.",
+        "wrong": "Partially wrong: please link goal alignment, transfer and reflection more strongly."
+      },
+      "progressLinks": [
+        "lf01_berufs_lebensplanung"
+      ]
+    },
+    {
+      "id": "q17",
+      "type": "single_choice",
+      "title": "Next development step",
+      "prompt": "Which next step makes the most sense after a week of onboarding?",
+      "options": [
+        {
+          "text": "Align a concrete learning goal with a practical task and a date",
+          "rationale": "Creates direction and commitment."
+        },
+        {
+          "text": "Wait until a suitable task appears by chance",
+          "rationale": "Development remains unplanned."
+        },
+        {
+          "text": "Collect only theoretical topics without application",
+          "rationale": "Transfer to the company is missing."
+        }
+      ],
+      "correctIndex": 0,
+      "feedback": {
+        "correct": "Correct: goal, task and date make development manageable.",
+        "wrong": "Not appropriate: the step must be concrete and actionable."
+      },
+      "progressLinks": [
+        "lf01_berufs_lebensplanung"
+      ]
+    },
+    {
+      "id": "q18",
+      "type": "short_text",
+      "title": "Development plan in brief",
+      "prompt": "Describe in 4-6 sentences a development plan for the next 6 weeks.",
+      "minChars": 160,
+      "requiredKeywords": [
+        "goal",
+        "practice",
+        "feedback"
+      ],
+      "expectedOutline": "Concrete goal picture, practical application, feedback and check points.",
+      "feedback": {
+        "correct": "Correct: the plan is realistic and learning-effective.",
+        "wrong": "Please elaborate goal, practical share and feedback mechanism more clearly."
+      },
+      "progressLinks": [
+        "lf01_berufs_lebensplanung",
+        "lf01_reflexion_verbesserung"
+      ]
+    },
+    {
+      "id": "q19",
+      "type": "number",
+      "title": "Learning time per month",
+      "prompt": "Planned learning time is 3.5 hours per week. How many hours should be planned in 6 weeks?",
+      "expected": 21,
+      "toleranceAbs": 0.5,
+      "showExpectedFormula": "3.5 * 6 = 21 hours",
+      "feedback": {
+        "correct": "Correct calculation.",
+        "wrong": "Please multiply the weekly amount by the number of weeks."
+      },
+      "progressLinks": [
+        "lf01_berufs_lebensplanung"
+      ]
+    },
+    {
+      "id": "q20",
+      "type": "ordering",
+      "title": "Build a learning goal process",
+      "prompt": "Order the steps from learning goal to evaluation.",
+      "items": [
+        "Formulate the learning goal concretely",
+        "Define the practical task",
+        "Carry out in the company",
+        "Collect feedback",
+        "Derive the next learning step"
+      ],
+      "correctOrder": [
+        "Formulate the learning goal concretely",
+        "Define the practical task",
+        "Carry out in the company",
+        "Collect feedback",
+        "Derive the next learning step"
+      ],
+      "feedback": {
+        "correct": "Correct: the learning process is didactically well structured.",
+        "wrong": "Not optimal: please structure from goal via practice to evaluation."
+      },
+      "progressLinks": [
+        "lf01_berufs_lebensplanung",
+        "lf01_reflexion_verbesserung"
+      ]
+    },
+    {
+      "id": "sep_f4",
+      "type": "followup_divider",
+      "title": "Follow-up task 4 - End-of-day wrap-up and team handover",
+      "from": "teamleitung@ausbildungsbetrieb.example",
+      "to": "klasse.fiae@berufsschule.example",
+      "subject": "Status, open items and next step by end of day",
+      "date": "2026-03-13",
+      "body": "The day's results should be clearly documented and handed over to the team. Please prioritize transparency and traceability."
+    },
+    {
+      "id": "q21",
+      "type": "single_choice",
+      "title": "Short status at end of day",
+      "prompt": "Which statement best fits a professional end-of-day status?",
+      "options": [
+        {
+          "text": "Only report that everything is roughly done",
+          "rationale": "Too imprecise for follow-up."
+        },
+        {
+          "text": "Name completed items, open risks and next action concretely",
+          "rationale": "This is directly usable for teamwork."
+        },
+        {
+          "text": "Only refer to tomorrow without any result reference",
+          "rationale": "Lacks transparency."
+        }
+      ],
+      "correctIndex": 1,
+      "feedback": {
+        "correct": "Correct: this makes the status handover-ready.",
+        "wrong": "Not appropriate: a status needs result, risk and next action."
+      },
+      "progressLinks": [
+        "lf01_reflexion_verbesserung"
+      ]
+    },
+    {
+      "id": "q22",
+      "type": "multi_select",
+      "title": "Documentation for team handover",
+      "prompt": "Which contents belong in a good team handover? (Multiple selection)",
+      "options": [
+        {
+          "text": "Short result status per work package",
+          "correct": true,
+          "rationale": "Ensures work continuity."
+        },
+        {
+          "text": "Open items with responsible persons",
+          "correct": true,
+          "rationale": "Makes follow-up clear."
+        },
+        {
+          "text": "Unsorted notes without context",
+          "correct": false,
+          "rationale": "Not usable for team work."
+        },
+        {
+          "text": "Risk or blocker notes",
+          "correct": true,
+          "rationale": "Important for prioritization."
+        },
+        {
+          "text": "Personal opinions without factual basis",
+          "correct": false,
+          "rationale": "Too imprecise for handover."
+        }
+      ],
+      "feedback": {
+        "correct": "Correct: the handover is clear and connectable.",
+        "wrong": "Partially wrong: please structure facts, responsibilities and risks more strongly."
+      },
+      "progressLinks": [
+        "lf01_reflexion_verbesserung"
+      ]
+    },
+    {
+      "id": "q23",
+      "type": "ordering",
+      "title": "Structured end of day",
+      "prompt": "Order the steps for a professional end-of-day wrap-up.",
+      "items": [
+        "Send a short status to the team",
+        "Document results",
+        "Prioritize open items",
+        "Define the next action",
+        "File documents in an orderly way"
+      ],
+      "correctOrder": [
+        "Document results",
+        "Prioritize open items",
+        "Define the next action",
+        "Send a short status to the team",
+        "File documents in an orderly way"
+      ],
+      "feedback": {
+        "correct": "Correct: this is a clean closing process.",
+        "wrong": "Not optimal: please document and plan first, then communicate."
+      },
+      "progressLinks": [
+        "lf01_reflexion_verbesserung"
+      ]
+    },
+    {
+      "id": "q24",
+      "type": "short_text",
+      "title": "Write a closing message",
+      "prompt": "Write a closing message (5-7 sentences) with status, open item, risk and next step.",
+      "minChars": 170,
+      "requiredKeywords": [
+        "status",
+        "open item",
+        "next step"
+      ],
+      "expectedOutline": "Clear status, open items with risk, concrete follow-up action.",
+      "feedback": {
+        "correct": "Correct: the message is team-ready and decision-capable.",
+        "wrong": "Please phrase status, open item and next step more concretely."
+      },
+      "progressLinks": [
+        "lf01_reflexion_verbesserung"
+      ]
+    }
+  ]
+}

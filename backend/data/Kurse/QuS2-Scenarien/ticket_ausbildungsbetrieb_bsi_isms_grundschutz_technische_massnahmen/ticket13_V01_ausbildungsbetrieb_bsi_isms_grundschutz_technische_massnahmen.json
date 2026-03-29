@@ -1,0 +1,250 @@
+{
+  "scenario": {
+    "company": "BürgerNetz IT GmbH",
+    "scale": "IT-Dienstleister für kommunale Fachverfahren und verteilte Standorte",
+    "context": "Vor einer Sicherheitsrunde soll klar werden, wie Schutzbedarfsanalyse, Risikoklassifikation, ISMS und technische Maßnahmen zusammenhängen.",
+    "mission": "BSI-Standards, ISO 2700x, Schutzbedarf, Risikoklassifikation und technische Schutzmaßnahmen in eine verständliche Betriebslogik übersetzen.",
+    "source": {
+      "kind": "Interner Sicherheitsauftrag",
+      "reference": "Sicherheitsrahmen 2026-04",
+      "note": "Die Leitung will eine klare Trennung zwischen Standardrahmen, Analyse und konkreten Schutzmaßnahmen sehen."
+    },
+    "station": {
+      "id": "QUS2-ST-13",
+      "department": "Informationssicherheit und Betriebskoordination",
+      "profile": "BSI, ISMS, Schutzbedarf, Risiken und technische Massnahmen",
+      "constraints": [
+        "Analyse, Bewertung und Umsetzung müssen getrennt, aber logisch verbunden bleiben",
+        "Standards und Handbuch dürfen nicht mit einem einzelnen Sicherheitswerkzeug verwechselt werden",
+        "Technische Maßnahmen sollen als konkrete Schutzwirkung lesbar bleiben"
+      ]
+    },
+    "customerRequest": {
+      "from": "sicherheitskoordination@buergernetz.example",
+      "to": "betrieb@buergernetz.example",
+      "subject": "Schutzbedarf, ISMS und technische Maßnahmen aufbereiten",
+      "date": "2026-03-27",
+      "body": "Guten Tag,\n\nbitte stellt für die Sicherheitsrunde die Begriffe BSI-Standards, ISO 2700x, ISMS, Schutzbedarfsanalyse und technische Massnahmen so zusammen, dass Analyse, Bewertung und Umsetzung sauber unterscheidbar bleiben.\n\nViele Grüsse\nInformationssicherheit"
+    }
+  },
+  "questions": [
+    {
+      "id": "ctx01",
+      "type": "context_card",
+      "title": "Rahmen für den Sicherheitsfall",
+      "contentBlocks": [
+        {
+          "type": "text",
+          "text": "Mehrere Fachverfahren sind neu verbunden worden. Die Sicherheitsrunde will jetzt nicht nur Werkzeuge sehen, sondern die Logik von BSI, ISMS, Schutzbedarf, Risiko und technischen Maßnahmen verstehen."
+        }
+      ]
+    },
+    {
+      "id": "q01",
+      "type": "single_choice",
+      "title": "BSI- und ISO-Rahmen erkennen",
+      "prompt": "Welche Aussage beschreibt den Rahmen am besten, wenn BSI-Standards und ISO 2700x genannt werden?",
+      "options": [
+        {
+          "text": "BSI-Standards und ISO 2700x sind anerkannte Rahmen für strukturierte Informationssicherheit; sie ersetzen aber keine konkrete Umsetzung im Betrieb.",
+          "rationale": "Das ist die fachlich stimmigste Einordnung.",
+          "correct": true
+        },
+        {
+          "text": "BSI-Standards sind nur ein anderer Name für Firewall-Regeln.",
+          "rationale": "Das verwechselt Rahmen und Einzelmaßnahme.",
+          "correct": false
+        },
+        {
+          "text": "ISO 2700x betrifft ausschließlich Papierakten und nicht Informationssicherheit.",
+          "rationale": "Das ist fachlich falsch.",
+          "correct": false
+        },
+        {
+          "text": "Sobald ein Standard genannt ist, muss im Betrieb nichts mehr geprüft werden.",
+          "rationale": "Ein Standard ersetzt nie die betriebliche Umsetzung.",
+          "correct": false
+        }
+      ],
+      "correctIndex": 0,
+      "feedback": {
+        "correct": "Der Standardrahmen wurde korrekt eingeordnet.",
+        "wrong": "Denken Sie an Rahmen, nicht an ein einzelnes Tool."
+      },
+      "progressLinks": [
+        "qus2_bsi_isms_grundschutz"
+      ]
+    },
+    {
+      "id": "q02",
+      "type": "multi_select",
+      "title": "Schutzbedarf und Anforderungen ableiten",
+      "prompt": "Welche Aussagen gehören zu Schutzbedarfsanalyse, Risikoklassifikation und der Ableitung von Sicherheitsanforderungen? Mehrere Aussagen können zutreffen.",
+      "options": [
+        {
+          "text": "Schutzbedarf von Informationen und Systemen wird zuerst bestimmt.",
+          "rationale": "Ohne Schutzbedarf gibt es keine belastbare Priorisierung.",
+          "correct": true
+        },
+        {
+          "text": "Risiken werden nach Bedeutung und Dringlichkeit klassifiziert.",
+          "rationale": "So lässt sich die Reihenfolge der Maßnahmen steuern.",
+          "correct": true
+        },
+        {
+          "text": "Sicherheitsanforderungen werden aus dem Schutzbedarf abgeleitet.",
+          "rationale": "Genau das verbindet Analyse und Umsetzung.",
+          "correct": true
+        },
+        {
+          "text": "Maßnahmen sollen anschließend abgestimmt, umgesetzt und evaluiert werden.",
+          "rationale": "Die Umsetzung gehört zur belastbaren Sicherheitsarbeit.",
+          "correct": true
+        },
+        {
+          "text": "Eine Firewall alleine ersetzt Schutzbedarfsanalyse und Risikoklassifikation.",
+          "rationale": "Ein einzelnes Werkzeug ersetzt den Analyseprozess nicht.",
+          "correct": false
+        },
+        {
+          "text": "Erst nach einem Vorfall ist es sinnvoll, den Schutzbedarf zu bestimmen.",
+          "rationale": "Dann kommt die Steuerung zu spät.",
+          "correct": false
+        }
+      ],
+      "feedback": {
+        "correct": "Die Analyse- und Umsetzungslogik wurde passend erkannt.",
+        "wrong": "Erst Schutzbedarf, dann Risiken, dann Anforderungen und Maßnahmen."
+      },
+      "progressLinks": [
+        "qus2_bsi_schutzbedarf_risiko_anforderungen"
+      ]
+    },
+    {
+      "id": "q03",
+      "type": "ordering",
+      "title": "Sicherheitsanalyse sinnvoll aufbauen",
+      "prompt": "Wie läuft eine saubere Analyse von Sicherheitsanforderungen typischerweise ab?",
+      "items": [
+        "Schützenswerte Informationen und Systeme erfassen.",
+        "Schutzbedarf bestimmen.",
+        "Risiken klassifizieren.",
+        "Geeignete Maßnahmen ableiten und abstimmen.",
+        "Umsetzung prüfen und evaluieren."
+      ],
+      "correctOrder": [
+        "Schützenswerte Informationen und Systeme erfassen.",
+        "Schutzbedarf bestimmen.",
+        "Risiken klassifizieren.",
+        "Geeignete Maßnahmen ableiten und abstimmen.",
+        "Umsetzung prüfen und evaluieren."
+      ],
+      "feedback": {
+        "correct": "Die Reihenfolge der Sicherheitsanalyse ist korrekt.",
+        "wrong": "Zuerst erfassen, dann bewerten, ableiten, umsetzen und prüfen."
+      },
+      "progressLinks": [
+        "qus2_bsi_schutzbedarf_riko_anforderungen",
+        "qus2_bsi_isms_grundschutz"
+      ]
+    },
+    {
+      "id": "q04",
+      "type": "match_pairs",
+      "title": "BSI- und IT-Sicherheitsbegriffe zuordnen",
+      "prompt": "Welche Beschreibung passt jeweils am besten zum Begriff?",
+      "layout": "table",
+      "columns": [
+        "Fachbegriff",
+        "Passende Beschreibung"
+      ],
+      "pairs": [
+        {
+          "key": "pair_1",
+          "left": "BSI-Standards",
+          "right": "Methodischer Rahmen des BSI für Grundschutz und Sicherheitsmanagement."
+        },
+        {
+          "key": "pair_2",
+          "left": "IT-Grundschutzhandbuch",
+          "right": "Sammlung von Bausteinen und Maßnahmen für den Grundschutz."
+        },
+        {
+          "key": "pair_3",
+          "left": "ISMS",
+          "right": "Managementsystem für Informationssicherheit."
+        },
+        {
+          "key": "pair_4",
+          "left": "IT-Sicherheitsmanagement",
+          "right": "Organisatorische Steuerung von Sicherheitsmaßnahmen."
+        },
+        {
+          "key": "pair_5",
+          "left": "IT-Sicherheitsbeauftragter",
+          "right": "Koordiniert Sicherheitsaufgaben und ist Ansprechperson."
+        },
+        {
+          "key": "pair_6",
+          "left": "Zugangs-/Zugriffskontrollen",
+          "right": "Nur berechtigten Personen Zugriff geben."
+        },
+        {
+          "key": "pair_7",
+          "left": "Verschlüsselung",
+          "right": "Daten ohne Schlüssel unlesbar machen."
+        },
+        {
+          "key": "pair_8",
+          "left": "Authentifizierung",
+          "right": "Identität einer Person oder eines Systems prüfen."
+        },
+        {
+          "key": "pair_9",
+          "left": "Firewall",
+          "right": "Netzwerkverkehr filtern."
+        },
+        {
+          "key": "pair_10",
+          "left": "Hashwerte",
+          "right": "Integrität von Daten mit Prüfsummen überprüfen."
+        }
+      ],
+      "options": [
+        "Methodischer Rahmen des BSI für Grundschutz und Sicherheitsmanagement.",
+        "Sammlung von Bausteinen und Maßnahmen für den Grundschutz.",
+        "Managementsystem für Informationssicherheit.",
+        "Organisatorische Steuerung von Sicherheitsmaßnahmen.",
+        "Koordiniert Sicherheitsaufgaben und ist Ansprechperson.",
+        "Nur berechtigten Personen Zugriff geben.",
+        "Daten ohne Schlüssel unlesbar machen.",
+        "Identität einer Person oder eines Systems prüfen.",
+        "Netzwerkverkehr filtern.",
+        "Integrität von Daten mit Prüfsummen überprüfen."
+      ],
+      "feedback": {
+        "correct": "Die Sicherheitsbegriffe wurden stimmig zugeordnet.",
+        "wrong": "Prüfen Sie den Unterschied zwischen Rahmen, Rolle, Kontrolle und technischer Wirkung."
+      },
+      "progressLinks": [
+        "qus2_bsi_isms_grundschutz",
+        "qus2_bsi_schutzbedarf_riko_anforderungen",
+        "qus2_bsi_technische_schutzmassnahmen"
+      ]
+    },
+    {
+      "id": "q05",
+      "type": "number",
+      "title": "Schutzziele zählen",
+      "prompt": "Wie viele klassische Schutzziele werden hier betrachtet?",
+      "expected": 3,
+      "feedback": {
+        "correct": "Es werden drei Schutzziele betrachtet.",
+        "wrong": "Die klassische Einordnung umfasst Vertraulichkeit, Integrität und Verfügbarkeit."
+      },
+      "progressLinks": [
+        "qus2_bsi_schutzbedarf_riko_anforderungen"
+      ]
+    }
+  ]
+}

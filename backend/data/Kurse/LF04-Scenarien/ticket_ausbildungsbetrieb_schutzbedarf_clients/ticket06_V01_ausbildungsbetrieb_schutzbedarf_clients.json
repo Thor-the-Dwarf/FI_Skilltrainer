@@ -1,0 +1,160 @@
+{
+  "scenario": {
+    "company": "Ausbildungsbetrieb IT-Service",
+    "scale": "Mittelstand, 180 Mitarbeitende",
+    "context": "Station 6 des Tageslaufs: Schutzbedarf für Arbeitsplatzsoftware und Clients bewerten.",
+    "mission": "Sie klassifizieren Schutzbedarf für Software, Client und Datenfluss eines Arbeitsplatzes.",
+    "station": {
+      "id": "LF04-ST-06",
+      "department": "Vertrieb",
+      "profile": "CRM, Dateiablage, Office und standardisierter Arbeitsplatz-Client",
+      "constraints": [
+        "Schutzbedarf fachlich begründen",
+        "Datenwert und Ausfallwirkung verknüpfen",
+        "Mindestschutz ableiten"
+      ]
+    },
+    "customerRequest": {
+      "from": "vertrieb.leitung@ausbildungsbetrieb.example",
+      "to": "it.service@ausbildungsbetrieb.example",
+      "subject": "Station 06: Schutzbedarf für CRM-Arbeitsplatz begründen",
+      "date": "2026-03-13",
+      "body": "Bitte bewerten Sie Schutzbedarf und Mindestschutz für CRM, Dateiablage und den zugehörigen Arbeitsplatz-Client nachvollziehbar."
+    }
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "type": "single_choice",
+      "title": "Stärkster Treiber des Schutzbedarfs",
+      "prompt": "Welcher Faktor bestimmt den Schutzbedarf am stärksten?",
+      "options": [
+        {
+          "text": "Sensibilität der Daten und Auswirkung auf den Geschäftsprozess",
+          "rationale": "Datenwert und Prozessauswirkung sind die entscheidenden Kriterien."
+        },
+        {
+          "text": "Nur die Farbe des Gehäuses",
+          "rationale": "Optik hat keinen Schutzbedarfsbezug."
+        },
+        {
+          "text": "Nur der Anschaffungspreis des Clients",
+          "rationale": "Kosten allein bilden Schutzbedarf nicht ab."
+        }
+      ],
+      "correctIndex": 0,
+      "feedback": {
+        "correct": "Richtig: Datenwert und Betriebswirkung sind entscheidend.",
+        "wrong": "Nicht passend: Schutzbedarf muss an Daten und Prozesswirkung festgemacht werden."
+      },
+      "progressLinks": [
+        "lf04_schutzbedarf_arbeitsplatzsoftware_clients"
+      ]
+    },
+    {
+      "id": "q2",
+      "type": "multi_select",
+      "title": "Bewertungsaspekte für Arbeitsplatzsoftware und Client",
+      "prompt": "Welche Aspekte sind für die Schutzbedarfsbewertung relevant? (Mehrfachauswahl)",
+      "options": [
+        {
+          "text": "Verarbeitete Datenkategorie und Sensibilität",
+          "correct": true,
+          "rationale": "Datenwert bestimmt Schutzbedarf wesentlich mit."
+        },
+        {
+          "text": "Patch- und Updatefähigkeit von Software und Client",
+          "correct": true,
+          "rationale": "Das beeinflusst die Angriffsoberfläche."
+        },
+        {
+          "text": "Auswirkungen bei Ausfall oder Manipulation",
+          "correct": true,
+          "rationale": "Schadenswirkung ist Kernelement der Bewertung."
+        },
+        {
+          "text": "Nur persönliche Vorlieben einzelner Nutzender",
+          "correct": false,
+          "rationale": "Schutzbedarf ist kein Geschmacksurteil."
+        },
+        {
+          "text": "Abhängigkeiten zwischen Software, Client und Datenfluss",
+          "correct": true,
+          "rationale": "Die Wechselwirkungen müssen mit betrachtet werden."
+        }
+      ],
+      "feedback": {
+        "correct": "Richtig: Sie gewichten Datenwert, Betrieb und technische Basis sauber.",
+        "wrong": "Teilweise falsch: Bitte Daten, Ausfallwirkung und Systemabhängigkeiten stärker koppeln."
+      },
+      "progressLinks": [
+        "lf04_schutzbedarf_arbeitsplatzsoftware_clients"
+      ]
+    },
+    {
+      "id": "q3",
+      "type": "ordering",
+      "title": "Methodik für den CRM-Arbeitsplatz",
+      "prompt": "Ordnen Sie die Schritte für die Schutzbedarfsfeststellung.",
+      "items": [
+        "Schutzbedarf für Software und Client einstufen",
+        "Mindestschutz und Restpunkte dokumentieren",
+        "Software, Client und Datenfluss erfassen",
+        "Ausfall-, Manipulations- und Zugriffsfolgen bewerten",
+        "Technische und organisatorische Risiken zusammenführen"
+      ],
+      "correctOrder": [
+        "Software, Client und Datenfluss erfassen",
+        "Ausfall-, Manipulations- und Zugriffsfolgen bewerten",
+        "Technische und organisatorische Risiken zusammenführen",
+        "Schutzbedarf für Software und Client einstufen",
+        "Mindestschutz und Restpunkte dokumentieren"
+      ],
+      "feedback": {
+        "correct": "Richtig: So wird der Schutzbedarf fachlich und nachvollziehbar aufgebaut.",
+        "wrong": "Nicht optimal: Bitte erst erfassen und bewerten, dann einstufen und dokumentieren."
+      },
+      "progressLinks": [
+        "lf04_schutzbedarf_methodik",
+        "lf04_schutzbedarf_arbeitsplatzsoftware_clients"
+      ]
+    },
+    {
+      "id": "q4",
+      "type": "number",
+      "title": "Einfachen Prioritätswert bilden",
+      "prompt": "Ein Modell addiert Datenwert 4, Ausfallwirkung 5 und Integritätsrisiko 3. Wie hoch ist der Gesamtwert?",
+      "expected": 12,
+      "toleranceAbs": 0,
+      "showExpectedFormula": "4 + 5 + 3 = 12",
+      "feedback": {
+        "correct": "Richtig gerechnet.",
+        "wrong": "Bitte alle drei Faktoren addieren."
+      },
+      "progressLinks": [
+        "lf04_schutzbedarf_arbeitsplatzsoftware_clients"
+      ]
+    },
+    {
+      "id": "q5",
+      "type": "short_text",
+      "title": "Schutzbedarf kurz begründen",
+      "prompt": "Begründen Sie in 4-6 Sätzen den Schutzbedarf eines CRM-Arbeitsplatzes mit einer Kernmassnahme und einem Restpunkt.",
+      "minChars": 160,
+      "requiredKeywords": [
+        "schutzbedarf",
+        "crm",
+        "massnahme"
+      ],
+      "expectedOutline": "Datenwert und Ausfallwirkung benennen, Kernmassnahme ableiten und Restpunkt transparent machen.",
+      "feedback": {
+        "correct": "Richtig: Die Begründung ist fachlich sauber und betrieblich brauchbar.",
+        "wrong": "Bitte Schutzbedarf, Massnahme und Restpunkt klarer trennen."
+      },
+      "progressLinks": [
+        "lf04_schutzbedarf_arbeitsplatzsoftware_clients",
+        "lf04_dokumentation_kommunikation"
+      ]
+    }
+  ]
+}

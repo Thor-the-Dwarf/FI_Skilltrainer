@@ -1,0 +1,732 @@
+{
+  "scenario": {
+    "company": "Ausbildungsbetrieb IT-Service",
+    "scale": "Mittelstand, 180 Mitarbeitende",
+    "context": "Station 01: Startauftrag und Folgeaufträge zur Schutzbedarfsanalyse im Vertriebsbereich.",
+    "mission": "Sie bearbeiten den Startauftrag und mehrere Folgeaufträge rund um Schutzziele, Bedrohungen, Social Engineering, Datenträger und Sicherheitsmassnahmen.",
+    "station": {
+      "id": "LF04-ST-01",
+      "department": "Vertrieb und Backoffice",
+      "profile": "CRM, Office, Dateiablage und gelegentlicher Datenaustausch mit externen Stellen",
+      "constraints": [
+        "Bewertungen kurz und nachvollziehbar begründen",
+        "Massnahmen realistisch für den Betrieb halten",
+        "Sicherheits- und Dokumentationsanforderungen einhalten"
+      ]
+    },
+    "customerRequest": {
+      "from": "sicherheitsteam@ausbildungsbetrieb.example",
+      "to": "it.service@ausbildungsbetrieb.example",
+      "subject": "Station 01: Schutzbedarf im Arbeitsbereich bewerten",
+      "date": "2026-03-13",
+      "body": "Bitte führen Sie für einen Standardarbeitsplatz im Vertriebsbereich eine Schutzbedarfsanalyse durch.\n\nDanach folgen weitere Aufträge zur selben Umgebung mit steigender Verantwortung zu Bedrohungen, Social Engineering, Arbeitsplatzsoftware und mobilem Datenaustausch."
+    }
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "type": "single_choice",
+      "title": "Schutzziele richtig einordnen",
+      "prompt": "Welche Zielkombination bildet den Kern der Informationssicherheit?",
+      "options": [
+        {
+          "text": "Vertraulichkeit, Integrität, Verfügbarkeit",
+          "rationale": "Diese drei Schutzziele sind die anerkannte Basis."
+        },
+        {
+          "text": "Performance, Komfort, Design",
+          "rationale": "Das sind keine grundlegenden Informationssicherheitsziele."
+        },
+        {
+          "text": "Preis, Lieferzeit, Markenbindung",
+          "rationale": "Das sind Beschaffungskriterien, aber keine Schutzziele."
+        }
+      ],
+      "correctIndex": 0,
+      "feedback": {
+        "correct": "Richtig: Diese drei Ziele steuern die Schutzbedarfsbetrachtung.",
+        "wrong": "Nicht passend: Bitte die klassischen Schutzziele beachten."
+      },
+      "progressLinks": [
+        "lf04_infosicherheit_grundlagen"
+      ]
+    },
+    {
+      "id": "q2",
+      "type": "multi_select",
+      "title": "Rollen und Zuständigkeiten im Sicherheitsalltag",
+      "prompt": "Welche Aussagen zu Rollen und Verantwortlichkeiten sind fachlich sinnvoll? (Mehrfachauswahl)",
+      "options": [
+        {
+          "text": "Der Fachbereich liefert Prozessanforderungen und die Sicht auf den möglichen Schaden",
+          "correct": true,
+          "rationale": "Der Fachbereich kennt Geschäftsauswirkungen am besten."
+        },
+        {
+          "text": "Die IT setzt technische Schutzmassnahmen um und dokumentiert ihre Schritte",
+          "correct": true,
+          "rationale": "Technische Umsetzung und Nachweis liegen typischerweise bei der IT."
+        },
+        {
+          "text": "Sicherheitsvorgänge werden möglichst nicht dokumentiert, um Zeit zu sparen",
+          "correct": false,
+          "rationale": "Ohne Dokumentation fehlt Nachvollziehbarkeit und Steuerung."
+        },
+        {
+          "text": "Meldewege für Sicherheitsvorfälle müssen bekannt sein",
+          "correct": true,
+          "rationale": "Schnelle Eskalation reduziert Folgeschäden."
+        },
+        {
+          "text": "Jede Person entscheidet allein über den Schutzbedarf ohne Abstimmung",
+          "correct": false,
+          "rationale": "Schutzbedarf ist team- und prozessbezogen abzustimmen."
+        }
+      ],
+      "feedback": {
+        "correct": "Richtig: Sie trennen Rollen und Verantwortung praxisnah.",
+        "wrong": "Teilweise falsch: Bitte Rollen, Meldewege und Dokumentation klarer einordnen."
+      },
+      "progressLinks": [
+        "lf04_verantwortung_zustaendigkeiten"
+      ]
+    },
+    {
+      "id": "q3",
+      "type": "ordering",
+      "title": "Ablauf einer belastbaren Schutzbedarfsanalyse",
+      "prompt": "Ordnen Sie die Schritte für eine saubere Schutzbedarfsfeststellung.",
+      "items": [
+        "Massnahmen ableiten und Rest-Risiko dokumentieren",
+        "Schutzobjekte und Prozesse erfassen",
+        "Bedrohungen und Schadensszenarien bewerten",
+        "Schutzbedarf begründet einstufen",
+        "Ergebnis mit Fachbereich und IT abstimmen"
+      ],
+      "correctOrder": [
+        "Schutzobjekte und Prozesse erfassen",
+        "Bedrohungen und Schadensszenarien bewerten",
+        "Schutzbedarf begründet einstufen",
+        "Massnahmen ableiten und Rest-Risiko dokumentieren",
+        "Ergebnis mit Fachbereich und IT abstimmen"
+      ],
+      "feedback": {
+        "correct": "Richtig: Der Ablauf ist methodisch und betrieblich stimmig.",
+        "wrong": "Nicht optimal: Bitte von Erfassung über Bewertung zur abgestimmten Entscheidung gehen."
+      },
+      "progressLinks": [
+        "lf04_schutzbedarf_methodik"
+      ]
+    },
+    {
+      "id": "q4",
+      "type": "number",
+      "title": "Ausfallzeit aus Zielverfügbarkeit",
+      "prompt": "Ein interner Dienst hat in einem 30-Tage-Monat eine Zielverfügbarkeit von 99,7 %. Wie viele Minuten Ausfall sind maximal enthalten?",
+      "expected": 130,
+      "toleranceAbs": 1,
+      "showExpectedFormula": "30 * 24 * 60 * (1 - 0,997) = 129,6 ~ 130 Minuten",
+      "feedback": {
+        "correct": "Richtig gerechnet.",
+        "wrong": "Bitte Gesamtzeitraum und Ausfallanteil korrekt multiplizieren."
+      },
+      "progressLinks": [
+        "lf04_verfuegbarkeit_schaden_berechnen"
+      ]
+    },
+    {
+      "id": "q5",
+      "type": "short_text",
+      "title": "Kurzlage zur Ersteinstufung",
+      "prompt": "Schreiben Sie eine kurze Meldung (4-6 Sätze) mit Schutzbedarf, Begründung und einem ersten Restrisiko.",
+      "minChars": 150,
+      "requiredKeywords": [
+        "schutzbedarf",
+        "begründung",
+        "risiko"
+      ],
+      "expectedOutline": "Einstufung, wichtigste Begründung und ein realistischer Restpunkt.",
+      "feedback": {
+        "correct": "Richtig: Die Meldung ist klar, knapp und entscheidungsfähig.",
+        "wrong": "Bitte Schutzbedarf, Begründung und Restrisiko klarer voneinander trennen."
+      },
+      "progressLinks": [
+        "lf04_dokumentation_kommunikation",
+        "lf04_schutzbedarf_methodik"
+      ]
+    },
+    {
+      "id": "sep_f1",
+      "type": "followup_divider",
+      "title": "Folgeauftrag 1 - Bedrohungslage und Rahmenvorgaben nachschärfen",
+      "from": "sicherheitsteam@ausbildungsbetrieb.example",
+      "to": "it.service@ausbildungsbetrieb.example",
+      "subject": "Bitte aktuelle Bedrohungen und Sicherheitsrahmen nachziehen",
+      "date": "2026-03-13",
+      "body": "Die Bereichsleitung möchte eine kompakte Nachschärfung zu Gesetzen, Standards und den aktuell wichtigsten Bedrohungen für den Vertriebsarbeitsplatz. Bitte priorisieren Sie die Risiken nachvollziehbar."
+    },
+    {
+      "id": "q6",
+      "type": "single_choice",
+      "title": "Gesetze, Standards und Grundschutz trennen",
+      "prompt": "Welche Aussage beschreibt den Unterschied am besten?",
+      "options": [
+        {
+          "text": "Gesetze sind verbindlich, Standards und Grundschutz liefern strukturierte Umsetzungsrahmen",
+          "rationale": "So lässt sich der Sicherheitsrahmen in der Praxis sauber einordnen."
+        },
+        {
+          "text": "Alles ist identisch und beliebig austauschbar",
+          "rationale": "Gesetze, Standards und Grundschutz haben unterschiedliche Rollen."
+        },
+        {
+          "text": "Nur interne Teamregeln sind für Sicherheit relevant",
+          "rationale": "Externe Anforderungen dürfen nicht ignoriert werden."
+        }
+      ],
+      "correctIndex": 0,
+      "feedback": {
+        "correct": "Richtig: Verbindlichkeit und Umsetzungsrahmen sind sauber getrennt.",
+        "wrong": "Nicht passend: Bitte Rechtsrahmen und Sicherheitsstandards deutlicher unterscheiden."
+      },
+      "progressLinks": [
+        "lf04_gesetze_standards_grundschutz"
+      ]
+    },
+    {
+      "id": "q7",
+      "type": "multi_select",
+      "title": "Relevante Bedrohungen für den Vertriebsarbeitsplatz",
+      "prompt": "Welche Szenarien sind für den beschriebenen Arbeitsplatz fachlich relevant? (Mehrfachauswahl)",
+      "options": [
+        {
+          "text": "Phishing auf CRM- oder Mail-Zugangsdaten",
+          "correct": true,
+          "rationale": "Konten und Kommunikationswege sind typische Angriffsziele."
+        },
+        {
+          "text": "Unberechtigte Einsicht in Angebots- und Kundendaten",
+          "correct": true,
+          "rationale": "Vertraulichkeitsverletzungen können direkte Geschäftsschäden verursachen."
+        },
+        {
+          "text": "Ransomware über Mailanhang oder Dateiablage",
+          "correct": true,
+          "rationale": "Das bedroht Verfügbarkeit und Integrität zugleich."
+        },
+        {
+          "text": "Ein neuer ergonomischer Bürostuhl",
+          "correct": false,
+          "rationale": "Das ist kein IT-Sicherheitsrisiko in diesem Kontext."
+        },
+        {
+          "text": "Fehlkonfigurierte Freigaben in gemeinsamer Dateiablage",
+          "correct": true,
+          "rationale": "Falsche Freigaben führen schnell zu ungewollten Zugriffen."
+        }
+      ],
+      "feedback": {
+        "correct": "Richtig: Sie verbinden Bedrohungslage mit echten Geschäftsauswirkungen.",
+        "wrong": "Teilweise falsch: Bitte Angriffe auf Daten, Konten und Freigaben stärker mitdenken."
+      },
+      "progressLinks": [
+        "lf04_bedrohungen_schadensszenarien"
+      ]
+    },
+    {
+      "id": "q8",
+      "type": "ordering",
+      "title": "Vom Sicherheitsrahmen zur Risikopriorität",
+      "prompt": "Ordnen Sie die Schritte sinnvoll.",
+      "items": [
+        "Massnahmen und Rückmeldung mit Verantwortlichen abstimmen",
+        "Leitlinie, Regeln und Rahmenvorgaben sichten",
+        "Bedrohungen und mögliche Schäden bewerten",
+        "Schutzobjekte und betroffene Prozesse benennen",
+        "Schutzbedarf und Priorität begründet einstufen"
+      ],
+      "correctOrder": [
+        "Leitlinie, Regeln und Rahmenvorgaben sichten",
+        "Schutzobjekte und betroffene Prozesse benennen",
+        "Bedrohungen und mögliche Schäden bewerten",
+        "Schutzbedarf und Priorität begründet einstufen",
+        "Massnahmen und Rückmeldung mit Verantwortlichen abstimmen"
+      ],
+      "feedback": {
+        "correct": "Richtig: Der Weg führt sauber vom Rahmen zur priorisierten Entscheidung.",
+        "wrong": "Nicht optimal: Bitte erst Rahmen und Schutzobjekte klären, dann priorisieren und abstimmen."
+      },
+      "progressLinks": [
+        "lf04_sicherheitsprozess_leitlinie"
+      ]
+    },
+    {
+      "id": "q9",
+      "type": "number",
+      "title": "Risikoscore berechnen",
+      "prompt": "In einer einfachen Matrix gilt: Risiko-Score = Eintrittswahrscheinlichkeit (1-5) * Schaden (1-5). Bei 4 und 5: Wie hoch ist der Score?",
+      "expected": 20,
+      "toleranceAbs": 0,
+      "showExpectedFormula": "4 * 5 = 20",
+      "feedback": {
+        "correct": "Richtig gerechnet.",
+        "wrong": "Bitte Wahrscheinlichkeit und Schaden multiplizieren."
+      },
+      "progressLinks": [
+        "lf04_bedrohungen_schadensszenarien"
+      ]
+    },
+    {
+      "id": "q10",
+      "type": "short_text",
+      "title": "Kurzempfehlung an die Bereichsleitung",
+      "prompt": "Formulieren Sie eine kurze Empfehlung (4-6 Sätze) mit zwei priorisierten Bedrohungen und einer passenden Massnahme.",
+      "minChars": 150,
+      "requiredKeywords": [
+        "bedrohung",
+        "massnahme",
+        "priorität"
+      ],
+      "expectedOutline": "Zwei priorisierte Risiken, eine plausible Massnahme und kurze Begründung.",
+      "feedback": {
+        "correct": "Richtig: Die Empfehlung ist fokussiert und leitungsfähig formuliert.",
+        "wrong": "Bitte Bedrohungen, Priorität und Massnahme klarer verknüpfen."
+      },
+      "progressLinks": [
+        "lf04_gesetze_standards_grundschutz",
+        "lf04_dokumentation_kommunikation"
+      ]
+    },
+    {
+      "id": "sep_f2",
+      "type": "followup_divider",
+      "title": "Folgeauftrag 2 - Verdächtiger Kontakt an der Hotline",
+      "from": "service.desk@ausbildungsbetrieb.example",
+      "to": "it.service@ausbildungsbetrieb.example",
+      "subject": "Möglicher Social-Engineering-Versuch gemeldet",
+      "date": "2026-03-13",
+      "body": "Eine Person hat sich telefonisch als externe Prüfinstanz ausgegeben und die sofortige Freigabe sensibler Vertriebsdaten verlangt. Bitte bewerten Sie den Vorfall und formulieren Sie einen passenden Umgang für das Team."
+    },
+    {
+      "id": "q11",
+      "type": "single_choice",
+      "title": "Erste Reaktion auf einen verdächtigen Kontakt",
+      "prompt": "Was ist in dieser Situation am sinnvollsten?",
+      "options": [
+        {
+          "text": "Keine sensiblen Daten herausgeben, Identität über bekannte Kontaktwege verifizieren und den Vorfall melden",
+          "rationale": "So bleiben Verifikation und Meldeweg unter Kontrolle."
+        },
+        {
+          "text": "Unter Zeitdruck alle geforderten Informationen direkt weitergeben",
+          "rationale": "Genau das nutzen Social-Engineering-Angriffe aus."
+        },
+        {
+          "text": "Den Anruf ignorieren und nirgends dokumentieren",
+          "rationale": "Ohne Meldung fehlt Schutz für weitere Betroffene."
+        }
+      ],
+      "correctIndex": 0,
+      "feedback": {
+        "correct": "Richtig: Verifikation und Meldeweg gehen vor Schnelligkeit.",
+        "wrong": "Nicht passend: Bitte keine Daten ohne Verifikation freigeben und den Vorfall sauber melden."
+      },
+      "progressLinks": [
+        "lf04_social_engineering"
+      ]
+    },
+    {
+      "id": "q12",
+      "type": "multi_select",
+      "title": "Warnsignale für Social Engineering",
+      "prompt": "Welche Hinweise sprechen für ein Social-Engineering-Risiko? (Mehrfachauswahl)",
+      "options": [
+        {
+          "text": "Druck zur sofortigen Herausgabe sensibler Daten",
+          "correct": true,
+          "rationale": "Zeitdruck ist ein klassisches Manipulationsmuster."
+        },
+        {
+          "text": "Ungewöhnliche Kommunikationskanäle ohne Verifizierung",
+          "correct": true,
+          "rationale": "Fehlende Verifikation erhöht das Missbrauchsrisiko."
+        },
+        {
+          "text": "Absenderidentität passt nicht zum behaupteten Auftrag",
+          "correct": true,
+          "rationale": "Identitätswidersprüche sind starke Warnsignale."
+        },
+        {
+          "text": "Mehrstufige Rückfrage über bekannte Kontaktwege",
+          "correct": false,
+          "rationale": "Das ist eher eine Schutzmassnahme als ein Angriffssignal."
+        },
+        {
+          "text": "Dokumentierte Freigabe mit Vier-Augen-Prinzip liegt vor",
+          "correct": false,
+          "rationale": "Das reduziert statt erhöht das Risiko."
+        }
+      ],
+      "feedback": {
+        "correct": "Richtig: Sie erkennen typische Manipulationssignale.",
+        "wrong": "Teilweise falsch: Bitte Warnsignale klar von Sicherheitskontrollen trennen."
+      },
+      "progressLinks": [
+        "lf04_social_engineering"
+      ]
+    },
+    {
+      "id": "q13",
+      "type": "ordering",
+      "title": "Umgang mit einem verdächtigen Kontakt",
+      "prompt": "Ordnen Sie die Schritte für den sicheren Umgang.",
+      "items": [
+        "Vorfall dokumentieren und bei Bedarf Teamhinweis geben",
+        "Keine sensiblen Daten herausgeben und Gespräch sauber begrenzen",
+        "Identität über bekannte Kontaktwege prüfen",
+        "Sicherheitsvorfall über den bekannten Meldeweg melden",
+        "Weitere Schritte gemäss Vorgabe abstimmen"
+      ],
+      "correctOrder": [
+        "Keine sensiblen Daten herausgeben und Gespräch sauber begrenzen",
+        "Identität über bekannte Kontaktwege prüfen",
+        "Sicherheitsvorfall über den bekannten Meldeweg melden",
+        "Weitere Schritte gemäss Vorgabe abstimmen",
+        "Vorfall dokumentieren und bei Bedarf Teamhinweis geben"
+      ],
+      "feedback": {
+        "correct": "Richtig: Der Ablauf minimiert Risiko und bleibt prozesskonform.",
+        "wrong": "Nicht optimal: Bitte Schutz, Verifikation, Meldung und Dokumentation sauber staffeln."
+      },
+      "progressLinks": [
+        "lf04_social_engineering",
+        "lf04_verantwortung_zustaendigkeiten"
+      ]
+    },
+    {
+      "id": "q14",
+      "type": "number",
+      "title": "Meldequote aus einer Phishing-Übung",
+      "prompt": "Von 20 Mitarbeitenden haben 6 eine verdächtige Mail korrekt über den Meldeweg eingereicht. Wie hoch ist die Meldequote in Prozent?",
+      "expected": 30,
+      "toleranceAbs": 0.5,
+      "showExpectedFormula": "6 / 20 * 100 = 30 %",
+      "feedback": {
+        "correct": "Richtig gerechnet.",
+        "wrong": "Bitte Anzahl korrekter Meldungen durch die Gesamtzahl teilen und in Prozent umrechnen."
+      },
+      "progressLinks": [
+        "lf04_social_engineering"
+      ]
+    },
+    {
+      "id": "q15",
+      "type": "short_text",
+      "title": "Warnmeldung an das Team",
+      "prompt": "Schreiben Sie eine kurze Warnmeldung (4-6 Sätze) mit Verifikationshinweis, Meldeweg und klarer Verhaltensregel.",
+      "minChars": 150,
+      "requiredKeywords": [
+        "verifizieren",
+        "melden",
+        "keine daten"
+      ],
+      "expectedOutline": "Warnsignal benennen, Verifikation verlangen und den Meldeweg klar nennen.",
+      "feedback": {
+        "correct": "Richtig: Die Meldung ist klar, präventiv und alltagstauglich.",
+        "wrong": "Bitte Verifikation, Meldeweg und Verhaltensregel deutlicher formulieren."
+      },
+      "progressLinks": [
+        "lf04_social_engineering",
+        "lf04_dokumentation_kommunikation"
+      ]
+    },
+    {
+      "id": "sep_f3",
+      "type": "followup_divider",
+      "title": "Folgeauftrag 3 - Schutzbedarf für CRM-Arbeitsplatz nachziehen",
+      "from": "vertrieb.leitung@ausbildungsbetrieb.example",
+      "to": "it.service@ausbildungsbetrieb.example",
+      "subject": "Bitte Schutzbedarf für Arbeitsplatzsoftware und Client genauer bewerten",
+      "date": "2026-03-13",
+      "body": "Die Bereichsleitung möchte speziell für CRM, Dateiablage und den zugehörigen Client eine klarere Schutzbedarfsbegründung. Bitte stellen Sie dar, welche Faktoren den Schutzbedarf treiben und welche Mindestmassnahmen sich daraus ergeben."
+    },
+    {
+      "id": "q16",
+      "type": "single_choice",
+      "title": "Wichtigster Treiber des Schutzbedarfs",
+      "prompt": "Welcher Faktor bestimmt den Schutzbedarf von Arbeitsplatzsoftware am stärksten?",
+      "options": [
+        {
+          "text": "Sensibilität der verarbeiteten Daten und die Auswirkung auf den Betrieb",
+          "rationale": "Datenwert und Geschäftsauswirkung bestimmen die Einstufung wesentlich."
+        },
+        {
+          "text": "Nur die Farbe der Softwareoberfläche",
+          "rationale": "Optik hat keinen Schutzbedarfsbezug."
+        },
+        {
+          "text": "Ausschliesslich der Anschaffungspreis des Clients",
+          "rationale": "Kosten allein bilden Schutzbedarf nicht ab."
+        }
+      ],
+      "correctIndex": 0,
+      "feedback": {
+        "correct": "Richtig: Datenwert und Auswirkung sind hier entscheidend.",
+        "wrong": "Nicht passend: Bitte Schutzbedarf an Daten und Geschäftsauswirkung festmachen."
+      },
+      "progressLinks": [
+        "lf04_schutzbedarf_arbeitsplatzsoftware_clients"
+      ]
+    },
+    {
+      "id": "q17",
+      "type": "multi_select",
+      "title": "Aspekte für Arbeitsplatzsoftware und Client",
+      "prompt": "Welche Aspekte sind für die Schutzbedarfsbewertung besonders relevant? (Mehrfachauswahl)",
+      "options": [
+        {
+          "text": "Verarbeitete Datenkategorie und Sensibilität",
+          "correct": true,
+          "rationale": "Datenwert bestimmt Schutzbedarf wesentlich mit."
+        },
+        {
+          "text": "Patch- und Updatefähigkeit von Software und Client",
+          "correct": true,
+          "rationale": "Das beeinflusst Angriffsoberfläche und Betriebsrisiko."
+        },
+        {
+          "text": "Auswirkungen bei Ausfall oder Manipulation",
+          "correct": true,
+          "rationale": "Schadensauswirkungen sind Kernelement der Bewertung."
+        },
+        {
+          "text": "Nur subjektive Vorlieben einzelner Nutzender",
+          "correct": false,
+          "rationale": "Schutzbedarf ist kein Geschmacksurteil."
+        },
+        {
+          "text": "Ausschliesslich der Anschaffungspreis des Clients",
+          "correct": false,
+          "rationale": "Preis allein bildet Schutzbedarf nicht ab."
+        }
+      ],
+      "feedback": {
+        "correct": "Richtig: Die Bewertung orientiert sich an Risiko und Auswirkung.",
+        "wrong": "Teilweise falsch: Bitte Datenwert, Betriebsrisiko und Schadenswirkung stärker koppeln."
+      },
+      "progressLinks": [
+        "lf04_schutzbedarf_arbeitsplatzsoftware_clients"
+      ]
+    },
+    {
+      "id": "q18",
+      "type": "ordering",
+      "title": "Bewertung für den CRM-Arbeitsplatz",
+      "prompt": "Ordnen Sie die Schritte für eine saubere Schutzbedarfsfeststellung.",
+      "items": [
+        "Mindestschutz und Restrisiko dokumentieren",
+        "Software, Client und Datenfluss erfassen",
+        "Ausfall-, Manipulations- und Zugriffsauswirkungen bewerten",
+        "Patch- und Betriebsrisiken des Clients prüfen",
+        "Schutzbedarf für Software und Client einstufen"
+      ],
+      "correctOrder": [
+        "Software, Client und Datenfluss erfassen",
+        "Ausfall-, Manipulations- und Zugriffsauswirkungen bewerten",
+        "Patch- und Betriebsrisiken des Clients prüfen",
+        "Schutzbedarf für Software und Client einstufen",
+        "Mindestschutz und Restrisiko dokumentieren"
+      ],
+      "feedback": {
+        "correct": "Richtig: So wird die Einstufung fachlich und nachvollziehbar aufgebaut.",
+        "wrong": "Nicht optimal: Bitte erst erfassen und bewerten, dann einstufen und dokumentieren."
+      },
+      "progressLinks": [
+        "lf04_schutzbedarf_methodik",
+        "lf04_schutzbedarf_arbeitsplatzsoftware_clients"
+      ]
+    },
+    {
+      "id": "q19",
+      "type": "number",
+      "title": "Prioritätswert additiv bilden",
+      "prompt": "Ein einfaches Modell addiert Datenwert (1-5) und Ausfallwirkung (1-5). Bei 5 und 4: Wie hoch ist der Gesamtwert?",
+      "expected": 9,
+      "toleranceAbs": 0,
+      "showExpectedFormula": "5 + 4 = 9",
+      "feedback": {
+        "correct": "Richtig gerechnet.",
+        "wrong": "Bitte beide Faktoren addieren."
+      },
+      "progressLinks": [
+        "lf04_schutzbedarf_arbeitsplatzsoftware_clients"
+      ]
+    },
+    {
+      "id": "q20",
+      "type": "short_text",
+      "title": "Schutzbedarfsbegründung für den CRM-Arbeitsplatz",
+      "prompt": "Formulieren Sie eine kurze Begründung (4-6 Sätze) mit Schutzbedarf, einer Kernmassnahme und einem Restpunkt.",
+      "minChars": 160,
+      "requiredKeywords": [
+        "crm",
+        "schutzbedarf",
+        "massnahme"
+      ],
+      "expectedOutline": "Schutzbedarf begründen, zentrale Massnahme benennen und Restpunkt transparent machen.",
+      "feedback": {
+        "correct": "Richtig: Die Begründung ist belastbar und praxisnah formuliert.",
+        "wrong": "Bitte Schutzbedarf, Kernmassnahme und Restpunkt klarer herausarbeiten."
+      },
+      "progressLinks": [
+        "lf04_schutzbedarf_arbeitsplatzsoftware_clients",
+        "lf04_tom_massnahmen"
+      ]
+    },
+    {
+      "id": "sep_f4",
+      "type": "followup_divider",
+      "title": "Folgeauftrag 4 - Datenaustausch über mobile Datenträger",
+      "from": "einkauf@ausbildungsbetrieb.example",
+      "to": "it.service@ausbildungsbetrieb.example",
+      "subject": "Bitte Regeln für mobilen Datenaustausch und Abschlussnotiz vorbereiten",
+      "date": "2026-03-13",
+      "body": "Für einen externen Termin wird erneut nach USB-basiertem Datenaustausch gefragt. Bitte bewerten Sie sichere Alternativen, den Freigabeprozess für mobile Datenträger und liefern Sie eine Abschlussnotiz mit Restrisiko."
+    },
+    {
+      "id": "q21",
+      "type": "single_choice",
+      "title": "Beste Option für sensible Datenübertragung",
+      "prompt": "Welche Option ist für sensible Daten im Regelfall am sinnvollsten?",
+      "options": [
+        {
+          "text": "Ein freigegebener verschlüsselter Übertragungsweg oder ein gemanagter Datenträgerprozess",
+          "rationale": "So bleiben Schutz und Nachvollziehbarkeit erhalten."
+        },
+        {
+          "text": "Ein privater unbekannter USB-Stick ohne Freigabe",
+          "rationale": "Das ist weder sicher noch prozesskonform."
+        },
+        {
+          "text": "Ein offener Messenger ohne Betriebsfreigabe",
+          "rationale": "Ohne Freigabe und Schutz ist das für sensible Daten ungeeignet."
+        }
+      ],
+      "correctIndex": 0,
+      "feedback": {
+        "correct": "Richtig: Freigegebene, geschützte Wege sind hier die beste Wahl.",
+        "wrong": "Nicht passend: Sensible Daten brauchen Schutz und Freigabe."
+      },
+      "progressLinks": [
+        "lf04_mobile_datentraeger"
+      ]
+    },
+    {
+      "id": "q22",
+      "type": "multi_select",
+      "title": "Regeln für mobile Datenträger",
+      "prompt": "Welche Regeln sind für mobilen Datenaustausch sinnvoll? (Mehrfachauswahl)",
+      "options": [
+        {
+          "text": "Freigabeprozess vor Nutzung einhalten",
+          "correct": true,
+          "rationale": "Die Nutzung muss abgesprochen und nachvollziehbar sein."
+        },
+        {
+          "text": "Geeignete Verschlüsselung und Zugriffsschutz einsetzen",
+          "correct": true,
+          "rationale": "Das reduziert Missbrauch bei Verlust oder Fehlversand."
+        },
+        {
+          "text": "Transport und Rückgabe dokumentieren",
+          "correct": true,
+          "rationale": "Ohne Nachweis fehlt die Kontrolle über den Datenträger."
+        },
+        {
+          "text": "Gefundene unbekannte Datenträger direkt am Produktivclient testen",
+          "correct": false,
+          "rationale": "Das widerspricht jedem sicheren Umgang."
+        },
+        {
+          "text": "Sichere Alternativen wie freigegebene Übertragungsdienste bevorzugen",
+          "correct": true,
+          "rationale": "Oft sind Alternativen sicherer und besser dokumentierbar."
+        }
+      ],
+      "feedback": {
+        "correct": "Richtig: Sie verbinden Freigabe, Schutz und Nachvollziehbarkeit.",
+        "wrong": "Teilweise falsch: Bitte Freigabe, Verschlüsselung und sichere Alternativen stärker priorisieren."
+      },
+      "progressLinks": [
+        "lf04_mobile_datentraeger",
+        "lf04_tom_massnahmen"
+      ]
+    },
+    {
+      "id": "q23",
+      "type": "ordering",
+      "title": "Sicherer Ablauf für geplanten Datenaustausch",
+      "prompt": "Ordnen Sie die Schritte für einen sicheren Datenträgerprozess.",
+      "items": [
+        "Transport, Übergabe und Rücknahme dokumentieren",
+        "Datenklassifikation und Notwendigkeit klären",
+        "Freigegebenen Übertragungsweg oder Datenträger auswählen",
+        "Verschlüsselung und Zugriffsschutz setzen",
+        "Löschung oder Rückgabe nach Abschluss prüfen"
+      ],
+      "correctOrder": [
+        "Datenklassifikation und Notwendigkeit klären",
+        "Freigegebenen Übertragungsweg oder Datenträger auswählen",
+        "Verschlüsselung und Zugriffsschutz setzen",
+        "Transport, Übergabe und Rücknahme dokumentieren",
+        "Löschung oder Rückgabe nach Abschluss prüfen"
+      ],
+      "feedback": {
+        "correct": "Richtig: Der Ablauf verbindet Schutz, Nachweis und Abschlusskontrolle.",
+        "wrong": "Nicht optimal: Bitte erst Notwendigkeit klären, dann Schutz, Doku und Abschluss kontrollieren."
+      },
+      "progressLinks": [
+        "lf04_mobile_datentraeger",
+        "lf04_sicherheitsprozess_leitlinie"
+      ]
+    },
+    {
+      "id": "q24",
+      "type": "number",
+      "title": "Dokumentationsquote beim Datenträgerprozess",
+      "prompt": "In einem Monat gab es 12 mobile Datenträger-Vorgänge, 3 davon ohne dokumentierte Freigabe. Wie hoch ist die dokumentierte Quote in Prozent?",
+      "expected": 75,
+      "toleranceAbs": 0.5,
+      "showExpectedFormula": "(12 - 3) / 12 * 100 = 75 %",
+      "feedback": {
+        "correct": "Richtig gerechnet.",
+        "wrong": "Bitte die dokumentierten Vorgänge durch die Gesamtzahl teilen und in Prozent umrechnen."
+      },
+      "progressLinks": [
+        "lf04_mobile_datentraeger",
+        "lf04_dokumentation_kommunikation"
+      ]
+    },
+    {
+      "id": "q25",
+      "type": "short_text",
+      "title": "Abschlussnotiz zur Schutzbedarfsanalyse",
+      "prompt": "Schreiben Sie eine Abschlussnotiz (5-7 Sätze) mit Schutzbedarf, zwei Kernmassnahmen und einem verbleibenden Restrisiko.",
+      "minChars": 180,
+      "requiredKeywords": [
+        "schutzbedarf",
+        "massnahme",
+        "restrisiko"
+      ],
+      "expectedOutline": "Begründete Einstufung, priorisierte Massnahmen, transparentes Restrisiko und nächster Schritt.",
+      "feedback": {
+        "correct": "Richtig: Die Notiz ist für Team und Leitung gut nutzbar.",
+        "wrong": "Bitte Schutzbedarf, Massnahmen und Restrisiko klarer strukturieren."
+      },
+      "progressLinks": [
+        "lf04_dokumentation_kommunikation",
+        "lf04_schutzbedarf_methodik"
+      ]
+    }
+  ]
+}

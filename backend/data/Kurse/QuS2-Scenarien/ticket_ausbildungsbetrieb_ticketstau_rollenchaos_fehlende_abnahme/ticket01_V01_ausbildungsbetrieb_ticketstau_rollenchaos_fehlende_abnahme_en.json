@@ -1,0 +1,512 @@
+{
+  "scenario": {
+    "company": "SecuBridge Service GmbH",
+    "scale": "IT service provider for home office, municipal workplaces and medical practice environments, 95 employees",
+    "context": "Several complaints from service, access rights, and acceptance already indicate a shared process weakness at project start.",
+    "mission": "Organize complaints, role and acceptance logic for the project start and derive measurable quality goals, evidence, and responsibilities.",
+    "source": {
+      "kind": "Internal project request with complaint situation",
+      "reference": "Kick-off service and security concept, 2026-03-26",
+      "note": "The basis is current complaints from service, access rights and acceptance as well as preparation for the project start."
+    },
+    "station": {
+      "id": "QUS2-ST-01",
+      "department": "Quality management and security coordination",
+      "profile": "Root cause analysis, quality goals, roles and start evidence",
+      "constraints": [
+        "Open complaints from service and acceptance must be consolidated into a shared processing status before the kick-off",
+        "Roles, approvals and acceptance criteria must be documented in a traceable way and must not rely on verbal alignment only",
+        "By the next steering date, a short start protocol with responsibility, risk and the next step is required"
+      ]
+    },
+    "customerRequest": {
+      "from": "programmleitung@secubridge-service.example",
+      "to": "projektteam@ausbildungsbetrieb.example",
+      "subject": "Secure project start: organize complaints, roles and acceptances",
+      "date": "2026-03-26",
+      "body": "Good day,\n\nfor our new service and security concept, preparations for home office, the municipal citizen office and a medical practice group are running in parallel. Even before the start date, we already see the same disruption patterns in several places: tickets remain in processing too long, permissions are interpreted inconsistently and acceptances are not properly verifiable.\n\nPlease prepare a shared working status for the meeting on three points:\n- suspected root causes behind the complaints\n- three measurable quality goals including evidence\n- roles, risks and the next step in the start protocol\n\nKind regards\nProgram management"
+    }
+  },
+  "questions": [
+    {
+      "id": "ctx01",
+      "type": "context_card",
+      "title": "Context for the project start",
+      "contentBlocks": [
+        {
+          "type": "text",
+          "text": "SecuBridge is starting a new service and security concept for three customer segments: home office, municipal citizen office and a medical practice group. Even before technical measures are defined, three disruption patterns already appear that likely trace back to the same process weakness."
+        },
+        {
+          "type": "table",
+          "columns": [
+            "Observation",
+            "Visible effect"
+          ],
+          "rows": [
+            [
+              "Ticket processing takes too long",
+              "Customers ask multiple times for the same status"
+            ],
+            [
+              "Permissions are inconsistent",
+              "Similar cases are viewed or changed differently depending on the role"
+            ],
+            [
+              "Acceptances are missing or unclear",
+              "Internally something is marked as done, but for the customer it still feels open"
+            ]
+          ]
+        },
+        {
+          "type": "text",
+          "text": "For the meeting, three concrete working outputs are needed: a traceable root-cause logic, three prioritized quality goals, and a start protocol with responsibility, risk and the next step."
+        }
+      ]
+    },
+    {
+      "id": "q01",
+      "type": "multi_select",
+      "title": "Narrow down the process weakness",
+      "prompt": "Which observations support the assumption that the complaints trace back to the same process weakness? Multiple statements can be correct.",
+      "options": [
+        {
+          "text": "Multiple disruption patterns appear exactly at handovers between roles and status changes.",
+          "correct": true,
+          "rationale": "If the same weakness shows up at several handovers, it strongly points to a process problem."
+        },
+        {
+          "text": "The symptoms affect response time, permissions and acceptance at the same time and therefore indicate missing binding process rules.",
+          "correct": true,
+          "rationale": "The combination of time, role logic and evidence points to a shared process root."
+        },
+        {
+          "text": "A contradiction arises between internal ticket status and the customer view.",
+          "correct": true,
+          "rationale": "The gap between internal completion and external perception is a classic signal of missing evidence and closure logic."
+        },
+        {
+          "text": "If the same issue appears in different teams, it is mostly due to different working styles and not yet a process weakness.",
+          "correct": false,
+          "rationale": "Different styles can amplify symptoms, but they do not explain recurring breaks at the same handovers."
+        },
+        {
+          "text": "As long as each side documents its own processing status internally, a missing shared evidence record is not yet a sign of a systemic problem.",
+          "correct": false,
+          "rationale": "Separate views without shared evidence point to missing binding process logic."
+        },
+        {
+          "text": "Even the first work packages lack evidence and clear responsibilities.",
+          "correct": true,
+          "rationale": "Missing responsibility and evidence at project start intensify exactly the observed disruptions."
+        }
+      ],
+      "feedback": {
+        "correct": "The signals pointing to a shared process root were correctly identified.",
+        "wrong": "Focus on indicators that jointly affect handovers, role binding, customer view and evidence."
+      },
+      "progressLinks": [
+        "qus2_fehlerursachen_analyse"
+      ]
+    },
+    {
+      "id": "q02",
+      "type": "match_pairs",
+      "title": "Assign root causes",
+      "prompt": "Which root cause best fits each observation?",
+      "layout": "table",
+      "columns": [
+        "Observation",
+        "Most likely cause"
+      ],
+      "pairs": [
+        {
+          "key": "cause_1",
+          "left": "Tickets remain open for a long time",
+          "right": "Handovers and escalation steps are not bindingly defined"
+        },
+        {
+          "key": "cause_2",
+          "left": "Permissions are interpreted differently",
+          "right": "Role and permission concept is not cleanly documented and approved"
+        },
+        {
+          "key": "cause_3",
+          "left": "Acceptances are unclear or missing",
+          "right": "Acceptance criteria and evidence are not bindingly anchored in the process"
+        },
+        {
+          "key": "cause_4",
+          "left": "The customer experiences a case as open despite an internal done status",
+          "right": "Customer view and internal status are not coupled through shared evidence"
+        }
+      ],
+      "options": [
+        "Handovers and escalation steps are not bindingly defined",
+        "Role and permission concept is not cleanly documented and approved",
+        "Acceptance criteria and evidence are not bindingly anchored in the process",
+        "Customer view and internal status are not coupled through shared evidence"
+      ],
+      "feedback": {
+        "correct": "The observations are linked to the most plausible root causes.",
+        "wrong": "Check again whether it is about role logic, handovers, permissions or missing evidence."
+      },
+      "progressLinks": [
+        "qus2_fehlerursachen_analyse"
+      ]
+    },
+    {
+      "id": "f02",
+      "type": "followup_divider",
+      "title": "Define quality goals",
+      "from": "qualitaetskoordination@secubridge-service.example",
+      "to": "projektteam@ausbildungsbetrieb.example",
+      "subject": "Define three measurable quality goals for the project start",
+      "date": "2026-03-26",
+      "body": "Hello everyone,\n\nfor the start date I need three goals that we can later verify with clear evidence rather than just claim. Please phrase the goals so that response time, role logic and acceptance are clearly described and can be proven later.\n\nKind regards\nQuality coordination"
+    },
+    {
+      "id": "q03",
+      "type": "single_choice",
+      "title": "Define a measurable quality goal",
+      "prompt": "Which wording fits best when response time, role logic and evidence should be defined within one goal?",
+      "options": [
+        {
+          "text": "For prioritized incidents, a documented first contact is visible within 30 minutes; each status change is assigned to a role and every acceptance ends with outcome, date and responsible person.",
+          "rationale": "This wording combines the goal, measurability, role logic and concrete evidence in one solid statement."
+        },
+        {
+          "text": "For prioritized incidents, a response should occur no later than the same working day; the exact role and acceptance logic will be added after the pilot phase.",
+          "rationale": "The time target sounds concrete, but role and evidence logic are left out."
+        },
+        {
+          "text": "Each involved role documents its processing status independently so that an overall picture emerges later.",
+          "rationale": "This sounds organized, but without shared criteria it does not create solid evidence."
+        },
+        {
+          "text": "The customer should be informed earlier in the future so that follow-up questions decrease and the flow feels calmer.",
+          "rationale": "This is a sensible communication intent, but it remains too vague without a measurable checkpoint."
+        }
+      ],
+      "correctIndex": 0,
+      "feedback": {
+        "correct": "The verifiable quality goal was correctly identified.",
+        "wrong": "Look for a statement that makes time, roles and evidence concrete, not just well-intentioned."
+      },
+      "progressLinks": [
+        "qus2_qualitaetsziele_priorisieren"
+      ]
+    },
+    {
+      "id": "q04",
+      "type": "table_fill",
+      "title": "Define goals and evidence per disruption",
+      "prompt": "Add the appropriate goal and evidence for each observation.",
+      "columns": [
+        "Observation",
+        "Quality goal",
+        "Evidence"
+      ],
+      "rows": [
+        [
+          "Ticket processing takes too long",
+          {
+            "key": "goal_row_1",
+            "label": "Ticket cycle time / quality goal",
+            "expected": "First contact and status transitions are bindingly documented with timestamps.",
+            "inputType": "select",
+            "placeholder": "Select quality goal",
+            "options": [
+              "First contact and status transitions are bindingly documented with timestamps.",
+              "Roles and approvals are clearly defined and approved per role.",
+              "Acceptance criteria and outcome are bindingly recorded for each work package.",
+              "Feedback is preferably aligned in the team chat so that status changes feel faster."
+            ]
+          },
+          {
+            "key": "evidence_row_1",
+            "label": "Ticket cycle time / evidence",
+            "expected": "Ticket log with timestamps and escalation point.",
+            "inputType": "select",
+            "placeholder": "Select evidence",
+            "options": [
+              "Ticket log with timestamps and escalation point.",
+              "Role and permission overview with approval status.",
+              "Acceptance protocol with outcome, date and responsible person.",
+              "Weekly report with averaged ticket cycle times without case reference."
+            ]
+          }
+        ],
+        [
+          "Permissions are inconsistent",
+          {
+            "key": "goal_row_2",
+            "label": "Permissions / quality goal",
+            "expected": "Roles and approvals are clearly defined and approved per role.",
+            "inputType": "select",
+            "placeholder": "Select quality goal",
+            "options": [
+              "First contact and status transitions are bindingly documented with timestamps.",
+              "Roles and approvals are clearly defined and approved per role.",
+              "Acceptance criteria and outcome are bindingly recorded for each work package.",
+              "Each role describes its access scope in its own words in the kick-off protocol."
+            ]
+          },
+          {
+            "key": "evidence_row_2",
+            "label": "Permissions / evidence",
+            "expected": "Role and permission overview with approval status.",
+            "inputType": "select",
+            "placeholder": "Select evidence",
+            "options": [
+              "Ticket log with timestamps and escalation point.",
+              "Role and permission overview with approval status.",
+              "Acceptance protocol with outcome, date and responsible person.",
+              "List of open questions from the role workshop."
+            ]
+          }
+        ],
+        [
+          "Acceptances are missing or unclear",
+          {
+            "key": "goal_row_3",
+            "label": "Acceptance / quality goal",
+            "expected": "Acceptance criteria and outcome are bindingly recorded for each work package.",
+            "inputType": "select",
+            "placeholder": "Select quality goal",
+            "options": [
+              "First contact and status transitions are bindingly documented with timestamps.",
+              "Roles and approvals are clearly defined and approved per role.",
+              "Acceptance criteria and outcome are bindingly recorded for each work package.",
+              "Done status may only be set by project moderation."
+            ]
+          },
+          {
+            "key": "evidence_row_3",
+            "label": "Acceptance / evidence",
+            "expected": "Acceptance protocol with outcome, date and responsible person.",
+            "inputType": "select",
+            "placeholder": "Select evidence",
+            "options": [
+              "Ticket log with timestamps and escalation point.",
+              "Role and permission overview with approval status.",
+              "Acceptance protocol with outcome, date and responsible person.",
+              "Approval email from project management without documented criteria and outcome."
+            ]
+          }
+        ]
+      ],
+      "feedback": {
+        "correct": "Observation, quality goal and evidence were aligned consistently.",
+        "wrong": "Check which goal truly fits the observation and which evidence can later prove the goal was met."
+      },
+      "progressLinks": [
+        "qus2_qualitaetsziele_priorisieren",
+        "qus2_startprotokoll_und_nachweise"
+      ]
+    },
+    {
+      "id": "q05",
+      "type": "single_choice",
+      "title": "Prioritize trust risk",
+      "prompt": "Which finding damages customer trust the fastest in this situation?",
+      "options": [
+        {
+          "text": "Internally a work package is marked as done, but solid acceptance with an outcome is missing.",
+          "rationale": "This is where delivery, evidence and customer view directly diverge; it undermines trust the fastest."
+        },
+        {
+          "text": "The first response time is missed multiple times, but the processing status remains transparently visible to the customer.",
+          "rationale": "This is serious, but transparency and a traceable status can mitigate trust damage."
+        },
+        {
+          "text": "Role permissions are not fully harmonized internally yet, without any incorrect approvals already reaching the customer.",
+          "rationale": "This is risky, but it usually damages trust less immediately than a seemingly closed case without acceptance evidence."
+        },
+        {
+          "text": "For later KPI reporting it is not yet decided which metric will be reported first.",
+          "rationale": "That is a steering gap, but not the fastest trust break in the current customer view."
+        }
+      ],
+      "correctIndex": 0,
+      "feedback": {
+        "correct": "The strongest trust risk was correctly prioritized.",
+        "wrong": "Consider what hits the customer hardest right away: a status without solid evidence."
+      },
+      "progressLinks": [
+        "qus2_qualitaetsziele_priorisieren"
+      ]
+    },
+    {
+      "id": "f03",
+      "type": "followup_divider",
+      "title": "Secure the start protocol",
+      "from": "projektmoderation@secubridge-service.example",
+      "to": "projektteam@ausbildungsbetrieb.example",
+      "subject": "Prepare the start protocol for project start",
+      "date": "2026-03-26",
+      "body": "Hello everyone,\n\nbefore we move into test planning and security measures, I need a documented starting status. The protocol must clearly capture the goal, roles, initial risks, open questions and the next binding step. Please assign responsibilities and include only points that we can later prove or track.\n\nKind regards\nProject moderation"
+    },
+    {
+      "id": "ctx02",
+      "type": "context_card",
+      "title": "Context for the start protocol",
+      "contentBlocks": [
+        {
+          "type": "text",
+          "text": "For the first phase, the start protocol must clearly show which goal applies, who is responsible for what, which risks or open questions are already visible, and which next step follows in a binding way.\n\nFor the kickoff, the following roles should already receive a clear initial focus."
+        },
+        {
+          "type": "table",
+          "columns": [
+            "Role",
+            "Initial focus"
+          ],
+          "rows": [
+            [
+              "Service management",
+              "Make the complaint picture and response time transparent"
+            ],
+            [
+              "Engineering and support",
+              "Review permissions, status transitions and operational stumbling blocks"
+            ],
+            [
+              "Quality coordination",
+              "Moderate the root-cause to goal to evidence logic"
+            ],
+            [
+              "Project moderation",
+              "Document risks, open questions and the next step in a binding way"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "id": "q06",
+      "type": "multi_select",
+      "title": "Minimum content of the start protocol",
+      "prompt": "Which four points must be included in the start protocol for this project start?",
+      "options": [
+        {
+          "text": "Goal of the first project phase and what must be visibly available at the end",
+          "correct": true,
+          "rationale": "Without a clear goal picture the project start remains non-binding."
+        },
+        {
+          "text": "Roles with responsibility and visible risks",
+          "correct": true,
+          "rationale": "Responsibility and risk must be named early so nothing remains vague later."
+        },
+        {
+          "text": "Open questions and the next binding step",
+          "correct": true,
+          "rationale": "A solid start protocol shows what is still unclear and how to proceed."
+        },
+        {
+          "text": "Required evidence or checkpoints for the first decisions",
+          "correct": true,
+          "rationale": "Evidence is what separates a real project start from good intentions."
+        },
+        {
+          "text": "A complete detailed architecture for all security and service components",
+          "correct": false,
+          "rationale": "This may be needed later, but it is too deep for the start protocol and does not replace goal or evidence logic."
+        },
+        {
+          "text": "A fully drafted test catalog for all later measures up to project completion",
+          "correct": false,
+          "rationale": "The test catalog belongs in later planning; the start protocol is about goal, risk, responsibility and next step."
+        },
+        {
+          "text": "A binding overall cost calculation for the entire project duration",
+          "correct": false,
+          "rationale": "Costs can be relevant, but they are not a mandatory core element of a solid start protocol."
+        }
+      ],
+      "feedback": {
+        "correct": "The core components of the start protocol were correctly selected.",
+        "wrong": "Focus on goal, responsibility, risk, evidence and the next binding step instead of side topics."
+      },
+      "progressLinks": [
+        "qus2_startprotokoll_und_nachweise",
+        "qus2_rollen_und_verantwortung"
+      ]
+    },
+    {
+      "id": "q07",
+      "type": "match_pairs",
+      "title": "Assign start responsibilities",
+      "prompt": "Which initial responsibility matches which role?",
+      "layout": "table",
+      "columns": [
+        "Role",
+        "Initial responsibility"
+      ],
+      "pairs": [
+        {
+          "key": "role_1",
+          "left": "Service management",
+          "right": "Make the complaint picture and response time transparent"
+        },
+        {
+          "key": "role_2",
+          "left": "Engineering and support",
+          "right": "Review permissions, status transitions and operational stumbling blocks"
+        },
+        {
+          "key": "role_3",
+          "left": "Quality coordination",
+          "right": "Moderate the root-cause to goal to evidence logic"
+        },
+        {
+          "key": "role_4",
+          "left": "Project moderation",
+          "right": "Document the start protocol, open questions and the next step in a binding way"
+        }
+      ],
+      "options": [
+        "Make the complaint picture and response time transparent",
+        "Review permissions, status transitions and operational stumbling blocks",
+        "Moderate the root-cause to goal to evidence logic",
+        "Document the start protocol, open questions and the next step in a binding way"
+      ],
+      "feedback": {
+        "correct": "The roles are aligned with their initial start responsibilities.",
+        "wrong": "Check who is responsible for complaint view, permission concept, quality logic or protocol ownership."
+      },
+      "progressLinks": [
+        "qus2_rollen_und_verantwortung"
+      ]
+    },
+    {
+      "id": "q08",
+      "type": "ordering",
+      "title": "Build a sensible project start",
+      "prompt": "Put the steps in a sensible order so the project start is prepared cleanly.",
+      "items": [
+        "Document the goal and expectation for the first phase.",
+        "Make complaints, permission chaos and missing acceptances jointly visible.",
+        "Derive three measurable quality goals with evidence from that.",
+        "Prioritize and justify the strongest trust risk.",
+        "Document roles, risks, open questions and the next step in the start protocol."
+      ],
+      "correctOrder": [
+        "Document the goal and expectation for the first phase.",
+        "Make complaints, permission chaos and missing acceptances jointly visible.",
+        "Derive three measurable quality goals with evidence from that.",
+        "Prioritize and justify the strongest trust risk.",
+        "Document roles, risks, open questions and the next step in the start protocol."
+      ],
+      "feedback": {
+        "correct": "The order leads from identifying the disruption patterns to a solid project start.",
+        "wrong": "First kick-off and disruption picture, then goals and priority, only then the binding start protocol."
+      },
+      "progressLinks": [
+        "qus2_startprotokoll_und_nachweise",
+        "qus2_rollen_und_verantwortung"
+      ]
+    }
+  ]
+}

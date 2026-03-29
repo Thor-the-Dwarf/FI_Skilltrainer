@@ -1,0 +1,159 @@
+{
+  "scenario": {
+    "company": "Ausbildungsbetrieb IT-Service",
+    "scale": "Mittelstand, 90 Mitarbeitende",
+    "context": "Station 08 des Tageslaufs: Kontrolle und Reflexion von Unterricht und betrieblicher Mitarbeit.",
+    "mission": "Sie schliessen den Tageslauf mit Soll-Ist-Bewertung, Lessons Learned und konkretem Folgeplan ab.",
+    "station": {
+      "id": "LF01-ST-08",
+      "department": "Ausbildung und Teamkoordination",
+      "profile": "Reflexion, Bewertungslogik, Verbesserungsplanung",
+      "constraints": [
+        "Soll-Ist-Betrachtung nachvollziehbar halten",
+        "Verbesserungen priorisieren",
+        "nächste Schritte verbindlich festhalten"
+      ]
+    },
+    "customerRequest": {
+      "from": "ausbildungsleitung@ausbildungsbetrieb.example",
+      "to": "klasse.fiae@berufsschule.example",
+      "subject": "Station 08: Abschlussreflexion LF01",
+      "date": "2026-03-13",
+      "body": "Bitte erstellen Sie zum Abschluss eine kurze Reflexion über den Tageslauf: Zielerreichung, offene Punkte, Lessons Learned und nächste Entwicklungsschritte."
+    }
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "type": "single_choice",
+      "title": "Soll-Ist sinnvoll starten",
+      "prompt": "Was ist der beste Start für eine Abschlussreflexion?",
+      "options": [
+        {
+          "text": "Nur subjektives Bauchgefühl notieren",
+          "rationale": "Zu wenig belastbar."
+        },
+        {
+          "text": "Ziele und erreichte Ergebnisse strukturiert gegenüberstellen",
+          "rationale": "Damit wird die Reflexion nachvollziehbar."
+        },
+        {
+          "text": "Nur die schwierigsten Aufgaben aufzahlen",
+          "rationale": "Fehlender Zielbezug."
+        }
+      ],
+      "correctIndex": 1,
+      "feedback": {
+        "correct": "Richtig: Soll-Ist-Vergleich ist die tragfähige Basis.",
+        "wrong": "Nicht passend: Eine Reflexion braucht Zielbezug und Fakten."
+      },
+      "progressLinks": [
+        "lf01_reflexion_verbesserung"
+      ]
+    },
+    {
+      "id": "q2",
+      "type": "multi_select",
+      "title": "Lessons Learned ableiten",
+      "prompt": "Welche Aussagen helfen bei belastbaren Lessons Learned? (Mehrfachauswahl)",
+      "options": [
+        {
+          "text": "Ursache und Wirkung eines Problems klar benennen",
+          "correct": true,
+          "rationale": "Macht Lernen reproduzierbar."
+        },
+        {
+          "text": "Verbesserung mit Verantwortlichem und Termin versehen",
+          "correct": true,
+          "rationale": "Erhöht Umsetzungschance."
+        },
+        {
+          "text": "Kritische Punkte aus Rücksicht auslassen",
+          "correct": false,
+          "rationale": "Verhindert echte Verbesserung."
+        },
+        {
+          "text": "Positive Muster für Folgeaufgaben dokumentieren",
+          "correct": true,
+          "rationale": "Stärkt wirksame Vorgehensweisen."
+        },
+        {
+          "text": "Massnahmen ohne Priorität erfassen",
+          "correct": false,
+          "rationale": "Erschwert Umsetzung."
+        }
+      ],
+      "feedback": {
+        "correct": "Richtig: Die Lessons Learned sind umsetzbar aufgebaut.",
+        "wrong": "Teilweise falsch: Bitte Ursachenbezug und Verbindlichkeit stärker sichern."
+      },
+      "progressLinks": [
+        "lf01_reflexion_verbesserung"
+      ]
+    },
+    {
+      "id": "q3",
+      "type": "ordering",
+      "title": "Abschlussprozess LF01",
+      "prompt": "Ordnen Sie den Ablauf für einen professionellen LF01-Abschluss.",
+      "items": [
+        "Zielerreichung prüfen",
+        "Abweichungen analysieren",
+        "Verbesserungen priorisieren",
+        "nächste Schritte terminieren",
+        "Abschlussstatus kommunizieren"
+      ],
+      "correctOrder": [
+        "Zielerreichung prüfen",
+        "Abweichungen analysieren",
+        "Verbesserungen priorisieren",
+        "nächste Schritte terminieren",
+        "Abschlussstatus kommunizieren"
+      ],
+      "feedback": {
+        "correct": "Richtig: Das ist ein klarer Abschlussprozess.",
+        "wrong": "Nicht optimal: Bitte Analyse und Priorisierung vor die Kommunikation setzen."
+      },
+      "progressLinks": [
+        "lf01_reflexion_verbesserung"
+      ]
+    },
+    {
+      "id": "q4",
+      "type": "number",
+      "title": "Erfüllungsquote LF01",
+      "prompt": "Von 18 geplanten Lernzielen wurden 15 erreicht. Wie hoch ist die Erfüllungsquote in Prozent (gerundet)?",
+      "expected": 83,
+      "toleranceAbs": 1,
+      "showExpectedFormula": "15 / 18 * 100 = 83,33 % ~ 83 %",
+      "feedback": {
+        "correct": "Richtig gerechnet.",
+        "wrong": "Bitte den Anteil erreichter Ziele korrekt berechnen."
+      },
+      "progressLinks": [
+        "lf01_reflexion_verbesserung"
+      ]
+    },
+    {
+      "id": "q5",
+      "type": "short_text",
+      "title": "Abschlussnotiz für den Ausbilder",
+      "prompt": "Formulieren Sie eine Abschlussnotiz (4-6 Sätze) mit Zielerreichung, offenem Risiko und nächstem Entwicklungsschritt.",
+      "minChars": 160,
+      "requiredKeywords": [
+        "zielerreichung",
+        "risiko",
+        "nächster schritt"
+      ],
+      "expectedOutline": "Klarer Abschluss mit Zielstand, Restrisiko und verbindlicher Folgeaktion.",
+      "feedback": {
+        "correct": "Richtig: Die Notiz ist für das Ausbildungsgespräch direkt nutzbar.",
+        "wrong": "Bitte Zielerreichung, Risiko und nächsten Schritt expliziter darstellen."
+      },
+      "progressLinks": [
+        "lf01_reflexion_verbesserung",
+        "lf01_berufs_lebensplanung"
+      ]
+    }
+  ]
+}

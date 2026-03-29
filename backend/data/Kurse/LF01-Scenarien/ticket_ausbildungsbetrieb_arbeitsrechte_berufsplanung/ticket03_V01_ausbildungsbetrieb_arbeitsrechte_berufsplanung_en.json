@@ -1,0 +1,160 @@
+{
+  "scenario": {
+    "company": "Training Company IT Service",
+    "scale": "Mid-sized company, 90 employees",
+    "context": "Station 03 of the day flow: Combine labor rights, co-determination and development planning.",
+    "mission": "You resolve team conflicts in a structured way and derive a responsible development plan.",
+    "station": {
+      "id": "LF01-ST-03",
+      "department": "IT Service",
+      "profile": "Co-determination, conflict communication, learning planning",
+      "constraints": [
+        "argue factually and team-oriented",
+        "use suitable escalation paths",
+        "make next learning steps concrete"
+      ]
+    },
+    "customerRequest": {
+      "from": "teamleitung@ausbildungsbetrieb.example",
+      "to": "klasse.fiae@berufsschule.example",
+      "subject": "Station 03: Conflict communication and learning planning",
+      "date": "2026-03-13",
+      "body": "Please handle a team conflict situation with appropriate co-determination and communication logic and derive a concrete learning and development plan."
+    }
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "type": "multi_select",
+      "title": "Prepare a conflict factually",
+      "prompt": "Which steps help when preparing a conflict conversation? (Multiple selection)",
+      "options": [
+        {
+          "text": "Collect concrete examples",
+          "correct": true,
+          "rationale": "Increases objectivity."
+        },
+        {
+          "text": "Name impacts on the process",
+          "correct": true,
+          "rationale": "Makes the need for action visible."
+        },
+        {
+          "text": "Start with personal accusations",
+          "correct": false,
+          "rationale": "Usually leads to hardening."
+        },
+        {
+          "text": "Consider solution options in advance",
+          "correct": true,
+          "rationale": "Promotes a constructive course."
+        },
+        {
+          "text": "Plan no follow-up",
+          "correct": false,
+          "rationale": "Without follow-up there is no commitment."
+        }
+      ],
+      "feedback": {
+        "correct": "Correct: this is structured conflict preparation.",
+        "wrong": "Partially wrong: please prioritize factual grounding and solution orientation."
+      },
+      "progressLinks": [
+        "lf01_arbeitsrechte_mitbestimmung"
+      ]
+    },
+    {
+      "id": "q2",
+      "type": "single_choice",
+      "title": "Appropriate escalation path",
+      "prompt": "A problem persists despite a team discussion. What is the best next step?",
+      "options": [
+        {
+          "text": "Pass on a documented status through the designated escalation path",
+          "rationale": "This is transparent and procedural."
+        },
+        {
+          "text": "Spread the topic internally without involving responsible parties",
+          "rationale": "Leads to ambiguity."
+        },
+        {
+          "text": "Do nothing and hope for chance",
+          "rationale": "The problem remains."
+        }
+      ],
+      "correctIndex": 0,
+      "feedback": {
+        "correct": "Correct: escalation requires evidence and a clean channel.",
+        "wrong": "Not appropriate: without an orderly path, the chance of resolution drops."
+      },
+      "progressLinks": [
+        "lf01_arbeitsrechte_mitbestimmung"
+      ]
+    },
+    {
+      "id": "q3",
+      "type": "ordering",
+      "title": "From conflict to learning measure",
+      "prompt": "Order the sequence from problem identification to learning derivation.",
+      "items": [
+        "Analyze the cause",
+        "Document the problem in a structured way",
+        "Align improvement within the team",
+        "Formulate a learning goal for your role",
+        "Set a follow-up date"
+      ],
+      "correctOrder": [
+        "Document the problem in a structured way",
+        "Analyze the cause",
+        "Align improvement within the team",
+        "Formulate a learning goal for your role",
+        "Set a follow-up date"
+      ],
+      "feedback": {
+        "correct": "Correct: this turns conflict into learning progress.",
+        "wrong": "Not optimal: document/analyze first, then improve and follow up."
+      },
+      "progressLinks": [
+        "lf01_arbeitsrechte_mitbestimmung",
+        "lf01_berufs_lebensplanung"
+      ]
+    },
+    {
+      "id": "q4",
+      "type": "number",
+      "title": "Plan a learning window",
+      "prompt": "You plan 5 learning slots of 40 minutes each plus 35 minutes of reflection. How many minutes does the block cover?",
+      "expected": 235,
+      "toleranceAbs": 1,
+      "showExpectedFormula": "5 * 40 + 35 = 235 minutes",
+      "feedback": {
+        "correct": "Correct calculation.",
+        "wrong": "Please sum learning slots and reflection time correctly."
+      },
+      "progressLinks": [
+        "lf01_berufs_lebensplanung"
+      ]
+    },
+    {
+      "id": "q5",
+      "type": "short_text",
+      "title": "Development goal after a conflict",
+      "prompt": "Formulate in 4-6 sentences a development goal derived from a team conflict.",
+      "minChars": 150,
+      "requiredKeywords": [
+        "cause",
+        "goal",
+        "follow-up"
+      ],
+      "expectedOutline": "Conflict cause, concrete learning goal, scheduled follow-up.",
+      "feedback": {
+        "correct": "Correct: the goal is clear, actionable and verifiable.",
+        "wrong": "Please connect cause, goal and follow-up more concretely."
+      },
+      "progressLinks": [
+        "lf01_berufs_lebensplanung",
+        "lf01_reflexion_verbesserung"
+      ]
+    }
+  ]
+}

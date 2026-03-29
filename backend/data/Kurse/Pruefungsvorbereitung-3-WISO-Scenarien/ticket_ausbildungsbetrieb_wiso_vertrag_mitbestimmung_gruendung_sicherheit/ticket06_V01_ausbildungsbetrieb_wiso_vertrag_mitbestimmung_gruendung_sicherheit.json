@@ -1,0 +1,1768 @@
+{
+  "scenario": {
+    "company": "Nordpfad IT GmbH",
+    "scale": "mittelständisches IT-Unternehmen mit Entwicklung, Vertrieb, Lager und Service, 556 Beschäftigte im Wahlkontext",
+    "context": "Prüfungsvorbereitung WISO im Stationsformat mit Arbeitsvertrags-, Mitbestimmungs-, Sozialversicherungs-, Gründungs-, Sicherheits- und Agilitätsfragen.",
+    "mission": "Sie bearbeiten eine zusammenhängende Fachsituation zu Ausbildereignung, GmbH, Befristung, Arbeitnehmerüberlassung, Betriebsrat, Sozialversicherung, Arbeitsschutz, AGG und agilem Projektmanagement.",
+    "source": {
+      "kind": "Pseudonymisierte Prüfungsvorlage",
+      "reference": "AP2 Wirtschafts- und Sozialkunde, Winter 2022/23",
+      "note": "Die fachliche Reihenfolge bleibt erhalten; Namen, Orte und Unternehmensbezug wurden in das Kursformat überführt."
+    },
+    "station": {
+      "id": "PV3WISO-ST-06",
+      "department": "Prüfungsvorbereitung Wirtschafts- und Sozialkunde",
+      "profile": "Arbeitsvertrag, Mitbestimmung, Sozialversicherung und Sicherheit",
+      "constraints": [
+        "Die 30 Themenaufgaben bleiben in thematischen Folgeaufträgen erkennbar",
+        "Scanlastige Tabellen und Zeichen werden bei Bedarf textnah in vorhandene Aufgabenformate überführt",
+        "Rechen-, Zuordnungs- und Auswahlaufgaben sollen möglichst direkt auto-auswertbar bleiben"
+      ]
+    },
+    "customerRequest": {
+      "from": "qualitaet@ordnungsbetrieb.example",
+      "to": "projektteam@ausbildungsbetrieb.example",
+      "subject": "Bitte ein neues WISO-Trainingspaket zu Vertrag, Mitbestimmung und Schutzsystemen aufsetzen",
+      "date": "2026-03-20",
+      "body": "Guten Tag,\n\nwir möchten ein weiteres WISO-Training im Stationsformat vorbereiten. Diesmal sollen vor allem Ausbildereignung, GmbH, befristete Arbeitsverträge, Arbeitnehmerüberlassung, Individualarbeitsrecht, Urlaub, Mutterschutz, Kündigungsgründe, Zeugnisse, Betriebsrat, JAV, Sozialversicherung, IHK, gesetzliche Unfallversicherung, Gründung, Arbeitsschutzzeichen, AGG und agile Zusammenarbeit vorkommen.\n\nBitte behalten Sie die Reihenfolge der Quelle erkennbar bei, formulieren Sie alles sauber pseudonymisiert und nutzen Sie vorhandene Aufgabenformate, damit die Antworten möglichst direkt auswertbar bleiben.\n\nViele Grüsse\nQualität"
+    }
+  },
+  "questions": [
+    {
+      "id": "q01",
+      "type": "table_fill",
+      "title": "Voraussetzungen für eine Ausbildertätigkeit einordnen",
+      "prompt": "Ordnen Sie zu, welche Aussagen die Voraussetzungen für eine Ausbildertätigkeit passend beschreiben.",
+      "columns": [
+        "Aussage",
+        "Trifft zu?"
+      ],
+      "rows": [
+        [
+          "Er muss fachlich und persönlich geeignet sein.",
+          {
+            "key": "ausbilder_a",
+            "label": "Fachlich und persönlich geeignet",
+            "expected": "Ja",
+            "inputType": "select",
+            "placeholder": "Auswahl treffen",
+            "options": [
+              "Ja",
+              "Nein"
+            ]
+          }
+        ],
+        [
+          "Eine abgeschlossene Berufsausbildung allein reicht immer als Nachweis aus.",
+          {
+            "key": "ausbilder_b",
+            "label": "Abgeschlossene Berufsausbildung allein reicht immer aus",
+            "expected": "Nein",
+            "inputType": "select",
+            "placeholder": "Auswahl treffen",
+            "options": [
+              "Ja",
+              "Nein"
+            ]
+          }
+        ],
+        [
+          "Er muss sicherstellen, dass im Unternehmen genug weitere Mitarbeitende beschäftigt sind.",
+          {
+            "key": "ausbilder_c",
+            "label": "Genug weitere Mitarbeitende beschäftigt",
+            "expected": "Nein",
+            "inputType": "select",
+            "placeholder": "Auswahl treffen",
+            "options": [
+              "Ja",
+              "Nein"
+            ]
+          }
+        ],
+        [
+          "Er muss persönlich über eigene Räumlichkeiten und Gerätschaften verfügen.",
+          {
+            "key": "ausbilder_d",
+            "label": "Eigene Räumlichkeiten und Gerätschaften",
+            "expected": "Nein",
+            "inputType": "select",
+            "placeholder": "Auswahl treffen",
+            "options": [
+              "Ja",
+              "Nein"
+            ]
+          }
+        ],
+        [
+          "Der blosse Hinweis auf alte Ausnahmeregelungen ersetzt keine positive Eignungsvoraussetzung.",
+          {
+            "key": "ausbilder_e",
+            "label": "Alte Ausnahmeregelungen ersetzen keine positive Eignung",
+            "expected": "Ja",
+            "inputType": "select",
+            "placeholder": "Auswahl treffen",
+            "options": [
+              "Ja",
+              "Nein"
+            ]
+          }
+        ]
+      ],
+      "feedback": {
+        "correct": "Die Voraussetzungen für eine Ausbildertätigkeit wurden über mehrere Aussagen hinweg sauber eingeordnet.",
+        "wrong": "Prüfen Sie noch einmal, welche persönliche und fachliche Eignung das BBiG für Ausbilder verlangt und welche Punkte dafür gerade nicht ausreichen."
+      },
+      "progressLinks": [
+        "pv3wiso_arbeitsrecht_ausbildung"
+      ]
+    },
+    {
+      "id": "q02",
+      "type": "single_choice",
+      "title": "Wesentliches Merkmal einer GmbH bestimmen",
+      "prompt": "Die Nordpfad IT GmbH ist als Gesellschaft mit beschränkter Haftung organisiert. Welche Aussage trifft auf eine GmbH zu?",
+      "options": [
+        {
+          "text": "Sie ist eine Kapitalgesellschaft.",
+          "rationale": "Genau das ist die passende Einordnung der GmbH."
+        },
+        {
+          "text": "Sie ist ein Monopolist in ihrer Branche.",
+          "rationale": "Die Rechtsform sagt nichts über eine Monopolstellung aus."
+        },
+        {
+          "text": "Sie ist eine juristische Person des öffentlichen Rechts.",
+          "rationale": "Eine GmbH gehört nicht zum öffentlichen Recht."
+        },
+        {
+          "text": "Sie ist eine Körperschaft des öffentlichen Rechts.",
+          "rationale": "Auch diese Einordnung passt nicht zur GmbH."
+        },
+        {
+          "text": "Sie ist ein legales Kartell.",
+          "rationale": "Kartell und Rechtsform sind zwei völlig verschiedene Ebenen."
+        }
+      ],
+      "correctIndex": 0,
+      "feedback": {
+        "correct": "Die GmbH wurde korrekt eingeordnet.",
+        "wrong": "Konzentrieren Sie sich auf die rechtsformbezogene Grundkategorie."
+      },
+      "progressLinks": [
+        "pv3wiso_wirtschaftssektoren_unternehmensformen"
+      ]
+    },
+    {
+      "id": "q03",
+      "type": "number",
+      "title": "Eigenkapitalrentabilität berechnen",
+      "prompt": "Eine Gesellschafterin hat 375.000,00 EUR Stammkapital eingebracht. Im Geschäftsjahr bleiben 28.125,00 EUR Gewinnanteil im Unternehmen. Wie hoch ist die Eigenkapitalrentabilität dieser Beteiligung in Prozent? Runden Sie auf eine Nachkommastelle.",
+      "expected": 7.5,
+      "toleranceAbs": 0.05,
+      "showExpectedFormula": "28.125,00 EUR / 375.000,00 EUR x 100 = 7,5 %.",
+      "feedback": {
+        "correct": "Die Eigenkapitalrentabilität wurde korrekt berechnet.",
+        "wrong": "Setzen Sie den Gewinnanteil ins Verhältnis zum eingesetzten Eigenkapital und rechnen Sie das Ergebnis in Prozent um."
+      },
+      "progressLinks": [
+        "pv3wiso_wirtschaftlichkeit_unternehmensanalyse"
+      ]
+    },
+    {
+      "id": "q04",
+      "type": "table_fill",
+      "title": "Aussagen zur Befristung einordnen",
+      "prompt": "Ordnen Sie zu, welche Aussagen zu befristeten Arbeitsverträgen zutreffen.",
+      "columns": [
+        "Aussage",
+        "Trifft zu?"
+      ],
+      "rows": [
+        [
+          "Die Befristung eines Arbeitsvertrags ist nur wirksam, wenn sie schriftlich vereinbart wurde.",
+          {
+            "key": "befristung_a",
+            "label": "Befristung nur wirksam wenn schriftlich vereinbart",
+            "expected": "Ja",
+            "inputType": "select",
+            "placeholder": "Auswahl treffen",
+            "options": [
+              "Ja",
+              "Nein"
+            ]
+          }
+        ],
+        [
+          "Befristete Arbeitsverhältnisse sind immer unzulässig.",
+          {
+            "key": "befristung_b",
+            "label": "Befristete Arbeitsverhältnisse immer unzulässig",
+            "expected": "Nein",
+            "inputType": "select",
+            "placeholder": "Auswahl treffen",
+            "options": [
+              "Ja",
+              "Nein"
+            ]
+          }
+        ],
+        [
+          "Eine Befristung bei Ersteinstellung ist höchstens für zwei Monate erlaubt.",
+          {
+            "key": "befristung_c",
+            "label": "Befristung bei Ersteinstellung höchstens zwei Monate",
+            "expected": "Nein",
+            "inputType": "select",
+            "placeholder": "Auswahl treffen",
+            "options": [
+              "Ja",
+              "Nein"
+            ]
+          }
+        ],
+        [
+          "Eine sachgrundlose Befristung ist auch dann zulässig, wenn sie länger als drei Jahre dauert.",
+          {
+            "key": "befristung_d",
+            "label": "Sachgrundlose Befristung länger als drei Jahre",
+            "expected": "Nein",
+            "inputType": "select",
+            "placeholder": "Auswahl treffen",
+            "options": [
+              "Ja",
+              "Nein"
+            ]
+          }
+        ],
+        [
+          "Befristete Arbeitsverhältnisse können grundsätzlich zulässig sein, wenn die gesetzlichen Voraussetzungen eingehalten werden.",
+          {
+            "key": "befristung_e",
+            "label": "Befristete Arbeitsverhältnisse können grundsätzlich zulässig sein",
+            "expected": "Ja",
+            "inputType": "select",
+            "placeholder": "Auswahl treffen",
+            "options": [
+              "Ja",
+              "Nein"
+            ]
+          }
+        ]
+      ],
+      "feedback": {
+        "correct": "Formvorschrift und typische Fehlannahmen zur Befristung wurden sauber eingeordnet.",
+        "wrong": "Prüfen Sie vor allem die Schriftform sowie die Tatsache, dass Befristungen nicht pauschal unzulässig, aber an gesetzliche Grenzen gebunden sind."
+      },
+      "progressLinks": [
+        "pv3wiso_arbeitsrecht_ausbildung"
+      ]
+    },
+    {
+      "id": "f02",
+      "type": "followup_divider",
+      "title": "Rechte, Pflichten und Schutzvorschriften",
+      "from": "personalentwicklung@ordnungsbetrieb.example",
+      "to": "projektteam@ausbildungsbetrieb.example",
+      "subject": "Bitte den zweiten Block zu Arbeitsvertrag, Urlaub und Mutterschutz vorbereiten",
+      "date": "2026-03-20",
+      "body": "Hallo,\n\nim zweiten Themenblock brauchen wir Aufgaben zu Pflichten aus dem Arbeitsvertrag, Arbeitnehmerüberlassung, Individualarbeitsrecht, Urlaub und Mutterschutz. Bitte halten Sie Rechte und Pflichten sauber getrennt und formulieren Sie die Schutzvorschriften eindeutig.\n\nViele Grüsse\nPersonalentwicklung"
+    },
+    {
+      "id": "q05",
+      "type": "single_choice",
+      "title": "Pflicht aus dem Arbeitsvertrag erkennen",
+      "prompt": "Mit der Unterzeichnung des Arbeitsvertrags übernimmt ein Arbeitnehmer bestimmte Pflichten. Welche Pflicht gehört dazu?",
+      "options": [
+        {
+          "text": "Er übernimmt die Haftung für alle Unternehmensverluste.",
+          "rationale": "Eine solche pauschale Verlusthaftung gehört nicht zu den regulären Arbeitspflichten."
+        },
+        {
+          "text": "Er übernimmt die gesetzliche Fürsorgepflicht gegenüber dem Betrieb.",
+          "rationale": "Die Fürsorgepflicht trifft in erster Linie den Arbeitgeber."
+        },
+        {
+          "text": "Er übernimmt die Beschäftigungspflicht gegenüber sich selbst.",
+          "rationale": "Auch diese Pflicht liegt beim Arbeitgeber."
+        },
+        {
+          "text": "Er ist zur Verschwiegenheit über betriebliche Angelegenheiten verpflichtet.",
+          "rationale": "Genau das ist eine typische Nebenpflicht aus dem Arbeitsverhältnis."
+        },
+        {
+          "text": "Er muss alle Mitarbeitenden des Unternehmens gleich behandeln.",
+          "rationale": "Eine allgemeine Gleichbehandlungspflicht in dieser Form ist keine typische Arbeitnehmerpflicht."
+        }
+      ],
+      "correctIndex": 3,
+      "feedback": {
+        "correct": "Die vertragliche Nebenpflicht wurde korrekt erkannt.",
+        "wrong": "Prüfen Sie noch einmal, welche Pflichten typischerweise die Arbeitnehmerseite treffen."
+      },
+      "progressLinks": [
+        "pv3wiso_arbeitsrecht_ausbildung"
+      ]
+    },
+    {
+      "id": "q06",
+      "type": "single_choice",
+      "title": "Arbeitnehmerüberlassung richtig bewerten",
+      "prompt": "Im Lagerbereich werden zeitweise Zeitarbeitskräfte eingesetzt. Welche Aussage zur Arbeitnehmerüberlassung trifft zu?",
+      "options": [
+        {
+          "text": "Die Entlohnung eines Zeitarbeitnehmers erfolgt ausschliesslich nach dem von ihm gefertigten Werk.",
+          "rationale": "Arbeitnehmerüberlassung ist kein Werkvertrag."
+        },
+        {
+          "text": "Die Entlohnung eines Zeitarbeitnehmers bestimmt der Verleiher.",
+          "rationale": "Genau der Verleiher ist arbeitsvertraglich für die Entlohnung zuständig."
+        },
+        {
+          "text": "Die Entlohnung eines Zeitarbeitnehmers legt immer der Einsatzbetrieb fest.",
+          "rationale": "Der Einsatzbetrieb ist nicht automatisch die entgeltzahlende Vertragspartei."
+        },
+        {
+          "text": "Zeitarbeitnehmer haben keinen Urlaubsanspruch.",
+          "rationale": "Auch Zeitarbeitnehmer haben selbstverständlich Urlaubsansprüche."
+        },
+        {
+          "text": "Zeitarbeitnehmer dürfen nur unbefristet eingestellt werden.",
+          "rationale": "Eine solche pauschale Vorgabe gibt es nicht."
+        }
+      ],
+      "correctIndex": 1,
+      "feedback": {
+        "correct": "Die Rollen bei der Arbeitnehmerüberlassung wurden korrekt unterschieden.",
+        "wrong": "Achten Sie darauf, wer Arbeitgeber bleibt und wer nur den Einsatz organisiert."
+      },
+      "progressLinks": [
+        "pv3wiso_arbeitsrecht_ausbildung"
+      ]
+    },
+    {
+      "id": "q07",
+      "type": "multi_select",
+      "title": "Regelungen des Individualarbeitsrechts auswählen",
+      "prompt": "Welche zwei Regelungen lassen sich dem Individualarbeitsrecht zuordnen?",
+      "options": [
+        {
+          "text": "Betriebsvereinbarungen",
+          "correct": false,
+          "rationale": "Betriebsvereinbarungen gehören zum kollektiven Arbeitsrecht."
+        },
+        {
+          "text": "Unfallverhütungsvorschriften",
+          "correct": false,
+          "rationale": "Das ist Arbeitsschutzrecht, nicht die typische Kernmaterie des Individualarbeitsrechts."
+        },
+        {
+          "text": "Übertarifliche Gehaltsvereinbarungen",
+          "correct": true,
+          "rationale": "Solche Vereinbarungen werden individuell zwischen Arbeitgeber und Arbeitnehmer getroffen."
+        },
+        {
+          "text": "Betriebliche Überstundenregelungen",
+          "correct": false,
+          "rationale": "Allgemeine betriebliche Regelungen liegen nicht auf der Ebene des Individualarbeitsrechts."
+        },
+        {
+          "text": "Urlaubsregelungen nach dem Bundesurlaubsgesetz",
+          "correct": true,
+          "rationale": "Das Bundesurlaubsgesetz begründet individuelle Ansprüche aus dem Arbeitsverhältnis."
+        }
+      ],
+      "feedback": {
+        "correct": "Die Regelungen des Individualarbeitsrechts wurden korrekt ausgewählt.",
+        "wrong": "Trennen Sie individuelle Ansprüche aus dem Arbeitsverhältnis von kollektiven oder arbeitsschutzrechtlichen Regelungen."
+      },
+      "progressLinks": [
+        "pv3wiso_arbeitsrecht_ausbildung",
+        "pv3wiso_jugendarbeitsschutz_urlaub"
+      ]
+    },
+    {
+      "id": "q08",
+      "type": "single_choice",
+      "title": "Aussage zum Bundesurlaubsgesetz prüfen",
+      "prompt": "Welche Aussage zum Bundesurlaubsgesetz ist zutreffend?",
+      "options": [
+        {
+          "text": "Erkrankt ein Arbeitnehmer während seines Urlaubs, verfällt sein Urlaubsanspruch.",
+          "rationale": "Erkrankung während des Urlaubs führt nicht einfach zum Verfall."
+        },
+        {
+          "text": "Der volle Urlaubsanspruch besteht erstmals nach sechsmonatigem Bestehen des Arbeitsverhältnisses.",
+          "rationale": "Genau diese Wartezeit ist im Bundesurlaubsgesetz geregelt."
+        },
+        {
+          "text": "Nicht genommener Urlaub kann immer sechs Monate lang in das Folgejahr übertragen werden.",
+          "rationale": "Eine pauschale Sechsmonatsregel gibt es so nicht."
+        },
+        {
+          "text": "Jede Arbeitnehmerin und jeder Arbeitnehmer hat nach Gesetz 30 Werktage Urlaub.",
+          "rationale": "Der gesetzliche Mindesturlaub liegt niedriger."
+        },
+        {
+          "text": "Alleinerziehende Mütter haben immer Anspruch auf Urlaub in den Schulferien.",
+          "rationale": "Ein solcher genereller Vorrang folgt nicht aus dem Bundesurlaubsgesetz."
+        }
+      ],
+      "correctIndex": 1,
+      "feedback": {
+        "correct": "Die Kernaussage zum Urlaubsanspruch wurde korrekt erkannt.",
+        "wrong": "Konzentrieren Sie sich auf die Wartezeit bis zum vollen gesetzlichen Urlaubsanspruch."
+      },
+      "progressLinks": [
+        "pv3wiso_jugendarbeitsschutz_urlaub"
+      ]
+    },
+    {
+      "id": "q09",
+      "type": "single_choice",
+      "title": "Mutterschutzregel korrekt bestimmen",
+      "prompt": "Eine Entwicklerin des Unternehmens ist schwanger. Welche Aussage trifft nach dem Mutterschutzgesetz zu?",
+      "options": [
+        {
+          "text": "Erforderliche Untersuchungen während der Schwangerschaft müssen ausserhalb der Arbeitszeit stattfinden.",
+          "rationale": "Die Betroffene darf für erforderliche Untersuchungen nicht auf ihre Freizeit verwiesen werden."
+        },
+        {
+          "text": "Mutterschaftsgeld wird während der gesamten Schwangerschaft gezahlt.",
+          "rationale": "Diese Aussage trifft so nicht zu."
+        },
+        {
+          "text": "Im Normalfall dürfen Frauen zehn Wochen vor und fünfzehn Wochen nach der Entbindung nicht beschäftigt werden.",
+          "rationale": "Diese Fristen sind nicht die regulären Mutterschutzfristen."
+        },
+        {
+          "text": "Bis zur Vollendung des sechsten Lebensjahres des Kindes besteht immer ein Anspruch auf Elternzeit.",
+          "rationale": "Die Aussage ist in dieser Form unzutreffend."
+        },
+        {
+          "text": "Es besteht Kündigungsschutz während der gesamten Schwangerschaft und bis vier Monate nach der Entbindung.",
+          "rationale": "Genau dieser besondere Kündigungsschutz ist gesetzlich vorgesehen."
+        }
+      ],
+      "correctIndex": 4,
+      "feedback": {
+        "correct": "Die Mutterschutzregel wurde korrekt eingeordnet.",
+        "wrong": "Prüfen Sie noch einmal, welche Schutzwirkung das Mutterschutzgesetz im Zusammenhang mit Kündigungen entfaltet."
+      },
+      "progressLinks": [
+        "pv3wiso_arbeitsrecht_ausbildung"
+      ]
+    },
+    {
+      "id": "f03",
+      "type": "followup_divider",
+      "title": "Kündigung, Zeugnis und Mitbestimmung",
+      "from": "betriebsorganisation@ordnungsbetrieb.example",
+      "to": "projektteam@ausbildungsbetrieb.example",
+      "subject": "Bitte den nächsten Block zu Zeugnis, Betriebsrat und JAV vorbereiten",
+      "date": "2026-03-20",
+      "body": "Hallo,\n\nim dritten Themenblock sollen Kündigungsgründe, qualifizierte Zeugnisse, die Grösse des Betriebsrats, Mitbestimmungsrechte und die JAV behandelt werden. Bitte halten Sie die Begriffe sauber getrennt und machen Sie die Schwellenwerte nachvollziehbar.\n\nViele Grüsse\nBetriebsorganisation"
+    },
+    {
+      "id": "q10",
+      "type": "table_fill",
+      "title": "Kündigungsgründe den Beispielen zuordnen",
+      "prompt": "Ordnen Sie den Beispielen jeweils den passenden Kündigungsgrund zu.",
+      "columns": [
+        "Beispiel",
+        "Kündigungsgrund"
+      ],
+      "rows": [
+        [
+          "Wiederholte Nichtbeachtung des Alkoholverbots während der Arbeitszeit",
+          {
+            "key": "termination_a",
+            "label": "Alkoholverbot missachtet",
+            "expected": "Verhaltensbedingte Kündigung",
+            "inputType": "select",
+            "placeholder": "Kündigungsgrund wählen",
+            "options": [
+              "Personenbedingte Kündigung",
+              "Verhaltensbedingte Kündigung",
+              "Betriebsbedingte Kündigung"
+            ]
+          }
+        ],
+        [
+          "Krankheit über einen langen Zeitraum",
+          {
+            "key": "termination_b",
+            "label": "Langfristige Erkrankung",
+            "expected": "Personenbedingte Kündigung",
+            "inputType": "select",
+            "placeholder": "Kündigungsgrund wählen",
+            "options": [
+              "Personenbedingte Kündigung",
+              "Verhaltensbedingte Kündigung",
+              "Betriebsbedingte Kündigung"
+            ]
+          }
+        ],
+        [
+          "Gewinnrückgang im Unternehmen",
+          {
+            "key": "termination_c",
+            "label": "Gewinnrückgang",
+            "expected": "Betriebsbedingte Kündigung",
+            "inputType": "select",
+            "placeholder": "Kündigungsgrund wählen",
+            "options": [
+              "Personenbedingte Kündigung",
+              "Verhaltensbedingte Kündigung",
+              "Betriebsbedingte Kündigung"
+            ]
+          }
+        ],
+        [
+          "Wiederholter Verstoss gegen das Rauchverbot auf dem Betriebsgelände",
+          {
+            "key": "termination_d",
+            "label": "Rauchverbot verletzt",
+            "expected": "Verhaltensbedingte Kündigung",
+            "inputType": "select",
+            "placeholder": "Kündigungsgrund wählen",
+            "options": [
+              "Personenbedingte Kündigung",
+              "Verhaltensbedingte Kündigung",
+              "Betriebsbedingte Kündigung"
+            ]
+          }
+        ],
+        [
+          "Schliessung einer Abteilung",
+          {
+            "key": "termination_e",
+            "label": "Abteilung wird geschlossen",
+            "expected": "Betriebsbedingte Kündigung",
+            "inputType": "select",
+            "placeholder": "Kündigungsgrund wählen",
+            "options": [
+              "Personenbedingte Kündigung",
+              "Verhaltensbedingte Kündigung",
+              "Betriebsbedingte Kündigung"
+            ]
+          }
+        ]
+      ],
+      "feedback": {
+        "correct": "Die Kündigungsgründe wurden korrekt zugeordnet.",
+        "wrong": "Unterscheiden Sie persönliche Ursachen, steuerbares Verhalten und betriebliche Gründe noch einmal sauber."
+      },
+      "progressLinks": [
+        "pv3wiso_arbeitsrecht_ausbildung"
+      ]
+    },
+    {
+      "id": "q11",
+      "type": "single_choice",
+      "title": "Formulierung für ein sehr gutes Zeugnis erkennen",
+      "prompt": "Ein ehemaliger Auszubildender der Nordpfad IT GmbH fordert ein qualifiziertes Zeugnis. Welche Formulierung entspricht einer sehr guten Beurteilung?",
+      "options": [
+        {
+          "text": "Er hat die übertragenen Arbeiten zu unserer Zufriedenheit erledigt.",
+          "rationale": "Diese Formulierung liegt deutlich unter einer sehr guten Bewertung."
+        },
+        {
+          "text": "Er hat die übertragenen Arbeiten stets zu unserer vollsten Zufriedenheit erledigt.",
+          "rationale": "Genau diese Formulierung steht typischerweise für eine sehr gute Bewertung."
+        },
+        {
+          "text": "Er hat sich bemüht, die übertragenen Arbeiten zu unserer Zufriedenheit zu erledigen.",
+          "rationale": "Diese Formel signalisiert gerade keine sehr gute Leistung."
+        },
+        {
+          "text": "Er hat die übertragenen Arbeiten stets zu unserer vollen Zufriedenheit erledigt.",
+          "rationale": "Das ist gut, aber nicht die klassische Spitzennote."
+        },
+        {
+          "text": "Er hat die übertragenen Arbeiten im Grossen und Ganzen zu unserer Zufriedenheit erledigt.",
+          "rationale": "Diese Abstufung liegt klar unter sehr gut."
+        }
+      ],
+      "correctIndex": 1,
+      "feedback": {
+        "correct": "Die typische Zeugnissprache für eine sehr gute Leistung wurde korrekt erkannt.",
+        "wrong": "Achten Sie genau auf die Abstufung zwischen `vollen`, `vollsten` und abgeschwächten Formulierungen."
+      },
+      "progressLinks": [
+        "pv3wiso_arbeitsrecht_ausbildung"
+      ]
+    },
+    {
+      "id": "ctx12",
+      "type": "context_card",
+      "title": "Betriebsratsgrösse anhand des BetrVG-Auszugs bestimmen",
+      "contentBlocks": [
+        {
+          "type": "text",
+          "text": "Für die nächste Betriebsratswahl soll die Zahl der Betriebsratsmitglieder bestimmt werden. Im Unternehmen arbeiten 537 volljährige Arbeitnehmerinnen und Arbeitnehmer. Zusätzlich gibt es 17 volljährige und 2 minderjährige Auszubildende. 250 Personen sind seit mindestens einem halben Jahr befristet beschäftigt.\n\nWahlberechtigt sind alle Arbeitnehmerinnen und Arbeitnehmer, die das 18. Lebensjahr vollendet haben."
+        },
+        {
+          "type": "table",
+          "columns": [
+            "Zahl der wahlberechtigten Arbeitnehmer",
+            "Regelzahl der Betriebsratsmitglieder"
+          ],
+          "rows": [
+            [
+              "5 bis 20",
+              "1"
+            ],
+            [
+              "21 bis 50",
+              "3"
+            ],
+            [
+              "51 bis 100",
+              "5"
+            ],
+            [
+              "101 bis 200",
+              "7"
+            ],
+            [
+              "201 bis 400",
+              "9"
+            ],
+            [
+              "401 bis 700",
+              "11"
+            ],
+            [
+              "701 bis 1.000",
+              "13"
+            ],
+            [
+              "1.001 bis 1.500",
+              "15"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "id": "q12",
+      "type": "number",
+      "title": "Regelgrösse des Betriebsrats bestimmen",
+      "prompt": "Wie viele Betriebsratsmitglieder können für die Nordpfad IT GmbH regelmässig gewählt werden?",
+      "expected": 11,
+      "toleranceAbs": 0,
+      "showExpectedFormula": "Wahlberechtigt sind 537 volljährige Arbeitnehmer plus 17 volljährige Auszubildende = 554 Personen; 554 liegt in der Staffel 401 bis 700, daher 11 Mitglieder.",
+      "feedback": {
+        "correct": "Die Regelgrösse des Betriebsrats wurde korrekt bestimmt.",
+        "wrong": "Zählen Sie nur die wahlberechtigten volljährigen Personen und ordnen Sie die Summe dann der richtigen Staffel zu."
+      },
+      "progressLinks": [
+        "pv3wiso_mitbestimmung_tarif_sozialversicherung"
+      ]
+    },
+    {
+      "id": "q13",
+      "type": "table_fill",
+      "title": "Mitbestimmungsfälle des Betriebsrats einordnen",
+      "prompt": "Ordnen Sie zu, in welchen Angelegenheiten der Betriebsrat ein Mitbestimmungsrecht hat.",
+      "columns": [
+        "Angelegenheit",
+        "Mitbestimmungsrecht?"
+      ],
+      "rows": [
+        [
+          "Umbaupläne des Betriebsgeländes",
+          {
+            "key": "mitbestimmung_a",
+            "label": "Umbaupläne des Betriebsgeländes",
+            "expected": "Nein",
+            "inputType": "select",
+            "placeholder": "Auswahl treffen",
+            "options": [
+              "Ja",
+              "Nein"
+            ]
+          }
+        ],
+        [
+          "Personalbedarf des Betriebs",
+          {
+            "key": "mitbestimmung_b",
+            "label": "Personalbedarf des Betriebs",
+            "expected": "Nein",
+            "inputType": "select",
+            "placeholder": "Auswahl treffen",
+            "options": [
+              "Ja",
+              "Nein"
+            ]
+          }
+        ],
+        [
+          "Betriebsferien",
+          {
+            "key": "mitbestimmung_c",
+            "label": "Betriebsferien",
+            "expected": "Ja",
+            "inputType": "select",
+            "placeholder": "Auswahl treffen",
+            "options": [
+              "Ja",
+              "Nein"
+            ]
+          }
+        ],
+        [
+          "Umweltschutzmassnahmen des Unternehmens",
+          {
+            "key": "mitbestimmung_d",
+            "label": "Umweltschutzmassnahmen des Unternehmens",
+            "expected": "Nein",
+            "inputType": "select",
+            "placeholder": "Auswahl treffen",
+            "options": [
+              "Ja",
+              "Nein"
+            ]
+          }
+        ],
+        [
+          "Einstellung von leitenden Mitarbeitenden",
+          {
+            "key": "mitbestimmung_e",
+            "label": "Einstellung von leitenden Mitarbeitenden",
+            "expected": "Nein",
+            "inputType": "select",
+            "placeholder": "Auswahl treffen",
+            "options": [
+              "Ja",
+              "Nein"
+            ]
+          }
+        ]
+      ],
+      "feedback": {
+        "correct": "Die mitbestimmungspflichtige Angelegenheit wurde sauber von anderen betrieblichen Entscheidungen getrennt.",
+        "wrong": "Denken Sie daran, bei welchen sozialen Angelegenheiten wie der Lage von Betriebsferien der Betriebsrat mitbestimmt."
+      },
+      "progressLinks": [
+        "pv3wiso_mitbestimmung_tarif_sozialversicherung"
+      ]
+    },
+    {
+      "id": "q14",
+      "type": "single_choice",
+      "title": "Voraussetzung für eine JAV richtig einordnen",
+      "prompt": "Für besondere Interessengruppen kann zusätzlich eine Jugend- und Auszubildendenvertretung gewählt werden. Welche Aussage dazu ist zutreffend?",
+      "options": [
+        {
+          "text": "Eine JAV kann nur gewählt werden, wenn mindestens zehn jugendliche Arbeitnehmer unter 18 Jahren beschäftigt sind.",
+          "rationale": "Die Schwelle liegt anders und bezieht sich nicht nur auf Jugendliche unter 18."
+        },
+        {
+          "text": "Alle volljährigen Beschäftigten dürfen die JAV wählen.",
+          "rationale": "Das Wahlrecht ist enger begrenzt."
+        },
+        {
+          "text": "Auszubildende bis zum Alter von 27 Jahren dürfen die JAV wählen.",
+          "rationale": "Die Altersgrenze liegt niedriger."
+        },
+        {
+          "text": "Nur in einem Betrieb mit Betriebsrat kann auch eine JAV gewählt werden.",
+          "rationale": "Genau diese Voraussetzung gilt für die JAV."
+        },
+        {
+          "text": "Wer in die JAV gewählt wird, wird nach der Ausbildung automatisch übernommen.",
+          "rationale": "Eine automatische Übernahme folgt daraus nicht."
+        }
+      ],
+      "correctIndex": 3,
+      "feedback": {
+        "correct": "Die strukturelle Voraussetzung für die JAV wurde korrekt erkannt.",
+        "wrong": "Prüfen Sie noch einmal das Verhältnis zwischen Betriebsrat und Jugend- und Auszubildendenvertretung."
+      },
+      "progressLinks": [
+        "pv3wiso_mitbestimmung_tarif_sozialversicherung"
+      ]
+    },
+    {
+      "id": "f04",
+      "type": "followup_divider",
+      "title": "Förderung, Kammern und Sozialversicherung",
+      "from": "servicecenter@ordnungsbetrieb.example",
+      "to": "projektteam@ausbildungsbetrieb.example",
+      "subject": "Bitte den vierten Block zu Förderung, IHK und Sozialversicherung vorbereiten",
+      "date": "2026-03-20",
+      "body": "Hallo,\n\nim vierten Themenblock sollen Fördermöglichkeiten, Aufgaben der IHK, gesetzliche Sozialversicherungen und Unfallmeldungen vorkommen. Bitte halten Sie die Rollen der Institutionen und die Versicherungszweige klar auseinander.\n\nViele Grüsse\nServicecenter"
+    },
+    {
+      "id": "q15",
+      "type": "single_choice",
+      "title": "Mögliche Förderstellen für Umschulung erkennen",
+      "prompt": "Eine arbeitssuchende Fachkraft fragt nach finanzieller Förderung für eine Fort- und Weiterbildungs- oder Umschulungsmassnahme. Welche Stellen kommen dafür unter anderem in Betracht?",
+      "options": [
+        {
+          "text": "IHK und Krankenkassen",
+          "rationale": "Diese Kombination bildet die typische Förderlogik nicht ab."
+        },
+        {
+          "text": "IHK und Handwerkskammern",
+          "rationale": "Kammern fördern nicht in dieser generellen Rolle eine Umschulung."
+        },
+        {
+          "text": "Rentenversicherungsträger und Krankenkassen",
+          "rationale": "Die Krankenkassen sind hier nicht die typische Förderinstanz."
+        },
+        {
+          "text": "Arbeitsagenturen und Rentenversicherungsträger",
+          "rationale": "Genau diese Stellen kommen für eine entsprechende Förderung in Betracht."
+        },
+        {
+          "text": "Arbeitsagenturen und IHK",
+          "rationale": "Die IHK ist keine generelle Förderstelle für Umschulungen."
+        }
+      ],
+      "correctIndex": 3,
+      "feedback": {
+        "correct": "Die passenden Förderstellen wurden korrekt erkannt.",
+        "wrong": "Denken Sie an die typischen Träger beruflicher Rehabilitation und Arbeitsförderung."
+      },
+      "progressLinks": [
+        "pv3wiso_mitbestimmung_tarif_sozialversicherung"
+      ]
+    },
+    {
+      "id": "q16",
+      "type": "table_fill",
+      "title": "Aussagen zur Sozialversicherung einordnen",
+      "prompt": "Ordnen Sie zu, welche Aussagen zur gesetzlichen Sozialversicherung und zum Solidarprinzip zutreffen.",
+      "columns": [
+        "Aussage",
+        "Trifft zu?"
+      ],
+      "rows": [
+        [
+          "Bei geringfügig Beschäftigten zahlt der Arbeitgeber in der Regel alle Beiträge.",
+          {
+            "key": "sv_a",
+            "label": "Arbeitgeber zahlt bei geringfügig Beschäftigten in der Regel alle Beiträge",
+            "expected": "Ja",
+            "inputType": "select",
+            "placeholder": "Auswahl treffen",
+            "options": [
+              "Ja",
+              "Nein"
+            ]
+          }
+        ],
+        [
+          "Nur Arbeitnehmer werden zur Zahlung der Sozialversicherungsbeiträge herangezogen.",
+          {
+            "key": "sv_b",
+            "label": "Nur Arbeitnehmer zahlen Sozialversicherungsbeiträge",
+            "expected": "Nein",
+            "inputType": "select",
+            "placeholder": "Auswahl treffen",
+            "options": [
+              "Ja",
+              "Nein"
+            ]
+          }
+        ],
+        [
+          "Nur Arbeitgeber werden zur Zahlung von Sozialversicherungsbeiträgen herangezogen.",
+          {
+            "key": "sv_c",
+            "label": "Nur Arbeitgeber zahlen Sozialversicherungsbeiträge",
+            "expected": "Nein",
+            "inputType": "select",
+            "placeholder": "Auswahl treffen",
+            "options": [
+              "Ja",
+              "Nein"
+            ]
+          }
+        ],
+        [
+          "Die Gemeinschaft sichert dem Einzelnen ein Tarifgehalt.",
+          {
+            "key": "sv_d",
+            "label": "Gemeinschaft sichert Tarifgehalt",
+            "expected": "Nein",
+            "inputType": "select",
+            "placeholder": "Auswahl treffen",
+            "options": [
+              "Ja",
+              "Nein"
+            ]
+          }
+        ],
+        [
+          "Wer gut verdient, ist nicht mehr zur Solidarität verpflichtet und wird nicht mehr herangezogen.",
+          {
+            "key": "sv_e",
+            "label": "Gutverdienende werden nicht mehr herangezogen",
+            "expected": "Nein",
+            "inputType": "select",
+            "placeholder": "Auswahl treffen",
+            "options": [
+              "Ja",
+              "Nein"
+            ]
+          }
+        ]
+      ],
+      "feedback": {
+        "correct": "Minijob-Regelung und typische Fehlannahmen zum Solidarprinzip wurden sauber eingeordnet.",
+        "wrong": "Prüfen Sie noch einmal, wie Minijobs und das Solidarprinzip typischerweise ausgestaltet sind und wer sich in der Regel an den Beiträgen beteiligt."
+      },
+      "progressLinks": [
+        "pv3wiso_mitbestimmung_tarif_sozialversicherung"
+      ]
+    },
+    {
+      "id": "q17",
+      "type": "single_choice",
+      "title": "Typische Aufgabe der IHK bestimmen",
+      "prompt": "Die Nordpfad IT GmbH ist Mitglied der zuständigen Industrie- und Handelskammer. Welche Aufgabe nimmt die IHK unter anderem wahr?",
+      "options": [
+        {
+          "text": "Sie überwacht die verschiedenen Schutzgesetze und ahndet deren Verstoss in länderspezifischer Zuordnung.",
+          "rationale": "Das ist nicht die typische Kernaufgabe der IHK."
+        },
+        {
+          "text": "Sie nimmt Meldungen über Betriebsunfälle entgegen und leitet sie an die zuständigen Stellen weiter.",
+          "rationale": "Das gehört nicht zu den klassischen IHK-Aufgaben."
+        },
+        {
+          "text": "Sie vertritt die Arbeitnehmer bei Tarifverhandlungen über eine branchenweite Abschlussregelung.",
+          "rationale": "Tarifverhandlungen führen Gewerkschaften, nicht die IHK."
+        },
+        {
+          "text": "Sie ist ein eingetragener Verein zur Förderung regionaler Interessen ihrer Mitglieder.",
+          "rationale": "Die IHK ist keine Vereinsorganisation."
+        },
+        {
+          "text": "Sie nimmt Meisterprüfungen ab und ist an Aufgaben der beruflichen Aus- und Weiterbildung beteiligt.",
+          "rationale": "Genau diese prüfungs- und bildungsbezogenen Aufgaben gehören zum Kammerwesen."
+        }
+      ],
+      "correctIndex": 4,
+      "feedback": {
+        "correct": "Die Aufgabe der IHK wurde korrekt erkannt.",
+        "wrong": "Konzentrieren Sie sich auf die Rolle der Kammer bei Prüfungen und beruflicher Bildung."
+      },
+      "progressLinks": [
+        "pv3wiso_mitbestimmung_tarif_sozialversicherung"
+      ]
+    },
+    {
+      "id": "q18",
+      "type": "table_fill",
+      "title": "Aussagen zur gesetzlichen Unfallversicherung einordnen",
+      "prompt": "Ordnen Sie zu, welche Aussagen zur gesetzlichen Unfallversicherung zutreffen.",
+      "columns": [
+        "Aussage",
+        "Trifft zu?"
+      ],
+      "rows": [
+        [
+          "Träger der gesetzlichen Unfallversicherung sind die zuständigen Berufsgenossenschaften.",
+          {
+            "key": "uv_a",
+            "label": "Träger sind Berufsgenossenschaften",
+            "expected": "Ja",
+            "inputType": "select",
+            "placeholder": "Auswahl treffen",
+            "options": [
+              "Ja",
+              "Nein"
+            ]
+          }
+        ],
+        [
+          "Wer einem Arbeitskollegen Erste Hilfe leistet, ist währenddessen nicht versichert.",
+          {
+            "key": "uv_b",
+            "label": "Hilfeleistende sind währenddessen nicht versichert",
+            "expected": "Nein",
+            "inputType": "select",
+            "placeholder": "Auswahl treffen",
+            "options": [
+              "Ja",
+              "Nein"
+            ]
+          }
+        ],
+        [
+          "In der gesetzlichen Unfallversicherung sind nur leitende Angestellte versichert.",
+          {
+            "key": "uv_c",
+            "label": "Nur leitende Angestellte sind versichert",
+            "expected": "Nein",
+            "inputType": "select",
+            "placeholder": "Auswahl treffen",
+            "options": [
+              "Ja",
+              "Nein"
+            ]
+          }
+        ],
+        [
+          "Die gesetzliche Unfallversicherung schützt auch bei Unfällen in der Freizeit.",
+          {
+            "key": "uv_d",
+            "label": "Schützt auch bei Freizeitunfällen",
+            "expected": "Nein",
+            "inputType": "select",
+            "placeholder": "Auswahl treffen",
+            "options": [
+              "Ja",
+              "Nein"
+            ]
+          }
+        ],
+        [
+          "Der Versicherungsschutz ist breiter als nur auf leitende Angestellte begrenzt.",
+          {
+            "key": "uv_e",
+            "label": "Versicherungsschutz ist breiter als nur leitende Angestellte",
+            "expected": "Ja",
+            "inputType": "select",
+            "placeholder": "Auswahl treffen",
+            "options": [
+              "Ja",
+              "Nein"
+            ]
+          }
+        ]
+      ],
+      "feedback": {
+        "correct": "Trägerstruktur, versicherte Hilfeleistungen und typische Fehlannahmen zur Unfallversicherung wurden sauber eingeordnet.",
+        "wrong": "Denken Sie an die Berufsgenossenschaften als zuständige Träger und daran, dass weder nur leitende Angestellte noch Freizeitunfälle den Kern des Schutzes ausmachen."
+      },
+      "progressLinks": [
+        "pv3wiso_mitbestimmung_tarif_sozialversicherung"
+      ]
+    },
+    {
+      "id": "q19",
+      "type": "single_choice",
+      "title": "Grundlage für das Arbeitslosengeld erkennen",
+      "prompt": "Ein Freund eines Mitarbeiters möchte Arbeitslosengeld beantragen. Welche Aussage zum Arbeitslosengeld ist zutreffend?",
+      "options": [
+        {
+          "text": "Die Höhe des Arbeitslosengeldes ist unabhängig vom früheren Arbeitsentgelt immer gleich.",
+          "rationale": "Die Leistung knüpft gerade an das frühere Entgelt an."
+        },
+        {
+          "text": "Das Arbeitslosengeld wird nur an bedürftige und arbeitsunfähige Personen gezahlt.",
+          "rationale": "Das beschreibt nicht die Voraussetzungen des Arbeitslosengelds."
+        },
+        {
+          "text": "Zur Berechnung des Arbeitslosengeldes wird das Bruttöntgelt der vergangenen zwölf Monate zugrunde gelegt.",
+          "rationale": "Genau diese Bemessungsgrundlage ist hier entscheidend."
+        },
+        {
+          "text": "Die Höhe des Arbeitslosengeldes berechnet sich nach dem letzten Arbeitsentgelt der letzten zehn Monate vor Eintritt der Arbeitslosigkeit.",
+          "rationale": "Diese Bemessungsregel trifft nicht zu."
+        },
+        {
+          "text": "Vor einem Anspruch auf Arbeitslosengeld müssen immer zuerst alle Ersparnisse aufgebraucht werden.",
+          "rationale": "Das ist keine Voraussetzung für das Arbeitslosengeld I."
+        }
+      ],
+      "correctIndex": 2,
+      "feedback": {
+        "correct": "Die Bemessungsgrundlage des Arbeitslosengelds wurde korrekt erkannt.",
+        "wrong": "Prüfen Sie noch einmal, wie das Arbeitslosengeld I vom vorherigen Arbeitsentgelt abhängt."
+      },
+      "progressLinks": [
+        "pv3wiso_mitbestimmung_tarif_sozialversicherung"
+      ]
+    },
+    {
+      "id": "q20",
+      "type": "single_choice",
+      "title": "Aussage zur Pflegeversicherung prüfen",
+      "prompt": "Ein Mitarbeiter schaut auf seine Lohnabrechnung und sieht den Beitrag zur Pflegeversicherung. Welche Aussage dazu ist zutreffend?",
+      "options": [
+        {
+          "text": "Die Pflegeversicherungsträger sind eigenständige staatliche Institutionen.",
+          "rationale": "So ist die Pflegeversicherung organisatorisch nicht aufgebaut."
+        },
+        {
+          "text": "Rentner, Studierende und Arbeitslose sind nicht versichert.",
+          "rationale": "Diese Aussage ist offenkundig zu pauschal und falsch."
+        },
+        {
+          "text": "Die Pflegeversicherung wird allein vom Arbeitnehmer gezahlt.",
+          "rationale": "Auch diese Aussage trifft so nicht zu."
+        },
+        {
+          "text": "Kinderlose Arbeitnehmer über 23 Jahre zahlen einen höheren Beitrag als Arbeitnehmer mit Kindern.",
+          "rationale": "Genau dieser Zuschlag für Kinderlose ist vorgesehen."
+        },
+        {
+          "text": "Die Pflegeversicherung dient nur der ambulanten Pflege durch Angehörige.",
+          "rationale": "Ihr Leistungsbereich ist deutlich breiter."
+        }
+      ],
+      "correctIndex": 3,
+      "feedback": {
+        "correct": "Die Aussage zur Pflegeversicherung wurde korrekt erkannt.",
+        "wrong": "Achten Sie auf den besonderen Zuschlag für kinderlose Versicherte über 23 Jahre."
+      },
+      "progressLinks": [
+        "pv3wiso_mitbestimmung_tarif_sozialversicherung"
+      ]
+    },
+    {
+      "id": "q21",
+      "type": "single_choice",
+      "title": "Empfänger einer Unfallmeldung bestimmen",
+      "prompt": "Bei einem Arbeitsunfall muss die Nordpfad IT GmbH eine Unfallmeldung unverzüglich an die zuständige Stelle senden. Wohin geht sie?",
+      "options": [
+        {
+          "text": "An die Haftpflichtversicherung",
+          "rationale": "Eine Unfallanzeige nach Arbeitsunfällen geht nicht dorthin."
+        },
+        {
+          "text": "An die Berufsgenossenschaft",
+          "rationale": "Genau dort ist die Unfallanzeige einzureichen."
+        },
+        {
+          "text": "An die Gewerbeaufsichtsbehörde",
+          "rationale": "Das ist nicht die regelmässige Anlaufstelle für die Unfallanzeige."
+        },
+        {
+          "text": "An die Krankenkasse",
+          "rationale": "Die Krankenkasse ist nicht der Unfallversicherungsträger."
+        },
+        {
+          "text": "An die private Unfallversicherung des Mitarbeiters",
+          "rationale": "Die gesetzliche Unfallmeldung erfolgt nicht dorthin."
+        }
+      ],
+      "correctIndex": 1,
+      "feedback": {
+        "correct": "Die zuständige Stelle für die Unfallmeldung wurde korrekt erkannt.",
+        "wrong": "Denken Sie an den gesetzlichen Unfallversicherungsträger des Betriebs."
+      },
+      "progressLinks": [
+        "pv3wiso_arbeitsschutz_umwelt_diversity"
+      ]
+    },
+    {
+      "id": "f05",
+      "type": "followup_divider",
+      "title": "Statistik, Gründung und sichere Zusammenarbeit",
+      "from": "qualitaetsboard@ordnungsbetrieb.example",
+      "to": "projektteam@ausbildungsbetrieb.example",
+      "subject": "Bitte den Abschlussblock zu Gründung, Arbeitsschutz und AGG vorbereiten",
+      "date": "2026-03-20",
+      "body": "Hallo,\n\nzum Abschluss brauchen wir Aufgaben zu Unfallstatistiken, Unternehmensgründung, e.K., Brandschutz, Sicherheitszeichen, AGG und agilem Projektmanagement. Bitte übernehmen Sie Tabellen und Zeichen quellenah, aber weiter in gut auswertbaren Formaten.\n\nViele Grüsse\nQualitätsboard"
+    },
+    {
+      "id": "ctx22",
+      "type": "context_card",
+      "title": "Statistik zu Arbeits- und Wegeunfällen",
+      "contentBlocks": [
+        {
+          "type": "text",
+          "text": "In einer Tageszeitung ist eine Statistik der Unfallversicherung der gewerblichen Wirtschaft und der Unfallversicherung der öffentlichen Hand abgedruckt. Auf Basis dieser Werte sollen zwei belegbare Aussagen ausgewählt werden."
+        },
+        {
+          "type": "table",
+          "columns": [
+            "Kennzahl",
+            "Vorjahr",
+            "Aktuelles Jahr",
+            "Veränderung in %"
+          ],
+          "rows": [
+            [
+              "Meldepflichtige Arbeitsunfälle",
+              "954.459",
+              "919.025",
+              "- 3,71"
+            ],
+            [
+              "Je 1.000 Vollarbeiter",
+              "25,84",
+              "24,52",
+              "- 5,09"
+            ],
+            [
+              "Meldepflichtige Wegeunfälle",
+              "223.973",
+              "188.452",
+              "- 15,86"
+            ],
+            [
+              "Je 1.000 Versicherungsverhältnisse",
+              "5,25",
+              "4,34",
+              "- 17,16"
+            ],
+            [
+              "Meldepflichtige Unfälle zusammen",
+              "1.178.432",
+              "1.107.477",
+              "- 6,02"
+            ],
+            [
+              "Tödliche Arbeitsunfälle",
+              "519",
+              "498",
+              "- 4,05"
+            ],
+            [
+              "Tödliche Wegeunfälle",
+              "367",
+              "394",
+              "+ 7,36"
+            ],
+            [
+              "Tödliche Unfälle zusammen",
+              "886",
+              "892",
+              "+ 0,68"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "id": "q22",
+      "type": "multi_select",
+      "title": "Belegbare Aussagen aus der Unfallstatistik auswählen",
+      "prompt": "Welche zwei Aussagen lassen sich mit der Statistik belegen?",
+      "options": [
+        {
+          "text": "Die Zahl der meldepflichtigen Arbeitsunfälle hat vom Vorjahr zum aktuellen Jahr zugenommen.",
+          "correct": false,
+          "rationale": "Die Zahl ist von 954.459 auf 919.025 gesunken."
+        },
+        {
+          "text": "Im Vorjahr gab es mehr meldepflichtige Wegeunfälle als im aktuellen Jahr.",
+          "correct": true,
+          "rationale": "223.973 im Vorjahr liegen über 188.452 im aktuellen Jahr."
+        },
+        {
+          "text": "Die Zahl der tödlichen Arbeitsunfälle hat zugenommen.",
+          "correct": false,
+          "rationale": "Sie ist von 519 auf 498 zurückgegangen."
+        },
+        {
+          "text": "Die Gesamtzahl der tödlichen Unfälle hat abgenommen.",
+          "correct": false,
+          "rationale": "Sie ist leicht von 886 auf 892 gestiegen."
+        },
+        {
+          "text": "Je 1.000 Versicherungsverhältnisse hat die Zahl der meldepflichtigen Wegeunfälle im aktuellen Jahr zugenommen.",
+          "correct": false,
+          "rationale": "Der Wert ist von 5,25 auf 4,34 gesunken."
+        },
+        {
+          "text": "Die Anzahl der tödlichen Wegeunfälle ist im aktuellen Jahr gestiegen.",
+          "correct": true,
+          "rationale": "Die Zahl stieg von 367 auf 394."
+        }
+      ],
+      "feedback": {
+        "correct": "Die beiden belegbaren Aussagen wurden korrekt ausgewählt.",
+        "wrong": "Vergleichen Sie die Vorjahreswerte noch einmal sauber mit dem aktuellen Jahr."
+      },
+      "progressLinks": [
+        "pv3wiso_arbeitsschutz_umwelt_diversity"
+      ]
+    },
+    {
+      "id": "q23",
+      "type": "single_choice",
+      "title": "Wichtigen Erfolgsfaktor für eine Gründung erkennen",
+      "prompt": "Ein Absolvent überlegt, sich nach der Ausbildung selbstständig zu machen. Welche Aussage zur Existenzgründung ist zutreffend?",
+      "options": [
+        {
+          "text": "Sich in der heutigen Zeit selbstständig zu machen, bedeutet immer ein viel zu grosses finanzielles Risiko.",
+          "rationale": "Diese pauschale Aussage trifft so nicht zu."
+        },
+        {
+          "text": "Für den Erfolg einer Existenzgründung sind Kenntnisse über den Markt und die Kundenwünsche wichtig.",
+          "rationale": "Genau diese Markt- und Kundenorientierung ist ein zentraler Erfolgsfaktor."
+        },
+        {
+          "text": "Für den Erfolg einer Existenzgründung ist ausschlaggebend, dass höchstens durchschnittliche Markt- und Fachkenntnisse vorhanden sind.",
+          "rationale": "Gerade gute Markt- und Fachkenntnisse sind wichtig."
+        },
+        {
+          "text": "In der Gründungsphase kann der Gründer immer von einem `guten Verdienst` ausgehen.",
+          "rationale": "Das ist wirtschaftlich nicht realistisch."
+        },
+        {
+          "text": "Gegen Risiken wie Krankheit und Alter ist ein Existenzgründer automatisch durch die Sozialversicherung abgesichert.",
+          "rationale": "Eine automatische Absicherung besteht so nicht."
+        }
+      ],
+      "correctIndex": 1,
+      "feedback": {
+        "correct": "Der wesentliche Erfolgsfaktor wurde korrekt erkannt.",
+        "wrong": "Prüfen Sie, welche Faktoren eine Gründung realistisch tragen und welche Aussagen nur Wunschdenken sind."
+      },
+      "progressLinks": [
+        "pv3wiso_wirtschaftssektoren_unternehmensformen"
+      ]
+    },
+    {
+      "id": "q24",
+      "type": "single_choice",
+      "title": "Aussage zum e.K. korrekt einordnen",
+      "prompt": "Ein Gründer plant, sein Unternehmen als eingetragener Kaufmann zu betreiben. Welche Aussage zu diesem Unternehmen ist zutreffend?",
+      "options": [
+        {
+          "text": "Zur Ausübung von Kreditgeschäften muss zwingend die Rechtsform der GmbH gewählt werden.",
+          "rationale": "Dafür besteht keine generelle Pflicht."
+        },
+        {
+          "text": "Vor der Gründung muss der Inhaber zwingend seine fachliche Qualifikation zum Betrieb eines kaufmännischen Unternehmens nachweisen.",
+          "rationale": "Ein solcher genereller Befähigungsnachweis ist nicht vorgeschrieben."
+        },
+        {
+          "text": "Die Eintragung als Ist-Kaufmann in das Handelsregister hat rein deklaratorische Wirkung.",
+          "rationale": "Genau das trifft für den Ist-Kaufmann zu."
+        },
+        {
+          "text": "Im ersten Jahr der Tätigkeit ist ein Einzelkaufmann grundsätzlich von der Gewerbesteuer befreit.",
+          "rationale": "Eine solche generelle Befreiung gibt es nicht."
+        },
+        {
+          "text": "Als selbstständiger Kaufmann benötigt der Gründer keine Krankenversicherung.",
+          "rationale": "Auch Selbstständige brauchen eine Krankenversicherung."
+        }
+      ],
+      "correctIndex": 2,
+      "feedback": {
+        "correct": "Die Aussage zum e.K. wurde korrekt eingeordnet.",
+        "wrong": "Achten Sie besonders auf die Wirkung der Handelsregistereintragung beim Ist-Kaufmann."
+      },
+      "progressLinks": [
+        "pv3wiso_wirtschaftssektoren_unternehmensformen"
+      ]
+    },
+    {
+      "id": "q25",
+      "type": "table_fill",
+      "title": "Verhalten im Brandfall einordnen",
+      "prompt": "Ordnen Sie zu, welche Handlungen im beschriebenen Brandfall fachlich angemessen sind.",
+      "columns": [
+        "Handlung",
+        "Angemessen?"
+      ],
+      "rows": [
+        [
+          "Eine zweite Person öffnet die Tür, um zu prüfen, ob der Brand noch selbst gelöscht werden kann.",
+          {
+            "key": "brand_a",
+            "label": "Tür öffnen um Brandlage zu prüfen",
+            "expected": "Nein",
+            "inputType": "select",
+            "placeholder": "Auswahl treffen",
+            "options": [
+              "Ja",
+              "Nein"
+            ]
+          }
+        ],
+        [
+          "Mitarbeitende werden durch lautes Rufen gewarnt.",
+          {
+            "key": "brand_b",
+            "label": "Mitarbeitende durch Rufen warnen",
+            "expected": "Ja",
+            "inputType": "select",
+            "placeholder": "Auswahl treffen",
+            "options": [
+              "Ja",
+              "Nein"
+            ]
+          }
+        ],
+        [
+          "Die Tür zum Lager wird nach dem Verlassen geschlossen, wenn sich dort keine weiteren Personen aufhalten.",
+          {
+            "key": "brand_c",
+            "label": "Tür nach dem Verlassen schliessen",
+            "expected": "Ja",
+            "inputType": "select",
+            "placeholder": "Auswahl treffen",
+            "options": [
+              "Ja",
+              "Nein"
+            ]
+          }
+        ],
+        [
+          "Der Brandbereich wird über das Treppenhaus verlassen.",
+          {
+            "key": "brand_d",
+            "label": "Brandbereich über das Treppenhaus verlassen",
+            "expected": "Ja",
+            "inputType": "select",
+            "placeholder": "Auswahl treffen",
+            "options": [
+              "Ja",
+              "Nein"
+            ]
+          }
+        ],
+        [
+          "Der eingeschlagene Feuermelder wird betätigt und der Notfall gemeldet.",
+          {
+            "key": "brand_e",
+            "label": "Feuermelder betätigen und Notfall melden",
+            "expected": "Ja",
+            "inputType": "select",
+            "placeholder": "Auswahl treffen",
+            "options": [
+              "Ja",
+              "Nein"
+            ]
+          }
+        ]
+      ],
+      "feedback": {
+        "correct": "Fehlverhalten und sinnvolle Sofortmassnahmen im Brandfall wurden sauber getrennt.",
+        "wrong": "Achten Sie darauf, welche Handlung ein Feuer durch Sauerstoffzufuhr oder Eigengefährdung verschlimmern kann und welche Schritte zur Alarmierung und Räumung gehören."
+      },
+      "progressLinks": [
+        "pv3wiso_arbeitsschutz_umwelt_diversity"
+      ]
+    },
+    {
+      "id": "q26",
+      "type": "table_fill",
+      "title": "Sicherheitszeichen den Zeichenarten zuordnen",
+      "prompt": "Ordnen Sie den beschriebenen Zeichen die passende Zeichenart zu. Die Bildsymbole der Quelle werden hier textnah beschrieben.",
+      "columns": [
+        "Beschriebenes Zeichen",
+        "Zeichenart"
+      ],
+      "rows": [
+        [
+          "Gelb-schwarzes Warndreieck mit Gabelstapler",
+          {
+            "key": "sign_1",
+            "label": "Warndreieck mit Gabelstapler",
+            "expected": "Warnzeichen",
+            "inputType": "select",
+            "placeholder": "Zeichenart wählen",
+            "options": [
+              "Verbotszeichen",
+              "Rettungszeichen",
+              "Brandschutzzeichen",
+              "Gebotszeichen",
+              "Warnzeichen",
+              "Gefahrensymbol/Gefahrenpiktogramm"
+            ]
+          }
+        ],
+        [
+          "Blau-weisser Kreis mit Schutzhandschuh",
+          {
+            "key": "sign_2",
+            "label": "Schutzhandschuh-Schild",
+            "expected": "Gebotszeichen",
+            "inputType": "select",
+            "placeholder": "Zeichenart wählen",
+            "options": [
+              "Verbotszeichen",
+              "Rettungszeichen",
+              "Brandschutzzeichen",
+              "Gebotszeichen",
+              "Warnzeichen",
+              "Gefahrensymbol/Gefahrenpiktogramm"
+            ]
+          }
+        ],
+        [
+          "Grün-weisses Sammelpunkt-Zeichen mit vier Pfeilen auf Personen",
+          {
+            "key": "sign_3",
+            "label": "Sammelpunkt-Zeichen",
+            "expected": "Rettungszeichen",
+            "inputType": "select",
+            "placeholder": "Zeichenart wählen",
+            "options": [
+              "Verbotszeichen",
+              "Rettungszeichen",
+              "Brandschutzzeichen",
+              "Gebotszeichen",
+              "Warnzeichen",
+              "Gefahrensymbol/Gefahrenpiktogramm"
+            ]
+          }
+        ],
+        [
+          "Rot-weisses Zeichen mit Feuerloescher",
+          {
+            "key": "sign_4",
+            "label": "Feuerloescher-Zeichen",
+            "expected": "Brandschutzzeichen",
+            "inputType": "select",
+            "placeholder": "Zeichenart wählen",
+            "options": [
+              "Verbotszeichen",
+              "Rettungszeichen",
+              "Brandschutzzeichen",
+              "Gebotszeichen",
+              "Warnzeichen",
+              "Gefahrensymbol/Gefahrenpiktogramm"
+            ]
+          }
+        ],
+        [
+          "Weiss-rot-schwarzes Gefahrstoffpiktogramm mit totem Baum und Fisch",
+          {
+            "key": "sign_5",
+            "label": "Umweltgefahr-Piktogramm",
+            "expected": "Gefahrensymbol/Gefahrenpiktogramm",
+            "inputType": "select",
+            "placeholder": "Zeichenart wählen",
+            "options": [
+              "Verbotszeichen",
+              "Rettungszeichen",
+              "Brandschutzzeichen",
+              "Gebotszeichen",
+              "Warnzeichen",
+              "Gefahrensymbol/Gefahrenpiktogramm"
+            ]
+          }
+        ],
+        [
+          "Weiss-rot-schwarzes Verbotszeichen mit durchgestrichenem Gabelstapler",
+          {
+            "key": "sign_6",
+            "label": "Durchgestrichener Gabelstapler",
+            "expected": "Verbotszeichen",
+            "inputType": "select",
+            "placeholder": "Zeichenart wählen",
+            "options": [
+              "Verbotszeichen",
+              "Rettungszeichen",
+              "Brandschutzzeichen",
+              "Gebotszeichen",
+              "Warnzeichen",
+              "Gefahrensymbol/Gefahrenpiktogramm"
+            ]
+          }
+        ]
+      ],
+      "feedback": {
+        "correct": "Die Sicherheitszeichen wurden korrekt zugeordnet.",
+        "wrong": "Prüfen Sie noch einmal die Unterschiede zwischen Warn-, Gebots-, Rettungs-, Brandschutz- und Verbotszeichen sowie Gefahrstoffpiktogrammen."
+      },
+      "progressLinks": [
+        "pv3wiso_arbeitsschutz_umwelt_diversity"
+      ]
+    },
+    {
+      "id": "q27",
+      "type": "single_choice",
+      "title": "Bedeutung des Sammelpunkt-Zeichens erkennen",
+      "prompt": "Worauf weist das in der vorherigen Aufgabe beschriebene grüne Sammelpunkt-Zeichen hin?",
+      "options": [
+        {
+          "text": "Gemeinschaftsraum",
+          "rationale": "Dafür steht das Zeichen nicht."
+        },
+        {
+          "text": "Belastung bis maximal vier Personen",
+          "rationale": "Die vier Figuren sind kein Belastungshinweis."
+        },
+        {
+          "text": "Menschenansammlungen vermeiden",
+          "rationale": "Das Gegenteil ist hier gemeint."
+        },
+        {
+          "text": "Garderobe oder Aufenthaltszone",
+          "rationale": "Auch das ist nicht die Aussage des Zeichens."
+        },
+        {
+          "text": "Sammelpunkt im Gefahrenfall",
+          "rationale": "Genau das bezeichnet das Rettungszeichen."
+        }
+      ],
+      "correctIndex": 4,
+      "feedback": {
+        "correct": "Die Bedeutung des Zeichens wurde korrekt erkannt.",
+        "wrong": "Denken Sie an den Ort, an dem sich Personen nach einer Räumung sammeln sollen."
+      },
+      "progressLinks": [
+        "pv3wiso_arbeitsschutz_umwelt_diversity"
+      ]
+    },
+    {
+      "id": "q28",
+      "type": "table_fill",
+      "title": "Formulierungen in einer Stellenanzeige prüfen",
+      "prompt": "Ordnen Sie zu, welche Formulierungen in der Stellenanzeige AGG-widrig sind.",
+      "columns": [
+        "Formulierung",
+        "AGG-widrig?"
+      ],
+      "rows": [
+        [
+          "Sie verfügen über hervorragende Kenntnisse in Java.",
+          {
+            "key": "agg_a",
+            "label": "Hervorragende Kenntnisse in Java",
+            "expected": "Nein",
+            "inputType": "select",
+            "placeholder": "Auswahl treffen",
+            "options": [
+              "Ja",
+              "Nein"
+            ]
+          }
+        ],
+        [
+          "Sie beherrschen die englische Sprache verhandlungssicher in Wort und Schrift.",
+          {
+            "key": "agg_b",
+            "label": "Englisch verhandlungssicher",
+            "expected": "Nein",
+            "inputType": "select",
+            "placeholder": "Auswahl treffen",
+            "options": [
+              "Ja",
+              "Nein"
+            ]
+          }
+        ],
+        [
+          "Sie sind mobil und bereit, auch längere Reisen ins Ausland zu unternehmen.",
+          {
+            "key": "agg_c",
+            "label": "Mobil und reisebereit",
+            "expected": "Nein",
+            "inputType": "select",
+            "placeholder": "Auswahl treffen",
+            "options": [
+              "Ja",
+              "Nein"
+            ]
+          }
+        ],
+        [
+          "Sie passen in unser junges dynamisches Team, wenn Sie deutscher Herkunft sind.",
+          {
+            "key": "agg_d",
+            "label": "Junges dynamisches Team und deutscher Herkunft",
+            "expected": "Ja",
+            "inputType": "select",
+            "placeholder": "Auswahl treffen",
+            "options": [
+              "Ja",
+              "Nein"
+            ]
+          }
+        ],
+        [
+          "Sie sind an flexible Arbeitszeiten gewöhnt und können gelegentlich abends länger arbeiten.",
+          {
+            "key": "agg_e",
+            "label": "Flexible Arbeitszeiten und gelegentlich abends länger arbeiten",
+            "expected": "Nein",
+            "inputType": "select",
+            "placeholder": "Auswahl treffen",
+            "options": [
+              "Ja",
+              "Nein"
+            ]
+          }
+        ]
+      ],
+      "feedback": {
+        "correct": "Sachliche Anforderungen und AGG-widrige Formulierungen wurden sauber voneinander getrennt.",
+        "wrong": "Achten Sie auf Benachteiligungen wegen geschützter Merkmale wie Alter oder Herkunft und trennen Sie diese von neutralen Qualifikationsanforderungen."
+      },
+      "progressLinks": [
+        "pv3wiso_arbeitsschutz_umwelt_diversity"
+      ]
+    },
+    {
+      "id": "q29",
+      "type": "single_choice",
+      "title": "Nicht-agilen Gesichtspunkt erkennen",
+      "prompt": "Das Projektteam soll künftig `agil` arbeiten, um besser auf Kundenwünsche reagieren zu können. Welcher Gesichtspunkt gehört nicht zu einem agilen Prozess?",
+      "options": [
+        {
+          "text": "Transparente Organisation, bei der Wissen offen weitergegeben wird",
+          "rationale": "Das passt gut zu agilem Arbeiten."
+        },
+        {
+          "text": "Hohe Flexibilität durch adaptives Planen",
+          "rationale": "Auch das ist typisch für agile Vorgehensweisen."
+        },
+        {
+          "text": "Transparente Darstellung des Fortschritts mithilfe von Boards",
+          "rationale": "Boards sind ein typisches Element agiler Zusammenarbeit."
+        },
+        {
+          "text": "Eigenverantwortliche Selbstorganisation des Teams",
+          "rationale": "Selbstorganisation ist ein Kerngedanke agiler Teams."
+        },
+        {
+          "text": "Lösung und Vorgehensweg werden von Vorgesetzten hierarchisch vorgegeben",
+          "rationale": "Genau das passt nicht zu einem agilen Prozess."
+        }
+      ],
+      "correctIndex": 4,
+      "feedback": {
+        "correct": "Der nicht-agile Gesichtspunkt wurde korrekt erkannt.",
+        "wrong": "Prüfen Sie noch einmal, wie stark agile Teams selbstorganisiert und anpassungsfähig arbeiten."
+      },
+      "progressLinks": [
+        "pv3wiso_wirtschaftssektoren_unternehmensformen"
+      ]
+    },
+    {
+      "id": "q30",
+      "type": "single_choice",
+      "title": "Vorteil des agilen Projektmanagements bestimmen",
+      "prompt": "Welcher Punkt ist ein typischer Vorteil des agilen Projektmanagements?",
+      "options": [
+        {
+          "text": "Erschwerte Kommunikation innerhalb des Teams",
+          "rationale": "Das ist kein Vorteil agiler Zusammenarbeit."
+        },
+        {
+          "text": "Zeitnahe Anpassung an neue Kundenwünsche",
+          "rationale": "Genau diese schnelle Anpassungsfähigkeit ist ein typischer Vorteil."
+        },
+        {
+          "text": "Langfristige Problemidentifikation ohne unmittelbare Reaktion",
+          "rationale": "Agile Teams wollen gerade früh und direkt reagieren."
+        },
+        {
+          "text": "Erschwerter Verbesserungsprozess",
+          "rationale": "Auch das wäre kein Vorteil."
+        },
+        {
+          "text": "Hoher Kommunikations- und Abstimmungsaufwand als Selbstzweck",
+          "rationale": "Mehr Kommunikation kann vorkommen, ist aber kein eigentlicher Zielvorteil."
+        }
+      ],
+      "correctIndex": 1,
+      "feedback": {
+        "correct": "Der Vorteil des agilen Projektmanagements wurde korrekt erkannt.",
+        "wrong": "Denken Sie daran, warum agile Prozesse besonders bei wechselnden Anforderungen beliebt sind."
+      },
+      "progressLinks": [
+        "pv3wiso_wirtschaftssektoren_unternehmensformen"
+      ]
+    }
+  ]
+}

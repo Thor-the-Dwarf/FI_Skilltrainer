@@ -1,0 +1,1343 @@
+{
+  "scenario": {
+    "company": "Rebenblick Softworks GmbH",
+    "scale": "Software- und Sensorikdienstleister für Weinbaubetriebe, 160 Mitarbeitende",
+    "context": "Prüfungsvorbereitung FIAE im Stationsformat mit zusammenhängenden Folgeaufträgen zu Projektvorbereitung, User Stories, Datenbanken und ER-Modellierung.",
+    "mission": "Sie begleiten die Konzeption einer KI-gestützten Weinbau-Lösung von Stakeholder-Workshop und Green IT über App-Funktionen bis zur Datenmodellierung für Dokumentdatenbanken und Weinbergsverwaltung.",
+    "source": {
+      "kind": "Pseudonymisierte Prüfungsvorlage",
+      "reference": "AP2 FIAE Teil 1, Winter 2023/24",
+      "note": "Die fachliche Aufgabenreihenfolge bleibt erhalten; Unternehmens-, Personen- und Ortsbezug wurden in das Kursformat überführt. Die Lösungs-PDF diente nur zur Klärung einzelner Fachdetails."
+    },
+    "station": {
+      "id": "PV1FIAE-ST-03",
+      "department": "Prüfungsvorbereitung Anwendungsentwicklung",
+      "profile": "Stakeholder, Green IT, User Stories, Datenbanken und ER-Modellierung",
+      "constraints": [
+        "Die vier Hauptaufgaben bleiben als fachlich zusammenhängende Folgeaufträge sichtbar",
+        "Offene Konzeptions- und Modellierungsaufgaben werden möglichst auto-auswertbar, aber fachlich gleichwertig umgesetzt",
+        "Visuals werden nur dort eingesetzt, wo die Quelle selbst ein fachliches Artefakt oder Beispielmaterial vorgibt"
+      ]
+    },
+    "customerRequest": {
+      "from": "programmleitung@rebenblick-softworks.example",
+      "to": "projektteam@ausbildungsbetrieb.example",
+      "subject": "KI-gestützte Weinbau-Plattform vorbereiten",
+      "date": "2026-03-20",
+      "body": "Guten Tag,\n\nwir entwickeln gemeinsam mit mehreren Weinbaubetrieben eine Plattform, die lokale Messpunkte, Drohnenflüge, cloudbasierte Datenspeicherung und KI-gestützte Auswertung verbindet. Ziel ist es, Pflanzenschutz, Pflege und weitere Entscheidungen datenbasiert zu unterstützen.\n\nBitte bearbeiten Sie die Teilaufträge in der vorgegebenen Reihenfolge. Zunächst brauchen wir eine saubere Einordnung von Stakeholdern, Workshopzielen, Green IT und Testkonzept. Anschliessend sollen die Kernfunktionen der Mess-App über User Stories und Ablauflogik beschrieben werden. Darauf folgen Datenbank- und JSON-Fragen sowie ein fachlich passendes ER-Modell für Weinberge, Sektoren und Pflanzenschutzmittel.\n\nViele Grüsse\nProgrammleitung"
+    }
+  },
+  "questions": [
+    {
+      "id": "ctx01",
+      "type": "context_card",
+      "title": "Kontext zum Projektstart",
+      "contentBlocks": [
+        {
+          "type": "text",
+          "text": "Rebenblick digitalisiert die Beobachtung von Weinbergen. Messpunkte im Feld, Drohnenbilder und cloudbasierte Datenhaltung sollen zusammengeführt werden, damit Weinbaubetriebe schneller auf Schädlinge, Wetterlagen und Pflegebedarf reagieren können.\n\nVor dem Start der eigentlichen Entwicklung müssen relevante Stakeholder, Workshopziele, Green-IT-Aspekte und das Testkonzept für die Gesamtlösung klar beschrieben werden."
+        }
+      ]
+    },
+    {
+      "id": "q01",
+      "type": "multi_select",
+      "title": "Stakeholder der Weinbau-Plattform erkennen",
+      "prompt": "Welche Gruppen zählen in dieser Fachsituation zu den naheliegenden Stakeholdern? Wählen Sie alle passenden Antworten.",
+      "options": [
+        {
+          "text": "Geschäftsleitung des Softwareanbieters",
+          "correct": true,
+          "rationale": "Die Unternehmensleitung des Anbieters hat ein direktes Interesse an Erfolg, Kosten und Nutzen des Projekts."
+        },
+        {
+          "text": "Mitarbeitende des Softwareanbieters",
+          "correct": true,
+          "rationale": "Entwicklung, Betrieb und Support sind direkt von den Projektentscheidungen betroffen."
+        },
+        {
+          "text": "Leitung der beteiligten Weinbaubetriebe",
+          "correct": true,
+          "rationale": "Die Fachseite entscheidet über Nutzung, Einführung und Mehrwert der Lösung."
+        },
+        {
+          "text": "Zuständige Fach- oder Aufsichtsbehörden",
+          "correct": true,
+          "rationale": "Bei Datenerhebung, Umweltthemen oder Dokumentationspflichten können Behörden relevant sein."
+        },
+        {
+          "text": "Betreiber der eingesetzten Cloud-Plattform",
+          "correct": true,
+          "rationale": "Verfügbarkeit, Schnittstellen und Betriebsrahmen des Cloud-Dienstes beeinflussen die Lösung direkt."
+        },
+        {
+          "text": "Lokaler Musikverein ohne Projektbezug",
+          "correct": false,
+          "rationale": "Ohne fachliche oder organisatorische Verbindung ist das kein naheliegender Stakeholder."
+        },
+        {
+          "text": "Touristische Reisegruppen ohne Nutzung der Plattform",
+          "correct": false,
+          "rationale": "Die Gruppen stehen hier nicht in einer direkten Projektbeziehung."
+        }
+      ],
+      "feedback": {
+        "correct": "Die relevanten Stakeholder-Gruppen sind fachlich passend erkannt.",
+        "wrong": "Achten Sie auf Gruppen, die vom Projekterfolg, den Daten, dem Betrieb oder regulatorischen Rahmenbedingungen direkt betroffen sind."
+      },
+      "progressLinks": [
+        "pv1fiae_stakeholder_greenit_testkonzept"
+      ]
+    },
+    {
+      "id": "q02",
+      "type": "multi_select",
+      "title": "Workshopziele für den Projektstart ableiten",
+      "prompt": "Welche Ziele passen zu einem ersten Workshop für dieses Vorhaben? Wählen Sie alle passenden Antworten.",
+      "options": [
+        {
+          "text": "Die übergeordneten Projektziele und der erwartete Nutzen werden für alle Beteiligten transparent gemacht.",
+          "correct": true,
+          "rationale": "Ein gemeinsames Zielbild ist ein typischer Kernzweck eines Projektstart-Workshops."
+        },
+        {
+          "text": "Risiken und Grenzen des bisherigen Vorgehens werden sichtbar gemacht.",
+          "correct": true,
+          "rationale": "Der Workshop soll auch erklären, warum eine Veränderung überhaupt sinnvoll ist."
+        },
+        {
+          "text": "Der Nutzen einer KI-unterstützten Weinbau-Lösung wird nachvollziehbar dargestellt.",
+          "correct": true,
+          "rationale": "Akzeptanz und fachlicher Mehrwert müssen früh greifbar werden."
+        },
+        {
+          "text": "Unterstützende, skeptische und unentschlossene Gruppen werden erkannt.",
+          "correct": true,
+          "rationale": "Stakeholder-Lagebilder helfen später bei Kommunikation und Einführung."
+        },
+        {
+          "text": "Der produktive Rollout wird noch im Workshop verbindlich für denselben Tag beschlossen.",
+          "correct": false,
+          "rationale": "Ein Start-Workshop ersetzt keine technische oder organisatorische Freigabe für den Sofortbetrieb."
+        },
+        {
+          "text": "Es werden ausschliesslich schon Farbpaletten für Dashboards festgelegt.",
+          "correct": false,
+          "rationale": "Ein solcher Fokus wäre für die hier gemeinten Projektziele zu eng."
+        }
+      ],
+      "feedback": {
+        "correct": "Die Workshopziele treffen Projektstart, Nutzenargumentation und Stakeholder-Bild gut.",
+        "wrong": "Prüfen Sie, ob das Ziel eher Orientierung, Nutzen, Risikoklärung oder Stakeholder-Einordnung unterstützt."
+      },
+      "progressLinks": [
+        "pv1fiae_stakeholder_greenit_testkonzept"
+      ]
+    },
+    {
+      "id": "q03",
+      "type": "short_text",
+      "title": "Green IT fachlich einordnen",
+      "prompt": "Formulieren Sie in 1-3 Sätzen, was Green IT in diesem Projektkontext bedeutet.",
+      "minChars": 90,
+      "requiredKeywords": [
+        "energie",
+        "ressourcen"
+      ],
+      "expectedOutline": "Beschreibt Green IT als energie- und ressourcenschonende Planung, Nutzung und den Betrieb von IT-Systemen über ihren Lebenszyklus hinweg.",
+      "feedback": {
+        "correct": "Green IT ist in diesem Zusammenhang fachlich treffend beschrieben.",
+        "wrong": "Arbeiten Sie klarer heraus, dass es um einen energie- und ressourcenschonenden Umgang mit IT geht und nicht um blosse Symbolik."
+      },
+      "progressLinks": [
+        "pv1fiae_stakeholder_greenit_testkonzept"
+      ]
+    },
+    {
+      "id": "q04",
+      "type": "multi_select",
+      "title": "Ziele von Green IT benennen",
+      "prompt": "Welche zwei Ziele passen besonders gut zu Green IT in dieser Fachsituation?",
+      "options": [
+        {
+          "text": "Den Energieverbrauch von Rechenleistung, Endgeräten und Infrastruktur senken",
+          "correct": true,
+          "rationale": "Ein geringerer Energiebedarf ist ein zentrales Green-IT-Ziel."
+        },
+        {
+          "text": "Hardware und Ressourcen möglichst effizient und länger nutzbar machen",
+          "correct": true,
+          "rationale": "Ressourcenschonung umfasst auch Nutzungsdauer, Wiederverwendung und sparsamen Materialeinsatz."
+        },
+        {
+          "text": "Alle Reports monatlich verpflichtend farbig ausdrucken",
+          "correct": false,
+          "rationale": "Das steht einem ressourcenschonenden Ansatz eher entgegen."
+        },
+        {
+          "text": "Für jede kleine Analyse standardmässig neue Testserver reservieren",
+          "correct": false,
+          "rationale": "Unnötige Infrastrukturreservierung passt nicht zu Green IT."
+        },
+        {
+          "text": "Fachliche Entscheidungen nur nach Marketingwirkung priorisieren",
+          "correct": false,
+          "rationale": "Marketingwirkung ersetzt keine Green-IT-Ziele."
+        }
+      ],
+      "feedback": {
+        "correct": "Die zentralen Green-IT-Ziele sind richtig erkannt.",
+        "wrong": "Achten Sie auf Energie- und Ressourcenschonung statt auf Massnahmen, die nur Aufwand oder Verbrauch steigern."
+      },
+      "progressLinks": [
+        "pv1fiae_stakeholder_greenit_testkonzept"
+      ]
+    },
+    {
+      "id": "q05",
+      "type": "multi_select",
+      "title": "Bestandteile eines Testkonzepts auswählen",
+      "prompt": "Welche Inhalte gehören typischerweise in ein Testkonzept für dieses Projekt? Wählen Sie alle passenden Antworten.",
+      "options": [
+        {
+          "text": "Teststrategie und Testziele",
+          "correct": true,
+          "rationale": "Ein Testkonzept beschreibt, wofür und mit welcher Grundausrichtung getestet wird."
+        },
+        {
+          "text": "Dokumentation, Vorlagen und Regeln für die Testerfassung",
+          "correct": true,
+          "rationale": "Vorgehensweisen und Nachweise müssen für die Testarbeit festgelegt sein."
+        },
+        {
+          "text": "Testumgebung und mögliche Testautomatisierung",
+          "correct": true,
+          "rationale": "Ohne passende Umgebung und Automatisierungsstrategie bleibt ein Testkonzept unvollständig."
+        },
+        {
+          "text": "Zusammenspiel der Teststufen und ihre Einbindung in andere Projektaktivitäten",
+          "correct": true,
+          "rationale": "Testen muss mit Entwicklung, Integration und Abnahme zusammengedacht werden."
+        },
+        {
+          "text": "Regeln für die Auswertung von Testergebnissen",
+          "correct": true,
+          "rationale": "Ein Testkonzept muss auch beschreiben, wie Ergebnisse bewertet und genutzt werden."
+        },
+        {
+          "text": "Testplanung mit Wer/Was/Wann/Wie-viel sowie groben Aufwandsschätzungen",
+          "correct": true,
+          "rationale": "Rollen, Umfang und Aufwand gehören zur organisatorischen Planung des Testens."
+        },
+        {
+          "text": "Private Hobbys aller Teammitglieder",
+          "correct": false,
+          "rationale": "Das hat keinen fachlichen Bezug zu einem Testkonzept."
+        },
+        {
+          "text": "Nur die finale Hintergrundfarbe der App",
+          "correct": false,
+          "rationale": "Einzelne Gestaltungsdetails ersetzen kein Testkonzept."
+        }
+      ],
+      "feedback": {
+        "correct": "Die typischen Bestandteile eines Testkonzepts sind passend gewählt.",
+        "wrong": "Denken Sie an Strategie, Dokumentation, Umgebung, Teststufen, Auswertung und Planungsaspekte."
+      },
+      "progressLinks": [
+        "pv1fiae_stakeholder_greenit_testkonzept"
+      ]
+    },
+    {
+      "id": "f02",
+      "type": "followup_divider",
+      "title": "Mess-App als User Stories und Ablauflogik beschreiben",
+      "from": "produktkonzept@rebenblick-softworks.example",
+      "to": "projektteam@ausbildungsbetrieb.example",
+      "subject": "User Stories für App-Funktionen und Speichervorgang abstimmen",
+      "date": "2026-03-20",
+      "body": "Hallo,\n\nfür die mobile Mess-App sollen mehrere Kernfunktionen sauber beschrieben werden. Dazu gehören `Zeit einstellen`, `Zeitzone festlegen`, `Standort einstellen`, `Messung starten` und `Messergebnisse speichern`.\n\nBitte ordnen Sie zuerst User-Story-Grundlagen ein und leiten Sie danach passende User Stories für zentrale Funktionen ab. Anschliessend soll die Speicherroutine für den Fall mit und ohne Internetverbindung fachlich richtig beschrieben werden.\n\nViele Grüsse\nProduktkonzept"
+    },
+    {
+      "id": "ctx02",
+      "type": "context_card",
+      "title": "Kontext zu User Story und Speichervorgang",
+      "contentBlocks": [
+        {
+          "type": "text",
+          "text": "Für die App gelten folgende Regeln:\n- `Zeit einstellen` schliesst `Zeitzone festlegen` mit ein.\n- `Standort einstellen` ist nur dann zusätzlich nötig, wenn vor `Messung starten` noch kein Standort festgelegt wurde.\n- Beim Speichern der Messergebnisse wird zuerst die Internetverbindung geprüft.\n- Ohne Internet werden Ergebnisse lokal zwischengespeichert.\n- Mit Internet werden aktuelle Daten an die Datenbank gesendet; wenn das Senden scheitert, werden die aktuellen Daten lokal gespeichert.\n- Sobald lokal gepufferte Daten erfolgreich übertragen wurden, können sie gelöscht werden.\n- Am Ende wird das Ergebnis des Speichervorgangs in der App angezeigt."
+        }
+      ]
+    },
+    {
+      "id": "q06",
+      "type": "table_fill",
+      "title": "User Stories initial anstossen",
+      "prompt": "Ordnen Sie den beiden Schritten im Story-Start die passende Rolle oder Richtung zu.",
+      "columns": [
+        "Schritt im Story-Start",
+        "Passende Rolle oder Richtung"
+      ],
+      "rows": [
+        [
+          "Erste User Stories fachlich anstossen und priorisieren",
+          {
+            "key": "story_start_owner",
+            "label": "Rolle für erstes Anstossen",
+            "expected": "Product Owner bzw. fachliche Produktverantwortung",
+            "inputType": "select",
+            "placeholder": "Rolle wählen",
+            "options": [
+              "Product Owner bzw. fachliche Produktverantwortung",
+              "Nur Netzwerkadministration und Rechenzentrumsbetrieb",
+              "Erst nach vollständiger Implementierung",
+              "Erst nachdem ein ER-Diagramm fertig ist"
+            ]
+          }
+        ],
+        [
+          "Stories anschliessend fachlich und technisch konkretisieren",
+          {
+            "key": "story_start_team",
+            "label": "Richtung für die Konkretisierung",
+            "expected": "Team und fachliche Produktverantwortung gemeinsam",
+            "inputType": "select",
+            "placeholder": "Richtung wählen",
+            "options": [
+              "Team und fachliche Produktverantwortung gemeinsam",
+              "Ausschliesslich späterer Rechenzentrumsbetrieb",
+              "Nur eine fertige ER-Modellierung ohne weitere Rückfragen",
+              "Ausschliesslich nach Abschluss der Produktivsetzung"
+            ]
+          }
+        ]
+      ],
+      "feedback": {
+        "correct": "Anstoss und spätere Konkretisierung von User Stories sind fachlich passend zugeordnet.",
+        "wrong": "Achten Sie darauf, dass User Stories früh aus der fachlichen Produktverantwortung kommen und anschliessend gemeinsam verfeinert werden."
+      },
+      "progressLinks": [
+        "pv1fiae_userstories_invest_aktivitaeten"
+      ]
+    },
+    {
+      "id": "q07",
+      "type": "table_fill",
+      "title": "Bausteine einer User Story zuordnen",
+      "prompt": "Ordnen Sie den drei Bausteinen einer User Story die passende Funktion zu.",
+      "columns": [
+        "Baustein",
+        "Passende Aussage"
+      ],
+      "rows": [
+        [
+          "Rolle",
+          {
+            "key": "story_part_role",
+            "label": "Rolle",
+            "expected": "Wer möchte etwas tun?",
+            "inputType": "select",
+            "placeholder": "Aussage wählen",
+            "options": [
+              "Wer möchte etwas tun?",
+              "Was soll getan werden?",
+              "Wozu oder mit welchem Nutzen?",
+              "Welche Datenbanktabellen werden später gebraucht?"
+            ]
+          }
+        ],
+        [
+          "Wunsch",
+          {
+            "key": "story_part_goal",
+            "label": "Wunsch",
+            "expected": "Was soll getan werden?",
+            "inputType": "select",
+            "placeholder": "Aussage wählen",
+            "options": [
+              "Wozu oder mit welchem Nutzen?",
+              "Was soll getan werden?",
+              "Wer möchte etwas tun?",
+              "Welche Programmiersprache wird später genutzt?"
+            ]
+          }
+        ],
+        [
+          "Nutzen",
+          {
+            "key": "story_part_benefit",
+            "label": "Nutzen",
+            "expected": "Wozu oder mit welchem Nutzen?",
+            "inputType": "select",
+            "placeholder": "Aussage wählen",
+            "options": [
+              "Was soll getan werden?",
+              "Welche Cloud-Region wird später genutzt?",
+              "Wozu oder mit welchem Nutzen?",
+              "Wer möchte etwas tun?"
+            ]
+          }
+        ]
+      ],
+      "feedback": {
+        "correct": "Rolle, Wunsch und Nutzen sind korrekt voneinander abgegrenzt.",
+        "wrong": "Prüfen Sie, welcher Teil den Akteur, welcher die Funktion und welcher den Mehrwert beschreibt."
+      },
+      "progressLinks": [
+        "pv1fiae_userstories_invest_aktivitaeten"
+      ]
+    },
+    {
+      "id": "q08",
+      "type": "match_pairs",
+      "title": "INVEST-Kriterien zuordnen",
+      "prompt": "Ordnen Sie die sechs INVEST-Bestandteile der passenden Bedeutung zu.",
+      "layout": "table",
+      "columns": [
+        "Bestandteil",
+        "Bedeutung"
+      ],
+      "pairs": [
+        {
+          "key": "invest_i",
+          "left": "I - Independent",
+          "right": "Möglichst unabhängig von anderen Stories planbar und umsetzbar"
+        },
+        {
+          "key": "invest_n",
+          "left": "N - Negotiable",
+          "right": "Inhaltlich verhandelbar und noch nicht als starrer Vertragstext eingefroren"
+        },
+        {
+          "key": "invest_v",
+          "left": "V - Valuable",
+          "right": "Bringt für Nutzer oder Fachseite einen erkennbaren Mehrwert"
+        },
+        {
+          "key": "invest_e",
+          "left": "E - Estimable",
+          "right": "So beschrieben, dass Aufwand und Umfang abschätzbar sind"
+        },
+        {
+          "key": "invest_s",
+          "left": "S - Small",
+          "right": "Klein genug für eine überschaubare Umsetzung"
+        },
+        {
+          "key": "invest_t",
+          "left": "T - Testable",
+          "right": "Überprüfbar durch klare Kriterien oder Tests"
+        }
+      ],
+      "options": [
+        "Möglichst unabhängig von anderen Stories planbar und umsetzbar",
+        "Inhaltlich verhandelbar und noch nicht als starrer Vertragstext eingefroren",
+        "Bringt für Nutzer oder Fachseite einen erkennbaren Mehrwert",
+        "So beschrieben, dass Aufwand und Umfang abschätzbar sind",
+        "Klein genug für eine überschaubare Umsetzung",
+        "Überprüfbar durch klare Kriterien oder Tests"
+      ],
+      "feedback": {
+        "correct": "Die INVEST-Kriterien sind fachlich korrekt zugeordnet.",
+        "wrong": "Achten Sie auf die klassische Bedeutung von unabhängig, verhandelbar, wertvoll, schätzbar, klein und testbar."
+      },
+      "progressLinks": [
+        "pv1fiae_userstories_invest_aktivitaeten"
+      ]
+    },
+    {
+      "id": "q09",
+      "type": "table_fill",
+      "title": "User Stories aus App-Funktionen ableiten",
+      "prompt": "Ordnen Sie den beiden App-Funktionen jeweils die passende Rolle, den Wunsch und den Nutzen zu.",
+      "columns": [
+        "Funktion",
+        "Rolle",
+        "Wunsch",
+        "Nutzen"
+      ],
+      "rows": [
+        [
+          "Zeit einstellen",
+          {
+            "key": "story_time_role",
+            "label": "Zeit einstellen / Rolle",
+            "expected": "Als Nutzende der Mess-App",
+            "inputType": "select",
+            "placeholder": "Rolle wählen",
+            "options": [
+              "Als Nutzende der Mess-App",
+              "Als Betreiber der Stromversorgung",
+              "Als externer Paketdienst",
+              "Als Werbeagentur"
+            ]
+          },
+          {
+            "key": "story_time_goal",
+            "label": "Zeit einstellen / Wunsch",
+            "expected": "möchte ich Uhrzeit und Zeitzone passend setzen",
+            "inputType": "select",
+            "placeholder": "Wunsch wählen",
+            "options": [
+              "möchte ich Uhrzeit und Zeitzone passend setzen",
+              "möchte ich Pflanzenschutzmittel automatisch bestellen",
+              "möchte ich alle Cloud-Logs löschen",
+              "möchte ich die App ausschliesslich im Qürformat sperren"
+            ]
+          },
+          {
+            "key": "story_time_benefit",
+            "label": "Zeit einstellen / Nutzen",
+            "expected": "damit Messwerte mit korrektem Zeitbezug gespeichert werden",
+            "inputType": "select",
+            "placeholder": "Nutzen wählen",
+            "options": [
+              "damit Messwerte mit korrektem Zeitbezug gespeichert werden",
+              "damit keine Datenbank mehr benötigt wird",
+              "damit GPS dauerhaft deaktiviert bleibt",
+              "damit nur noch PDF-Dateien erzeugt werden"
+            ]
+          }
+        ],
+        [
+          "Messung starten",
+          {
+            "key": "story_measure_role",
+            "label": "Messung starten / Rolle",
+            "expected": "Als Nutzende der Mess-App",
+            "inputType": "select",
+            "placeholder": "Rolle wählen",
+            "options": [
+              "Als Nutzende der Mess-App",
+              "Als Betreiber der Stromversorgung",
+              "Als externer Paketdienst",
+              "Als Werbeagentur"
+            ]
+          },
+          {
+            "key": "story_measure_goal",
+            "label": "Messung starten / Wunsch",
+            "expected": "möchte ich am aktuellen Standort eine Messung auslösen",
+            "inputType": "select",
+            "placeholder": "Wunsch wählen",
+            "options": [
+              "möchte ich am aktuellen Standort eine Messung auslösen",
+              "möchte ich die komplette Datenbank exportieren",
+              "möchte ich die Zeitzone jedes Sensors manuell deaktivieren",
+              "möchte ich alle Kartenansichten ausblenden"
+            ]
+          },
+          {
+            "key": "story_measure_benefit",
+            "label": "Messung starten / Nutzen",
+            "expected": "damit aktuelle Felddaten erfasst und weiterverarbeitet werden können",
+            "inputType": "select",
+            "placeholder": "Nutzen wählen",
+            "options": [
+              "damit aktuelle Felddaten erfasst und weiterverarbeitet werden können",
+              "damit Messwerte nie lokal gespeichert werden dürfen",
+              "damit die App ohne Sensoren lauffähig bleibt",
+              "damit nur noch Marketingtexte angezeigt werden"
+            ]
+          }
+        ]
+      ],
+      "feedback": {
+        "correct": "Die beiden User Stories sind fachlich passend aus den App-Funktionen abgeleitet.",
+        "wrong": "Achten Sie darauf, dass Rolle, Wunsch und Nutzen direkt zur jeweiligen App-Funktion passen."
+      },
+      "progressLinks": [
+        "pv1fiae_userstories_invest_aktivitaeten"
+      ]
+    },
+    {
+      "id": "q10",
+      "type": "table_fill",
+      "title": "Ablauf beim Speichern der Messergebnisse aufteilen",
+      "prompt": "Ordnen Sie den vier Fällen der Speicherroutine die passende Reaktion zu.",
+      "columns": [
+        "Fall der Speicherroutine",
+        "Passende Reaktion"
+      ],
+      "rows": [
+        [
+          "Es wird keine Internetverbindung festgestellt.",
+          {
+            "key": "save_case_offline",
+            "label": "Reaktion ohne Internet",
+            "expected": "Aktuelle Messergebnisse lokal zwischenspeichern",
+            "inputType": "select",
+            "placeholder": "Reaktion wählen",
+            "options": [
+              "Aktuelle Messergebnisse lokal zwischenspeichern",
+              "Aktuelle Messergebnisse verwerfen",
+              "Nur alte Pufferdaten senden",
+              "Lokale Pufferdaten sofort löschen"
+            ]
+          }
+        ],
+        [
+          "Internet ist verfügbar und das Senden der aktuellen Daten gelingt.",
+          {
+            "key": "save_case_online_success",
+            "label": "Reaktion bei erfolgreichem Senden",
+            "expected": "Aktuelle Daten an die Datenbank senden und danach lokal gepufferte Daten bei erfolgreicher Übertragung bereinigen",
+            "inputType": "select",
+            "placeholder": "Reaktion wählen",
+            "options": [
+              "Aktuelle Daten an die Datenbank senden und danach lokal gepufferte Daten bei erfolgreicher Übertragung bereinigen",
+              "Nur einen Fehlerdialog anzeigen und nichts speichern",
+              "Die aktuelle Messung niemals senden",
+              "Vor dem Senden alle lokalen Pufferdaten löschen"
+            ]
+          }
+        ],
+        [
+          "Internet ist verfügbar, aber das Senden der aktuellen Daten scheitert.",
+          {
+            "key": "save_case_online_fail",
+            "label": "Reaktion bei Sendefehler",
+            "expected": "Aktuelle Daten lokal speichern",
+            "inputType": "select",
+            "placeholder": "Reaktion wählen",
+            "options": [
+              "Aktuelle Daten lokal speichern",
+              "Aktuelle Daten endgültig verwerfen",
+              "Nur die Zeitzone erneut abfragen",
+              "Alle lokal gespeicherten Daten sofort löschen"
+            ]
+          }
+        ],
+        [
+          "Die Speicherroutine ist fachlich abgeschlossen.",
+          {
+            "key": "save_case_feedback",
+            "label": "Abschluss der Routine",
+            "expected": "Ergebnis des Speichervorgangs in der App anzeigen",
+            "inputType": "select",
+            "placeholder": "Reaktion wählen",
+            "options": [
+              "Ergebnis des Speichervorgangs in der App anzeigen",
+              "Die App kommentarlos schliessen",
+              "Nur die Standortfunktion deaktivieren",
+              "Sofort ein neues ER-Diagramm erzeugen"
+            ]
+          }
+        ]
+      ],
+      "feedback": {
+        "correct": "Die Aktivitätslogik für den Speichervorgang ist sauber in ihre Fälle aufgeteilt.",
+        "wrong": "Achten Sie getrennt auf Offline-Pufferung, Online-Übertragung, Fehlerfall, Bereinigung lokaler Pufferdaten und die Rückmeldung in der App."
+      },
+      "progressLinks": [
+        "pv1fiae_userstories_invest_aktivitaeten"
+      ]
+    },
+    {
+      "id": "f03",
+      "type": "followup_divider",
+      "title": "Speicherkonzept und Dokumentdaten strukturieren",
+      "from": "datenarchitektur@rebenblick-softworks.example",
+      "to": "projektteam@ausbildungsbetrieb.example",
+      "subject": "Transaktionsgrundlagen, Dokumentdatenbank und JSON-Struktur abstimmen",
+      "date": "2026-03-20",
+      "body": "Hallo,\n\nfür verschiedene Fachbereiche müssen wir relationale und dokumentenorientierte Datenhaltung sauber gegeneinander abgrenzen. Bitte ordnen Sie zuerst die ACID-Eigenschaften und die Grundbegriffe der Dokumentdatenbank ein. Danach soll aus einem relationalen Ausgangsstand eine passende JSON-Struktur für ein Weingut mit Verkaufsstellen abgeleitet werden.\n\nViele Grüsse\nDatenarchitektur",
+      "visuals": [
+        {
+          "type": "code_block",
+          "eyebrow": "Arbeitsstand",
+          "title": "Ausschnitt aus den relationalen Quelldaten",
+          "codeTitle": "weingüter_und_verkaufsstellen.txt",
+          "language": "text",
+          "code": "weingüter\nid | name            | leitbild\n1  | Hof Morgenhang  | Ressourcenschonender Weinbau ohne unnötige Spritzmittel\n2  | Weingut Talwiese| Begrünte Flächen und wassersparende Pflege\n\nverkaufsstellen\nid | weingut_id | strasse      | plz   | ort\n1  | 1          | Hauptstr. 12 | 23456 | Hahne\n2  | 1          | Am Markt 2   | 23457 | Buchheim"
+        }
+      ]
+    },
+    {
+      "id": "q11",
+      "type": "match_pairs",
+      "title": "ACID-Eigenschaften zuordnen",
+      "prompt": "Ordnen Sie die vier ACID-Eigenschaften der passenden Bedeutung zu.",
+      "layout": "table",
+      "columns": [
+        "Eigenschaft",
+        "Bedeutung"
+      ],
+      "pairs": [
+        {
+          "key": "acid_a",
+          "left": "Atomarität",
+          "right": "Eine Transaktion wird ganz oder gar nicht ausgeführt"
+        },
+        {
+          "key": "acid_c",
+          "left": "Konsistenz",
+          "right": "Daten bleiben vor und nach der Transaktion in einem gültigen Zustand"
+        },
+        {
+          "key": "acid_i",
+          "left": "Isolation",
+          "right": "Parallel laufende Transaktionen beeinflussen sich nicht sichtbar gegenseitig"
+        },
+        {
+          "key": "acid_d",
+          "left": "Dauerhaftigkeit",
+          "right": "Erfolgreich abgeschlossene Transaktionen bleiben dauerhaft gespeichert"
+        }
+      ],
+      "options": [
+        "Eine Transaktion wird ganz oder gar nicht ausgeführt",
+        "Daten bleiben vor und nach der Transaktion in einem gültigen Zustand",
+        "Parallel laufende Transaktionen beeinflussen sich nicht sichtbar gegenseitig",
+        "Erfolgreich abgeschlossene Transaktionen bleiben dauerhaft gespeichert"
+      ],
+      "feedback": {
+        "correct": "Die vier ACID-Eigenschaften sind fachlich korrekt zugeordnet.",
+        "wrong": "Prüfen Sie, welche Eigenschaft Ganz-oder-gar-nicht, Gültigkeit, Abschirmung paralleler Zugriffe und Dauerhaftigkeit beschreibt."
+      },
+      "progressLinks": [
+        "pv1fiae_acid_json_dokumentdatenbanken"
+      ]
+    },
+    {
+      "id": "q12",
+      "type": "match_pairs",
+      "title": "Relationale und dokumentenorientierte Begriffe verbinden",
+      "prompt": "Ordnen Sie den relationalen Begriffen die passende Entsprechung in einer Dokumentdatenbank zu.",
+      "layout": "table",
+      "columns": [
+        "Relationaler Begriff",
+        "Entsprechung in der Dokumentdatenbank"
+      ],
+      "pairs": [
+        {
+          "key": "doc_term_db",
+          "left": "Relationale Datenbank",
+          "right": "Database"
+        },
+        {
+          "key": "doc_term_table",
+          "left": "Tabelle",
+          "right": "Collection"
+        },
+        {
+          "key": "doc_term_row",
+          "left": "Datensatz / Zeile",
+          "right": "Document"
+        },
+        {
+          "key": "doc_term_col",
+          "left": "Spalte",
+          "right": "Field"
+        }
+      ],
+      "options": [
+        "Database",
+        "Collection",
+        "Document",
+        "Field"
+      ],
+      "feedback": {
+        "correct": "Die Grundbegriffe der relationalen und dokumentenorientierten Sicht sind passend verbunden.",
+        "wrong": "Achten Sie auf die typische Abbildung von Tabelle zu Collection, Zeile zu Document und Spalte zu Field."
+      },
+      "progressLinks": [
+        "pv1fiae_acid_json_dokumentdatenbanken"
+      ]
+    },
+    {
+      "id": "q13",
+      "type": "table_fill",
+      "title": "JSON-Struktur für ein Weingut aufbauen",
+      "prompt": "Ordnen Sie den drei Strukturaspekten die passende JSON-Gestaltung für das Dokument `Hof Morgenhang` zu.",
+      "columns": [
+        "Strukturaspekt",
+        "Passende JSON-Gestaltung"
+      ],
+      "rows": [
+        [
+          "Weingut als Hauptdokument",
+          {
+            "key": "json_root",
+            "label": "Hauptdokument",
+            "expected": "Stammdaten wie `id`, `name` und `leitbild` liegen auf oberster Ebene des Weingut-Dokuments",
+            "inputType": "select",
+            "placeholder": "Gestaltung wählen",
+            "options": [
+              "Stammdaten wie `id`, `name` und `leitbild` liegen auf oberster Ebene des Weingut-Dokuments",
+              "Alle Weingutwerte werden ohne Schlüssel nur als Array gespeichert",
+              "Jede Verkaufsstelle wird zu einem eigenen Oberfeld wie `verkaufsstelle_1_strasse`",
+              "Das Hauptdokument enthält ausschliesslich die Postleitzahlen der Verkaufsstellen"
+            ]
+          }
+        ],
+        [
+          "Wiederholbare Verkaufsstellen",
+          {
+            "key": "json_sales_array",
+            "label": "Verkaufsstellen",
+            "expected": "Verkaufsstellen werden als Array eingebetteter Unterdokumente modelliert",
+            "inputType": "select",
+            "placeholder": "Gestaltung wählen",
+            "options": [
+              "Verkaufsstellen werden als Array eingebetteter Unterdokumente modelliert",
+              "Verkaufsstellen werden in starre Einzelattribute zerlegt",
+              "Es darf nur genau eine Verkaufsstelle als einzelnes Objekt geben",
+              "Verkaufsstellen werden als unbeschriftete Liste einzelner Strings abgelegt"
+            ]
+          }
+        ],
+        [
+          "Eine einzelne Verkaufsstelle",
+          {
+            "key": "json_sales_entry",
+            "label": "Einzelne Verkaufsstelle",
+            "expected": "Jede Verkaufsstelle enthält strukturierte Felder wie `id`, `strasse`, `plz` und `ort`",
+            "inputType": "select",
+            "placeholder": "Gestaltung wählen",
+            "options": [
+              "Jede Verkaufsstelle enthält strukturierte Felder wie `id`, `strasse`, `plz` und `ort`",
+              "Jede Verkaufsstelle besteht nur aus dem Ortsnamen ohne weitere Schlüssel",
+              "Jede Verkaufsstelle wird als freie Textzeile ohne Feldstruktur abgelegt",
+              "Jede Verkaufsstelle ersetzt das gesamte Weingut-Dokument"
+            ]
+          }
+        ]
+      ],
+      "feedback": {
+        "correct": "Hauptdokument, Verkaufsstellen-Array und Unterdokumente sind fachlich passend aufgebaut.",
+        "wrong": "Achten Sie auf das Weingut als Hauptdokument, wiederholbare Verkaufsstellen als Array und klar strukturierte Felder in jedem Unterdokument."
+      },
+      "progressLinks": [
+        "pv1fiae_acid_json_dokumentdatenbanken"
+      ]
+    },
+    {
+      "id": "q14",
+      "type": "short_text",
+      "title": "Einbettung der Verkaufsstellen begründen",
+      "prompt": "Begründen Sie in 2-4 Sätzen, warum die Verkaufsstellen hier als Array in das Weingut-Dokument eingebettet werden können.",
+      "minChars": 100,
+      "requiredKeywords": [
+        "weingut",
+        "verkaufsstellen",
+        "gemeinsam"
+      ],
+      "expectedOutline": "Begründet die Einbettung damit, dass Weingut und Verkaufsstellen häufig gemeinsam gelesen werden und die Anzahl der Verkaufsstellen pro Weingut überschaubar bleibt.",
+      "feedback": {
+        "correct": "Die eingebettete Struktur ist fachlich nachvollziehbar begründet.",
+        "wrong": "Arbeiten Sie klarer heraus, dass Weingut und Verkaufsstellen häufig gemeinsam gelesen werden und die Anzahl der Untereinträge begrenzt bleibt."
+      },
+      "progressLinks": [
+        "pv1fiae_acid_json_dokumentdatenbanken"
+      ]
+    },
+    {
+      "id": "f04",
+      "type": "followup_divider",
+      "title": "Weinbergsdaten modellieren und anzeigen",
+      "from": "fachmodell@rebenblick-softworks.example",
+      "to": "projektteam@ausbildungsbetrieb.example",
+      "subject": "ER-Modell für Weinbau und geeignete Darstellungsform für Sektoren abstimmen",
+      "date": "2026-03-20",
+      "body": "Hallo,\n\nfür die Weinbauverwaltung brauchen wir ein fachlich passendes ER-Modell und anschliessend eine gute Darstellungsform für die einzelnen Sektoren eines Weinbergs. Bitte wählen Sie zuerst das stimmigste Modell aus und begründen Sie danach, welche Anzeigeformen für die Übersicht der Sektoren sinnvoll sind.\n\nViele Grüsse\nFachmodell"
+    },
+    {
+      "id": "ctx04",
+      "type": "context_card",
+      "title": "Kontext zum ER-Modell",
+      "contentBlocks": [
+        {
+          "type": "text",
+          "text": "Für das Fachmodell gelten diese Regeln:\n- Ein Weingut speichert `name`, `telefon` und `email`.\n- Ein Weinberg besitzt eine `bezeichnung`.\n- Jeder Sektor gehört genau zu einem Weingut und liegt in genau einem Weinberg.\n- Jeder Sektor besitzt `bezeichnung` und `lage`.\n- In jedem Sektor wächst genau eine Rebsorte mit `name`.\n- Pflanzenschutzmittel besitzen `name`, `anwendungshinweise` und `gefahrenhinweise`.\n- Wenn ein Pflanzenschutzmittel in einem Sektor eingesetzt wird, müssen `menge` und `datum` für diesen Einsatz festgehalten werden."
+        }
+      ]
+    },
+    {
+      "id": "q15",
+      "type": "single_choice",
+      "title": "Passendes ER-Modell für den Weinbau auswählen",
+      "prompt": "Welches ER-Modell bildet die beschriebene Fachsituation am treffendsten ab?",
+      "options": [
+        {
+          "label": "Modell A",
+          "diagram": {
+            "type": "erm",
+            "width": 980,
+            "height": 520,
+            "entities": [
+              {
+                "id": "weingut",
+                "title": "WEINGUT",
+                "x": 28,
+                "y": 26,
+                "width": 190,
+                "fields": [
+                  "PK weingut_id",
+                  "name",
+                  "telefon",
+                  "email"
+                ]
+              },
+              {
+                "id": "weinberg",
+                "title": "WEINBERG",
+                "x": 404,
+                "y": 26,
+                "width": 180,
+                "fields": [
+                  "PK weinberg_id",
+                  "bezeichnung"
+                ]
+              },
+              {
+                "id": "sektor",
+                "title": "SEKTOR",
+                "x": 210,
+                "y": 212,
+                "width": 220,
+                "fields": [
+                  "PK sektor_id",
+                  "bezeichnung",
+                  "lage"
+                ]
+              },
+              {
+                "id": "rebsorte",
+                "title": "REBSORTE",
+                "x": 28,
+                "y": 366,
+                "width": 180,
+                "fields": [
+                  "PK rebsorte_id",
+                  "name"
+                ]
+              },
+              {
+                "id": "psm",
+                "title": "PFLANZENSCHUTZMITTEL",
+                "x": 560,
+                "y": 212,
+                "width": 300,
+                "fields": [
+                  "PK psm_id",
+                  "name",
+                  "anwendungshinweise",
+                  "gefahrenhinweise"
+                ]
+              }
+            ],
+            "relations": [
+              {
+                "from": "weingut",
+                "to": "sektor",
+                "label": "gehört zu",
+                "fromCard": "1",
+                "toCard": "0..n"
+              },
+              {
+                "from": "weinberg",
+                "to": "sektor",
+                "label": "liegt in",
+                "fromCard": "1",
+                "toCard": "1..n"
+              },
+              {
+                "from": "rebsorte",
+                "to": "sektor",
+                "label": "wächst in",
+                "fromCard": "1",
+                "toCard": "0..n"
+              },
+              {
+                "from": "sektor",
+                "to": "psm",
+                "label": "erhält (Menge, Datum)",
+                "fromCard": "0..n",
+                "toCard": "0..n"
+              }
+            ]
+          },
+          "rationale": "Dieses Modell trennt Weingut, Weinberg, Sektor, Rebsorte und Pflanzenschutzmittel sauber und führt Menge sowie Datum passend an der n:m-Beziehung."
+        },
+        {
+          "label": "Modell B",
+          "diagram": {
+            "type": "erm",
+            "width": 940,
+            "height": 470,
+            "entities": [
+              {
+                "id": "weingut",
+                "title": "WEINGUT",
+                "x": 26,
+                "y": 24,
+                "width": 190,
+                "fields": [
+                  "PK weingut_id",
+                  "name",
+                  "telefon",
+                  "email"
+                ]
+              },
+              {
+                "id": "weinberg",
+                "title": "WEINBERG",
+                "x": 266,
+                "y": 24,
+                "width": 180,
+                "fields": [
+                  "PK weinberg_id",
+                  "bezeichnung"
+                ]
+              },
+              {
+                "id": "sektor",
+                "title": "SEKTOR",
+                "x": 266,
+                "y": 214,
+                "width": 280,
+                "fields": [
+                  "PK sektor_id",
+                  "bezeichnung",
+                  "lage",
+                  "psm_name",
+                  "menge",
+                  "datum"
+                ]
+              },
+              {
+                "id": "rebsorte",
+                "title": "REBSORTE",
+                "x": 612,
+                "y": 214,
+                "width": 180,
+                "fields": [
+                  "PK rebsorte_id",
+                  "name"
+                ]
+              }
+            ],
+            "relations": [
+              {
+                "from": "weingut",
+                "to": "weinberg",
+                "label": "besitzt",
+                "fromCard": "1",
+                "toCard": "0..n"
+              },
+              {
+                "from": "weinberg",
+                "to": "sektor",
+                "label": "enthält",
+                "fromCard": "1",
+                "toCard": "1..n"
+              },
+              {
+                "from": "rebsorte",
+                "to": "sektor",
+                "label": "wächst in",
+                "fromCard": "1",
+                "toCard": "0..n"
+              }
+            ]
+          },
+          "rationale": "Pflanzenschutzmittel, Menge und Datum werden hier unpassend in die Sektor-Entität gedrückt statt als eigene Mittel mit Einsatzbeziehung modelliert."
+        },
+        {
+          "label": "Modell C",
+          "diagram": {
+            "type": "erm",
+            "width": 960,
+            "height": 500,
+            "entities": [
+              {
+                "id": "weingut",
+                "title": "WEINGUT",
+                "x": 30,
+                "y": 30,
+                "width": 190,
+                "fields": [
+                  "PK weingut_id",
+                  "name",
+                  "telefon",
+                  "email"
+                ]
+              },
+              {
+                "id": "weinberg",
+                "title": "WEINBERG",
+                "x": 256,
+                "y": 30,
+                "width": 180,
+                "fields": [
+                  "PK weinberg_id",
+                  "bezeichnung"
+                ]
+              },
+              {
+                "id": "sektor",
+                "title": "SEKTOR",
+                "x": 256,
+                "y": 226,
+                "width": 220,
+                "fields": [
+                  "PK sektor_id",
+                  "bezeichnung",
+                  "lage"
+                ]
+              },
+              {
+                "id": "rebsorte",
+                "title": "REBSORTE",
+                "x": 26,
+                "y": 382,
+                "width": 180,
+                "fields": [
+                  "PK rebsorte_id",
+                  "name"
+                ]
+              },
+              {
+                "id": "psm",
+                "title": "PFLANZENSCHUTZMITTEL",
+                "x": 566,
+                "y": 214,
+                "width": 290,
+                "fields": [
+                  "PK psm_id",
+                  "name",
+                  "anwendungshinweise",
+                  "gefahrenhinweise",
+                  "menge",
+                  "datum"
+                ]
+              }
+            ],
+            "relations": [
+              {
+                "from": "weingut",
+                "to": "sektor",
+                "label": "gehört zu",
+                "fromCard": "1",
+                "toCard": "0..n"
+              },
+              {
+                "from": "weinberg",
+                "to": "sektor",
+                "label": "liegt in",
+                "fromCard": "1",
+                "toCard": "1..n"
+              },
+              {
+                "from": "rebsorte",
+                "to": "sektor",
+                "label": "wächst in",
+                "fromCard": "1",
+                "toCard": "0..n"
+              },
+              {
+                "from": "sektor",
+                "to": "psm",
+                "label": "erhält",
+                "fromCard": "0..n",
+                "toCard": "0..n"
+              }
+            ]
+          },
+          "rationale": "Die Beziehung zwischen Sektor und Pflanzenschutzmittel ist zwar n:m, aber Menge und Datum gehören nicht in die Stammdaten des Mittels."
+        },
+        {
+          "label": "Modell D",
+          "diagram": {
+            "type": "erm",
+            "width": 950,
+            "height": 470,
+            "entities": [
+              {
+                "id": "weingut",
+                "title": "WEINGUT",
+                "x": 32,
+                "y": 26,
+                "width": 190,
+                "fields": [
+                  "PK weingut_id",
+                  "name",
+                  "telefon",
+                  "email"
+                ]
+              },
+              {
+                "id": "sektor",
+                "title": "SEKTOR",
+                "x": 280,
+                "y": 26,
+                "width": 240,
+                "fields": [
+                  "PK sektor_id",
+                  "bezeichnung",
+                  "lage"
+                ]
+              },
+              {
+                "id": "rebsorte",
+                "title": "REBSORTE",
+                "x": 588,
+                "y": 26,
+                "width": 180,
+                "fields": [
+                  "PK rebsorte_id",
+                  "name"
+                ]
+              },
+              {
+                "id": "psm",
+                "title": "PFLANZENSCHUTZMITTEL",
+                "x": 588,
+                "y": 220,
+                "width": 290,
+                "fields": [
+                  "PK psm_id",
+                  "name",
+                  "anwendungshinweise",
+                  "gefahrenhinweise"
+                ]
+              }
+            ],
+            "relations": [
+              {
+                "from": "weingut",
+                "to": "sektor",
+                "label": "gehört zu",
+                "fromCard": "1",
+                "toCard": "0..n"
+              },
+              {
+                "from": "rebsorte",
+                "to": "sektor",
+                "label": "wächst in",
+                "fromCard": "0..n",
+                "toCard": "0..n"
+              },
+              {
+                "from": "sektor",
+                "to": "psm",
+                "label": "erhält",
+                "fromCard": "1",
+                "toCard": "1"
+              }
+            ]
+          },
+          "rationale": "Hier fehlt der Weinberg als eigener Modellbestandteil, und sowohl Rebsorten- als auch Pflanzenschutzmittel-Beziehungen sind fachlich falsch kardinalisiert."
+        }
+      ],
+      "correctIndex": 0,
+      "feedback": {
+        "correct": "Das ausgewählte ER-Modell trennt die Entitäten sauber und führt Menge sowie Datum korrekt an der Einsatzbeziehung.",
+        "wrong": "Achten Sie auf die funf Entitäten, die Rolle des Sektors als Knotenpunkt und darauf, wo `Menge` und `Datum` fachlich hingehören."
+      },
+      "progressLinks": [
+        "pv1fiae_erd_ui_weinbau"
+      ]
+    },
+    {
+      "id": "q16",
+      "type": "multi_select",
+      "title": "Kernaussagen zum ER-Modell prüfen",
+      "prompt": "Welche Aussagen müssen für ein fachlich passendes ER-Modell dieser Weinbau-Situation gelten? Wählen Sie alle passenden Antworten.",
+      "options": [
+        {
+          "text": "Jeder Sektor gehört genau einem Weingut und liegt in genau einem Weinberg.",
+          "correct": true,
+          "rationale": "Der Sektor ist fachlich jeweils genau einem Weingut und einem Weinberg zugeordnet."
+        },
+        {
+          "text": "Pro Sektor wird genau eine Rebsorte modelliert.",
+          "correct": true,
+          "rationale": "Die Aufgabenbeschreibung ordnet jedem Sektor genau eine Rebsorte zu."
+        },
+        {
+          "text": "Menge und Datum gehören an die Beziehung zwischen Sektor und Pflanzenschutzmittel.",
+          "correct": true,
+          "rationale": "Beide Werte beschreiben den konkreten Einsatz des Mittels, nicht das Mittel als Stammdatensatz."
+        },
+        {
+          "text": "Ein Weinberg braucht keine Verbindung zu Sektoren, solange die Rebsorte bekannt ist.",
+          "correct": false,
+          "rationale": "Die Sektoren sind ausdrücklich Teil des Weinbergs und müssen modelliert verbunden sein."
+        },
+        {
+          "text": "Anwendungshinweise und Gefahrenhinweise gehören nur an den einzelnen Einsatz und nicht an das Pflanzenschutzmittel selbst.",
+          "correct": false,
+          "rationale": "Diese Hinweise beschreiben das Mittel und gehören deshalb in dessen Stammdaten."
+        }
+      ],
+      "feedback": {
+        "correct": "Die Schlüsselaussagen zum ER-Modell sind richtig erkannt.",
+        "wrong": "Prüfen Sie noch einmal die Zuordnung von Rebsorte, Sektor, Weinberg und den Einsatzwerten `Menge` und `Datum`."
+      },
+      "progressLinks": [
+        "pv1fiae_erd_ui_weinbau"
+      ]
+    },
+    {
+      "id": "q17",
+      "type": "multi_select",
+      "title": "Sektoren in der Oberfläche darstellen",
+      "prompt": "Welche Darstellungsformen können für die Anzeige von Weinberg-Sektoren fachlich sinnvoll sein? Wählen Sie alle passenden Antworten.",
+      "options": [
+        {
+          "text": "Listen- oder Tabellendarstellung",
+          "correct": true,
+          "rationale": "Eine Liste oder Tabelle erlaubt eine schnelle und übersichtliche Sicht auf die Datensätze."
+        },
+        {
+          "text": "Kachel- oder Kartendarstellung",
+          "correct": true,
+          "rationale": "Kacheln können einzelne Sektoren kompakt und visuell fokussiert präsentieren."
+        },
+        {
+          "text": "Kartendarstellung mit geographischer Einordnung",
+          "correct": true,
+          "rationale": "Bei lagebezogenen Daten kann eine Karte das Arbeiten mit Gebieten deutlich erleichtern."
+        },
+        {
+          "text": "Audiowellenform mit Lautstärkebalken",
+          "correct": false,
+          "rationale": "Eine Audiowellenform hat keinen fachlichen Bezug zur Sektorverwaltung."
+        },
+        {
+          "text": "Kreisdiagramm für die Schreibweise der Strassennamen",
+          "correct": false,
+          "rationale": "Diese Form unterstützt die gezeigte Sektoransicht nicht sinnvoll."
+        }
+      ],
+      "feedback": {
+        "correct": "Die fachlich sinnvollen Anzeigeformen für Sektoren sind richtig erkannt.",
+        "wrong": "Achten Sie auf Darstellungen, die tabellarische Übersicht, kompakte Detailkarten oder geographische Lage sinnvoll unterstützen."
+      },
+      "progressLinks": [
+        "pv1fiae_erd_ui_weinbau"
+      ]
+    },
+    {
+      "id": "q18",
+      "type": "short_text",
+      "title": "Geeignete Anzeigeform bei lagebezogenen Sektoren wählen",
+      "prompt": "Begründen Sie in 1-3 Sätzen, welche Anzeigeform bei lagebezogenen Sektoren am stärksten ist.",
+      "minChars": 80,
+      "requiredKeywords": [
+        "karte",
+        "lage"
+      ],
+      "expectedOutline": "Begründet die Kartendarstellung damit, dass die Lage der Sektoren fachlich wichtig ist und die geographische Einordnung direkt sichtbar werden muss.",
+      "feedback": {
+        "correct": "Die Anzeigeform für lagebezogene Sektoren ist fachlich treffend begründet.",
+        "wrong": "Wenn die Positionen der Sektoren fachlich relevant sind, sollte Ihre Begründung den Lagebezug und die Kartenansicht deutlicher machen."
+      },
+      "progressLinks": [
+        "pv1fiae_erd_ui_weinbau"
+      ]
+    }
+  ]
+}

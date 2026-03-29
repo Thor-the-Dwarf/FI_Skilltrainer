@@ -1,0 +1,161 @@
+{
+  "scenario": {
+    "company": "Ausbildungsbetrieb IT-Service",
+    "scale": "Regional, 140 Mitarbeitende",
+    "context": "Station 7 des Tageslaufs: Netzwerkfunktion prüfen, warten und Konfiguration nachhalten.",
+    "mission": "Sie planen Schnelltests, vorbeugende Wartung und die saubere Dokumentation von Konfigurationsänderungen.",
+    "station": {
+      "id": "LF03-ST-07",
+      "department": "Support und Betrieb",
+      "profile": "Verbindungstest, Wartung, Konfigurationsänderung und Monitoring",
+      "constraints": [
+        "Änderungen nachvollziehbar halten",
+        "Vorbeugende Wartung ernst nehmen",
+        "Tests zuerst auf die Basis ausrichten"
+      ]
+    },
+    "customerRequest": {
+      "from": "betrieb.teamlead@ausbildungsbetrieb.example",
+      "to": "support.team@ausbildungsbetrieb.example",
+      "subject": "Station 07: Wartungs- und Pruefablauf für Client-Netze vorbereiten",
+      "date": "2026-03-13",
+      "body": "Bitte erarbeiten Sie für das Client-Netz einen kompakten Prüf- und Wartungsablauf. Wichtig sind Basisdiagnose, geordnete Konfigurationsänderung und eine kurze Wartungsnotiz."
+    }
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "type": "single_choice",
+      "title": "Erster Schritt im Verbindungstest",
+      "prompt": "Was ist bei einem gemeldeten Verbindungsproblem als erster Schritt am sinnvollsten?",
+      "options": [
+        {
+          "text": "Physische Verbindung und Link-Status prüfen",
+          "rationale": "Damit wird die technische Basis zuerst abgesichert."
+        },
+        {
+          "text": "Ohne Analyse sofort das komplette Gerät austauschen",
+          "rationale": "Das ist ohne Befund nicht wirtschaftlich."
+        },
+        {
+          "text": "Nur den Namen des Clients ändern",
+          "rationale": "Das hilft bei der Erstdiagnose nicht weiter."
+        }
+      ],
+      "correctIndex": 0,
+      "feedback": {
+        "correct": "Richtig: Diagnose startet bei der Basisverbindung.",
+        "wrong": "Nicht passend: Bitte erst die physische Grundlage prüfen."
+      },
+      "progressLinks": [
+        "lf03_pruefen_warten"
+      ]
+    },
+    {
+      "id": "q2",
+      "type": "multi_select",
+      "title": "Vorbeugende Wartung im Client-Netz",
+      "prompt": "Welche Massnahmen gehören zu einer sinnvollen vorbeugenden Wartung? (Mehrfachauswahl)",
+      "options": [
+        {
+          "text": "Wiederkehrende Störungen auswerten und dokumentieren",
+          "correct": true,
+          "rationale": "Mustererkennung ist Grundlage für nachhaltige Verbesserungen."
+        },
+        {
+          "text": "Firmware- oder Konfigurationsänderungen in Wartungsfenstern planen",
+          "correct": true,
+          "rationale": "Das reduziert Betriebsrisiken."
+        },
+        {
+          "text": "Konfigurationsstände vor Änderungen sichern",
+          "correct": true,
+          "rationale": "Das ermöglicht eine schnelle Rücknahme."
+        },
+        {
+          "text": "Warnmeldungen grundsätzlich ignorieren",
+          "correct": false,
+          "rationale": "Warnungen können auf kommende Störungen hinweisen."
+        },
+        {
+          "text": "Nach Änderungen Verbindung und Namensauflösung prüfen",
+          "correct": true,
+          "rationale": "So wird die Wirkung der Änderung direkt abgesichert."
+        }
+      ],
+      "feedback": {
+        "correct": "Richtig: Sie koppeln Wartung, Rückfalloption und Wirksamkeitsprüfung.",
+        "wrong": "Teilweise falsch: Bitte Vorbeugung, Sicherung und Nachtests stärker gewichten."
+      },
+      "progressLinks": [
+        "lf03_pruefen_warten",
+        "lf03_komponenten_konfigurieren"
+      ]
+    },
+    {
+      "id": "q3",
+      "type": "ordering",
+      "title": "Änderung an einer Netzwerkkonfiguration",
+      "prompt": "Ordnen Sie die Schritte für eine saubere Konfigurationsänderung.",
+      "items": [
+        "Funktionstest und Monitoring prüfen",
+        "Änderung im Ticket oder Auftrag freigeben",
+        "Alten Konfigurationsstand sichern",
+        "Änderung umsetzen",
+        "Ergebnis und neuen Stand dokumentieren"
+      ],
+      "correctOrder": [
+        "Änderung im Ticket oder Auftrag freigeben",
+        "Alten Konfigurationsstand sichern",
+        "Änderung umsetzen",
+        "Funktionstest und Monitoring prüfen",
+        "Ergebnis und neuen Stand dokumentieren"
+      ],
+      "feedback": {
+        "correct": "Richtig: So bleibt die Änderung steuerbar und nachvollziehbar.",
+        "wrong": "Nicht optimal: Bitte Freigabe, Sicherung, Änderung, Test und Doku klar hintereinander denken."
+      },
+      "progressLinks": [
+        "lf03_komponenten_konfigurieren",
+        "lf03_pruefen_warten"
+      ]
+    },
+    {
+      "id": "q4",
+      "type": "number",
+      "title": "Geplante Wartungszeit",
+      "prompt": "Drei Wartungsfenster pro Monat dauern jeweils 45 Minuten. Wie viele Minuten Wartungszeit sind insgesamt geplant?",
+      "expected": 135,
+      "toleranceAbs": 0,
+      "showExpectedFormula": "3 * 45 = 135 Minuten",
+      "feedback": {
+        "correct": "Richtig gerechnet.",
+        "wrong": "Bitte Anzahl der Wartungsfenster mit der Dauer multiplizieren."
+      },
+      "progressLinks": [
+        "lf03_pruefen_warten"
+      ]
+    },
+    {
+      "id": "q5",
+      "type": "short_text",
+      "title": "Wartungsnotiz verfassen",
+      "prompt": "Schreiben Sie in 4-6 Sätzen eine Wartungsnotiz mit durchgeführter Konfiguration, Prüfergebnis und nächstem Termin.",
+      "minChars": 150,
+      "requiredKeywords": [
+        "wartung",
+        "konfiguration",
+        "nächster termin"
+      ],
+      "expectedOutline": "Änderung, Testlage und Folgetermin kurz und nachvollziehbar festhalten.",
+      "feedback": {
+        "correct": "Richtig: Die Notiz ist für Betrieb und Nachverfolgung gut nutzbar.",
+        "wrong": "Bitte Wartung, Konfigurationsänderung und Folgetermin klarer trennen."
+      },
+      "progressLinks": [
+        "lf03_pruefen_warten",
+        "lf03_komponenten_konfigurieren"
+      ]
+    }
+  ]
+}

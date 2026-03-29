@@ -1,0 +1,236 @@
+{
+  "scenario": {
+    "company": "MediTrust IT GmbH",
+    "scale": "IT-Betrieb für Praxis- und Verwaltungsumgebungen mit personenbezogenen Daten",
+    "context": "In mehreren Fachanwendungen werden personenbezogene Daten verarbeitet. Nach einem unklaren Export soll jetzt sauber getrennt werden, was rechtlich, organisatorisch und technisch zum Datenschutz gehört.",
+    "mission": "Grundlagen von Informationssicherheit und Datenschutz, die drei Schutzziele, TOM sowie die Rollen von DSGVO, BDSG und Datenschutzbeauftragtem sauber einordnen.",
+    "source": {
+      "kind": "Interner Datenschutz- und Sicherheitsauftrag",
+      "reference": "Datenschutzpaket 2026-04",
+      "note": "Die Fachkoordination will zuerst die Grundlagen verstehen, bevor technische Einzelmassnahmen geprüft werden."
+    },
+    "station": {
+      "id": "QUS2-ST-12",
+      "department": "Datenschutzkoordination und Betriebsunterstützung",
+      "profile": "Informationssicherheit, Datenschutz, TOM, DSGVO und BDSG",
+      "constraints": [
+        "Rechtliche Vorgaben und betriebliche Regeln müssen getrennt lesbar bleiben",
+        "Vertraulichkeit, Integrität und Verfügbarkeit sollen als Schutzziele erscheinen",
+        "Datenschutzbeauftragter und TOM dürfen nicht mit rein technischen Einzelmaßnahmen verwechselt werden"
+      ]
+    },
+    "customerRequest": {
+      "from": "datenschutzkoordination@meditrust.example",
+      "to": "betrieb@meditrust.example",
+      "subject": "Informationssicherheit und Datenschutz für den Fachbereich aufbereiten",
+      "date": "2026-03-27",
+      "body": "Guten Tag,\n\nbitte bereitet die Grundlagen so auf, dass der Fachbereich sofort erkennt, was Datenschutz, was Informationssicherheit und was eine betriebliche Vorgabe ist. Das Ganze soll anschlussfähig für TOM, DSGVO/BDSG und die Rolle des Datenschutzbeauftragten sein.\n\nViele Grüsse\nDatenschutzkoordination"
+    }
+  },
+  "questions": [
+    {
+      "id": "ctx01",
+      "type": "context_card",
+      "title": "Rahmen für den Datenschutzfall",
+      "contentBlocks": [
+        {
+          "type": "text",
+          "text": "Im Fachbetrieb laufen personenbezogene Daten, interne Prozesse und technische Schutzmassnahmen zusammen. Das Team soll die grundlegenden Begriffe nicht vermischen, sondern sauber zwischen Datenschutz, Informationssicherheit, Schutzzielen und betrieblicher Umsetzung unterscheiden."
+        }
+      ]
+    },
+    {
+      "id": "q01",
+      "type": "single_choice",
+      "title": "Schutzziele richtig beschreiben",
+      "prompt": "Welche Aussage beschreibt Vertraulichkeit, Integrität und Verfügbarkeit am treffendsten?",
+      "options": [
+        {
+          "text": "Vertraulichkeit schützt vor unbefugtem Zugriff, Integrität vor unbemerkten Änderungen, Verfügbarkeit vor Ausfällen.",
+          "rationale": "Die drei Schutzziele sind hier korrekt und knapp auf den Punkt gebracht.",
+          "correct": true
+        },
+        {
+          "text": "Vertraulichkeit bedeutet schnelle Verteilung, Integrität nur vollständige Speicherung, Verfügbarkeit nur Backups.",
+          "rationale": "Das vertauscht die Schutzwirkung und ist fachlich falsch.",
+          "correct": false
+        },
+        {
+          "text": "Alle drei Ziele beziehen sich nur auf Passwörter.",
+          "rationale": "Das ist zu eng; die Ziele betreffen den gesamten Umgang mit Informationen.",
+          "correct": false
+        },
+        {
+          "text": "Verfügbarkeit ist das Gegenstück zu Datenschutz, Integrität nur für Papierakten.",
+          "rationale": "Auch das trifft den fachlichen Kern nicht.",
+          "correct": false
+        }
+      ],
+      "correctIndex": 0,
+      "feedback": {
+        "correct": "Die drei Schutzziele wurden korrekt eingeordnet.",
+        "wrong": "Achten Sie auf Zugriff, Unverändertheit und Nutzbarkeit der Daten."
+      },
+      "progressLinks": [
+        "qus2_infosec_datenschutz_grundlagen"
+      ]
+    },
+    {
+      "id": "q02",
+      "type": "multi_select",
+      "title": "Datenschutz und TOM im Betrieb",
+      "prompt": "Welche Punkte gehören typischerweise zu betrieblichen Vorgaben, Datenschutz und technischen bzw. organisatorischen Maßnahmen? Mehrere Aussagen können zutreffen.",
+      "options": [
+        {
+          "text": "Interne Regeln zur Verarbeitung werden eingehalten.",
+          "rationale": "Betriebliche Vorgaben müssen sichtbar beachtet werden.",
+          "correct": true
+        },
+        {
+          "text": "Rechtliche Regelungen werden beachtet.",
+          "rationale": "Datenschutz ist ohne Rechtsrahmen nicht belastbar.",
+          "correct": true
+        },
+        {
+          "text": "Zugriff erhalten nur Berechtigte mit nachvollziehbarer Rolle.",
+          "rationale": "Das ist ein klassischer TOM- und Datenschutzpunkt.",
+          "correct": true
+        },
+        {
+          "text": "Protokollierung unterstützt die Nachvollziehbarkeit.",
+          "rationale": "Ohne Protokoll bleibt der Fall oft nicht prüfbar.",
+          "correct": true
+        },
+        {
+          "text": "Der Datenschutzbeauftragte ist nur bei Technikstörungen zuständig.",
+          "rationale": "Die Rolle ist deutlich breiter und beratend/überwachend angelegt.",
+          "correct": false
+        },
+        {
+          "text": "Ein Thema ist erledigt, sobald die Lösung intern gut gemeint ist.",
+          "rationale": "Gute Absicht ersetzt keine Regel- und Nachweislogik.",
+          "correct": false
+        }
+      ],
+      "feedback": {
+        "correct": "Die grundlegenden Betriebspflichten und TOM wurden passend erkannt.",
+        "wrong": "Denken Sie an Regeln, Recht, Zugriff, Protokoll und die Rolle des Datenschutzes."
+      },
+      "progressLinks": [
+        "qus2_infosec_tom_dsgvo_bdsg",
+        "qus2_infosec_datenschutz_grundlagen"
+      ]
+    },
+    {
+      "id": "q03",
+      "type": "ordering",
+      "title": "Datenschutzvorfall behandeln",
+      "prompt": "Welche Reihenfolge ist bei einem Datenschutzvorfall grundsätzlich sinnvoll?",
+      "items": [
+        "Sachstand und betroffene Daten eingrenzen.",
+        "Zugriff oder Weitergabe sofort stoppen.",
+        "Zuständige Rolle und Leitung informieren.",
+        "Maßnahmen und offene Punkte dokumentieren.",
+        "Nächste Schritte und Wiedervorlage festhalten."
+      ],
+      "correctOrder": [
+        "Sachstand und betroffene Daten eingrenzen.",
+        "Zugriff oder Weitergabe sofort stoppen.",
+        "Zuständige Rolle und Leitung informieren.",
+        "Maßnahmen und offene Punkte dokumentieren.",
+        "Nächste Schritte und Wiedervorlage festhalten."
+      ],
+      "feedback": {
+        "correct": "Die Reihenfolge für das Grundvorgehen ist korrekt.",
+        "wrong": "Erst eingrenzen, dann stoppen, informieren, dokumentieren und nachhalten."
+      },
+      "progressLinks": [
+        "qus2_meldewege_rollen_nachweise",
+        "qus2_sofortmassnahmen_absichern"
+      ]
+    },
+    {
+      "id": "q04",
+      "type": "match_pairs",
+      "title": "Grundbegriffe zuordnen",
+      "prompt": "Welche Beschreibung passt jeweils am besten zum Begriff?",
+      "layout": "table",
+      "columns": [
+        "Fachbegriff",
+        "Passende Beschreibung"
+      ],
+      "pairs": [
+        {
+          "key": "pair_1",
+          "left": "Informationssicherheit",
+          "right": "Schutz von Vertraulichkeit, Integrität und Verfügbarkeit von Informationen."
+        },
+        {
+          "key": "pair_2",
+          "left": "Datenschutz",
+          "right": "Rechtmäßiger Umgang mit personenbezogenen Daten."
+        },
+        {
+          "key": "pair_3",
+          "left": "Vertraulichkeit",
+          "right": "Nur berechtigte Personen erhalten Zugriff."
+        },
+        {
+          "key": "pair_4",
+          "left": "Integrität",
+          "right": "Daten bleiben korrekt und unverändert."
+        },
+        {
+          "key": "pair_5",
+          "left": "Verfügbarkeit",
+          "right": "Daten und Systeme sind bei Bedarf nutzbar."
+        },
+        {
+          "key": "pair_6",
+          "left": "TOM",
+          "right": "Technische und organisatorische Maßnahmen."
+        },
+        {
+          "key": "pair_7",
+          "left": "DSGVO",
+          "right": "Europäische Datenschutz-Grundverordnung."
+        },
+        {
+          "key": "pair_8",
+          "left": "BDSG",
+          "right": "Deutsche Ergänzung zum Datenschutzrecht."
+        },
+        {
+          "key": "pair_9",
+          "left": "Datenschutzbeauftragter",
+          "right": "Berät und überwacht den Datenschutz im Betrieb."
+        },
+        {
+          "key": "pair_10",
+          "left": "Betriebliche Vorgaben",
+          "right": "Interne Regeln für sichere und rechtmäßige Verarbeitung."
+        }
+      ],
+      "options": [
+        "Schutz von Vertraulichkeit, Integrität und Verfügbarkeit von Informationen.",
+        "Rechtmäßiger Umgang mit personenbezogenen Daten.",
+        "Nur berechtigte Personen erhalten Zugriff.",
+        "Daten bleiben korrekt und unverändert.",
+        "Daten und Systeme sind bei Bedarf nutzbar.",
+        "Technische und organisatorische Maßnahmen.",
+        "Europäische Datenschutz-Grundverordnung.",
+        "Deutsche Ergänzung zum Datenschutzrecht.",
+        "Berät und überwacht den Datenschutz im Betrieb.",
+        "Interne Regeln für sichere und rechtmäßige Verarbeitung."
+      ],
+      "feedback": {
+        "correct": "Die Grundbegriffe wurden sauber zugeordnet.",
+        "wrong": "Prüfen Sie den Unterschied zwischen Schutz, Recht, Rolle und betrieblicher Regel."
+      },
+      "progressLinks": [
+        "qus2_infosec_datenschutz_grundlagen",
+        "qus2_infosec_tom_dsgvo_bdsg"
+      ]
+    }
+  ]
+}

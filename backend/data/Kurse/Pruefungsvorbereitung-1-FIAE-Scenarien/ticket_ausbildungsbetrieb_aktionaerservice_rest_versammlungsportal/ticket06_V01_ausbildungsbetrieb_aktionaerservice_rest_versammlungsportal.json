@@ -1,0 +1,1347 @@
+{
+  "scenario": {
+    "company": "VoltMotion Mobility AG",
+    "scale": "Hersteller für Akkus und Energiesysteme im Mikromobilitätsmarkt, 320 Mitarbeitende",
+    "context": "Prüfungsvorbereitung FIAE im Stationsformat mit zusammenhängenden Folgeaufträgen zu Serviceplattform, REST, Versammlungslogik und virtueller Hauptversammlung.",
+    "mission": "Sie planen eine E-Service-Plattform für Aktionärinnen und Aktionäre und bearbeiten dazu Projektvorteile, REST-Logik, UML, Pseudocode, Datenmodellierung und UI/UX.",
+    "source": {
+      "kind": "Pseudonymisierte Prüfungsvorlage",
+      "reference": "AP2 FIAE Teil 1, Sommer 2024",
+      "note": "Die fachliche Aufgabenreihenfolge bleibt erhalten; Unternehmens- und Personendaten wurden in das Kursformat überführt. Die Lösungs-PDF diente nur zur Klärung fachlicher Zweifelsfälle."
+    },
+    "station": {
+      "id": "PV1FIAE-ST-06",
+      "department": "Prüfungsvorbereitung Anwendungsentwicklung",
+      "profile": "Serviceplattform, REST, UML, Pseudocode, Datenmodellierung und UI/UX",
+      "constraints": [
+        "Die vier Hauptaufgaben bleiben als fachlich zusammenhängende Folgeaufträge sichtbar",
+        "Offene Modellierungs-, Pseudocode- und UI-Aufgaben werden möglichst auto-auswertbar, aber fachlich gleichwertig umgesetzt",
+        "Visuals werden nur dort eingesetzt, wo die Quelle selbst konkrete Artefakte wie Requests, Modelle oder Mockups vorgibt"
+      ]
+    },
+    "customerRequest": {
+      "from": "vorstand@voltmotion-ag.example",
+      "to": "projektteam@ausbildungsbetrieb.example",
+      "subject": "E-Service-Plattform für Aktionäre konzipieren",
+      "date": "2026-03-20",
+      "body": "Guten Tag,\n\nzur Vorbereitung künftiger Aktionärsversammlungen wollen wir eine E-Service-Plattform aufbauen. Über diese Plattform sollen Aktionäre unter anderem ihre Anschrift ändern, Einladungen elektronisch erhalten und an Hauptversammlungen auch virtuell teilnehmen können.\n\nBitte bearbeiten Sie die Teilaufträge in der vorgegebenen Reihenfolge. Zunächst müssen Vorteile, qualitätssichernde Massnahmen, Sicherheitsanforderungen und Stakeholder-Perspektiven geklärt werden. Anschliessend folgen REST-API, CRUD, Request-/Response-Grundlagen und ein passender Sequenzablauf. Danach geht es um Use Cases und Pseudocode für Einladung und Registrierung. Abschliessend brauchen wir eine Erweiterung des Datenmodells sowie eine bessere Oberfläche für die virtuelle Versammlung.\n\nViele Grüsse\nVorstand"
+    }
+  },
+  "questions": [
+    {
+      "id": "ctx01",
+      "type": "context_card",
+      "title": "Kontext zum Projektstart",
+      "contentBlocks": [
+        {
+          "type": "text",
+          "text": "VoltMotion möchte seine Aktionärskommunikation digital ausbauen. In einem ersten Schritt soll eine E-Service-Plattform entstehen, über die Anschriften geändert, Einladungen rein elektronisch verschickt und Hauptversammlungen auch virtuell begleitet werden können.\n\nVor dem Umsetzungsstart müssen Nutzen, Qualität, Sicherheit und relevante Stakeholder sauber eingeordnet werden."
+        }
+      ]
+    },
+    {
+      "id": "q01",
+      "type": "multi_select",
+      "title": "Vorteile einer E-Service-Plattform erkennen",
+      "prompt": "Welche Vorteile kann die Bereitstellung einer E-Service-Plattform für Aktionäre in dieser Situation plausibel bringen? Wählen Sie alle passenden Antworten.",
+      "options": [
+        {
+          "text": "Schnellere und direktere Kommunikation mit Aktionären",
+          "correct": true,
+          "rationale": "Digitale Kommunikation kann Informationen schneller und unmittelbarer bereitstellen."
+        },
+        {
+          "text": "Weniger Druck-, Papier- und Portokosten",
+          "correct": true,
+          "rationale": "Elektronische Prozesse reduzieren häufig klassische Versand- und Materialkosten."
+        },
+        {
+          "text": "Nutzung der Services auch über mobile Endgeräte",
+          "correct": true,
+          "rationale": "Eine Plattform ist oft orts- und geräteunabhängiger als klassische Papierprozesse."
+        },
+        {
+          "text": "Zusätzliche oder kurzfristige Informationen können leichter bereitgestellt werden",
+          "correct": true,
+          "rationale": "Digitale Plattformen erleichtern kurzfristige Aktualisierungen und Zusatzinformationen."
+        },
+        {
+          "text": "Eine Serviceplattform verbietet automatisch jede Form von Sicherheitsrisiko",
+          "correct": false,
+          "rationale": "Auch digitale Plattformen müssen aktiv abgesichert werden."
+        },
+        {
+          "text": "Aktionäre müssen dadurch zwingend persönlich vor Ort erscheinen",
+          "correct": false,
+          "rationale": "Die Plattform soll gerade digitale und virtuelle Prozesse ermöglichen."
+        }
+      ],
+      "feedback": {
+        "correct": "Die wesentlichen Vorteile einer digitalen Aktionärsplattform sind passend erkannt.",
+        "wrong": "Achten Sie auf Kommunikation, Kosten, Verfügbarkeit und Flexibilität statt auf unrealistische Nebenfolgen."
+      },
+      "progressLinks": [
+        "pv1fiae_eservice_qualitaet_sicherheit"
+      ]
+    },
+    {
+      "id": "q02",
+      "type": "multi_select",
+      "title": "Qualitätssichernde Massnahmen auswählen",
+      "prompt": "Welche Massnahmen passen in diesem Projekt besonders gut zur Qualitätssicherung? Wählen Sie alle passenden Antworten.",
+      "options": [
+        {
+          "text": "Ein standardisiertes Vorgehensmodell und geeignete Entwicklungswerkzeuge festlegen",
+          "correct": true,
+          "rationale": "Strukturierte Vorgehensweisen und Werkzeuge helfen, Qualität planbar zu machen."
+        },
+        {
+          "text": "Standardisierte Testumgebungen, Testverfahren und Testdaten verwenden",
+          "correct": true,
+          "rationale": "Wiederholbare Testbedingungen sind ein wichtiger Baustein der Qualitätssicherung."
+        },
+        {
+          "text": "Verfahrensanweisungen für Dokumentation und Nachvollziehbarkeit bereitstellen",
+          "correct": true,
+          "rationale": "Dokumentation und klare Regeln machen Qualität über den Projektverlauf hinweg sichtbarer."
+        },
+        {
+          "text": "Code-Reviews in den Entwicklungsprozess einbauen",
+          "correct": true,
+          "rationale": "Review-Prozesse helfen, Fehler und Inkonsistenzen früh zu erkennen."
+        },
+        {
+          "text": "Qualität ausschliesslich durch spätes Bauchgefühl einzelner Beteiligter absichern",
+          "correct": false,
+          "rationale": "Qualitätssicherung sollte systematisch und nicht rein intuitiv erfolgen."
+        },
+        {
+          "text": "Alle Tests erst nach dem Produktivstart einplanen",
+          "correct": false,
+          "rationale": "QS muss deutlich früher beginnen als der Live-Betrieb."
+        }
+      ],
+      "feedback": {
+        "correct": "Die passenden qualitätssichernden Massnahmen sind richtig gewählt.",
+        "wrong": "Denken Sie an strukturierte Entwicklung, Testorganisation, Dokumentation und Reviews statt an unsystematische Spätkontrollen."
+      },
+      "progressLinks": [
+        "pv1fiae_eservice_qualitaet_sicherheit"
+      ]
+    },
+    {
+      "id": "q03",
+      "type": "multi_select",
+      "title": "Sicherheitstechnische Anforderungen benennen",
+      "prompt": "Welche sicherheitstechnischen Anforderungen sind für die Plattform besonders naheliegend? Wählen Sie alle passenden Antworten.",
+      "options": [
+        {
+          "text": "Sichere Übertragung personenbezogener Daten",
+          "correct": true,
+          "rationale": "Gerade bei personenbezogenen Daten ist geschützte Kommunikation zentral."
+        },
+        {
+          "text": "Sichere Speicherung sensibler Daten",
+          "correct": true,
+          "rationale": "Auch ruhende Daten müssen angemessen abgesichert sein."
+        },
+        {
+          "text": "Sichere Authentifizierung der Benutzenden",
+          "correct": true,
+          "rationale": "Die Plattform muss verlässlich zwischen berechtigten und unberechtigten Zugriffen unterscheiden."
+        },
+        {
+          "text": "Session-Timeout oder Reaktion auf Inaktivität und Verbindungsabbruch",
+          "correct": true,
+          "rationale": "Zeitliche Begrenzungen und saubere Sitzungslogik gehören zu plausiblen Sicherheitsanforderungen."
+        },
+        {
+          "text": "Vollständige Offenlegung aller Zugangsdaten für den Support",
+          "correct": false,
+          "rationale": "Das wäre das Gegenteil eines sicheren Umgangs mit Zugangsdaten."
+        },
+        {
+          "text": "Verzicht auf jede Authentifizierung, solange die Plattform modern aussieht",
+          "correct": false,
+          "rationale": "Design ersetzt keine Sicherheit."
+        }
+      ],
+      "feedback": {
+        "correct": "Die zentralen sicherheitstechnischen Anforderungen sind passend erkannt.",
+        "wrong": "Achten Sie auf Übertragung, Speicherung, Authentifizierung und Session-Logik statt auf unsichere Scheinlösungen."
+      },
+      "progressLinks": [
+        "pv1fiae_eservice_qualitaet_sicherheit"
+      ]
+    },
+    {
+      "id": "q04",
+      "type": "multi_select",
+      "title": "Stakeholder-Befürchtungen und Gegenmassnahmen einordnen",
+      "prompt": "Welche Kombinationen aus Stakeholder, Befürchtung und passender Gegenmassnahme sind in diesem Projekt fachlich plausibel? Wählen Sie alle passenden Antworten.",
+      "options": [
+        {
+          "text": "Aktionäre fürchten einen unzulässigen Umgang mit ihren personenbezogenen Daten; ein umfassendes IT-Sicherheitskonzept ist eine passende Gegenmassnahme.",
+          "correct": true,
+          "rationale": "Datenschutz- und Sicherheitsbedenken sind bei Aktionärsportalen sehr plausibel."
+        },
+        {
+          "text": "Der Vorstand fürchtet, dass das Projekt aus dem Kostenrahmen läuft; ein mehrfach geprüfter Kostenplan ist eine passende Gegenmassnahme.",
+          "correct": true,
+          "rationale": "Budgetrisiken und Kostensteuerung gehören zu typischen Vorstandsperspektiven."
+        },
+        {
+          "text": "Ein IT-Dienstleister fürchtet Termin- und Reputationsverluste; eine realistische Ressourcen- und Pufferplanung ist eine sinnvolle Gegenmassnahme.",
+          "correct": true,
+          "rationale": "Lieferfähigkeit und Reputation sind für Dienstleister zentrale Projektrisiken."
+        },
+        {
+          "text": "Aktionäre fürchten zu wenig Papierpost; Gegenmassnahme ist das vollständige Abschalten aller digitalen Sicherheitsfunktionen.",
+          "correct": false,
+          "rationale": "Das ist weder eine sinnvolle Befürchtung noch eine passende Gegenmassnahme."
+        },
+        {
+          "text": "Der Vorstand fürchtet Mehraufwand durch Qualitätssicherung; Gegenmassnahme ist der komplette Verzicht auf Tests und Reviews.",
+          "correct": false,
+          "rationale": "Der Verzicht auf QS wäre keine fachlich passende Reaktion auf Projektrisiken."
+        }
+      ],
+      "feedback": {
+        "correct": "Die plausiblen Stakeholder-Kombinationen sind fachlich richtig erkannt.",
+        "wrong": "Prüfen Sie, welche Gruppen in so einem Projekt realistische Sorgen haben und mit welchen Massnahmen diese sinnvoll adressiert werden können."
+      },
+      "progressLinks": [
+        "pv1fiae_eservice_qualitaet_sicherheit"
+      ]
+    },
+    {
+      "id": "f02",
+      "type": "followup_divider",
+      "title": "REST-API und Datenabruf der Plattform strukturieren",
+      "from": "api-architektur@voltmotion-ag.example",
+      "to": "projektteam@ausbildungsbetrieb.example",
+      "subject": "REST, CRUD, Request-Bestandteile und Sequenzlogik abstimmen",
+      "date": "2026-03-20",
+      "body": "Hallo,\n\nfür die Verwaltung von Aktionärsdaten soll eine webbasierte Applikation über eine REST-API auf die Daten zugreifen. Bitte ordnen Sie zuerst die grundlegenden REST- und HTTP-Konzepte ein und bewerten Sie danach den beschriebenen Sequenzablauf beim Abruf aller Aktionäre aus Köln.\n\nViele Grüsse\nAPI-Architektur",
+      "visuals": [
+        {
+          "type": "code_block",
+          "eyebrow": "Beispielrequest",
+          "title": "Clientseitige HTTP-Anforderung",
+          "codeTitle": "request.txt",
+          "language": "text",
+          "code": "PUT https://portal.voltmotion.example/shareholders\ncontent-type: application/json\naccept: application/json\nauthorization: Basic YW5uYTpwYXNz\n\n{\n  \"name\": \"Anna Keller\",\n  \"address\": [\n    {\n      \"street\": \"Marktplatz 12\",\n      \"pc\": \"50667\",\n      \"city\": \"Köln\"\n    }\n  ],\n  \"id\": 25\n}"
+        }
+      ]
+    },
+    {
+      "id": "q05",
+      "type": "short_text",
+      "title": "Grundidee einer REST-API erklären",
+      "prompt": "Beschreiben Sie in 1-3 Sätzen das Grundprinzip einer REST-API in diesem Projektkontext.",
+      "minChars": 110,
+      "requiredKeywords": [
+        "ressourcen",
+        "http",
+        "zustands"
+      ],
+      "expectedOutline": "Erklärt, dass Ressourcen über eindeutige URLs adressiert und mit standardisierten HTTP-Methoden in möglichst zustandsloser Kommunikation gelesen, angelegt, geändert oder gelöscht werden.",
+      "feedback": {
+        "correct": "Das REST-Konzept ist fachlich passend beschrieben.",
+        "wrong": "Achten Sie auf Ressourcen, standardisierte HTTP-Methoden und möglichst zustandsarme Kommunikation."
+      },
+      "progressLinks": [
+        "pv1fiae_rest_crud_http_sequenz"
+      ]
+    },
+    {
+      "id": "q06",
+      "type": "table_fill",
+      "title": "CRUD-Operationen und HTTP-Methoden zuordnen",
+      "prompt": "Ordnen Sie den vier CRUD-Buchstaben jeweils die passende Bedeutung und eine typische HTTP-Methode zu.",
+      "columns": [
+        "Buchstabe",
+        "Bedeutung",
+        "Typische HTTP-Methode"
+      ],
+      "rows": [
+        [
+          "C",
+          {
+            "key": "crud_c_desc",
+            "label": "C / Bedeutung",
+            "expected": "Create / Erstellen einer Ressource",
+            "inputType": "select",
+            "placeholder": "Bedeutung wählen",
+            "options": [
+              "Create / Erstellen einer Ressource",
+              "Read / Lesen einer Ressource",
+              "Update / Ändern einer Ressource",
+              "Delete / Löschen einer Ressource"
+            ]
+          },
+          {
+            "key": "crud_c_http",
+            "label": "C / HTTP-Methode",
+            "expected": "POST",
+            "inputType": "select",
+            "placeholder": "Methode wählen",
+            "options": [
+              "POST",
+              "GET",
+              "PUT/PATCH",
+              "DELETE"
+            ]
+          }
+        ],
+        [
+          "R",
+          {
+            "key": "crud_r_desc",
+            "label": "R / Bedeutung",
+            "expected": "Read / Lesen einer Ressource",
+            "inputType": "select",
+            "placeholder": "Bedeutung wählen",
+            "options": [
+              "Create / Erstellen einer Ressource",
+              "Read / Lesen einer Ressource",
+              "Update / Ändern einer Ressource",
+              "Delete / Löschen einer Ressource"
+            ]
+          },
+          {
+            "key": "crud_r_http",
+            "label": "R / HTTP-Methode",
+            "expected": "GET",
+            "inputType": "select",
+            "placeholder": "Methode wählen",
+            "options": [
+              "POST",
+              "GET",
+              "PUT/PATCH",
+              "DELETE"
+            ]
+          }
+        ],
+        [
+          "U",
+          {
+            "key": "crud_u_desc",
+            "label": "U / Bedeutung",
+            "expected": "Update / Ändern einer Ressource",
+            "inputType": "select",
+            "placeholder": "Bedeutung wählen",
+            "options": [
+              "Create / Erstellen einer Ressource",
+              "Read / Lesen einer Ressource",
+              "Update / Ändern einer Ressource",
+              "Delete / Löschen einer Ressource"
+            ]
+          },
+          {
+            "key": "crud_u_http",
+            "label": "U / HTTP-Methode",
+            "expected": "PUT/PATCH",
+            "inputType": "select",
+            "placeholder": "Methode wählen",
+            "options": [
+              "POST",
+              "GET",
+              "PUT/PATCH",
+              "DELETE"
+            ]
+          }
+        ],
+        [
+          "D",
+          {
+            "key": "crud_d_desc",
+            "label": "D / Bedeutung",
+            "expected": "Delete / Löschen einer Ressource",
+            "inputType": "select",
+            "placeholder": "Bedeutung wählen",
+            "options": [
+              "Create / Erstellen einer Ressource",
+              "Read / Lesen einer Ressource",
+              "Update / Ändern einer Ressource",
+              "Delete / Löschen einer Ressource"
+            ]
+          },
+          {
+            "key": "crud_d_http",
+            "label": "D / HTTP-Methode",
+            "expected": "DELETE",
+            "inputType": "select",
+            "placeholder": "Methode wählen",
+            "options": [
+              "POST",
+              "GET",
+              "PUT/PATCH",
+              "DELETE"
+            ]
+          }
+        ]
+      ],
+      "feedback": {
+        "correct": "CRUD-Bedeutungen und typische HTTP-Methoden sind stimmig zugeordnet.",
+        "wrong": "Prüfen Sie noch einmal, welche Operation eher erstellt, liest, ändert oder löscht und welche HTTP-Methode dazu typischerweise passt."
+      },
+      "progressLinks": [
+        "pv1fiae_rest_crud_http_sequenz"
+      ]
+    },
+    {
+      "id": "q07",
+      "type": "match_pairs",
+      "title": "Bestandteile eines HTTP-Requests benennen",
+      "prompt": "Ordnen Sie den Teilen der gezeigten HTTP-Anforderung die passende Bedeutung zu.",
+      "layout": "table",
+      "columns": [
+        "Bestandteil",
+        "Bedeutung"
+      ],
+      "pairs": [
+        {
+          "key": "http_part_1",
+          "left": "https://portal.voltmotion.example/shareholders",
+          "right": "Endpoint-URL"
+        },
+        {
+          "key": "http_part_2",
+          "left": "PUT",
+          "right": "HTTP-Methode"
+        },
+        {
+          "key": "http_part_3",
+          "left": "content-type / accept / authorization",
+          "right": "HTTP-Header für Metainformationen, Token, Cookies oder API-Keys"
+        },
+        {
+          "key": "http_part_4",
+          "left": "JSON-Objekt mit name, address und id",
+          "right": "HTTP-Body für die übertragenen Daten"
+        }
+      ],
+      "options": [
+        "Endpoint-URL",
+        "HTTP-Methode",
+        "HTTP-Header für Metainformationen, Token, Cookies oder API-Keys",
+        "HTTP-Body für die übertragenen Daten"
+      ],
+      "feedback": {
+        "correct": "Die Bestandteile des HTTP-Requests sind fachlich korrekt benannt.",
+        "wrong": "Achten Sie auf die Unterscheidung zwischen URL, Methode, Headern und dem eigentlichen Nutzdatenblock."
+      },
+      "progressLinks": [
+        "pv1fiae_rest_crud_http_sequenz"
+      ]
+    },
+    {
+      "id": "q08",
+      "type": "match_pairs",
+      "title": "Statuscodes der HTTP-Response einordnen",
+      "prompt": "Ordnen Sie den drei Statuscode-Gruppen die passende Bedeutung zu.",
+      "layout": "table",
+      "columns": [
+        "Statuscode-Gruppe",
+        "Bedeutung"
+      ],
+      "pairs": [
+        {
+          "key": "status_2xx",
+          "left": "2XX",
+          "right": "Request erfolgreich bearbeitet"
+        },
+        {
+          "key": "status_4xx",
+          "left": "4XX",
+          "right": "Clientfehler durch eine fehlerhafte Anfrage des Clients"
+        },
+        {
+          "key": "status_5xx",
+          "left": "5XX",
+          "right": "Serverfehler aufgrund eines Problems auf Serverseite"
+        }
+      ],
+      "options": [
+        "Request erfolgreich bearbeitet",
+        "Clientfehler durch eine fehlerhafte Anfrage des Clients",
+        "Serverfehler aufgrund eines Problems auf Serverseite"
+      ],
+      "feedback": {
+        "correct": "Die drei Statuscode-Gruppen sind korrekt eingeordnet.",
+        "wrong": "Prüfen Sie, ob die Gruppe für erfolgreichen Abschluss, Clientfehler oder Serverfehler steht."
+      },
+      "progressLinks": [
+        "pv1fiae_rest_crud_http_sequenz"
+      ]
+    },
+    {
+      "id": "q09",
+      "type": "table_fill",
+      "title": "Sequenzablauf für den Abruf aus Köln richtig lesen",
+      "prompt": "Ordnen Sie den Situationen im Sequenzablauf die passende Aktion zu.",
+      "columns": [
+        "Situation im Ablauf",
+        "Passende Aktion"
+      ],
+      "rows": [
+        [
+          "Die App fordert alle Aktionäre mit Wohnort `Koeln` an.",
+          {
+            "key": "seq_request",
+            "label": "Aktion beim Start",
+            "expected": "App ruft beim WebService `GET /shareholders?city=Koeln` auf",
+            "inputType": "select",
+            "placeholder": "Aktion wählen",
+            "options": [
+              "App ruft beim WebService `GET /shareholders?city=Koeln` auf",
+              "App ruft direkt bei der Datenbank `GET /shareholders?city=Koeln` auf",
+              "App sendet `POST /shareholders` an den WebService",
+              "App wartet ohne Request auf eine Push-Nachricht"
+            ]
+          }
+        ],
+        [
+          "Die Daten liegen bereits im Cache.",
+          {
+            "key": "seq_cache_hit",
+            "label": "Aktion bei Cache-Treffer",
+            "expected": "WebService liest die Daten über `getCache(\"Koeln\")`",
+            "inputType": "select",
+            "placeholder": "Aktion wählen",
+            "options": [
+              "WebService liest die Daten über `getCache(\"Koeln\")`",
+              "WebService fragt trotzdem immer zuerst die Datenbank ab",
+              "Die App löscht den Cache und sendet danach einen neuen POST-Request",
+              "Der Abruf endet automatisch mit `404`"
+            ]
+          }
+        ],
+        [
+          "Die Daten liegen nicht im Cache.",
+          {
+            "key": "seq_cache_miss",
+            "label": "Aktion bei Cache-Fehlzugriff",
+            "expected": "WebService holt die Daten über `getData(\"Koeln\")` aus der Datenbank",
+            "inputType": "select",
+            "placeholder": "Aktion wählen",
+            "options": [
+              "WebService holt die Daten über `getData(\"Koeln\")` aus der Datenbank",
+              "Die App greift direkt auf die Datenbank zu und umgeht den WebService",
+              "Die Datenbank sendet selbstständig einen neuen Zugangscode",
+              "Der WebService antwortet ohne weiteren Versuch mit `500`"
+            ]
+          }
+        ],
+        [
+          "Der Abruf war erfolgreich abgeschlossen.",
+          {
+            "key": "seq_success_response",
+            "label": "Abschluss des Ablaufs",
+            "expected": "WebService antwortet der App mit `200 + data`",
+            "inputType": "select",
+            "placeholder": "Aktion wählen",
+            "options": [
+              "WebService antwortet der App mit `200 + data`",
+              "Datenbank antwortet direkt der App mit `500`",
+              "WebService antwortet immer mit `404`",
+              "App beendet den Ablauf ohne Rückgabe"
+            ]
+          }
+        ]
+      ],
+      "feedback": {
+        "correct": "Der beschriebene Sequenzablauf mit Cache-Fall und Datenbank-Fallback ist korrekt erkannt.",
+        "wrong": "Achten Sie auf GET mit Qüry-Parameter, die Verzweigung Cache vs. Datenbank und die abschliessende erfolgreiche 200-Response."
+      },
+      "progressLinks": [
+        "pv1fiae_rest_crud_http_sequenz"
+      ]
+    },
+    {
+      "id": "f03",
+      "type": "followup_divider",
+      "title": "Aktionärsversammlung als Use Cases und Pseudocode abbilden",
+      "from": "produktlogik@voltmotion-ag.example",
+      "to": "projektteam@ausbildungsbetrieb.example",
+      "subject": "Anwendungsfälle und Registrierungsklassen für die Versammlung konkretisieren",
+      "date": "2026-03-20",
+      "body": "Hallo,\n\nfür die Vorbereitung und Durchführung einer Aktionärsversammlung müssen die wichtigsten Anwendungsfälle sowie die Logik für Einladung und Anmeldung sauber beschrieben werden. Dazu liegen bereits Klassen für `Versammlung`, `Versammlungsteilnehmer` und `Aktionaer` vor.\n\nViele Grüsse\nProduktlogik"
+    },
+    {
+      "id": "ctx03",
+      "type": "context_card",
+      "title": "Kontext zu Versammlung und Registrierung",
+      "contentBlocks": [
+        {
+          "type": "text",
+          "text": "Für die E-Service-Plattform gelten diese Regeln:\n- Mitarbeitende und Aktionäre arbeiten mit der Plattform.\n- Mitarbeitende können eine Versammlung einrichten und Aktionäre einladen.\n- Beim Einladen wird eine Einladungsmail versendet.\n- Mitarbeitende können den Status der Einladungen einsehen.\n- Aktionäre können ihre Einladung abrufen und sich für eine Versammlung registrieren.\n- Ist der Aktionär ein eingeladener Teilnehmer, wird bei der Registrierung ein Zugangscode erzeugt.\n- Aktionäre können Dokumente zur Versammlung einsehen.\n- Sind Dokumente nicht öffentlich, muss der Zugangscode zum Öffnen eingegeben werden.\n\nZur Verarbeitung der Registrierung gibt es bereits Klassen `Versammlung`, `Versammlungsteilnehmer` und `Aktionaer`. Jede Liste besitzt eine Methode `add(objekt)` zum Hinzufügen eines Elements."
+        }
+      ]
+    },
+    {
+      "id": "q10",
+      "type": "multi_select",
+      "title": "Akteure der Plattform erkennen",
+      "prompt": "Welche Rollen sind in den beschriebenen Use Cases die eigentlichen Akteure der Plattform? Wählen Sie alle passenden Antworten.",
+      "options": [
+        {
+          "text": "Mitarbeitende",
+          "correct": true,
+          "rationale": "Mitarbeitende richten Versammlungen ein, laden ein und prüfen Status."
+        },
+        {
+          "text": "Aktionäre",
+          "correct": true,
+          "rationale": "Aktionäre rufen Einladungen ab, registrieren sich und sehen Dokumente ein."
+        },
+        {
+          "text": "SMTP-Server",
+          "correct": false,
+          "rationale": "Technische Infrastruktur ist hier kein fachlicher Akteur des Use-Case-Diagramms."
+        },
+        {
+          "text": "PDF-Datei",
+          "correct": false,
+          "rationale": "Ein Dokument ist kein Akteur, sondern ein Informationsobjekt."
+        }
+      ],
+      "feedback": {
+        "correct": "Die fachlichen Akteure der Plattform sind korrekt erkannt.",
+        "wrong": "Achten Sie darauf, welche Rollen tatsächlich mit der Plattform interagieren."
+      },
+      "progressLinks": [
+        "pv1fiae_usecases_pseudocode_versammlung"
+      ]
+    },
+    {
+      "id": "q11",
+      "type": "match_pairs",
+      "title": "Use Cases den Rollen zuordnen",
+      "prompt": "Ordnen Sie die beschriebenen Anwendungsfälle der passenden Rolle zu.",
+      "layout": "table",
+      "columns": [
+        "Use Case",
+        "Passende Rolle"
+      ],
+      "pairs": [
+        {
+          "key": "uc_setup",
+          "left": "Versammlung einrichten",
+          "right": "Mitarbeitende"
+        },
+        {
+          "key": "uc_invite",
+          "left": "Aktionäre einladen",
+          "right": "Mitarbeitende"
+        },
+        {
+          "key": "uc_status",
+          "left": "Status der Einladungen einsehen",
+          "right": "Mitarbeitende"
+        },
+        {
+          "key": "uc_fetch",
+          "left": "Einladung abrufen",
+          "right": "Aktionäre"
+        },
+        {
+          "key": "uc_register",
+          "left": "Für Versammlung registrieren",
+          "right": "Aktionäre"
+        },
+        {
+          "key": "uc_docs",
+          "left": "Dokumente einsehen",
+          "right": "Aktionäre"
+        }
+      ],
+      "options": [
+        "Mitarbeitende",
+        "Aktionäre"
+      ],
+      "feedback": {
+        "correct": "Die Use Cases sind den passenden Rollen stimmig zugeordnet.",
+        "wrong": "Prüfen Sie, welche Schritte eher organisatorisch durch Mitarbeitende erfolgen und welche direkt von Aktionären ausgelöst werden."
+      },
+      "progressLinks": [
+        "pv1fiae_usecases_pseudocode_versammlung"
+      ]
+    },
+    {
+      "id": "q12",
+      "type": "table_fill",
+      "title": "Include- und Extend-Logik richtig abbilden",
+      "prompt": "Ordnen Sie den drei fachlichen Schritten die passende Beziehungslogik zu.",
+      "columns": [
+        "Fachlicher Schritt",
+        "Passende Logik"
+      ],
+      "rows": [
+        [
+          "`Einladungsmail versenden` im Zusammenhang mit `Aktionaere einladen`",
+          {
+            "key": "uc_invite_mail_logic",
+            "label": "Logik Einladungsmail",
+            "expected": "Pflichtschritt, der beim Einladen mit ausgeführt wird",
+            "inputType": "select",
+            "placeholder": "Logik wählen",
+            "options": [
+              "Pflichtschritt, der beim Einladen mit ausgeführt wird",
+              "Optionaler Zusatzschritt nur nach erfolgreicher Registrierung",
+              "Schritt ohne Bezug zum Einladen",
+              "Pflichtschritt für jedes Dokument"
+            ]
+          }
+        ],
+        [
+          "`Zugangscode erzeugen` bei `Registrieren`",
+          {
+            "key": "uc_code_generate_logic",
+            "label": "Logik Zugangscode erzeugen",
+            "expected": "Bedingter Zusatzschritt nur für eingeladene Teilnehmende",
+            "inputType": "select",
+            "placeholder": "Logik wählen",
+            "options": [
+              "Bedingter Zusatzschritt nur für eingeladene Teilnehmende",
+              "Allgemeiner Pflichtschritt für jede beliebige Plattformaktion",
+              "Nur für Mitarbeitende beim Einrichten der Versammlung relevant",
+              "Immer vor dem Einladen auszuführen"
+            ]
+          }
+        ],
+        [
+          "`Zugangscode eingeben` beim Öffnen nicht öffentlicher Dokumente",
+          {
+            "key": "uc_code_input_logic",
+            "label": "Logik Zugangscode eingeben",
+            "expected": "Bedingter Zusatzschritt nur für nicht öffentliche Dokumente",
+            "inputType": "select",
+            "placeholder": "Logik wählen",
+            "options": [
+              "Bedingter Zusatzschritt nur für nicht öffentliche Dokumente",
+              "Pflichtschritt für alle Dokumente und jede Navigation",
+              "Nur beim Einrichten der Versammlung relevant",
+              "Ersatz für die Einladung"
+            ]
+          }
+        ]
+      ],
+      "feedback": {
+        "correct": "Die include-/extend-nahe Fachlogik der Use Cases ist korrekt erkannt.",
+        "wrong": "Achten Sie darauf, welche Schritte immer mitlaufen und welche nur unter einer Bedingung zusätzlich entstehen."
+      },
+      "progressLinks": [
+        "pv1fiae_usecases_pseudocode_versammlung"
+      ]
+    },
+    {
+      "id": "q13",
+      "type": "ordering",
+      "title": "Methode `einladen` logisch aufbauen",
+      "prompt": "Ordnen Sie die zentralen Schritte der Methode `einladen(aktionaere)` in eine fachlich sinnvolle Reihenfolge.",
+      "items": [
+        "Nächsten `Aktionaer a` aus der übergebenen Liste `aktionaere` verarbeiten",
+        "Einladungsmail an `a.getEmailAdresse()` versenden",
+        "`a` in `eingeladeneTeilnehmer` speichern",
+        "Die übergebene Liste `aktionaere` durchlaufen"
+      ],
+      "correctOrder": [
+        "Die übergebene Liste `aktionaere` durchlaufen",
+        "Nächsten `Aktionaer a` aus der übergebenen Liste `aktionaere` verarbeiten",
+        "Einladungsmail an `a.getEmailAdresse()` versenden",
+        "`a` in `eingeladeneTeilnehmer` speichern"
+      ],
+      "feedback": {
+        "correct": "Die Methode `einladen` ist logisch passend umgesetzt.",
+        "wrong": "Achten Sie darauf, dass jede übergebene Person eine Mail bekommt und in `eingeladeneTeilnehmer` landet, aber noch nicht als angemeldet gilt."
+      },
+      "progressLinks": [
+        "pv1fiae_usecases_pseudocode_versammlung"
+      ]
+    },
+    {
+      "id": "q14",
+      "type": "ordering",
+      "title": "Methode `istAngemeldeterTeilnehmer` prüfen",
+      "prompt": "Ordnen Sie die Kernschritte der Methode `istAngemeldeterTeilnehmer(a)` in eine fachlich passende Reihenfolge.",
+      "items": [
+        "`ergebnis = false` initialisieren",
+        "Liste `angemeldeteTeilnehmer` durchlaufen",
+        "Bei jedem `Versammlungsteilnehmer` den zugehörigen Aktionär mit `a` vergleichen",
+        "Bei Treffer `ergebnis = true` setzen",
+        "`ergebnis` zurückgeben"
+      ],
+      "correctOrder": [
+        "`ergebnis = false` initialisieren",
+        "Liste `angemeldeteTeilnehmer` durchlaufen",
+        "Bei jedem `Versammlungsteilnehmer` den zugehörigen Aktionär mit `a` vergleichen",
+        "Bei Treffer `ergebnis = true` setzen",
+        "`ergebnis` zurückgeben"
+      ],
+      "feedback": {
+        "correct": "Die Prüflogik für bereits angemeldete Teilnehmende ist korrekt erkannt.",
+        "wrong": "Prüfen Sie, welche Liste durchsucht werden muss und dass das Ergebnis als Boolean zurückkommen soll."
+      },
+      "progressLinks": [
+        "pv1fiae_usecases_pseudocode_versammlung"
+      ]
+    },
+    {
+      "id": "q15",
+      "type": "ordering",
+      "title": "Methode `anmelden` aufbauen",
+      "prompt": "Ordnen Sie die Schritte der Methode `anmelden(a)` in eine fachlich passende Reihenfolge.",
+      "items": [
+        "Nur fortfahren, wenn `a` noch kein angemeldeter Teilnehmer ist",
+        "Zugangscode mit `erstelleCode()` erzeugen",
+        "Neues Objekt `Versammlungsteilnehmer(a, code)` erstellen",
+        "Neuen Teilnehmer in `angemeldeteTeilnehmer` speichern"
+      ],
+      "correctOrder": [
+        "Nur fortfahren, wenn `a` noch kein angemeldeter Teilnehmer ist",
+        "Zugangscode mit `erstelleCode()` erzeugen",
+        "Neues Objekt `Versammlungsteilnehmer(a, code)` erstellen",
+        "Neuen Teilnehmer in `angemeldeteTeilnehmer` speichern"
+      ],
+      "feedback": {
+        "correct": "Die Logik der Methode `anmelden` ist korrekt erkannt.",
+        "wrong": "Achten Sie auf die Reihenfolge: erst prüfen, dann Code erzeugen, neues Objekt erstellen und schliesslich speichern."
+      },
+      "progressLinks": [
+        "pv1fiae_usecases_pseudocode_versammlung"
+      ]
+    },
+    {
+      "id": "f04",
+      "type": "followup_divider",
+      "title": "Virtuelle Versammlung modellieren und benutzerfreundlich gestalten",
+      "from": "ux-architektur@voltmotion-ag.example",
+      "to": "projektteam@ausbildungsbetrieb.example",
+      "subject": "Datenmodell und Oberfläche für die virtuelle Hauptversammlung abstimmen",
+      "date": "2026-03-20",
+      "body": "Hallo,\n\nin der virtuellen Hauptversammlung müssen Fragen, Dokumente und der Zugriff auf den Livestream sauber modelliert und in einer übersichtlichen Oberfläche dargestellt werden. Bitte wählen Sie zuerst die fachlich passende Modell-Erweiterung und prüfen Sie danach, welche UI/UX-Mängel das vorliegende Mockup hat und welche bessere Oberfläche die Anforderungen am besten umsetzt.\n\nViele Grüsse\nUX-Architektur",
+      "visuals": [
+        {
+          "type": "code_block",
+          "eyebrow": "Vorliegendes Mockup",
+          "title": "Abgelehnte Oberfläche der virtuellen Versammlung",
+          "codeTitle": "mockup.txt",
+          "language": "text",
+          "code": "[ HV 2024 ]\nhttps://investor-relations.voltmotion.example\nHome | Aktuelles | Veranstaltungen | Dokumente | Meine Daten\n\nHauptversammlung 2024                         Livestream\n[                       grosses Video                        ] Frage stellen\n[                                                           ] Dokumente"
+        }
+      ]
+    },
+    {
+      "id": "ctx04",
+      "type": "context_card",
+      "title": "Kontext zur virtuellen Versammlung",
+      "contentBlocks": [
+        {
+          "type": "text",
+          "text": "Im bestehenden Modell gibt es bereits `Aktionaer`, `Versammlung` und `Dokument`. Aktionäre können sich zu Versammlungen anmelden; dabei werden `Anmeldezeitpunkt` und `Zugangs-Code` an der Teilnahmebeziehung gespeichert.\n\nNeu kommen diese Anforderungen hinzu:\n- Aktionäre können während einer Versammlung Fragen stellen.\n- Fragen sollen in der Reihenfolge ihres Eingangs angezeigt werden.\n- Sobald eine Frage besprochen wurde, wird sie als beantwortet markiert; der Zeitpunkt muss dokumentiert werden.\n- Eine Frage kann vom Aktionär zurückgezogen werden, ohne den Datensatz physisch zu löschen.\n- Ein Dokument kann für mehrere Versammlungen relevant sein.\n- In der Oberfläche sollen Livestream, Fragen und relevante Dokumente übersichtlich und ohne verwirrende Doppelnavigation erreichbar sein."
+        }
+      ]
+    },
+    {
+      "id": "q16",
+      "type": "single_choice",
+      "title": "Passende ER-Erweiterung für die virtuelle Versammlung auswählen",
+      "prompt": "Welches Modell erweitert das bestehende ER-Modell fachlich am besten für Fragen und versammlungsrelevante Dokumente?",
+      "options": [
+        {
+          "label": "Modell A",
+          "diagram": {
+            "type": "erm",
+            "width": 980,
+            "height": 520,
+            "entities": [
+              {
+                "id": "aktionaer",
+                "title": "AKTIONAER",
+                "x": 700,
+                "y": 24,
+                "width": 210,
+                "fields": [
+                  "PK aktionär_id",
+                  "vorname",
+                  "nachname",
+                  "email"
+                ]
+              },
+              {
+                "id": "versammlung",
+                "title": "VERSAMMLUNG",
+                "x": 250,
+                "y": 120,
+                "width": 210,
+                "fields": [
+                  "PK versammlung_id",
+                  "name",
+                  "beginn"
+                ]
+              },
+              {
+                "id": "dokument",
+                "title": "DOKUMENT",
+                "x": 40,
+                "y": 350,
+                "width": 230,
+                "fields": [
+                  "PK dokument_id",
+                  "bezeichnung",
+                  "dateiname",
+                  "dateityp",
+                  "dateipfad"
+                ]
+              },
+              {
+                "id": "frage",
+                "title": "VERSAMMLUNGSFRAGE",
+                "x": 520,
+                "y": 300,
+                "width": 260,
+                "fields": [
+                  "PK frage_id",
+                  "frage",
+                  "erstellzeitpunkt",
+                  "beantwortungszeitpunkt",
+                  "ist_zurückgezogen"
+                ]
+              }
+            ],
+            "relations": [
+              {
+                "from": "aktionaer",
+                "to": "versammlung",
+                "label": "nimmt teil an (Anmeldezeitpunkt, Zugangs-Code)",
+                "fromCard": "0..n",
+                "toCard": "0..n"
+              },
+              {
+                "from": "aktionaer",
+                "to": "frage",
+                "label": "stellt",
+                "fromCard": "1",
+                "toCard": "0..n"
+              },
+              {
+                "from": "versammlung",
+                "to": "frage",
+                "label": "wird gestellt in",
+                "fromCard": "1",
+                "toCard": "0..n"
+              },
+              {
+                "from": "versammlung",
+                "to": "dokument",
+                "label": "ist relevant für",
+                "fromCard": "0..n",
+                "toCard": "0..n"
+              }
+            ]
+          },
+          "rationale": "Dieses Modell fügt die Fragen als eigene Entität mit Reihenfolge-/Zeit- und Statuslogik ein und modelliert Dokumente korrekt für mehrere Versammlungen."
+        },
+        {
+          "label": "Modell B",
+          "diagram": {
+            "type": "erm",
+            "width": 980,
+            "height": 500,
+            "entities": [
+              {
+                "id": "aktionaer",
+                "title": "AKTIONAER",
+                "x": 700,
+                "y": 24,
+                "width": 210,
+                "fields": [
+                  "PK aktionär_id",
+                  "vorname",
+                  "nachname",
+                  "email"
+                ]
+              },
+              {
+                "id": "versammlung",
+                "title": "VERSAMMLUNG",
+                "x": 250,
+                "y": 120,
+                "width": 230,
+                "fields": [
+                  "PK versammlung_id",
+                  "name",
+                  "beginn",
+                  "frage",
+                  "beantwortungszeitpunkt"
+                ]
+              },
+              {
+                "id": "dokument",
+                "title": "DOKUMENT",
+                "x": 40,
+                "y": 350,
+                "width": 230,
+                "fields": [
+                  "PK dokument_id",
+                  "bezeichnung",
+                  "dateiname",
+                  "dateityp",
+                  "dateipfad"
+                ]
+              }
+            ],
+            "relations": [
+              {
+                "from": "aktionaer",
+                "to": "versammlung",
+                "label": "nimmt teil an (Anmeldezeitpunkt, Zugangs-Code)",
+                "fromCard": "0..n",
+                "toCard": "0..n"
+              },
+              {
+                "from": "versammlung",
+                "to": "dokument",
+                "label": "enthält",
+                "fromCard": "1",
+                "toCard": "0..n"
+              }
+            ]
+          },
+          "rationale": "Hier werden Fragen fälschlich in der Versammlung selbst gespeichert und Dokumente zu stark auf eine einzelne Versammlung verengt."
+        },
+        {
+          "label": "Modell C",
+          "diagram": {
+            "type": "erm",
+            "width": 980,
+            "height": 520,
+            "entities": [
+              {
+                "id": "aktionaer",
+                "title": "AKTIONAER",
+                "x": 700,
+                "y": 24,
+                "width": 210,
+                "fields": [
+                  "PK aktionär_id",
+                  "vorname",
+                  "nachname",
+                  "email",
+                  "zugangs_code"
+                ]
+              },
+              {
+                "id": "versammlung",
+                "title": "VERSAMMLUNG",
+                "x": 250,
+                "y": 120,
+                "width": 210,
+                "fields": [
+                  "PK versammlung_id",
+                  "name",
+                  "beginn"
+                ]
+              },
+              {
+                "id": "dokument",
+                "title": "DOKUMENT",
+                "x": 40,
+                "y": 350,
+                "width": 230,
+                "fields": [
+                  "PK dokument_id",
+                  "bezeichnung",
+                  "dateiname",
+                  "dateityp",
+                  "dateipfad"
+                ]
+              },
+              {
+                "id": "frage",
+                "title": "VERSAMMLUNGSFRAGE",
+                "x": 520,
+                "y": 300,
+                "width": 260,
+                "fields": [
+                  "PK frage_id",
+                  "frage",
+                  "ist_beantwortet"
+                ]
+              }
+            ],
+            "relations": [
+              {
+                "from": "aktionaer",
+                "to": "versammlung",
+                "label": "nimmt teil an",
+                "fromCard": "1",
+                "toCard": "1"
+              },
+              {
+                "from": "frage",
+                "to": "dokument",
+                "label": "bezieht sich auf",
+                "fromCard": "0..n",
+                "toCard": "0..n"
+              }
+            ]
+          },
+          "rationale": "Hier liegen Teilnahme- und Zugangslogik an der falschen Stelle, und die Frage ist nicht sauber mit Aktionär und Versammlung verbunden."
+        },
+        {
+          "label": "Modell D",
+          "diagram": {
+            "type": "erm",
+            "width": 980,
+            "height": 520,
+            "entities": [
+              {
+                "id": "aktionaer",
+                "title": "AKTIONAER",
+                "x": 700,
+                "y": 24,
+                "width": 210,
+                "fields": [
+                  "PK aktionär_id",
+                  "vorname",
+                  "nachname",
+                  "email"
+                ]
+              },
+              {
+                "id": "versammlung",
+                "title": "VERSAMMLUNG",
+                "x": 250,
+                "y": 120,
+                "width": 210,
+                "fields": [
+                  "PK versammlung_id",
+                  "name",
+                  "beginn"
+                ]
+              },
+              {
+                "id": "dokument",
+                "title": "DOKUMENT",
+                "x": 40,
+                "y": 350,
+                "width": 230,
+                "fields": [
+                  "PK dokument_id",
+                  "bezeichnung",
+                  "dateiname",
+                  "dateityp",
+                  "dateipfad"
+                ]
+              },
+              {
+                "id": "frage",
+                "title": "VERSAMMLUNGSFRAGE",
+                "x": 520,
+                "y": 300,
+                "width": 250,
+                "fields": [
+                  "PK frage_id",
+                  "frage",
+                  "gelöscht"
+                ]
+              }
+            ],
+            "relations": [
+              {
+                "from": "aktionaer",
+                "to": "frage",
+                "label": "stellt",
+                "fromCard": "1",
+                "toCard": "0..1"
+              },
+              {
+                "from": "versammlung",
+                "to": "frage",
+                "label": "enthält",
+                "fromCard": "1",
+                "toCard": "1"
+              },
+              {
+                "from": "versammlung",
+                "to": "dokument",
+                "label": "ist relevant für",
+                "fromCard": "1",
+                "toCard": "0..n"
+              }
+            ]
+          },
+          "rationale": "Die Kardinalitäten verengen Fragen und Dokumente unzutreffend, und die Rückzug-Logik als echtes Löschen ist fachlich zu grob."
+        }
+      ],
+      "correctIndex": 0,
+      "feedback": {
+        "correct": "Die ER-Erweiterung bildet Fragen, Relevanz von Dokumenten und Statuslogik fachlich passend ab.",
+        "wrong": "Achten Sie auf eine eigene Frage-Entität, passende Kardinalitäten, Soft-Delete-Logik und die n:m-Relevanz zwischen Versammlung und Dokument."
+      },
+      "progressLinks": [
+        "pv1fiae_erd_uiux_virtuelle_versammlung"
+      ]
+    },
+    {
+      "id": "q17",
+      "type": "multi_select",
+      "title": "Kernaussagen der Modell-Erweiterung absichern",
+      "prompt": "Welche Aussagen müssen für ein fachlich passendes erweitertes Modell der virtuellen Versammlung gelten? Wählen Sie alle passenden Antworten.",
+      "options": [
+        {
+          "text": "Die Reihenfolge der Fragen muss über einen Zeit- oder Reihenfolgewert nachvollziehbar bleiben.",
+          "correct": true,
+          "rationale": "Die Quelle verlangt, dass Fragen in der Reihenfolge ihres Eingangs angezeigt werden."
+        },
+        {
+          "text": "Wenn eine Frage besprochen wurde, muss dies dokumentiert werden; der Zeitpunkt gehört dazu.",
+          "correct": true,
+          "rationale": "Beantwortung und Zeitpunkt sind ein expliziter Teil der Anforderungen."
+        },
+        {
+          "text": "Das Zurückziehen einer Frage darf nicht denselben Effekt haben wie das physische Löschen des Datensatzes.",
+          "correct": true,
+          "rationale": "Die Quelle fordert bewusst eine Rückzug- statt Löschlogik."
+        },
+        {
+          "text": "Ein Dokument kann für mehrere Versammlungen relevant sein.",
+          "correct": true,
+          "rationale": "Gerade deshalb ist eine n:m-Logik zwischen Versammlung und Dokument naheliegend."
+        },
+        {
+          "text": "Jeder Aktionär darf höchstens eine Frage im gesamten System stellen.",
+          "correct": false,
+          "rationale": "Eine solche Einschränkung ist nicht gefordert."
+        },
+        {
+          "text": "Ein zurückgezogenes Thema muss immer komplett aus der Datenbank entfernt werden.",
+          "correct": false,
+          "rationale": "Das widerspricht der geforderten Rückzug-Logik."
+        }
+      ],
+      "feedback": {
+        "correct": "Die Schlüsselregeln der Modell-Erweiterung sind korrekt erkannt.",
+        "wrong": "Prüfen Sie noch einmal Reihenfolge, Antwortzeitpunkt, Rückzug ohne Hard Delete und die Dokument-Relevanz über mehrere Versammlungen."
+      },
+      "progressLinks": [
+        "pv1fiae_erd_uiux_virtuelle_versammlung"
+      ]
+    },
+    {
+      "id": "q18",
+      "type": "multi_select",
+      "title": "UI/UX-Mängel des vorliegenden Mockups erkennen",
+      "prompt": "Welche Mängel des gezeigten Mockups sind aus UI/UX-Sicht besonders plausibel? Wählen Sie alle passenden Antworten.",
+      "options": [
+        {
+          "text": "Die Überschrift und das grosse Video sind unruhig positioniert und nicht sauber mit der Navigation ausgerichtet.",
+          "correct": true,
+          "rationale": "Fehlende Ausrichtung und inkonsistente Platzierung erschweren die Orientierung."
+        },
+        {
+          "text": "Die Links `Livestream`, `Frage stellen` und `Dokumente` verschwenden rechts neben dem Video unnötig Platz.",
+          "correct": true,
+          "rationale": "Die vertikale Anordnung wirkt platzraubend und unausgewogen."
+        },
+        {
+          "text": "Der Link `Livestream` ist auf einer Seite mit sichtbarem Livestream selbst überflüssig und kann irritieren.",
+          "correct": true,
+          "rationale": "Ein Verweis auf dieselbe Funktion auf derselben Seite schafft wenig Mehrwert."
+        },
+        {
+          "text": "Es ist für Benutzende unklar, warum `Dokumente` sowohl im Hauptmenü als auch noch einmal direkt am Video erscheint.",
+          "correct": true,
+          "rationale": "Doppelte Navigationspfade ohne erkennbare Differenzierung können verwirren."
+        },
+        {
+          "text": "Die Seite ist schlecht, weil überhaupt keine Farben verwendet werden dürfen.",
+          "correct": false,
+          "rationale": "Die Mangelanalyse richtet sich nicht gegen Farbverzicht an sich, sondern gegen Struktur und Nutzbarkeit."
+        },
+        {
+          "text": "Eine gute UI darf niemals Navigationspunkte enthalten.",
+          "correct": false,
+          "rationale": "Navigation ist notwendig; problematisch ist hier ihre Anordnung und Redundanz."
+        }
+      ],
+      "feedback": {
+        "correct": "Die plausiblen UI/UX-Mängel des Mockups sind richtig erkannt.",
+        "wrong": "Achten Sie auf Ausrichtung, Flächennutzung, Redundanz und Verwirrung statt auf pauschale Gestaltungsverbote."
+      },
+      "progressLinks": [
+        "pv1fiae_erd_uiux_virtuelle_versammlung"
+      ]
+    },
+    {
+      "id": "q19",
+      "type": "table_fill",
+      "title": "Bessere Oberfläche für die virtuelle Versammlung wählen",
+      "prompt": "Ordnen Sie den Anforderungen an die verbesserte Oberfläche die passende Umsetzungsentscheidung zu.",
+      "columns": [
+        "Anforderung an die Oberfläche",
+        "Passende Umsetzungsentscheidung"
+      ],
+      "rows": [
+        [
+          "Der Livestream soll klar im Mittelpunkt stehen, ohne dass ein redundanter `Livestream`-Link daneben irritiert.",
+          {
+            "key": "ui_stream_focus",
+            "label": "Umsetzung Livestream",
+            "expected": "Grosses zentral platziertes Video ohne zusätzlichen gleichartigen Seitenlink",
+            "inputType": "select",
+            "placeholder": "Umsetzung wählen",
+            "options": [
+              "Grosses zentral platziertes Video ohne zusätzlichen gleichartigen Seitenlink",
+              "Kleines Video oben links plus weiterer Livestream-Link in der Seitenleiste",
+              "Kein sichtbarer Livestreambereich auf der Seite",
+              "Mehrere konkurrierende Videoflächen auf derselben Seite"
+            ]
+          }
+        ],
+        [
+          "Fragen und relevante Dokumente sollen direkt erreichbar sein, ohne versteckte Umwege.",
+          {
+            "key": "ui_actions_docs",
+            "label": "Umsetzung Fragen und Dokumente",
+            "expected": "Klar sichtbare Schaltfläche für Fragen und direkt angebundener Dokumentbereich",
+            "inputType": "select",
+            "placeholder": "Umsetzung wählen",
+            "options": [
+              "Klar sichtbare Schaltfläche für Fragen und direkt angebundener Dokumentbereich",
+              "Fragen und Dokumente nur über das Browser-Menü erreichbar machen",
+              "Fragen nur als Freitext in der Fusszeile verstecken",
+              "Dokumente ausschliesslich über doppelte Navigation oben und rechts anbieten"
+            ]
+          }
+        ],
+        [
+          "Die Seite soll übersichtlich bleiben und keine verwirrende Doppelnavigation erzeugen.",
+          {
+            "key": "ui_navigation_clarity",
+            "label": "Umsetzung Navigation",
+            "expected": "Eine konsistente Hauptnavigation beibehalten und keine gleichartige Zweitnavigation für dieselben Ziele aufbauen",
+            "inputType": "select",
+            "placeholder": "Umsetzung wählen",
+            "options": [
+              "Eine konsistente Hauptnavigation beibehalten und keine gleichartige Zweitnavigation für dieselben Ziele aufbauen",
+              "Zusatzlinks für dieselben Ziele an möglichst vielen Stellen wiederholen",
+              "Navigation komplett entfernen",
+              "Jedes Dokument als eigenen Hauptnavigationspunkt darstellen"
+            ]
+          }
+        ]
+      ],
+      "feedback": {
+        "correct": "Die verbesserte Oberfläche bildet Livestream, Fragen und Dokumente deutlich nutzerfreundlicher ab.",
+        "wrong": "Achten Sie auf klare Priorisierung, konsistente Navigation, direkte Erreichbarkeit der Kernfunktionen und den Verzicht auf redundante Links."
+      },
+      "progressLinks": [
+        "pv1fiae_erd_uiux_virtuelle_versammlung"
+      ]
+    }
+  ]
+}

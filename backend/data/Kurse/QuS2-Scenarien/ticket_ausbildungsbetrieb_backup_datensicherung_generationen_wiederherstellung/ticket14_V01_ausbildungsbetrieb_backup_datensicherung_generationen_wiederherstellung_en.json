@@ -1,0 +1,241 @@
+{
+  "scenario": {
+    "company": "SafeBackup Betrieb GmbH",
+    "scale": "IT operations for smaller departments and mobile workplaces",
+    "context": "Backup runs look technically green, but the backup strategy is not yet clearly described. In particular, full, incremental, differential and the generation principle should be clear.",
+    "mission": "Map data protection, backup strategies, generation principle, offsite storage and restore testing into a clear topic structure.",
+    "source": {
+      "kind": "Internal backup request",
+      "reference": "Backuprahmen 2026-04",
+      "note": "The functional coordination expects a clear separation between backup type, retention, recovery and evidence."
+    },
+    "station": {
+      "id": "QUS2-ST-14",
+      "department": "Operations, archiving and recovery",
+      "profile": "Backup strategies, generation principle and restore evidence",
+      "constraints": [
+        "Backup strategy and restore evidence should be clearly separated but connected",
+        "Generation principle and retention period must be visible",
+        "A green job status does not replace a restore test"
+      ]
+    },
+    "customerRequest": {
+      "from": "betrieb@safebackup.example",
+      "to": "datensicherung@safebackup.example",
+      "subject": "Prepare backup strategy and recovery in a traceable way",
+      "date": "2026-03-27",
+      "body": "Hello,\n\nwe need a compact but reliable presentation of the backup strategy. Please separate full, incremental, differential, GFS and restore testing so the department can directly follow the logic later.\n\nBest regards\nOperations"
+    }
+  },
+  "questions": [
+    {
+      "id": "ctx01",
+      "type": "context_card",
+      "title": "Framework for the backup case",
+      "contentBlocks": [
+        {
+          "type": "text",
+          "text": "Backups run regularly, but the strategy has not been clearly named yet. The team now needs to place the terms for backup type, generations, retention, restore test and evidence so a viable plan emerges."
+        }
+      ]
+    },
+    {
+      "id": "q01",
+      "type": "single_choice",
+      "title": "Distinguish backup types",
+      "prompt": "Which statement best describes full, incremental and differential backups?",
+      "options": [
+        {
+          "text": "A full backup captures a complete state; incremental backs up changes since the last backup; differential backs up changes since the last full backup.",
+          "rationale": "This is the technically correct distinction.",
+          "correct": true
+        },
+        {
+          "text": "Incremental and differential mean the same thing, just with a different name.",
+          "rationale": "This is technically incorrect.",
+          "correct": false
+        },
+        {
+          "text": "Differential backs up only new folders, incremental only old folders.",
+          "rationale": "That distinction is not correct.",
+          "correct": false
+        },
+        {
+          "text": "A full backup is only a log without actual data.",
+          "rationale": "This confuses strategy and evidence.",
+          "correct": false
+        }
+      ],
+      "correctIndex": 0,
+      "feedback": {
+        "correct": "The backup types were correctly distinguished.",
+        "wrong": "Pay attention to the relation to the full backup and to changes since the last backup."
+      },
+      "progressLinks": [
+        "qus2_backup_generationen_strategien"
+      ]
+    },
+    {
+      "id": "q02",
+      "type": "multi_select",
+      "title": "Recognize a reliable backup strategy",
+      "prompt": "Which points belong to a reliable backup strategy? Multiple statements can be correct.",
+      "options": [
+        {
+          "text": "Full backups and complementary backup types are planned.",
+          "rationale": "The backup type must match the protection needs.",
+          "correct": true
+        },
+        {
+          "text": "Retention periods are defined.",
+          "rationale": "Without a retention period the strategy is incomplete.",
+          "correct": true
+        },
+        {
+          "text": "Separate storage or offsite backups are planned.",
+          "rationale": "This keeps a copy safe even if local issues occur.",
+          "correct": true
+        },
+        {
+          "text": "A restore test is explicitly planned.",
+          "rationale": "Only a tested restore makes the backup reliable.",
+          "correct": true
+        },
+        {
+          "text": "Backup logs are kept for evidence.",
+          "rationale": "Without logs there is no audit trail.",
+          "correct": true
+        },
+        {
+          "text": "A green job status is sufficient evidence.",
+          "rationale": "Job status does not replace a recovery test.",
+          "correct": false
+        },
+        {
+          "text": "Backups need no documentation as long as there is free storage.",
+          "rationale": "Storage alone says nothing about recoverability.",
+          "correct": false
+        }
+      ],
+      "feedback": {
+        "correct": "The core elements of the backup strategy were correctly recognized.",
+        "wrong": "Think about type, retention, storage, test and logs instead of just job status."
+      },
+      "progressLinks": [
+        "qus2_backup_generationen_strategien",
+        "qus2_backup_restore_und_nachweise"
+      ]
+    },
+    {
+      "id": "q03",
+      "type": "ordering",
+      "title": "Order backup and restore flow",
+      "prompt": "Which sequence makes sense for backup and recovery?",
+      "items": [
+        "Define data scope and backup target.",
+        "Run full and follow-up backups according to plan.",
+        "Document generations and retention.",
+        "Run a restore test on a test system.",
+        "Log results and remaining items."
+      ],
+      "correctOrder": [
+        "Define data scope and backup target.",
+        "Run full and follow-up backups according to plan.",
+        "Document generations and retention.",
+        "Run a restore test on a test system.",
+        "Log results and remaining items."
+      ],
+      "feedback": {
+        "correct": "The sequence for backup and recovery is correct.",
+        "wrong": "First plan, then back up, then test and document."
+      },
+      "progressLinks": [
+        "qus2_backup_generationen_strategien",
+        "qus2_backup_restore_und_nachweise"
+      ]
+    },
+    {
+      "id": "q04",
+      "type": "match_pairs",
+      "title": "Assign backup terms",
+      "prompt": "Which description best fits each term?",
+      "layout": "table",
+      "columns": [
+        "Term",
+        "Matching description"
+      ],
+      "pairs": [
+        {
+          "key": "pair_1",
+          "left": "Full backup",
+          "right": "Complete backup of an approved data state."
+        },
+        {
+          "key": "pair_2",
+          "left": "Incremental",
+          "right": "Only changes since the last backup are stored."
+        },
+        {
+          "key": "pair_3",
+          "left": "Differential",
+          "right": "Only changes since the last full backup are stored."
+        },
+        {
+          "key": "pair_4",
+          "left": "Grandfather-Father-Son",
+          "right": "Generation rotation with three levels for backups."
+        },
+        {
+          "key": "pair_5",
+          "left": "GFS",
+          "right": "Generation principle for structured retention."
+        },
+        {
+          "key": "pair_6",
+          "left": "Offsite backup",
+          "right": "Backup is stored separately from the primary location."
+        },
+        {
+          "key": "pair_7",
+          "left": "Retention period",
+          "right": "Time span for how long backups are kept."
+        },
+        {
+          "key": "pair_8",
+          "left": "Backup window",
+          "right": "Planned time window in which backups are executed."
+        },
+        {
+          "key": "pair_9",
+          "left": "Restore test",
+          "right": "Tests whether recovery actually works."
+        },
+        {
+          "key": "pair_10",
+          "left": "Backup log",
+          "right": "Documented evidence of the backup."
+        }
+      ],
+      "options": [
+        "Complete backup of an approved data state.",
+        "Only changes since the last backup are stored.",
+        "Only changes since the last full backup are stored.",
+        "Generation rotation with three levels for backups.",
+        "Generation principle for structured retention.",
+        "Backup is stored separately from the primary location.",
+        "Time span for how long backups are kept.",
+        "Planned time window in which backups are executed.",
+        "Tests whether recovery actually works.",
+        "Documented evidence of the backup."
+      ],
+      "feedback": {
+        "correct": "The backup terms were assigned consistently.",
+        "wrong": "Check backup type, rotation, storage, retention and recovery testing."
+      },
+      "progressLinks": [
+        "qus2_backup_generationen_strategien",
+        "qus2_backup_restore_und_nachweise"
+      ]
+    }
+  ]
+}

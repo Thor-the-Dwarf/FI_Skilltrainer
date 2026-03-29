@@ -1,0 +1,159 @@
+{
+  "scenario": {
+    "company": "Nordufer Maschinenbau GmbH",
+    "scale": "Mittelstand, 2 Standorte, 310 Mitarbeitende",
+    "context": "Station 03 des Tageslaufs: technische Anforderungen für Protokolle, Komponenten, Server und WAN konkretisieren.",
+    "mission": "Sie leiten aus dem Bedarf tragfähige technische Entscheidungen für Netzwerk und Dienste ab.",
+    "station": {
+      "id": "LF09-ST-03",
+      "department": "Solution Design",
+      "profile": "Protokolle, Komponenten, Server und Standortkopplung",
+      "constraints": [
+        "Technikentscheidungen immer am Bedarf ausrichten",
+        "Komponenten und Dienste gemeinsam betrachten",
+        "Standortkopplung und Betrieb früh mitdenken"
+      ]
+    },
+    "customerRequest": {
+      "from": "architektur@nordufer-maschinenbau.example",
+      "to": "infra.team@ausbildungsbetrieb.example",
+      "subject": "Station 03: Technische Netzwerkplanung",
+      "date": "2026-03-13",
+      "body": "Bitte konkretisieren Sie Protokolle, Komponenten, Serverrollen und WAN-Anbindung für das freigegebene Zielbild."
+    }
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "type": "multi_select",
+      "title": "Technisches Zielbild stutzen",
+      "prompt": "Welche Elemente gehören in ein belastbares technisches Netzkonzept? (Mehrfachauswahl)",
+      "options": [
+        {
+          "text": "Saubere Segmentierung und definierte Dienstzonen",
+          "correct": true,
+          "rationale": "Unterstützt Sicherheit und Wartbarkeit."
+        },
+        {
+          "text": "Passende Komponentenrollen für Access, Core und Schutz",
+          "correct": true,
+          "rationale": "Strukturiert das Netz nach Funktion."
+        },
+        {
+          "text": "Bewusst unklare Protokoll- und Serverrollen",
+          "correct": false,
+          "rationale": "Führt später zu Integrationsproblemen."
+        },
+        {
+          "text": "Standortkopplung und zentrale Dienste mitdenken",
+          "correct": true,
+          "rationale": "Ist für ein mehrstandortiges Unternehmen zentral."
+        },
+        {
+          "text": "Die technische Doku erst nach der Abnahme erstellen",
+          "correct": false,
+          "rationale": "Erschwert Planung und Umsetzung unnötig."
+        }
+      ],
+      "feedback": {
+        "correct": "Richtig: Das Konzept verbindet Netzstruktur, Rollen und Dienste sinnvoll.",
+        "wrong": "Teilweise falsch: Bitte Segmentierung, Komponentenrollen und Dienste sauber zusammendenken."
+      },
+      "progressLinks": [
+        "lf09_technische_anforderungen"
+      ]
+    },
+    {
+      "id": "q2",
+      "type": "single_choice",
+      "title": "WAN-Grundsatz wählen",
+      "prompt": "Welche WAN-Entscheidung passt am besten zu zwei Standorten mit zentralen Diensten und planbaren Lasten?",
+      "options": [
+        {
+          "text": "Eine abgesicherte Standortkopplung mit definierter Bandbreite und zentral verwaltbarer Sicherheit",
+          "rationale": "Das passt zu planbaren Lasten und betrieblichen Anforderungen."
+        },
+        {
+          "text": "Beliebige Internetzugriffe je Standort ohne gemeinsames Sicherheitskonzept",
+          "rationale": "Erschwert Betrieb, Schutz und Support."
+        },
+        {
+          "text": "Die Standortkopplung erst nach dem Produktionsstart diskutieren",
+          "rationale": "Das wäre für zentrale Dienste zu spät."
+        }
+      ],
+      "correctIndex": 0,
+      "feedback": {
+        "correct": "Richtig: Standortkopplung braucht planbare Leistung und sauberen Schutz.",
+        "wrong": "Nicht passend: Eine mehrstandortige Umgebung braucht einen kontrollierten WAN-Ansatz."
+      },
+      "progressLinks": [
+        "lf09_technische_anforderungen"
+      ]
+    },
+    {
+      "id": "q3",
+      "type": "number",
+      "title": "Bandbreite im Servernetz",
+      "prompt": "Zwei Replikationsjobs erzeugen zusammen 220 Mbit/s, dazu kommen drei Dienstgruppen mit je 90 Mbit/s. Welche Mindestbandbreite ist ohne Reserve zwischen Servernetz und Core nötig?",
+      "expected": 490,
+      "toleranceAbs": 1,
+      "showExpectedFormula": "220 + (3 * 90) = 490 Mbit/s",
+      "feedback": {
+        "correct": "Richtig gerechnet.",
+        "wrong": "Bitte Replikation und Dienstgruppen korrekt zusammenrechnen."
+      },
+      "progressLinks": [
+        "lf09_technische_anforderungen"
+      ]
+    },
+    {
+      "id": "q4",
+      "type": "ordering",
+      "title": "Technisches Konzept entwickeln",
+      "prompt": "Ordnen Sie den Weg vom Bedarf zur technischen Lösung.",
+      "items": [
+        "Dienste, Schutzbedarf und Lastprofil klären",
+        "Protokolle und Segmentierung ableiten",
+        "Komponenten und Serverrollen auswählen",
+        "WAN- und Rechenzentrumsbezug prüfen",
+        "Technischen Entwurf dokumentieren"
+      ],
+      "correctOrder": [
+        "Dienste, Schutzbedarf und Lastprofil klären",
+        "Protokolle und Segmentierung ableiten",
+        "Komponenten und Serverrollen auswählen",
+        "WAN- und Rechenzentrumsbezug prüfen",
+        "Technischen Entwurf dokumentieren"
+      ],
+      "feedback": {
+        "correct": "Richtig: Der Entwurf wird systematisch aus dem Bedarf entwickelt.",
+        "wrong": "Nicht optimal: Bitte erst Dienst- und Lastbild klären und daraus das Technikbild ableiten."
+      },
+      "progressLinks": [
+        "lf09_technische_anforderungen"
+      ]
+    },
+    {
+      "id": "q5",
+      "type": "short_text",
+      "title": "Serverrolle begründen",
+      "prompt": "Erläutern Sie in 4-6 Sätzen, wie Sie Server-Hardware, Server-Software und Rechenzentrumsanforderungen für diesen Fall zusammenbringen würden.",
+      "minChars": 170,
+      "requiredKeywords": [
+        "server",
+        "hardware",
+        "dienst"
+      ],
+      "expectedOutline": "Technische Begründung über Dienstrolle, Hardwarebasis und Umgebungsanforderung.",
+      "feedback": {
+        "correct": "Richtig: Die serverseitige Planung ist technisch schlüssig begründet.",
+        "wrong": "Bitte Dienstrolle, Hardware und Umgebungsanforderungen konkreter verbinden."
+      },
+      "progressLinks": [
+        "lf09_technische_anforderungen",
+        "lf09_pruefung_dokumentation"
+      ]
+    }
+  ]
+}

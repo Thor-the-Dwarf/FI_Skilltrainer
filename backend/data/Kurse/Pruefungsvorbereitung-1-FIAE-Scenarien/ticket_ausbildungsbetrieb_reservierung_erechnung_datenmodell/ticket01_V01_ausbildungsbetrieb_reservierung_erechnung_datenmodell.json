@@ -1,0 +1,1319 @@
+{
+  "scenario": {
+    "company": "Tischfunk Digital GmbH",
+    "scale": "Softwareanbieter für Gastronomiebetriebe, 85 Mitarbeitende",
+    "context": "Prüfungsvorbereitung FIAE im Stationsformat mit zusammenhängenden Kundenanfragen und Folgeaufträgen.",
+    "mission": "Sie planen ein Reservierungs- und eRechnungsprojekt, prüfen Absicherung und strukturieren Bewertungsdaten für eine relationale Datenbank.",
+    "source": {
+      "kind": "Pseudonymisierte Prüfungsvorlage",
+      "reference": "AP2 FIAE Teil 1, Winter 2025/26",
+      "note": "Die fachliche Aufgabenreihenfolge bleibt erhalten; Namen, Kontakte und Unternehmensbezug wurden in das Kursformat überführt."
+    },
+    "station": {
+      "id": "PV1FIAE-ST-01",
+      "department": "Prüfungsvorbereitung Anwendungsentwicklung",
+      "profile": "Projektplanung, UML, IT-Sicherheit, XML und Datenmodellierung",
+      "constraints": [
+        "Die vier Hauptaufgaben bleiben als fachlich zusammenhängende Folgeaufträge sichtbar",
+        "Texte und Beispieldaten bleiben sauber pseudonymisiert, aber fachlich nah an der Vorlage",
+        "Bestehende Aufgabentypen werden bevorzugt; neue Visuals entstehen nur bei fachlichem Anlass"
+      ]
+    },
+    "customerRequest": {
+      "from": "produktmanagement@tischfunk-digital.example",
+      "to": "projektteam@ausbildungsbetrieb.example",
+      "subject": "Konzeption für Reservierungsmodul, eRechnung und Bewertungsdaten vorbereiten",
+      "date": "2026-03-19",
+      "body": "Guten Tag,\n\nunsere Lösungen für Gastronomiebetriebe werden stark nachgefragt. Im nächsten Ausbaupaket sollen ein Online-Reservierungsmodul, die spätere Verarbeitung strukturierter eRechnungen und ein belastbares Datenmodell für Gästebewertungen konzipiert werden.\n\nBitte bearbeiten Sie die Teilaufträge in der vorgegebenen Reihenfolge. Im Fokus stehen Machbarkeit, Vorgehensmodell, Reservierungslogik, Absicherung der eRechnungsverarbeitung und die relationale Struktur der Bewertungsdaten.\n\nViele Grüsse\nProduktmanagement"
+    }
+  },
+  "questions": [
+    {
+      "id": "ctx01",
+      "type": "context_card",
+      "title": "Kontext zum Projektstart",
+      "contentBlocks": [
+        {
+          "type": "text",
+          "text": "Das Projektpaket startet mit einer Machbarkeitsanalyse für ein neues Online-Reservierungssystem. Anschliessend müssen ein geeignetes Vorgehensmodell, projekttypische Risiken, das Reservierungsmodul selbst, Anforderungen an eRechnungen und später die Datenhaltung für Leistungsbewertungen konsistent eingeordnet werden.\n\nWichtig: Die Fachsituation bleibt zusammenhängend. Entscheidungen aus frühen Konzeptionsschritten müssen später zu Reservierungslogik, Absicherung und Datenmodell passen."
+        }
+      ]
+    },
+    {
+      "id": "q01",
+      "type": "multi_select",
+      "title": "Machbarkeitskriterien erkennen",
+      "prompt": "Welche Punkte gehören zu einer belastbaren Machbarkeitsanalyse für das geplante Reservierungssystem? Wählen Sie alle passenden Kriterien.",
+      "options": [
+        {
+          "text": "Marktanalyse für Nachfrage, Zielgruppe und mögliches Marktvolumen",
+          "correct": true,
+          "rationale": "Die Nachfrage im Zielmarkt ist ein typisches Kriterium einer Machbarkeitsanalyse."
+        },
+        {
+          "text": "Technische Machbarkeit mit Blick auf Infrastruktur, Hosting und Integrationsaufwand",
+          "correct": true,
+          "rationale": "Die technische Umsetzbarkeit ist ein klassisches Machbarkeitskriterium."
+        },
+        {
+          "text": "Rechtliche Machbarkeit, zum Beispiel Datenschutz- und Branchenvorgaben",
+          "correct": true,
+          "rationale": "Rechtliche Rahmenbedingungen können ein Projekt direkt begrenzen oder verteuern."
+        },
+        {
+          "text": "Wirtschaftliche Machbarkeit, etwa über Investitions- und Erlösbetrachtungen",
+          "correct": true,
+          "rationale": "Auch Kosten, Nutzen und Wirtschaftlichkeit gehören zur Machbarkeitsanalyse."
+        },
+        {
+          "text": "Welche Lieblingsgerichte das Entwicklungsteam für interne Workshops bestellt",
+          "correct": false,
+          "rationale": "Das hat keinen fachlichen Bezug zur Machbarkeit des Produkts."
+        },
+        {
+          "text": "Welche Symbolfarbe später in der ersten Designskizze verwendet wird",
+          "correct": false,
+          "rationale": "UI-Farbideen können später relevant sein, sind aber kein Machbarkeitskriterium."
+        }
+      ],
+      "feedback": {
+        "correct": "Die ausgewählten Kriterien decken typische fachliche, technische, rechtliche und wirtschaftliche Machbarkeitsfragen ab.",
+        "wrong": "Achten Sie auf echte Machbarkeitskriterien und trennen Sie diese von rein gestalterischen oder organisatorisch irrelevanten Details."
+      },
+      "progressLinks": [
+        "pv1fiae_machbarkeit_kriterien"
+      ]
+    },
+    {
+      "id": "q02",
+      "type": "table_fill",
+      "title": "Klassisch und agil gegenüberstellen",
+      "prompt": "Ordnen Sie die Beschreibungen dem passenden Vorgehensmodell und dem jeweiligen Aspekt zu.",
+      "columns": [
+        "Vorgehensmodell",
+        "Projektplanung und Anforderungen",
+        "Flexibilität bei Änderungen"
+      ],
+      "rows": [
+        [
+          "Klassisches Projektmanagement",
+          {
+            "key": "classic_plan",
+            "label": "Klassisch / Projektplanung und Anforderungen",
+            "expected": "Anforderungen früh detailliert festlegen und die Gesamtplanung weitgehend vorab ausarbeiten",
+            "inputType": "select",
+            "placeholder": "Beschreibung wählen",
+            "options": [
+              "Anforderungen früh detailliert festlegen und die Gesamtplanung weitgehend vorab ausarbeiten",
+              "Anforderungen laufend verfeinern und in kurzen Iterationen nachschärfen",
+              "Planung vollständig durch den Kunden ersetzen und auf Dokumentation verzichten",
+              "Ausschliesslich nach spontanen Einzelideen ohne abgestimmte Reihenfolge arbeiten"
+            ]
+          },
+          {
+            "key": "classic_change",
+            "label": "Klassisch / Flexibilität bei Änderungen",
+            "expected": "Änderungen nur mit grösserem Anpassungsaufwand in Plan, Zeit und Budget umsetzen",
+            "inputType": "select",
+            "placeholder": "Beschreibung wählen",
+            "options": [
+              "Änderungen nur mit grösserem Anpassungsaufwand in Plan, Zeit und Budget umsetzen",
+              "Änderungen als normalen Teil kurzer Arbeitszyklen aufnehmen",
+              "Änderungen grundsätzlich ignorieren, sobald ein Projekt gestartet ist",
+              "Änderungen nur nach Abschluss der Produktivsetzung überhaupt betrachten"
+            ]
+          }
+        ],
+        [
+          "Agiles Projektmanagement",
+          {
+            "key": "agile_plan",
+            "label": "Agil / Projektplanung und Anforderungen",
+            "expected": "Anforderungen iterativ verfeinern und die Planung schrittweise in kleinen Einheiten aufbauen",
+            "inputType": "select",
+            "placeholder": "Beschreibung wählen",
+            "options": [
+              "Anforderungen iterativ verfeinern und die Planung schrittweise in kleinen Einheiten aufbauen",
+              "Anforderungen ein einziges Mal zu Projektbeginn vollständig einfrieren",
+              "Planung und Anforderungen grundsätzlich voneinander trennen und getrennt bewerten",
+              "Anforderungen nur mündlich festhalten und nie in Arbeitsbausteine überführen"
+            ]
+          },
+          {
+            "key": "agile_change",
+            "label": "Agil / Flexibilität bei Änderungen",
+            "expected": "Änderungen laufend aufnehmen und in kurzen Zyklen in die Arbeit integrieren",
+            "inputType": "select",
+            "placeholder": "Beschreibung wählen",
+            "options": [
+              "Änderungen laufend aufnehmen und in kurzen Zyklen in die Arbeit integrieren",
+              "Änderungen nur mit grossem Change-Request-Verfahren und langen Freigabeketten einbauen",
+              "Änderungen aus Prinzip vermeiden, damit jeder Sprint unverändert bleibt",
+              "Änderungen nur akzeptieren, wenn sie keinen Bezug zu Anforderungen haben"
+            ]
+          }
+        ]
+      ],
+      "feedback": {
+        "correct": "Die Unterschiede zwischen klassischem und agilem Vorgehen sind passend zugeordnet.",
+        "wrong": "Achten Sie darauf, wie Anforderungen geplant werden und wie leicht Änderungen später aufgenommen werden können."
+      },
+      "progressLinks": [
+        "pv1fiae_projektmanagement_risiken"
+      ]
+    },
+    {
+      "id": "q03",
+      "type": "table_fill",
+      "title": "Risiken und Gegenmassnahmen zuordnen",
+      "prompt": "Ergänzen Sie für die beiden vorgegebenen Probleme jeweils ein passendes Risiko und eine geeignete Gegenmassnahme.",
+      "columns": [
+        "Problem",
+        "Risiko",
+        "Gegenmassnahme"
+      ],
+      "rows": [
+        [
+          "Die Gastronomiebetriebe könnten ihre Anforderungen während des Projekts ändern.",
+          {
+            "key": "risk_req_change",
+            "label": "Risiko bei Anforderungswechseln",
+            "expected": "Mehrfach überarbeitete Funktionen können Zeit und Budget spürbar belasten",
+            "inputType": "select",
+            "placeholder": "Risiko wählen",
+            "options": [
+              "Mehrfach überarbeitete Funktionen können Zeit und Budget spürbar belasten",
+              "Es entstehen automatisch keine Zusatzaufwände, weil jede Änderung kostenneutral bleibt",
+              "Änderungen verbessern immer sofort die Codequalität und beseitigen Projektrisiken",
+              "Anforderungswechsel betreffen nur das Design und nie die eigentliche Funktionalität"
+            ]
+          },
+          {
+            "key": "measure_req_change",
+            "label": "Gegenmassnahme bei Anforderungswechseln",
+            "expected": "Agile Sprints mit Reviews und frühen Stakeholder-Rückmeldungen einplanen",
+            "inputType": "select",
+            "placeholder": "Gegenmassnahme wählen",
+            "options": [
+              "Agile Sprints mit Reviews und frühen Stakeholder-Rückmeldungen einplanen",
+              "Änderungswünsche erst nach dem Projektende gesammelt lesen",
+              "Alle Anforderungen dauerhaft mündlich lassen und nicht dokumentieren",
+              "Das Team ohne Abstimmung parallel an widersprüchlichen Versionen arbeiten lassen"
+            ]
+          }
+        ],
+        [
+          "Fehlende oder unzureichende Kommunikation",
+          {
+            "key": "risk_communication",
+            "label": "Risiko bei fehlender Kommunikation",
+            "expected": "Missverständnisse führen zu Nacharbeit, Verzögerungen und Fehlentwicklungen",
+            "inputType": "select",
+            "placeholder": "Risiko wählen",
+            "options": [
+              "Missverständnisse führen zu Nacharbeit, Verzögerungen und Fehlentwicklungen",
+              "Kommunikationslücken haben nur positive Effekte auf Transparenz und Geschwindigkeit",
+              "Unklare Absprachen betreffen ausschliesslich die Rechnungsstellung, nicht die Entwicklung",
+              "Fehlende Kommunikation reduziert automatisch den Abstimmungsaufwand ohne Nebenwirkungen"
+            ]
+          },
+          {
+            "key": "measure_communication",
+            "label": "Gegenmassnahme bei fehlender Kommunikation",
+            "expected": "Regelmässige Team- und Stakeholder-Meetings plus transparente Dokumentation einführen",
+            "inputType": "select",
+            "placeholder": "Gegenmassnahme wählen",
+            "options": [
+              "Regelmässige Team- und Stakeholder-Meetings plus transparente Dokumentation einführen",
+              "Projektbeteiligte nur noch über Einzelchats ohne gemeinsame Ablage informieren",
+              "Statusänderungen bewusst nicht teilen, damit sich niemand einmischt",
+              "Rückfragen vermeiden und offene Punkte erst im Abnahmetermin sammeln"
+            ]
+          }
+        ]
+      ],
+      "feedback": {
+        "correct": "Risiken und Gegenmassnahmen sind fachlich stimmig den Problemen zugeordnet.",
+        "wrong": "Denken Sie an typische Projektfolgen von Anforderungswechseln und Kommunikationslücken sowie an passende organisatorische Gegenmassnahmen."
+      },
+      "progressLinks": [
+        "pv1fiae_projektmanagement_risiken"
+      ]
+    },
+    {
+      "id": "f02",
+      "type": "followup_divider",
+      "title": "Reservierungsmodul und eRechnung konzipieren",
+      "from": "fachbereich.reservierung@tischfunk-digital.example",
+      "to": "projektteam@ausbildungsbetrieb.example",
+      "subject": "Use-Case-Logik für Platzreservierung und Grundlagen zur eRechnung abstimmen",
+      "date": "2026-03-19",
+      "body": "Hallo zusammen,\n\nfür den nächsten Konzeptionsblock brauchen wir ein klares Bild vom Reservierungsmodul. Firmenkunden sollen sich registrieren können, damit später eine Bezahlung per Rechnung möglich ist. Gleichzeitig müssen auch nicht registrierte Kunden Reservierungen anlegen und stornieren können. Bitte ordnen Sie die Akteure, Use Cases und Beziehungen sauber ein.\n\nIm selben Arbeitspaket sollen ausserdem die Grundideen strukturierter eRechnungen eingeordnet werden. Im Fokus steht, warum diese Rechnungen maschinell gut verarbeitbar sein müssen.\n\nViele Grüsse\nFachbereich Reservierung"
+    },
+    {
+      "id": "ctx02",
+      "type": "context_card",
+      "title": "Kontext zum Reservierungsmodul",
+      "contentBlocks": [
+        {
+          "type": "text",
+          "text": "Für das Modul zum Reservieren von Plätzen gelten folgende fachliche Vorgaben:\n- Ein Mitarbeiter bearbeitet Stammdaten wie Öffnungszeiten oder Platzanzahl und muss sich dafür einloggen.\n- Firmenkunden registrieren sich, um eine Registrierungsnummer zu erhalten.\n- Bei einer Reservierung gibt der Kunde Datum, Uhrzeit und Anzahl der Plätze an.\n- Sonderwünsche wie Fensterplatz, ruhiger Bereich oder Extraraum sind optional.\n- Bei allen Reservierungen ist eine E-Mail-Adresse Pflicht.\n- Bei Reservierungen von Firmenkunden muss zusätzlich die Registrierungsnummer hinterlegt werden.\n- Alle Kunden können eine Reservierung stornieren.\n\nIm Infotext zur eRechnung wird ausserdem betont, dass strukturierte Rechnungen vor allem für eine automatische Verarbeitung in Computersystemen gedacht sind."
+        }
+      ]
+    },
+    {
+      "id": "q04",
+      "type": "multi_select",
+      "title": "Akteure im Use-Case-Modell",
+      "prompt": "Welche Akteure sollten im Anwendungsfalldiagramm sichtbar sein, wenn `Firmenkunde` als Spezialisierung des allgemeinen `Kunde` modelliert wird?",
+      "options": [
+        {
+          "text": "Kunde",
+          "correct": true,
+          "rationale": "Der allgemeine Kunde ist der Basisaakteur für Reservieren und Stornieren."
+        },
+        {
+          "text": "Firmenkunde",
+          "correct": true,
+          "rationale": "Firmenkunden haben zusätzliche fachliche Anforderungen wie Registrierung und Registrierungsnummer."
+        },
+        {
+          "text": "Mitarbeiter",
+          "correct": true,
+          "rationale": "Ein Mitarbeiter pflegt die Reservierungsstammdaten und muss sich dafür einloggen."
+        },
+        {
+          "text": "Koch",
+          "correct": false,
+          "rationale": "Der Koch ist in den beschriebenen Reservierungsabläufen kein expliziter Akteur."
+        },
+        {
+          "text": "Lieferant",
+          "correct": false,
+          "rationale": "Ein Lieferant kommt in den Anforderungen des Reservierungsmoduls nicht vor."
+        }
+      ],
+      "feedback": {
+        "correct": "Die relevanten Akteure für das Reservierungsmodul sind passend erfasst.",
+        "wrong": "Berücksichtigen Sie die allgemeine Kundenrolle, deren Spezialisierung für Firmenkunden und die pflegende Mitarbeiterrolle."
+      },
+      "progressLinks": [
+        "pv1fiae_uml_use_cases"
+      ]
+    },
+    {
+      "id": "q05",
+      "type": "match_pairs",
+      "title": "Use Cases den Akteuren zuordnen",
+      "prompt": "Ordnen Sie die beschriebenen Use Cases dem jeweils naheliegendsten Akteur zu.",
+      "layout": "table",
+      "columns": [
+        "Use Case",
+        "Akteur"
+      ],
+      "pairs": [
+        {
+          "key": "uc_1",
+          "left": "Stammdaten für Öffnungszeiten und Platzanzahl pflegen",
+          "right": "Mitarbeiter"
+        },
+        {
+          "key": "uc_2",
+          "left": "Registrieren, um eine Registrierungsnummer zu erhalten",
+          "right": "Firmenkunde"
+        },
+        {
+          "key": "uc_3",
+          "left": "Reservierung mit Datum, Uhrzeit und Plätzen anlegen",
+          "right": "Kunde"
+        },
+        {
+          "key": "uc_4",
+          "left": "Pflichtangabe der E-Mail-Adresse bei der Reservierung",
+          "right": "Kunde"
+        },
+        {
+          "key": "uc_5",
+          "left": "Reservierung stornieren",
+          "right": "Kunde"
+        }
+      ],
+      "options": [
+        "Mitarbeiter",
+        "Firmenkunde",
+        "Kunde"
+      ],
+      "feedback": {
+        "correct": "Die Akteurszuordnung passt zur fachlichen Verantwortung der Beteiligten.",
+        "wrong": "Achten Sie darauf, welche Aufgaben allen Kunden offenstehen und welche speziell nur Firmenkunden oder Mitarbeitern zugeordnet sind."
+      },
+      "progressLinks": [
+        "pv1fiae_uml_use_cases"
+      ]
+    },
+    {
+      "id": "q06",
+      "type": "table_fill",
+      "title": "Beziehungslogik im Use-Case-Diagramm festlegen",
+      "prompt": "Ordnen Sie den beiden Fachaussagen die passende Modellierungslogik im Use-Case-Diagramm zu.",
+      "columns": [
+        "Fachaussage",
+        "Passende Modellierung"
+      ],
+      "rows": [
+        [
+          "`Firmenkunde` ist ein Spezialfall von `Kunde`.",
+          {
+            "key": "uc_relation_actor",
+            "label": "Beziehung für Firmenkunde und Kunde",
+            "expected": "Spezialisierung / Generalisierung",
+            "inputType": "select",
+            "placeholder": "Modellierung wählen",
+            "options": [
+              "Spezialisierung / Generalisierung",
+              "`<<extend>>`-Beziehung",
+              "`<<include>>`-Beziehung",
+              "Direkte Assoziation zwischen zwei Akteuren ohne Vererbung"
+            ]
+          }
+        ],
+        [
+          "`Sonderwuensche angeben` soll nur bei Bedarf Teil von `Reservierung vornehmen` sein.",
+          {
+            "key": "uc_relation_optional",
+            "label": "Beziehung für Sonderwünsche",
+            "expected": "`<<extend>>`-Beziehung",
+            "inputType": "select",
+            "placeholder": "Modellierung wählen",
+            "options": [
+              "`<<extend>>`-Beziehung",
+              "`<<include>>`-Beziehung",
+              "Spezialisierung / Generalisierung",
+              "Keine Beziehung, weil optionale Schritte nie modelliert werden"
+            ]
+          }
+        ]
+      ],
+      "feedback": {
+        "correct": "Spezialisierung und optionale Erweiterung sind fachlich passend modelliert.",
+        "wrong": "Prüfen Sie getrennt, welche Rolle ein Spezialfall von `Kunde` ist und welcher Use Case nur optional zur Reservierung gehört."
+      },
+      "progressLinks": [
+        "pv1fiae_uml_use_cases"
+      ]
+    },
+    {
+      "id": "ctx03",
+      "type": "context_card",
+      "title": "Kurznotiz zur eRechnung",
+      "contentBlocks": [
+        {
+          "type": "text",
+          "text": "Im Projektkontext steht die eRechnung nicht zuerst für ein schönes Layout, sondern für strukturierte elektronische Daten. Diese Daten sollen von IT-Systemen möglichst automatisch weiterverarbeitet werden können.\n\nDaneben gibt es weiterhin einen visuellen Aspekt für Menschen, zum Beispiel eine lesbare Darstellung. Fachlich ist dieser Darstellungsaspekt aber nachrangig gegenüber dem Datenaspekt der automatischen Verarbeitung."
+        }
+      ]
+    },
+    {
+      "id": "q07",
+      "type": "short_text",
+      "title": "Hauptziel einer eRechnung kurz formulieren",
+      "prompt": "Formulieren Sie in 1-3 Sätzen das Hauptziel einer eRechnung in diesem Projektkontext.",
+      "minChars": 90,
+      "requiredKeywords": [
+        "automatisch",
+        "verarbeiten"
+      ],
+      "expectedOutline": "Beschreibt die eRechnung als strukturierte elektronische Rechnung, deren Hauptziel die automatische bzw. maschinelle Verarbeitung in IT-Systemen ist; eine lesbare Darstellung für Menschen bleibt nachrangig.",
+      "feedback": {
+        "correct": "Das Hauptziel der eRechnung ist fachlich treffend formuliert.",
+        "wrong": "Arbeiten Sie klarer heraus, dass strukturierte Rechnungsdaten vor allem automatisch weiterverarbeitet werden sollen."
+      },
+      "progressLinks": [
+        "pv1fiae_erechnung_grundlagen"
+      ]
+    },
+    {
+      "id": "q08",
+      "type": "multi_select",
+      "title": "Aspekte einer digitalen Rechnung",
+      "prompt": "Welche zwei Aspekte einer digitalen Rechnung werden im Infotext explizit unterschieden?",
+      "options": [
+        {
+          "text": "Ein visueller Aspekt für menschliche Leser",
+          "correct": true,
+          "rationale": "Der visuelle Aspekt betrifft die Darstellung für Menschen."
+        },
+        {
+          "text": "Ein Datenaspekt für die Verarbeitung in Computersystemen",
+          "correct": true,
+          "rationale": "Der Datenaspekt beschreibt die maschinelle Weiterverarbeitung."
+        },
+        {
+          "text": "Ein Papieraspekt für den obligatorischen Ausdruck in mehrfacher Ausfertigung",
+          "correct": false,
+          "rationale": "Ein Papieraspekt wird gerade nicht als Kernmerkmal digitaler Rechnungen beschrieben."
+        },
+        {
+          "text": "Ein Archivaspekt, nach dem die Rechnung ausschliesslich analog abgelegt werden darf",
+          "correct": false,
+          "rationale": "Das wird im Infotext nicht als der zentrale Unterschied einer digitalen Rechnung beschrieben."
+        },
+        {
+          "text": "Ein Farbkonzept-Aspekt für die visuelle Corporate-Identity-Prüfung",
+          "correct": false,
+          "rationale": "Farben und Branding sind kein fachlicher Kernpunkt der beschriebenen Unterscheidung."
+        }
+      ],
+      "feedback": {
+        "correct": "Die zwei explizit genannten Aspekte der digitalen Rechnung sind richtig gewählt.",
+        "wrong": "Unterschieden werden die Sicht für Menschen und die strukturierte Datenverarbeitung durch Systeme."
+      },
+      "progressLinks": [
+        "pv1fiae_erechnung_grundlagen"
+      ]
+    },
+    {
+      "id": "f03",
+      "type": "followup_divider",
+      "title": "Sichere Übertragung und Validierung absichern",
+      "from": "architektur@tischfunk-digital.example",
+      "to": "projektteam@ausbildungsbetrieb.example",
+      "subject": "Transportverschlüsselung, Protokollprüfung und XML-Beispiel bewerten",
+      "date": "2026-03-19",
+      "body": "Hallo,\n\nfür die künftige Übermittlung strukturierter eRechnungen an Firmenkunden wollen wir die Übertragung per E-Mail absichern und die Konformität zur jeweiligen Protokollspezifikation verlässlich prüfen. Bitte ordnen Sie zuerst das Transportverschlüsselungsverfahren ein und bewerten Sie danach, welche Validierungsschritte sinnvoll sind.\n\nFür die XML-Prüfung liegt unten ein bewusst fehlerhafter Ausschnitt vor. Er hilft dabei zu beurteilen, warum eine reine XSD-Prüfung nicht in jedem Fall ausreicht.\n\nViele Grüsse\nArchitektur",
+      "visuals": [
+        {
+          "type": "code_block",
+          "eyebrow": "Beispieldaten",
+          "title": "XML-Ausschnitt mit markierter Fehlerstelle",
+          "codeTitle": "invoice.xml",
+          "language": "xml",
+          "code": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<Invoice>\n  <InvoiceLines>\n    <InvoiceLine>\n      <LineNumber>1</LineNumber>\n      <ProductCode>123456</ProductCode>\n      <NetPrice>10.00</NetPrice>\n      <Quantity>10</Quantity>\n      <NetTotal>100.00</NetTotal>\n      <TaxTotal>19.00</TaxTotal>\n      <GrossTotal>119.00</GrossTotal>\n    </InvoiceLine>\n    <InvoiceLine>\n      <LineNumber>2</LineNumber>\n      <ProductCode>654321</ProductCode>\n      <NetPrice>20.00</NetPrice>\n      <Quantity>5</Quantity>\n      <NetTotal>100.00</NetTotal>\n      <TaxTotal>19.00</TaxTotal>\n      <GrossTotal>119.00</GrossTotal>\n    </InvoiceLine>\n  </InvoiceLines>\n  <InvoiceTotal>\n    <NetTotal>238.00</NetTotal> <!-- Fehler -->\n  </InvoiceTotal>\n</Invoice>"
+        }
+      ]
+    },
+    {
+      "id": "q09",
+      "type": "table_fill",
+      "title": "Hybride Transportverschlüsselung in zwei Phasen einordnen",
+      "prompt": "Ordnen Sie den beiden Phasen der geschützten E-Mail-Übertragung den passenden kryptografischen Ansatz zu.",
+      "columns": [
+        "Phase der Übertragung",
+        "Passender kryptografischer Ansatz"
+      ],
+      "rows": [
+        [
+          "Beim Verbindungsaufbau wird Material für die sichere Sitzung vorbereitet oder ausgetauscht.",
+          {
+            "key": "tls_phase_setup",
+            "label": "Ansatz beim Verbindungsaufbau",
+            "expected": "Asymmetrischer Anteil für Schlüsselaustausch und Vertrauensaufbau",
+            "inputType": "select",
+            "placeholder": "Ansatz wählen",
+            "options": [
+              "Asymmetrischer Anteil für Schlüsselaustausch und Vertrauensaufbau",
+              "Symmetrischer Anteil für die eigentliche Nutzdatenübertragung",
+              "Steganografie zum Verstecken der Rechnung im E-Mail-Text",
+              "Hashing ohne Schlüssel als vollständiger Ersatz für Verschlüsselung"
+            ]
+          }
+        ],
+        [
+          "Die eigentlichen Rechnungsdaten werden danach effizient übertragen.",
+          {
+            "key": "tls_phase_data",
+            "label": "Ansatz bei der Nutzdatenübertragung",
+            "expected": "Symmetrischer Anteil für die eigentliche Nutzdatenübertragung",
+            "inputType": "select",
+            "placeholder": "Ansatz wählen",
+            "options": [
+              "Symmetrischer Anteil für die eigentliche Nutzdatenübertragung",
+              "Asymmetrischer Anteil für Schlüsselaustausch und Vertrauensaufbau",
+              "Steganografie zum Verstecken der Rechnung im E-Mail-Text",
+              "Hashing ohne Schlüssel als vollständiger Ersatz für Verschlüsselung"
+            ]
+          }
+        ]
+      ],
+      "feedback": {
+        "correct": "Die zwei Phasen der Transportverschlüsselung sind fachlich passend eingeordnet.",
+        "wrong": "Achten Sie darauf, dass hier asymmetrischer und symmetrischer Anteil zusammenwirken und damit ein hybrides Verfahren entsteht."
+      },
+      "progressLinks": [
+        "pv1fiae_sicherheit_validierung_prototyping"
+      ]
+    },
+    {
+      "id": "q10",
+      "type": "short_text",
+      "title": "Vorteil der hybriden/asymmetrischen Schlüsselidee kurz begründen",
+      "prompt": "Beschreiben Sie in 2-4 Sätzen, warum die hybride/asymmetrische Schlüsselidee gegenüber Verfahren mit gemeinsamem Geheimnis ein Vorteil ist.",
+      "minChars": 120,
+      "requiredKeywords": [
+        "schlüssel",
+        "geheimnis",
+        "öffentlich"
+      ],
+      "expectedOutline": "Erklärt, dass kein vorab geteiltes gemeinsames Geheimnis ausgetauscht werden muss, weil mit dem öffentlichen Schlüssel des Empfängers gearbeitet werden kann und der private Schlüssel geheim bleibt.",
+      "feedback": {
+        "correct": "Der Vorteil gegenüber einem vorab geteilten Geheimnis ist fachlich nachvollziehbar beschrieben.",
+        "wrong": "Arbeiten Sie klarer heraus, dass kein gemeinsames Geheimnis vorab verteilt werden muss und der Empfänger über seinen Schlüssel eingebunden wird."
+      },
+      "progressLinks": [
+        "pv1fiae_sicherheit_validierung_prototyping"
+      ]
+    },
+    {
+      "id": "q11",
+      "type": "multi_select",
+      "title": "Konformität zur Protokollspezifikation absichern",
+      "prompt": "Welche Massnahmen sind geeignet, um die Implementierung einer eRechnung gegen die Protokollspezifikation abzusichern? Wählen Sie alle passenden Antworten.",
+      "options": [
+        {
+          "text": "Generierte Test-Rechnungen bei einem zertifizierten Validator prüfen",
+          "correct": true,
+          "rationale": "Ein zertifizierter Validator ist eine direkte Möglichkeit, Konformität zu prüfen."
+        },
+        {
+          "text": "Unit-Tests für erzeugte Dokumente und relevante Regeln implementieren",
+          "correct": true,
+          "rationale": "Automatisierte Tests helfen dabei, erwartetes Verhalten systematisch abzusichern."
+        },
+        {
+          "text": "Eine geeignete und möglichst zertifizierte Library verwenden",
+          "correct": true,
+          "rationale": "Libraries können etablierte Regeln und Formate verlässlich abbilden."
+        },
+        {
+          "text": "Formale Validierung über Schemadateien wie XSD einbeziehen",
+          "correct": true,
+          "rationale": "Schema-Prüfungen helfen, strukturelle Vorgaben der Spezifikation abzusichern."
+        },
+        {
+          "text": "Nur Screenshots des Rechnungslayouts im Teamchat bewerten",
+          "correct": false,
+          "rationale": "Ein reiner Layoutvergleich prüft keine strukturierte Protokollkonformität."
+        },
+        {
+          "text": "Die XML-Datei farblich schöner formatieren, damit Parser weniger Fehler machen",
+          "correct": false,
+          "rationale": "Optische Formatierung ersetzt keine fachliche oder technische Validierung."
+        }
+      ],
+      "feedback": {
+        "correct": "Die ausgewählten Massnahmen decken mehrere sinnvolle Wege zur Absicherung der Protokollkonformität ab.",
+        "wrong": "Denken Sie an Validatoren, Tests, Libraries und formale Schemaprüfungen statt an rein optische Kontrollen."
+      },
+      "progressLinks": [
+        "pv1fiae_sicherheit_validierung_prototyping"
+      ]
+    },
+    {
+      "id": "q12",
+      "type": "multi_select",
+      "title": "Externe Test-Website verantwortungsvoll nutzen",
+      "prompt": "Welche zwei Punkte müssen Sie beachten, wenn Sie Rechnungen bei einer externen Test-Website hochladen?",
+      "options": [
+        {
+          "text": "Es dürfen keine echten Kunden- oder Unternehmensdaten hochgeladen werden; Testdaten müssen anonym bzw. künstlich sein.",
+          "correct": true,
+          "rationale": "Vertraulichkeit und Datenschutz sprechen gegen Echt-Daten auf externen Plattformen."
+        },
+        {
+          "text": "Es muss geprüft werden, ob das Tool zertifiziert ist oder nur Teilaspekte statt der vollständigen Konformität testet.",
+          "correct": true,
+          "rationale": "Nicht jedes Tool prüft mit derselben Qualität oder demselben fachlichen Umfang."
+        },
+        {
+          "text": "Die Website darf nur dann genutzt werden, wenn jede Rechnung schon produktiv beim Kunden war.",
+          "correct": false,
+          "rationale": "Gerade für Testzwecke sollen keine produktiven Echtfälle vorausgesetzt werden."
+        },
+        {
+          "text": "Das Testergebnis ersetzt automatisch alle internen Qualitätssicherungs- und Freigabeschritte.",
+          "correct": false,
+          "rationale": "Ein externes Tool kann interne QS nicht vollständig ersetzen."
+        },
+        {
+          "text": "Nach dem Upload müssen alle XML-Feldnamen in Marketing-Begriffe umbenannt werden.",
+          "correct": false,
+          "rationale": "Marketing-Begriffe haben nichts mit der fachlichen Bewertung eines Validators zu tun."
+        }
+      ],
+      "feedback": {
+        "correct": "Datenschutz und die Aussagekraft des Validierungstools sind die zentralen Punkte.",
+        "wrong": "Achten Sie sowohl auf Vertraulichkeit der Daten als auch auf Reichweite und Qualität der externen Prüfung."
+      },
+      "progressLinks": [
+        "pv1fiae_sicherheit_validierung_prototyping"
+      ]
+    },
+    {
+      "id": "q13",
+      "type": "multi_select",
+      "title": "Warum XSD allein nicht reicht",
+      "prompt": "Welche zwei Aussagen erklären am besten, warum eine reine XSD-Schemavalidierung für den gezeigten XML-Ausschnitt nicht ausreicht?",
+      "options": [
+        {
+          "text": "Der Gesamtwert `NetTotal` wurde fachlich falsch gebildet, weil hier der Brutto-Gesamtwert statt der Summe der Netto-Werte steht.",
+          "correct": true,
+          "rationale": "Die markierte Zahl ist logisch falsch, obwohl die Struktur des XML formal plausibel bleibt."
+        },
+        {
+          "text": "Eine XSD prüft vor allem Struktur und Datentypen, erkennt aber keine fachliche Rechenlogik oder Plausibilität.",
+          "correct": true,
+          "rationale": "Genau deshalb können inhaltliche Summenfehler trotz gültiger Struktur unentdeckt bleiben."
+        },
+        {
+          "text": "Zwei `InvoiceLine`-Elemente sind in einer Rechnung grundsätzlich unzulässig und machen die Datei automatisch ungültig.",
+          "correct": false,
+          "rationale": "Mehrere Rechnungspositionen sind gerade ein normaler Bestandteil einer Rechnung."
+        },
+        {
+          "text": "Die Datei ist ungültig, weil XML keine Zahlen mit Dezimalpunkt erlaubt.",
+          "correct": false,
+          "rationale": "Dezimalzahlen sind in XML grundsätzlich möglich."
+        },
+        {
+          "text": "Das `InvoiceTotal`-Element ist immer verboten, sobald bereits Einzelpositionen vorhanden sind.",
+          "correct": false,
+          "rationale": "Ein Gesamtblock ist fachlich sinnvoll; problematisch ist hier die inhaltliche Berechnung."
+        }
+      ],
+      "feedback": {
+        "correct": "Der Unterschied zwischen formaler Strukturprüfung und fachlicher Logikprüfung ist richtig erkannt.",
+        "wrong": "Prüfen Sie, welcher Fehler im Zahleninhalt steckt und was ein Schema überhaupt leisten kann."
+      },
+      "progressLinks": [
+        "pv1fiae_sicherheit_validierung_prototyping"
+      ]
+    },
+    {
+      "id": "q14",
+      "type": "ordering",
+      "title": "Prototyping sinnvoll in die Konzeptionsphase einbauen",
+      "prompt": "Ordnen Sie die Schritte so, dass ein Prototyp in der Konzeptionsphase fachlich sinnvoll genutzt wird.",
+      "items": [
+        "Vereinfachten Prototypen mit Kernfunktion bauen",
+        "Erkenntnisse zu Aufwand, Risiken und Grenzen dokumentieren",
+        "Unsicheren Lösungsbereich oder offene Fachfrage identifizieren",
+        "Mit Stakeholdern oder Fachseite prüfen und Rückmeldung einholen",
+        "Nächste Architektur- oder Projektentscheidung aus den Ergebnissen ableiten"
+      ],
+      "correctOrder": [
+        "Unsicheren Lösungsbereich oder offene Fachfrage identifizieren",
+        "Vereinfachten Prototypen mit Kernfunktion bauen",
+        "Mit Stakeholdern oder Fachseite prüfen und Rückmeldung einholen",
+        "Erkenntnisse zu Aufwand, Risiken und Grenzen dokumentieren",
+        "Nächste Architektur- oder Projektentscheidung aus den Ergebnissen ableiten"
+      ],
+      "feedback": {
+        "correct": "Der Ablauf zeigt Prototyping als gezielte Erprobung vor einer belastbaren Entscheidung.",
+        "wrong": "Ein Prototyp ist kein Endprodukt. Ordnen Sie zuerst die offene Frage, dann Erprobung, Rückmeldung, Dokumentation und erst danach die Entscheidung."
+      },
+      "progressLinks": [
+        "pv1fiae_sicherheit_validierung_prototyping"
+      ]
+    },
+    {
+      "id": "f04",
+      "type": "followup_divider",
+      "title": "Bewertungsdaten normalisieren",
+      "from": "datenarchitektur@tischfunk-digital.example",
+      "to": "projektteam@ausbildungsbetrieb.example",
+      "subject": "Tabellarische Bewertungsdaten auf Redundanz, Anomalien und 3NF prüfen",
+      "date": "2026-03-19",
+      "body": "Hallo,\n\nzur Qualitätssicherung unserer Gastro-Lösung können Gäste einzelne Leistungen eines Besuchs online bewerten. Der aktuelle Datenexport ist noch tabellarisch und führt dadurch mehrfach dieselben Informationen mit. Bitte beurteilen Sie erst Redundanz und typische Anomalien und wählen Sie anschliessend ein passendes relationales Modell in 3. Normalform.\n\nWichtig: Für Primär- und Fremdschlüssel sollen nur bereits vorhandene Daten verwendet werden. Laut Spezifikation wird eine bestimmte Leistung je Besuch nur einmal erbracht.\n\nViele Grüsse\nDatenarchitektur",
+      "visuals": [
+        {
+          "type": "table",
+          "eyebrow": "Arbeitsstand",
+          "title": "Ausschnitt aus der Tabelle `Bewertung`",
+          "caption": "Die Daten sind noch nicht normalisiert und enthalten mehrfach dieselben Gast-, Leistungs- und Mitarbeiterinformationen.",
+          "columns": [
+            "Id_Gast",
+            "Gast_Kontakt",
+            "Besuch_Zeit",
+            "Id_Leist",
+            "Leistung",
+            "Bewertung",
+            "Id_Mit",
+            "Mitarbeiter",
+            "Mit_Telefon"
+          ],
+          "rows": [
+            [
+              "51",
+              "Mara Vogt / 01701112233 / mara@beispiel.test",
+              "2025-10-17 19:45",
+              "301",
+              "Service",
+              "5",
+              "18",
+              "Alina Berg",
+              "040-3201"
+            ],
+            [
+              "51",
+              "Mara Vogt / 01701112233 / mara@beispiel.test",
+              "2025-10-17 19:45",
+              "488",
+              "Pilzrisotto",
+              "3",
+              "27",
+              "Jonas Feld",
+              "040-3255"
+            ],
+            [
+              "51",
+              "Mara Vogt / 01701112233 / mara@beispiel.test",
+              "2025-10-17 19:45",
+              "793",
+              "Mousse",
+              "4",
+              "27",
+              "Jonas Feld",
+              "040-3255"
+            ],
+            [
+              "73",
+              "Lea Winter / 01704445566 / lea@firma.test",
+              "2025-11-17 19:45",
+              "301",
+              "Service",
+              "3",
+              "18",
+              "Alina Berg",
+              "040-3201"
+            ],
+            [
+              "73",
+              "Lea Winter / 01704445566 / lea@firma.test",
+              "2025-11-17 19:45",
+              "896",
+              "Cäsar Bowl",
+              "4",
+              "41",
+              "Nico Sauer",
+              "040-3310"
+            ],
+            [
+              "88",
+              "Noah Kern / 01709998877 / noah@beispiel.test",
+              "2025-10-19 17:30",
+              "896",
+              "Cäsar Bowl",
+              "2",
+              "41",
+              "Nico Sauer",
+              "040-3310"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "id": "q15",
+      "type": "table_fill",
+      "title": "Redundante Informationen im Tabellenexport benennen",
+      "prompt": "Ordnen Sie den beiden Beobachtungen ein passendes konkretes Beispiel aus dem gezeigten Datenexport zu.",
+      "columns": [
+        "Beobachtung",
+        "Beispiel aus dem Datenexport"
+      ],
+      "rows": [
+        [
+          "Gastdaten werden innerhalb desselben Besuchs mehrfach wiederholt.",
+          {
+            "key": "redundancy_güst",
+            "label": "Beispiel für wiederholte Gastdaten",
+            "expected": "`Gast_Kontakt` von `Mara Vogt` erscheint bei mehreren Zeilen desselben Besuchs erneut.",
+            "inputType": "select",
+            "placeholder": "Beispiel wählen",
+            "options": [
+              "`Gast_Kontakt` von `Mara Vogt` erscheint bei mehreren Zeilen desselben Besuchs erneut.",
+              "`Bewertung` wechselt zwischen `5`, `3` und `4` und zeigt damit gerade unterschiedliche Informationen.",
+              "`Id_Leist` unterscheidet sich zwischen `301`, `488` und `793` und ist deshalb kein Wiederholungsbeispiel.",
+              "`Besuch_Zeit` ist über alle Gäste hinweg immer verschieden und deshalb das stärkste Redundanzmerkmal."
+            ]
+          }
+        ],
+        [
+          "Mitarbeiterdaten tauchen in verschiedenen Bewertungszeilen erneut auf.",
+          {
+            "key": "redundancy_staff",
+            "label": "Beispiel für wiederholte Mitarbeiterdaten",
+            "expected": "Mitarbeiter `Jonas Feld` mit `040-3255` erscheint in mehreren Bewertungszeilen erneut.",
+            "inputType": "select",
+            "placeholder": "Beispiel wählen",
+            "options": [
+              "Mitarbeiter `Jonas Feld` mit `040-3255` erscheint in mehreren Bewertungszeilen erneut.",
+              "Die Kombination aus `Leistung` und `Bewertung` ist immer einzigartig und deshalb das beste Redundanzbeispiel.",
+              "`Id_Gast` `73` kommt nur in zwei Zeilen vor und verhindert dadurch jede Redundanz.",
+              "`Mit_Telefon` darf in relationalen Tabellen niemals gespeichert werden und ist deshalb automatisch kein Wiederholungsproblem."
+            ]
+          }
+        ]
+      ],
+      "feedback": {
+        "correct": "Die Redundanz ist über konkrete Wiederholungen im Export sauber erkannt.",
+        "wrong": "Schauen Sie gezielt auf Informationen, die in mehreren Zeilen erneut auftauchen, obwohl sie fachlich nur einmal gepflegt werden sollten."
+      },
+      "progressLinks": [
+        "pv1fiae_datenmodell_normalisierung"
+      ]
+    },
+    {
+      "id": "q16",
+      "type": "match_pairs",
+      "title": "Anomaliearten mit Beispielen verknüpfen",
+      "prompt": "Ordnen Sie die Beispiele den passenden Anomaliearten zu.",
+      "layout": "table",
+      "columns": [
+        "Beispiel",
+        "Anomalieart"
+      ],
+      "pairs": [
+        {
+          "key": "anom_1",
+          "left": "Der Name `Caesar Bowl` müsste in mehreren Datensätzen gleichzeitig geändert werden.",
+          "right": "Änderungsanomalie"
+        },
+        {
+          "key": "anom_2",
+          "left": "Ein neuer Gast soll angelegt werden, obwohl noch kein Besuch mit Bewertung vorliegt; dabei entstünden leere Felder für Besuch und Leistung.",
+          "right": "Einfügeanomalie"
+        },
+        {
+          "key": "anom_3",
+          "left": "Wird der letzte Datensatz zu `Mousse` gelöscht, verschwinden damit auch die einzigen Informationen zu dieser Leistung.",
+          "right": "Löschanomalie"
+        }
+      ],
+      "options": [
+        "Änderungsanomalie",
+        "Einfügeanomalie",
+        "Löschanomalie"
+      ],
+      "feedback": {
+        "correct": "Die drei typischen Anomaliearten sind den Beispielen korrekt zugeordnet.",
+        "wrong": "Prüfen Sie, ob das Beispiel von mehrfacher Änderung, problematischer Neueinfuegung oder Informationsverlust beim Löschen handelt."
+      },
+      "progressLinks": [
+        "pv1fiae_datenmodell_normalisierung"
+      ]
+    },
+    {
+      "id": "q17",
+      "type": "single_choice",
+      "title": "Passendes 3NF-Datenmodell auswählen",
+      "prompt": "Welches relationale Modell bildet die gezeigten Bewertungsdaten unter Beachtung der Hinweise fachlich am besten in 3. Normalform ab?",
+      "options": [
+        {
+          "label": "Modell A",
+          "diagram": {
+            "type": "erm",
+            "width": 880,
+            "height": 470,
+            "entities": [
+              {
+                "id": "gast",
+                "title": "GAST",
+                "x": 24,
+                "y": 26,
+                "width": 180,
+                "fields": [
+                  "PK id_gast",
+                  "gast_name",
+                  "gast_telefon",
+                  "gast_mail"
+                ]
+              },
+              {
+                "id": "besuch",
+                "title": "BESUCH",
+                "x": 252,
+                "y": 24,
+                "width": 220,
+                "fields": [
+                  "PK/FK id_gast",
+                  "PK besuch_zeit"
+                ]
+              },
+              {
+                "id": "leistung",
+                "title": "LEISTUNG",
+                "x": 658,
+                "y": 24,
+                "width": 180,
+                "fields": [
+                  "PK id_leist",
+                  "leistungs_bezeichnung"
+                ]
+              },
+              {
+                "id": "mitarbeiter",
+                "title": "MITARBEITER",
+                "x": 658,
+                "y": 246,
+                "width": 180,
+                "fields": [
+                  "PK id_mit",
+                  "mitarbeiter_name",
+                  "mit_telefon"
+                ]
+              },
+              {
+                "id": "bewertung",
+                "title": "BEWERTUNG",
+                "x": 236,
+                "y": 246,
+                "width": 280,
+                "fields": [
+                  "PK/FK id_gast",
+                  "PK/FK besuch_zeit",
+                  "PK/FK id_leist",
+                  "FK id_mit",
+                  "bewertung"
+                ]
+              }
+            ],
+            "relations": [
+              {
+                "from": "gast",
+                "to": "besuch",
+                "label": "hat",
+                "fromCard": "1",
+                "toCard": "0..n"
+              },
+              {
+                "from": "besuch",
+                "to": "bewertung",
+                "label": "umfasst",
+                "fromCard": "1",
+                "toCard": "0..n"
+              },
+              {
+                "from": "leistung",
+                "to": "bewertung",
+                "label": "wird bewertet in",
+                "fromCard": "1",
+                "toCard": "0..n"
+              },
+              {
+                "from": "mitarbeiter",
+                "to": "bewertung",
+                "label": "wird erbracht von",
+                "fromCard": "1",
+                "toCard": "0..n"
+              }
+            ]
+          },
+          "rationale": "Das Modell trennt Gast, Besuch, Leistung, Mitarbeiter und Bewertung sauber und nutzt nur vorhandene Daten für die Schlüsselbildung."
+        },
+        {
+          "label": "Modell B",
+          "diagram": {
+            "type": "erm",
+            "width": 860,
+            "height": 420,
+            "entities": [
+              {
+                "id": "gast",
+                "title": "GAST",
+                "x": 24,
+                "y": 24,
+                "width": 190,
+                "fields": [
+                  "PK id_gast",
+                  "gast_name",
+                  "gast_telefon",
+                  "gast_mail"
+                ]
+              },
+              {
+                "id": "besuch",
+                "title": "BESUCH",
+                "x": 264,
+                "y": 24,
+                "width": 220,
+                "fields": [
+                  "PK/FK id_gast",
+                  "PK besuch_zeit"
+                ]
+              },
+              {
+                "id": "bewertung",
+                "title": "BEWERTUNG",
+                "x": 250,
+                "y": 232,
+                "width": 360,
+                "fields": [
+                  "PK/FK id_gast",
+                  "PK/FK besuch_zeit",
+                  "PK id_leist",
+                  "leistung_bezeichnung",
+                  "bewertung",
+                  "mitarbeiter_name",
+                  "mit_telefon"
+                ]
+              }
+            ],
+            "relations": [
+              {
+                "from": "gast",
+                "to": "besuch",
+                "label": "hat",
+                "fromCard": "1",
+                "toCard": "0..n"
+              },
+              {
+                "from": "besuch",
+                "to": "bewertung",
+                "label": "enthält",
+                "fromCard": "1",
+                "toCard": "0..n"
+              }
+            ]
+          },
+          "rationale": "Leistungs- und Mitarbeiterdaten bleiben hier weiterhin redundant in der Bewertungstabelle gespeichert."
+        },
+        {
+          "label": "Modell C",
+          "diagram": {
+            "type": "erm",
+            "width": 860,
+            "height": 450,
+            "entities": [
+              {
+                "id": "gast",
+                "title": "GAST",
+                "x": 24,
+                "y": 24,
+                "width": 180,
+                "fields": [
+                  "PK id_gast",
+                  "gast_name",
+                  "gast_telefon",
+                  "gast_mail"
+                ]
+              },
+              {
+                "id": "besuch",
+                "title": "BESUCH",
+                "x": 250,
+                "y": 24,
+                "width": 210,
+                "fields": [
+                  "PK besuch_id",
+                  "FK id_gast",
+                  "besuch_zeit"
+                ]
+              },
+              {
+                "id": "leistung",
+                "title": "LEISTUNG",
+                "x": 638,
+                "y": 24,
+                "width": 180,
+                "fields": [
+                  "PK id_leist",
+                  "leistungs_bezeichnung"
+                ]
+              },
+              {
+                "id": "mitarbeiter",
+                "title": "MITARBEITER",
+                "x": 638,
+                "y": 236,
+                "width": 180,
+                "fields": [
+                  "PK id_mit",
+                  "mitarbeiter_name",
+                  "mit_telefon"
+                ]
+              },
+              {
+                "id": "bewertung",
+                "title": "BEWERTUNG",
+                "x": 234,
+                "y": 234,
+                "width": 270,
+                "fields": [
+                  "PK bewertung_id",
+                  "FK besuch_id",
+                  "FK id_leist",
+                  "FK id_mit",
+                  "bewertung"
+                ]
+              }
+            ],
+            "relations": [
+              {
+                "from": "gast",
+                "to": "besuch",
+                "label": "hat",
+                "fromCard": "1",
+                "toCard": "0..n"
+              },
+              {
+                "from": "besuch",
+                "to": "bewertung",
+                "label": "umfasst",
+                "fromCard": "1",
+                "toCard": "0..n"
+              },
+              {
+                "from": "leistung",
+                "to": "bewertung",
+                "label": "wird bewertet in",
+                "fromCard": "1",
+                "toCard": "0..n"
+              },
+              {
+                "from": "mitarbeiter",
+                "to": "bewertung",
+                "label": "wird erbracht von",
+                "fromCard": "1",
+                "toCard": "0..n"
+              }
+            ]
+          },
+          "rationale": "Das Modell führt neue Kunstschlüssel ein, obwohl laut Hinweis nur vorhandene Daten für Schlüssel verwendet werden sollen."
+        },
+        {
+          "label": "Modell D",
+          "diagram": {
+            "type": "erm",
+            "width": 860,
+            "height": 410,
+            "entities": [
+              {
+                "id": "gast",
+                "title": "GAST",
+                "x": 24,
+                "y": 24,
+                "width": 180,
+                "fields": [
+                  "PK id_gast",
+                  "gast_name",
+                  "gast_telefon",
+                  "gast_mail"
+                ]
+              },
+              {
+                "id": "leistung",
+                "title": "LEISTUNG",
+                "x": 336,
+                "y": 24,
+                "width": 230,
+                "fields": [
+                  "PK id_leist",
+                  "leistungs_bezeichnung",
+                  "FK id_mit"
+                ]
+              },
+              {
+                "id": "mitarbeiter",
+                "title": "MITARBEITER",
+                "x": 650,
+                "y": 24,
+                "width": 180,
+                "fields": [
+                  "PK id_mit",
+                  "mitarbeiter_name",
+                  "mit_telefon"
+                ]
+              },
+              {
+                "id": "bewertung",
+                "title": "BEWERTUNG",
+                "x": 252,
+                "y": 222,
+                "width": 320,
+                "fields": [
+                  "PK/FK id_gast",
+                  "PK/FK id_leist",
+                  "besuch_zeit",
+                  "bewertung"
+                ]
+              }
+            ],
+            "relations": [
+              {
+                "from": "gast",
+                "to": "bewertung",
+                "label": "gibt ab",
+                "fromCard": "1",
+                "toCard": "0..n"
+              },
+              {
+                "from": "leistung",
+                "to": "bewertung",
+                "label": "wird bewertet",
+                "fromCard": "1",
+                "toCard": "0..n"
+              },
+              {
+                "from": "mitarbeiter",
+                "to": "leistung",
+                "label": "ist fest zugeordnet",
+                "fromCard": "1",
+                "toCard": "0..n"
+              }
+            ]
+          },
+          "rationale": "Hier fehlt die saubere Trennung des Besuchs, und eine Leistung wäre unzutreffend fest an genau einen Mitarbeiter gekoppelt."
+        }
+      ],
+      "correctIndex": 0,
+      "feedback": {
+        "correct": "Das Modell in 3NF trennt Gast, Besuch, Leistung, Mitarbeiter und Bewertung fachlich sauber und beachtet die Schlüsselvorgaben.",
+        "wrong": "Achten Sie auf Redundanzabbau, vorhandene Schlüsselwerte aus der Quelle und darauf, dass eine Leistung pro Besuch genau einmal bewertet wird."
+      },
+      "progressLinks": [
+        "pv1fiae_datenmodell_normalisierung"
+      ]
+    },
+    {
+      "id": "q18",
+      "type": "multi_select",
+      "title": "Schlüssel- und Beziehungslogik der 3NF",
+      "prompt": "Welche Aussagen müssen für ein fachlich passendes 3NF-Modell der gezeigten Bewertungsdaten gelten? Wählen Sie alle passenden Antworten.",
+      "options": [
+        {
+          "text": "Ein Besuch lässt sich mit vorhandenen Daten sinnvoll über `id_gast` und `besuch_zeit` identifizieren.",
+          "correct": true,
+          "rationale": "Damit wird kein künstlicher Schlüssel benötigt und ein Besuch bleibt eindeutig beschreibbar."
+        },
+        {
+          "text": "Die Bewertung muss den erbringenden Mitarbeiter referenzieren, weil dieselbe Leistung von unterschiedlichen Mitarbeitenden erbracht werden kann.",
+          "correct": true,
+          "rationale": "Die Bewertung bezieht sich nicht nur auf die Leistung, sondern auch auf die konkret beteiligte Person."
+        },
+        {
+          "text": "Die Leistung sollte eigenständig gespeichert und über `id_leist` referenziert werden, statt ihre Bezeichnung in jeder Bewertungszeile zu wiederholen.",
+          "correct": true,
+          "rationale": "So wird Wiederholung vermieden und die Leistung bleibt an einer Stelle pflegbar."
+        },
+        {
+          "text": "Die Telefonnummer eines Mitarbeiters gehört in jede einzelne Bewertungszeile, damit keine Fremdschlüssel erforderlich sind.",
+          "correct": false,
+          "rationale": "Das würde Redundanz sogar vergrössern und nicht normalisieren."
+        },
+        {
+          "text": "Gastkontakt sollte ausschliesslich in der Bewertungstabelle bleiben, weil Besuche ohne Gast fachlich ungültig sind.",
+          "correct": false,
+          "rationale": "Auch wenn ein Besuch einen Gast braucht, gehören die Gaststammdaten nicht in jede Bewertungszeile."
+        }
+      ],
+      "feedback": {
+        "correct": "Die zentralen Schlüssel- und Beziehungsregeln für das 3NF-Modell sind richtig erkannt.",
+        "wrong": "Prüfen Sie, welche Informationen als Stammdaten ausgelagert werden müssen und wie Besuch, Leistung, Mitarbeiter und Bewertung zusammenhängen."
+      },
+      "progressLinks": [
+        "pv1fiae_datenmodell_normalisierung"
+      ]
+    }
+  ]
+}

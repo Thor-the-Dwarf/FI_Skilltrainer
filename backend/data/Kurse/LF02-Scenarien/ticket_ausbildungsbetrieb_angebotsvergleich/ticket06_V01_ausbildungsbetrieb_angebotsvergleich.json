@@ -1,0 +1,159 @@
+{
+  "scenario": {
+    "company": "Ausbildungsbetrieb IT-Service",
+    "scale": "Regional, 120 Mitarbeitende",
+    "context": "Station 6 des Tageslaufs: Angebote vergleichen und begründen.",
+    "mission": "Sie vergleichen zwei Arbeitsplatzangebote fachlich und wirtschaftlich.",
+    "station": {
+      "id": "NS-ST-06",
+      "department": "Einkauf/PreSales",
+      "profile": "Angebotsbewertung für Office-Arbeitsplätze",
+      "constraints": [
+        "Nachvollziehbare Kriterien",
+        "Nicht nur Preis betrachten",
+        "Kurze Entscheidungsvorlage"
+      ]
+    },
+    "customerRequest": {
+      "from": "einkauf@ausbildungsbetrieb.example",
+      "to": "rollout.team@systemhaus.example",
+      "subject": "Angebotsvergleich Station NS-ST-06",
+      "date": "2026-03-13",
+      "body": "Bitte vergleichen Sie zwei Angebote für Standardarbeitsplätze.\n\nWir brauchen eine kurze, begründete Empfehlung mit Blick auf Eignung und Wirtschaftlichkeit."
+    }
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "type": "single_choice",
+      "title": "Besseres Angebot erkennen",
+      "prompt": "Angebot A: 590 EUR, 8 GB RAM, HDD, 1 Videoausgang. Angebot B: 660 EUR, 16 GB RAM, SSD, 2 Videoausgänge. Welches ist für den beschriebenen Office-Zweck tragfähiger?",
+      "options": [
+        {
+          "text": "Angebot A, weil es günstiger ist",
+          "rationale": "Preis allein reicht nicht bei fehlender Eignung."
+        },
+        {
+          "text": "Angebot B, weil es den Bedarf technisch besser abdeckt",
+          "rationale": "Leistung und Anschlüsse passen zum Arbeitsplatzprofil."
+        },
+        {
+          "text": "Beide sind gleich gut",
+          "rationale": "Die technischen Unterschiede sind relevant."
+        }
+      ],
+      "correctIndex": 1,
+      "feedback": {
+        "correct": "Richtig: Bedarfsgerechte Technik ist entscheidend.",
+        "wrong": "Nicht optimal: Angebot muss mehr als nur den Preis erfüllen."
+      },
+      "progressLinks": [
+        "lf02_qualitaet_bewertung"
+      ]
+    },
+    {
+      "id": "q2",
+      "type": "multi_select",
+      "title": "Kriterien für Angebotsvergleich",
+      "prompt": "Welche Kriterien sollten in die Entscheidung einfliessen? (Mehrfachauswahl)",
+      "options": [
+        {
+          "text": "Leistung passend zur Nutzung",
+          "correct": true,
+          "rationale": "Grundlage für den praktischen Betrieb."
+        },
+        {
+          "text": "Anschlussausstattung und Erweiterbarkeit",
+          "correct": true,
+          "rationale": "Wichtig für Nutzbarkeit und Lebensdauer."
+        },
+        {
+          "text": "Nur Marketing-Slogan des Herstellers",
+          "correct": false,
+          "rationale": "Kein belastbares Kriterium."
+        },
+        {
+          "text": "Service, Gewährleistung und Support",
+          "correct": true,
+          "rationale": "Betriebssicherheit und Folgekosten beeinflussen die Entscheidung."
+        },
+        {
+          "text": "Farbe der Verpackung",
+          "correct": false,
+          "rationale": "Nicht fachrelevant."
+        }
+      ],
+      "feedback": {
+        "correct": "Richtig: Sie vergleichen ganzheitlich und praxisnah.",
+        "wrong": "Teilweise unpassend: Bitte technische und betriebliche Kriterien priorisieren."
+      },
+      "progressLinks": [
+        "lf02_qualitaet_bewertung"
+      ]
+    },
+    {
+      "id": "q3",
+      "type": "number",
+      "title": "Gesamtkosten je Angebot",
+      "prompt": "Für 6 Arbeitsplätze: Angebot A kostet 590 EUR pro Platz plus 35 EUR Einrichtung pro Platz. Angebot B kostet 660 EUR pro Platz plus 20 EUR Einrichtung pro Platz. Wie hoch ist die Gesamtsumme von Angebot B?",
+      "expected": 4080,
+      "toleranceAbs": 1,
+      "showExpectedFormula": "6 * (660 + 20) = 4.080 EUR",
+      "feedback": {
+        "correct": "Richtig gerechnet.",
+        "wrong": "Bitte pro Platz Gesamtkosten bilden und mit 6 multiplizieren."
+      },
+      "progressLinks": [
+        "lf02_rechnen_abschaetzen"
+      ]
+    },
+    {
+      "id": "q4",
+      "type": "ordering",
+      "title": "Vorgehen beim Angebotsvergleich",
+      "prompt": "Ordnen Sie die Schritte sinnvoll.",
+      "items": [
+        "Empfehlung schriftlich begründen",
+        "Anforderungen und Muss-Kriterien festhalten",
+        "Angebote nach Kriterien vergleichen",
+        "Gesamtkosten transparent berechnen",
+        "Ergebnis mit Fachbereich kurz abstimmen"
+      ],
+      "correctOrder": [
+        "Anforderungen und Muss-Kriterien festhalten",
+        "Angebote nach Kriterien vergleichen",
+        "Gesamtkosten transparent berechnen",
+        "Ergebnis mit Fachbereich kurz abstimmen",
+        "Empfehlung schriftlich begründen"
+      ],
+      "feedback": {
+        "correct": "Richtig: Der Entscheidungsweg ist nachvollziehbar.",
+        "wrong": "Nicht optimal: Erst Kriterien, dann Vergleich und begründete Empfehlung."
+      },
+      "progressLinks": [
+        "lf02_qualitaet_bewertung"
+      ]
+    },
+    {
+      "id": "q5",
+      "type": "short_text",
+      "title": "Kurzempfehlung",
+      "prompt": "Formulieren Sie eine kurze Empfehlung (4-6 Sätze) mit technischer und wirtschaftlicher Begründung.",
+      "minChars": 130,
+      "requiredKeywords": [
+        "kriterium",
+        "begründung",
+        "kosten"
+      ],
+      "expectedOutline": "Knappe Entscheidungsvorlage mit Kriterienbezug, Kostenblick und klarer Empfehlung.",
+      "feedback": {
+        "correct": "Richtig: Die Entscheidung ist nachvollziehbar und brauchbar.",
+        "wrong": "Bitte Kriterien, Kosten und Empfehlung klarer verknüpfen."
+      },
+      "progressLinks": [
+        "lf02_benutzer_kundenkommunikation",
+        "lf02_dokumentation"
+      ]
+    }
+  ]
+}

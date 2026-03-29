@@ -1,0 +1,160 @@
+{
+  "scenario": {
+    "company": "Nordhafen Verpackungstechnik GmbH",
+    "scale": "Produktionsnaher Mittelstand, 2 Hallen, 280 Mitarbeitende",
+    "context": "Station 08 des Tageslaufs: Sicherheitsbezug, FMEA-Denken und Optimierungsvorschläge für die nächste Ausbaustufe formulieren.",
+    "mission": "Sie betrachten Risiken, minimieren Ausfallfolgen im Grundsatz und bereiten eine adressatengerechte Verbesserungsempfehlung vor.",
+    "station": {
+      "id": "LF07-ST-08",
+      "department": "Optimierung",
+      "profile": "Risiken, FMEA und Verbesserungen",
+      "constraints": [
+        "Gefahren nicht bagatellisieren",
+        "Verbesserungen auf Risiko und Nutzen beziehen",
+        "FMEA nur so tief einsetzen, wie es zum Lernfeld passt"
+      ]
+    },
+    "customerRequest": {
+      "from": "betriebsleitung@nordhafen-verpackungstechnik.example",
+      "to": "cps.team@ausbildungsbetrieb.example",
+      "subject": "Station 08: Optimierung und FMEA",
+      "date": "2026-03-13",
+      "body": "Bitte bereiten Sie einen kurzen Optimierungsvorschlag für die nächste Ausbaustufe mit Risiko- und FMEA-Blick vor."
+    }
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "type": "single_choice",
+      "title": "Risikobetrachtung einordnen",
+      "prompt": "Was ist das Ziel einer einfachen FMEA-nahen Betrachtung im CPS-Projekt?",
+      "options": [
+        {
+          "text": "Nur möglichst viele Tabellen erzeugen",
+          "rationale": "Das trifft den Sinn der Methode nicht."
+        },
+        {
+          "text": "Mögliche Fehlerfolgen erkennen und Massnahmen zur Risikominimierung ableiten",
+          "rationale": "Das beschreibt den praktischen Nutzen treffend."
+        },
+        {
+          "text": "Die technische Dokumentation komplett ersetzen",
+          "rationale": "FMEA ist ein Analysewerkzeug, kein Ersatz für alle Doku."
+        }
+      ],
+      "correctIndex": 1,
+      "feedback": {
+        "correct": "Richtig: Es geht um Fehlerfolgen und Gegenmassnahmen.",
+        "wrong": "Nicht passend: Die Methode soll Risiken sichtbar und beherrschbar machen."
+      },
+      "progressLinks": [
+        "lf07_review_sicherheit_optimierung"
+      ]
+    },
+    {
+      "id": "q2",
+      "type": "number",
+      "title": "Ausfallhäufigkeit abschätzen",
+      "prompt": "Ein Sensor fiel in 6 von 120 prüfbaren Zyklen aus. Wie hoch ist die Ausfallquote in Prozent?",
+      "expected": 5,
+      "toleranceAbs": 0.5,
+      "showExpectedFormula": "6 / 120 * 100 = 5 %",
+      "feedback": {
+        "correct": "Richtig gerechnet.",
+        "wrong": "Bitte Ausfälle und Gesamtzyklen korrekt ins Verhältnis setzen."
+      },
+      "progressLinks": [
+        "lf07_review_sicherheit_optimierung"
+      ]
+    },
+    {
+      "id": "q3",
+      "type": "multi_select",
+      "title": "Optimierungsvorschläge sammeln",
+      "prompt": "Welche Verbesserungen können für die nächste Ausbaustufe sinnvoll sein? (Mehrfachauswahl)",
+      "options": [
+        {
+          "text": "Plausibilitätsprüfungen für Sensordaten erweitern",
+          "correct": true,
+          "rationale": "Verbessert Zuverlässigkeit und Diagnose."
+        },
+        {
+          "text": "Alarmierung und Eskalationsweg klarer staffeln",
+          "correct": true,
+          "rationale": "Hilft im Störungsfall beim Betrieb."
+        },
+        {
+          "text": "Test- und Reviewdokumentation weglassen",
+          "correct": false,
+          "rationale": "Würde die Weiterentwicklung erschweren."
+        },
+        {
+          "text": "Kritische Ausfallpunkte mit einfachen Gegenmassnahmen absichern",
+          "correct": true,
+          "rationale": "Das passt zur FMEA-Sicht im Lernfeld."
+        },
+        {
+          "text": "Sicherheitsfragen komplett später behandeln",
+          "correct": false,
+          "rationale": "Gerade sie gehören in die Optimierung hinein."
+        }
+      ],
+      "feedback": {
+        "correct": "Richtig: Die Vorschläge sind praxisnah und risikobezogen.",
+        "wrong": "Teilweise falsch: Bitte Diagnose, Alarmierung und Risikominimierung stärker betonen."
+      },
+      "progressLinks": [
+        "lf07_review_sicherheit_optimierung"
+      ]
+    },
+    {
+      "id": "q4",
+      "type": "ordering",
+      "title": "Von Risiko zu Verbesserung",
+      "prompt": "Ordnen Sie den Weg von der Risikörkenntnis zum Vorschlag für den Auftraggeber.",
+      "items": [
+        "kritische Fehlerstelle benennen",
+        "Auswirkung auf Betrieb oder Daten beschreiben",
+        "Gegenmassnahme oder Verbesserung ableiten",
+        "Nutzen und Aufwand kurz einschätzen",
+        "Vorschlag adressatengerecht darstellen"
+      ],
+      "correctOrder": [
+        "kritische Fehlerstelle benennen",
+        "Auswirkung auf Betrieb oder Daten beschreiben",
+        "Gegenmassnahme oder Verbesserung ableiten",
+        "Nutzen und Aufwand kurz einschätzen",
+        "Vorschlag adressatengerecht darstellen"
+      ],
+      "feedback": {
+        "correct": "Richtig: Der Verbesserungsvorschlag ist vom Risiko her sauber aufgebaut.",
+        "wrong": "Nicht optimal: Bitte erst Fehlerstelle und Wirkung klären und dann den Vorschlag ableiten."
+      },
+      "progressLinks": [
+        "lf07_review_sicherheit_optimierung",
+        "lf07_dokumentation_teamkommunikation"
+      ]
+    },
+    {
+      "id": "q5",
+      "type": "short_text",
+      "title": "Optimierung adressatengerecht vorstellen",
+      "prompt": "Beschreiben Sie in 4-6 Sätzen, wie Sie einen Optimierungsvorschlag so präsentieren, dass Auftraggeber den Nutzen und die Risikoreduktion schnell verstehen.",
+      "minChars": 170,
+      "requiredKeywords": [
+        "nutzen",
+        "risiko",
+        "vorschlag"
+      ],
+      "expectedOutline": "Kurze Nutzenargumentation mit Risikobezug und realistischer Empfehlung.",
+      "feedback": {
+        "correct": "Richtig: Der Vorschlag ist adressatengerecht und betriebsnah formuliert.",
+        "wrong": "Bitte Nutzen, Risikoreduktion und Vorschlag klarer miteinander verbinden."
+      },
+      "progressLinks": [
+        "lf07_review_sicherheit_optimierung",
+        "lf07_dokumentation_teamkommunikation"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,159 @@
+{
+  "scenario": {
+    "company": "Nordhafen Verpackungstechnik GmbH",
+    "scale": "Produktionsnaher Mittelstand, 2 Hallen, 280 Mitarbeitende",
+    "context": "Station 03 des Tageslaufs: CPS-Protokolle und Kommunikationswege im Betrieb vergleichen.",
+    "mission": "Sie wägen MQTT, OPC UA und weitere Kommunikationsanforderungen gegeneinander ab und formulieren eine begründete Empfehlung.",
+    "station": {
+      "id": "LF07-ST-03",
+      "department": "Kommunikation",
+      "profile": "Protokolle und Integrationssicht",
+      "constraints": [
+        "Protokolle nicht isoliert, sondern im Systemkontext bewerten",
+        "Sicherheits- und Betriebsbezug mitdenken",
+        "Empfehlungen nachvollziehbar dokumentieren"
+      ]
+    },
+    "customerRequest": {
+      "from": "architektur@nordhafen-verpackungstechnik.example",
+      "to": "cps.team@ausbildungsbetrieb.example",
+      "subject": "Station 03: Protokollvergleich",
+      "date": "2026-03-13",
+      "body": "Bitte vergleichen Sie die Kommunikationsansätze für die geplante CPS-Erweiterung."
+    }
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "type": "multi_select",
+      "title": "Protokollentscheidung vorbereiten",
+      "prompt": "Welche Kriterien sind für die Auswahl eines Kommunikationsprotokolls wichtig? (Mehrfachauswahl)",
+      "options": [
+        {
+          "text": "Integrationsfähigkeit mit vorhandener Steuerung und Auswertung",
+          "correct": true,
+          "rationale": "Das entscheidet über Umsetzbarkeit und Aufwand."
+        },
+        {
+          "text": "Kommunikationsmuster und Nachrichtenhäufigkeit",
+          "correct": true,
+          "rationale": "Muss zum technischen Use Case passen."
+        },
+        {
+          "text": "Ausschliesslich das schickste Werbeplakat des Herstellers",
+          "correct": false,
+          "rationale": "Das ist kein tragfähiges Auswahlkriterium."
+        },
+        {
+          "text": "Sicherheitsanforderungen des Produktionsumfelds",
+          "correct": true,
+          "rationale": "Gerade im Betrieb unverzichtbar."
+        },
+        {
+          "text": "Dokumentation bewusst vermeiden",
+          "correct": false,
+          "rationale": "Würde Nachvollziehbarkeit und Betrieb erschweren."
+        }
+      ],
+      "feedback": {
+        "correct": "Richtig: Die Protokollentscheidung ist fachlich sauber vorbereitet.",
+        "wrong": "Teilweise falsch: Bitte Integration, Lastbild und Sicherheit stärker gewichten."
+      },
+      "progressLinks": [
+        "lf07_protokolle_unterscheiden"
+      ]
+    },
+    {
+      "id": "q2",
+      "type": "single_choice",
+      "title": "Publish-Subscribe erkennen",
+      "prompt": "Welche Aussage passt am besten zu einem Publish-Subscribe-Ansatz wie MQTT?",
+      "options": [
+        {
+          "text": "Ein vermittelnder Broker verteilt Nachrichten anhand von Topics an interessierte Clients",
+          "rationale": "Das beschreibt das Muster korrekt."
+        },
+        {
+          "text": "Alle Teilnehmer kommunizieren ausschliesslich über geteilte USB-Sticks",
+          "rationale": "Das hat mit dem Protokollprinzip nichts zu tun."
+        },
+        {
+          "text": "Nachrichten dürfen nur lokal in einer Textdatei abgelegt werden",
+          "rationale": "Das beschreibt keinen Kommunikationsansatz."
+        }
+      ],
+      "correctIndex": 0,
+      "feedback": {
+        "correct": "Richtig: Das Publish-Subscribe-Prinzip ist korrekt erkannt.",
+        "wrong": "Nicht passend: Bitte die Rolle von Broker, Topics und Clients beachten."
+      },
+      "progressLinks": [
+        "lf07_protokolle_unterscheiden"
+      ]
+    },
+    {
+      "id": "q3",
+      "type": "number",
+      "title": "Nachrichtenrate berechnen",
+      "prompt": "14 Sensoren senden jeweils 30 Meldungen pro Minute. Wie viele Meldungen entstehen in 20 Minuten?",
+      "expected": 8400,
+      "toleranceAbs": 1,
+      "showExpectedFormula": "14 * 30 * 20 = 8400",
+      "feedback": {
+        "correct": "Richtig gerechnet.",
+        "wrong": "Bitte Sensoranzahl, Meldungsrate und Zeitfenster korrekt kombinieren."
+      },
+      "progressLinks": [
+        "lf07_protokolle_unterscheiden"
+      ]
+    },
+    {
+      "id": "q4",
+      "type": "ordering",
+      "title": "Kommunikationskonzept dokumentieren",
+      "prompt": "Ordnen Sie die Schritte zu einer nachvollziehbaren Kommunikationsbeschreibung.",
+      "items": [
+        "Teilnehmer und Rollen im Datenaustausch festlegen",
+        "Topics oder Schnittstellenstruktur definieren",
+        "Sicherheits- und Verbindungsparameter abstimmen",
+        "Testkommunikation prüfen",
+        "Ergebnisse im Schnittstellendokument sichern"
+      ],
+      "correctOrder": [
+        "Teilnehmer und Rollen im Datenaustausch festlegen",
+        "Topics oder Schnittstellenstruktur definieren",
+        "Sicherheits- und Verbindungsparameter abstimmen",
+        "Testkommunikation prüfen",
+        "Ergebnisse im Schnittstellendokument sichern"
+      ],
+      "feedback": {
+        "correct": "Richtig: Das Kommunikationskonzept wird systematisch aufgebaut.",
+        "wrong": "Nicht optimal: Bitte erst Rollen und Struktur klären, dann prüfen und dokumentieren."
+      },
+      "progressLinks": [
+        "lf07_protokolle_unterscheiden",
+        "lf07_dokumentation_teamkommunikation"
+      ]
+    },
+    {
+      "id": "q5",
+      "type": "short_text",
+      "title": "Protokolle gegeneinander abwägen",
+      "prompt": "Beschreiben Sie in 4-6 Sätzen, warum MQTT für Zustandsmeldungen passend sein kann und wo OPC UA im selben Umfeld Vorteile hat.",
+      "minChars": 170,
+      "requiredKeywords": [
+        "mqtt",
+        "opc",
+        "vorteil"
+      ],
+      "expectedOutline": "Praxisnahe Gegenüberstellung von MQTT und OPC UA im Anlagenumfeld.",
+      "feedback": {
+        "correct": "Richtig: Die Protokolle sind angemessen gegeneinander abgewogen.",
+        "wrong": "Bitte Einsatzfall und jeweilige Stärken deutlicher herausarbeiten."
+      },
+      "progressLinks": [
+        "lf07_protokolle_unterscheiden"
+      ]
+    }
+  ]
+}

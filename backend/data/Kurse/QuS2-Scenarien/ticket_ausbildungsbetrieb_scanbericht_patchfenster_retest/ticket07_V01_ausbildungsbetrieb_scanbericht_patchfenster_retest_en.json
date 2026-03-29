@@ -1,0 +1,423 @@
+{
+  "scenario": {
+    "company": "SecuBridge Service GmbH",
+    "scale": "IT service provider for home office, municipal workplaces and medical practice environments, 95 employees",
+    "context": "Shortly before a coordination meeting with a municipal client, an internal scan revealed multiple vulnerabilities in the update proxy, upload service and package share.",
+    "mission": "Prioritize findings, initiate interim measures, align the patch window and prepare retest with reliable evidence.",
+    "source": {
+      "kind": "Internal scan and action request",
+      "reference": "Vulnerability report service platform, 2026-03-26 08:40",
+      "note": "Based on current scan findings about the reachability of an admin interface, an outdated library in the upload service and unnecessarily broad write permissions on an old package share."
+    },
+    "station": {
+      "id": "QUS2-ST-07",
+      "department": "Security, platform operations and release coordination",
+      "profile": "Vulnerability assessment, interim measures, patch window and retest",
+      "constraints": [
+        "Finding, reachability, affected service and operational impact must be assessed together",
+        "Interim measures must not replace the patch and subsequent retest",
+        "For client and audit a readable status with measure, deadline, evidence and residual point is required"
+      ]
+    },
+    "customerRequest": {
+      "from": "sicherheitsteam@secubridge-service.example",
+      "to": "patchkoordination@ausbildungsbetrieb.example",
+      "subject": "Classify scan findings for update proxy and upload service by tomorrow",
+      "date": "2026-03-26",
+      "body": "Good day,\n\nshortly before the coordination meeting with the municipal client, our internal scan flagged three items: the update proxy admin interface is reachable from more office networks than intended, the document upload service runs an outdated library, and an old package share still has write permissions for a rollout team that is winding down.\n\nPlease prepare a reliable status by tomorrow noon: what must be contained immediately, which measures go into the next patch window, who owns which part and which evidence we need for retest and closure.\n\nKind regards\nSecurity team"
+    }
+  },
+  "questions": [
+    {
+      "id": "ctx01",
+      "type": "context_card",
+      "title": "Current findings",
+      "contentBlocks": [
+        {
+          "type": "text",
+          "text": "SecuBridge operates a service platform for multiple customers with update proxy, document upload and package distribution. The scan report shows three different findings that do not all require the same urgency or technical response."
+        },
+        {
+          "type": "table",
+          "columns": [
+            "Finding",
+            "Current status"
+          ],
+          "rows": [
+            [
+              "Update proxy admin interface",
+              "Reachable from several internal networks although only the admin team should access it"
+            ],
+            [
+              "Upload service for documents",
+              "Outdated library, vendor update already available"
+            ],
+            [
+              "Package share for rollouts",
+              "Old team group still has write permissions"
+            ],
+            [
+              "Next maintenance window",
+              "Wednesday 19:30 to 21:30 reserved"
+            ],
+            [
+              "Expectation for Thursday",
+              "Prioritized findings, implemented interim measures, planned retest and visible residual points"
+            ]
+          ]
+        },
+        {
+          "type": "text",
+          "text": "The goal is not a blanket patch-everything-now approach, but a reliable sequence of containment, clean patch window, retest and traceable closure."
+        }
+      ]
+    },
+    {
+      "id": "q01",
+      "type": "multi_select",
+      "title": "Initial response to the scan report",
+      "prompt": "Which steps belong in the initial response before the patch window starts? Several steps may be necessary.",
+      "options": [
+        {
+          "text": "Immediately restrict access to the admin interface to the approved admin networks.",
+          "correct": true,
+          "rationale": "Widely reachable admin paths should not remain open until the patch window."
+        },
+        {
+          "text": "Revoke or strongly restrict the old write permissions on the package share for the winding-down team.",
+          "correct": true,
+          "rationale": "Unnecessarily broad write permissions can be reduced immediately and do not need to wait for the patch."
+        },
+        {
+          "text": "Define affected version, target version and required test scope for the upload service in the next maintenance window.",
+          "correct": true,
+          "rationale": "The patch must be prepared technically and functionally instead of just announced."
+        },
+        {
+          "text": "Document finding, time, affected systems and initial responsibilities immediately.",
+          "correct": true,
+          "rationale": "Without an early baseline, priorities and ownership quickly drift apart."
+        },
+        {
+          "text": "Wait until the next monthly report so all scan findings can be reviewed together.",
+          "correct": false,
+          "rationale": "Here there is already a concrete and timely need to act."
+        },
+        {
+          "text": "Skip the retest later if the change is formally closed in the maintenance window.",
+          "correct": false,
+          "rationale": "Vulnerabilities require a visible retest, not only a change status."
+        }
+      ],
+      "feedback": {
+        "correct": "The initial response to the findings was prioritized correctly.",
+        "wrong": "Focus on immediately containable access, a prepared patch path and early documentation."
+      },
+      "progressLinks": [
+        "qus2_schwachstellenlage_priorisieren",
+        "qus2_zwischenmassnahmen_und_patchfenster"
+      ]
+    },
+    {
+      "id": "q02",
+      "type": "single_choice",
+      "title": "Sustainable approach for the upload service",
+      "prompt": "Which approach is the most sustainable for the outdated library in the upload service?",
+      "options": [
+        {
+          "text": "Leave the update open until the next major platform modernization as long as no incident is visible internally.",
+          "rationale": "No visible incident does not replace a proper response to a confirmed finding."
+        },
+        {
+          "text": "Document interim measures, define target version and test scope for the approved window, and schedule the retest afterward.",
+          "rationale": "This connects risk limitation, orderly implementation and reliable closure."
+        },
+        {
+          "text": "Update the service immediately in production without preparation so the finding disappears quickly.",
+          "rationale": "Without preparation and testing, a security finding can become an operational issue."
+        },
+        {
+          "text": "Store the scan screenshot as evidence and wait for client feedback before deciding.",
+          "rationale": "The finding is already known internally and must be handled, not only archived."
+        }
+      ],
+      "correctIndex": 1,
+      "feedback": {
+        "correct": "The most sustainable approach for the upload service was correctly identified.",
+        "wrong": "The target is a path that ties interim measures, patch window, testing and retest together."
+      },
+      "progressLinks": [
+        "qus2_schwachstellenlage_priorisieren",
+        "qus2_zwischenmassnahmen_und_patchfenster"
+      ]
+    },
+    {
+      "id": "f02",
+      "type": "followup_divider",
+      "title": "Turn findings into an actionable change status",
+      "from": "releasekoordination@secubridge-service.example",
+      "to": "patchkoordination@ausbildungsbetrieb.example",
+      "subject": "Prepare action matrix for Wednesday",
+      "date": "2026-03-26",
+      "body": "Hello everyone,\n\nbefore I confirm the maintenance window, I need a clear statement per finding on what is contained immediately, what is implemented in the window and which first evidence will support the status later. Please combine technical change, domain test and retest into one shared picture.\n\nKind regards\nRelease coordination"
+    },
+    {
+      "id": "q03",
+      "type": "table_fill",
+      "title": "Measure and first evidence per finding",
+      "prompt": "For each finding, add the most likely first measure and the first appropriate evidence.",
+      "columns": [
+        "Finding",
+        "First measure",
+        "First appropriate evidence"
+      ],
+      "rows": [
+        [
+          "Update proxy admin interface is too broadly reachable",
+          {
+            "key": "action_row_1",
+            "label": "Update proxy / measure",
+            "expected": "Restrict access via firewall or ACL rule to approved admin networks.",
+            "inputType": "select",
+            "placeholder": "Select measure",
+            "options": [
+              "Restrict access via firewall or ACL rule to approved admin networks.",
+              "Only add a note in the operations manual.",
+              "Rename the proxy so the interface is harder to notice.",
+              "Observe until end of month whether anyone actually accesses it."
+            ]
+          },
+          {
+            "key": "proof_row_1",
+            "label": "Update proxy / evidence",
+            "expected": "Change record of the network rule with target system and timestamp.",
+            "inputType": "select",
+            "placeholder": "Select evidence",
+            "options": [
+              "Change record of the network rule with target system and timestamp.",
+              "Screenshot of the scanner email without implementation reference.",
+              "Calendar entry for the maintenance window.",
+              "General org chart of the admin team."
+            ]
+          }
+        ],
+        [
+          "Upload service uses an outdated library",
+          {
+            "key": "action_row_2",
+            "label": "Upload service / measure",
+            "expected": "Define target version, test scope and patch step for the maintenance window.",
+            "inputType": "select",
+            "placeholder": "Select measure",
+            "options": [
+              "Define target version, test scope and patch step for the maintenance window.",
+              "Shut down the service for several days without notice.",
+              "Only forward the scan report to the vendor and wait internally.",
+              "Handle uploads manually and skip the patch."
+            ]
+          },
+          {
+            "key": "proof_row_2",
+            "label": "Upload service / evidence",
+            "expected": "Change or patch ticket with affected version, target version and test responsibility.",
+            "inputType": "select",
+            "placeholder": "Select evidence",
+            "options": [
+              "Change or patch ticket with affected version, target version and test responsibility.",
+              "Short note that the service has looked stable so far.",
+              "Only the general release roadmap of the quarter.",
+              "Screenshot of a project meeting without version reference."
+            ]
+          }
+        ],
+        [
+          "Old package share still has write permissions",
+          {
+            "key": "action_row_3",
+            "label": "Package share / measure",
+            "expected": "Revoke unnecessary group rights immediately and reconfirm remaining access.",
+            "inputType": "select",
+            "placeholder": "Select measure",
+            "options": [
+              "Revoke unnecessary group rights immediately and reconfirm remaining access.",
+              "Rename the folder so the former team finds it less easily.",
+              "Only monitor free storage space on the share.",
+              "Leave the finding open until the next major project."
+            ]
+          },
+          {
+            "key": "proof_row_3",
+            "label": "Package share / evidence",
+            "expected": "Permission extract before and after the change with the legacy group marked.",
+            "inputType": "select",
+            "placeholder": "Select evidence",
+            "options": [
+              "Permission extract before and after the change with the legacy group marked.",
+              "General screenshot of the file explorer.",
+              "Phone note stating the team probably no longer needs the share.",
+              "List of all rollout packages without permission reference."
+            ]
+          }
+        ]
+      ],
+      "feedback": {
+        "correct": "Finding, first measure and first evidence were matched consistently.",
+        "wrong": "Check which measure truly contains or prepares and which evidence can later support the implementation."
+      },
+      "progressLinks": [
+        "qus2_schwachstellenlage_priorisieren",
+        "qus2_zwischenmassnahmen_und_patchfenster"
+      ]
+    },
+    {
+      "id": "q04",
+      "type": "match_pairs",
+      "title": "Roles in the patch flow",
+      "prompt": "Which role takes which initial responsibility in this vulnerability case?",
+      "layout": "table",
+      "columns": [
+        "Role",
+        "Initial responsibility"
+      ],
+      "pairs": [
+        {
+          "key": "role_1",
+          "left": "Information security",
+          "right": "Prioritize findings and keep residual or exception assessment visible"
+        },
+        {
+          "key": "role_2",
+          "left": "Platform operations",
+          "right": "Implement network rule and permission changes technically and document them"
+        },
+        {
+          "key": "role_3",
+          "left": "Application owner upload service",
+          "right": "Define test scope for the library change and support functional service testing"
+        },
+        {
+          "key": "role_4",
+          "left": "Release coordination",
+          "right": "Consolidate patch window, rollback path and retest closure"
+        }
+      ],
+      "options": [
+        "Prioritize findings and keep residual or exception assessment visible",
+        "Implement network rule and permission changes technically and document them",
+        "Define test scope for the library change and support functional service testing",
+        "Consolidate patch window, rollback path and retest closure"
+      ],
+      "feedback": {
+        "correct": "The roles were matched with their initial responsibilities.",
+        "wrong": "Focus on who assesses, who implements technically, who tests and who steers the window and closure."
+      },
+      "progressLinks": [
+        "qus2_zwischenmassnahmen_und_patchfenster"
+      ]
+    },
+    {
+      "id": "q05",
+      "type": "short_text",
+      "title": "Short status for team leadership",
+      "prompt": "Write a short note (4-6 sentences) with prioritized finding, interim measure, patch window and planned retest.",
+      "minChars": 180,
+      "requiredKeywords": [
+        "interim measure",
+        "patch window",
+        "retest"
+      ],
+      "expectedOutline": "Briefly explain what is prioritized, what was contained immediately, what is implemented in the window and how the retest is secured.",
+      "feedback": {
+        "correct": "The short status is concise, steerable and reliable.",
+        "wrong": "Please separate prioritized finding, interim measure, patch window and retest more clearly."
+      },
+      "progressLinks": [
+        "qus2_zwischenmassnahmen_und_patchfenster"
+      ]
+    },
+    {
+      "id": "f03",
+      "type": "followup_divider",
+      "title": "Secure retest and closure for Thursday",
+      "from": "revision@secubridge-service.example",
+      "to": "patchkoordination@ausbildungsbetrieb.example",
+      "subject": "Deliver closure picture for scan findings and retest",
+      "date": "2026-03-26",
+      "body": "Hello everyone,\n\nfor Thursday I do not need a pure scan comparison, but a readable closure on which findings were contained, patched, retested or deliberately left open with a residual point. Please also make visible which evidence already exists and what is still scheduled for follow-up review.\n\nKind regards\nAudit"
+    },
+    {
+      "id": "q06",
+      "type": "multi_select",
+      "title": "What the closure picture must contain",
+      "prompt": "Which documents or results must be available after the patch window so the vulnerability status can be closed reliably?",
+      "options": [
+        {
+          "text": "A decision per finding with current status and short justification.",
+          "correct": true,
+          "rationale": "The closure needs a clear status per finding, not only a general statement."
+        },
+        {
+          "text": "Evidence of implemented interim measures or patches with reference to the affected system.",
+          "correct": true,
+          "rationale": "Only then can it be seen later what was actually implemented."
+        },
+        {
+          "text": "Retest result or a justified open residual point with responsible owner.",
+          "correct": true,
+          "rationale": "The retest is what separates reliable closure from a mere implementation promise."
+        },
+        {
+          "text": "Follow-up review or next date for everything that remains open after the window.",
+          "correct": true,
+          "rationale": "Open points must remain steerable and readable."
+        },
+        {
+          "text": "A single screenshot from the scanner if the status looks greener afterward.",
+          "correct": false,
+          "rationale": "Without implementation, decision and retest, that is too thin."
+        },
+        {
+          "text": "A general assessment that the platform should now feel safe again.",
+          "correct": false,
+          "rationale": "An impression does not replace a traceable closure."
+        }
+      ],
+      "feedback": {
+        "correct": "The necessary elements of the closure picture were fully identified.",
+        "wrong": "Focus on decisions, implementation evidence, retest and visible residual points instead of snapshots."
+      },
+      "progressLinks": [
+        "qus2_retest_und_abschlussnachweise"
+      ]
+    },
+    {
+      "id": "q07",
+      "type": "ordering",
+      "title": "From scan to reliable closure",
+      "prompt": "Put the steps in a sensible order so the scan report becomes a steerable closure.",
+      "items": [
+        "Confirm findings, affected systems and urgency cleanly.",
+        "Reduce immediately containable access or rights and document it.",
+        "Define patch window, test scope and rollback path for remaining changes.",
+        "Prove implementation and subsequent retest with system reference.",
+        "Release closure picture with status, residual point and follow-up review."
+      ],
+      "correctOrder": [
+        "Confirm findings, affected systems and urgency cleanly.",
+        "Reduce immediately containable access or rights and document it.",
+        "Define patch window, test scope and rollback path for remaining changes.",
+        "Prove implementation and subsequent retest with system reference.",
+        "Release closure picture with status, residual point and follow-up review."
+      ],
+      "feedback": {
+        "correct": "The order leads cleanly from finding to containment and patch window to retest closure.",
+        "wrong": "First finding and immediate measures, then the window, then retest and finally the closure."
+      },
+      "progressLinks": [
+        "qus2_schwachstellenlage_priorisieren",
+        "qus2_zwischenmassnahmen_und_patchfenster",
+        "qus2_retest_und_abschlussnachweise"
+      ]
+    }
+  ]
+}

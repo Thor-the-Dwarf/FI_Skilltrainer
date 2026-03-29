@@ -1,0 +1,1694 @@
+{
+  "scenario": {
+    "company": "Nordwacht IT-Sicherheit GmbH",
+    "scale": "IT-Sicherheitsdienstleister mit Beratungs-, Schulungs- und Servicebereich, 81 Mitarbeitende",
+    "context": "Prüfungsvorbereitung WISO im Stationsformat mit Ausbildungs-, Tarif-, Organisations-, Sicherheits- und Rechtsfragen.",
+    "mission": "Sie bearbeiten eine zusammenhängende Fachsituation zu Probezeit, Berichtsheft, Kündigung, Betriebsvereinbarung, Tarifvertrag, GmbH, Arbeitsschutz, AGG und digitaler Sicherheit.",
+    "source": {
+      "kind": "Pseudonymisierte Prüfungsvorlage",
+      "reference": "AP2 Wirtschafts- und Sozialkunde, Winter 2021/22",
+      "note": "Die fachliche Reihenfolge bleibt erhalten; Namen, Orte und Unternehmensbezug wurden in das Kursformat überführt."
+    },
+    "station": {
+      "id": "PV3WISO-ST-05",
+      "department": "Prüfungsvorbereitung Wirtschafts- und Sozialkunde",
+      "profile": "Ausbildung, Tarifrecht, Organisation, Sicherheit und Rechte",
+      "constraints": [
+        "Die 30 Themenaufgaben bleiben in thematischen Folgeaufträgen erkennbar",
+        "Scanlastige Diagramme und Anzeigen werden bei Bedarf textnah in vorhandene Aufgabenformate überführt",
+        "Rechen-, Zuordnungs- und Auswahlaufgaben sollen möglichst direkt auto-auswertbar bleiben"
+      ]
+    },
+    "customerRequest": {
+      "from": "qualitaet@ordnungsbetrieb.example",
+      "to": "projektteam@ausbildungsbetrieb.example",
+      "subject": "Bitte ein neues WISO-Trainingspaket zu Ausbildung, Tarifrecht und IT-Sicherheit aufsetzen",
+      "date": "2026-03-20",
+      "body": "Guten Tag,\n\nwir möchten ein weiteres WISO-Training im Stationsformat vorbereiten. Diesmal sollen vor allem Probezeit, Ausbildungsnachweis, Kündigungsgründe, Betriebsvereinbarung, Mutterschutz, Tarifvertrag, private Altersvorsorge, GmbH, Organisationsformen, IHK-Rollen, Arbeitsschutz, Umwelt, AGG, Phishing, öffentliche WLAN-Nutzung, Integrität und Compliance vorkommen.\n\nBitte behalten Sie die Reihenfolge der Quelle erkennbar bei, formulieren Sie alles sauber pseudonymisiert und nutzen Sie vorhandene Aufgabenformate, damit die Antworten möglichst direkt auswertbar bleiben.\n\nViele Grüsse\nQualität"
+    }
+  },
+  "questions": [
+    {
+      "id": "q01",
+      "type": "table_fill",
+      "title": "Gesetzliche Probezeit in der Ausbildung eintragen",
+      "prompt": "Tragen Sie die gesetzliche Mindest- und Hoechstdauer der Probezeit für ein Berufsausbildungsverhältnis in Monaten ein.",
+      "columns": [
+        "Angabe",
+        "Monate"
+      ],
+      "rows": [
+        [
+          "Mindestdauer der Probezeit",
+          {
+            "key": "probe_min",
+            "label": "Mindestdauer Probezeit",
+            "expected": 1,
+            "inputType": "number",
+            "placeholder": "Monate"
+          }
+        ],
+        [
+          "Hoechstdauer der Probezeit",
+          {
+            "key": "probe_max",
+            "label": "Hoechstdauer Probezeit",
+            "expected": 4,
+            "inputType": "number",
+            "placeholder": "Monate"
+          }
+        ]
+      ],
+      "feedback": {
+        "correct": "Mindest- und Hoechstdauer der Probezeit wurden korrekt eingetragen.",
+        "wrong": "Prüfen Sie noch einmal die gesetzliche Spanne der Probezeit im BBiG."
+      },
+      "progressLinks": [
+        "pv3wiso_arbeitsrecht_ausbildung"
+      ]
+    },
+    {
+      "id": "q02",
+      "type": "table_fill",
+      "title": "Aussagen zum Ausbildungsnachweis einordnen",
+      "prompt": "Ordnen Sie zu, welche Aussagen den Zweck eines Ausbildungsnachweises passend beschreiben.",
+      "columns": [
+        "Aussage",
+        "Trifft zu?"
+      ],
+      "rows": [
+        [
+          "Er dokumentiert die vermittelten Ausbildungsinhalte.",
+          {
+            "key": "berichtsheft_a",
+            "label": "Vermittelte Ausbildungsinhalte dokumentieren",
+            "expected": "Ja",
+            "inputType": "select",
+            "placeholder": "Auswahl treffen",
+            "options": [
+              "Ja",
+              "Nein"
+            ]
+          }
+        ],
+        [
+          "Er dient als Grundlage für die Benotung des Abschlussprojekts.",
+          {
+            "key": "berichtsheft_b",
+            "label": "Grundlage für Benotung des Abschlussprojekts",
+            "expected": "Nein",
+            "inputType": "select",
+            "placeholder": "Auswahl treffen",
+            "options": [
+              "Ja",
+              "Nein"
+            ]
+          }
+        ],
+        [
+          "Er dient als Nachweis für die Tätigkeit des Ausbilders im Betrieb.",
+          {
+            "key": "berichtsheft_c",
+            "label": "Nachweis für Tätigkeit des Ausbilders",
+            "expected": "Nein",
+            "inputType": "select",
+            "placeholder": "Auswahl treffen",
+            "options": [
+              "Ja",
+              "Nein"
+            ]
+          }
+        ],
+        [
+          "Er soll sichtbar machen, welche Inhalte während der Ausbildung behandelt wurden.",
+          {
+            "key": "berichtsheft_d",
+            "label": "Sichtbar machen welche Inhalte behandelt wurden",
+            "expected": "Ja",
+            "inputType": "select",
+            "placeholder": "Auswahl treffen",
+            "options": [
+              "Ja",
+              "Nein"
+            ]
+          }
+        ],
+        [
+          "Er prüft die Einhaltung tariflich vereinbarter Ausbildungszeiten durch die Gewerkschaft.",
+          {
+            "key": "berichtsheft_e",
+            "label": "Tarifliche Ausbildungszeiten durch Gewerkschaft prüfen",
+            "expected": "Nein",
+            "inputType": "select",
+            "placeholder": "Auswahl treffen",
+            "options": [
+              "Ja",
+              "Nein"
+            ]
+          }
+        ]
+      ],
+      "feedback": {
+        "correct": "Der Zweck des Ausbildungsnachweises wurde über mehrere Aussagen hinweg sauber eingeordnet.",
+        "wrong": "Denken Sie daran, was im Berichtsheft regelmässig festgehalten werden soll und wofür es gerade nicht gedacht ist."
+      },
+      "progressLinks": [
+        "pv3wiso_arbeitsrecht_ausbildung"
+      ]
+    },
+    {
+      "id": "q03",
+      "type": "table_fill",
+      "title": "Kündigungsgründe den Beispielen zuordnen",
+      "prompt": "Ordnen Sie jedem Beispiel den passenden Kündigungsgrund zu.",
+      "columns": [
+        "Beispiel",
+        "Kündigungsgrund"
+      ],
+      "rows": [
+        [
+          "Wiederholte Nichtbeachtung des Alkoholverbots während der Arbeitszeit",
+          {
+            "key": "termination_a",
+            "label": "Alkoholverbot missachtet",
+            "expected": "Verhaltensbedingte Kündigung",
+            "inputType": "select",
+            "placeholder": "Kündigungsgrund wählen",
+            "options": [
+              "Personenbedingte Kündigung",
+              "Verhaltensbedingte Kündigung",
+              "Betriebsbedingte Kündigung"
+            ]
+          }
+        ],
+        [
+          "Negative Auswirkungen einer Erkrankung über einen langen Zeitraum",
+          {
+            "key": "termination_b",
+            "label": "Lang andauernde Krankheit",
+            "expected": "Personenbedingte Kündigung",
+            "inputType": "select",
+            "placeholder": "Kündigungsgrund wählen",
+            "options": [
+              "Personenbedingte Kündigung",
+              "Verhaltensbedingte Kündigung",
+              "Betriebsbedingte Kündigung"
+            ]
+          }
+        ],
+        [
+          "Langfristig kritische wirtschaftliche Lage im Unternehmen",
+          {
+            "key": "termination_c",
+            "label": "Wirtschaftliche Unternehmenslage",
+            "expected": "Betriebsbedingte Kündigung",
+            "inputType": "select",
+            "placeholder": "Kündigungsgrund wählen",
+            "options": [
+              "Personenbedingte Kündigung",
+              "Verhaltensbedingte Kündigung",
+              "Betriebsbedingte Kündigung"
+            ]
+          }
+        ],
+        [
+          "Mehrfacher Verstoss gegen das Rauchverbot auf dem Betriebsgelände trotz Abmahnung",
+          {
+            "key": "termination_d",
+            "label": "Rauchverbot trotz Abmahnung verletzt",
+            "expected": "Verhaltensbedingte Kündigung",
+            "inputType": "select",
+            "placeholder": "Kündigungsgrund wählen",
+            "options": [
+              "Personenbedingte Kündigung",
+              "Verhaltensbedingte Kündigung",
+              "Betriebsbedingte Kündigung"
+            ]
+          }
+        ],
+        [
+          "Ständige Verspätungen auch nach wiederholter Abmahnung",
+          {
+            "key": "termination_e",
+            "label": "Verspätungen trotz Abmahnung",
+            "expected": "Verhaltensbedingte Kündigung",
+            "inputType": "select",
+            "placeholder": "Kündigungsgrund wählen",
+            "options": [
+              "Personenbedingte Kündigung",
+              "Verhaltensbedingte Kündigung",
+              "Betriebsbedingte Kündigung"
+            ]
+          }
+        ]
+      ],
+      "feedback": {
+        "correct": "Die Beispiele wurden den Kündigungsgründen korrekt zugeordnet.",
+        "wrong": "Unterscheiden Sie persönliche Leistungsfähigkeit, steuerbares Verhalten und betriebliche Ursachen noch einmal sauber."
+      },
+      "progressLinks": [
+        "pv3wiso_arbeitsrecht_ausbildung"
+      ]
+    },
+    {
+      "id": "f02",
+      "type": "followup_divider",
+      "title": "Betriebsvereinbarung, Tarifvertrag und Vorsorge",
+      "from": "personalentwicklung@ordnungsbetrieb.example",
+      "to": "projektteam@ausbildungsbetrieb.example",
+      "subject": "Bitte den nächsten Block zu Mitbestimmung, Tarifvertrag und Vorsorge vorbereiten",
+      "date": "2026-03-20",
+      "body": "Hallo,\n\nim zweiten Themenblock brauchen wir Aufgaben zu Betriebsvereinbarung, Mutterschutz, Tarifvertrag, privater Altersvorsorge, vermogenswirksamen Leistungen, Ausbildungsordnung und Lohnsteuerklasse. Bitte halten Sie die Rechtsfolgen und Begriffe klar auseinander.\n\nViele Grüsse\nPersonalentwicklung"
+    },
+    {
+      "id": "q04",
+      "type": "table_fill",
+      "title": "Aussagen zur Betriebsvereinbarung einordnen",
+      "prompt": "Ordnen Sie zu, welche Aussagen zu einer Betriebsvereinbarung zutreffen.",
+      "columns": [
+        "Aussage",
+        "Trifft zu?"
+      ],
+      "rows": [
+        [
+          "Sie wird zwischen Arbeitgeber und Betriebsrat geschlossen.",
+          {
+            "key": "bv_a",
+            "label": "Zwischen Arbeitgeber und Betriebsrat geschlossen",
+            "expected": "Ja",
+            "inputType": "select",
+            "placeholder": "Auswahl treffen",
+            "options": [
+              "Ja",
+              "Nein"
+            ]
+          }
+        ],
+        [
+          "Sie gilt automatisch für die ganze Branche.",
+          {
+            "key": "bv_b",
+            "label": "Gilt automatisch für die ganze Branche",
+            "expected": "Nein",
+            "inputType": "select",
+            "placeholder": "Auswahl treffen",
+            "options": [
+              "Ja",
+              "Nein"
+            ]
+          }
+        ],
+        [
+          "Sie schafft verbindliche Normen für die in ihr genannten Mitarbeitergruppen.",
+          {
+            "key": "bv_c",
+            "label": "Schafft verbindliche Normen für Mitarbeitergruppen",
+            "expected": "Ja",
+            "inputType": "select",
+            "placeholder": "Auswahl treffen",
+            "options": [
+              "Ja",
+              "Nein"
+            ]
+          }
+        ],
+        [
+          "Sie ist ein Einzelvertrag mit jeder Mitarbeiterin und jedem Mitarbeiter.",
+          {
+            "key": "bv_d",
+            "label": "Einzelvertrag mit jeder Mitarbeiterin und jedem Mitarbeiter",
+            "expected": "Nein",
+            "inputType": "select",
+            "placeholder": "Auswahl treffen",
+            "options": [
+              "Ja",
+              "Nein"
+            ]
+          }
+        ],
+        [
+          "Sie wird zwingend von der zuständigen Gewerkschaft abgeschlossen.",
+          {
+            "key": "bv_e",
+            "label": "Zwingend von der Gewerkschaft abgeschlossen",
+            "expected": "Nein",
+            "inputType": "select",
+            "placeholder": "Auswahl treffen",
+            "options": [
+              "Ja",
+              "Nein"
+            ]
+          }
+        ]
+      ],
+      "feedback": {
+        "correct": "Betriebsvereinbarung, Tarifvertrag und Einzelvertrag wurden sauber voneinander getrennt.",
+        "wrong": "Trennen Sie noch einmal, wer die Vereinbarung schliesst, für wen sie wirkt und was sie gerade nicht ist."
+      },
+      "progressLinks": [
+        "pv3wiso_mitbestimmung_tarif_sozialversicherung"
+      ]
+    },
+    {
+      "id": "q05",
+      "type": "single_choice",
+      "title": "Besonderen Kündigungsschutz nach dem Mutterschutz erkennen",
+      "prompt": "Welche Aussage trifft nach dem Mutterschutzgesetz zu?",
+      "options": [
+        {
+          "text": "Eine Arbeitnehmerin darf nach Mitteilung der Schwangerschaft sofort ohne weitere Voraussetzungen der Arbeit fernbleiben.",
+          "rationale": "Der Mutterschutz bedeutet nicht pauschal, dass jede Arbeit sofort entfällt."
+        },
+        {
+          "text": "Eine Schwangere kann ihre Arbeitszeiten während der Schwangerschaft frei wählen.",
+          "rationale": "Ein freies Wahlrecht dieser Art besteht nicht."
+        },
+        {
+          "text": "Bei Schwangerschaft und Mutterschutz darf der Lohn höchstens 75 Prozent des letzten Nettolohns betragen.",
+          "rationale": "So ist die Regelung nicht ausgestaltet."
+        },
+        {
+          "text": "Eine Arbeitnehmerin steht während der Schwangerschaft und nach der Entbindung unter besonderem Kündigungsschutz.",
+          "rationale": "Genau dieser Schutz gehört zu den Kernregeln des Mutterschutzes."
+        },
+        {
+          "text": "Eine Arbeitnehmerin darf schon drei Tage nach der Entbindung wieder beschäftigt werden.",
+          "rationale": "Die Schutzfristen nach der Entbindung stehen dem entgegen."
+        }
+      ],
+      "correctIndex": 3,
+      "feedback": {
+        "correct": "Der besondere Kündigungsschutz wurde korrekt erkannt.",
+        "wrong": "Achten Sie auf die Schutzwirkung des Mutterschutzrechts vor und nach der Entbindung."
+      },
+      "progressLinks": [
+        "pv3wiso_arbeitsrecht_ausbildung"
+      ]
+    },
+    {
+      "id": "q06",
+      "type": "table_fill",
+      "title": "Aussagen zur Allgemeinverbindlichkeit einordnen",
+      "prompt": "Ordnen Sie zu, welche Aussagen die Wirkung eines allgemeinverbindlich erklärten Tarifvertrags passend beschreiben.",
+      "columns": [
+        "Aussage",
+        "Trifft zu?"
+      ],
+      "rows": [
+        [
+          "Allgemeinverbindlich erklärte Tarifverträge gelten für alle Arbeitnehmer der Branche, unabhängig von ihrer Gewerkschaftszugehörigkeit.",
+          {
+            "key": "tarif_a",
+            "label": "Gilt für alle Arbeitnehmer der Branche unabhängig von Gewerkschaftszugehörigkeit",
+            "expected": "Ja",
+            "inputType": "select",
+            "placeholder": "Auswahl treffen",
+            "options": [
+              "Ja",
+              "Nein"
+            ]
+          }
+        ],
+        [
+          "Die persönliche Reichweite des Tarifvertrags wird dadurch über die Mitglieder der Tarifparteien hinaus erweitert.",
+          {
+            "key": "tarif_b",
+            "label": "Persönliche Reichweite wird erweitert",
+            "expected": "Ja",
+            "inputType": "select",
+            "placeholder": "Auswahl treffen",
+            "options": [
+              "Ja",
+              "Nein"
+            ]
+          }
+        ],
+        [
+          "Bestimmte Tarifbedingungen gelten dann in allen Ländern der EU.",
+          {
+            "key": "tarif_c",
+            "label": "Gilt in allen Ländern der EU",
+            "expected": "Nein",
+            "inputType": "select",
+            "placeholder": "Auswahl treffen",
+            "options": [
+              "Ja",
+              "Nein"
+            ]
+          }
+        ],
+        [
+          "Haustarifverträge gelten dadurch automatisch für die gesamte Branche.",
+          {
+            "key": "tarif_d",
+            "label": "Haustarifverträge gelten automatisch für ganze Branche",
+            "expected": "Nein",
+            "inputType": "select",
+            "placeholder": "Auswahl treffen",
+            "options": [
+              "Ja",
+              "Nein"
+            ]
+          }
+        ],
+        [
+          "Während der Laufzeit eines Tarifvertrags sind Streik und Aussperrung zulässig, wenn eine Bundesbehörde zustimmt.",
+          {
+            "key": "tarif_e",
+            "label": "Streik und Aussperrung mit Behördenzustimmung zulässig",
+            "expected": "Nein",
+            "inputType": "select",
+            "placeholder": "Auswahl treffen",
+            "options": [
+              "Ja",
+              "Nein"
+            ]
+          }
+        ]
+      ],
+      "feedback": {
+        "correct": "Die Wirkung der Allgemeinverbindlichkeit wurde über Reichweite und typische Fehlannahmen hinweg sauber eingeordnet.",
+        "wrong": "Prüfen Sie noch einmal, wie Allgemeinverbindlichkeit die persönliche Reichweite eines Tarifvertrags verändert und was sie gerade nicht bewirkt."
+      },
+      "progressLinks": [
+        "pv3wiso_mitbestimmung_tarif_sozialversicherung"
+      ]
+    },
+    {
+      "id": "q07",
+      "type": "ordering",
+      "title": "Tarifverhandlungen in die richtige Reihenfolge bringen",
+      "prompt": "Bringen Sie die Schritte bis zum Zustandekommen eines neuen Tarifvertrags in die richtige Reihenfolge.",
+      "items": [
+        "Spruch eines neutralen Schlichters",
+        "Tarifverhandlungen",
+        "Abschluss des neuen Tarifvertrags",
+        "Annahme der Schlichtung",
+        "Einleitung einer Schlichtung",
+        "Erklärung des Scheiterns der Tarifverhandlung"
+      ],
+      "correctOrder": [
+        "Tarifverhandlungen",
+        "Erklärung des Scheiterns der Tarifverhandlung",
+        "Einleitung einer Schlichtung",
+        "Spruch eines neutralen Schlichters",
+        "Annahme der Schlichtung",
+        "Abschluss des neuen Tarifvertrags"
+      ],
+      "feedback": {
+        "correct": "Die Reihenfolge der Tarifverhandlungen ist korrekt.",
+        "wrong": "Ordnen Sie erst die Verhandlung, dann das Scheitern, die Schlichtung und erst am Ende den Vertragsabschluss."
+      },
+      "progressLinks": [
+        "pv3wiso_mitbestimmung_tarif_sozialversicherung"
+      ]
+    },
+    {
+      "id": "q08",
+      "type": "single_choice",
+      "title": "Notwendigkeit privater Altersvorsorge beurteilen",
+      "prompt": "Welche Aussage über die Notwendigkeit einer privaten Altersvorsorge trifft zu?",
+      "options": [
+        {
+          "text": "Private Altersvorsorge ist notwendig, weil die gesetzliche Rentenversicherung voraussichtlich nicht ausreichen wird.",
+          "rationale": "Genau das ist die typische Begründung für zusätzliche private Vorsorge."
+        },
+        {
+          "text": "Private Altersvorsorge ist nicht notwendig, weil das Rentenniveau der gesetzlichen Rentenversicherung stetig steigt.",
+          "rationale": "Davon kann gerade nicht ausgegangen werden."
+        },
+        {
+          "text": "Private Altersvorsorge ist nicht sinnvoll, weil das Rentenniveau der gesetzlichen Rentenversicherung steigt.",
+          "rationale": "Auch das trifft nicht zu."
+        },
+        {
+          "text": "Private Altersvorsorge ist nicht notwendig, weil jeder Arbeitnehmer eine Betriebsrente erhält.",
+          "rationale": "Eine Betriebsrente steht nicht automatisch jeder Person zu."
+        },
+        {
+          "text": "Private Altersvorsorge ist nicht notwendig, wenn die Inflationsrate steigt.",
+          "rationale": "Gerade Inflation spricht eher für zusätzliche Absicherung."
+        }
+      ],
+      "correctIndex": 0,
+      "feedback": {
+        "correct": "Die Rolle privater Altersvorsorge wurde korrekt eingeordnet.",
+        "wrong": "Denken Sie an das Verhältnis zwischen gesetzlicher Rente und zusätzlicher Absicherung."
+      },
+      "progressLinks": [
+        "pv3wiso_mitbestimmung_tarif_sozialversicherung"
+      ]
+    },
+    {
+      "id": "q09",
+      "type": "multi_select",
+      "title": "Geeignete Formen vermogenswirksamer Leistungen auswählen",
+      "prompt": "Welche zwei Anlageformen werden im Rahmen vermogenswirksamer Leistungen typischerweise gefördert?",
+      "options": [
+        {
+          "text": "Sparlose bei einer Bank",
+          "correct": false,
+          "rationale": "Sparlose sind keine typische Form vermogenswirksamer Leistungen."
+        },
+        {
+          "text": "Aktien eines beliebigen börsennotierten Unternehmens",
+          "correct": false,
+          "rationale": "So pauschal sind Aktienkäufe nicht die hier gesuchte Standardform."
+        },
+        {
+          "text": "Bausparvertrag",
+          "correct": true,
+          "rationale": "Ein Bausparvertrag ist eine klassische Anlageform für vermogenswirksame Leistungen."
+        },
+        {
+          "text": "Unfallversicherung",
+          "correct": false,
+          "rationale": "Versicherungen dieser Art gehören nicht zu den typischen VL-Anlagen."
+        },
+        {
+          "text": "Sterbegeldversicherung",
+          "correct": false,
+          "rationale": "Auch das ist keine typische VL-Anlage."
+        },
+        {
+          "text": "Spezieller VL-Sparplan einer Bank",
+          "correct": true,
+          "rationale": "Auch VL-Sparpläne gehören zu den klassischen Förderformen."
+        }
+      ],
+      "feedback": {
+        "correct": "Die geeigneten Anlageformen wurden korrekt ausgewählt.",
+        "wrong": "Prüfen Sie noch einmal, welche Sparformen im Rahmen vermogenswirksamer Leistungen üblich sind."
+      },
+      "progressLinks": [
+        "pv3wiso_wirtschaftlichkeit_unternehmensanalyse"
+      ]
+    },
+    {
+      "id": "q10",
+      "type": "single_choice",
+      "title": "Inhalt einer Ausbildungsordnung erkennen",
+      "prompt": "Welche Aussage beschreibt einen typischen Regelungsinhalt einer Ausbildungsordnung?",
+      "options": [
+        {
+          "text": "Sie enthält Angaben über die Höhe der Ausbildungsvergütung.",
+          "rationale": "Die Vergütung wird dort nicht in dieser Form festgelegt."
+        },
+        {
+          "text": "Sie legt Planungshilfen für die Urlaubsdauer von Auszubildenden fest.",
+          "rationale": "Das ist kein typischer Inhalt einer Ausbildungsordnung."
+        },
+        {
+          "text": "Sie beschreibt Richtlinien, wie der Berufsschulunterricht an den betrieblichen Ausbildungsplan anzupassen ist.",
+          "rationale": "Das ist nicht der Kern der Ausbildungsordnung."
+        },
+        {
+          "text": "Sie bestimmt die Dauer der überbetrieblichen Ausbildung im Detail.",
+          "rationale": "Auch das ist nicht die zentrale Regelung."
+        },
+        {
+          "text": "Sie legt fest, welche Kenntnisse, Fertigkeiten und Fähigkeiten während der Ausbildung zu vermitteln sind.",
+          "rationale": "Genau das gehört zum Kern einer Ausbildungsordnung."
+        }
+      ],
+      "correctIndex": 4,
+      "feedback": {
+        "correct": "Der Inhalt der Ausbildungsordnung wurde korrekt erkannt.",
+        "wrong": "Achten Sie darauf, welche Inhalte das Berufsbild und die zu vermittelnden Kompetenzen beschreiben."
+      },
+      "progressLinks": [
+        "pv3wiso_arbeitsrecht_ausbildung"
+      ]
+    },
+    {
+      "id": "q11",
+      "type": "single_choice",
+      "title": "Passende Lohnsteuerklasse bestimmen",
+      "prompt": "Eine ledige, kinderlose Kauffrau arbeitet in einem Einzelarbeitsverhältnis. In welche Lohnsteuerklasse wird sie typischerweise eingruppiert?",
+      "options": [
+        {
+          "text": "Lohnsteuerklasse 1",
+          "rationale": "Das ist die typische Steuerklasse für ledige, kinderlose Arbeitnehmerinnen und Arbeitnehmer."
+        },
+        {
+          "text": "Lohnsteuerklasse 2",
+          "rationale": "Diese Steuerklasse setzt besondere Voraussetzungen wie Alleinerziehung voraus."
+        },
+        {
+          "text": "Lohnsteuerklasse 3",
+          "rationale": "Sie passt typischerweise zu verheirateten Paaren in bestimmter Kombination."
+        },
+        {
+          "text": "Lohnsteuerklasse 4",
+          "rationale": "Auch diese ist auf verheiratete Paare zugeschnitten."
+        },
+        {
+          "text": "Lohnsteuerklasse 5",
+          "rationale": "Sie wird nur in Kombination mit Steuerklasse 3 genutzt."
+        }
+      ],
+      "correctIndex": 0,
+      "feedback": {
+        "correct": "Die passende Lohnsteuerklasse wurde korrekt erkannt.",
+        "wrong": "Prüfen Sie noch einmal die Standard-Steuerklasse für ledige und kinderlose Beschäftigte."
+      },
+      "progressLinks": [
+        "pv3wiso_mitbestimmung_tarif_sozialversicherung"
+      ]
+    },
+    {
+      "id": "f03",
+      "type": "followup_divider",
+      "title": "GmbH, Organisation und betriebliche Mitbestimmung",
+      "from": "organisationsentwicklung@ordnungsbetrieb.example",
+      "to": "projektteam@ausbildungsbetrieb.example",
+      "subject": "Bitte den Block zu GmbH, Organisationsformen und Betriebsrat vorbereiten",
+      "date": "2026-03-20",
+      "body": "Hallo,\n\nim dritten Themenblock benötigen wir Aufgaben zu GmbH, Organisationsformen, IHK-Rechten und Pflichten, Betriebsratswahl, Mitbestimmungsrecht und Arbeitsschutzprävention. Gerade die Organigrammfrage soll fachlich gleich bleiben, darf aber textnaher abgebildet werden.\n\nViele Grüsse\nOrganisationsentwicklung"
+    },
+    {
+      "id": "q12",
+      "type": "table_fill",
+      "title": "Aussagen zur GmbH einordnen",
+      "prompt": "Ordnen Sie zu, welche Aussagen über eine GmbH zutreffen.",
+      "columns": [
+        "Aussage",
+        "Trifft zu?"
+      ],
+      "rows": [
+        [
+          "Das Stammkapital einer GmbH muss mindestens 25.000 EUR betragen.",
+          {
+            "key": "gmbh_a",
+            "label": "Mindeststammkapital 25000 EUR",
+            "expected": "Ja",
+            "inputType": "select",
+            "placeholder": "Auswahl treffen",
+            "options": [
+              "Ja",
+              "Nein"
+            ]
+          }
+        ],
+        [
+          "Die GmbH ist eine Kapitalgesellschaft.",
+          {
+            "key": "gmbh_b",
+            "label": "GmbH ist Kapitalgesellschaft",
+            "expected": "Ja",
+            "inputType": "select",
+            "placeholder": "Auswahl treffen",
+            "options": [
+              "Ja",
+              "Nein"
+            ]
+          }
+        ],
+        [
+          "Die Gesellschafter haften auch mit ihrem Privatvermögen.",
+          {
+            "key": "gmbh_c",
+            "label": "Gesellschafter haften privat",
+            "expected": "Nein",
+            "inputType": "select",
+            "placeholder": "Auswahl treffen",
+            "options": [
+              "Ja",
+              "Nein"
+            ]
+          }
+        ],
+        [
+          "Eine GmbH benötigt immer einen Kommanditisten und einen Komplementär.",
+          {
+            "key": "gmbh_d",
+            "label": "Braucht immer Kommanditisten und Komplementär",
+            "expected": "Nein",
+            "inputType": "select",
+            "placeholder": "Auswahl treffen",
+            "options": [
+              "Ja",
+              "Nein"
+            ]
+          }
+        ],
+        [
+          "Der Komplementär leitet die GmbH.",
+          {
+            "key": "gmbh_e",
+            "label": "Komplementär leitet die GmbH",
+            "expected": "Nein",
+            "inputType": "select",
+            "placeholder": "Auswahl treffen",
+            "options": [
+              "Ja",
+              "Nein"
+            ]
+          }
+        ]
+      ],
+      "feedback": {
+        "correct": "Haftung, Mindestkapital und Rechtsform der GmbH wurden sauber voneinander getrennt.",
+        "wrong": "Trennen Sie Mindestkapital, Rechtsform und Abgrenzung zur KG noch einmal systematisch."
+      },
+      "progressLinks": [
+        "pv3wiso_wirtschaftssektoren_unternehmensformen"
+      ]
+    },
+    {
+      "id": "q13",
+      "type": "table_fill",
+      "title": "Beschreibungen den Organisationsformen zuordnen",
+      "prompt": "Ordnen Sie den Beschreibungen die passende Organisationsform zu.",
+      "columns": [
+        "Beschreibung",
+        "Organisationsform"
+      ],
+      "rows": [
+        [
+          "Dem Nachteil einer uneinheitlichen Führung steht der Vorteil kurzer Wege gegenüber.",
+          {
+            "key": "org_a",
+            "label": "Uneinheitliche Führung, kurze Wege",
+            "expected": "Mehrliniensystem",
+            "inputType": "select",
+            "placeholder": "Organisationsform wählen",
+            "options": [
+              "Einliniensystem",
+              "Matrixorganisation",
+              "Mehrliniensystem",
+              "Stabliniensystem"
+            ]
+          }
+        ],
+        [
+          "Es werden besonders hohe Anforderungen an Teamfähigkeit gestellt, zugleich besteht ein hoher Kommunikationsbedarf.",
+          {
+            "key": "org_b",
+            "label": "Hoher Kommunikationsbedarf und Teamfähigkeit",
+            "expected": "Matrixorganisation",
+            "inputType": "select",
+            "placeholder": "Organisationsform wählen",
+            "options": [
+              "Einliniensystem",
+              "Matrixorganisation",
+              "Mehrliniensystem",
+              "Stabliniensystem"
+            ]
+          }
+        ],
+        [
+          "Einige Instanzen werden entlastet und die Spezialkenntnisse von Stabsstellen werden besser genutzt.",
+          {
+            "key": "org_c",
+            "label": "Entlastung der Linie durch Stabsstellen",
+            "expected": "Stabliniensystem",
+            "inputType": "select",
+            "placeholder": "Organisationsform wählen",
+            "options": [
+              "Einliniensystem",
+              "Matrixorganisation",
+              "Mehrliniensystem",
+              "Stabliniensystem"
+            ]
+          }
+        ]
+      ],
+      "feedback": {
+        "correct": "Die Organisationsformen wurden den Beschreibungen korrekt zugeordnet.",
+        "wrong": "Vergleichen Sie Mehrlinien-, Matrix- und Stabstruktur noch einmal nach Führungswegen und Kommunikationsaufwand."
+      },
+      "progressLinks": [
+        "pv3wiso_wirtschaftssektoren_unternehmensformen"
+      ]
+    },
+    {
+      "id": "q14",
+      "type": "single_choice",
+      "title": "Zutreffende Pflicht gegenüber der IHK erkennen",
+      "prompt": "Welche Aussage zu Rechten und Pflichten eines Ausbildungsbetriebs gegenüber der IHK trifft zu?",
+      "options": [
+        {
+          "text": "Ein Betrieb darf ohne Zustimmung der IHK ausbilden.",
+          "rationale": "Die Eignung des Betriebs und der Ausbilderinnen oder Ausbilder spielt für die Ausbildung sehr wohl eine Rolle."
+        },
+        {
+          "text": "Eine Verkürzung der Ausbildungszeit bedarf der Genehmigung der IHK.",
+          "rationale": "Genau das ist die zutreffende Aussage."
+        },
+        {
+          "text": "Jede Fehlzeit eines Auszubildenden muss sofort der IHK gemeldet werden.",
+          "rationale": "So pauschal besteht keine Meldepflicht."
+        },
+        {
+          "text": "Jede Unstimmigkeit mit Auszubildenden muss dem Schlichtungsausschuss gemeldet werden.",
+          "rationale": "Auch das ist nicht zwingend vorgeschrieben."
+        },
+        {
+          "text": "Bei hoher Auftragslage kann der Betrieb von der IHK die Verschiebung eines Prüfungstermins verlangen.",
+          "rationale": "Ein solches einseitiges Verlangen besteht nicht."
+        }
+      ],
+      "correctIndex": 1,
+      "feedback": {
+        "correct": "Die zutreffende IHK-bezogene Aussage wurde korrekt erkannt.",
+        "wrong": "Prüfen Sie noch einmal, in welchen Fällen die IHK bei einer Ausbildung genehmigend oder bestätigend eingebunden ist."
+      },
+      "progressLinks": [
+        "pv3wiso_arbeitsrecht_ausbildung"
+      ]
+    },
+    {
+      "id": "q15",
+      "type": "single_choice",
+      "title": "Wahlrecht bei der Betriebsratswahl einordnen",
+      "prompt": "Eine Mitarbeiterin wird im April volljährig und soll im Mai an der Betriebsratswahl teilnehmen. Welche Aussage trifft zu?",
+      "options": [
+        {
+          "text": "Nein, weil sie zu Beginn des Jahres noch minderjährig war.",
+          "rationale": "Massgeblich ist nicht der Jahresbeginn."
+        },
+        {
+          "text": "Nein, weil sie noch nicht lange genug im Betrieb beschäftigt ist.",
+          "rationale": "Diese Voraussetzung ist für das aktive Wahlrecht hier nicht entscheidend."
+        },
+        {
+          "text": "Ja, aber nur wenn sie Mitglied einer Gewerkschaft ist.",
+          "rationale": "Das aktive Wahlrecht hängt nicht von einer Gewerkschaftsmitgliedschaft ab."
+        },
+        {
+          "text": "Ja, weil sie volljährig ist.",
+          "rationale": "Genau dieser Gesichtspunkt ist hier entscheidend."
+        },
+        {
+          "text": "Ja, wenn die Geschäftsleitung einverstanden ist.",
+          "rationale": "Das Wahlrecht hängt nicht vom Einverständnis der Geschäftsleitung ab."
+        }
+      ],
+      "correctIndex": 3,
+      "feedback": {
+        "correct": "Das Wahlrecht wurde korrekt eingeordnet.",
+        "wrong": "Achten Sie darauf, welche Voraussetzungen für die Teilnahme an der Betriebsratswahl gelten."
+      },
+      "progressLinks": [
+        "pv3wiso_mitbestimmung_tarif_sozialversicherung"
+      ]
+    },
+    {
+      "id": "q16",
+      "type": "table_fill",
+      "title": "Mitbestimmungsfälle des Betriebsrats einordnen",
+      "prompt": "Ordnen Sie zu, in welchen Fällen der Betriebsrat ein Mitbestimmungsrecht hat.",
+      "columns": [
+        "Fall",
+        "Mitbestimmungsrecht?"
+      ],
+      "rows": [
+        [
+          "Eine Mitarbeiterin kündigt innerhalb der Probezeit, um eine besser bezahlte Stelle anzunehmen.",
+          {
+            "key": "mitbestimmung_a",
+            "label": "Eigenkündigung innerhalb der Probezeit",
+            "expected": "Nein",
+            "inputType": "select",
+            "placeholder": "Auswahl treffen",
+            "options": [
+              "Ja",
+              "Nein"
+            ]
+          }
+        ],
+        [
+          "Der Arbeitgeber möchte während der Weihnachtszeit Mehrarbeit anordnen.",
+          {
+            "key": "mitbestimmung_b",
+            "label": "Mehrarbeit während der Weihnachtszeit anordnen",
+            "expected": "Ja",
+            "inputType": "select",
+            "placeholder": "Auswahl treffen",
+            "options": [
+              "Ja",
+              "Nein"
+            ]
+          }
+        ],
+        [
+          "Der gesetzliche Mindestlohn wird staatlich erhöht.",
+          {
+            "key": "mitbestimmung_c",
+            "label": "Gesetzlicher Mindestlohn wird staatlich erhöht",
+            "expected": "Nein",
+            "inputType": "select",
+            "placeholder": "Auswahl treffen",
+            "options": [
+              "Ja",
+              "Nein"
+            ]
+          }
+        ],
+        [
+          "Das Unternehmen besetzt die Stelle der Geschäftsführung neu.",
+          {
+            "key": "mitbestimmung_d",
+            "label": "Stelle der Geschäftsführung neu besetzen",
+            "expected": "Nein",
+            "inputType": "select",
+            "placeholder": "Auswahl treffen",
+            "options": [
+              "Ja",
+              "Nein"
+            ]
+          }
+        ],
+        [
+          "Eine Auszubildende möchte nach bestandener Abschlussprüfung zu einem anderen Arbeitgeber wechseln.",
+          {
+            "key": "mitbestimmung_e",
+            "label": "Arbeitgeberwechsel nach bestandener Abschlussprüfung",
+            "expected": "Nein",
+            "inputType": "select",
+            "placeholder": "Auswahl treffen",
+            "options": [
+              "Ja",
+              "Nein"
+            ]
+          }
+        ]
+      ],
+      "feedback": {
+        "correct": "Die Mitbestimmungsfälle wurden sauber von individuellen Entscheidungen und Gesetzeslagen getrennt.",
+        "wrong": "Achten Sie besonders auf Arbeitszeitregelungen und die soziale Mitbestimmung des Betriebsrats."
+      },
+      "progressLinks": [
+        "pv3wiso_mitbestimmung_tarif_sozialversicherung"
+      ]
+    },
+    {
+      "id": "q17",
+      "type": "single_choice",
+      "title": "Verantwortung für die Prävention zuordnen",
+      "prompt": "Wer ist für die Umsetzung der Unfallverhütungsvorschrift `Grundsaetze der Praevention` im Betrieb verantwortlich?",
+      "options": [
+        {
+          "text": "Die Fachkraft für Arbeitssicherheit",
+          "rationale": "Sie berät, trägt aber nicht allein die Gesamtverantwortung."
+        },
+        {
+          "text": "Der Betriebsrat",
+          "rationale": "Der Betriebsrat begleitet, ist aber nicht der Hauptverantwortliche."
+        },
+        {
+          "text": "Der Arbeitgeber beziehungsweise die betrieblichen Vorgesetzten",
+          "rationale": "Dort liegt die Verantwortung für den Arbeitsschutz im Betrieb."
+        },
+        {
+          "text": "Die Mitarbeitenden in Eigenverantwortung",
+          "rationale": "Mitarbeitende haben Mitwirkungspflichten, aber nicht die Hauptverantwortung."
+        },
+        {
+          "text": "Externe, auf Unfallverhütung spezialisierte Unternehmen",
+          "rationale": "Sie können unterstützen, übernehmen aber nicht die Grundverantwortung."
+        }
+      ],
+      "correctIndex": 2,
+      "feedback": {
+        "correct": "Die Verantwortung für die Prävention wurde korrekt zugeordnet.",
+        "wrong": "Denken Sie daran, wer im Betrieb die organisatorische Hauptverantwortung für Arbeitsschutz und Prävention trägt."
+      },
+      "progressLinks": [
+        "pv3wiso_arbeitsschutz_umwelt_diversity"
+      ]
+    },
+    {
+      "id": "f04",
+      "type": "followup_divider",
+      "title": "Arbeitsschutz, Umwelt und Erste Hilfe",
+      "from": "arbeitsschutz@ordnungsbetrieb.example",
+      "to": "projektteam@ausbildungsbetrieb.example",
+      "subject": "Bitte den Block zu Arbeitsschutzgesetzen, Umweltzeichen und Erste Hilfe ausarbeiten",
+      "date": "2026-03-20",
+      "body": "Hallo,\n\nnun brauchen wir Aufgaben zu Arbeitsschutzgesetzen, zu einer nicht umweltschonenden Massnahme, zum Umweltzeichen `Blauer Engel` und zum richtigen Verhalten bei einer Brandverletzung. Bitte halten Sie die Antworten fachlich eindeutig und direkt auswertbar.\n\nViele Grüsse\nArbeitsschutz"
+    },
+    {
+      "id": "q18",
+      "type": "table_fill",
+      "title": "Arbeitsschutzgesetze den Sachverhalten zuordnen",
+      "prompt": "Ordnen Sie den Sachverhalten das jeweils zutreffende Arbeits- oder Schutzgesetz zu.",
+      "columns": [
+        "Sachverhalt",
+        "Rechtsgrundlage"
+      ],
+      "rows": [
+        [
+          "Besonderer Kündigungsschutz für Arbeitnehmende, der 36 Monate oder länger betragen kann",
+          {
+            "key": "law18_a",
+            "label": "Kündigungsschutz während Elternzeit",
+            "expected": "Elternzeitgesetz",
+            "inputType": "select",
+            "placeholder": "Rechtsgrundlage wählen",
+            "options": [
+              "Schwerbehindertengesetz",
+              "Arbeitszeitgesetz",
+              "Bundesurlaubsgesetz",
+              "Entgeltfortzahlungsgesetz",
+              "Elternzeitgesetz"
+            ]
+          }
+        ],
+        [
+          "Mindestanspruch auf 24 Werktage bezahlten Urlaub",
+          {
+            "key": "law18_b",
+            "label": "Mindesturlaub",
+            "expected": "Bundesurlaubsgesetz",
+            "inputType": "select",
+            "placeholder": "Rechtsgrundlage wählen",
+            "options": [
+              "Schwerbehindertengesetz",
+              "Arbeitszeitgesetz",
+              "Bundesurlaubsgesetz",
+              "Entgeltfortzahlungsgesetz",
+              "Elternzeitgesetz"
+            ]
+          }
+        ],
+        [
+          "Zahlung des Arbeitsentgelts auch bei Arbeitsausfall an gesetzlichen Feiertagen",
+          {
+            "key": "law18_c",
+            "label": "Entgelt an Feiertagen",
+            "expected": "Entgeltfortzahlungsgesetz",
+            "inputType": "select",
+            "placeholder": "Rechtsgrundlage wählen",
+            "options": [
+              "Schwerbehindertengesetz",
+              "Arbeitszeitgesetz",
+              "Bundesurlaubsgesetz",
+              "Entgeltfortzahlungsgesetz",
+              "Elternzeitgesetz"
+            ]
+          }
+        ],
+        [
+          "Tägliche Arbeitszeit von acht Stunden, die im Ausnahmefall verlängert werden kann",
+          {
+            "key": "law18_d",
+            "label": "Tägliche Arbeitszeit",
+            "expected": "Arbeitszeitgesetz",
+            "inputType": "select",
+            "placeholder": "Rechtsgrundlage wählen",
+            "options": [
+              "Schwerbehindertengesetz",
+              "Arbeitszeitgesetz",
+              "Bundesurlaubsgesetz",
+              "Entgeltfortzahlungsgesetz",
+              "Elternzeitgesetz"
+            ]
+          }
+        ],
+        [
+          "Besonderer Kündigungsschutz und zusätzlicher Urlaub von fünf Tagen für bestimmte Arbeitnehmende",
+          {
+            "key": "law18_e",
+            "label": "Zusatzurlaub und Kündigungsschutz",
+            "expected": "Schwerbehindertengesetz",
+            "inputType": "select",
+            "placeholder": "Rechtsgrundlage wählen",
+            "options": [
+              "Schwerbehindertengesetz",
+              "Arbeitszeitgesetz",
+              "Bundesurlaubsgesetz",
+              "Entgeltfortzahlungsgesetz",
+              "Elternzeitgesetz"
+            ]
+          }
+        ]
+      ],
+      "feedback": {
+        "correct": "Die Sachverhalte wurden den Gesetzen korrekt zugeordnet.",
+        "wrong": "Vergleichen Sie noch einmal Urlaub, Arbeitszeit, Entgeltfortzahlung, Elternzeit und Schwerbehindertenschutz."
+      },
+      "progressLinks": [
+        "pv3wiso_arbeitsschutz_umwelt_diversity"
+      ]
+    },
+    {
+      "id": "q19",
+      "type": "table_fill",
+      "title": "Umweltmassnahmen fachlich einordnen",
+      "prompt": "Ordnen Sie zu, welche Massnahmen dem Umweltschutz dienen.",
+      "columns": [
+        "Massnahme",
+        "Dient dem Umweltschutz?"
+      ],
+      "rows": [
+        [
+          "Es werden nur noch nachfüllbare Tintenpatronen verwendet.",
+          {
+            "key": "umwelt_a",
+            "label": "Nachfüllbare Tintenpatronen verwenden",
+            "expected": "Ja",
+            "inputType": "select",
+            "placeholder": "Auswahl treffen",
+            "options": [
+              "Ja",
+              "Nein"
+            ]
+          }
+        ],
+        [
+          "Bei Kopiervorgängen wird Recyclingpapier genutzt.",
+          {
+            "key": "umwelt_b",
+            "label": "Recyclingpapier für Kopien nutzen",
+            "expected": "Ja",
+            "inputType": "select",
+            "placeholder": "Auswahl treffen",
+            "options": [
+              "Ja",
+              "Nein"
+            ]
+          }
+        ],
+        [
+          "Beim Einkauf werden Kunststoff- und andere Verpackungen möglichst vermieden.",
+          {
+            "key": "umwelt_c",
+            "label": "Verpackungen möglichst vermeiden",
+            "expected": "Ja",
+            "inputType": "select",
+            "placeholder": "Auswahl treffen",
+            "options": [
+              "Ja",
+              "Nein"
+            ]
+          }
+        ],
+        [
+          "Bei Werbemassnahmen werden nur noch Hochglanzkataloge genutzt.",
+          {
+            "key": "umwelt_d",
+            "label": "Nur noch Hochglanzkataloge nutzen",
+            "expected": "Nein",
+            "inputType": "select",
+            "placeholder": "Auswahl treffen",
+            "options": [
+              "Ja",
+              "Nein"
+            ]
+          }
+        ],
+        [
+          "Häufige kleine Bestellungen und Kleinstsendungen werden möglichst vermieden.",
+          {
+            "key": "umwelt_e",
+            "label": "Kleine Bestellungen und Kleinstsendungen vermeiden",
+            "expected": "Ja",
+            "inputType": "select",
+            "placeholder": "Auswahl treffen",
+            "options": [
+              "Ja",
+              "Nein"
+            ]
+          }
+        ]
+      ],
+      "feedback": {
+        "correct": "Die Umweltmassnahmen wurden passend nach Ressourcenschonung und Umweltbelastung eingeordnet.",
+        "wrong": "Achten Sie darauf, welche Massnahme Material- und Ressourcenverbrauch eher erhöht und welche ihn senkt."
+      },
+      "progressLinks": [
+        "pv3wiso_arbeitsschutz_umwelt_diversity"
+      ]
+    },
+    {
+      "id": "q20",
+      "type": "single_choice",
+      "title": "Aussage zum Umweltzeichen Blauer Engel bestimmen",
+      "prompt": "Ein Elektronikgerät trägt das Umweltzeichen `Blauer Engel`. Welche Aussage dazu trifft zu?",
+      "options": [
+        {
+          "text": "Die Ware ist besonders haltbar.",
+          "rationale": "Das ist keine allgemeine Definition des Umweltzeichens."
+        },
+        {
+          "text": "Die Ware ist besonders sicher in der Handhabung.",
+          "rationale": "Sicherheit allein beschreibt den Blauen Engel nicht."
+        },
+        {
+          "text": "Die Ware wurde umweltschonend produziert oder gestaltet.",
+          "rationale": "Genau darauf weist der Blaue Engel hin."
+        },
+        {
+          "text": "Die Ware hat bereits mehrere Umweltpreise gewonnen.",
+          "rationale": "Das ist nicht die Aussage des Zeichens."
+        },
+        {
+          "text": "Die Ware muss nach der Nutzung ausschliesslich über das Duale System entsorgt werden.",
+          "rationale": "Auch das folgt aus dem Zeichen nicht."
+        }
+      ],
+      "correctIndex": 2,
+      "feedback": {
+        "correct": "Die Aussage zum Blauen Engel wurde korrekt erkannt.",
+        "wrong": "Prüfen Sie noch einmal, worauf dieses Umweltzeichen typischerweise hinweist."
+      },
+      "progressLinks": [
+        "pv3wiso_arbeitsschutz_umwelt_diversity"
+      ]
+    },
+    {
+      "id": "q21",
+      "type": "single_choice",
+      "title": "Richtiges Verhalten bei einer Brandverletzung wählen",
+      "prompt": "Bei einem Arbeitsunfall verbrennt sich eine Mitarbeiterin. Welche Verhaltensweise eines Ersthelfers ist in diesem Fall richtig?",
+      "options": [
+        {
+          "text": "Die betroffene Stelle wird als Erstmassnahme erwärmt.",
+          "rationale": "Das wäre gerade falsch."
+        },
+        {
+          "text": "Die Brandwunde wird mit einem speziellen, keimfreien Verband für Brandwunden abgedeckt.",
+          "rationale": "Das ist das richtige Vorgehen bei der Erstversorgung."
+        },
+        {
+          "text": "Brandwunden werden mit Öl, Salben oder ähnlichen Mitteln behandelt.",
+          "rationale": "Solche Mittel gehören nicht in die Erstversorgung."
+        },
+        {
+          "text": "Brandwunden werden ausgewaschen und Brandblasen geöffnet.",
+          "rationale": "Brandblasen sollen nicht geöffnet werden."
+        },
+        {
+          "text": "Der Unfall wird nur fotografiert und anschliessend der Geschäftsleitung gezeigt.",
+          "rationale": "Das ersetzt keine Erstversorgung."
+        }
+      ],
+      "correctIndex": 1,
+      "feedback": {
+        "correct": "Das richtige Verhalten bei einer Brandverletzung wurde korrekt erkannt.",
+        "wrong": "Achten Sie auf die schonende Abdeckung der Wunde und vermeiden Sie typische Fehlmassnahmen."
+      },
+      "progressLinks": [
+        "pv3wiso_arbeitsschutz_umwelt_diversity"
+      ]
+    },
+    {
+      "id": "f05",
+      "type": "followup_divider",
+      "title": "AGG, Europass und digitale Sicherheit",
+      "from": "security-and-compliance@ordnungsbetrieb.example",
+      "to": "projektteam@ausbildungsbetrieb.example",
+      "subject": "Bitte den Abschlussblock zu Gleichbehandlung, Sicherheit und Compliance vervollständigen",
+      "date": "2026-03-20",
+      "body": "Hallo,\n\nzum Abschluss wollen wir noch AGG, Urheberrechte an Programmen, den Europass sowie mehrere Sicherheitsfragen zu Phishing, Webseitennutzung, öffentlichem WLAN, Checksummen und Compliance aufnehmen. Bitte halten Sie die Begriffe hier besonders trennscharf.\n\nViele Grüsse\nSecurity and Compliance"
+    },
+    {
+      "id": "q22",
+      "type": "multi_select",
+      "title": "AGG-Verstösse in einer Stellenanzeige erkennen",
+      "prompt": "Welche zwei Positionen der folgenden Stellenanzeige verstossen gegen das AGG?",
+      "options": [
+        {
+          "text": "Position 1: Die Berufsbezeichnung wird nur in männlicher Form genannt.",
+          "correct": true,
+          "rationale": "Ohne neutrale oder inklusive Formulierung liegt hier ein AGG-Problem nahe."
+        },
+        {
+          "text": "Position 2: Gefordert werden `jung`, `belastbar` und ein `angenehmes aeusseres Erscheinungsbild`.",
+          "correct": true,
+          "rationale": "Die Formulierung benachteiligt insbesondere wegen des Alters und bewertet das äussere Erscheinungsbild unsachlich."
+        },
+        {
+          "text": "Position 3: Es wird ein sicherer Arbeitsplatz mit attraktivem Gehalt angeboten.",
+          "correct": false,
+          "rationale": "Das ist kein AGG-Verstoss."
+        },
+        {
+          "text": "Position 4: Das Unternehmen bietet Weiterbildungsmöglichkeiten an.",
+          "correct": false,
+          "rationale": "Auch das ist AGG-neutral."
+        },
+        {
+          "text": "Position 5: Das Unternehmen bietet Gestaltungsspielräume an.",
+          "correct": false,
+          "rationale": "Hier wird kein geschütztes Merkmal benachteiligt."
+        },
+        {
+          "text": "Position 6: Das Unternehmen wirbt mit diversen Aufstiegsmöglichkeiten in einem hochmotivierten Team.",
+          "correct": false,
+          "rationale": "Die Formulierung ist für sich genommen kein AGG-Verstoss."
+        }
+      ],
+      "feedback": {
+        "correct": "Die AGG-widrigen Positionen wurden korrekt ausgewählt.",
+        "wrong": "Prüfen Sie, welche Formulierungen geschützte Merkmale wie Geschlecht oder Alter berühren."
+      },
+      "progressLinks": [
+        "pv3wiso_arbeitsschutz_umwelt_diversity"
+      ]
+    },
+    {
+      "id": "q23",
+      "type": "single_choice",
+      "title": "Richtige Aussage zu Urheberrecht und Verwertungsrechten erkennen",
+      "prompt": "Sie haben in Festanstellung ein erfolgreiches Programm entwickelt. Welche Aussage ist richtig?",
+      "options": [
+        {
+          "text": "Sofern vertraglich nichts anderes geregelt ist, behalten Sie das Urheberrecht am Programm, während das Unternehmen die Verwertungsrechte ausübt.",
+          "rationale": "Das beschreibt die grundlegende Trennung zwischen Urheberschaft und wirtschaftlicher Nutzung im Arbeitsverhältnis."
+        },
+        {
+          "text": "Sie dürfen als Urheber jede weitere Nutzung Ihres Programms durch das Unternehmen jederzeit verbieten.",
+          "rationale": "So weit reicht Ihre Stellung im Arbeitsverhältnis nicht."
+        },
+        {
+          "text": "Sie haben automatisch Anspruch auf Beteiligung am Erlös aus allen Verkäufen des Programms.",
+          "rationale": "Ein solcher Automatismus besteht nicht."
+        },
+        {
+          "text": "Sie haften persönlich für alle Schäden bei den Anwendern, wenn das Programm Fehler enthält.",
+          "rationale": "Das ist in dieser Pauschalität falsch."
+        },
+        {
+          "text": "Sie können dem Unternehmen die Herausgabe des Quelltextes generell verweigern.",
+          "rationale": "Auch das ist nicht die zutreffende Rechtsfolge."
+        }
+      ],
+      "correctIndex": 0,
+      "feedback": {
+        "correct": "Die richtige Aussage zu Urheberrecht und Verwertungsrechten wurde korrekt erkannt.",
+        "wrong": "Trennen Sie persönliche Urheberschaft von den Nutzungs- und Verwertungsrechten des Arbeitgebers."
+      },
+      "progressLinks": [
+        "pv3wiso_arbeitsrecht_ausbildung"
+      ]
+    },
+    {
+      "id": "q24",
+      "type": "single_choice",
+      "title": "Zweck des Europass bestimmen",
+      "prompt": "Wozu wurde der Europass geschaffen?",
+      "options": [
+        {
+          "text": "Er ersetzt für Auszubildende die Reisepässe der EU-Mitgliedstaaten.",
+          "rationale": "Dafür ist der Europass nicht gedacht."
+        },
+        {
+          "text": "Er ist ein vereinheitlichtes Dokument, das Qualifikationen und Kompetenzen europaweit verständlich und transparent darstellt.",
+          "rationale": "Genau das ist der Kernzweck des Europass."
+        },
+        {
+          "text": "Mit ihm kann man innerhalb der EU kostenlos Bahn fahren und verreisen.",
+          "rationale": "Das gehört nicht zum Europass."
+        },
+        {
+          "text": "Mit ihm kann man innerhalb der EU formlos Unternehmen gründen und Mitarbeitende einstellen.",
+          "rationale": "Auch das ist nicht seine Funktion."
+        },
+        {
+          "text": "Er garantiert kostenlose medizinische Versorgung innerhalb der EU.",
+          "rationale": "Das betrifft andere europäische Nachweise."
+        }
+      ],
+      "correctIndex": 1,
+      "feedback": {
+        "correct": "Der Zweck des Europass wurde korrekt erkannt.",
+        "wrong": "Denken Sie an die europaweite Vergleichbarkeit und Transparenz von Qualifikationen."
+      },
+      "progressLinks": [
+        "pv3wiso_arbeitsrecht_ausbildung"
+      ]
+    },
+    {
+      "id": "q25",
+      "type": "table_fill",
+      "title": "Merkmale von Phishing-Mails einordnen",
+      "prompt": "Ordnen Sie zu, welche Aussagen typische Merkmale von Phishing-Mails beschreiben.",
+      "columns": [
+        "Aussage",
+        "Typisch für Phishing?"
+      ],
+      "rows": [
+        [
+          "Sie zielen darauf ab, Zugangsdaten zu erbeuten und enthalten häufig einen Link zur Eingabe dieser Daten.",
+          {
+            "key": "phishing_a",
+            "label": "Zielt auf Zugangsdaten und Eingabelink",
+            "expected": "Ja",
+            "inputType": "select",
+            "placeholder": "Auswahl treffen",
+            "options": [
+              "Ja",
+              "Nein"
+            ]
+          }
+        ],
+        [
+          "Absendername und angezeigte Adresse können voneinander abweichen.",
+          {
+            "key": "phishing_b",
+            "label": "Absendername und Adresse können abweichen",
+            "expected": "Ja",
+            "inputType": "select",
+            "placeholder": "Auswahl treffen",
+            "options": [
+              "Ja",
+              "Nein"
+            ]
+          }
+        ],
+        [
+          "Sie werden immer mit persönlicher Anrede und echter Signatur versendet.",
+          {
+            "key": "phishing_c",
+            "label": "Immer persönliche Anrede und echte Signatur",
+            "expected": "Nein",
+            "inputType": "select",
+            "placeholder": "Auswahl treffen",
+            "options": [
+              "Ja",
+              "Nein"
+            ]
+          }
+        ],
+        [
+          "Sie enthalten niemals einen Anhang.",
+          {
+            "key": "phishing_d",
+            "label": "Niemals Anhang",
+            "expected": "Nein",
+            "inputType": "select",
+            "placeholder": "Auswahl treffen",
+            "options": [
+              "Ja",
+              "Nein"
+            ]
+          }
+        ],
+        [
+          "Die Aussage über ein sicheres HTTPS-Protokoll ist für die Bewertung einer E-Mail selbst kein verlässliches Sicherheitsmerkmal.",
+          {
+            "key": "phishing_e",
+            "label": "HTTPS Aussage ist für E Mail selbst kein verlässliches Merkmal",
+            "expected": "Ja",
+            "inputType": "select",
+            "placeholder": "Auswahl treffen",
+            "options": [
+              "Ja",
+              "Nein"
+            ]
+          }
+        ]
+      ],
+      "feedback": {
+        "correct": "Die typischen Merkmale von Phishing-Mails wurden über mehrere Aussagen hinweg sauber eingeordnet.",
+        "wrong": "Achten Sie darauf, worauf Phishing-Mails abzielen und welche vermeintlichen Sicherheitsmerkmale in Wirklichkeit keine Entwarnung geben."
+      },
+      "progressLinks": [
+        "pv3wiso_arbeitsschutz_umwelt_diversity"
+      ]
+    },
+    {
+      "id": "q26",
+      "type": "single_choice",
+      "title": "Richtigen Umgang mit einer Phishing-Mail wählen",
+      "prompt": "Sie erhalten eine Mail, in der Sie nach einem Link zur Eingabe von Zugangsdaten aufgefordert werden. Welche Reaktion ist zutreffend?",
+      "options": [
+        {
+          "text": "Sie öffnen den Link und geben die geforderten Daten ein.",
+          "rationale": "Genau das darf bei Verdacht auf Phishing nicht geschehen."
+        },
+        {
+          "text": "Sie speichern die Mail auf dem Desktop, um das Problem später zu prüfen.",
+          "rationale": "Das ist nicht die richtige Sicherheitsreaktion."
+        },
+        {
+          "text": "Sie antworten direkt an die in der Mail genannte Kontaktadresse.",
+          "rationale": "Auch damit können Sie den Angriff weiter verstärken."
+        },
+        {
+          "text": "Sie löschen die Mail und informieren die IT-Abteilung oder die zuständige Sicherheitsstelle.",
+          "rationale": "Das ist die richtige Reaktion auf eine offensichtlich verdächtige Mail."
+        },
+        {
+          "text": "Sie drucken die Mail aus und archivieren sie für später.",
+          "rationale": "Das löst das Sicherheitsproblem nicht."
+        }
+      ],
+      "correctIndex": 3,
+      "feedback": {
+        "correct": "Der richtige Umgang mit der Phishing-Mail wurde korrekt gewählt.",
+        "wrong": "Bei verdächtigen Mails gilt: nicht klicken, nicht antworten, sondern melden."
+      },
+      "progressLinks": [
+        "pv3wiso_arbeitsschutz_umwelt_diversity"
+      ]
+    },
+    {
+      "id": "q27",
+      "type": "single_choice",
+      "title": "Sicherheitsbewertung beim Surfen auf bekannten Webseiten",
+      "prompt": "Welche Einschätzung zur Sicherheit beim Besuch einer bekannten und vertrauten Webseite ist zutreffend?",
+      "options": [
+        {
+          "text": "Wer eine Seite oft besucht, muss sich dort keine Sorgen mehr machen.",
+          "rationale": "Auch bekannte Seiten können kompromittiert werden."
+        },
+        {
+          "text": "Wenn eine Seite bekannt und seriös wirkt, kann beim Surfen nichts passieren.",
+          "rationale": "Seriöser Eindruck ersetzt keine Sicherheitsmassnahmen."
+        },
+        {
+          "text": "Auch bei bekannten und vertrauenswuerdigen Webseiten müssen Standardsicherheitsmassnahmen beachtet werden.",
+          "rationale": "Genau diese Vorsicht ist richtig."
+        },
+        {
+          "text": "Gefährlich sind nur Webseiten mit Animationen oder anderen aktiven Inhalten.",
+          "rationale": "Risiken beschränken sich nicht auf solche Inhalte."
+        },
+        {
+          "text": "Neue Webseiten, die Werbung nachladen, sind immer unsicher.",
+          "rationale": "Auch das ist zu pauschal."
+        }
+      ],
+      "correctIndex": 2,
+      "feedback": {
+        "correct": "Die zutreffende Sicherheitsbewertung wurde korrekt erkannt.",
+        "wrong": "Bekanntheit einer Webseite ersetzt keine grundlegenden Sicherheitsmassnahmen."
+      },
+      "progressLinks": [
+        "pv3wiso_arbeitsschutz_umwelt_diversity"
+      ]
+    },
+    {
+      "id": "q28",
+      "type": "single_choice",
+      "title": "Geschäftliche Nutzung eines offenen WLAN richtig einordnen",
+      "prompt": "Welche Aussage zur Nutzung eines öffentlichen, unverschlüsselten WLAN-Zugangs ist richtig?",
+      "options": [
+        {
+          "text": "Ein E-Mail-Programm kann dort in jedem Fall sicher genutzt werden, weil alle E-Mail-Programme automatisch verschlüsseln.",
+          "rationale": "So pauschal stimmt das nicht."
+        },
+        {
+          "text": "Im öffentlichen WLAN kann kein Computer die Daten mitlesen.",
+          "rationale": "Gerade das Risiko des Mitlesens ist bei offenem WLAN hoch."
+        },
+        {
+          "text": "Wenn ein WLAN in einem Cafe bereitgestellt wird, kann man davon ausgehen, dass der Betreiber die Sicherheit des Netzes ausreichend gewähleistet.",
+          "rationale": "Eine solche Annahme ist gefährlich."
+        },
+        {
+          "text": "Mithilfe einer VPN-Lösung können geschäftliche Anwendungen in einem offenen WLAN deutlich sicherer genutzt werden.",
+          "rationale": "Genau diese Absicherung ist die richtige Aussage."
+        },
+        {
+          "text": "Ein offenes WLAN ist sicher, sobald beim Einloggen eine E-Mail-Adresse angegeben werden muss.",
+          "rationale": "Eine E-Mail-Abfrage ersetzt keine technische Absicherung."
+        }
+      ],
+      "correctIndex": 3,
+      "feedback": {
+        "correct": "Die richtige Aussage zur Nutzung offener WLANs wurde korrekt erkannt.",
+        "wrong": "Achten Sie auf die Bedeutung einer VPN-Absicherung in unsicheren Netzen."
+      },
+      "progressLinks": [
+        "pv3wiso_arbeitsschutz_umwelt_diversity"
+      ]
+    },
+    {
+      "id": "q29",
+      "type": "single_choice",
+      "title": "Zweck von Checksummen bestimmen",
+      "prompt": "Bei einer Datenübertragung wird eine berechnete Kontrollsumme mitgesendet und später mit einer neu berechneten Summe verglichen. Welchem Schutzziel dient dieses Verfahren?",
+      "options": [
+        {
+          "text": "Verfügbarkeit",
+          "rationale": "Checksummen sichern nicht primär die Verfügbarkeit."
+        },
+        {
+          "text": "Integrität",
+          "rationale": "Checksummen helfen zu erkennen, ob Daten unbemerkt verändert wurden."
+        },
+        {
+          "text": "Vertraulichkeit",
+          "rationale": "Vertraulichkeit erfordert andere Massnahmen als eine Kontrollsumme."
+        },
+        {
+          "text": "Lesbarkeit",
+          "rationale": "Lesbarkeit ist hier nicht das gesuchte Schutzziel."
+        },
+        {
+          "text": "Verständlichkeit",
+          "rationale": "Auch das beschreibt kein Sicherheitsziel dieser Art."
+        }
+      ],
+      "correctIndex": 1,
+      "feedback": {
+        "correct": "Das Schutzziel wurde korrekt erkannt.",
+        "wrong": "Fragen Sie sich, welches Ziel prüft, ob übertragene Daten unverändert angekommen sind."
+      },
+      "progressLinks": [
+        "pv3wiso_arbeitsschutz_umwelt_diversity"
+      ]
+    },
+    {
+      "id": "q30",
+      "type": "single_choice",
+      "title": "Verstösse gegen Regeln dem richtigen Feld zuordnen",
+      "prompt": "Wenn Geschäftspartner oder Unternehmen gegen allgemeine oder selbst gesetzte Regeln verstossen, welchem Feld werden solche Verstösse zugeordnet?",
+      "options": [
+        {
+          "text": "Datenschutz",
+          "rationale": "Datenschutz ist nur ein Teilaspekt, aber nicht der Oberbegriff der hier gesuchten Regelkonformität."
+        },
+        {
+          "text": "Compliance",
+          "rationale": "Genau darum geht es bei der Einhaltung gesetzlicher und interner Regeln."
+        },
+        {
+          "text": "Incidence",
+          "rationale": "Das ist hier nicht der passende Fachbegriff."
+        },
+        {
+          "text": "Consilience",
+          "rationale": "Auch das ist nicht die gesuchte Kategorie."
+        },
+        {
+          "text": "Disruption",
+          "rationale": "Disruption beschreibt etwas anderes."
+        }
+      ],
+      "correctIndex": 1,
+      "feedback": {
+        "correct": "Das richtige Feld wurde korrekt zugeordnet.",
+        "wrong": "Gesucht ist der Oberbegriff für regelkonformes Verhalten und die Vermeidung von Regelverstössen."
+      },
+      "progressLinks": [
+        "pv3wiso_arbeitsschutz_umwelt_diversity"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,159 @@
+{
+  "scenario": {
+    "company": "Training Company IT Service",
+    "scale": "Mid-sized company, 90 employees",
+    "context": "Station 04 of the day flow: Classify the training company structurally and legally.",
+    "mission": "You describe structure, goals and legal form of the company based on concrete work situations.",
+    "station": {
+      "id": "LF01-ST-04",
+      "department": "Organization",
+      "profile": "Company structure, roles, corporate goals, legal forms",
+      "constraints": [
+        "distinguish terms cleanly",
+        "establish operational context in answers",
+        "justify decisions in a traceable way"
+      ]
+    },
+    "customerRequest": {
+      "from": "orga@ausbildungsbetrieb.example",
+      "to": "klasse.fiae@berufsschule.example",
+      "subject": "Station 04: Company structure and corporate goals",
+      "date": "2026-03-13",
+      "body": "Please classify the organizational structure, corporate goals and legal form in a practical way and justify their impact on training daily work."
+    }
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "type": "single_choice",
+      "title": "Recognize organizational structure",
+      "prompt": "Which statement best describes a clear organizational structure?",
+      "options": [
+        {
+          "text": "Roles and responsibilities are clearly defined per area",
+          "rationale": "That is the core objective of organizational structure."
+        },
+        {
+          "text": "Every task is assigned randomly",
+          "rationale": "Leads to ambiguity and friction."
+        },
+        {
+          "text": "Responsibilities change daily without alignment",
+          "rationale": "Not reliable for operations and training."
+        }
+      ],
+      "correctIndex": 0,
+      "feedback": {
+        "correct": "Correct: clear responsibilities make an organization effective.",
+        "wrong": "Not appropriate: organizational structure needs clear roles."
+      },
+      "progressLinks": [
+        "lf01_betrieb_ziele_aufbau"
+      ]
+    },
+    {
+      "id": "q2",
+      "type": "multi_select",
+      "title": "Corporate goals in practice",
+      "prompt": "Which points can be legitimate corporate goals? (Multiple selection)",
+      "options": [
+        {
+          "text": "Ensure stable service quality",
+          "correct": true,
+          "rationale": "Quality is a central goal for many organizations."
+        },
+        {
+          "text": "Operate in a financially sustainable way",
+          "correct": true,
+          "rationale": "Operational success requires economic viability."
+        },
+        {
+          "text": "Systematically ignore customer requests",
+          "correct": false,
+          "rationale": "Contradicts customer orientation."
+        },
+        {
+          "text": "Develop employees professionally",
+          "correct": true,
+          "rationale": "Development supports future viability."
+        },
+        {
+          "text": "Keep processes intentionally opaque",
+          "correct": false,
+          "rationale": "Opacity increases errors and conflicts."
+        }
+      ],
+      "feedback": {
+        "correct": "Correct: the selection combines quality, business and development.",
+        "wrong": "Partially wrong: please evaluate corporate goal systems more consistently."
+      },
+      "progressLinks": [
+        "lf01_betrieb_ziele_aufbau"
+      ]
+    },
+    {
+      "id": "q3",
+      "type": "ordering",
+      "title": "Explain the company profile",
+      "prompt": "Order the sequence for a short company description.",
+      "items": [
+        "Name core service and target group",
+        "Classify legal and organizational form",
+        "Describe department collaboration",
+        "Explain goals and success factors",
+        "Make the link to your own role"
+      ],
+      "correctOrder": [
+        "Name core service and target group",
+        "Classify legal and organizational form",
+        "Describe department collaboration",
+        "Explain goals and success factors",
+        "Make the link to your own role"
+      ],
+      "feedback": {
+        "correct": "Correct: the description is structured and practical.",
+        "wrong": "Not optimal: please lead from profile through structure to role."
+      },
+      "progressLinks": [
+        "lf01_betrieb_ziele_aufbau"
+      ]
+    },
+    {
+      "id": "q4",
+      "type": "number",
+      "title": "Estimate department capacity",
+      "prompt": "A team has 6 people. Each person can handle 7 support cases per day. How many cases are plausible as daily capacity?",
+      "expected": 42,
+      "toleranceAbs": 1,
+      "showExpectedFormula": "6 * 7 = 42 cases",
+      "feedback": {
+        "correct": "Correct calculation.",
+        "wrong": "Please multiply team size and output per person."
+      },
+      "progressLinks": [
+        "lf01_betrieb_ziele_aufbau"
+      ]
+    },
+    {
+      "id": "q5",
+      "type": "short_text",
+      "title": "Explain company structure briefly",
+      "prompt": "Describe in 4-6 sentences how structure and goals of the company affect an apprentice's daily work.",
+      "minChars": 150,
+      "requiredKeywords": [
+        "structure",
+        "goal",
+        "daily work"
+      ],
+      "expectedOutline": "Connection between structure, goals and concrete training daily work.",
+      "feedback": {
+        "correct": "Correct: the company context is clear and traceable.",
+        "wrong": "Please link structure, goals and daily work more concretely."
+      },
+      "progressLinks": [
+        "lf01_betrieb_ziele_aufbau",
+        "lf01_reflexion_verbesserung"
+      ]
+    }
+  ]
+}

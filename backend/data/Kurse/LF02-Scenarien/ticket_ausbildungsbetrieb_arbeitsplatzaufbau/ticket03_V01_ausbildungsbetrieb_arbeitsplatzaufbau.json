@@ -1,0 +1,158 @@
+{
+  "scenario": {
+    "company": "Ausbildungsbetrieb IT-Service",
+    "scale": "Regional, 120 Mitarbeitende",
+    "context": "Station 3 des Tageslaufs: Arbeitsplatz aufbauen und anschliessen.",
+    "mission": "Sie bauen eine Standard-Station betriebsbereit auf und prüfen die Grundfunktion.",
+    "station": {
+      "id": "NS-ST-03",
+      "department": "Vertrieb",
+      "profile": "Desktop, 2 Monitore, Tastatur, Maus, LAN, Headset",
+      "constraints": [
+        "Saubere Verkabelung",
+        "Funktionsfähiger Start",
+        "Kurze Dokumentation der Umsetzung"
+      ]
+    },
+    "customerRequest": {
+      "from": "it.leitung@ausbildungsbetrieb.example",
+      "to": "rollout.team@systemhaus.example",
+      "subject": "Arbeitsplatzaufbau für Station NS-ST-03",
+      "date": "2026-03-13",
+      "body": "Bitte bauen Sie die Station NS-ST-03 vollständig auf und prüfen Sie die Grundfunktion.\n\nWichtig sind korrekte Verkabelung, funktionierende Peripherie und ein kurzes Aufbauprotokoll."
+    }
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "type": "multi_select",
+      "title": "Pflichtpunkte beim Aufbau",
+      "prompt": "Welche Punkte gehören zur Grundausstattung eines Büroarbeitsplatzes? (Mehrfachauswahl)",
+      "options": [
+        {
+          "text": "Monitor(e) korrekt verbinden",
+          "correct": true,
+          "rationale": "Grundvoraussetzung für den Arbeitsplatz."
+        },
+        {
+          "text": "Tastatur und Maus anschliessen und testen",
+          "correct": true,
+          "rationale": "Direkt benötigte Eingabegeräte."
+        },
+        {
+          "text": "LAN oder freigegebenes Netzwerk anbinden",
+          "correct": true,
+          "rationale": "Netzwerk wird für den Betrieb benötigt."
+        },
+        {
+          "text": "Beliebige private Spiele installieren",
+          "correct": false,
+          "rationale": "Nicht Teil des technischen Grundaufbaus."
+        },
+        {
+          "text": "Kabel nur lose hinter den Tisch legen",
+          "correct": false,
+          "rationale": "Unsauber und störungsanfällig."
+        }
+      ],
+      "feedback": {
+        "correct": "Richtig: Sie fokussieren auf den technisch nötigen Aufbau.",
+        "wrong": "Teilweise falsch: Bitte Pflichtumfang des Arbeitsplatzes sauber trennen."
+      },
+      "progressLinks": [
+        "lf02_geraete_aufbauen_anschliessen"
+      ]
+    },
+    {
+      "id": "q2",
+      "type": "ordering",
+      "title": "Ablauf beim Arbeitsplatzaufbau",
+      "prompt": "Ordnen Sie die Schritte in eine sinnvolle Reihenfolge.",
+      "items": [
+        "Kurzen Funktionstest durchführen",
+        "Arbeitsplatzplan und Material prüfen",
+        "Geräte positionieren und anschliessen",
+        "Kabel sauber führen und beschriften",
+        "Aufbau kurz dokumentieren"
+      ],
+      "correctOrder": [
+        "Arbeitsplatzplan und Material prüfen",
+        "Geräte positionieren und anschliessen",
+        "Kabel sauber führen und beschriften",
+        "Kurzen Funktionstest durchführen",
+        "Aufbau kurz dokumentieren"
+      ],
+      "feedback": {
+        "correct": "Richtig: Der Aufbau ist strukturiert und nachvollziehbar.",
+        "wrong": "Nicht optimal: Erst Planung/Anschluss, dann Test und Dokumentation."
+      },
+      "progressLinks": [
+        "lf02_arbeitsplatzbereitstellung"
+      ]
+    },
+    {
+      "id": "q3",
+      "type": "single_choice",
+      "title": "Erste Massnahme bei Kabelchaos",
+      "prompt": "Beim Test fällt auf, dass Kabel nicht zuordenbar sind. Was ist der beste erste Schritt?",
+      "options": [
+        {
+          "text": "Alles ignorieren, solange der PC läuft",
+          "rationale": "Führt später zu Supportproblemen."
+        },
+        {
+          "text": "Kabel sauber führen, zuordnen und kurz kennzeichnen",
+          "rationale": "Verbessert Wartbarkeit und Fehlersuche sofort."
+        },
+        {
+          "text": "Nur den Monitor tauschen",
+          "rationale": "Löst das eigentliche Problem nicht."
+        }
+      ],
+      "correctIndex": 1,
+      "feedback": {
+        "correct": "Richtig: Strukturierte Verkabelung ist Teil der Qualität.",
+        "wrong": "Unpassend: Das Problem liegt in der fehlenden Zuordnung."
+      },
+      "progressLinks": [
+        "lf02_geraete_aufbauen_anschliessen"
+      ]
+    },
+    {
+      "id": "q4",
+      "type": "number",
+      "title": "Zeitplanung Aufbau",
+      "prompt": "Ein Aufbau dauert 35 Minuten pro Arbeitsplatz. Für 4 Arbeitsplätze kommen 20 Minuten Endcheck hinzu. Wie viele Minuten sind insgesamt einzuplanen?",
+      "expected": 160,
+      "toleranceAbs": 1,
+      "showExpectedFormula": "4*35 + 20 = 160 Minuten",
+      "feedback": {
+        "correct": "Richtig gerechnet.",
+        "wrong": "Bitte Aufbauzeit pro Platz und Endcheck zusammenrechnen."
+      },
+      "progressLinks": [
+        "lf02_rechnen_abschaetzen"
+      ]
+    },
+    {
+      "id": "q5",
+      "type": "short_text",
+      "title": "Aufbauprotokoll",
+      "prompt": "Formulieren Sie ein kurzes Protokoll (4-5 Sätze) mit Aufbau-Status, Test und offenem Punkt.",
+      "minChars": 120,
+      "requiredKeywords": [
+        "status",
+        "test",
+        "offen"
+      ],
+      "expectedOutline": "Kurzbericht mit Stand, Testergebnis und ggf. Restpunkt für Nacharbeit.",
+      "feedback": {
+        "correct": "Richtig: Das Protokoll ist praktisch nutzbar.",
+        "wrong": "Bitte Status, Testbezug und offenen Punkt klarer benennen."
+      },
+      "progressLinks": [
+        "lf02_dokumentation"
+      ]
+    }
+  ]
+}

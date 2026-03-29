@@ -1,0 +1,1281 @@
+{
+  "scenario": {
+    "company": "UrbanFlow Solutions GmbH",
+    "scale": "Software- und IT-Dienstleister für OePNV-Plattformen, Fahrgastsysteme und Verkehrsdaten, 154 Mitarbeitende",
+    "context": "Prüfungsvorbereitung 2 FIAE im Stationsformat mit Fahrzeitauswertung, API-Logik, relationaler Datenmodellierung und SQL für Haltestellendaten.",
+    "mission": "Sie werten Fahrzeiten einer Stadtbahn aus, implementieren einen API-Endpunkt für Abfahrten, modellieren Kontrolldaten in 3NF und formulieren SQL-Abfragen für Haltestellen- und Verspätungsdaten.",
+    "source": {
+      "kind": "Pseudonymisierte Prüfungsvorlage",
+      "reference": "AP2 FIAE Teil 2, Winter 2024/25",
+      "note": "Die fachliche Aufgabenreihenfolge bleibt erhalten; Orte, Organisationsbezug und sichtbare Namen wurden für das Kursformat überführt."
+    },
+    "station": {
+      "id": "PV2FIAE-ST-07",
+      "department": "Prüfungsvorbereitung Anwendungsentwicklung",
+      "profile": "Algorithmik, API-Endpunkte, Datenmodellierung und SQL",
+      "constraints": [
+        "Die vier Hauptaufgaben bleiben als fachlich zusammenhängende Folgeaufträge sichtbar",
+        "Offene Prüfungsfragen werden möglichst auto-auswertbar, aber fachlich gleichwertig umgesetzt",
+        "Visuals entstehen nur dort, wo die Quelle selbst Klassen, Tabellen oder Ergebnisstrukturen vorgibt"
+      ]
+    },
+    "customerRequest": {
+      "from": "portfolio.oepnv@urbanflow-solutions.example",
+      "to": "projektteam@ausbildungsbetrieb.example",
+      "subject": "Fahrzeitdaten, API-Endpunkt, Kontrolldatenmodell und SQL für die neue Stadtbahnlinie vorbereiten",
+      "date": "2026-03-20",
+      "body": "Guten Tag,\n\nfür ein neues Stadtbahnprojekt müssen mehrere technische Bausteine parallel vorbereitet werden. Zuerst sollen wir Fahrzeitmessungen auswerten, um Verspätungsschwerpunkte auf einzelnen Streckenabschnitten zu erkennen. Danach braucht die Fahrgast-App einen belastbaren API-Endpunkt für die nächsten Abfahrten. Im dritten Block geht es um das relationale Datenmodell für Kontrolleinsätze im Fahrbetrieb und um die Frage, wie ein bereits manuell erfasster Altbestand sinnvoll behandelt werden kann. Abschliessend benötigt das Datenbankteam mehrere SQL-Abfragen für Haltestellen, Planzeiten und Verspätungen.\n\nBitte bearbeiten Sie die Teilaufträge in der vorgegebenen Reihenfolge. Im Fokus stehen saubere Array- und Vergleichslogik, korrekte HTTP-Antworten, 3NF in der Datenmodellierung sowie gut lesbare SQL-Abfragen.\n\nViele Grüsse\nPortfolio OePNV"
+    }
+  },
+  "questions": [
+    {
+      "id": "ctx01",
+      "type": "context_card",
+      "title": "Kontext zur Auswertung von Fahrzeitmessungen",
+      "contentBlocks": [
+        {
+          "type": "text",
+          "text": "Für eine neue Stadtbahnlinie wurden an mehreren Tagen die Zeiten aller Halte einer kompletten Fahrt gemessen. Ein Eintrag vom Typ `Abfahrtszeit` speichert Datum, Haltestellennummer, planmässige Zeit und tatsächliche Zeit jeweils in Minuten seit Mitternacht. Auch für den letzten Eintrag der Fahrt wird dieselbe Struktur genutzt; dort repräsentieren die beiden Zeitwerte die Ankunft an der Endstation.\n\nDie Fahrzeit eines Streckenabschnitts ist die Differenz zweier aufeinanderfolgender Einträge desselben Tages. Eine Verspätung auf einem Abschnitt liegt vor, wenn die tatsächliche Fahrzeit mehr als zwei Minuten länger ist als die planmässige Fahrzeit. Gesucht ist eine Funktion, die für alle 15 Streckenabschnitte zählt, wie oft diese Verspätung aufgetreten ist."
+        },
+        {
+          "type": "table_group",
+          "eyebrow": "Arbeitsgrundlage",
+          "title": "Klasse und Trainingsausschnitt für die Fahrzeitanalyse",
+          "caption": "Der sichtbare Ausschnitt ist pseudonymisiert, die Fachlogik der Quelle bleibt erhalten.",
+          "tableRows": [
+            [
+              {
+                "title": "Klasse `Abfahrtszeit`",
+                "columns": [
+                  "Attribut",
+                  "Bedeutung"
+                ],
+                "rows": [
+                  [
+                    "datum : Date",
+                    "Messtag der Fahrt"
+                  ],
+                  [
+                    "haltestellenNr : Integer",
+                    "Position der Haltestelle innerhalb der Fahrt"
+                  ],
+                  [
+                    "planAbfahrt : Integer",
+                    "planmässige Uhrzeit in Minuten seit Mitternacht"
+                  ],
+                  [
+                    "istAbfahrt : Integer",
+                    "tatsächliche Uhrzeit in Minuten seit Mitternacht"
+                  ]
+                ]
+              }
+            ],
+            [
+              {
+                "title": "Ausschnitt aus `zeiten`",
+                "columns": [
+                  "Datum",
+                  "HaltestellenNr",
+                  "planAbfahrt",
+                  "istAbfahrt"
+                ],
+                "rows": [
+                  [
+                    "01.09.2024",
+                    "0",
+                    "480",
+                    "480"
+                  ],
+                  [
+                    "01.09.2024",
+                    "1",
+                    "483",
+                    "483"
+                  ],
+                  [
+                    "01.09.2024",
+                    "2",
+                    "485",
+                    "486"
+                  ],
+                  [
+                    "01.09.2024",
+                    "15",
+                    "579",
+                    "583"
+                  ],
+                  [
+                    "02.09.2024",
+                    "0",
+                    "480",
+                    "480"
+                  ],
+                  [
+                    "02.09.2024",
+                    "1",
+                    "483",
+                    "484"
+                  ],
+                  [
+                    "02.09.2024",
+                    "15",
+                    "579",
+                    "582"
+                  ]
+                ]
+              }
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "id": "q01",
+      "type": "single_choice",
+      "title": "Passende Vergleichspaare im Array erkennen",
+      "prompt": "Welche beiden Arrayeinträge dürfen für die Fahrzeit eines Streckenabschnitts miteinander verglichen werden?",
+      "options": [
+        {
+          "text": "Zwei aufeinanderfolgende Einträge derselben Fahrt am selben Datum, die benachbarte Haltestellen repräsentieren.",
+          "rationale": "Nur so entsteht die Fahrzeit eines konkreten Streckenabschnitts."
+        },
+        {
+          "text": "Beliebige zwei Einträge mit derselben Haltestellennummer, auch wenn sie von verschiedenen Tagen stammen.",
+          "rationale": "Damit würden keine Abschnittsfahrzeiten, sondern Tagesvergleiche derselben Haltestelle berechnet."
+        },
+        {
+          "text": "Immer der erste und der letzte Eintrag eines Tages, weil damit die gesamte Fahrt am genauesten beschrieben ist.",
+          "rationale": "Gesucht sind Zählungen pro Streckenabschnitt und nicht nur für die Gesamtfahrt."
+        },
+        {
+          "text": "Nur Einträge mit derselben planmässigen Abfahrtszeit, unabhängig von Datum und Haltestelle.",
+          "rationale": "Die planmässige Abfahrtszeit allein beschreibt keinen zusammenhängenden Abschnitt."
+        }
+      ],
+      "correctIndex": 0,
+      "feedback": {
+        "correct": "Das richtige Vergleichspaar für einen Streckenabschnitt ist korrekt erkannt.",
+        "wrong": "Denken Sie daran, dass eine Fahrzeit immer aus zwei benachbarten Haltestellen derselben Fahrt entsteht."
+      },
+      "progressLinks": [
+        "pv2fiae_fahrzeit_abschnittslogik"
+      ]
+    },
+    {
+      "id": "q02",
+      "type": "single_choice",
+      "title": "Verspätungsbedingung korrekt formulieren",
+      "prompt": "Welche Bedingung prüft fachlich korrekt, ob auf einem Streckenabschnitt eine Verspätung im Sinne der Aufgabenstellung vorliegt?",
+      "options": [
+        {
+          "label": "Variante A",
+          "language": "java",
+          "code": "(istAktuell - istVorher) - (planAktuell - planVorher) > 2",
+          "rationale": "Hier wird die tatsächliche Fahrzeit mit der planmässigen Fahrzeit verglichen, und nur Mehrzeiten über zwei Minuten gelten als Verspätung."
+        },
+        {
+          "label": "Variante B",
+          "language": "java",
+          "code": "(planAktuell - planVorher) - (istAktuell - istVorher) > 2",
+          "rationale": "Diese Variante misst den Unterschied in die falsche Richtung."
+        },
+        {
+          "label": "Variante C",
+          "language": "java",
+          "code": "(istAktuell - planAktuell) > 2",
+          "rationale": "Hier wird nur eine einzelne Haltestelle betrachtet, nicht die Fahrzeit eines Abschnitts."
+        },
+        {
+          "label": "Variante D",
+          "language": "java",
+          "code": "(istAktuell - istVorher) >= (planAktuell - planVorher)",
+          "rationale": "Damit wären bereits gleiche oder minimal längere Fahrzeiten als Verspätung markiert."
+        }
+      ],
+      "correctIndex": 0,
+      "feedback": {
+        "correct": "Die Bedingung für eine Verspätung auf einem Streckenabschnitt ist korrekt formuliert.",
+        "wrong": "Verglichen werden müssen die beiden Abschnittsfahrzeiten, nicht nur einzelne Zeitwerte."
+      },
+      "progressLinks": [
+        "pv2fiae_fahrzeit_abschnittslogik"
+      ]
+    },
+    {
+      "id": "q03",
+      "type": "single_choice",
+      "title": "Pseudocode für die Abschnittsauswertung wählen",
+      "prompt": "Welche Java-nahe Variante bildet die Funktion `ermittleFahrzeiten(Abfahrtszeit[] zeiten)` fachlich korrekt ab?",
+      "options": [
+        {
+          "label": "Variante A",
+          "language": "java",
+          "code": "int[] ermittleFahrzeiten(Abfahrtszeit[] zeiten) {\n    int[] verspätungen = new int[15];\n    for (int i = 1; i < zeiten.length; i++) {\n        if (zeiten[i].getDatum().equals(zeiten[i - 1].getDatum())) {\n            int plan = zeiten[i].getPlanAbfahrt() - zeiten[i - 1].getPlanAbfahrt();\n            int ist = zeiten[i].getIstAbfahrt() - zeiten[i - 1].getIstAbfahrt();\n            if (ist - plan > 2) {\n                verspätungen[zeiten[i].getHaltestellenNr() - 1]++;\n            }\n        }\n    }\n    return verspätungen;\n}",
+          "rationale": "Die Variante arbeitet zeilenweise durch das sortierte Array, vergleicht nur passende Tagespaare und erhöht den Zähler des betreffenden Streckenabschnitts."
+        },
+        {
+          "label": "Variante B",
+          "language": "java",
+          "code": "int[] ermittleFahrzeiten(Abfahrtszeit[] zeiten) {\n    int[] verspätungen = new int[15];\n    for (int i = 0; i < zeiten.length; i++) {\n        if (zeiten[i].getIstAbfahrt() - zeiten[i].getPlanAbfahrt() > 2) {\n            verspätungen[zeiten[i].getHaltestellenNr()]++;\n        }\n    }\n    return verspätungen;\n}",
+          "rationale": "Hier wird keine Abschnittsfahrzeit gebildet, sondern nur die Einzelabweichung je Haltestelle betrachtet."
+        },
+        {
+          "label": "Variante C",
+          "language": "java",
+          "code": "int[] ermittleFahrzeiten(Abfahrtszeit[] zeiten) {\n    int[] verspätungen = new int[zeiten.length];\n    for (int i = 1; i < zeiten.length; i++) {\n        int plan = zeiten[i].getPlanAbfahrt() - zeiten[i - 1].getPlanAbfahrt();\n        int ist = zeiten[i].getIstAbfahrt() - zeiten[i - 1].getIstAbfahrt();\n        if (plan - ist > 2) {\n            verspätungen[i]++;\n        }\n    }\n    return verspätungen;\n}",
+          "rationale": "Die Richtung des Vergleichs ist falsch, und die Rückgabestruktur passt nicht zu den 15 Streckenabschnitten."
+        },
+        {
+          "label": "Variante D",
+          "language": "java",
+          "code": "int[] ermittleFahrzeiten(Abfahrtszeit[] zeiten) {\n    int[] verspätungen = new int[15];\n    for (int i = 1; i < zeiten.length; i++) {\n        if (!zeiten[i].getDatum().equals(zeiten[i - 1].getDatum())) {\n            int plan = zeiten[i].getPlanAbfahrt() - zeiten[i - 1].getPlanAbfahrt();\n            int ist = zeiten[i].getIstAbfahrt() - zeiten[i - 1].getIstAbfahrt();\n            if (ist - plan > 2) {\n                verspätungen[0]++;\n            }\n        }\n    }\n    return verspätungen;\n}",
+          "rationale": "Hier werden gerade unpassende Tageswechsel betrachtet, und alle Treffer würden auf denselben Abschnitt laufen."
+        }
+      ],
+      "correctIndex": 0,
+      "feedback": {
+        "correct": "Der Pseudocode für die Fahrzeitauswertung ist korrekt gewählt.",
+        "wrong": "Achten Sie auf Abschnittsbildung, Tagesgrenze, korrekten Index im Ergebnisarray und die Richtung des Vergleichs."
+      },
+      "progressLinks": [
+        "pv2fiae_fahrzeit_abschnittslogik",
+        "pv2fiae_datenstrukturen_listen"
+      ]
+    },
+    {
+      "id": "f02",
+      "type": "followup_divider",
+      "title": "API-Endpunkt für aktuelle Abfahrten vorbereiten",
+      "from": "produktteam.fahrgastapp@urbanflow-solutions.example",
+      "to": "projektteam@ausbildungsbetrieb.example",
+      "subject": "Controller-Logik für Fehlermeldungen und nächste Abfahrten absichern",
+      "date": "2026-03-20",
+      "body": "Hallo zusammen,\n\nfür die Fahrgast-App müssen wir den API-Endpunkt für Abfahrten vervollständigen. Neben einer sauberen Fehlerantwort brauchen wir eine Methode, die aus den bereits sortierten Abfahrten die nächsten Fahrten ab dem aktuellen Zeitpunkt liefert. Bitte halten Sie sich eng an die gegebenen Klassen und an die Semantik von `DateTime.compare(...)`.\n\nViele Grüsse\nProduktteam Fahrgastapp"
+    },
+    {
+      "id": "ctx02",
+      "type": "context_card",
+      "title": "Kontext zur API für Abfahrtsdaten",
+      "contentBlocks": [
+        {
+          "type": "text",
+          "text": "Die Fahrgast-App zeigt aktuelle Abfahrtszeiten und Verspätungen über einen API-Endpunkt an. `FahrplanController` besitzt einen Verweis auf `FahrplanService`. Der Service liefert für eine Haltestelle bereits aufsteigend nach Abfahrtszeit sortierte `Abfahrt[]`. Die Controller-Methode `getNaechsteAbfahrten(...)` soll ab dem aktuellen Zeitpunkt höchstens `maxAbfahrten` liefern.\n\nDie Methode `DateTime.compare(dt)` liefert `-1`, wenn das aktuelle Objekt vor `dt` liegt, `0` bei Gleichheit und `1`, wenn das aktuelle Objekt nach `dt` liegt."
+        },
+        {
+          "type": "table_group",
+          "eyebrow": "Klassenausschnitt",
+          "title": "Relevante Methoden und Datenstrukturen",
+          "caption": "Die Darstellung fasst die fachlich benötigten Signaturen der Quelle in Tabellenform zusammen.",
+          "tableRows": [
+            [
+              {
+                "title": "Klasse `FahrplanController`",
+                "columns": [
+                  "Element",
+                  "Bedeutung"
+                ],
+                "rows": [
+                  [
+                    "fahrplanService : FahrplanService",
+                    "Service für Abfahrtsdaten"
+                  ],
+                  [
+                    "handleAbfahrtenRequest(haltestellenId: int)",
+                    "öffentlicher Einstiegspunkt"
+                  ],
+                  [
+                    "createErrorResponse(nachricht: string, statusCode: int)",
+                    "private Hilfsmethode für Fehlerantworten"
+                  ],
+                  [
+                    "getNaechsteAbfahrten(haltestellenId: int, maxAbfahrten: int)",
+                    "private Hilfsmethode für die nächsten Abfahrten"
+                  ]
+                ]
+              },
+              {
+                "title": "Klasse `HttpResponse`",
+                "columns": [
+                  "Element",
+                  "Bedeutung"
+                ],
+                "rows": [
+                  [
+                    "HttpResponse(code: int)",
+                    "erstellt Antwortobjekt mit Status-Code"
+                  ],
+                  [
+                    "addHeader(name: string, valü: string)",
+                    "Header hinzufügen"
+                  ],
+                  [
+                    "setBody(content: string)",
+                    "Response-Body setzen"
+                  ]
+                ]
+              }
+            ],
+            [
+              {
+                "title": "Klasse `FahrplanService`",
+                "columns": [
+                  "Element",
+                  "Bedeutung"
+                ],
+                "rows": [
+                  [
+                    "getAbfahrten(haltestellenId: int)",
+                    "liefert sortiertes Array `Abfahrt[]`"
+                  ]
+                ]
+              },
+              {
+                "title": "Klasse `Abfahrt`",
+                "columns": [
+                  "Attribut",
+                  "Bedeutung"
+                ],
+                "rows": [
+                  [
+                    "verbindungsId : int",
+                    "Verbindungskennung"
+                  ],
+                  [
+                    "haltestellenId : int",
+                    "Start-Haltestelle"
+                  ],
+                  [
+                    "abfahrtsZeit : DateTime",
+                    "Zeitpunkt der Abfahrt"
+                  ]
+                ]
+              }
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "id": "q04",
+      "type": "single_choice",
+      "title": "HTTP-Fehlerantwort korrekt aufbauen",
+      "prompt": "Welche Java-nahe Variante implementiert `createErrorResponse(nachricht, statusCode)` fachlich korrekt?",
+      "options": [
+        {
+          "label": "Variante A",
+          "language": "java",
+          "code": "private HttpResponse createErrorResponse(String nachricht, int statusCode) {\n    HttpResponse response = new HttpResponse(statusCode);\n    response.addHeader(\"Content-Type\", \"text/plain\");\n    response.addHeader(\"Content-Length\", String.valueOf(nachricht.getBytes().length));\n    response.setBody(nachricht);\n    return response;\n}",
+          "rationale": "Status-Code, beide Header und der Body werden in der geforderten Struktur gesetzt."
+        },
+        {
+          "label": "Variante B",
+          "language": "java",
+          "code": "private HttpResponse createErrorResponse(String nachricht, int statusCode) {\n    HttpResponse response = new HttpResponse(200);\n    response.addHeader(\"Content-Type\", \"application/json\");\n    return response;\n}",
+          "rationale": "Hier stimmen weder Status-Code noch Content-Type noch der Body."
+        },
+        {
+          "label": "Variante C",
+          "language": "java",
+          "code": "private HttpResponse createErrorResponse(String nachricht, int statusCode) {\n    HttpResponse response = new HttpResponse(statusCode);\n    response.setBody(statusCode + \":\" + nachricht);\n    return response;\n}",
+          "rationale": "Die geforderten Header fehlen, und der Body hat nicht mehr die übergebene Nachricht in der vorgesehenen Form."
+        },
+        {
+          "label": "Variante D",
+          "language": "java",
+          "code": "private HttpResponse createErrorResponse(String nachricht, int statusCode) {\n    return new HttpResponse(statusCode);\n}",
+          "rationale": "Damit fehlen Content-Type, Content-Length und Body komplett."
+        }
+      ],
+      "correctIndex": 0,
+      "feedback": {
+        "correct": "Die Fehlerantwort wird in der geforderten HTTP-Struktur korrekt aufgebaut.",
+        "wrong": "Prüfen Sie Status-Code, `Content-Type`, `Content-Length` und den Body als zusammenspielende Teile der Antwort."
+      },
+      "progressLinks": [
+        "pv2fiae_api_http_endpunkte"
+      ]
+    },
+    {
+      "id": "q05",
+      "type": "single_choice",
+      "title": "Zukünftige Abfahrten mit `compare` erkennen",
+      "prompt": "Welche Bedingung prüft mit `DateTime.compare(...)` korrekt, ob eine Abfahrt jetzt oder in der Zukunft liegt?",
+      "options": [
+        {
+          "label": "Variante A",
+          "language": "java",
+          "code": "jetzt.compare(abfahrt.abfahrtsZeit) <= 0",
+          "rationale": "Der aktuelle Zeitpunkt liegt dann vor oder genau auf der Abfahrtszeit."
+        },
+        {
+          "label": "Variante B",
+          "language": "java",
+          "code": "jetzt.compare(abfahrt.abfahrtsZeit) > 0",
+          "rationale": "Das wäre gerade der Fall, dass der aktuelle Zeitpunkt nach der Abfahrt liegt."
+        },
+        {
+          "label": "Variante C",
+          "language": "java",
+          "code": "jetzt.compare(abfahrt.abfahrtsZeit) == 1",
+          "rationale": "Auch hier wäre die Abfahrt bereits vorbei."
+        },
+        {
+          "label": "Variante D",
+          "language": "java",
+          "code": "abfahrt.abfahrtsZeit.compare(jetzt) < 0",
+          "rationale": "Dann läge die Abfahrtszeit vor dem aktuellen Zeitpunkt und damit in der Vergangenheit."
+        }
+      ],
+      "correctIndex": 0,
+      "feedback": {
+        "correct": "Die Vergleichsbedingung für zukünftige oder aktuelle Abfahrten ist korrekt gewählt.",
+        "wrong": "Achten Sie genau auf die Rückgabewerte von `compare`: `-1` bedeutet, dass das aktuelle Objekt vor dem übergebenen Zeitpunkt liegt."
+      },
+      "progressLinks": [
+        "pv2fiae_api_http_endpunkte"
+      ]
+    },
+    {
+      "id": "q06",
+      "type": "single_choice",
+      "title": "Pseudocode für die nächsten Abfahrten wählen",
+      "prompt": "Welche Java-nahe Variante bildet `getNaechsteAbfahrten(haltestellenId, maxAbfahrten)` fachlich korrekt ab?",
+      "options": [
+        {
+          "label": "Variante A",
+          "language": "java",
+          "code": "private Abfahrt[] getNaechsteAbfahrten(int haltestellenId, int maxAbfahrten) {\n    Abfahrt[] naechsteAbfahrten = new Abfahrt[maxAbfahrten];\n    int count = 0;\n    DateTime jetzt = DateTime.now();\n    Abfahrt[] abfahrten = this.fahrplanService.getAbfahrten(haltestellenId);\n\n    for (int i = 0; i < abfahrten.length && count < maxAbfahrten; i++) {\n        Abfahrt abfahrt = abfahrten[i];\n        if (jetzt.compare(abfahrt.abfahrtsZeit) <= 0) {\n            naechsteAbfahrten[count] = abfahrt;\n            count++;\n        }\n    }\n    return naechsteAbfahrten;\n}",
+          "rationale": "Die Variante nutzt das bereits sortierte Array, filtert ab dem aktuellen Zeitpunkt und begrenzt die Rückgabe auf `maxAbfahrten`."
+        },
+        {
+          "label": "Variante B",
+          "language": "java",
+          "code": "private Abfahrt[] getNaechsteAbfahrten(int haltestellenId, int maxAbfahrten) {\n    Abfahrt[] abfahrten = this.fahrplanService.getAbfahrten(haltestellenId);\n    DateTime jetzt = DateTime.now();\n    for (int i = 0; i < abfahrten.length; i++) {\n        if (jetzt.compare(abfahrten[i].abfahrtsZeit) > 0) {\n            return abfahrten;\n        }\n    }\n    return new Abfahrt[0];\n}",
+          "rationale": "Hier werden vergangene statt zukünftige Abfahrten betrachtet, und die Begrenzung auf `maxAbfahrten` fehlt."
+        },
+        {
+          "label": "Variante C",
+          "language": "java",
+          "code": "private Abfahrt[] getNaechsteAbfahrten(int haltestellenId, int maxAbfahrten) {\n    Abfahrt[] naechsteAbfahrten = new Abfahrt[maxAbfahrten];\n    for (int i = 0; i < maxAbfahrten; i++) {\n        naechsteAbfahrten[i] = new Abfahrt();\n    }\n    return naechsteAbfahrten;\n}",
+          "rationale": "Es werden keine Service-Daten geladen und keine Zeitvergleiche durchgeführt."
+        },
+        {
+          "label": "Variante D",
+          "language": "java",
+          "code": "private Abfahrt[] getNaechsteAbfahrten(int haltestellenId, int maxAbfahrten) {\n    Abfahrt[] abfahrten = this.fahrplanService.getAbfahrten(haltestellenId);\n    DateTime jetzt = DateTime.now();\n    for (int i = abfahrten.length - 1; i >= 0; i--) {\n        if (jetzt.compare(abfahrten[i].abfahrtsZeit) <= 0) {\n            abfahrten[i] = null;\n        }\n    }\n    return abfahrten;\n}",
+          "rationale": "Hier würden gerade die relevanten zukünftigen Abfahrten gelöscht, und auch `maxAbfahrten` wird nicht beachtet."
+        }
+      ],
+      "correctIndex": 0,
+      "feedback": {
+        "correct": "Die Methode für die nächsten Abfahrten ist fachlich korrekt aufgebaut.",
+        "wrong": "Achten Sie auf drei Dinge zugleich: sortierte Service-Daten, die Zeitbedingung für zukünftige Abfahrten und die Begrenzung auf `maxAbfahrten`."
+      },
+      "progressLinks": [
+        "pv2fiae_api_http_endpunkte"
+      ]
+    },
+    {
+      "id": "f03",
+      "type": "followup_divider",
+      "title": "Kontrolldaten modellieren und Import bewerten",
+      "from": "datenarchitektur@urbanflow-solutions.example",
+      "to": "projektteam@ausbildungsbetrieb.example",
+      "subject": "Relationales Modell für Kontrolleinsätze und Umgang mit Altbestandsdaten absichern",
+      "date": "2026-03-20",
+      "body": "Hallo,\n\nfür das Stadtbahnprojekt sollen stichprobenartige Kontrollen in einer relationalen Datenbank verwaltet werden. Zuerst brauchen wir ein belastbares Modell in 3. Normalform. Ausserdem liegt bereits ein manuell erfasster Altbestand vor, dessen Qualität fraglich ist. Bitte prüfen Sie deshalb sowohl die Tabellenstruktur als auch den sinnvollen Umgang mit diesen Importdaten.\n\nViele Grüsse\nDatenarchitektur"
+    },
+    {
+      "id": "ctx03",
+      "type": "context_card",
+      "title": "Kontext zu Kontrollen und Altbestandsdaten",
+      "contentBlocks": [
+        {
+          "type": "text",
+          "text": "Fachlich gilt für das relationale Modell: Jede Kontrolle findet auf genau einer Fahrt statt, auf einer Fahrt können mehrere Kontrollen stattfinden, zu jeder Kontrolle gehören mindestens zwei Mitarbeitende, und bei jeder Kontrolle können mehrere Vorkommnisse auftreten. Jedem Vorkommnis wird genau eine Art der Massnahme zugeordnet. Alle Tabellen sollen der 3. Normalform genügen.\n\nParallel wird überlegt, einen bereits manuell erfassten Altbestand mit über 1.000 Zeilen zu importieren. Der sichtbare Ausschnitt zeigt, dass dabei nicht nur Werte fehlen, sondern auch Formate und Begriffe uneinheitlich sein können."
+        },
+        {
+          "type": "table_group",
+          "eyebrow": "Altbestandsausschnitt",
+          "title": "Manuell erfasste Kontrolldaten vor einem möglichen Import",
+          "caption": "Die Beispielzeilen sind pseudonymisiert, bilden aber dieselben Qualitätsprobleme wie die Quelle ab.",
+          "tableRows": [
+            [
+              {
+                "title": "Tabelle `Kontrollimport_Rohdaten`",
+                "columns": [
+                  "Datum",
+                  "Mitarbeiter",
+                  "Fahrt",
+                  "Vorkommnis",
+                  "Massnahme"
+                ],
+                "rows": [
+                  [
+                    "1.7.",
+                    "Keller, Braun",
+                    "Linie 12",
+                    "Kein Ticket",
+                    "Erhöhtes Beförderungsentgelt"
+                  ],
+                  [
+                    "38.23",
+                    "Braun, Keller",
+                    "L 4",
+                    "Ohne Fahrkarte",
+                    "60 EUR Strafe"
+                  ],
+                  [
+                    "31.4.",
+                    "Keler, Braun",
+                    "Linie 6",
+                    "Randalierer",
+                    "Anzeige"
+                  ],
+                  [
+                    "47",
+                    "Keller; Braun",
+                    "Linie 17",
+                    "Kein Ticket",
+                    "60 EUR"
+                  ],
+                  [
+                    "2023-4-13",
+                    "Braun,",
+                    "Linie 17",
+                    "Ticket nicht lesbar",
+                    "Verwarnung"
+                  ],
+                  [
+                    "23623",
+                    "Braun; Jona",
+                    "Linie 3",
+                    "Kein Fahrschein",
+                    "60 EUR erhöhtes Entgelt"
+                  ]
+                ]
+              }
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "id": "q07",
+      "type": "multi_select",
+      "title": "Nötige Tabellen für das Kontrollmodell bestimmen",
+      "prompt": "Welche Tabellen müssen im relationalen Modell zwingend auftauchen, damit die beschriebenen Kontrollen in 3. Normalform abbildbar sind?",
+      "options": [
+        {
+          "text": "Fahrt",
+          "correct": true,
+          "rationale": "Jede Kontrolle findet auf genau einer Fahrt statt."
+        },
+        {
+          "text": "Kontrolle",
+          "correct": true,
+          "rationale": "Die eigentliche Kontrolle ist ein eigenes Ereignisobjekt."
+        },
+        {
+          "text": "Mitarbeiter",
+          "correct": true,
+          "rationale": "Mitarbeitende müssen als eigene Stammdaten entkoppelt werden."
+        },
+        {
+          "text": "Kontrolle_Mitarbeiter",
+          "correct": true,
+          "rationale": "Mehrere Mitarbeitende pro Kontrolle erfordern eine Zwischentabelle."
+        },
+        {
+          "text": "Vorkommnis",
+          "correct": true,
+          "rationale": "Mehrere Vorkommnisse pro Kontrolle brauchen eine eigene Entität."
+        },
+        {
+          "text": "VorkommnisArt",
+          "correct": true,
+          "rationale": "Die Art des Vorkommnisses gehört in eine eigene Stammdatentabelle."
+        },
+        {
+          "text": "MassnahmeArt",
+          "correct": true,
+          "rationale": "Auch die Art der Massnahme sollte als eigene Entität geführt werden."
+        },
+        {
+          "text": "Ticketautomat",
+          "correct": false,
+          "rationale": "Aus der Aufgabenstellung ergibt sich keine Ticketautomaten-Tabelle."
+        },
+        {
+          "text": "Werkstattauftrag",
+          "correct": false,
+          "rationale": "Werkstattaufträge gehören nicht zum beschriebenen Fachkontext."
+        }
+      ],
+      "feedback": {
+        "correct": "Die benötigten Tabellen für das Kontrollmodell sind korrekt erkannt.",
+        "wrong": "Leiten Sie die Tabellen direkt aus den fachlichen Aussagen zu Fahrten, Kontrollen, Mitarbeitenden und Vorkommnissen ab."
+      },
+      "progressLinks": [
+        "pv2fiae_erm_kontrolldaten"
+      ]
+    },
+    {
+      "id": "q08",
+      "type": "match_pairs",
+      "title": "Beziehungslogik im Kontrollmodell zuordnen",
+      "prompt": "Ordnen Sie den Fachbeziehungen die passende relationale Struktur zu.",
+      "layout": "table",
+      "columns": [
+        "Fachaussage",
+        "Passende Struktur"
+      ],
+      "pairs": [
+        {
+          "key": "rel_1",
+          "left": "Eine Kontrolle gehört genau zu einer Fahrt, auf einer Fahrt können mehrere Kontrollen stattfinden.",
+          "right": "Fahrt 1 : n Kontrolle"
+        },
+        {
+          "key": "rel_2",
+          "left": "Zu einer Kontrolle können mehrere Vorkommnisse erfasst werden.",
+          "right": "Kontrolle 1 : n Vorkommnis"
+        },
+        {
+          "key": "rel_3",
+          "left": "Eine Art des Vorkommnisses kann vielen Vorkommnissen zugeordnet sein.",
+          "right": "VorkommnisArt 1 : n Vorkommnis"
+        },
+        {
+          "key": "rel_4",
+          "left": "Eine Art der Massnahme kann bei vielen Vorkommnissen verwendet werden.",
+          "right": "MassnahmeArt 1 : n Vorkommnis"
+        },
+        {
+          "key": "rel_5",
+          "left": "Eine Kontrolle hat mehrere Mitarbeitende, und Mitarbeitende können an mehreren Kontrollen beteiligt sein.",
+          "right": "Kontrolle n : m Mitarbeiter über Kontrolle_Mitarbeiter"
+        }
+      ],
+      "options": [
+        "Fahrt 1 : n Kontrolle",
+        "Kontrolle 1 : n Vorkommnis",
+        "VorkommnisArt 1 : n Vorkommnis",
+        "MassnahmeArt 1 : n Vorkommnis",
+        "Kontrolle n : m Mitarbeiter über Kontrolle_Mitarbeiter"
+      ],
+      "feedback": {
+        "correct": "Die Beziehungslogik des Kontrollmodells ist korrekt zugeordnet.",
+        "wrong": "Achten Sie darauf, wo direkte 1:n-Beziehungen reichen und wo wegen mehrerer Mitarbeitender pro Kontrolle eine Zwischentabelle nötig ist."
+      },
+      "progressLinks": [
+        "pv2fiae_erm_kontrolldaten"
+      ]
+    },
+    {
+      "id": "q09",
+      "type": "multi_select",
+      "title": "Probleme in den Importdaten erkennen",
+      "prompt": "Welche Datenqualitätsprobleme sind im sichtbaren Altbestandsausschnitt eindeutig vorhanden?",
+      "options": [
+        {
+          "text": "Datumswerte sind uneinheitlich formatiert oder fachlich ungültig.",
+          "correct": true,
+          "rationale": "Beispiele wie `38.23`, `31.4.` oder `23623` sind nicht sauber importierbar."
+        },
+        {
+          "text": "Mitarbeiterangaben verwenden verschiedene Trennzeichen, Schreibweisen oder unvollständige Namen.",
+          "correct": true,
+          "rationale": "Genau dadurch werden Zuordnungen zu echten Mitarbeitenden unsicher."
+        },
+        {
+          "text": "Fachlich gleiche Vorkommnisse und Massnahmen werden uneinheitlich benannt.",
+          "correct": true,
+          "rationale": "Begriffe wie `Kein Ticket`, `Ohne Fahrkarte` und `Kein Fahrschein` sprechen für dieselbe Art von Ereignis."
+        },
+        {
+          "text": "Alle Fahrten und Mitarbeitenden liegen bereits mit stabilen technischen IDs vor.",
+          "correct": false,
+          "rationale": "Gerade diese eindeutigen IDs fehlen im sichtbaren Ausschnitt."
+        },
+        {
+          "text": "Die Rohdaten sind bereits so konsistent, dass sie ohne Vorarbeit direkt in 3NF-Tabellen übernommen werden können.",
+          "correct": false,
+          "rationale": "Die Uneinheitlichkeiten sprechen klar gegen einen direkten Import."
+        }
+      ],
+      "feedback": {
+        "correct": "Die zentralen Datenqualitätsprobleme des Altbestands sind korrekt erkannt.",
+        "wrong": "Prüfen Sie Formate, Schreibweisen und Fachbegriffe darauf, ob sie direkt automatisiert weiterverarbeitet werden könnten."
+      },
+      "progressLinks": [
+        "pv2fiae_datenqualitaet_import"
+      ]
+    },
+    {
+      "id": "q10",
+      "type": "single_choice",
+      "title": "Sinnvollen Importweg auswählen",
+      "prompt": "Welcher Weg kann den Import der Rohdaten trotz der sichtbaren Mängel am ehesten ermöglichen?",
+      "options": [
+        {
+          "text": "Die Daten zuerst in einer Staging-Struktur sammeln, Formate und Schreibweisen standardisieren, Problemfälle kennzeichnen und nur bereinigte Datensätze in das Zielmodell übernehmen.",
+          "rationale": "So können Fehler systematisch behandelt werden, bevor 3NF-Tabellen befüllt werden."
+        },
+        {
+          "text": "Die Rohdaten ohne Vorprüfung direkt in die Produktivtabellen importieren und später bei Bedarf manuell suchen.",
+          "rationale": "Damit würden Inkonsistenzen direkt ins Zielsystem übernommen."
+        },
+        {
+          "text": "Nur die Datumswerte löschen und den Rest unverändert importieren.",
+          "rationale": "Damit blieben die Probleme bei Mitarbeitenden, Vorkommnissen und Massnahmen bestehen."
+        },
+        {
+          "text": "Den Import nur deshalb erzwingen, weil der Datenumfang über 1.000 Zeilen liegt.",
+          "rationale": "Die Zeilenanzahl ersetzt keine Qualitätssicherung."
+        }
+      ],
+      "correctIndex": 0,
+      "feedback": {
+        "correct": "Der sinnvolle Weg für einen möglichen Import ist korrekt gewählt.",
+        "wrong": "Ein belastbarer Import braucht zuerst Bereinigung, Vereinheitlichung und kontrollierte Übernahme statt eines Direktimports."
+      },
+      "progressLinks": [
+        "pv2fiae_datenqualitaet_import"
+      ]
+    },
+    {
+      "id": "q11",
+      "type": "single_choice",
+      "title": "Importidee insgesamt bewerten",
+      "prompt": "Welche Bewertung der Importidee ist auf Basis des gezeigten Datenzustands am treffendsten?",
+      "options": [
+        {
+          "text": "Ein Direktimport ist nicht vertretbar; ein geregelter Import kommt nur dann in Frage, wenn der fachliche Nutzen den erheblichen Bereinigungsaufwand rechtfertigt.",
+          "rationale": "Genau diese Abwägung entspricht einer realistischen fachlichen Bewertung."
+        },
+        {
+          "text": "Der Direktimport ist unproblematisch, weil sich fehlerhafte Bezeichnungen später automatisch angleichen.",
+          "rationale": "Eine automatische spätere Korrektur ist ohne Vorarbeit gerade nicht gesichert."
+        },
+        {
+          "text": "Die Daten sollten auf jeden Fall verworfen werden, weil ein Import nie lohnend sein kann.",
+          "rationale": "Ein Import kann trotz Aufwand sinnvoll sein, wenn der Nutzen hoch genug ist."
+        },
+        {
+          "text": "Die Daten sind bereits so hochwertig, dass nur noch ein einzelner SQL-Befehl zum Import fehlt.",
+          "rationale": "Die sichtbaren Qualitätsprobleme sprechen deutlich dagegen."
+        }
+      ],
+      "correctIndex": 0,
+      "feedback": {
+        "correct": "Die Importidee ist fachlich realistisch bewertet.",
+        "wrong": "Entscheidend ist die Kombination aus Datenqualität, notwendiger Vorbereinigung und dem tatsächlichen Nutzen der Altbestandsdaten."
+      },
+      "progressLinks": [
+        "pv2fiae_datenqualitaet_import"
+      ]
+    },
+    {
+      "id": "f04",
+      "type": "followup_divider",
+      "title": "SQL für Haltestellen und Verspätungen formulieren",
+      "from": "datenbank.oepnv@urbanflow-solutions.example",
+      "to": "projektteam@ausbildungsbetrieb.example",
+      "subject": "Abfragen auf Haltestellen, Planzeiten und Istzeiten vorbereiten",
+      "date": "2026-03-20",
+      "body": "Hallo,\n\nfür die Betriebsdatenbank der neuen Linie benötigen wir mehrere SQL-Abfragen. Eine erste Abfrage soll alle aktiven Haltestellen einer Linie liefern. Danach brauchen wir eine Liste geplanter Abfahrten für eine konkrete Haltestelle und zum Schluss eine Auswertung aller Verspätungen auf Basis von Plan- und Istzeiten.\n\nViele Grüsse\nDatenbank OePNV"
+    },
+    {
+      "id": "ctx04",
+      "type": "context_card",
+      "title": "Kontext zu Haltestellen-, Plan- und Istzeiten",
+      "contentBlocks": [
+        {
+          "type": "text",
+          "text": "Die folgenden Tabellen bilden einen Ausschnitt aus der Betriebsdatenbank der Stadtbahn. `Haltestelle` enthält Stammdaten, `Haltestelle_Plan` die geplanten Ankunfts- und Abfahrtszeiten und `Haltestelle_Zeiten` die tatsächlich gemessenen Zeiten. Für die SQL-Aufgaben sind insbesondere Aktiv-Status, Liniennummer, die Verknüpfung über die Schlüssel und die Zeitdifferenzen zwischen Plan und Ist relevant."
+        },
+        {
+          "type": "table_group",
+          "eyebrow": "Tabellenausschnitt",
+          "title": "Relevante Daten für die SQL-Aufgaben",
+          "caption": "Haltestellennamen wurden pseudonymisiert; Schlüssel- und Zeitlogik bleiben erhalten.",
+          "tableRows": [
+            [
+              {
+                "title": "Tabelle `Haltestelle`",
+                "columns": [
+                  "HSt_IdKey",
+                  "HSt_Name",
+                  "HSt_Aktiv",
+                  "HSt_Linie"
+                ],
+                "rows": [
+                  [
+                    "1",
+                    "Hafenbogen",
+                    "1",
+                    "124"
+                  ],
+                  [
+                    "2",
+                    "Norduferstr.",
+                    "1",
+                    "124"
+                  ],
+                  [
+                    "3",
+                    "Ringtor",
+                    "1",
+                    "124"
+                  ],
+                  [
+                    "4",
+                    "Marktallee",
+                    "1",
+                    "124"
+                  ],
+                  [
+                    "5",
+                    "Südwall",
+                    "1",
+                    "124"
+                  ],
+                  [
+                    "6",
+                    "Auenweg",
+                    "1",
+                    "250"
+                  ],
+                  [
+                    "7",
+                    "Lindenplatz",
+                    "1",
+                    "250"
+                  ],
+                  [
+                    "8",
+                    "Parkhof",
+                    "0",
+                    "250"
+                  ],
+                  [
+                    "9",
+                    "Mühlenweg",
+                    "1",
+                    "250"
+                  ],
+                  [
+                    "10",
+                    "Westforum",
+                    "1",
+                    "124"
+                  ],
+                  [
+                    "11",
+                    "Zentralmarkt",
+                    "1",
+                    "250"
+                  ],
+                  [
+                    "12",
+                    "Zentralmarkt",
+                    "1",
+                    "140"
+                  ]
+                ]
+              }
+            ],
+            [
+              {
+                "title": "Tabelle `Haltestelle_Plan`",
+                "columns": [
+                  "HStP_IdKey",
+                  "HStP_HStIdKey",
+                  "HStP_Ankunft_Plan",
+                  "HStP_Abfahrt_Plan"
+                ],
+                "rows": [
+                  [
+                    "1",
+                    "1",
+                    "2024-12-01 10:01:00",
+                    "2024-12-01 10:01:00"
+                  ],
+                  [
+                    "2",
+                    "2",
+                    "2024-12-01 10:04:00",
+                    "2024-12-01 10:04:00"
+                  ],
+                  [
+                    "3",
+                    "3",
+                    "2024-12-01 10:08:00",
+                    "2024-12-01 10:08:00"
+                  ],
+                  [
+                    "4",
+                    "4",
+                    "2024-12-01 10:09:00",
+                    "2024-12-01 10:09:00"
+                  ],
+                  [
+                    "5",
+                    "10",
+                    "2024-12-01 10:13:00",
+                    "2024-12-01 10:18:00"
+                  ],
+                  [
+                    "6",
+                    "11",
+                    "2024-12-01 10:22:00",
+                    "2024-12-01 10:22:00"
+                  ],
+                  [
+                    "7",
+                    "6",
+                    "2024-12-01 10:03:00",
+                    "2024-12-01 10:03:00"
+                  ],
+                  [
+                    "8",
+                    "7",
+                    "2024-12-01 10:06:00",
+                    "2024-12-01 10:06:00"
+                  ],
+                  [
+                    "9",
+                    "9",
+                    "2024-12-01 10:11:00",
+                    "2024-12-01 10:11:00"
+                  ],
+                  [
+                    "10",
+                    "11",
+                    "2024-12-01 10:12:00",
+                    "2024-12-01 10:12:00"
+                  ],
+                  [
+                    "11",
+                    "6",
+                    "2024-12-01 11:12:00",
+                    "2024-12-01 11:12:00"
+                  ],
+                  [
+                    "12",
+                    "6",
+                    "2024-12-01 12:12:00",
+                    "2024-12-01 12:12:00"
+                  ]
+                ]
+              },
+              {
+                "title": "Tabelle `Haltestelle_Zeiten`",
+                "columns": [
+                  "HStZ_IdKey",
+                  "HStZ_HStIdKey",
+                  "HStZ_HStPIdKey",
+                  "HStZ_Ankunft",
+                  "HSt_Abfahrt"
+                ],
+                "rows": [
+                  [
+                    "1",
+                    "1",
+                    "1",
+                    "2024-12-01 10:01:00",
+                    "2024-12-01 10:01:00"
+                  ],
+                  [
+                    "2",
+                    "2",
+                    "2",
+                    "2024-12-01 10:05:00",
+                    "2024-12-01 10:05:00"
+                  ],
+                  [
+                    "3",
+                    "3",
+                    "3",
+                    "2024-12-01 10:09:00",
+                    "2024-12-01 10:09:00"
+                  ],
+                  [
+                    "4",
+                    "4",
+                    "4",
+                    "2024-12-01 10:10:00",
+                    "2024-12-01 10:10:00"
+                  ],
+                  [
+                    "5",
+                    "10",
+                    "5",
+                    "2024-12-01 10:15:00",
+                    "2024-12-01 10:18:00"
+                  ],
+                  [
+                    "6",
+                    "11",
+                    "6",
+                    "2024-12-01 10:22:00",
+                    "2024-12-01 10:22:00"
+                  ],
+                  [
+                    "7",
+                    "6",
+                    "7",
+                    "2024-12-01 10:03:00",
+                    "2024-12-01 10:03:00"
+                  ],
+                  [
+                    "8",
+                    "7",
+                    "8",
+                    "2024-12-01 10:06:00",
+                    "2024-12-01 10:06:00"
+                  ],
+                  [
+                    "9",
+                    "9",
+                    "9",
+                    "2024-12-01 10:11:00",
+                    "2024-12-01 10:11:00"
+                  ],
+                  [
+                    "10",
+                    "11",
+                    "10",
+                    "2024-12-01 10:12:00",
+                    "2024-12-01 10:12:00"
+                  ]
+                ]
+              }
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "id": "q12",
+      "type": "single_choice",
+      "title": "Aktive Haltestellen der Linie 250 abfragen",
+      "visuals": [
+        {
+          "type": "table",
+          "eyebrow": "Erwartete Ausgabe",
+          "title": "Aktive Haltestellen der Linie 250",
+          "caption": "Die Abfrage soll nur aktive Haltestellen der Linie 250 zurückgeben.",
+          "columns": [
+            "Name der Haltestelle"
+          ],
+          "rows": [
+            [
+              "Auenweg"
+            ],
+            [
+              "Lindenplatz"
+            ],
+            [
+              "Mühlenweg"
+            ],
+            [
+              "Zentralmarkt"
+            ]
+          ]
+        }
+      ],
+      "prompt": "Welche SQL-Anweisung liefert alle aktiven Haltestellen der Linie 250?",
+      "options": [
+        {
+          "label": "Variante A",
+          "language": "sql",
+          "code": "SELECT HSt_Name AS Name_der_Haltestelle\nFROM Haltestelle\nWHERE HSt_Aktiv = 1 AND HSt_Linie = 250;",
+          "rationale": "Diese Abfrage filtert korrekt auf aktive Haltestellen der gesuchten Linie."
+        },
+        {
+          "label": "Variante B",
+          "language": "sql",
+          "code": "SELECT *\nFROM Haltestelle\nWHERE HSt_Linie = 250 OR HSt_Aktiv = 1;",
+          "rationale": "Mit `OR` würden auch Haltestellen anderer Linien oder inaktive Haltestellen erscheinen."
+        },
+        {
+          "label": "Variante C",
+          "language": "sql",
+          "code": "SELECT HSt_Name\nFROM Haltestelle_Plan\nWHERE HSt_Linie = 250 AND HSt_Aktiv = 1;",
+          "rationale": "Die benötigten Spalten liegen in `Haltestelle`, nicht in `Haltestelle_Plan`."
+        },
+        {
+          "label": "Variante D",
+          "language": "sql",
+          "code": "SELECT HSt_Name AS Name_der_Haltestelle\nFROM Haltestelle\nWHERE HSt_Aktiv = 0 AND HSt_Linie = 250;",
+          "rationale": "Hier würden gerade die inaktiven Haltestellen der Linie 250 abgefragt."
+        }
+      ],
+      "correctIndex": 0,
+      "feedback": {
+        "correct": "Die SQL-Abfrage für aktive Haltestellen der Linie 250 ist korrekt aufgebaut.",
+        "wrong": "Prüfen Sie Tabelle, Linienfilter und Aktiv-Status gemeinsam."
+      },
+      "progressLinks": [
+        "pv2fiae_sql_abfragen_filter"
+      ]
+    },
+    {
+      "id": "q13",
+      "type": "single_choice",
+      "title": "Geplante Abfahrten für `Auenweg` sortiert ausgeben",
+      "visuals": [
+        {
+          "type": "table",
+          "eyebrow": "Erwartete Ausgabe",
+          "title": "Geplante Abfahrten der Haltestelle `Auenweg`",
+          "caption": "Die Liste ist absteigend nach Datum und Uhrzeit sortiert.",
+          "columns": [
+            "HSt_Name",
+            "HSt_Linie",
+            "HStP_Abfahrt_Plan"
+          ],
+          "rows": [
+            [
+              "Auenweg",
+              "250",
+              "2024-12-01 12:12:00"
+            ],
+            [
+              "Auenweg",
+              "250",
+              "2024-12-01 11:12:00"
+            ],
+            [
+              "Auenweg",
+              "250",
+              "2024-12-01 10:03:00"
+            ]
+          ]
+        }
+      ],
+      "prompt": "Welche SQL-Anweisung liefert alle geplanten Abfahrten der Haltestelle `Auenweg` absteigend nach Datum und Uhrzeit?",
+      "options": [
+        {
+          "label": "Variante A",
+          "language": "sql",
+          "code": "SELECT h.HSt_Name, h.HSt_Linie, hp.HStP_Abfahrt_Plan\nFROM Haltestelle AS h\nINNER JOIN Haltestelle_Plan AS hp ON h.HSt_IdKey = hp.HStP_HStIdKey\nWHERE h.HSt_Name = 'Auenweg'\nORDER BY hp.HStP_Abfahrt_Plan DESC;",
+          "rationale": "Name, Linie und geplante Abfahrt werden korrekt über den Schlüssel verknüpft und absteigend sortiert."
+        },
+        {
+          "label": "Variante B",
+          "language": "sql",
+          "code": "SELECT h.HSt_Name, h.HSt_Linie, hp.HStP_Abfahrt_Plan\nFROM Haltestelle AS h\nINNER JOIN Haltestelle_Plan AS hp ON h.HSt_IdKey = hp.HStP_HStIdKey\nWHERE h.HSt_Name = 'Auenweg'\nORDER BY hp.HStP_Abfahrt_Plan ASC;",
+          "rationale": "Die Sortierung ist aufsteigend statt gefordert absteigend."
+        },
+        {
+          "label": "Variante C",
+          "language": "sql",
+          "code": "SELECT HSt_Name, HSt_Linie, HSt_Abfahrt\nFROM Haltestelle_Zeiten\nWHERE HSt_Name = 'Auenweg'\nORDER BY HSt_Abfahrt DESC;",
+          "rationale": "Die Tabellen- und Spaltenbezuge stimmen hier nicht; `HSt_Name` liegt nicht in `Haltestelle_Zeiten`."
+        },
+        {
+          "label": "Variante D",
+          "language": "sql",
+          "code": "SELECT h.HSt_Name, hp.HStP_Abfahrt_Plan\nFROM Haltestelle AS h\nWHERE h.HSt_Name = 'Auenweg';",
+          "rationale": "Die Planzeiten werden hier gar nicht über `Haltestelle_Plan` eingebunden."
+        }
+      ],
+      "correctIndex": 0,
+      "feedback": {
+        "correct": "Die SQL-Abfrage für die geplanten Abfahrten ist korrekt aufgebaut.",
+        "wrong": "Achten Sie auf den Join zwischen Haltestelle und Planzeiten sowie auf die verlangte Sortierung absteigend nach Zeit."
+      },
+      "progressLinks": [
+        "pv2fiae_sql_zeitraumliste"
+      ]
+    },
+    {
+      "id": "q14",
+      "type": "single_choice",
+      "title": "Alle Verspätungen auf Basis von Plan und Ist abfragen",
+      "visuals": [
+        {
+          "type": "table",
+          "eyebrow": "Erwartete Ausgabe",
+          "title": "Verspätungen aller betroffenen Haltestellen",
+          "caption": "Die Abfrage soll nur die Fälle liefern, bei denen die tatsächliche Ankunft später als die Planankunft ist.",
+          "columns": [
+            "HSt_Name",
+            "HSt_Linie",
+            "HStP_Ankunft_Plan",
+            "HStZ_Ankunft",
+            "Verspätung in Minuten"
+          ],
+          "rows": [
+            [
+              "Norduferstr.",
+              "124",
+              "2024-12-01 10:04:00",
+              "2024-12-01 10:05:00",
+              "1"
+            ],
+            [
+              "Ringtor",
+              "124",
+              "2024-12-01 10:08:00",
+              "2024-12-01 10:09:00",
+              "1"
+            ],
+            [
+              "Marktallee",
+              "124",
+              "2024-12-01 10:09:00",
+              "2024-12-01 10:10:00",
+              "1"
+            ],
+            [
+              "Westforum",
+              "124",
+              "2024-12-01 10:13:00",
+              "2024-12-01 10:15:00",
+              "2"
+            ]
+          ]
+        }
+      ],
+      "prompt": "Welche SQL-Anweisung liefert alle Verspätungen aller Haltestellen inklusive berechneter Minutenabweichung?",
+      "options": [
+        {
+          "label": "Variante A",
+          "language": "sql",
+          "code": "SELECT h.HSt_Name,\n       h.HSt_Linie,\n       hp.HStP_Ankunft_Plan,\n       hz.HStZ_Ankunft,\n       TIMESTAMPDIFF(MINUTE, hp.HStP_Ankunft_Plan, hz.HStZ_Ankunft) AS Verspätung_in_Minuten\nFROM Haltestelle AS h\nINNER JOIN Haltestelle_Plan AS hp ON h.HSt_IdKey = hp.HStP_HStIdKey\nINNER JOIN Haltestelle_Zeiten AS hz ON hp.HStP_IdKey = hz.HStZ_HStPIdKey\nWHERE hp.HStP_Ankunft_Plan < hz.HStZ_Ankunft;",
+          "rationale": "Die Abfrage verknüpft alle drei Tabellen korrekt und filtert exakt auf echte Verspätungen."
+        },
+        {
+          "label": "Variante B",
+          "language": "sql",
+          "code": "SELECT h.HSt_Name,\n       h.HSt_Linie,\n       hp.HStP_Ankunft_Plan,\n       hz.HStZ_Ankunft,\n       TIMESTAMPDIFF(MINUTE, hz.HStZ_Ankunft, hp.HStP_Ankunft_Plan) AS Verspätung_in_Minuten\nFROM Haltestelle AS h\nINNER JOIN Haltestelle_Plan AS hp ON h.HSt_IdKey = hp.HStP_HStIdKey\nINNER JOIN Haltestelle_Zeiten AS hz ON hp.HStP_IdKey = hz.HStZ_HStPIdKey\nWHERE hp.HStP_Ankunft_Plan > hz.HStZ_Ankunft;",
+          "rationale": "Hier werden verfrühte Ankünfte statt Verspätungen betrachtet, und die Minutenberechnung läuft rückwärts."
+        },
+        {
+          "label": "Variante C",
+          "language": "sql",
+          "code": "SELECT h.HSt_Name,\n       h.HSt_Linie,\n       hp.HStP_Ankunft_Plan,\n       hz.HStZ_Ankunft\nFROM Haltestelle AS h\nINNER JOIN Haltestelle_Zeiten AS hz ON h.HSt_IdKey = hz.HStZ_HStIdKey\nWHERE hz.HStZ_Ankunft IS NOT NULL;",
+          "rationale": "Die Planzeiten und die Verspätungsberechnung fehlen hier."
+        },
+        {
+          "label": "Variante D",
+          "language": "sql",
+          "code": "SELECT HSt_Name, HSt_Linie, HStP_Ankunft_Plan, HStZ_Ankunft, 0 AS Verspätung_in_Minuten\nFROM Haltestelle_Plan;",
+          "rationale": "Die Tabellenbeziehungen fehlen, und eine echte Berechnung der Verspätung findet nicht statt."
+        }
+      ],
+      "correctIndex": 0,
+      "feedback": {
+        "correct": "Die SQL-Abfrage für alle Verspätungen ist fachlich korrekt aufgebaut.",
+        "wrong": "Achten Sie auf den korrekten Join der drei Tabellen, auf die Richtung des Zeitvergleichs und auf die Berechnung der Minutenabweichung."
+      },
+      "progressLinks": [
+        "pv2fiae_sql_joins_aggregation"
+      ]
+    }
+  ]
+}

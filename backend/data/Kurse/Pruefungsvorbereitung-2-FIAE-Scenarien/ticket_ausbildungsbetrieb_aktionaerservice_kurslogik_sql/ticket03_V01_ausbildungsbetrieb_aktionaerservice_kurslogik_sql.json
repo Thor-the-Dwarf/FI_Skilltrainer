@@ -1,0 +1,1129 @@
+{
+  "scenario": {
+    "company": "Voltaris Motion AG",
+    "scale": "Börsennotierter Hersteller für Energiesysteme und Leichtmobilität, 230 Mitarbeitende",
+    "context": "Prüfungsvorbereitung 2 FIAE im Stationsformat mit zusammenhängenden Folgeaufträgen für Investor-Portal, Kurslogik, Testverfahren und SQL.",
+    "mission": "Sie modellieren Ablauflogik für ein Investor-Portal, prüfen Sortier- und Testlogik und erstellen belastbare SQL-Berichte.",
+    "source": {
+      "kind": "Pseudonymisierte Prüfungsvorlage",
+      "reference": "AP2 FIAE Teil 2, Sommer 2024",
+      "note": "Die fachliche Aufgabenreihenfolge bleibt erhalten; Namen, Werte und Unternehmensbezug wurden in das Kursformat überführt."
+    },
+    "station": {
+      "id": "PV2FIAE-ST-03",
+      "department": "Prüfungsvorbereitung Anwendungsentwicklung",
+      "profile": "UML-Aktivitäten, Algorithmen, Whitebox-Tests und SQL",
+      "constraints": [
+        "Die vier Hauptaufgaben bleiben als fachlich zusammenhängende Folgeaufträge sichtbar",
+        "Offene Prüfungsfragen werden möglichst auto-auswertbar, aber fachlich gleichwertig umgesetzt",
+        "Code und SQL erhalten Syntaxhighlighting; Visuals entstehen nur bei fachlichem Anlass"
+      ]
+    },
+    "customerRequest": {
+      "from": "aktionaerservice@voltaris-motion.example",
+      "to": "projektteam@ausbildungsbetrieb.example",
+      "subject": "Investor-Portal, Kursauswertungen und SQL-Berichte für die Hauptversammlung vorbereiten",
+      "date": "2026-03-20",
+      "body": "Guten Tag,\n\nfür die nächste Kapitalversammlung wollen wir mehrere Arbeitspakete gleichzeitig voranbringen. Neben dem Ausbau des Investor-Portals müssen Ablauflogik und Sicherheitsfragen sauber dokumentiert werden. Ausserdem benötigt die Geschäftsleitung neue Auswertungen für Kursdaten, Testkonzepte für künftige Softwaremodule und SQL-Berichte für die Hauptversammlung.\n\nBitte bearbeiten Sie die Teilaufträge in der vorgegebenen Reihenfolge. Im Fokus stehen Aktivitätslogik, sichere Portalfunktionen, flexible Sortier- und Vergleichslogik, Whitebox-Testverständnis und auswertbare SQL-Anweisungen.\n\nViele Grüsse\nAktionärservice"
+    }
+  },
+  "questions": [
+    {
+      "id": "ctx01",
+      "type": "context_card",
+      "title": "Kontext zum Investor-Portal",
+      "contentBlocks": [
+        {
+          "type": "text",
+          "text": "Voltaris plant für Anteilseigner ein Serviceportal rund um die jährliche Kapitalversammlung.\n\nDie Einladungen gehen parallel per Post und über das Portal heraus. Wer bereits einen Portaleingang besitzt, meldet sich online an und wählt zwischen virtueller und präsenter Teilnahme. Ohne Portalzugang bleibt nur die präsente Teilnahme auf dem Postweg; diese Rückmeldung wird später intern erfasst. Ein Sitzplatz wird nur nach einer Präsenzanmeldung reserviert. Für virtuelle Teilnahmen stellt das System stattdessen Zugangsdaten bereit. Für das Zurücksetzen des Passworts steht aktuell ein Link per E-Mail im Raum."
+        }
+      ]
+    },
+    {
+      "id": "q01",
+      "type": "match_pairs",
+      "title": "Aktivitäten den Swimlanes zuordnen",
+      "prompt": "Ordnen Sie die fachlichen Aktivitäten der passenden Rolle im UML-Aktivitätsdiagramm zu.",
+      "pairs": [
+        {
+          "key": "lane_1",
+          "left": "Einladungen gleichzeitig per Post und über das Portal verschicken",
+          "right": "Mitarbeiter Investorensekretariat"
+        },
+        {
+          "key": "lane_2",
+          "left": "Am Serviceportal anmelden und Teilnahmeart wählen",
+          "right": "Aktionär"
+        },
+        {
+          "key": "lane_3",
+          "left": "Postalische Rückmeldung zur Präsenzteilnahme erfassen",
+          "right": "Mitarbeiter Investorensekretariat"
+        },
+        {
+          "key": "lane_4",
+          "left": "Sitzplatz für eine Präsenzteilnahme reservieren",
+          "right": "System"
+        },
+        {
+          "key": "lane_5",
+          "left": "Zugangsdaten und Tagesordnung versenden",
+          "right": "System"
+        }
+      ],
+      "options": [
+        "Mitarbeiter Investorensekretariat",
+        "Aktionär",
+        "System"
+      ],
+      "feedback": {
+        "correct": "Die Aktivitäten sind den passenden Swimlanes zugeordnet.",
+        "wrong": "Achten Sie darauf, welche Schritte fachlich vom Mitarbeiter, vom Anteilseigner oder vom System ausgeführt werden."
+      },
+      "progressLinks": [
+        "pv2fiae_aktionaerservice_sicherheit"
+      ]
+    },
+    {
+      "id": "q02",
+      "type": "single_choice",
+      "title": "Ablauflogik der Anmeldung verstehen",
+      "prompt": "Welche Beschreibung bildet die fachliche Ablauflogik für die Kapitalversammlung am treffendsten ab?",
+      "options": [
+        {
+          "text": "Einladungen gehen parallel über Post und Portal raus. Portalnutzende melden sich online an und wählen virtuell oder vor Ort. Ohne Portalzugang bleibt nur die postalische Präsenzanmeldung, die intern erfasst wird. Ein Platz wird nur bei Präsenz reserviert.",
+          "rationale": "Diese Variante enthält Parallelversand, den Unterschied zwischen Portal- und Postweg sowie die korrekte Reservierungslogik."
+        },
+        {
+          "text": "Sobald ein Anteilseigner online reagiert, reserviert das System immer einen Platz, auch für virtuelle Teilnahme. Anschliessend entscheidet der Mitarbeiter, welche Unterlagen verschickt werden.",
+          "rationale": "Für virtuelle Teilnahme wird gerade kein Sitzplatz reserviert."
+        },
+        {
+          "text": "Ohne Portalzugang ist nur eine virtuelle Teilnahme möglich, weil die Anmeldung sonst nicht automatisch verarbeitet werden kann.",
+          "rationale": "Ohne Portalzugang bleibt nur die präsente Teilnahme auf dem Postweg."
+        },
+        {
+          "text": "Der Mitarbeiter erfasst jede Anmeldung zuerst manuell, erst danach darf ein Anteilseigner im Portal zwischen präsenter und virtueller Teilnahme wählen.",
+          "rationale": "Portalnutzende wählen ihre Teilnahmeart selbst online; nur der Postweg wird manuell erfasst."
+        }
+      ],
+      "correctIndex": 0,
+      "feedback": {
+        "correct": "Die Prozesslogik der Aktivitäten ist passend eingeordnet.",
+        "wrong": "Prüfen Sie Parallelversand, Online- versus Postweg und die Bedingung, unter der wirklich ein Platz reserviert wird."
+      },
+      "progressLinks": [
+        "pv2fiae_aktionaerservice_sicherheit"
+      ]
+    },
+    {
+      "id": "q03",
+      "type": "single_choice",
+      "title": "Risiko eines Dateianhangs erkennen",
+      "prompt": "Welche Gefahr entsteht besonders dann, wenn Einladungen als bearbeitbare Office-Datei im Mailanhang verteilt werden?",
+      "options": [
+        {
+          "text": "Manipulierte oder mit Schadcode versehene Dokumente aus externer Quelle können geöffnet werden.",
+          "rationale": "Bearbeitbare Office-Anhänge können Schadcode transportieren oder inhaltlich manipuliert sein."
+        },
+        {
+          "text": "Die Einladungen können grundsätzlich nicht mehr ausgedruckt werden.",
+          "rationale": "Das ist kein typisches Sicherheitsproblem des Dateianhangs."
+        },
+        {
+          "text": "Das System verliert automatisch alle Protokolldaten über den Versandzeitpunkt.",
+          "rationale": "Ein Mailanhang führt nicht automatisch zum Verlust von Protokolldaten."
+        },
+        {
+          "text": "Die Tagesordnung darf in einer E-Mail generell nie erwähnt werden.",
+          "rationale": "Die pauschale Aussage ist fachlich unzutreffend."
+        }
+      ],
+      "correctIndex": 0,
+      "feedback": {
+        "correct": "Das zentrale Sicherheitsrisiko des bearbeitbaren Dateianhangs ist korrekt erkannt.",
+        "wrong": "Denken Sie an die Risiken, die durch das Öffnen externer Office-Dokumente entstehen können."
+      },
+      "progressLinks": [
+        "pv2fiae_aktionaerservice_sicherheit"
+      ]
+    },
+    {
+      "id": "q04",
+      "type": "single_choice",
+      "title": "Sicherere Einladungsausgabe wählen",
+      "prompt": "Welche Alternative bietet gegenüber einem Word-Anhang die deutlich bessere Sicherheit?",
+      "options": [
+        {
+          "text": "Die Einladung nur nach Anmeldung direkt im geschützten Web-Portal anzeigen.",
+          "rationale": "Damit wird kein bearbeitbarer Dateianhang verteilt und die Anzeige bleibt an die kontrollierte Plattform gebunden."
+        },
+        {
+          "text": "Die gleiche Datei zusätzlich in eine ZIP-Datei verpacken und per Mail verschicken.",
+          "rationale": "Das verändert das Grundproblem eines externen Dateianhangs nicht."
+        },
+        {
+          "text": "Die Einladung in einer Messenger-Gruppe der Anteilseigner posten.",
+          "rationale": "Das wäre weder sicherer noch angemessen kontrollierbar."
+        },
+        {
+          "text": "Die Word-Datei auf einem öffentlichen Downloadserver ablegen und den Link breit streuen.",
+          "rationale": "Das schwacht die Zugriffskontrolle zusätzlich ab."
+        }
+      ],
+      "correctIndex": 0,
+      "feedback": {
+        "correct": "Die Einladung bleibt auf der kontrollierten Plattform und muss nicht als bearbeitbarer Anhang verteilt werden.",
+        "wrong": "Sicherer wird es vor allem dann, wenn die Einladung nicht als extern bearbeitbare Datei verschickt wird."
+      },
+      "progressLinks": [
+        "pv2fiae_aktionaerservice_sicherheit"
+      ]
+    },
+    {
+      "id": "q05",
+      "type": "single_choice",
+      "title": "Schwachstelle beim Passwort-Reset",
+      "prompt": "Welche Schwachstelle beschreibt den Versand eines reinen Rücksetz-Links an die hinterlegte E-Mail-Adresse am treffendsten?",
+      "options": [
+        {
+          "text": "Gelangen Mailkonto oder Link in falsche Hände, kann das Passwort unberechtigt zurückgesetzt werden.",
+          "rationale": "Genau darin liegt die Schwachstelle eines einfachen Link-Ansatzes."
+        },
+        {
+          "text": "Ein Link in einer E-Mail verhindert grundsätzlich jede Nachvollziehbarkeit des Vorgangs.",
+          "rationale": "Der Vorgang kann sehr wohl protokolliert werden; das ist nicht die Kernschwäche."
+        },
+        {
+          "text": "Ein Rücksetz-Link funktioniert nur bei virtueller Teilnahme an der Kapitalversammlung.",
+          "rationale": "Die Teilnahmeart hat mit der Passwort-Rücksetzung nichts zu tun."
+        },
+        {
+          "text": "Sobald ein Link verschickt wird, ist eine Zwei-Faktor-Anmeldung technisch nicht mehr möglich.",
+          "rationale": "Ein zusätzlicher Faktor kann weiterhin eingesetzt werden."
+        }
+      ],
+      "correctIndex": 0,
+      "feedback": {
+        "correct": "Die Kernschwäche des einfachen Mail-Links ist richtig erkannt.",
+        "wrong": "Achten Sie darauf, wer ein Passwort zurücksetzen kann, wenn Mailkonto oder Link kompromittiert werden."
+      },
+      "progressLinks": [
+        "pv2fiae_aktionaerservice_sicherheit"
+      ]
+    },
+    {
+      "id": "q06",
+      "type": "single_choice",
+      "title": "Rücksetzvorgang härter absichern",
+      "prompt": "Welches Vorgehen erhöht die Sicherheit beim Passwort-Reset am sinnvollsten?",
+      "options": [
+        {
+          "text": "Zum Rücksetz-Link einen zeitlich begrenzten Code über einen zweiten Kanal versenden, zum Beispiel SMS oder Authenticator.",
+          "rationale": "Ein zweiter Übertragungsweg erschwert den Missbrauch des Reset-Links deutlich."
+        },
+        {
+          "text": "Den Link dauerhaft gültig lassen, damit sich Anteilseigner nicht mehrfach melden müssen.",
+          "rationale": "Eine unbegrenzte Gültigkeit wäre sogar sicherheitsschwächer."
+        },
+        {
+          "text": "Das alte Passwort unverschlüsselt in der E-Mail mitschicken, damit die Identität nachgewiesen ist.",
+          "rationale": "Das wäre fachlich unzulässig und massiv unsicher."
+        },
+        {
+          "text": "Jeden Rücksetzversuch ohne jede Prüfung direkt an die Personalabteilung weiterleiten.",
+          "rationale": "Das löst das Sicherheitsproblem fachlich nicht."
+        }
+      ],
+      "correctIndex": 0,
+      "feedback": {
+        "correct": "Ein zweiter Kanal oder Faktor macht den Rücksetzvorgang deutlich belastbarer.",
+        "wrong": "Suchen Sie nach einer Variante, die nicht nur einen Link verschickt, sondern einen zusätzlichen Verifikationsschritt nutzt."
+      },
+      "progressLinks": [
+        "pv2fiae_aktionaerservice_sicherheit"
+      ]
+    },
+    {
+      "id": "f02",
+      "type": "followup_divider",
+      "title": "Kursdaten flexibel sortieren",
+      "from": "marktanalyse@voltaris-motion.example",
+      "to": "projektteam@ausbildungsbetrieb.example",
+      "subject": "Vergleichsfunktion für Kursauswertungen und Tagesvergleich vorbereiten",
+      "date": "2026-03-20",
+      "body": "Hallo zusammen,\n\nfür die Berichte an den Vorstand sollen Tageskurse nach wechselnden Kriterien sortierbar sein. Deshalb möchten wir Sortierlogik und Vergleichsfunktion trennen. Zusätzlich brauchen wir eine kleine Auswertung, die zählt, an wie vielen Tagen sich unsere Aktie prozentual besser entwickelt hat als der Vergleichsindex.\n\nBitte nutzen Sie die unten skizzierten Felder und den Aufruf der Vergleichsfunktion als gemeinsame Grundlage.\n\nViele Grüsse\nMarktanalyse"
+    },
+    {
+      "id": "ctx02",
+      "type": "context_card",
+      "title": "Kontext zu `Tageskurs` und Vergleichsfunktion",
+      "contentBlocks": [
+        {
+          "type": "text",
+          "text": "Für die Auswertung steht eine Klasse `Tageskurs` zur Verfügung. Im Array `kurse` liegen Objekte dieses Typs. Die Vergleichsfunktion wird als Parameter übergeben. Ein Aufruf `compare_fn(a, b)` liefert einen Wert grösser `0`, wenn `b` vor `a` einsortiert werden soll."
+        },
+        {
+          "type": "table_group",
+          "eyebrow": "Arbeitsstand",
+          "title": "Klasse und Beispieldaten für die Kursauswertung",
+          "caption": "Die sichtbaren Daten sind nur ein Ausschnitt; die Sortier- und Vergleichslogik muss allgemein funktionieren.",
+          "tableRows": [
+            [
+              {
+                "title": "Klasse `Tageskurs`",
+                "columns": [
+                  "Attribut",
+                  "Typ",
+                  "Bedeutung"
+                ],
+                "rows": [
+                  [
+                    "datum",
+                    "date",
+                    "Handelstag"
+                  ],
+                  [
+                    "aktienkurs",
+                    "float",
+                    "Kurs der Aktie"
+                  ],
+                  [
+                    "indexWert",
+                    "float",
+                    "Vergleichswert des Branchenindex"
+                  ],
+                  [
+                    "prozVAktie",
+                    "float",
+                    "relative Änderung der Aktie zum Vortag"
+                  ],
+                  [
+                    "prozVIndex",
+                    "float",
+                    "relative Änderung des Index zum Vortag"
+                  ]
+                ]
+              }
+            ],
+            [
+              {
+                "title": "Ausschnitt aus `kurse`",
+                "columns": [
+                  "datum",
+                  "aktienkurs",
+                  "indexWert",
+                  "prozVAktie",
+                  "prozVIndex"
+                ],
+                "rows": [
+                  [
+                    "15.04.2026",
+                    "97.00",
+                    "14780",
+                    "0.0280",
+                    "0.0410"
+                  ],
+                  [
+                    "16.04.2026",
+                    "101.00",
+                    "14860",
+                    "0.0412",
+                    "0.0054"
+                  ],
+                  [
+                    "17.04.2026",
+                    "104.00",
+                    "14690",
+                    "0.0297",
+                    "-0.0114"
+                  ]
+                ]
+              }
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "id": "q07",
+      "type": "single_choice",
+      "title": "Sortierlogik mit Vergleichsfunktion umsetzen",
+      "prompt": "Welche Python-Variante sortiert `quotes` korrekt mithilfe von `compare_fn`, wenn ein Rückgabewert grösser `0` bedeutet, dass das zweite Element vor dem ersten stehen soll?",
+      "options": [
+        {
+          "label": "Variante A",
+          "language": "python",
+          "code": "def sort_quotes(quotes, compare_fn):\n    for last in range(len(quotes) - 1, 0, -1):\n        for i in range(last):\n            if compare_fn(quotes[i], quotes[i + 1]) > 0:\n                quotes[i], quotes[i + 1] = quotes[i + 1], quotes[i]",
+          "rationale": "Die Vergleichsfunktion steuert den Tausch genau in der geforderten Richtung."
+        },
+        {
+          "label": "Variante B",
+          "language": "python",
+          "code": "def sort_quotes(quotes, compare_fn):\n    for last in range(len(quotes) - 1, 0, -1):\n        for i in range(last):\n            if compare_fn(quotes[i + 1], quotes[i]) > 0:\n                quotes[i], quotes[i + 1] = quotes[i + 1], quotes[i]",
+          "rationale": "Hier werden die Operanden in umgekehrter Reihenfolge verglichen."
+        },
+        {
+          "label": "Variante C",
+          "language": "python",
+          "code": "def sort_quotes(quotes, compare_fn):\n    for last in range(len(quotes) - 1, 0, -1):\n        for i in range(last):\n            if compare_fn(quotes[i], quotes[i + 1]) < 0:\n                quotes[i], quotes[i + 1] = quotes[i + 1], quotes[i]",
+          "rationale": "Die Richtung des Vergleichsergebnisses ist hier vertauscht."
+        },
+        {
+          "label": "Variante D",
+          "language": "python",
+          "code": "def sort_quotes(quotes, compare_fn):\n    for i in range(len(quotes) - 1):\n        if compare_fn(quotes[i], quotes[i + 1]) > 0:\n            quotes[i], quotes[i + 1] = quotes[i + 1], quotes[i]",
+          "rationale": "Ein einzelner Durchlauf reicht für eine vollständige Sortierung nicht aus."
+        }
+      ],
+      "correctIndex": 0,
+      "feedback": {
+        "correct": "Die Sortierlogik setzt die Vergleichsfunktion fachlich passend um.",
+        "wrong": "Achten Sie auf die Bedeutung des Rückgabewerts und darauf, dass wirklich komplett sortiert wird."
+      },
+      "progressLinks": [
+        "pv2fiae_sortierung_vergleichsfunktion"
+      ]
+    },
+    {
+      "id": "q08",
+      "type": "multi_select",
+      "title": "Vergleichsfunktion fachlich einordnen",
+      "prompt": "Welche zwei Aussagen beschreiben die Rolle von `compare_fn` in der Sortierlogik korrekt?",
+      "options": [
+        {
+          "text": "Das Sortierkriterium kann gewechselt werden, ohne den Sortieralgorithmus selbst umzuschreiben.",
+          "correct": true,
+          "rationale": "Genau darin liegt der Vorteil einer getrennten Vergleichsfunktion."
+        },
+        {
+          "text": "Ein Rückgabewert grösser `0` bedeutet hier, dass das zweite Element vor dem ersten eingeordnet werden soll.",
+          "correct": true,
+          "rationale": "So ist die Vergleichslogik in der Aufgabenstellung definiert."
+        },
+        {
+          "text": "Die Vergleichsfunktion sortiert das Array bereits selbstständig, auch ohne Schleifenlogik.",
+          "correct": false,
+          "rationale": "Die Vergleichsfunktion entscheidet nur über die Ordnung, sortiert aber nicht selbst."
+        },
+        {
+          "text": "Die Funktion darf nur `True` oder `False` zurückgeben, sonst kann kein Sortierverfahren arbeiten.",
+          "correct": false,
+          "rationale": "Die Aufgabenstellung arbeitet gerade mit einem numerischen Rückgabewert."
+        },
+        {
+          "text": "Ein einziger Vergleichsaufruf reicht immer aus, um die komplette Reihenfolge festzulegen.",
+          "correct": false,
+          "rationale": "Sortierverfahren benötigen typischerweise viele Vergleiche."
+        }
+      ],
+      "feedback": {
+        "correct": "Die Aufgabe und Rolle der Vergleichsfunktion sind sauber eingeordnet.",
+        "wrong": "Trennen Sie klar zwischen der reinen Vergleichsentscheidung und der eigentlichen Sortierarbeit."
+      },
+      "progressLinks": [
+        "pv2fiae_sortierung_vergleichsfunktion"
+      ]
+    },
+    {
+      "id": "q09",
+      "type": "single_choice",
+      "title": "Tage mit besserer Notierung zählen",
+      "prompt": "Welche Python-Variante liefert die Anzahl der Tage, an denen die prozentuale Änderung der Aktie grösser war als die des Index?",
+      "options": [
+        {
+          "label": "Variante A",
+          "language": "python",
+          "code": "def count_outperforming_days(quotes):\n    count = 0\n    for quote in quotes:\n        if quote.prozVAktie > quote.prozVIndex:\n            count += 1\n    return count",
+          "rationale": "Hier wird genau die geforderte Relation zwischen den beiden Prozentwerten geprüft."
+        },
+        {
+          "label": "Variante B",
+          "language": "python",
+          "code": "def count_outperforming_days(quotes):\n    count = 0\n    for quote in quotes:\n        if quote.prozVAktie < quote.prozVIndex:\n            count += 1\n    return count",
+          "rationale": "Damit würden gerade die schlechteren Tage der Aktie gezählt."
+        },
+        {
+          "label": "Variante C",
+          "language": "python",
+          "code": "def count_outperforming_days(quotes):\n    count = 0\n    for quote in quotes:\n        if quote.aktienkurs > quote.indexWert:\n            count += 1\n    return count",
+          "rationale": "Verglichen werden sollen relative Veränderungen, nicht die absoluten Werte in unterschiedlichen Skalen."
+        },
+        {
+          "label": "Variante D",
+          "language": "python",
+          "code": "def count_outperforming_days(quotes):\n    count = 0\n    for quote in quotes:\n        if quote.prozVAktie > quote.prozVIndex:\n            count = 1\n    return count",
+          "rationale": "Der Zähler wird hier nicht sauber aufsummiert."
+        }
+      ],
+      "correctIndex": 0,
+      "feedback": {
+        "correct": "Die Vergleichs- und Zähllogik für die Tagesauswertung passt.",
+        "wrong": "Achten Sie auf den Vergleich der Prozentveränderungen und darauf, wie der Zähler aktualisiert wird."
+      },
+      "progressLinks": [
+        "pv2fiae_sortierung_vergleichsfunktion"
+      ]
+    },
+    {
+      "id": "f03",
+      "type": "followup_divider",
+      "title": "Whitebox-Tests und Pfade absichern",
+      "from": "qualitaetssicherung@voltaris-motion.example",
+      "to": "projektteam@ausbildungsbetrieb.example",
+      "subject": "Whitebox-Vorteile, Regression und Pfade für `login(...)` einordnen",
+      "date": "2026-03-20",
+      "body": "Hallo,\n\nim Testteam werden aktuell Whitebox- und Blackbox-Strategien gegeneinander abgegrenzt. Parallel sollen Regressionstests begründet, Überdeckungsmetriken eingeordnet und die möglichen Pfade eines Login-Ablaufs nachvollzogen werden.\n\nBitte nutzen Sie den unten gezeigten Algorithmus als Basis für die Pfadbetrachtung.\n\nViele Grüsse\nQualitätssicherung",
+      "visuals": [
+        {
+          "type": "code_compare",
+          "eyebrow": "Arbeitsstand",
+          "title": "Ablauf von `login(name, password)`",
+          "caption": "Die Markierungen B1 bis B3 stehen für Bedingungen, A1 bis A4 für ausführbare Anweisungen.",
+          "blocks": [
+            {
+              "title": "Login-Algorithmus",
+              "language": "java",
+              "code": "void login(String name, String password) {\n    if (checkCredentials(name, password)) { // B1\n        showStandardMenu(); // A1\n        if (checkPremiumMember()) { // B2\n            showPremiumMemberMenu(); // A3\n        }\n        if (checkStaffMember()) { // B3\n            showStaffMemberMenu(); // A4\n        }\n    } else {\n        showErrorMessage(); // A2\n    }\n}"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "q10",
+      "type": "multi_select",
+      "title": "Vorteile von Whitebox-Tests",
+      "prompt": "Welche zwei Vorteile sprechen im Teamgespräch für Whitebox-Tests gegenüber Blackbox-Tests?",
+      "options": [
+        {
+          "text": "Fehler lassen sich häufig genauer auf interne Codestellen eingrenzen.",
+          "correct": true,
+          "rationale": "Whitebox-Tests kennen den inneren Aufbau und erleichtern dadurch die Lokalisierung."
+        },
+        {
+          "text": "Innere Zweige und bisher ungetestete Codeteile können gezielt abgedeckt werden.",
+          "correct": true,
+          "rationale": "Whitebox-Tests unterstützen gerade die gezielte Abdeckung interner Strukturen."
+        },
+        {
+          "text": "Sie benötigen keinerlei Kenntnis über den Quellcode und sind deshalb immer einfacher.",
+          "correct": false,
+          "rationale": "Das beschreibt eher Blackbox-Tests und ist kein Vorteil von Whitebox-Tests."
+        },
+        {
+          "text": "Sie entdecken automatisch alle fehlenden Fachanforderungen, auch wenn diese nie spezifiziert wurden.",
+          "correct": false,
+          "rationale": "Das lässt sich so pauschal nicht aus Whitebox-Tests ableiten."
+        },
+        {
+          "text": "Sie ersetzen grundsätzlich alle Integrations- und Systemtests.",
+          "correct": false,
+          "rationale": "Whitebox-Tests decken andere Fragestellungen ab und ersetzen die späteren Teststufen nicht."
+        }
+      ],
+      "feedback": {
+        "correct": "Die fachlich zentralen Vorteile von Whitebox-Tests sind korrekt erkannt.",
+        "wrong": "Achten Sie auf Vorteile, die sich aus der Kenntnis der inneren Programmstruktur ergeben."
+      },
+      "progressLinks": [
+        "pv2fiae_whitebox_regression"
+      ]
+    },
+    {
+      "id": "q11",
+      "type": "single_choice",
+      "title": "Zweck von Regressionstests",
+      "prompt": "Welchen Zweck verfolgen Regressionstests am treffendsten?",
+      "options": [
+        {
+          "text": "Sie prüfen, ob bestehende Funktionen nach Codeänderungen, Optimierungen oder Fehlerbehebungen weiterhin korrekt arbeiten.",
+          "rationale": "Genau das ist der Zweck von Regressionstests."
+        },
+        {
+          "text": "Sie werden nur einmal vor der ersten Auslieferung verwendet und danach nicht mehr benötigt.",
+          "rationale": "Regressionstests sind gerade für spätere Änderungen wichtig."
+        },
+        {
+          "text": "Sie ersetzen die fachliche Spezifikation durch zufällige Stichproben im Produktivsystem.",
+          "rationale": "Das beschreibt keinen sinnvollen Testzweck."
+        },
+        {
+          "text": "Sie dienen ausschliesslich dazu, Hardwarefehler in der Produktionsumgebung aufzudecken.",
+          "rationale": "Regressionstests beziehen sich auf Softwareverhalten nach Änderungen."
+        }
+      ],
+      "correctIndex": 0,
+      "feedback": {
+        "correct": "Der Zweck von Regressionstests ist richtig beschrieben.",
+        "wrong": "Denken Sie an Änderungen im Code und daran, bestehendes Verhalten nach solchen Eingriffen abzusichern."
+      },
+      "progressLinks": [
+        "pv2fiae_whitebox_regression"
+      ]
+    },
+    {
+      "id": "q12",
+      "type": "match_pairs",
+      "title": "Testmetriken mit Kriterien verknüpfen",
+      "prompt": "Ordnen Sie jeder Whitebox-Metrik das passende Kriterium für die Gewinnung der Testdaten zu.",
+      "pairs": [
+        {
+          "key": "cov_1",
+          "left": "Anweisungsüberdeckung",
+          "right": "Testdaten so wählen, dass jede Anweisung mindestens einmal ausgeführt wird"
+        },
+        {
+          "key": "cov_2",
+          "left": "Zweigüberdeckung",
+          "right": "Testdaten so wählen, dass jeder Zweig jeder Bedingung mindestens einmal durchlaufen wird"
+        },
+        {
+          "key": "cov_3",
+          "left": "Pfadüberdeckung",
+          "right": "Testdaten so wählen, dass jeder mögliche Pfad vom Einstieg bis zum Ausstieg abgedeckt wird"
+        }
+      ],
+      "options": [
+        "Testdaten so wählen, dass jede Anweisung mindestens einmal ausgeführt wird",
+        "Testdaten so wählen, dass jeder Zweig jeder Bedingung mindestens einmal durchlaufen wird",
+        "Testdaten so wählen, dass jeder mögliche Pfad vom Einstieg bis zum Ausstieg abgedeckt wird"
+      ],
+      "feedback": {
+        "correct": "Die Metriken sind mit den passenden Kriterien verknüpft.",
+        "wrong": "Trennen Sie sauber zwischen einzelnen Anweisungen, Verzweigungen und kompletten Pfaden."
+      },
+      "progressLinks": [
+        "pv2fiae_testabdeckung_pfade"
+      ]
+    },
+    {
+      "id": "q13",
+      "type": "multi_select",
+      "title": "Aufbau der Überdeckungsmetriken",
+      "prompt": "Welche zwei Aussagen beschreiben den hierarchischen Aufbau der drei Whitebox-Metriken korrekt?",
+      "options": [
+        {
+          "text": "Vollständige Zweigüberdeckung schliesst eine vollständige Anweisungsüberdeckung mit ein.",
+          "correct": true,
+          "rationale": "Wer alle Zweige abdeckt, führt damit auch alle Anweisungen aus."
+        },
+        {
+          "text": "Vollständige Pfadüberdeckung schliesst eine vollständige Zweigüberdeckung mit ein.",
+          "correct": true,
+          "rationale": "Pfadüberdeckung ist hier die stärkere Anforderung."
+        },
+        {
+          "text": "Anweisungsüberdeckung enthält automatisch jede Zweigüberdeckung.",
+          "correct": false,
+          "rationale": "Anweisungsüberdeckung ist die schwächere Metrik."
+        },
+        {
+          "text": "Zweigüberdeckung enthält automatisch jede Pfadüberdeckung.",
+          "correct": false,
+          "rationale": "Das Verhältnis ist genau andersherum."
+        },
+        {
+          "text": "Pfadüberdeckung ignoriert einzelne Anweisungen, weil nur Start und Ende betrachtet werden.",
+          "correct": false,
+          "rationale": "Gerade Pfade bestehen aus konkreten Abfolgen von Anweisungen und Bedingungen."
+        }
+      ],
+      "feedback": {
+        "correct": "Die Einschlussbeziehungen der Metriken sind korrekt beschrieben.",
+        "wrong": "Ordnen Sie die Metriken von schwacher zu starker Abdeckung und prüfen Sie, was jeweils automatisch enthalten ist."
+      },
+      "progressLinks": [
+        "pv2fiae_testabdeckung_pfade"
+      ]
+    },
+    {
+      "id": "q14",
+      "type": "multi_select",
+      "title": "Mögliche Pfade des Login-Ablaufs",
+      "prompt": "Welche Pfadfolgen können im gezeigten Algorithmus tatsächlich auftreten? Wählen Sie alle möglichen Pfade aus.",
+      "options": [
+        {
+          "text": "B1, A2",
+          "correct": true,
+          "rationale": "Bei ungültigen Zugangsdaten wird direkt die Fehlermeldung gezeigt."
+        },
+        {
+          "text": "B1, A1, B2, A3, B3, A4",
+          "correct": true,
+          "rationale": "Dieser Pfad entsteht, wenn alle drei Bedingungen wahr sind."
+        },
+        {
+          "text": "B1, A1, B2, B3, A4",
+          "correct": true,
+          "rationale": "Premium ist hier falsch, Staff wahr."
+        },
+        {
+          "text": "B1, A1, B2, A3, B3",
+          "correct": true,
+          "rationale": "Premium ist wahr, Staff falsch."
+        },
+        {
+          "text": "B1, A1, B2, B3",
+          "correct": true,
+          "rationale": "Sowohl Premium als auch Staff sind hier falsch."
+        },
+        {
+          "text": "B1, A1, A2",
+          "correct": false,
+          "rationale": "Nach erfolgreichem Credentials-Check wird die Fehlermeldung nicht mehr erreicht."
+        },
+        {
+          "text": "B1, A2, B3, A4",
+          "correct": false,
+          "rationale": "Mit Fehlermeldung im Else-Zweig werden die inneren Menüzweige nicht mehr durchlaufen."
+        },
+        {
+          "text": "B1, A1, B3, A4, A2",
+          "correct": false,
+          "rationale": "A2 liegt nur im Else-Zweig des ersten `if` und kann danach nicht mehr auftreten."
+        }
+      ],
+      "feedback": {
+        "correct": "Die möglichen Pfade des Login-Ablaufs sind passend identifiziert.",
+        "wrong": "Verfolgen Sie genau, welche Anweisungen nur bei erfolgreichem Login erreichbar sind und wann der Else-Zweig abschneidet."
+      },
+      "progressLinks": [
+        "pv2fiae_testabdeckung_pfade"
+      ]
+    },
+    {
+      "id": "f04",
+      "type": "followup_divider",
+      "title": "SQL-Berichte für die Hauptversammlung",
+      "from": "datenanalyse@voltaris-motion.example",
+      "to": "projektteam@ausbildungsbetrieb.example",
+      "subject": "Tabellenstand und SQL-Berichte für die Kursauswertung abstimmen",
+      "date": "2026-03-20",
+      "body": "Hallo,\n\nfür die Hauptversammlung benötigt die Geschäftsleitung mehrere SQL-Auswertungen auf Basis der Kurs- und Börsendaten. Die Tabellenstruktur steht fest, ausserdem werden Vorjahresdaten jährlich in `AktienKursArchiv` überführt. Bitte nutzen Sie den unten gezeigten Tabellenstand als fachliche Grundlage.\n\nWichtig: Die sichtbaren Transaktionen sind nur ein Ausschnitt. Die Ergebnistabellen in den Aufgaben beziehen sich auf den Vollbestand der Daten.\n\nViele Grüsse\nDatenanalyse",
+      "visuals": [
+        {
+          "type": "table_group",
+          "eyebrow": "Tabellenstand",
+          "title": "Pseudonymisierte Tabellen für die SQL-Aufgaben",
+          "caption": "Die gezeigten Transaktionen sind ein Ausschnitt des aktuellen Bestands.",
+          "tableRows": [
+            [
+              {
+                "title": "Tabelle `Aktie`",
+                "columns": [
+                  "A_ID",
+                  "A_Name",
+                  "A_WKN"
+                ],
+                "rows": [
+                  [
+                    "1",
+                    "Helion Storage",
+                    "HL1001"
+                  ],
+                  [
+                    "2",
+                    "Rheinwerk Motors",
+                    "RM2040"
+                  ],
+                  [
+                    "3",
+                    "UrbanRide Components",
+                    "UR3300"
+                  ],
+                  [
+                    "4",
+                    "Nordair Systems",
+                    "NA7788"
+                  ],
+                  [
+                    "5",
+                    "Bergwerk Energy",
+                    "BE5511"
+                  ],
+                  [
+                    "6",
+                    "Voltaris",
+                    "VT9999"
+                  ]
+                ]
+              },
+              {
+                "title": "Tabelle `Boerse`",
+                "columns": [
+                  "B_ID",
+                  "B_Name",
+                  "B_Kürzel"
+                ],
+                "rows": [
+                  [
+                    "1",
+                    "Nordbörse Frankfurt",
+                    "NBF"
+                  ],
+                  [
+                    "2",
+                    "Südbörse Stuttgart",
+                    "SBS"
+                  ],
+                  [
+                    "3",
+                    "Handelsplatz Hannover",
+                    "HPH"
+                  ],
+                  [
+                    "4",
+                    "Markt Düsseldorf",
+                    "MDU"
+                  ],
+                  [
+                    "5",
+                    "Börse München",
+                    "BMU"
+                  ],
+                  [
+                    "6",
+                    "Tradepoint",
+                    "TPX"
+                  ]
+                ]
+              }
+            ],
+            [
+              {
+                "title": "Tabelle `AktienKurs`",
+                "columns": [
+                  "AK_ID",
+                  "AK_DatumZeit",
+                  "AK_Kurs",
+                  "AK_BoerseID",
+                  "AK_AktieID",
+                  "AK_Anzahl"
+                ],
+                "rows": [
+                  [
+                    "10021",
+                    "2026-04-19 10:08:00.033",
+                    "61.35",
+                    "1",
+                    "6",
+                    "5"
+                  ],
+                  [
+                    "10022",
+                    "2026-04-19 10:09:20.110",
+                    "61.92",
+                    "2",
+                    "6",
+                    "100"
+                  ],
+                  [
+                    "10023",
+                    "2026-04-19 10:09:55.110",
+                    "61.78",
+                    "1",
+                    "6",
+                    "150"
+                  ],
+                  [
+                    "10024",
+                    "2026-04-19 10:09:55.120",
+                    "210.66",
+                    "2",
+                    "4",
+                    "150"
+                  ],
+                  [
+                    "10025",
+                    "2026-04-19 10:11:55.120",
+                    "61.44",
+                    "4",
+                    "6",
+                    "150"
+                  ],
+                  [
+                    "10026",
+                    "2026-04-19 10:12:05.120",
+                    "61.50",
+                    "3",
+                    "6",
+                    "70"
+                  ],
+                  [
+                    "10027",
+                    "2026-04-19 11:00:01.020",
+                    "61.85",
+                    "2",
+                    "6",
+                    "99"
+                  ],
+                  [
+                    "10028",
+                    "2026-04-19 11:00:02.033",
+                    "61.71",
+                    "3",
+                    "6",
+                    "120"
+                  ],
+                  [
+                    "10029",
+                    "2026-04-19 11:00:02.133",
+                    "61.68",
+                    "2",
+                    "6",
+                    "250"
+                  ]
+                ]
+              }
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "id": "q15",
+      "type": "single_choice",
+      "title": "Löschanweisung für eine nicht mehr gehandelte Aktie",
+      "prompt": "Welche SQL-Anweisung entfernt alle Kursdatensätze der Aktie mit `AK_AktieID = 4` aus `AktienKurs`?",
+      "options": [
+        {
+          "label": "Variante A",
+          "language": "sql",
+          "code": "DELETE FROM AktienKurs\nWHERE AK_AktieID = 4;",
+          "rationale": "Diese Anweisung entfernt genau die geforderten Datensätze aus der richtigen Tabelle."
+        },
+        {
+          "label": "Variante B",
+          "language": "sql",
+          "code": "DELETE FROM Aktie\nWHERE AK_AktieID = 4;",
+          "rationale": "Hier wird die falsche Tabelle angesprochen."
+        },
+        {
+          "label": "Variante C",
+          "language": "sql",
+          "code": "DELETE AK_AktieID = 4\nFROM AktienKurs;",
+          "rationale": "Die Syntax der DELETE-Anweisung ist so nicht korrekt."
+        },
+        {
+          "label": "Variante D",
+          "language": "sql",
+          "code": "SELECT * FROM AktienKurs\nWHERE AK_AktieID = 4;",
+          "rationale": "Diese Anweisung liest nur Daten aus und löscht nichts."
+        }
+      ],
+      "correctIndex": 0,
+      "feedback": {
+        "correct": "Die Löschanweisung für die nicht mehr gehandelte Aktie ist korrekt gewählt.",
+        "wrong": "Prüfen Sie Tabelle, Feldname und SQL-Syntax der DELETE-Anweisung."
+      },
+      "progressLinks": [
+        "pv2fiae_sql_auswertung_archiv"
+      ]
+    },
+    {
+      "id": "q16",
+      "type": "single_choice",
+      "title": "Börsenweise Kursstatistik aufbauen",
+      "visuals": [
+        {
+          "type": "table",
+          "eyebrow": "Erwartete Ausgabe",
+          "title": "Börsenweise Kursstatistik für `Voltaris`",
+          "caption": "Die gezeigten Kennzahlen beziehen sich auf den Vollbestand, nicht nur auf den sichtbaren Transaktionsausschnitt.",
+          "columns": [
+            "B_ID",
+            "B_Name",
+            "KursMin",
+            "KursMax",
+            "KursDurchschnitt",
+            "AnzahlTransaktionen"
+          ],
+          "rows": [
+            [
+              "1",
+              "Nordbörse Frankfurt",
+              "61.35",
+              "61.78",
+              "61.565000",
+              "2140"
+            ],
+            [
+              "2",
+              "Südbörse Stuttgart",
+              "61.68",
+              "61.92",
+              "61.816667",
+              "2988"
+            ],
+            [
+              "3",
+              "Handelsplatz Hannover",
+              "61.50",
+              "61.71",
+              "61.605000",
+              "1875"
+            ],
+            [
+              "4",
+              "Markt Düsseldorf",
+              "61.44",
+              "61.44",
+              "61.440000",
+              "954"
+            ]
+          ]
+        }
+      ],
+      "prompt": "Welche SQL-Anweisung liefert für die Aktie `AK_AktieID = 6` je Börse Minimalwert, Maximalwert, Durchschnittskurs und Anzahl der Transaktionen in der gezeigten Struktur?",
+      "options": [
+        {
+          "label": "Variante A",
+          "language": "sql",
+          "code": "SELECT\n    b.B_ID,\n    b.B_Name,\n    MIN(ak.AK_Kurs) AS KursMin,\n    MAX(ak.AK_Kurs) AS KursMax,\n    AVG(ak.AK_Kurs) AS KursDurchschnitt,\n    COUNT(ak.AK_ID) AS AnzahlTransaktionen\nFROM Börse AS b\nINNER JOIN AktienKurs AS ak ON ak.AK_BoerseID = b.B_ID\nWHERE ak.AK_AktieID = 6\nGROUP BY b.B_ID, b.B_Name;",
+          "rationale": "Diese Variante verknüpft die Tabellen korrekt und aggregiert pro Börse."
+        },
+        {
+          "label": "Variante B",
+          "language": "sql",
+          "code": "SELECT\n    b.B_ID,\n    MIN(ak.AK_Kurs) AS KursMin,\n    MAX(ak.AK_Kurs) AS KursMax,\n    COUNT(ak.AK_ID) AS AnzahlTransaktionen\nFROM Börse AS b\nINNER JOIN AktienKurs AS ak ON ak.AK_BoerseID = b.B_ID\nWHERE ak.AK_AktieID = 6\nGROUP BY ak.AK_ID;",
+          "rationale": "Hier wird nach einzelnen Transaktionen statt nach Börsen gruppiert, ausserdem fehlt der Durchschnitt."
+        },
+        {
+          "label": "Variante C",
+          "language": "sql",
+          "code": "SELECT\n    B_ID,\n    B_Name,\n    MIN(AK_Kurs) AS KursMin,\n    MAX(AK_Kurs) AS KursMax,\n    AVG(AK_Kurs) AS KursDurchschnitt,\n    COUNT(AK_ID) AS AnzahlTransaktionen\nFROM Börse\nWHERE AK_AktieID = 6\nGROUP BY B_ID, B_Name;",
+          "rationale": "Die Kursdaten kommen aus `AktienKurs`; ohne Join fehlen die benötigten Datensätze."
+        },
+        {
+          "label": "Variante D",
+          "language": "sql",
+          "code": "SELECT\n    b.B_ID,\n    b.B_Name,\n    MIN(ak.AK_Kurs) AS KursMin,\n    MAX(ak.AK_Kurs) AS KursMax,\n    SUM(ak.AK_Kurs) AS KursDurchschnitt,\n    COUNT(*) AS AnzahlTransaktionen\nFROM Börse AS b\nINNER JOIN AktienKurs AS ak ON ak.AK_BoerseID = b.B_ID\nWHERE ak.AK_AktieID = 6\nGROUP BY b.B_ID, b.B_Name;",
+          "rationale": "Für den Durchschnitt darf hier nicht `SUM` verwendet werden."
+        }
+      ],
+      "correctIndex": 0,
+      "feedback": {
+        "correct": "Die Aggregation pro Börse ist fachlich korrekt aufgebaut.",
+        "wrong": "Achten Sie auf Join, Filter, Aggregatfunktionen und die korrekte Gruppierung pro Börse."
+      },
+      "progressLinks": [
+        "pv2fiae_sql_auswertung_archiv"
+      ]
+    },
+    {
+      "id": "q17",
+      "type": "single_choice",
+      "title": "Vorjahresdaten korrekt archivieren",
+      "prompt": "Welche SQL-Variante verschiebt am Jahresanfang alle Datensätze früherer Jahre aus `AktienKurs` nach `AktienKursArchiv` und entfernt sie anschliessend aus der Originaltabelle?",
+      "options": [
+        {
+          "label": "Variante A",
+          "language": "sql",
+          "code": "INSERT INTO AktienKursArchiv (AK_ID, AK_DatumZeit, AK_Kurs, AK_BoerseID, AK_AktieID, AK_Anzahl)\nSELECT AK_ID, AK_DatumZeit, AK_Kurs, AK_BoerseID, AK_AktieID, AK_Anzahl\nFROM AktienKurs\nWHERE YEAR(AK_DatumZeit) < YEAR(CURDATE());\n\nDELETE FROM AktienKurs\nWHERE YEAR(AK_DatumZeit) < YEAR(CURDATE());",
+          "rationale": "Erst kopieren, dann löschen: so werden die Vorjahresdaten korrekt verschoben."
+        },
+        {
+          "label": "Variante B",
+          "language": "sql",
+          "code": "DELETE FROM AktienKurs\nWHERE YEAR(AK_DatumZeit) < YEAR(CURDATE());\n\nINSERT INTO AktienKursArchiv (AK_ID, AK_DatumZeit, AK_Kurs, AK_BoerseID, AK_AktieID, AK_Anzahl)\nSELECT AK_ID, AK_DatumZeit, AK_Kurs, AK_BoerseID, AK_AktieID, AK_Anzahl\nFROM AktienKurs\nWHERE YEAR(AK_DatumZeit) < YEAR(CURDATE());",
+          "rationale": "Nach dem DELETE stehen die zu archivierenden Datensätze nicht mehr für das INSERT bereit."
+        },
+        {
+          "label": "Variante C",
+          "language": "sql",
+          "code": "INSERT INTO AktienKursArchiv (AK_ID)\nSELECT AK_ID\nFROM AktienKurs\nWHERE YEAR(AK_DatumZeit) < YEAR(CURDATE());",
+          "rationale": "Hier würde nur die ID übernommen; die Tabellen sind aber gleich aufgebaut und sollen vollständig befüllt werden."
+        },
+        {
+          "label": "Variante D",
+          "language": "sql",
+          "code": "INSERT INTO AktienKurs\nSELECT *\nFROM AktienKursArchiv\nWHERE YEAR(AK_DatumZeit) < YEAR(CURDATE());",
+          "rationale": "Diese Variante kopiert in die falsche Richtung."
+        }
+      ],
+      "correctIndex": 0,
+      "feedback": {
+        "correct": "Die Vorjahresdaten werden in der fachlich richtigen Reihenfolge verschoben.",
+        "wrong": "Denken Sie daran, dass ein Verschieben aus Einfügen in die Zieltabelle und anschliessendem Löschen aus der Quelltabelle besteht."
+      },
+      "progressLinks": [
+        "pv2fiae_sql_auswertung_archiv"
+      ]
+    },
+    {
+      "id": "q18",
+      "type": "single_choice",
+      "title": "Jahresübersicht aus aktuellem und archiviertem Bestand",
+      "visuals": [
+        {
+          "type": "table",
+          "eyebrow": "Erwartete Ausgabe",
+          "title": "Jahresstatistik für `Voltaris` über alle Börsen",
+          "caption": "Die Ausgabe soll aktuelle und archivierte Kursdaten gemeinsam auswerten und nach Jahren absteigend sortieren.",
+          "columns": [
+            "Börsenjahr",
+            "KursMin",
+            "KursMax",
+            "AnzahlTransaktionen"
+          ],
+          "rows": [
+            [
+              "2026",
+              "61.35",
+              "61.92",
+              "7857"
+            ],
+            [
+              "2025",
+              "57.10",
+              "60.42",
+              "9124"
+            ],
+            [
+              "2024",
+              "55.86",
+              "59.77",
+              "6481"
+            ]
+          ]
+        }
+      ],
+      "prompt": "Welche SQL-Anweisung liefert für `AK_AktieID = 6` über alle Jahre und alle Börsen Minimalwert, Maximalwert und Anzahl der Transaktionen, wenn aktuelle Daten in `AktienKurs` und Vorjahresdaten in `AktienKursArchiv` liegen?",
+      "options": [
+        {
+          "label": "Variante A",
+          "language": "sql",
+          "code": "SELECT\n    YEAR(x.AK_DatumZeit) AS Börsenjahr,\n    MIN(x.AK_Kurs) AS KursMin,\n    MAX(x.AK_Kurs) AS KursMax,\n    COUNT(x.AK_ID) AS AnzahlTransaktionen\nFROM (\n    SELECT AK_ID, AK_DatumZeit, AK_Kurs\n    FROM AktienKurs\n    WHERE AK_AktieID = 6\n    UNION ALL\n    SELECT AK_ID, AK_DatumZeit, AK_Kurs\n    FROM AktienKursArchiv\n    WHERE AK_AktieID = 6\n) AS x\nGROUP BY YEAR(x.AK_DatumZeit)\nORDER BY Börsenjahr DESC;",
+          "rationale": "Diese Variante führt aktuellen und archivierten Bestand korrekt zusammen und aggregiert pro Jahr."
+        },
+        {
+          "label": "Variante B",
+          "language": "sql",
+          "code": "SELECT\n    YEAR(AK_DatumZeit) AS Börsenjahr,\n    MIN(AK_Kurs) AS KursMin,\n    MAX(AK_Kurs) AS KursMax,\n    COUNT(AK_ID) AS AnzahlTransaktionen\nFROM AktienKurs\nWHERE AK_AktieID = 6\nGROUP BY YEAR(AK_DatumZeit)\nORDER BY Börsenjahr DESC;",
+          "rationale": "Hier fehlt der archivierte Tabellenbestand komplett."
+        },
+        {
+          "label": "Variante C",
+          "language": "sql",
+          "code": "SELECT\n    YEAR(x.AK_DatumZeit) AS Börsenjahr,\n    MIN(x.AK_Kurs) AS KursMin,\n    MAX(x.AK_Kurs) AS KursMax,\n    COUNT(x.AK_ID) AS AnzahlTransaktionen\nFROM (\n    SELECT AK_ID, AK_DatumZeit, AK_Kurs\n    FROM AktienKurs\n    WHERE AK_AktieID = 6\n    UNION\n    SELECT AK_ID, AK_DatumZeit, AK_Kurs\n    FROM AktienKursArchiv\n    WHERE AK_AktieID = 6\n) AS x\nGROUP BY YEAR(x.AK_DatumZeit)\nORDER BY Börsenjahr ASC;",
+          "rationale": "Hier wird aufsteigend sortiert; ausserdem kann `UNION` Dubletten für Zählungen ungewollt entfernen."
+        },
+        {
+          "label": "Variante D",
+          "language": "sql",
+          "code": "SELECT\n    YEAR(x.AK_DatumZeit) AS Börsenjahr,\n    MIN(x.AK_Kurs) AS KursMin,\n    MAX(x.AK_Kurs) AS KursMax,\n    COUNT(x.AK_ID) AS AnzahlTransaktionen\nFROM (\n    SELECT AK_ID, AK_DatumZeit, AK_Kurs\n    FROM AktienKurs\n    WHERE AK_AktieID = 6\n    UNION ALL\n    SELECT AK_ID, AK_DatumZeit, AK_Kurs\n    FROM AktienKursArchiv\n    WHERE AK_AktieID = 6\n) AS x\nGROUP BY x.AK_DatumZeit\nORDER BY Börsenjahr DESC;",
+          "rationale": "Hier wird nach einzelnen Zeitpunkten statt nach Jahren gruppiert."
+        }
+      ],
+      "correctIndex": 0,
+      "feedback": {
+        "correct": "Die Jahresübersicht führt aktuellen und archivierten Bestand fachlich korrekt zusammen.",
+        "wrong": "Achten Sie auf den Zusammenschluss beider Tabellen, die Aggregation pro Jahr und die verlangte Sortierung absteigend nach Jahren."
+      },
+      "progressLinks": [
+        "pv2fiae_sql_auswertung_archiv"
+      ]
+    }
+  ]
+}

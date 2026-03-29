@@ -1,0 +1,159 @@
+{
+  "scenario": {
+    "company": "Ausbildungsbetrieb IT-Service",
+    "scale": "Mittelstand, 220 Mitarbeitende",
+    "context": "Station 04 des Tageslaufs: Benutzerschnittstellen ergonomisch konzipieren.",
+    "mission": "Sie entwerfen UI-Elemente nach Ergonomiekriterien und sichern konsistente Interaktion.",
+    "station": {
+      "id": "LF10FIAE-ST-04",
+      "department": "UX Design",
+      "profile": "Ergonomie und Interaktion",
+      "constraints": [
+        "Konsistenz sicherstellen",
+        "Rückmeldelogik ausbauen",
+        "Nutzeraufgabe in den Mittelpunkt stellen"
+      ]
+    },
+    "customerRequest": {
+      "from": "ux.team@ausbildungsbetrieb.example",
+      "to": "dev.team@ausbildungsbetrieb.example",
+      "subject": "Station 04: Ergonomiekonzept",
+      "date": "2026-03-13",
+      "body": "Bitte entwickeln Sie ein ergonomisches Konzept für die Ticketbearbeitungsoberfläche."
+    }
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "type": "single_choice",
+      "title": "Konsistenzregel",
+      "prompt": "Welche Regel ist für ergonomische UIs besonders wichtig?",
+      "options": [
+        {
+          "text": "Jeder Screen sollte einzigartig bedienbar sein",
+          "rationale": "Erhöht Lernaufwand."
+        },
+        {
+          "text": "Fehlermeldungen nur mit Codes anzeigen",
+          "rationale": "Nutzerunfreundlich."
+        },
+        {
+          "text": "Gleiche Aktionen sollten gleich bedienbar sein",
+          "rationale": "Kern der Interaktionskonsistenz."
+        }
+      ],
+      "correctIndex": 2,
+      "feedback": {
+        "correct": "Richtig: Konsistenz ist ein zentrales Ergonomiekriterium.",
+        "wrong": "Nicht passend: Inkonsistenz verschlechtert Bedienbarkeit."
+      },
+      "progressLinks": [
+        "lf10fiae_ui_konzeption_ergonomie"
+      ]
+    },
+    {
+      "id": "q2",
+      "type": "multi_select",
+      "title": "Ergonomie im Detail",
+      "prompt": "Welche Punkte verbessern die Bedienbarkeit? (Mehrfachauswahl)",
+      "options": [
+        {
+          "text": "Sichtbare Rückmeldung nach jeder Aktion",
+          "correct": true,
+          "rationale": "Nutzer behalten Kontrolle."
+        },
+        {
+          "text": "Klare Beschriftung von Eingabefeldern",
+          "correct": true,
+          "rationale": "Verhindert Missverständnisse."
+        },
+        {
+          "text": "Versteckte Primaraktionen",
+          "correct": false,
+          "rationale": "Erschwert Bedienung."
+        },
+        {
+          "text": "Sinnvolle Tastaturkürzel für Häufiges",
+          "correct": true,
+          "rationale": "Steigert Effizienz."
+        },
+        {
+          "text": "Uneinheitliche Benennung gleicher Objekte",
+          "correct": false,
+          "rationale": "Senkt Verständlichkeit."
+        }
+      ],
+      "feedback": {
+        "correct": "Richtig: Die Kriterien sind ergonomisch stimmig.",
+        "wrong": "Teilweise falsch: Bitte Rückmeldung, Klarheit und Konsistenz stärker absichern."
+      },
+      "progressLinks": [
+        "lf10fiae_ui_konzeption_ergonomie"
+      ]
+    },
+    {
+      "id": "q3",
+      "type": "ordering",
+      "title": "Interaktionskonzept entwickeln",
+      "prompt": "Ordnen Sie den Ablauf zur Entwicklung eines Interaktionskonzepts.",
+      "items": [
+        "Nutzeraufgaben priorisieren",
+        "Passende UI-Elemente zuordnen",
+        "Rückmeldelogik definieren",
+        "Konzept testen",
+        "Verbesserung einarbeiten"
+      ],
+      "correctOrder": [
+        "Nutzeraufgaben priorisieren",
+        "Passende UI-Elemente zuordnen",
+        "Rückmeldelogik definieren",
+        "Konzept testen",
+        "Verbesserung einarbeiten"
+      ],
+      "feedback": {
+        "correct": "Richtig: Das Interaktionskonzept ist sauber aufgebaut.",
+        "wrong": "Nicht optimal: Bitte von Nutzeraufgabe über Test zur Verbesserung gehen."
+      },
+      "progressLinks": [
+        "lf10fiae_ui_konzeption_ergonomie"
+      ]
+    },
+    {
+      "id": "q4",
+      "type": "number",
+      "title": "Bedienzeit vergleichen",
+      "prompt": "Variante A benötigt 52 Sekunden, Variante B 41 Sekunden pro Vorgang. Wie viele Sekunden spart Variante B je Vorgang?",
+      "expected": 11,
+      "toleranceAbs": 1,
+      "showExpectedFormula": "52 - 41 = 11 Sekunden",
+      "feedback": {
+        "correct": "Richtig gerechnet.",
+        "wrong": "Bitte Differenz der Bedienzeiten korrekt berechnen."
+      },
+      "progressLinks": [
+        "lf10fiae_ui_konzeption_ergonomie"
+      ]
+    },
+    {
+      "id": "q5",
+      "type": "short_text",
+      "title": "Ergonomiekonzept begründen",
+      "prompt": "Formulieren Sie in 4-6 Sätzen, wie Ihr Konzept Konsistenz und Fehlersicherheit verbessert.",
+      "minChars": 150,
+      "requiredKeywords": [
+        "konsistenz",
+        "fehlermeldung",
+        "nutzbarkeit"
+      ],
+      "expectedOutline": "Klarer Bezug zu Konsistenz, Rückmeldung und Fehlersicherheit.",
+      "feedback": {
+        "correct": "Richtig: Das Konzept ist ergonomisch nachvollziehbar.",
+        "wrong": "Bitte Konsistenz, Fehlermeldung und Nutzbarkeit konkreter verbinden."
+      },
+      "progressLinks": [
+        "lf10fiae_ui_konzeption_ergonomie",
+        "lf10fiae_ui_tests_ux"
+      ]
+    }
+  ]
+}

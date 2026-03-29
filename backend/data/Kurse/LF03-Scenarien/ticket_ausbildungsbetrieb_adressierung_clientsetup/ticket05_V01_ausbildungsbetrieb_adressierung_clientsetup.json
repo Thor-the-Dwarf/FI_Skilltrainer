@@ -1,0 +1,161 @@
+{
+  "scenario": {
+    "company": "Ausbildungsbetrieb IT-Service",
+    "scale": "Regional, 140 Mitarbeitende",
+    "context": "Station 5 des Tageslaufs: Adressierung und Client-Setup absichern.",
+    "mission": "Sie prüfen MAC/IP-Rollen, Basisdienste und ein sauberes Client-Setup im Unternehmensnetz.",
+    "station": {
+      "id": "LF03-ST-05",
+      "department": "Workplace Services",
+      "profile": "DHCP, DNS, Gateway, Subnetz und standardisierte Client-Adressierung",
+      "constraints": [
+        "Adressierungslogik sauber anwenden",
+        "Dienste korrekt zuordnen",
+        "Konfigurationsweg nachvollziehbar halten"
+      ]
+    },
+    "customerRequest": {
+      "from": "workplace.teamlead@ausbildungsbetrieb.example",
+      "to": "support.team@ausbildungsbetrieb.example",
+      "subject": "Station 05: Client-Adressierung und Setup prüfen",
+      "date": "2026-03-13",
+      "body": "Bitte prüfen Sie die Grundkonfiguration für neue Clients. Im Fokus stehen MAC und IP, DHCP, DNS, Gateway sowie eine kurze Erläuterung des betriebsüblichen Setups."
+    }
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "type": "single_choice",
+      "title": "MAC und IP unterscheiden",
+      "prompt": "Welche Aussage trifft zu?",
+      "options": [
+        {
+          "text": "Die MAC-Adresse gehört zur Schnittstelle, die IP-Adresse ordnet das Gerät logisch im Netz ein",
+          "rationale": "So lassen sich beide Adressarten im Alltag gut unterscheiden."
+        },
+        {
+          "text": "MAC und IP haben immer dieselbe Aufgabe",
+          "rationale": "Beide Adressarten dienen unterschiedlichen Zwecken."
+        },
+        {
+          "text": "Die IP-Adresse ersetzt jede Netzwerkkarte",
+          "rationale": "Ohne Schnittstelle kann die Adresse nicht genutzt werden."
+        }
+      ],
+      "correctIndex": 0,
+      "feedback": {
+        "correct": "Richtig: MAC und IP sind klar getrennte Adressbegriffe.",
+        "wrong": "Nicht passend: Bitte physische Schnittstelle und logische Einordnung trennen."
+      },
+      "progressLinks": [
+        "lf03_schichtenmodelle_adressierung"
+      ]
+    },
+    {
+      "id": "q2",
+      "type": "multi_select",
+      "title": "DHCP, DNS und Gateway zuordnen",
+      "prompt": "Welche Aussagen sind fachlich richtig? (Mehrfachauswahl)",
+      "options": [
+        {
+          "text": "DHCP kann Clients automatisch mit Netzparametern versorgen",
+          "correct": true,
+          "rationale": "Das ist ein typischer Standard für Arbeitsplatzsysteme."
+        },
+        {
+          "text": "DNS übersetzt Namen in nutzbare Adressinformationen",
+          "correct": true,
+          "rationale": "Ohne DNS werden viele Dienste für Nutzende unpraktisch."
+        },
+        {
+          "text": "Das Default Gateway wird für Ziele ausserhalb des eigenen Netzes gebraucht",
+          "correct": true,
+          "rationale": "Es vermittelt in andere Netze."
+        },
+        {
+          "text": "Die MAC-Adresse ersetzt die Subnetzmaske",
+          "correct": false,
+          "rationale": "Beides sind unterschiedliche Konzepte."
+        },
+        {
+          "text": "Statische Adressen sollten nur nach Vorgabe und dokumentiert vergeben werden",
+          "correct": true,
+          "rationale": "Das reduziert Konflikte und Verwaltungsfehler."
+        }
+      ],
+      "feedback": {
+        "correct": "Richtig: Sie ordnen die Basisdienste sauber zu.",
+        "wrong": "Teilweise falsch: Bitte DHCP, DNS, Gateway und Dokumentationspflicht klarer trennen."
+      },
+      "progressLinks": [
+        "lf03_ethernet_tcpip",
+        "lf03_schichtenmodelle_adressierung"
+      ]
+    },
+    {
+      "id": "q3",
+      "type": "ordering",
+      "title": "Prüfkette für ein neues Client-Setup",
+      "prompt": "Ordnen Sie die Schritte für ein sauberes Setup.",
+      "items": [
+        "Ergebnis dokumentieren",
+        "Link-Status und Schnittstelle prüfen",
+        "IP-Konfiguration inkl. DNS und Gateway kontrollieren",
+        "Erreichbarkeit lokal und zum Gateway testen",
+        "Namensauflösung und zentrale Dienste prüfen"
+      ],
+      "correctOrder": [
+        "Link-Status und Schnittstelle prüfen",
+        "IP-Konfiguration inkl. DNS und Gateway kontrollieren",
+        "Erreichbarkeit lokal und zum Gateway testen",
+        "Namensauflösung und zentrale Dienste prüfen",
+        "Ergebnis dokumentieren"
+      ],
+      "feedback": {
+        "correct": "Richtig: So wird das Setup systematisch und nachvollziehbar geprüft.",
+        "wrong": "Nicht optimal: Bitte erst Verbindung und Parameter, dann Dienste und Dokumentation."
+      },
+      "progressLinks": [
+        "lf03_ethernet_tcpip",
+        "lf03_client_integration"
+      ]
+    },
+    {
+      "id": "q4",
+      "type": "number",
+      "title": "Nutzbare Host-Adressen im /26-Netz",
+      "prompt": "Wie viele nutzbare Host-Adressen bietet ein /26-Subnetz?",
+      "expected": 62,
+      "toleranceAbs": 0,
+      "showExpectedFormula": "2^(32-26) - 2 = 62",
+      "feedback": {
+        "correct": "Richtig gerechnet.",
+        "wrong": "Bitte Hostbits bestimmen und Netz- sowie Broadcastadresse abziehen."
+      },
+      "progressLinks": [
+        "lf03_schichtenmodelle_adressierung"
+      ]
+    },
+    {
+      "id": "q5",
+      "type": "short_text",
+      "title": "Betriebsübliches Setup erklären",
+      "prompt": "Erklären Sie in 4-6 Sätzen, warum Standard-Clients meist per DHCP arbeiten und welche Rolle DNS und Gateway dabei spielen.",
+      "minChars": 150,
+      "requiredKeywords": [
+        "dhcp",
+        "dns",
+        "gateway"
+      ],
+      "expectedOutline": "Standardisierung, Erreichbarkeit und Dienstnutzung in kurzen Sätzen erklären.",
+      "feedback": {
+        "correct": "Richtig: Das Setup ist verständlich und fachlich sauber beschrieben.",
+        "wrong": "Bitte DHCP, DNS und Gateway klarer in ihrem Zusammenspiel erklären."
+      },
+      "progressLinks": [
+        "lf03_ethernet_tcpip",
+        "lf03_client_integration"
+      ]
+    }
+  ]
+}

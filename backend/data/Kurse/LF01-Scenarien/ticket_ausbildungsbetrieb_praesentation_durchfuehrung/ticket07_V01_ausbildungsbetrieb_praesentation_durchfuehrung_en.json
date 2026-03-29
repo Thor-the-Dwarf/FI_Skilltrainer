@@ -1,0 +1,159 @@
+{
+  "scenario": {
+    "company": "Training Company IT Service",
+    "scale": "Mid-sized company, 90 employees",
+    "context": "Station 07 of the day flow: Deliver the presentation, answer questions and ensure quality.",
+    "mission": "You assess the presentation delivery and secure content and communication quality.",
+    "station": {
+      "id": "LF01-ST-07",
+      "department": "Training team",
+      "profile": "Presentation, questions, quality control",
+      "constraints": [
+        "communicate for the audience",
+        "answer questions in a structured way",
+        "apply quality criteria visibly"
+      ]
+    },
+    "customerRequest": {
+      "from": "ausbildungsleitung@ausbildungsbetrieb.example",
+      "to": "klasse.fiae@berufsschule.example",
+      "subject": "Station 07: Deliver and review the presentation",
+      "date": "2026-03-13",
+      "body": "Please deliver the prepared presentation, answer questions confidently and secure quality through clear criteria."
+    }
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "type": "multi_select",
+      "title": "Quality criteria during the presentation",
+      "prompt": "Which criteria help with good presentation delivery? (Multiple selection)",
+      "options": [
+        {
+          "text": "Present key messages clearly and in a structured way",
+          "correct": true,
+          "rationale": "Improves clarity."
+        },
+        {
+          "text": "Adjust pace to the audience",
+          "correct": true,
+          "rationale": "Prevents overload."
+        },
+        {
+          "text": "Ignore questions due to time pressure",
+          "correct": false,
+          "rationale": "Reduces quality and acceptance."
+        },
+        {
+          "text": "Use examples from daily operations",
+          "correct": true,
+          "rationale": "Strengthens practical relevance."
+        },
+        {
+          "text": "Leave contradictory statements unaddressed",
+          "correct": false,
+          "rationale": "Leads to uncertainty."
+        }
+      ],
+      "feedback": {
+        "correct": "Correct: these are central quality criteria.",
+        "wrong": "Partially wrong: please consider structure, audience focus and questions more strongly."
+      },
+      "progressLinks": [
+        "lf01_praesentation_durchfuehrung"
+      ]
+    },
+    {
+      "id": "q2",
+      "type": "ordering",
+      "title": "Answer questions professionally",
+      "prompt": "Order the sequence for a professional answer to questions.",
+      "items": [
+        "Acknowledge the question",
+        "Structure the core message briefly",
+        "Establish practical relevance",
+        "Ask a check-back question",
+        "Transition cleanly to the next topic"
+      ],
+      "correctOrder": [
+        "Acknowledge the question",
+        "Structure the core message briefly",
+        "Establish practical relevance",
+        "Ask a check-back question",
+        "Transition cleanly to the next topic"
+      ],
+      "feedback": {
+        "correct": "Correct: answer quality and flow are well secured.",
+        "wrong": "Not optimal: please keep a structured response flow."
+      },
+      "progressLinks": [
+        "lf01_praesentation_durchfuehrung"
+      ]
+    },
+    {
+      "id": "q3",
+      "type": "single_choice",
+      "title": "Transition under time pressure",
+      "prompt": "Time is running out. What is the best step?",
+      "options": [
+        {
+          "text": "Skip the rest spontaneously without notice",
+          "rationale": "Creates a lack of transparency."
+        },
+        {
+          "text": "Prioritize key points and communicate transparently what will be delivered later",
+          "rationale": "Secures clarity despite time pressure."
+        },
+        {
+          "text": "End the presentation immediately",
+          "rationale": "Unnecessarily radical."
+        }
+      ],
+      "correctIndex": 1,
+      "feedback": {
+        "correct": "Correct: prioritization and transparency are decisive here.",
+        "wrong": "Not appropriate: time pressure requires structured prioritization."
+      },
+      "progressLinks": [
+        "lf01_praesentation_durchfuehrung"
+      ]
+    },
+    {
+      "id": "q4",
+      "type": "number",
+      "title": "Assess question time",
+      "prompt": "The Q&A was planned for 8 minutes, but actually lasted 11 minutes. By how many minutes was the plan exceeded?",
+      "expected": 3,
+      "toleranceAbs": 1,
+      "showExpectedFormula": "11 - 8 = 3 minutes",
+      "feedback": {
+        "correct": "Correct calculation.",
+        "wrong": "Please calculate the difference between actual and plan correctly."
+      },
+      "progressLinks": [
+        "lf01_praesentation_durchfuehrung"
+      ]
+    },
+    {
+      "id": "q5",
+      "type": "short_text",
+      "title": "Short delivery feedback",
+      "prompt": "Provide a short delivery feedback (4-6 sentences) with strength, weakness and a concrete improvement.",
+      "minChars": 150,
+      "requiredKeywords": [
+        "strength",
+        "weakness",
+        "improvement"
+      ],
+      "expectedOutline": "Balanced assessment with directly actionable improvement.",
+      "feedback": {
+        "correct": "Correct: the feedback is differentiated and useful.",
+        "wrong": "Please separate strength, weakness and improvement more clearly."
+      },
+      "progressLinks": [
+        "lf01_praesentation_durchfuehrung",
+        "lf01_reflexion_verbesserung"
+      ]
+    }
+  ]
+}

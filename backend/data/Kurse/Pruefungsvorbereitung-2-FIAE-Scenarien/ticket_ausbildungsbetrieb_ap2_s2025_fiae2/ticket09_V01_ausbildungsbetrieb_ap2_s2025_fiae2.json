@@ -1,0 +1,1257 @@
+{
+  "scenario": {
+    "company": "Clinevo Systems GmbH",
+    "scale": "IT-Dienstleister für Kliniken und Versorgungszentren, 168 Mitarbeitende",
+    "context": "Prüfungsvorbereitung 2 FIAE im Stationsformat mit Belegungsanalyse, UML-Sequenzdiagramm, ER-Modellierung und SQL für Kliniksysteme.",
+    "mission": "Sie leiten eine Auswertung zur Bettenauslastung ab, modellieren die Ausgabe eines Medikationsplans, erweitern ein OP-Datenmodell in 3NF und formulieren SQL-Anweisungen für das Notaufnahme-Management.",
+    "source": {
+      "kind": "Pseudonymisierte Prüfungsvorlage",
+      "reference": "AP2 FIAE Teil 2, Sommer 2025",
+      "note": "Die fachliche Aufgabenreihenfolge bleibt erhalten; Personen-, Organisations- und Kontaktdaten wurden für das Kursformat überführt."
+    },
+    "station": {
+      "id": "PV2FIAE-ST-09",
+      "department": "Prüfungsvorbereitung Anwendungsentwicklung",
+      "profile": "Algorithmik, UML-Sequenzdiagramme, ERM und SQL",
+      "constraints": [
+        "Die vier Hauptaufgaben bleiben als zusammenhängende Folgeaufträge sichtbar",
+        "Offene Prüfungsfragen werden möglichst auto-auswertbar, aber fachlich gleichwertig umgesetzt",
+        "Visuals werden nur dort eingesetzt, wo die Quelle selbst fachliche Artefakte vorgibt"
+      ]
+    },
+    "customerRequest": {
+      "from": "portfolio.health@clinevo-systems.example",
+      "to": "projektteam@ausbildungsbetrieb.example",
+      "subject": "Analyse-, Medikations-, OP- und SQL-Bausteine für die Klinikplattform absichern",
+      "date": "2026-03-20",
+      "body": "Guten Tag,\n\nwir bereiten für mehrere Klinikkunden gleichzeitig ein grösseres Fachpaket vor. Im ersten Schritt soll die Bettenauslastung auf Stationsebene belastbar ausgewertet werden. Danach müssen wir die Ausgabe eines Medikationsplans fachlich sauber modellieren, das relationale OP-Datenmodell erweitern und zum Schluss SQL-Aufgaben für die Notaufnahme-Datenbank absichern.\n\nBitte bearbeiten Sie die Teilaufträge in der vorgegebenen Reihenfolge. Wichtig sind diesmal Zeitraumslogik bei Belegungen, Nachrichtenfolgen im Sequenzdiagramm, 3NF bei den OP-Daten sowie sichere SQL-Anweisungen für DML, Rechtevergabe, DDL und Auswertungen.\n\nViele Grüsse\nPortfolio Health"
+    }
+  },
+  "questions": [
+    {
+      "id": "ctx01",
+      "type": "context_card",
+      "title": "Kontext zur Bettenauslastung auf Stationsebene",
+      "contentBlocks": [
+        {
+          "type": "text",
+          "text": "Für einen Klinikverbund soll eine Funktion ermitteln, an wie vielen Tagen eine vorgegebene Station im betrachteten Zeitraum zu mehr als 80 Prozent ausgelastet war. Die Daten liegen als Liste von Belegungsobjekten vor. Dabei gilt: `datumVon` zählt als erster Belegungstag, `datumBis` ist der Entlassungstag und zählt nicht mehr als Belegungstag. Ein `DatumZaehler` läuft Tag für Tag vom Start- bis zum Enddatum."
+        },
+        {
+          "type": "table_group",
+          "eyebrow": "Arbeitsgrundlage",
+          "title": "Klassen und Beispieldaten für die Auswertung",
+          "caption": "Die Fachstruktur der Quelle bleibt erhalten; IDs und Datumswerte wurden in das Kursformat überführt.",
+          "tableRows": [
+            [
+              {
+                "title": "Klasse `Belegung`",
+                "columns": [
+                  "Attribut",
+                  "Bedeutung"
+                ],
+                "rows": [
+                  [
+                    "patientId : Integer",
+                    "eindeutige Patientenzuordnung"
+                  ],
+                  [
+                    "datumVon : Date",
+                    "erster Belegungstag"
+                  ],
+                  [
+                    "datumBis : Date",
+                    "Entlassungstag, nicht mehr als Belegung zu zählen"
+                  ],
+                  [
+                    "stationId : Integer",
+                    "Station der Belegung"
+                  ]
+                ]
+              },
+              {
+                "title": "Klasse `Station`",
+                "columns": [
+                  "Attribut",
+                  "Bedeutung"
+                ],
+                "rows": [
+                  [
+                    "stationId : Integer",
+                    "eindeutige Stations-ID"
+                  ],
+                  [
+                    "anzahlBetten : Integer",
+                    "verfügbare Betten der Station"
+                  ]
+                ]
+              }
+            ],
+            [
+              {
+                "title": "Ausschnitt aus `belegung`",
+                "columns": [
+                  "Index",
+                  "patientId",
+                  "datumVon",
+                  "datumBis",
+                  "stationId"
+                ],
+                "rows": [
+                  [
+                    "0",
+                    "20341",
+                    "04.05.2026",
+                    "09.05.2026",
+                    "310"
+                  ],
+                  [
+                    "1",
+                    "20408",
+                    "06.05.2026",
+                    "11.05.2026",
+                    "310"
+                  ],
+                  [
+                    "2",
+                    "20512",
+                    "06.05.2026",
+                    "07.05.2026",
+                    "412"
+                  ]
+                ]
+              }
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "id": "q01",
+      "type": "single_choice",
+      "title": "Gültige Belegung für einen Tag erkennen",
+      "prompt": "Welche Bedingung prüft fachlich korrekt, ob ein Eintrag am aktuell betrachteten Tag als belegtes Bett der gesuchten Station zählt?",
+      "options": [
+        {
+          "label": "Variante A",
+          "language": "python",
+          "code": "if (\n    eintrag['datumVon'] <= akt_datum\n    and akt_datum < eintrag['datumBis']\n    and eintrag['stationId'] == station['stationId']\n):",
+          "rationale": "Diese Bedingung berücksichtigt den Belegungsbeginn, schliesst den Entlassungstag aus und prüft zusätzlich die passende Station."
+        },
+        {
+          "label": "Variante B",
+          "language": "python",
+          "code": "if (\n    eintrag['datumVon'] < akt_datum\n    and akt_datum <= eintrag['datumBis']\n    and eintrag['stationId'] == station['stationId']\n):",
+          "rationale": "Hier wird der erste Belegungstag ausgeschlossen und der Entlassungstag fälschlich mitgezählt."
+        },
+        {
+          "label": "Variante C",
+          "language": "python",
+          "code": "if (\n    eintrag['datumVon'] <= akt_datum\n    and akt_datum < eintrag['datumBis']\n):",
+          "rationale": "Die Stationsprüfung fehlt; dadurch würden auch Betten anderer Stationen mitgezählt."
+        },
+        {
+          "label": "Variante D",
+          "language": "python",
+          "code": "if (\n    eintrag['datumVon'] == akt_datum\n    and eintrag['datumBis'] == akt_datum\n    and eintrag['stationId'] == station['stationId']\n):",
+          "rationale": "Diese Bedingung trifft nur auf einen untypischen Sonderfall zu und bildet keine Zeitraumlogik ab."
+        }
+      ],
+      "correctIndex": 0,
+      "feedback": {
+        "correct": "Die Tagesprüfung für eine gültige Stationsbelegung ist korrekt gewählt.",
+        "wrong": "Achten Sie auf den eingeschlossenen Starttag, den ausgeschlossenen Entlassungstag und die zusätzliche Stations-ID."
+      },
+      "progressLinks": [
+        "pv2fiae_bettenauslastung_zeitraumlogik"
+      ]
+    },
+    {
+      "id": "q02",
+      "type": "single_choice",
+      "title": "Schwelle von mehr als 80 Prozent deuten",
+      "prompt": "Bei welcher Belegung ist die Grenze 'mehr als 80 Prozent ausgelastet' sicher überschritten?",
+      "options": [
+        {
+          "text": "4 von 5 Betten sind belegt.",
+          "rationale": "Das entspricht genau 80 Prozent und ist damit nicht mehr als 80 Prozent."
+        },
+        {
+          "text": "5 von 5 Betten sind belegt.",
+          "rationale": "Das entspricht 100 Prozent und liegt damit sicher über 80 Prozent."
+        },
+        {
+          "text": "8 von 10 Betten sind belegt.",
+          "rationale": "Auch das sind exakt 80 Prozent und damit noch nicht über der Grenze."
+        },
+        {
+          "text": "3 von 4 Betten sind belegt.",
+          "rationale": "Das sind 75 Prozent und liegt unterhalb der Grenze."
+        }
+      ],
+      "correctIndex": 1,
+      "feedback": {
+        "correct": "Die Auslastungsschwelle ist fachlich korrekt eingeordnet.",
+        "wrong": "Mehr als 80 Prozent bedeutet, dass Werte von exakt 80 Prozent noch nicht ausreichen."
+      },
+      "progressLinks": [
+        "pv2fiae_bettenauslastung_zeitraumlogik"
+      ]
+    },
+    {
+      "id": "q03",
+      "type": "single_choice",
+      "title": "Pseudocode für Auslastungstage wählen",
+      "prompt": "Welche Python-Variante bildet die geforderte Funktion zur Ermittlung der Auslastungstage fachlich korrekt ab?",
+      "options": [
+        {
+          "label": "Variante A",
+          "language": "python",
+          "code": "def ermittle_auslastungstage(belegung, start_datum, end_datum, station):\n    tage = 0\n    akt_datum = start_datum\n    while akt_datum <= end_datum:\n        anzahl_belegte_betten = 0\n        for eintrag in belegung:\n            if (\n                eintrag['datumVon'] <= akt_datum\n                and akt_datum < eintrag['datumBis']\n                and eintrag['stationId'] == station['stationId']\n            ):\n                anzahl_belegte_betten += 1\n        if anzahl_belegte_betten / station['anzahlBetten'] > 0.8:\n            tage += 1\n        akt_datum += timedelta(days=1)\n    return tage",
+          "rationale": "Diese Variante iteriert tagweise durch den Zeitraum, zählt pro Tag die Belegungen der gesuchten Station und erhöht den Zähler nur oberhalb der 80-Prozent-Grenze."
+        },
+        {
+          "label": "Variante B",
+          "language": "python",
+          "code": "def ermittle_auslastungstage(belegung, start_datum, end_datum, station):\n    tage = 0\n    for eintrag in belegung:\n        if eintrag['stationId'] == station['stationId']:\n            tage += 1\n    return tage",
+          "rationale": "Hier werden nur Einträge gezählt, aber keine einzelnen Kalendertage und keine Auslastung pro Tag geprüft."
+        },
+        {
+          "label": "Variante C",
+          "language": "python",
+          "code": "def ermittle_auslastungstage(belegung, start_datum, end_datum, station):\n    tage = 0\n    akt_datum = start_datum\n    while akt_datum < end_datum:\n        for eintrag in belegung:\n            if eintrag['datumBis'] <= akt_datum:\n                tage += 1\n        akt_datum += timedelta(days=1)\n    return tage",
+          "rationale": "Diese Variante verwendet eine fachlich falsche Belegungsprüfung und zählt nicht die Auslastung der Station."
+        },
+        {
+          "label": "Variante D",
+          "language": "python",
+          "code": "def ermittle_auslastungstage(belegung, start_datum, end_datum, station):\n    tage = 0\n    akt_datum = start_datum\n    while akt_datum <= end_datum:\n        anzahl_belegte_betten = len(belegung)\n        if anzahl_belegte_betten >= station['anzahlBetten']:\n            tage += 1\n        akt_datum += timedelta(days=1)\n    return tage",
+          "rationale": "Hier wird pro Tag immer die Gesamtliste verwendet, unabhängig von Datum und Station."
+        }
+      ],
+      "correctIndex": 0,
+      "feedback": {
+        "correct": "Die Pseudocode-Variante für die Auslastungstage ist korrekt gewählt.",
+        "wrong": "Prüfen Sie Tagesiteration, Zeitraumlogik, Stationsfilter und die Berechnung der Auslastungsgrenze noch einmal gemeinsam."
+      },
+      "progressLinks": [
+        "pv2fiae_bettenauslastung_zeitraumlogik"
+      ]
+    },
+    {
+      "id": "f02",
+      "type": "followup_divider",
+      "title": "Sequenz für den Medikationsplan abstimmen",
+      "from": "fachteam.medikation@clinevo-systems.example",
+      "to": "projektteam@ausbildungsbetrieb.example",
+      "subject": "Nachrichtenfolge für die Ausgabe des Medikationsplans modellieren",
+      "date": "2026-03-20",
+      "body": "Hallo zusammen,\n\nfür die Medikationsansicht im Klinikportal müssen wir die Aufrufe zwischen UI, Verordnungen, Medikation und der Medikamentendatenbank sauber beschreiben. Bitte nutzen Sie die vorhandenen Klassensignaturen und leiten Sie daraus einen belastbaren Ablauf für das Sequenzdiagramm ab. Im Anschluss soll die Teststrategie für diese Methode fachlich abgesichert werden.\n\nViele Grüsse\nFachteam Medikation"
+    },
+    {
+      "id": "ctx02",
+      "type": "context_card",
+      "title": "Kontext zur Ausgabe eines Medikationsplans",
+      "contentBlocks": [
+        {
+          "type": "text",
+          "text": "Die UI startet mit `ausgabe_medikationsplan(patient)`. Zuerst fordert sie über `Verordnungen` die Liste aller Medikamente für die Patientin oder den Patienten an. Für jedes Medikament wird `Medikation.getEinnahme(...)` aufgerufen. Liefert diese Methode einen konkreten String, wird genau dieser ausgegeben. Fehlt eine individuelle Angabe, wird über `MedDB.getStandardMedikation(...)` die Standardinformation geladen und anschliessend ausgegeben."
+        },
+        {
+          "type": "table_group",
+          "eyebrow": "Klassenausschnitt",
+          "title": "Beteiligte Komponenten und Methoden",
+          "caption": "Die Klassen `Patient` und `Medikament` selbst sind hier nicht dargestellt; relevant sind ihre Aufrufe in der Nachrichtenfolge.",
+          "tableRows": [
+            [
+              {
+                "title": "Klasse `UI`",
+                "columns": [
+                  "Methode",
+                  "Rückgabe"
+                ],
+                "rows": [
+                  [
+                    "ausgabeMedikationsplan()",
+                    "void"
+                  ],
+                  [
+                    "ausgabeMedikation(medikation: String)",
+                    "void"
+                  ]
+                ]
+              },
+              {
+                "title": "Klasse `Verordnungen`",
+                "columns": [
+                  "Methode",
+                  "Rückgabe"
+                ],
+                "rows": [
+                  [
+                    "getMedikamente(patient: Patient)",
+                    "Medikament[]"
+                  ]
+                ]
+              }
+            ],
+            [
+              {
+                "title": "Klasse `Medikation`",
+                "columns": [
+                  "Methode",
+                  "Rückgabe"
+                ],
+                "rows": [
+                  [
+                    "getEinnahme(medikament: Medikament, patient: Patient)",
+                    "String"
+                  ]
+                ]
+              },
+              {
+                "title": "Klasse `MedDB`",
+                "columns": [
+                  "Methode",
+                  "Rückgabe"
+                ],
+                "rows": [
+                  [
+                    "getStandardMedikation(medikament: Medikament)",
+                    "String"
+                  ]
+                ]
+              }
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "id": "q04",
+      "type": "single_choice",
+      "title": "Nachrichtenfolge des Sequenzdiagramms einordnen",
+      "prompt": "Welche Ablaufbeschreibung bildet das gesuchte Sequenzdiagramm fachlich korrekt ab?",
+      "options": [
+        {
+          "text": "Die UI holt zuerst die Medikamentenliste von `Verordnungen`, läuft dann in einer Schleife über alle Medikamente, fragt je Medikament `getEinnahme(...)` an und greift nur dann auf `MedDB.getStandardMedikation(...)` zu, wenn keine individuelle Einnahme hinterlegt ist. Abschliessend wird die ermittelte Medikation über die UI ausgegeben.",
+          "rationale": "Das entspricht genau der geforderten Kombination aus Schleife und optionalem Fallback."
+        },
+        {
+          "text": "Die UI fordert für jedes Medikament zuerst die Standardmedikation von `MedDB` an und fragt nur bei Bedarf anschliessend `getEinnahme(...)` bei `Medikation` ab.",
+          "rationale": "Damit wäre die Nachrichtenreihenfolge umgedreht; laut Vorgabe wird zuerst die individuelle Einnahme geprüft."
+        },
+        {
+          "text": "Die UI ruft einmalig `getEinnahme(...)` auf, bekommt eine komplette Medikamentenliste zurück und verzichtet deshalb auf `Verordnungen`.",
+          "rationale": "Die Medikamentenliste kommt aus `Verordnungen`, nicht aus `Medikation`."
+        },
+        {
+          "text": "Die UI sendet nur eine Nachricht an `Verordnungen`; alle weiteren Aufrufe innerhalb der Schleife erfolgen implizit und müssen im Sequenzdiagramm nicht modelliert werden.",
+          "rationale": "Gerade die Schleife und die optionalen Aufrufe sind fachlich zentral und gehören sichtbar ins Diagramm."
+        }
+      ],
+      "correctIndex": 0,
+      "feedback": {
+        "correct": "Die geforderte Nachrichtenfolge für den Medikationsplan ist korrekt eingeordnet.",
+        "wrong": "Achten Sie auf die Reihenfolge `Verordnungen -> Medikation -> optional MedDB -> UI-Ausgabe` innerhalb der Schleife."
+      },
+      "progressLinks": [
+        "pv2fiae_uml_sequenzdiagramm"
+      ]
+    },
+    {
+      "id": "q05",
+      "type": "single_choice",
+      "title": "Geeignete Coverage-Art wählen",
+      "prompt": "Welche Art der Testabdeckung passt für diese Methode am besten zu der gezeigten Optional-Verzweigung?",
+      "options": [
+        {
+          "text": "Zweigabdeckung, weil die optionale Entscheidung zwischen individueller Einnahme und Standardmedikation sicher durchlaufen werden muss.",
+          "rationale": "Genau diese Alternative ist der wesentliche Kontrollfluss der Methode."
+        },
+        {
+          "text": "Pfadabdeckung, weil jede denkbare Schleifenlänge vollständig getestet werden muss.",
+          "rationale": "Durch die Schleife ist eine vollständige Pfadabdeckung praktisch nicht sinnvoll begrenzbar."
+        },
+        {
+          "text": "Nur Anweisungsabdeckung, weil bei der Methode keine Verzweigung vorkommt.",
+          "rationale": "Die optionale Entscheidung erzeugt sehr wohl eine Verzweigung."
+        },
+        {
+          "text": "Es wird keine Coverage benötigt, weil ein Sequenzdiagramm keine fachliche Logik enthält.",
+          "rationale": "Die Methode enthält Fachlogik und braucht deshalb sehr wohl eine belastbare Teststrategie."
+        }
+      ],
+      "correctIndex": 0,
+      "feedback": {
+        "correct": "Die passende Coverage-Art für die gezeigte Verzweigung ist korrekt gewählt.",
+        "wrong": "Prüfen Sie, welche Kontrollstruktur hier wirklich abgesichert werden soll und warum eine vollständige Pfadabdeckung wegen der Schleife unpraktisch ist."
+      },
+      "progressLinks": [
+        "pv2fiae_uml_sequenzdiagramm",
+        "pv2fiae_testen_coverage"
+      ]
+    },
+    {
+      "id": "q06",
+      "type": "single_choice",
+      "title": "Whiteboxtest fachlich beschreiben",
+      "prompt": "Welche Aussage beschreibt einen Whiteboxtest für diese Methode am treffendsten?",
+      "options": [
+        {
+          "text": "Die Testfälle werden aus der internen Struktur des Quelltexts abgeleitet, zum Beispiel aus Schleifen, Verzweigungen und Rückgabepfaden.",
+          "rationale": "Das ist das zentrale Merkmal eines Whiteboxtests."
+        },
+        {
+          "text": "Es werden nur sichtbare Oberflächentexte geprüft, ohne die interne Programmlogik zu betrachten.",
+          "rationale": "Das wäre eher eine Blackbox- oder UI-Perspektive."
+        },
+        {
+          "text": "Die Methode wird nur im Produktivsystem beobachtet, ohne Testfälle aus dem Code abzuleiten.",
+          "rationale": "Das beschreibt keine Whitebox-Testidee."
+        },
+        {
+          "text": "Es werden ausschliesslich Datenbanktabellen verglichen, weil Sequenzdiagramme nicht testbar sind.",
+          "rationale": "Auch der Kontrollfluss hinter einer aus dem Diagramm abgeleiteten Methode ist testbar."
+        }
+      ],
+      "correctIndex": 0,
+      "feedback": {
+        "correct": "Die Kernaussage eines Whiteboxtests ist korrekt beschrieben.",
+        "wrong": "Whiteboxtests orientieren sich an der internen Struktur des Programmcodes und nicht nur an der sichtbaren Aussenwirkung."
+      },
+      "progressLinks": [
+        "pv2fiae_whitebox_regression"
+      ]
+    },
+    {
+      "id": "q07",
+      "type": "single_choice",
+      "title": "Nur Leerzeichen als Einnahme korrekt behandeln",
+      "prompt": "Wie sollte das Programm reagieren, wenn die vom Arzt hinterlegte Medikation nur aus Leerzeichen besteht?",
+      "options": [
+        {
+          "text": "Die Eingabe sollte wie eine leere Zeichenkette behandelt werden; deshalb wird statt der Leerzeichen die Standardmedikation geladen und ausgegeben.",
+          "rationale": "So greift die Fallback-Logik robust, obwohl keine sinnvolle individuelle Einnahme hinterlegt ist."
+        },
+        {
+          "text": "Die Leerzeichen müssen unverändert ausgegeben werden, weil jeder String als gültige Medikation gilt.",
+          "rationale": "Reine Leerzeichen tragen keine fachliche Information."
+        },
+        {
+          "text": "Die Methode sollte eine Endlosschleife starten, bis der Arzt eine neue Eingabe macht.",
+          "rationale": "Das ist weder benutzerfreundlich noch fachlich gefordert."
+        },
+        {
+          "text": "Das Programm soll den Medikationsplan komplett abbrechen und keine Ausgabe mehr erzeugen.",
+          "rationale": "Die fachlich saubere Fallback-Lösung ist gerade die Standardmedikation."
+        }
+      ],
+      "correctIndex": 0,
+      "feedback": {
+        "correct": "Der Sonderfall mit reinen Leerzeichen ist fachlich korrekt eingeordnet.",
+        "wrong": "Eine Eingabe nur aus Leerzeichen enthält keine sinnvolle Medikation und braucht daher einen robusten Fallback."
+      },
+      "progressLinks": [
+        "pv2fiae_uml_sequenzdiagramm",
+        "pv2fiae_unit_tests_methodenlogik"
+      ]
+    },
+    {
+      "id": "f03",
+      "type": "followup_divider",
+      "title": "OP-Datenmodell in 3NF erweitern",
+      "from": "datenmodell.op@clinevo-systems.example",
+      "to": "projektteam@ausbildungsbetrieb.example",
+      "subject": "Relationales Modell für Operationen, Rollen und Anästhesie ergänzen",
+      "date": "2026-03-20",
+      "body": "Hallo,\n\nfür das Klinikmodul müssen wir die Operationsdaten fachlich sauber erweitern. Stammdaten zu Patienten, Ärzten, OP-Sälen und Medikamenten sind bereits vorhanden. Jetzt kommen Operationen, Rollen von Ärzten im Eingriff, OP-Arten und Anästhesieformen hinzu. Bitte achten Sie strikt auf 3. Normalform und auf nachvollziehbare Beziehungen zwischen den Tabellen.\n\nViele Grüsse\nDatenmodell OP"
+    },
+    {
+      "id": "ctx03",
+      "type": "context_card",
+      "title": "Kontext zum OP- und Anästhesiemodell",
+      "contentBlocks": [
+        {
+          "type": "text",
+          "text": "Im Zielmodell sollen pro Operation mindestens Patient, Datum/Uhrzeit, OP-Saal, OP-Art, beteiligte Ärzte mit genau einer Funktion sowie optionale Besonderheiten erfasst werden. Mehrere Ärzte können an einer Operation beteiligt sein. Operationstypen und Arztfunktionen werden jeweils als eigene Tabellen gespeichert. Pro Operation kann höchstens eine Anästhesieform hinterlegt sein; dieselbe Anästhesieform darf aber bei mehreren Operationen vorkommen. Zu ihr gehören Bezeichnung, geplante Dauer und das verwendete Medikament."
+        },
+        {
+          "type": "table_group",
+          "eyebrow": "Bereits vorhanden",
+          "title": "Stammdaten, die im Modell schon existieren",
+          "caption": "Die fehlenden Strukturen müssen an diese vorhandenen Grundentitäten angeschlossen werden.",
+          "tableRows": [
+            [
+              {
+                "title": "Entität `Patient`",
+                "columns": [
+                  "Feld",
+                  "Rolle"
+                ],
+                "rows": [
+                  [
+                    "Pat_ID (PK)",
+                    "eindeutiger Patient"
+                  ],
+                  [
+                    "Name",
+                    "Anzeigename"
+                  ]
+                ]
+              },
+              {
+                "title": "Entität `Arzt`",
+                "columns": [
+                  "Feld",
+                  "Rolle"
+                ],
+                "rows": [
+                  [
+                    "Arzt_ID (PK)",
+                    "eindeutiger Arzt"
+                  ],
+                  [
+                    "Name",
+                    "Anzeigename"
+                  ]
+                ]
+              }
+            ],
+            [
+              {
+                "title": "Entität `OP_Saal`",
+                "columns": [
+                  "Feld",
+                  "Rolle"
+                ],
+                "rows": [
+                  [
+                    "OPS_ID (PK)",
+                    "eindeutiger OP-Saal"
+                  ],
+                  [
+                    "Bezeichnung",
+                    "sprechender Name"
+                  ]
+                ]
+              },
+              {
+                "title": "Entität `Medikament`",
+                "columns": [
+                  "Feld",
+                  "Rolle"
+                ],
+                "rows": [
+                  [
+                    "Med_ID (PK)",
+                    "eindeutiges Medikament"
+                  ],
+                  [
+                    "Name",
+                    "Bezeichnung"
+                  ]
+                ]
+              }
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "id": "q08",
+      "type": "multi_select",
+      "title": "Zusätzliche Entitäten für das Modell bestimmen",
+      "prompt": "Welche zusätzlichen Entitäten müssen neben den bereits vorhandenen Stammdaten eingeführt werden, damit die Anforderungen in 3. Normalform abbildbar sind?",
+      "options": [
+        {
+          "text": "Operation",
+          "correct": true,
+          "rationale": "Die eigentlichen Eingriffe müssen als eigene Ereignisentität modelliert werden."
+        },
+        {
+          "text": "OP_Art",
+          "correct": true,
+          "rationale": "Operationstypen gehören in eine eigene Stammdatentabelle."
+        },
+        {
+          "text": "Funktion",
+          "correct": true,
+          "rationale": "Arztrollen wie Operateur oder Anästhesist werden als eigene Tabelle benötigt."
+        },
+        {
+          "text": "Operation_Arzt",
+          "correct": true,
+          "rationale": "Mehrere Ärzte pro Operation mit jeweils genau einer Funktion brauchen eine Zwischentabelle."
+        },
+        {
+          "text": "Anästhesieform",
+          "correct": true,
+          "rationale": "Bezeichnung, geplante Dauer und Medikamentenbezug der Anästhesie müssen separat modelliert werden."
+        },
+        {
+          "text": "Klinikverbund",
+          "correct": false,
+          "rationale": "Aus den Anforderungen ergibt sich keine eigene Entität für den Verbund."
+        },
+        {
+          "text": "Kalenderwoche",
+          "correct": false,
+          "rationale": "Zeitpunkte gehören zur Operation, aber eine separate Kalenderwochentabelle ist hier nicht erforderlich."
+        }
+      ],
+      "feedback": {
+        "correct": "Die benötigten zusätzlichen Entitäten für das OP-Modell sind korrekt erkannt.",
+        "wrong": "Leiten Sie die Tabellen direkt aus den geforderten Fachobjekten ab und trennen Sie Ereignisse, Rollen und Stammdaten sauber."
+      },
+      "progressLinks": [
+        "pv2fiae_erm_operationsplanung"
+      ]
+    },
+    {
+      "id": "q09",
+      "type": "match_pairs",
+      "title": "Beziehungslogik des OP-Modells zuordnen",
+      "prompt": "Ordnen Sie den Fachaussagen die passende Beziehungslogik im relationalen Modell zu.",
+      "layout": "table",
+      "columns": [
+        "Fachaussage",
+        "Passende Beziehungslogik"
+      ],
+      "pairs": [
+        {
+          "key": "rel_1",
+          "left": "Ein Patient kann mehrere Operationen haben; jede Operation gehört genau zu einem Patienten.",
+          "right": "Patient 1 : n Operation"
+        },
+        {
+          "key": "rel_2",
+          "left": "Eine Operation findet in genau einem OP-Saal statt; ein OP-Saal kann für viele Operationen genutzt werden.",
+          "right": "OP_Saal 1 : n Operation"
+        },
+        {
+          "key": "rel_3",
+          "left": "Eine Operation hat genau eine OP-Art; eine OP-Art kann vielen Operationen zugeordnet sein.",
+          "right": "OP_Art 1 : n Operation"
+        },
+        {
+          "key": "rel_4",
+          "left": "An einer Operation können mehrere Ärzte beteiligt sein; ihre Zuordnung inklusive Funktion läuft über eine Zwischentabelle.",
+          "right": "Operation n : m Arzt über Operation_Arzt"
+        },
+        {
+          "key": "rel_5",
+          "left": "Eine Anästhesieform darf bei mehreren Operationen vorkommen; pro Operation ist höchstens eine Anästhesieform hinterlegt.",
+          "right": "Anästhesieform 1 : n Operation"
+        }
+      ],
+      "options": [
+        "Patient 1 : n Operation",
+        "OP_Saal 1 : n Operation",
+        "OP_Art 1 : n Operation",
+        "Operation n : m Arzt über Operation_Arzt",
+        "Anästhesieform 1 : n Operation"
+      ],
+      "feedback": {
+        "correct": "Die zentralen Beziehungen des OP-Modells sind korrekt zugeordnet.",
+        "wrong": "Achten Sie darauf, welche Fachobjekte Stammdaten sind, wo Zwischentabellen benötigt werden und wo pro Operation nur genau ein Verweis vorkommt."
+      },
+      "progressLinks": [
+        "pv2fiae_erm_operationsplanung"
+      ]
+    },
+    {
+      "id": "q10",
+      "type": "single_choice",
+      "title": "Rolle der Zwischentabelle `Operation_Arzt` begründen",
+      "prompt": "Warum ist die Tabelle `Operation_Arzt` im Modell fachlich notwendig?",
+      "options": [
+        {
+          "text": "Weil eine Operation mehrere Ärzte haben kann und jeder dieser Ärzte für genau diese Operation noch eine konkrete Funktion mitbekommt.",
+          "rationale": "Genau diese Kombination aus n:m-Beziehung und rollenbezogenem Zusatzattribut rechtfertigt die Zwischentabelle."
+        },
+        {
+          "text": "Weil jeder Arzt nur eine einzige Operation in seinem Berufsleben begleiten darf.",
+          "rationale": "Das wäre fachlich offenkundig falsch."
+        },
+        {
+          "text": "Weil die Zwischentabelle den OP-Saal ersetzt und damit die Raumbeziehung überflüssig macht.",
+          "rationale": "Die Raumbeziehung bleibt weiterhin direkt an der Operation erforderlich."
+        },
+        {
+          "text": "Weil sich damit die Patientendaten aus der Tabelle `Patient` einsparen lassen.",
+          "rationale": "Patienten bleiben ein eigenes Fachobjekt und werden nicht über Arztzuordnungen ersetzt."
+        }
+      ],
+      "correctIndex": 0,
+      "feedback": {
+        "correct": "Die fachliche Rolle von `Operation_Arzt` ist korrekt erkannt.",
+        "wrong": "Denken Sie an mehrere Ärzte pro Eingriff und an die zusätzliche Information über deren jeweilige Funktion."
+      },
+      "progressLinks": [
+        "pv2fiae_erm_operationsplanung"
+      ]
+    },
+    {
+      "id": "q11",
+      "type": "single_choice",
+      "title": "Medikamentenbezug der Anästhesie richtig platzieren",
+      "prompt": "In welcher Entität sollte das verwendete Medikament als Fremdschlüssel liegen, wenn Bezeichnung, geplante Dauer und Medikament gemeinsam die Anästhesieform beschreiben?",
+      "options": [
+        {
+          "text": "In `Anaesthesieform`, weil das Medikament Teil der Beschreibung dieser Form ist.",
+          "rationale": "So bleiben die Anästhesie-Stammdaten gebündelt und mehrfach verwendbar."
+        },
+        {
+          "text": "In `Patient`, weil das Medikament immer patientenbezogen ist.",
+          "rationale": "Hier geht es um die Beschreibung der Anästhesieform, nicht um eine generelle Patientenhistorie."
+        },
+        {
+          "text": "In `Operation_Arzt`, weil das Medikament direkt an die Rolle eines Arztes gebunden ist.",
+          "rationale": "Die Arztrolle beschreibt die Beteiligung am Eingriff, nicht die Stammdaten der Anästhesieform."
+        },
+        {
+          "text": "In `OP_Saal`, weil die Ausstattung des Raums das Medikament festlegt.",
+          "rationale": "Der OP-Saal ist nicht der fachliche Trager der Anästhesieeigenschaften."
+        }
+      ],
+      "correctIndex": 0,
+      "feedback": {
+        "correct": "Der Medikamentenbezug ist im Modell an der richtigen Stelle verortet.",
+        "wrong": "Prüfen Sie, zu welchem Fachobjekt Bezeichnung, geplante Dauer und Medikament gemeinsam gehören."
+      },
+      "progressLinks": [
+        "pv2fiae_erm_operationsplanung"
+      ]
+    },
+    {
+      "id": "f04",
+      "type": "followup_divider",
+      "title": "SQL für die Notaufnahme-Datenbank absichern",
+      "from": "datenbank.notaufnahme@clinevo-systems.example",
+      "to": "projektteam@ausbildungsbetrieb.example",
+      "subject": "DML-, Rechte-, DDL- und Auswertungsabfragen für NotaufnahmeManagement vorbereiten",
+      "date": "2026-03-20",
+      "body": "Hallo,\n\nfür das Datenbankschema `NotaufnahmeManagement` brauchen wir mehrere SQL-Aufgaben in einem zusammenhängenden Kontext. Neben einfachen DML-Anweisungen und Rechtevergaben müssen auch Strukturentscheidungen an der Tabelle `Aerzte` sowie zwei Auswertungen auf Basis vorhandener Verschreibungen abgesichert werden. Bitte nutzen Sie die Tabellenausschnitte als gemeinsame Grundlage.\n\nViele Grüsse\nDatenbank Notaufnahme"
+    },
+    {
+      "id": "ctx04",
+      "type": "context_card",
+      "title": "Kontext zum Schema `NotaufnahmeManagement`",
+      "contentBlocks": [
+        {
+          "type": "text",
+          "text": "Für die folgenden SQL-Aufgaben stehen Ausschnitte aus vier Tabellen zur Verfügung: `Patienten`, `Medikamente`, `Verschreibungen` und `Aerzte`. Ausserdem existieren bereits die Datenbankbenutzer `mweber` und `tbrandt`. Bei den Auswertungen geht es einmal um Patientinnen und Patienten mit mindestens drei Verschreibungen und einmal um den Durchschnitt der Verschreibungsanzahl pro Patient."
+        },
+        {
+          "type": "table_group",
+          "eyebrow": "Tabellenauszüge",
+          "title": "Beispieldaten aus der Notaufnahme-Datenbank",
+          "caption": "Personen- und Produktnamen wurden pseudonymisiert; die fachliche Tabellenlogik und die Schlüsselstruktur bleiben erhalten.",
+          "tableRows": [
+            [
+              {
+                "title": "Tabelle `Patienten`",
+                "columns": [
+                  "PID",
+                  "Vorname",
+                  "Nachname"
+                ],
+                "rows": [
+                  [
+                    "1",
+                    "Lea",
+                    "Kramer"
+                  ],
+                  [
+                    "2",
+                    "Jonas",
+                    "Berg"
+                  ],
+                  [
+                    "3",
+                    "Maja",
+                    "Roth"
+                  ],
+                  [
+                    "4",
+                    "Timo",
+                    "Held"
+                  ],
+                  [
+                    "5",
+                    "Sina",
+                    "Voss"
+                  ]
+                ]
+              },
+              {
+                "title": "Tabelle `Medikamente`",
+                "columns": [
+                  "MID",
+                  "Name"
+                ],
+                "rows": [
+                  [
+                    "1",
+                    "Dolaren"
+                  ],
+                  [
+                    "2",
+                    "Cefalin"
+                  ],
+                  [
+                    "3",
+                    "Noceran"
+                  ],
+                  [
+                    "4",
+                    "Auronix"
+                  ],
+                  [
+                    "5",
+                    "Metroval"
+                  ],
+                  [
+                    "6",
+                    "Clamydol"
+                  ]
+                ]
+              }
+            ],
+            [
+              {
+                "title": "Tabelle `Verschreibungen`",
+                "columns": [
+                  "VID",
+                  "PID",
+                  "AID",
+                  "MID",
+                  "Dosis",
+                  "Hinweis",
+                  "Datum"
+                ],
+                "rows": [
+                  [
+                    "1",
+                    "1",
+                    "2",
+                    "1",
+                    "200 mg",
+                    "2x täglich nach dem Essen",
+                    "2026-05-04 09:00:00"
+                  ],
+                  [
+                    "2",
+                    "2",
+                    "1",
+                    "3",
+                    "500 mg",
+                    "1x abends",
+                    "2026-05-04 14:15:00"
+                  ],
+                  [
+                    "3",
+                    "1",
+                    "4",
+                    "2",
+                    "250 mg",
+                    "1x morgens",
+                    "2026-05-06 08:30:00"
+                  ],
+                  [
+                    "4",
+                    "3",
+                    "3",
+                    "4",
+                    "100 mg",
+                    "bei Bedarf",
+                    "2026-05-07 11:00:00"
+                  ],
+                  [
+                    "5",
+                    "4",
+                    "2",
+                    "5",
+                    "20 mg",
+                    "1x morgens",
+                    "2026-05-08 07:45:00"
+                  ],
+                  [
+                    "6",
+                    "2",
+                    "1",
+                    "2",
+                    "500 mg",
+                    "3x täglich für 7 Tage",
+                    "2026-05-09 09:20:00"
+                  ],
+                  [
+                    "7",
+                    "1",
+                    "2",
+                    "6",
+                    "10 mg",
+                    "1x morgens",
+                    "2026-05-10 08:10:00"
+                  ],
+                  [
+                    "8",
+                    "1",
+                    "4",
+                    "1",
+                    "200 mg",
+                    "2x täglich",
+                    "2026-05-12 12:40:00"
+                  ],
+                  [
+                    "9",
+                    "5",
+                    "3",
+                    "3",
+                    "250 mg",
+                    "1x abends",
+                    "2026-05-13 18:05:00"
+                  ],
+                  [
+                    "10",
+                    "2",
+                    "2",
+                    "4",
+                    "500 mg",
+                    "1x morgens",
+                    "2026-05-15 10:30:00"
+                  ]
+                ]
+              },
+              {
+                "title": "Tabelle `Aerzte`",
+                "columns": [
+                  "AID",
+                  "Vorname",
+                  "Nachname",
+                  "Fachgebiet",
+                  "Email"
+                ],
+                "rows": [
+                  [
+                    "1",
+                    "Mira",
+                    "Keller",
+                    "Allgemeinmedizin",
+                    "m.keller@fit.example"
+                  ],
+                  [
+                    "2",
+                    "Leon",
+                    "Hartmann",
+                    "Neurologie",
+                    "l.hartmann@fit.example"
+                  ],
+                  [
+                    "3",
+                    "Jule",
+                    "Winter",
+                    "Kardiologie",
+                    "NULL"
+                  ],
+                  [
+                    "4",
+                    "Aras",
+                    "Demir",
+                    "Unfallchirurgie",
+                    "a.demir@fit.example"
+                  ]
+                ]
+              }
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "id": "q12",
+      "type": "single_choice",
+      "title": "Neuen Arzt per INSERT anlegen",
+      "prompt": "Welche SQL-Anweisung fügt den neuen Arzt `Nora Fechner` mit dem Fachgebiet `Allgemeinmedizin` korrekt in die Tabelle `Aerzte` ein?",
+      "options": [
+        {
+          "label": "Variante A",
+          "language": "sql",
+          "code": "INSERT INTO Ärzte (Vorname, Nachname, Fachgebiet)\nVALUES ('Nora', 'Fechner', 'Allgemeinmedizin');",
+          "rationale": "Diese Anweisung fügt genau die geforderten Werte in die richtige Tabelle ein."
+        },
+        {
+          "label": "Variante B",
+          "language": "sql",
+          "code": "INSERT Nora, Fechner, Allgemeinmedizin\nINTO Ärzte;",
+          "rationale": "Die SQL-Syntax für `INSERT` ist so nicht korrekt."
+        },
+        {
+          "label": "Variante C",
+          "language": "sql",
+          "code": "UPDATE Ärzte\nSET Vorname = 'Nora', Nachname = 'Fechner', Fachgebiet = 'Allgemeinmedizin';",
+          "rationale": "Damit würden bestehende Datensätze verändert statt ein neuer angelegt."
+        },
+        {
+          "label": "Variante D",
+          "language": "sql",
+          "code": "INSERT INTO Patienten (Vorname, Nachname, Fachgebiet)\nVALUES ('Nora', 'Fechner', 'Allgemeinmedizin');",
+          "rationale": "Die Anweisung adressiert die falsche Tabelle."
+        }
+      ],
+      "correctIndex": 0,
+      "feedback": {
+        "correct": "Die INSERT-Anweisung für den neuen Arzt ist korrekt gewählt.",
+        "wrong": "Prüfen Sie Tabelle, Spaltenliste und die Syntax einer `INSERT INTO ... VALUES`-Anweisung."
+      },
+      "progressLinks": [
+        "pv2fiae_sql_admin_klinikbetrieb"
+      ]
+    },
+    {
+      "id": "q13",
+      "type": "single_choice",
+      "title": "Schreibrechte auf `Verschreibungen` vergeben",
+      "prompt": "Welche SQL-Anweisung vergibt dem bereits vorhandenen Benutzer `mweber` Schreibrechte auf die Tabelle `NotaufnahmeManagement.Verschreibungen`?",
+      "options": [
+        {
+          "label": "Variante A",
+          "language": "sql",
+          "code": "GRANT INSERT, UPDATE ON NotaufnahmeManagement.Verschreibungen\nTO 'mweber';",
+          "rationale": "Damit werden genau die benötigten Schreibrechte auf die richtige Tabelle vergeben."
+        },
+        {
+          "label": "Variante B",
+          "language": "sql",
+          "code": "REVOKE INSERT, UPDATE ON NotaufnahmeManagement.Verschreibungen\nFROM 'mweber';",
+          "rationale": "Diese Anweisung entzieht Rechte statt sie zu vergeben."
+        },
+        {
+          "label": "Variante C",
+          "language": "sql",
+          "code": "GRANT SELECT ON NotaufnahmeManagement.Verschreibungen\nTO 'mweber';",
+          "rationale": "Hier wird nur Leserecht vergeben, aber kein Schreibrecht."
+        },
+        {
+          "label": "Variante D",
+          "language": "sql",
+          "code": "GRANT INSERT, UPDATE TO 'mweber'\nON NotaufnahmeManagement.Ärzte;",
+          "rationale": "Die Reihenfolge ist unüblich und zusätzlich ist die Tabelle falsch."
+        }
+      ],
+      "correctIndex": 0,
+      "feedback": {
+        "correct": "Die Rechtevergabe für `mweber` ist fachlich korrekt aufgebaut.",
+        "wrong": "Achten Sie auf `GRANT`, die richtigen Rechtearten und die passende Zieltabelle."
+      },
+      "progressLinks": [
+        "pv2fiae_sql_admin_klinikbetrieb"
+      ]
+    },
+    {
+      "id": "q14",
+      "type": "single_choice",
+      "title": "Schreibrechte wieder entziehen",
+      "prompt": "Welche SQL-Anweisung entzieht dem Benutzer `tbrandt` die Schreibrechte auf die Tabelle `NotaufnahmeManagement.Verschreibungen`?",
+      "options": [
+        {
+          "label": "Variante A",
+          "language": "sql",
+          "code": "REVOKE INSERT, UPDATE ON NotaufnahmeManagement.Verschreibungen\nFROM 'tbrandt';",
+          "rationale": "Diese Anweisung entzieht genau die geforderten Schreibrechte auf der richtigen Tabelle."
+        },
+        {
+          "label": "Variante B",
+          "language": "sql",
+          "code": "GRANT INSERT, UPDATE ON NotaufnahmeManagement.Verschreibungen\nTO 'tbrandt';",
+          "rationale": "Hier werden Rechte vergeben statt entzogen."
+        },
+        {
+          "label": "Variante C",
+          "language": "sql",
+          "code": "REVOKE SELECT ON NotaufnahmeManagement.Verschreibungen\nFROM 'tbrandt';",
+          "rationale": "Das wäre nur ein Entzug des Leserechts und nicht der geforderten Schreibrechte."
+        },
+        {
+          "label": "Variante D",
+          "language": "sql",
+          "code": "DELETE FROM NotaufnahmeManagement.Verschreibungen\nWHERE Benutzer = 'tbrandt';",
+          "rationale": "Ein `DELETE` löscht Datensätze und hat nichts mit dem Entzug von Rechten zu tun."
+        }
+      ],
+      "correctIndex": 0,
+      "feedback": {
+        "correct": "Der Entzug der Schreibrechte ist korrekt formuliert.",
+        "wrong": "Für den Entzug von Rechten brauchen Sie `REVOKE` auf der richtigen Tabelle und mit den passenden Rechten."
+      },
+      "progressLinks": [
+        "pv2fiae_sql_admin_klinikbetrieb"
+      ]
+    },
+    {
+      "id": "q15",
+      "type": "single_choice",
+      "title": "Spalte `Email` sicher zum Pflichtfeld machen",
+      "prompt": "Die Spalte `Email` soll in `Aerzte` zum Pflichtfeld werden, obwohl bereits Datensätze mit `NULL` vorhanden sind. Welche SQL-Variante geht fachlich korrekt vor?",
+      "options": [
+        {
+          "label": "Variante A",
+          "language": "sql",
+          "code": "UPDATE Ärzte\nSET Email = 'info@fit.example'\nWHERE Email IS NULL;\n\nALTER TABLE Ärzte\nMODIFY Email VARCHAR(100) NOT NULL;",
+          "rationale": "Erst werden fehlende Werte nachgezogen, danach kann die Spalte sicher auf `NOT NULL` gesetzt werden."
+        },
+        {
+          "label": "Variante B",
+          "language": "sql",
+          "code": "ALTER TABLE Ärzte\nMODIFY Email VARCHAR(100) NOT NULL;\n\nUPDATE Ärzte\nSET Email = 'info@fit.example'\nWHERE Email IS NULL;",
+          "rationale": "Das `ALTER TABLE` würde schon vor dem Update an vorhandenen `NULL`-Werten scheitern."
+        },
+        {
+          "label": "Variante C",
+          "language": "sql",
+          "code": "UPDATE Ärzte\nSET Email = NULL\nWHERE Email IS NULL;",
+          "rationale": "Damit werden keine fehlenden Daten ergänzt und die Pflichtfeld-Anforderung ebenfalls nicht umgesetzt."
+        },
+        {
+          "label": "Variante D",
+          "language": "sql",
+          "code": "ALTER TABLE Ärzte\nADD COLUMN EmailPflicht BOOLEAN DEFAULT TRUE;",
+          "rationale": "Eine zusätzliche Spalte ersetzt nicht die eigentliche `NOT NULL`-Prüfung für `Email`."
+        }
+      ],
+      "correctIndex": 0,
+      "feedback": {
+        "correct": "Die Umstellung auf ein Pflichtfeld erfolgt in der fachlich richtigen Reihenfolge.",
+        "wrong": "Denken Sie daran, bestehende `NULL`-Werte zuerst aufzufüllen und erst danach die `NOT NULL`-Bedingung zu setzen."
+      },
+      "progressLinks": [
+        "pv2fiae_sql_admin_klinikbetrieb"
+      ]
+    },
+    {
+      "id": "q16",
+      "type": "single_choice",
+      "title": "Patienten mit mindestens drei Verschreibungen auswerten",
+      "visuals": [
+        {
+          "type": "table",
+          "eyebrow": "Erwartete Ausgabe",
+          "title": "Patienten mit mindestens drei Verschreibungen",
+          "caption": "Die Ergebnisliste soll nach `Anzahl_Verschreibungen` absteigend sortiert sein.",
+          "columns": [
+            "PID",
+            "Nachname",
+            "Vorname",
+            "Anzahl_Verschreibungen"
+          ],
+          "rows": [
+            [
+              "1",
+              "Kramer",
+              "Lea",
+              "4"
+            ],
+            [
+              "2",
+              "Berg",
+              "Jonas",
+              "3"
+            ]
+          ]
+        }
+      ],
+      "prompt": "Welche SQL-Anweisung liefert für alle Patientinnen und Patienten mit mindestens drei Verschreibungen die Spalten `PID`, `Nachname`, `Vorname` und `Anzahl_Verschreibungen` in der gezeigten Struktur?",
+      "options": [
+        {
+          "label": "Variante A",
+          "language": "sql",
+          "code": "SELECT\n    p.PID,\n    p.Nachname,\n    p.Vorname,\n    COUNT(v.VID) AS Anzahl_Verschreibungen\nFROM Patienten AS p\nJOIN Verschreibungen AS v ON p.PID = v.PID\nGROUP BY p.PID, p.Nachname, p.Vorname\nHAVING COUNT(v.VID) >= 3\nORDER BY Anzahl_Verschreibungen DESC;",
+          "rationale": "Diese Abfrage verknüpft Patienten und Verschreibungen korrekt, gruppiert pro Patient und filtert anschliessend über `HAVING`."
+        },
+        {
+          "label": "Variante B",
+          "language": "sql",
+          "code": "SELECT\n    p.PID,\n    p.Nachname,\n    p.Vorname,\n    COUNT(v.VID) AS Anzahl_Verschreibungen\nFROM Patienten AS p\nJOIN Verschreibungen AS v ON p.PID = v.PID\nWHERE COUNT(v.VID) >= 3\nGROUP BY p.PID;",
+          "rationale": "Aggregationen dürfen nicht über `WHERE COUNT(...)` gefiltert werden; dafür ist `HAVING` gedacht."
+        },
+        {
+          "label": "Variante C",
+          "language": "sql",
+          "code": "SELECT\n    p.PID,\n    p.Nachname,\n    p.Vorname,\n    v.VID AS Anzahl_Verschreibungen\nFROM Patienten AS p\nJOIN Verschreibungen AS v ON p.PID = v.PID\nORDER BY Anzahl_Verschreibungen DESC;",
+          "rationale": "Hier fehlt die Aggregation pro Patient komplett."
+        },
+        {
+          "label": "Variante D",
+          "language": "sql",
+          "code": "SELECT\n    PID,\n    Nachname,\n    Vorname,\n    COUNT(*) AS Anzahl_Verschreibungen\nFROM Verschreibungen\nGROUP BY PID, Nachname, Vorname\nHAVING COUNT(*) >= 3;",
+          "rationale": "Die Tabelle `Verschreibungen` enthält weder `Nachname` noch `Vorname`; dafür ist der Join auf `Patienten` erforderlich."
+        }
+      ],
+      "correctIndex": 0,
+      "feedback": {
+        "correct": "Die SQL-Auswertung für Patientinnen und Patienten mit mindestens drei Verschreibungen ist korrekt aufgebaut.",
+        "wrong": "Achten Sie auf Join, Gruppierung pro Patient, `HAVING` für Aggregatfilter und die gewünschte Sortierung."
+      },
+      "progressLinks": [
+        "pv2fiae_sql_joins_aggregation"
+      ]
+    },
+    {
+      "id": "q17",
+      "type": "single_choice",
+      "title": "Durchschnittliche Verschreibungsanzahl pro Patient berechnen",
+      "visuals": [
+        {
+          "type": "table",
+          "eyebrow": "Erwartete Ausgabe",
+          "title": "Durchschnitt der Verschreibungen pro Patient",
+          "caption": "Die Berechnung basiert auf den pro Patient bereits aggregierten Verschreibungszahlen.",
+          "columns": [
+            "Durchschnitt_Verschreibungen_pro_Patient"
+          ],
+          "rows": [
+            [
+              "2.0"
+            ]
+          ]
+        }
+      ],
+      "prompt": "Welche SQL-Anweisung berechnet den Durchschnitt der Verschreibungsanzahl pro Patient fachlich korrekt?",
+      "options": [
+        {
+          "label": "Variante A",
+          "language": "sql",
+          "code": "SELECT AVG(anzahl_verschreibungen) AS Durchschnitt_Verschreibungen_pro_Patient\nFROM (\n    SELECT COUNT(*) AS anzahl_verschreibungen\n    FROM Verschreibungen\n    GROUP BY PID\n) AS verschreibungen_pro_patient;",
+          "rationale": "Zuerst wird pro Patient gezählt, danach wird über diese Einzelwerte der Durchschnitt gebildet."
+        },
+        {
+          "label": "Variante B",
+          "language": "sql",
+          "code": "SELECT AVG(*) AS Durchschnitt_Verschreibungen_pro_Patient\nFROM Verschreibungen;",
+          "rationale": "Ein `AVG(*)` ist syntaktisch ungültig und bildet auch fachlich nicht die Anzahl pro Patient ab."
+        },
+        {
+          "label": "Variante C",
+          "language": "sql",
+          "code": "SELECT COUNT(*) / PID AS Durchschnitt_Verschreibungen_pro_Patient\nFROM Verschreibungen;",
+          "rationale": "Hier wird nicht pro Patient gruppiert und `PID` darf nicht so für die Durchschnittsbildung verwendet werden."
+        },
+        {
+          "label": "Variante D",
+          "language": "sql",
+          "code": "SELECT AVG(PID) AS Durchschnitt_Verschreibungen_pro_Patient\nFROM Verschreibungen;",
+          "rationale": "Der Mittelwert über Patienten-IDs sagt nichts über die Zahl der Verschreibungen pro Patient aus."
+        }
+      ],
+      "correctIndex": 0,
+      "feedback": {
+        "correct": "Die Durchschnittsberechnung pro Patient ist fachlich korrekt aufgebaut.",
+        "wrong": "Für diese Kennzahl müssen Sie zuerst pro Patient aggregieren und erst danach den Durchschnitt über diese Teilmengen bilden."
+      },
+      "progressLinks": [
+        "pv2fiae_sql_joins_aggregation"
+      ]
+    }
+  ]
+}

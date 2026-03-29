@@ -1,0 +1,161 @@
+{
+  "scenario": {
+    "company": "Ausbildungsbetrieb IT-Service",
+    "scale": "Regional, 210 Mitarbeitende",
+    "context": "Station 6 des Tageslaufs: Kundengerecht kommunizieren und deeskalieren.",
+    "mission": "Sie formulieren klare Statusmeldungen und steuern schwierige Gespräche deeskalierend.",
+    "station": {
+      "id": "LF06-ST-06",
+      "department": "Service Desk",
+      "profile": "Statusmeldungen, schwierige Gespräche, Verbindlichkeit und Deeskalation",
+      "constraints": [
+        "Technik verständlich erklären",
+        "Verbindlichkeit trotz Druck halten",
+        "Kundenlage und Bearbeitungsrealität zusammenbringen"
+      ]
+    },
+    "customerRequest": {
+      "from": "service.manager@ausbildungsbetrieb.example",
+      "to": "service.desk@ausbildungsbetrieb.example",
+      "subject": "Station 06: Kommunikation in angespannten Servicefällen trainieren",
+      "date": "2026-03-13",
+      "body": "Bitte bereiten Sie Beispiele für kundenorientierte Statuskommunikation und den Umgang mit verargerten Anrufenden vor."
+    }
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "type": "single_choice",
+      "title": "Ziel einer guten Statusmeldung",
+      "prompt": "Was ist das wichtigste Ziel einer guten Statusmeldung im Servicefall?",
+      "options": [
+        {
+          "text": "Klarheit über Stand, nächsten Schritt und Zeitbezug schaffen",
+          "rationale": "So wird Unsicherheit reduziert und Erwartungsmanagement verbessert."
+        },
+        {
+          "text": "Möglichst viele Fachbegriffe ohne Einordnung nennen",
+          "rationale": "Das hilft nicht bei der Orientierung."
+        },
+        {
+          "text": "Nur sagen, dass weiter gearbeitet wird",
+          "rationale": "Ohne Details bleibt die Aussage zu ungenau."
+        }
+      ],
+      "correctIndex": 0,
+      "feedback": {
+        "correct": "Richtig: Gute Statusmeldungen geben Orientierung und Verbindlichkeit.",
+        "wrong": "Nicht passend: Bitte Stand, nächsten Schritt und Zeitbezug stärker gewichten."
+      },
+      "progressLinks": [
+        "lf06_kundenkommunikation"
+      ]
+    },
+    {
+      "id": "q2",
+      "type": "multi_select",
+      "title": "Deeskalierende Gesprächselemente",
+      "prompt": "Welche Verhaltensweisen helfen in einem angespannten Servicegespräch? (Mehrfachauswahl)",
+      "options": [
+        {
+          "text": "Aktiv zuhören und die Lage des Gegenübers erkennbar aufnehmen",
+          "correct": true,
+          "rationale": "Das reduziert häufig den ersten Druck."
+        },
+        {
+          "text": "Klare Vereinbarung zum nächsten Schritt treffen",
+          "correct": true,
+          "rationale": "Verbindlichkeit schafft Orientierung."
+        },
+        {
+          "text": "Technische Inhalte in verständlicher Sprache erklären",
+          "correct": true,
+          "rationale": "Verständlichkeit senkt Frustration."
+        },
+        {
+          "text": "Dem Kunden Vorwürfe machen",
+          "correct": false,
+          "rationale": "Das verschlechtert die Gesprächslage."
+        },
+        {
+          "text": "Keine Rückmeldung mehr zusagen, um Druck zu vermeiden",
+          "correct": false,
+          "rationale": "Das macht die Situation eher schlechter."
+        }
+      ],
+      "feedback": {
+        "correct": "Richtig: Sie verbinden Verständnis, Klarheit und Verbindlichkeit.",
+        "wrong": "Teilweise falsch: Bitte aktives Zuhören, klare Vereinbarung und verständliche Sprache stärker betonen."
+      },
+      "progressLinks": [
+        "lf06_kundenkommunikation",
+        "lf06_konflikt_deeskalation"
+      ]
+    },
+    {
+      "id": "q3",
+      "type": "ordering",
+      "title": "Deeskalierendes Gespräch führen",
+      "prompt": "Ordnen Sie die Schritte sinnvoll.",
+      "items": [
+        "Nächsten Schritt und Rückmeldezeit vereinbaren",
+        "Lage des Anrufers kurz aufnehmen und aktives Zuhören zeigen",
+        "Aktuellen Stand verständlich erklären",
+        "Emotionen nicht gegen Emotionen beantworten",
+        "Gespräch sauber abschliessen und vereinbarte Punkte sichern"
+      ],
+      "correctOrder": [
+        "Lage des Anrufers kurz aufnehmen und aktives Zuhören zeigen",
+        "Emotionen nicht gegen Emotionen beantworten",
+        "Aktuellen Stand verständlich erklären",
+        "Nächsten Schritt und Rückmeldezeit vereinbaren",
+        "Gespräch sauber abschliessen und vereinbarte Punkte sichern"
+      ],
+      "feedback": {
+        "correct": "Richtig: So bleibt das Gespräch ruhig, klar und verbindlich.",
+        "wrong": "Nicht optimal: Bitte erst aufnehmen, dann erklären, vereinbaren und sauber abschliessen."
+      },
+      "progressLinks": [
+        "lf06_konflikt_deeskalation",
+        "lf06_kundenkommunikation"
+      ]
+    },
+    {
+      "id": "q4",
+      "type": "number",
+      "title": "Rückmeldefenster berechnen",
+      "prompt": "Ein Rückruf soll spätestens 25 Minuten nach 13:40 erfolgen. Wie viele Minuten nach 08:00 entspricht das?",
+      "expected": 365,
+      "toleranceAbs": 0,
+      "showExpectedFormula": "13:40 = 340 min nach 08:00, +25 = 365 min (14:05)",
+      "feedback": {
+        "correct": "Richtig gerechnet.",
+        "wrong": "Bitte die Startzeit in Minuten nach 08:00 umrechnen und 25 Minuten addieren."
+      },
+      "progressLinks": [
+        "lf06_kundenkommunikation"
+      ]
+    },
+    {
+      "id": "q5",
+      "type": "short_text",
+      "title": "Deeskalierende Antwort formulieren",
+      "prompt": "Formulieren Sie in 4-6 Sätzen eine deeskalierende Antwort mit Verständnis, Status und klarer Vereinbarung.",
+      "minChars": 170,
+      "requiredKeywords": [
+        "verständnis",
+        "status",
+        "vereinbarung"
+      ],
+      "expectedOutline": "Verständnis zeigen, Sachstand benennen und die nächste verbindliche Vereinbarung formulieren.",
+      "feedback": {
+        "correct": "Richtig: Die Antwort ist deeskalierend und dennoch klar.",
+        "wrong": "Bitte Verständnis, Status und Vereinbarung klarer miteinander verbinden."
+      },
+      "progressLinks": [
+        "lf06_kundenkommunikation",
+        "lf06_konflikt_deeskalation"
+      ]
+    }
+  ]
+}

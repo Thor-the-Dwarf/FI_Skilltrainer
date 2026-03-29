@@ -1,0 +1,393 @@
+{
+  "scenario": {
+    "company": "SecuBridge Service GmbH",
+    "scale": "IT-Dienstleister für Homeoffice, kommunale Arbeitsplätze und Praxisumgebungen, 95 Mitarbeitende",
+    "context": "Bei einer internen Alarmierungsprobe für Abend- und Wochenendstörungen sind veraltete Kontaktwege, unklare Rufbereitschaftsvertretungen und ein lückenhafter Eskalationspfad sichtbar geworden.",
+    "mission": "Kontaktstand, Rufbereitschaft, Eskalationsfolge und Abschlussnachweise für die Alarmierung sauber festlegen.",
+    "source": {
+      "kind": "Interner Alarmierungs- und Bereitschaftsauftrag",
+      "reference": "Alarmierungsprobe Betriebsbereitschaft, 2026-03-26 18:10",
+      "note": "Grundlage sind eine fehlgeschlagene Alarmierungsprobe, alte Mobilnummern in der Rufbereitschaftsliste, eine nicht mehr gültige Hotline für einen Infrastrukturpartner und die Anforderung, den Bereitschafts- und Eskalationsstand bis Freitag belastbar zu ordnen."
+    },
+    "station": {
+      "id": "QUS2-ST-10",
+      "department": "Betrieb, Notfallkoordination und Serviceleitung",
+      "profile": "Alarmierung, Rufbereitschaft, Eskalation und Abschlussnachweise",
+      "constraints": [
+        "Kontaktweg, Rolle und Vertretung müssen pro Alarmierungsstufe klar und aktuell dokumentiert sein",
+        "Hotline, Rufbereitschaft und interner Eskalationspfad dürfen nicht nur formal vorhanden, sondern praktisch nutzbar sein",
+        "Für Freitag wird ein lesbarer Abschluss mit aktualisiertem Kontaktstand, Testergebnis und offenen Restpunkten benötigt"
+      ]
+    },
+    "customerRequest": {
+      "from": "betrieb@secubridge-service.example",
+      "to": "alarmkoordination@ausbildungsbetrieb.example",
+      "subject": "Alarmierungsprobe für Abendbetrieb und Rufbereitschaft sauber nachziehen",
+      "date": "2026-03-26",
+      "body": "Guten Tag,\n\nbei unserer Probe für Abend- und Wochenendstörungen haben mehrere Teile nicht sauber gegriffen: Zwei Mobilnummern in der Rufbereitschaftsliste waren veraltet, die Vertretung für den Plattformbetrieb war nicht klar benannt, und die hinterlegte Hotline eines Infrastrukturpartners ist laut Rückmeldung nicht mehr gültig.\n\nBitte bereiten Sie bis Freitag einen belastbaren Stand vor: Welche Kontaktwege müssen sofort korrigiert werden, wie wird die Eskalationsfolge für Abendstörungen sauber aufgebaut, welche Vertretungen sind verbindlich und welche Nachweise brauchen wir für einen nachvollziehbaren Abschluss.\n\nViele Grüsse\nBetrieb"
+    }
+  },
+  "questions": [
+    {
+      "id": "ctx01",
+      "type": "context_card",
+      "title": "Stand der Alarmierungsprobe",
+      "contentBlocks": [
+        {
+          "type": "text",
+          "text": "SecuBridge prüft für Störungen ausserhalb des Tagesbetriebs die Alarmierung von Rufbereitschaft, Vertretung und externen Partnern. Die aktuelle Probe zeigt nicht einen einzelnen Defekt, sondern mehrere Brüche in Kontaktlisten, Vertretungslogik und Eskalationsfolge."
+        },
+        {
+          "type": "table",
+          "columns": [
+            "Punkt",
+            "Aktueller Befund"
+          ],
+          "rows": [
+            [
+              "Rufbereitschaftsliste",
+              "zwei Mobilnummern veraltet"
+            ],
+            [
+              "Vertretung Plattformbetrieb",
+              "nicht eindeutig hinterlegt"
+            ],
+            [
+              "Partner-Hotline",
+              "hinterlegte Nummer nicht mehr gültig"
+            ],
+            [
+              "Fallback-Kanal",
+              "kein klarer benoannter Kanal für den Fall nicht erreichbarer Erstkontakte"
+            ],
+            [
+              "Erwartung für Freitag",
+              "aktualisierte Kontaktfolge, benannte Vertretungen, Testnachweis und offene Restpunkte"
+            ]
+          ]
+        },
+        {
+          "type": "text",
+          "text": "Gesucht ist kein allgemeines Notfallpapier, sondern ein konkret nutzbarer Alarmierungsstand für echte Abend- oder Wochenendstörungen."
+        }
+      ]
+    },
+    {
+      "id": "q01",
+      "type": "multi_select",
+      "title": "Sofort zu klärende Punkte",
+      "prompt": "Welche Punkte müssen nach der Alarmierungsprobe zuerst geklärt oder korrigiert werden? Mehrere Punkte können gleichzeitig zwingend sein.",
+      "options": [
+        {
+          "text": "Veraltete Mobilnummern in der Rufbereitschaftsliste aktualisieren und den Kontaktweg erneut prüfen.",
+          "correct": true,
+          "rationale": "Ohne erreichbare Erstkontakte bleibt jede Alarmierungslogik auf dem Papier stehen."
+        },
+        {
+          "text": "Verbindliche Vertretung für den Plattformbetrieb mit eigener Erreichbarkeit festziehen.",
+          "correct": true,
+          "rationale": "Eine unklare Vertretung reisst die Eskalationsfolge an einer kritischen Stelle auf."
+        },
+        {
+          "text": "Nicht mehr gültige Hotline-Daten des Infrastrukturpartners korrigieren oder einen alternativen Partnerkontakt sichern.",
+          "correct": true,
+          "rationale": "Externe Eskalation muss im Ernstfall tatsächlich nutzbar sein."
+        },
+        {
+          "text": "Fallback-Kanal für den Fall festlegen, dass Erstkontakt und Vertretung nicht erreichbar sind.",
+          "correct": true,
+          "rationale": "Ohne Rückfallebene bleibt der Alarmfluss bei der ersten Lücke stehen."
+        },
+        {
+          "text": "Die Kontaktlisten können unverändert bleiben, solange intern bekannt ist, wer normalerweise reagiert.",
+          "correct": false,
+          "rationale": "Informelles Wissen ersetzt keine belastbare Alarmierung ausserhalb des Tagesbetriebs."
+        },
+        {
+          "text": "Eine bestandene Probe ist nicht nötig, wenn der Teamkalender die Rufbereitschaft bereits zeigt.",
+          "correct": false,
+          "rationale": "Kalendereinträge beweisen nicht, dass Kontaktweg und Eskalation praktisch greifen."
+        }
+      ],
+      "feedback": {
+        "correct": "Die zuerst zu klärenden Punkte nach der Probe wurden richtig priorisiert.",
+        "wrong": "Achten Sie auf aktuelle Erreichbarkeit, klare Vertretung, externen Kontaktweg und einen echten Fallback."
+      },
+      "progressLinks": [
+        "qus2_alarmierung_und_kontaktstand"
+      ]
+    },
+    {
+      "id": "q02",
+      "type": "single_choice",
+      "title": "Belastbare Alarmierungslogik",
+      "prompt": "Welche Beschreibung passt am besten zu einer belastbaren Alarmierungslogik für diesen Fall?",
+      "options": [
+        {
+          "text": "Es reicht, wenn die Liste formal existiert; offene Erreichbarkeitslücken können im Notfall improvisiert geschlossen werden.",
+          "rationale": "Improvisation ersetzt keine verifizierte Alarmierungsfolge."
+        },
+        {
+          "text": "Erstkontakt, Vertretung, Fallback und externer Partnerkontakt sind aktuell, prüfbar und für die jeweilige Störungsart klar zugeordnet.",
+          "rationale": "Genau diese Kombination macht eine Alarmierung praktisch nutzbar statt nur formal vorhanden."
+        },
+        {
+          "text": "Sobald die Serviceleitung informiert ist, kann die restliche Alarmierung je nach Stimmung im Team entschieden werden.",
+          "rationale": "Die Alarmfolge darf nicht von spontaner Verfügbarkeit oder Stimmung abhängen."
+        },
+        {
+          "text": "Die externe Hotline ist wichtiger als interne Vertretungen und sollte deshalb allein im Fokus stehen.",
+          "rationale": "Externe Kontakte sind nur ein Teil der gesamten Alarmierungslogik."
+        }
+      ],
+      "correctIndex": 1,
+      "feedback": {
+        "correct": "Die belastbare Alarmierungslogik wurde richtig erkannt.",
+        "wrong": "Gesucht ist eine Linie mit aktuellem Erstkontakt, Vertretung, Fallback und passendem externem Bezug."
+      },
+      "progressLinks": [
+        "qus2_alarmierung_und_kontaktstand",
+        "qus2_rufbereitschaft_und_eskalation"
+      ]
+    },
+    {
+      "id": "f02",
+      "type": "followup_divider",
+      "title": "Kontakt- und Eskalationsmatrix aufbauen",
+      "from": "notfallkoordination@secubridge-service.example",
+      "to": "alarmkoordination@ausbildungsbetrieb.example",
+      "subject": "Matrix für Erstkontakt, Vertretung und Fallback vorbereiten",
+      "date": "2026-03-26",
+      "body": "Hallo zusammen,\n\nbevor ich die Liste freigebe, brauche ich pro Alarmierungsstufe eine klare Aussage dazu, wer zuerst angesprochen wird, wer vertreten darf, wie der Fallback läuft und welcher erste Nachweis später zeigt, dass die Kontaktfolge wirklich getestet oder aktualisiert wurde. Bitte zieht interne und externe Kontakte in einem gemeinsamen Bild zusammen.\n\nViele Grüsse\nNotfallkoordination"
+    },
+    {
+      "id": "q03",
+      "type": "table_fill",
+      "title": "Kontaktweg und erster Nachweis je Alarmierungsstufe",
+      "prompt": "Ergänzen Sie pro Alarmierungsstufe den naheliegendsten Kontaktweg und den ersten passenden Nachweis.",
+      "columns": [
+        "Alarmierungsstufe",
+        "Naheliegendster Kontaktweg",
+        "Erster passender Nachweis"
+      ],
+      "rows": [
+        [
+          "Erstkontakt für Plattformstörung",
+          {
+            "key": "route_row_1",
+            "label": "Erstkontakt / Kontaktweg",
+            "expected": "Aktuelle Rufbereitschaftsnummer der verantwortlichen Person mit bestätigter Erreichbarkeit.",
+            "inputType": "select",
+            "placeholder": "Kontaktweg wählen",
+            "options": [
+              "Aktuelle Rufbereitschaftsnummer der verantwortlichen Person mit bestätigter Erreichbarkeit.",
+              "Beliebige frühere Mobilnummer aus einem alten Einsatzprotokoll.",
+              "Nur der Teamkalender ohne Telefonnummer.",
+              "Eine allgemeine Postfachadresse ohne Zustelllogik."
+            ]
+          },
+          {
+            "key": "proof_row_1",
+            "label": "Erstkontakt / Nachweis",
+            "expected": "Aktualisierte Rufbereitschaftsliste oder erfolgreicher Testkontakt mit Datum.",
+            "inputType": "select",
+            "placeholder": "Nachweis wählen",
+            "options": [
+              "Aktualisierte Rufbereitschaftsliste oder erfolgreicher Testkontakt mit Datum.",
+              "Screenshot des Firmenlogos im Alarmtool.",
+              "Allgemeine Wochenplanung des Teams.",
+              "Telefonnotiz ohne Bezug zur aktualisierten Nummer."
+            ]
+          }
+        ],
+        [
+          "Vertretung bei nicht erreichbarer Erstperson",
+          {
+            "key": "route_row_2",
+            "label": "Vertretung / Kontaktweg",
+            "expected": "Benannte Vertretung mit eigener Nummer und klarer Zustandsverantwortung.",
+            "inputType": "select",
+            "placeholder": "Kontaktweg wählen",
+            "options": [
+              "Benannte Vertretung mit eigener Nummer und klarer Zustandsverantwortung.",
+              "Die Annahme, dass irgendjemand aus dem Plattformteam schon reagieren wird.",
+              "Ein Chatraum ohne benoannte Verantwortliche.",
+              "Nur die alte Mobilnummer der zuerst vorgesehenen Person."
+            ]
+          },
+          {
+            "key": "proof_row_2",
+            "label": "Vertretung / Nachweis",
+            "expected": "Dokumentierte Vertretungsregel mit Kontaktweg und Prüfdatum.",
+            "inputType": "select",
+            "placeholder": "Nachweis wählen",
+            "options": [
+              "Dokumentierte Vertretungsregel mit Kontaktweg und Prüfdatum.",
+              "Nur eine ungefähre Teamabsprache ohne Datumsbezug.",
+              "Kalendereinladung für eine spätere Besprechung.",
+              "Liste aller Mitarbeitenden ohne Rollenbezug."
+            ]
+          }
+        ],
+        [
+          "Externe Eskalation an Infrastrukturpartner",
+          {
+            "key": "route_row_3",
+            "label": "Partnerkontakt / Kontaktweg",
+            "expected": "Aktuelle Hotline oder Servicekontakt aus dem gültigen Partnervertrag mit Fallback-Ansprechpartner.",
+            "inputType": "select",
+            "placeholder": "Kontaktweg wählen",
+            "options": [
+              "Aktuelle Hotline oder Servicekontakt aus dem gültigen Partnervertrag mit Fallback-Ansprechpartner.",
+              "Die frühere Hotline aus dem ausgelaufenen Vertrag, solange sie in alten Unterlagen steht.",
+              "Ein allgemeines Kontaktformular ohne Bezug zu Störungen ausserhalb der Zeiten.",
+              "Nur die Firmenwebseite des Partners."
+            ]
+          },
+          {
+            "key": "proof_row_3",
+            "label": "Partnerkontakt / Nachweis",
+            "expected": "Aktualisierte Kontaktinfo oder verifizierter Testanruf mit Bezug zum gültigen Vertrag.",
+            "inputType": "select",
+            "placeholder": "Nachweis wählen",
+            "options": [
+              "Aktualisierte Kontaktinfo oder verifizierter Testanruf mit Bezug zum gültigen Vertrag.",
+              "Allgemeine Lieferantenliste ohne Hotline-Angabe.",
+              "Foto eines Besucherausweises des Partners.",
+              "Kurznotiz, dass der Partner früher erreichbar war."
+            ]
+          }
+        ]
+      ],
+      "feedback": {
+        "correct": "Kontaktweg und erster Nachweis wurden je Alarmierungsstufe stimmig verbunden.",
+        "wrong": "Prüfen Sie, welcher Kontaktweg wirklich belastbar ist und welcher Nachweis später die Aktualisierung oder den Test tragen kann."
+      },
+      "progressLinks": [
+        "qus2_alarmierung_und_kontaktstand",
+        "qus2_rufbereitschaft_und_eskalation"
+      ]
+    },
+    {
+      "id": "q04",
+      "type": "match_pairs",
+      "title": "Rollen in Bereitschaft und Eskalation",
+      "prompt": "Welche Rolle übernimmt welche erste Verantwortung in diesem Alarmierungsfall?",
+      "layout": "table",
+      "columns": [
+        "Rolle",
+        "erste Verantwortung"
+      ],
+      "pairs": [
+        {
+          "key": "role_1",
+          "left": "Notfallkoordination",
+          "right": "Alarmierungsfolge, Fallback und offene Lücken im Gesamtbild zusammenziehen"
+        },
+        {
+          "key": "role_2",
+          "left": "Serviceleitung",
+          "right": "Rufbereitschaft, Vertretung und Erreichbarkeit der internen Rollen verbindlich bestätigen"
+        },
+        {
+          "key": "role_3",
+          "left": "Plattformbetrieb",
+          "right": "Technisch kritische Bereitschaftsrollen und deren Vertretung für Störungen absichern"
+        },
+        {
+          "key": "role_4",
+          "left": "Lieferantenmanagement",
+          "right": "Gültigen Partnerkontakt, Hotline-Stand und Vertragsbezug aktualisieren"
+        }
+      ],
+      "options": [
+        "Alarmierungsfolge, Fallback und offene Lücken im Gesamtbild zusammenziehen",
+        "Rufbereitschaft, Vertretung und Erreichbarkeit der internen Rollen verbindlich bestätigen",
+        "Technisch kritische Bereitschaftsrollen und deren Vertretung für Störungen absichern",
+        "Gültigen Partnerkontakt, Hotline-Stand und Vertragsbezug aktualisieren"
+      ],
+      "feedback": {
+        "correct": "Die Rollen wurden mit ihren ersten Verantwortungen passend verbunden.",
+        "wrong": "Achten Sie darauf, wer Gesamtbild, interne Erreichbarkeit, technische Bereitschaft und Partnerkontakt jeweils zuerst zieht."
+      },
+      "progressLinks": [
+        "qus2_rufbereitschaft_und_eskalation"
+      ]
+    },
+    {
+      "id": "q05",
+      "type": "number",
+      "title": "Offene Kontaktlücken vor der Freigabe",
+      "prompt": "In der Alarmierungsliste stehen 14 Kontaktpunkte. 8 sind bereits verifiziert, 3 wurden heute erfolgreich aktualisiert und 1 externer Kontakt ist als gültig bestätigt. Wie viele Kontaktpunkte bleiben noch offen, bevor die Liste freigegeben werden kann?",
+      "expected": 2,
+      "toleranceAbs": 0,
+      "showExpectedFormula": "14 - 8 - 3 - 1 = 2 Kontaktpunkte",
+      "feedback": {
+        "correct": "Die Zahl der noch offenen Kontaktpunkte wurde korrekt berechnet.",
+        "wrong": "Bitte vom Gesamtbestand die bereits verifizierten und heute erfolgreich geklärten Kontaktpunkte abziehen."
+      },
+      "progressLinks": [
+        "qus2_alarmierung_und_kontaktstand"
+      ]
+    },
+    {
+      "id": "f03",
+      "type": "followup_divider",
+      "title": "Abschluss für Freitag sichern",
+      "from": "revision@secubridge-service.example",
+      "to": "alarmkoordination@ausbildungsbetrieb.example",
+      "subject": "Nachweisbild zur Alarmierungsprobe vorbereiten",
+      "date": "2026-03-26",
+      "body": "Hallo zusammen,\n\nfür Freitag brauche ich keinen allgemeinen Bereitschaftsplan, sondern einen lesbaren Stand dazu, welche Kontaktwege aktualisiert wurden, welche Vertretungen jetzt verbindlich hinterlegt sind, ob die Probe nach den Korrekturen funktioniert hat und welche Restpunkte offen bleiben. Bitte macht im Abschluss auch sichtbar, wenn externe Kontakte noch nicht vollständig verifiziert werden konnten.\n\nViele Grüsse\nRevision"
+    },
+    {
+      "id": "q06",
+      "type": "short_text",
+      "title": "Kurzstand zur Alarmierungsbereitschaft",
+      "prompt": "Schreiben Sie eine kurze Notiz (4-6 Sätze) mit Kontaktstand, Vertretungslogik, Testergebnis und offenem Restpunkt.",
+      "minChars": 180,
+      "requiredKeywords": [
+        "kontaktstand",
+        "testergebnis",
+        "restpunkt"
+      ],
+      "expectedOutline": "Kurz darlegen, was aktualisiert wurde, wie Vertretung und Fallback nun laufen, was der Test gezeigt hat und welcher Punkt noch offen bleibt.",
+      "feedback": {
+        "correct": "Der Kurzstand zur Alarmierungsbereitschaft ist knapp und belastbar formuliert.",
+        "wrong": "Bitte Kontaktstand, Vertretungslogik, Testergebnis und Restpunkt klarer voneinander trennen."
+      },
+      "progressLinks": [
+        "qus2_alarmierungsnachweise_und_abschluss"
+      ]
+    },
+    {
+      "id": "q07",
+      "type": "ordering",
+      "title": "Alarmierungsstand sauber wiederherstellen",
+      "prompt": "Bringen Sie die Schritte in eine sinnvolle Reihenfolge, damit die Alarmierung nach der Probe belastbar wird.",
+      "items": [
+        "Kontaktlücken, veraltete Nummern und unklare Vertretungen sauber zusammentragen.",
+        "Erstkontakt, Vertretung, Fallback und externen Partnerkontakt aktualisieren.",
+        "Die korrigierte Alarmierungsfolge praktisch prüfen oder verifizieren.",
+        "Offene Restpunkte und nicht verifizierte Kontakte sichtbar dokumentieren.",
+        "Abschlussbild für Freitag mit Kontaktstand und Testergebnis freigeben."
+      ],
+      "correctOrder": [
+        "Kontaktlücken, veraltete Nummern und unklare Vertretungen sauber zusammentragen.",
+        "Erstkontakt, Vertretung, Fallback und externen Partnerkontakt aktualisieren.",
+        "Die korrigierte Alarmierungsfolge praktisch prüfen oder verifizieren.",
+        "Offene Restpunkte und nicht verifizierte Kontakte sichtbar dokumentieren.",
+        "Abschlussbild für Freitag mit Kontaktstand und Testergebnis freigeben."
+      ],
+      "feedback": {
+        "correct": "Die Reihenfolge führt sauber von den Lücken über die Korrektur bis zum belastbaren Abschluss.",
+        "wrong": "Erst müssen die Lücken gesammelt und korrigiert werden, dann folgt die Probe, erst danach Restpunkte und Abschluss."
+      },
+      "progressLinks": [
+        "qus2_alarmierung_und_kontaktstand",
+        "qus2_rufbereitschaft_und_eskalation",
+        "qus2_alarmierungsnachweise_und_abschluss"
+      ]
+    }
+  ]
+}

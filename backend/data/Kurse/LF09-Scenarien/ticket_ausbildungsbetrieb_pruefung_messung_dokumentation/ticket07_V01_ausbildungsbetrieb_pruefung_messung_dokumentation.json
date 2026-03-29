@@ -1,0 +1,160 @@
+{
+  "scenario": {
+    "company": "Nordufer Maschinenbau GmbH",
+    "scale": "Mittelstand, 2 Standorte, 310 Mitarbeitende",
+    "context": "Station 07 des Tageslaufs: Infrastruktur und Netzwerkkomponenten prüfen sowie Ergebnisse dokumentieren.",
+    "mission": "Sie leiten aus Sollwerten einen Prüf- und Dokumentationsansatz für die Abnahme ab.",
+    "station": {
+      "id": "LF09-ST-07",
+      "department": "Qualitätssicherung",
+      "profile": "Prüfung, Messung und Dokumentation",
+      "constraints": [
+        "Sollwerte vor Messung klar festlegen",
+        "Abweichungen nicht nur finden, sondern klassifizieren",
+        "Abnahme- und Betriebsdokumente gemeinsam denken"
+      ]
+    },
+    "customerRequest": {
+      "from": "qa@nordufer-maschinenbau.example",
+      "to": "infra.team@ausbildungsbetrieb.example",
+      "subject": "Station 07: Prüfung und Dokumentation",
+      "date": "2026-03-13",
+      "body": "Bitte erstellen Sie einen belastbaren Ansatz für Infrastrukturtests, Messungen und Dokumentation."
+    }
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "type": "multi_select",
+      "title": "Prüfumfang festlegen",
+      "prompt": "Welche Prüfungen sollten vor der Abnahme mindestens vorgesehen sein? (Mehrfachauswahl)",
+      "options": [
+        {
+          "text": "Erreichbarkeit zentraler Dienste in allen relevanten Segmenten",
+          "correct": true,
+          "rationale": "Das prüft die Kernfunktion des Zielbilds."
+        },
+        {
+          "text": "Segmentgrenzen und Zugriffsregeln testen",
+          "correct": true,
+          "rationale": "Sichert Schutz und korrekte Netztrennung."
+        },
+        {
+          "text": "Auf zufällige Nutzerbeobachtungen warten",
+          "correct": false,
+          "rationale": "Das ersetzt keinen strukturierten Test."
+        },
+        {
+          "text": "Messwerte gegen definierte Sollwerte vergleichen",
+          "correct": true,
+          "rationale": "Nur so wird die Abnahme nachvollziehbar."
+        },
+        {
+          "text": "Fehler nur informell im Chat sammeln",
+          "correct": false,
+          "rationale": "Das ist für Abnahme und Nacharbeit zu unverbindlich."
+        }
+      ],
+      "feedback": {
+        "correct": "Richtig: Der Prüfumfang ist für eine belastbare Abnahme geeignet.",
+        "wrong": "Teilweise falsch: Bitte Funktion, Schutz und Sollwertbezug stärker absichern."
+      },
+      "progressLinks": [
+        "lf09_pruefung_dokumentation"
+      ]
+    },
+    {
+      "id": "q2",
+      "type": "number",
+      "title": "Testquote berechnen",
+      "prompt": "Von 48 geplanten Testfällen wurden 44 erfolgreich bestanden. Wie hoch ist die Erfolgsquote in Prozent, gerundet?",
+      "expected": 92,
+      "toleranceAbs": 1,
+      "showExpectedFormula": "44 / 48 * 100 = 91,67 % -> 92 %",
+      "feedback": {
+        "correct": "Richtig gerechnet.",
+        "wrong": "Bitte bestandene und geplante Testfälle korrekt ins Verhältnis setzen."
+      },
+      "progressLinks": [
+        "lf09_pruefung_dokumentation"
+      ]
+    },
+    {
+      "id": "q3",
+      "type": "single_choice",
+      "title": "Abweichung richtig behandeln",
+      "prompt": "Was ist bei einer Messabweichung über dem Sollbereich am sinnvollsten?",
+      "options": [
+        {
+          "text": "Die Abweichung ignorieren, wenn der Rest gut aussieht",
+          "rationale": "Das wäre für die Abnahme riskant."
+        },
+        {
+          "text": "Nur mündlich notieren und auf den nächsten Termin verschieben",
+          "rationale": "Das macht Nachverfolgung und Freigabe unsicher."
+        },
+        {
+          "text": "Die Abweichung klassifizieren, dokumentieren und einen Nachtest auslösen",
+          "rationale": "So bleibt die Qualitätssicherung nachvollziehbar und steuerbar."
+        }
+      ],
+      "correctIndex": 2,
+      "feedback": {
+        "correct": "Richtig: Abweichungen müssen systematisch behandelt werden.",
+        "wrong": "Nicht passend: Eine Abweichung braucht Klassifikation, Doku und Nachtest."
+      },
+      "progressLinks": [
+        "lf09_pruefung_dokumentation",
+        "lf09_rollout_uebergabe"
+      ]
+    },
+    {
+      "id": "q4",
+      "type": "ordering",
+      "title": "Von der Prüfung zur Abnahme",
+      "prompt": "Ordnen Sie den Ablauf von Test bis Abschlussdokumentation.",
+      "items": [
+        "Prüfungen und Messungen durchführen",
+        "Ergebnisse mit Sollwerten vergleichen",
+        "Abweichungen und Restpunkte einstufen",
+        "Nachtests dokumentieren",
+        "Abnahmebericht erstellen"
+      ],
+      "correctOrder": [
+        "Prüfungen und Messungen durchführen",
+        "Ergebnisse mit Sollwerten vergleichen",
+        "Abweichungen und Restpunkte einstufen",
+        "Nachtests dokumentieren",
+        "Abnahmebericht erstellen"
+      ],
+      "feedback": {
+        "correct": "Richtig: Der Ablauf führt schlüssig zur Abnahme.",
+        "wrong": "Nicht optimal: Bitte erst prüfen, dann bewerten, nachtesten und dokumentieren."
+      },
+      "progressLinks": [
+        "lf09_pruefung_dokumentation"
+      ]
+    },
+    {
+      "id": "q5",
+      "type": "short_text",
+      "title": "Messbericht formulieren",
+      "prompt": "Beschreiben Sie in 4-6 Sätzen, wie ein guter Mess- und Abnahmebericht für dieses Projekt aussehen sollte.",
+      "minChars": 170,
+      "requiredKeywords": [
+        "messung",
+        "abweichung",
+        "restpunkt"
+      ],
+      "expectedOutline": "Bericht mit Sollwertbezug, Abweichungsklassifikation und klaren Restpunkten.",
+      "feedback": {
+        "correct": "Richtig: Der Bericht ist für Abnahme und Betrieb nachvollziehbar beschrieben.",
+        "wrong": "Bitte Sollwertbezug, Abweichungen und Restpunkte deutlicher herausarbeiten."
+      },
+      "progressLinks": [
+        "lf09_pruefung_dokumentation",
+        "lf09_rollout_uebergabe"
+      ]
+    }
+  ]
+}

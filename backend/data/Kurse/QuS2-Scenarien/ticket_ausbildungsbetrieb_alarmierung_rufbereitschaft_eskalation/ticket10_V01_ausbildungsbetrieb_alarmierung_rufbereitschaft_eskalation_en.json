@@ -1,0 +1,393 @@
+{
+  "scenario": {
+    "company": "SecuBridge Service GmbH",
+    "scale": "IT service provider for home office, municipal workplaces and medical practice environments, 95 employees",
+    "context": "During an internal alerting drill for evening and weekend incidents, outdated contact paths, unclear on-call substitutes and a patchy escalation path became visible.",
+    "mission": "Define contact status, on-call coverage, escalation sequence and completion evidence for alerting.",
+    "source": {
+      "kind": "Internal alerting and on-call request",
+      "reference": "Alerting drill operations readiness, 2026-03-26 18:10",
+      "note": "Based on a failed alerting drill, old mobile numbers in the on-call list, a no-longer-valid hotline for an infrastructure partner and the requirement to put on-call and escalation status in order by Friday."
+    },
+    "station": {
+      "id": "QUS2-ST-10",
+      "department": "Operations, emergency coordination and service management",
+      "profile": "Alerting, on-call coverage, escalation and completion evidence",
+      "constraints": [
+        "Contact path, role and substitute must be clearly and currently documented per alerting level",
+        "Hotline, on-call coverage and internal escalation path must be practically usable, not just formally present",
+        "By Friday a readable closure with updated contact status, test result and open residual points is required"
+      ]
+    },
+    "customerRequest": {
+      "from": "betrieb@secubridge-service.example",
+      "to": "alarmkoordination@ausbildungsbetrieb.example",
+      "subject": "Follow up alerting drill for evening operations and on-call readiness cleanly",
+      "date": "2026-03-26",
+      "body": "Good day,\n\nduring our drill for evening and weekend incidents several parts did not work cleanly: two mobile numbers in the on-call list were outdated, the substitute for platform operations was not clearly named, and the stored hotline of an infrastructure partner is no longer valid according to feedback.\n\nPlease prepare a reliable status by Friday: which contact paths must be corrected immediately, how the escalation sequence for evening incidents is built cleanly, which substitutes are binding and which evidence we need for a traceable closure.\n\nKind regards\nOperations"
+    }
+  },
+  "questions": [
+    {
+      "id": "ctx01",
+      "type": "context_card",
+      "title": "Alerting drill status",
+      "contentBlocks": [
+        {
+          "type": "text",
+          "text": "SecuBridge tests alerting for incidents outside daytime operations involving on-call staff, substitutes and external partners. The current drill shows not a single defect, but multiple breaks in contact lists, substitution logic and escalation sequence."
+        },
+        {
+          "type": "table",
+          "columns": [
+            "Point",
+            "Current finding"
+          ],
+          "rows": [
+            [
+              "On-call list",
+              "Two mobile numbers outdated"
+            ],
+            [
+              "Platform operations substitute",
+              "Not clearly recorded"
+            ],
+            [
+              "Partner hotline",
+              "Stored number no longer valid"
+            ],
+            [
+              "Fallback channel",
+              "No clearly named channel if first contacts are unreachable"
+            ],
+            [
+              "Expectation for Friday",
+              "Updated contact sequence, named substitutes, test evidence and open residual points"
+            ]
+          ]
+        },
+        {
+          "type": "text",
+          "text": "The goal is not a general emergency document, but a concretely usable alerting status for real evening or weekend incidents."
+        }
+      ]
+    },
+    {
+      "id": "q01",
+      "type": "multi_select",
+      "title": "Points to clarify immediately",
+      "prompt": "Which points must be clarified or corrected first after the alerting drill? Several points can be mandatory.",
+      "options": [
+        {
+          "text": "Update outdated mobile numbers in the on-call list and recheck the contact path.",
+          "correct": true,
+          "rationale": "Without reachable first contacts, every alerting logic remains on paper."
+        },
+        {
+          "text": "Define a binding substitute for platform operations with their own reachability.",
+          "correct": true,
+          "rationale": "An unclear substitute tears the escalation sequence at a critical spot."
+        },
+        {
+          "text": "Correct the invalid hotline data of the infrastructure partner or secure an alternative contact.",
+          "correct": true,
+          "rationale": "External escalation must be actually usable in an emergency."
+        },
+        {
+          "text": "Define a fallback channel in case first contact and substitute are unreachable.",
+          "correct": true,
+          "rationale": "Without a fallback level, the alert flow stops at the first gap."
+        },
+        {
+          "text": "Contact lists can remain unchanged as long as it is known internally who usually responds.",
+          "correct": false,
+          "rationale": "Informal knowledge does not replace reliable alerting outside daytime operations."
+        },
+        {
+          "text": "A successful drill is not needed if the team calendar already shows on-call coverage.",
+          "correct": false,
+          "rationale": "Calendar entries do not prove that contact path and escalation work in practice."
+        }
+      ],
+      "feedback": {
+        "correct": "The first points to clarify after the drill were correctly prioritized.",
+        "wrong": "Focus on current reachability, clear substitute, external contact path and a real fallback."
+      },
+      "progressLinks": [
+        "qus2_alarmierung_und_kontaktstand"
+      ]
+    },
+    {
+      "id": "q02",
+      "type": "single_choice",
+      "title": "Reliable alerting logic",
+      "prompt": "Which description best fits a reliable alerting logic for this case?",
+      "options": [
+        {
+          "text": "It is enough if the list exists formally; open reachability gaps can be improvised in an emergency.",
+          "rationale": "Improvisation does not replace a verified alerting sequence."
+        },
+        {
+          "text": "First contact, substitute, fallback and external partner contact are current, verifiable and clearly assigned to the incident type.",
+          "rationale": "This combination makes alerting practically usable rather than merely formal."
+        },
+        {
+          "text": "Once service management is informed, the remaining alerting can be decided based on team availability.",
+          "rationale": "The alert sequence must not depend on spontaneous availability."
+        },
+        {
+          "text": "The external hotline is more important than internal substitutes and should therefore be the sole focus.",
+          "rationale": "External contacts are only one part of the overall alerting logic."
+        }
+      ],
+      "correctIndex": 1,
+      "feedback": {
+        "correct": "The reliable alerting logic was correctly identified.",
+        "wrong": "The target line includes current first contact, substitute, fallback and a suitable external reference."
+      },
+      "progressLinks": [
+        "qus2_alarmierung_und_kontaktstand",
+        "qus2_rufbereitschaft_und_eskalation"
+      ]
+    },
+    {
+      "id": "f02",
+      "type": "followup_divider",
+      "title": "Build contact and escalation matrix",
+      "from": "notfallkoordination@secubridge-service.example",
+      "to": "alarmkoordination@ausbildungsbetrieb.example",
+      "subject": "Prepare matrix for first contact, substitute and fallback",
+      "date": "2026-03-26",
+      "body": "Hello everyone,\n\nbefore I approve the list, I need a clear statement per alerting level on who is contacted first, who can substitute, how fallback works and which first evidence later shows that the contact sequence was tested or updated. Please combine internal and external contacts into one shared picture.\n\nKind regards\nEmergency coordination"
+    },
+    {
+      "id": "q03",
+      "type": "table_fill",
+      "title": "Contact path and first evidence per alerting level",
+      "prompt": "For each alerting level, add the most likely contact path and the first appropriate evidence.",
+      "columns": [
+        "Alerting level",
+        "Most likely contact path",
+        "First appropriate evidence"
+      ],
+      "rows": [
+        [
+          "First contact for platform incident",
+          {
+            "key": "route_row_1",
+            "label": "First contact / contact path",
+            "expected": "Current on-call number of the responsible person with confirmed reachability.",
+            "inputType": "select",
+            "placeholder": "Select contact path",
+            "options": [
+              "Current on-call number of the responsible person with confirmed reachability.",
+              "Any earlier mobile number from an old incident log.",
+              "Only the team calendar without phone number.",
+              "A general mailbox address without delivery logic."
+            ]
+          },
+          {
+            "key": "proof_row_1",
+            "label": "First contact / evidence",
+            "expected": "Updated on-call list or successful test contact with date.",
+            "inputType": "select",
+            "placeholder": "Select evidence",
+            "options": [
+              "Updated on-call list or successful test contact with date.",
+              "Screenshot of the company logo in the alerting tool.",
+              "General weekly planning of the team.",
+              "Phone note without reference to the updated number."
+            ]
+          }
+        ],
+        [
+          "Substitute when first contact is unreachable",
+          {
+            "key": "route_row_2",
+            "label": "Substitute / contact path",
+            "expected": "Named substitute with their own number and clear responsibility for the status.",
+            "inputType": "select",
+            "placeholder": "Select contact path",
+            "options": [
+              "Named substitute with their own number and clear responsibility for the status.",
+              "The assumption that someone from the platform team will react.",
+              "A chat room without named responsible persons.",
+              "Only the old mobile number of the primary person."
+            ]
+          },
+          {
+            "key": "proof_row_2",
+            "label": "Substitute / evidence",
+            "expected": "Documented substitute rule with contact path and review date.",
+            "inputType": "select",
+            "placeholder": "Select evidence",
+            "options": [
+              "Documented substitute rule with contact path and review date.",
+              "Only a rough team agreement without date reference.",
+              "Calendar invitation for a later meeting.",
+              "List of all employees without role reference."
+            ]
+          }
+        ],
+        [
+          "External escalation to infrastructure partner",
+          {
+            "key": "route_row_3",
+            "label": "Partner contact / contact path",
+            "expected": "Current hotline or service contact from the valid partner contract with a fallback contact person.",
+            "inputType": "select",
+            "placeholder": "Select contact path",
+            "options": [
+              "Current hotline or service contact from the valid partner contract with a fallback contact person.",
+              "The former hotline from the expired contract as long as it appears in old documents.",
+              "A general contact form without reference to after-hours incidents.",
+              "Only the partner's corporate website."
+            ]
+          },
+          {
+            "key": "proof_row_3",
+            "label": "Partner contact / evidence",
+            "expected": "Updated contact info or verified test call with reference to the valid contract.",
+            "inputType": "select",
+            "placeholder": "Select evidence",
+            "options": [
+              "Updated contact info or verified test call with reference to the valid contract.",
+              "General supplier list without hotline details.",
+              "Photo of a partner visitor badge.",
+              "Short note that the partner used to be reachable."
+            ]
+          }
+        ]
+      ],
+      "feedback": {
+        "correct": "Contact path and first evidence were matched consistently per alerting level.",
+        "wrong": "Check which contact path is truly reliable and which evidence can later support the update or test."
+      },
+      "progressLinks": [
+        "qus2_alarmierung_und_kontaktstand",
+        "qus2_rufbereitschaft_und_eskalation"
+      ]
+    },
+    {
+      "id": "q04",
+      "type": "match_pairs",
+      "title": "Roles in on-call and escalation",
+      "prompt": "Which role takes which initial responsibility in this alerting case?",
+      "layout": "table",
+      "columns": [
+        "Role",
+        "Initial responsibility"
+      ],
+      "pairs": [
+        {
+          "key": "role_1",
+          "left": "Emergency coordination",
+          "right": "Consolidate alerting sequence, fallback and open gaps in the overall picture"
+        },
+        {
+          "key": "role_2",
+          "left": "Service management",
+          "right": "Confirm on-call coverage, substitutes and reachability of internal roles as binding"
+        },
+        {
+          "key": "role_3",
+          "left": "Platform operations",
+          "right": "Secure technically critical on-call roles and their substitutes for incidents"
+        },
+        {
+          "key": "role_4",
+          "left": "Vendor management",
+          "right": "Update valid partner contact, hotline status and contract reference"
+        }
+      ],
+      "options": [
+        "Consolidate alerting sequence, fallback and open gaps in the overall picture",
+        "Confirm on-call coverage, substitutes and reachability of internal roles as binding",
+        "Secure technically critical on-call roles and their substitutes for incidents",
+        "Update valid partner contact, hotline status and contract reference"
+      ],
+      "feedback": {
+        "correct": "The roles were matched with their initial responsibilities.",
+        "wrong": "Focus on who owns the overall picture, internal reachability, technical readiness and partner contact."
+      },
+      "progressLinks": [
+        "qus2_rufbereitschaft_und_eskalation"
+      ]
+    },
+    {
+      "id": "q05",
+      "type": "number",
+      "title": "Open contact gaps before release",
+      "prompt": "The alert list contains 14 contact points. 8 are already verified, 3 were updated successfully today and 1 external contact is confirmed as valid. How many contact points remain open before the list can be released?",
+      "expected": 2,
+      "toleranceAbs": 0,
+      "showExpectedFormula": "14 - 8 - 3 - 1 = 2 contact points",
+      "feedback": {
+        "correct": "The number of remaining open contact points was calculated correctly.",
+        "wrong": "Please subtract the already verified and updated contact points from the total."
+      },
+      "progressLinks": [
+        "qus2_alarmierung_und_kontaktstand"
+      ]
+    },
+    {
+      "id": "f03",
+      "type": "followup_divider",
+      "title": "Secure closure for Friday",
+      "from": "revision@secubridge-service.example",
+      "to": "alarmkoordination@ausbildungsbetrieb.example",
+      "subject": "Prepare evidence picture for the alerting drill",
+      "date": "2026-03-26",
+      "body": "Hello everyone,\n\nfor Friday I do not need a general on-call plan, but a readable status of which contact paths were updated, which substitutes are now binding, whether the drill worked after corrections and which residual points remain open. Please also make visible if external contacts could not yet be fully verified.\n\nKind regards\nAudit"
+    },
+    {
+      "id": "q06",
+      "type": "short_text",
+      "title": "Short status on alerting readiness",
+      "prompt": "Write a short note (4-6 sentences) with contact status, substitute logic, test result and open residual point.",
+      "minChars": 180,
+      "requiredKeywords": [
+        "contact status",
+        "test result",
+        "residual point"
+      ],
+      "expectedOutline": "Briefly describe what was updated, how substitute and fallback now run, what the test showed and which point remains open.",
+      "feedback": {
+        "correct": "The short status on alerting readiness is concise and reliable.",
+        "wrong": "Please separate contact status, substitute logic, test result and residual point more clearly."
+      },
+      "progressLinks": [
+        "qus2_alarmierungsnachweise_und_abschluss"
+      ]
+    },
+    {
+      "id": "q07",
+      "type": "ordering",
+      "title": "Restore alerting status cleanly",
+      "prompt": "Put the steps in a sensible order so alerting becomes reliable after the drill.",
+      "items": [
+        "Collect contact gaps, outdated numbers and unclear substitutes cleanly.",
+        "Update first contact, substitute, fallback and external partner contact.",
+        "Practically test or verify the corrected alerting sequence.",
+        "Document open residual points and unverified contacts visibly.",
+        "Release the closure picture for Friday with contact status and test result."
+      ],
+      "correctOrder": [
+        "Collect contact gaps, outdated numbers and unclear substitutes cleanly.",
+        "Update first contact, substitute, fallback and external partner contact.",
+        "Practically test or verify the corrected alerting sequence.",
+        "Document open residual points and unverified contacts visibly.",
+        "Release the closure picture for Friday with contact status and test result."
+      ],
+      "feedback": {
+        "correct": "The order leads cleanly from gaps through correction to reliable closure.",
+        "wrong": "First collect and correct gaps, then run the drill, only after that document residual points and closure."
+      },
+      "progressLinks": [
+        "qus2_alarmierung_und_kontaktstand",
+        "qus2_rufbereitschaft_und_eskalation",
+        "qus2_alarmierungsnachweise_und_abschluss"
+      ]
+    }
+  ]
+}

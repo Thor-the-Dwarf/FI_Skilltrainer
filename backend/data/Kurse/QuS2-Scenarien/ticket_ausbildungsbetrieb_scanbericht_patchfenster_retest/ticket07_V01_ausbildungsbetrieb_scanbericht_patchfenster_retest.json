@@ -1,0 +1,423 @@
+{
+  "scenario": {
+    "company": "SecuBridge Service GmbH",
+    "scale": "IT-Dienstleister für Homeoffice, kommunale Arbeitsplätze und Praxisumgebungen, 95 Mitarbeitende",
+    "context": "Kurz vor einem Abstimmungstermin mit einem kommunalen Auftraggeber wurden in einem internen Scan mehrere Schwachstellen an Update-Proxy, Upload-Dienst und Paketshare sichtbar.",
+    "mission": "Befunde priorisieren, Zwischenmassnahmen anstossen, Patchfenster abstimmen und den Retest mit belastbaren Nachweisen vorbereiten.",
+    "source": {
+      "kind": "Interner Scan- und Massnahmenauftrag",
+      "reference": "Schwachstellenbericht Serviceplattform, 2026-03-26 08:40",
+      "note": "Grundlage sind aktuelle Scanbefunde zur Erreichbarkeit einer Admin-Oberfläche, zu einer veralteten Bibliothek im Upload-Dienst und zu unnötig breiten Schreibrechten auf einem alten Paketshare."
+    },
+    "station": {
+      "id": "QUS2-ST-07",
+      "department": "Sicherheit, Plattformbetrieb und Releasekoordination",
+      "profile": "Schwachstellenbewertung, Zwischenmassnahmen, Patchfenster und Retest",
+      "constraints": [
+        "Befund, Erreichbarkeit, betroffener Dienst und Betriebswirkung müssen gemeinsam bewertet werden",
+        "Zwischenmassnahmen dürfen den Patch und den anschliessenden Retest nicht ersetzen",
+        "Für Auftraggeber und Revision wird ein lesbarer Stand mit Massnahme, Frist, Nachweis und Restpunkt benötigt"
+      ]
+    },
+    "customerRequest": {
+      "from": "sicherheitsteam@secubridge-service.example",
+      "to": "patchkoordination@ausbildungsbetrieb.example",
+      "subject": "Scanbefunde für Update-Proxy und Upload-Dienst bis morgen einordnen",
+      "date": "2026-03-26",
+      "body": "Guten Tag,\n\nkurz vor dem Abstimmungstermin mit dem kommunalen Auftraggeber hat unser interner Scan drei Punkte hochgezogen: Die Admin-Oberfläche des Update-Proxy ist im Büro-Netz breiter erreichbar als vorgesehen, der Upload-Dienst für Dokumente läuft mit einer veralteten Bibliothek, und auf einem alten Paketshare bestehen noch Schreibrechte für ein auslaufendes Rollout-Team.\n\nBitte bereiten Sie bis morgen Mittag einen belastbaren Stand vor: Was muss sofort eingegrenzt werden, welche Massnahmen gehen ins nächste Patchfenster, wer zieht welchen Teil und welche Nachweise brauchen wir für Retest und Abschluss.\n\nViele Grüsse\nSicherheitsteam"
+    }
+  },
+  "questions": [
+    {
+      "id": "ctx01",
+      "type": "context_card",
+      "title": "Aktuelle Befundlage",
+      "contentBlocks": [
+        {
+          "type": "text",
+          "text": "SecuBridge betreibt für mehrere Kunden eine Serviceplattform mit Update-Proxy, Dokumentenupload und Paketverteilung. Der Scanbericht zeigt drei unterschiedliche Befunde, die nicht alle dieselbe Dringlichkeit oder dieselbe technische Antwort brauchen."
+        },
+        {
+          "type": "table",
+          "columns": [
+            "Befund",
+            "Aktueller Stand"
+          ],
+          "rows": [
+            [
+              "Update-Proxy Admin-Oberfläche",
+              "aus mehreren internen Netzen erreichbar, obwohl nur Admin-Team zugreifen soll"
+            ],
+            [
+              "Upload-Dienst für Dokumente",
+              "veraltete Bibliothek, Hersteller-Update liegt bereits vor"
+            ],
+            [
+              "Paketshare für Rollouts",
+              "alte Teamgruppe besitzt weiterhin Schreibrechte"
+            ],
+            [
+              "Nächstes Wartungsfenster",
+              "Mittwoch 19:30 bis 21:30 reserviert"
+            ],
+            [
+              "Erwartung für Donnerstag",
+              "priorisierte Befunde, umgesetzte Zwischenmassnahmen, geplanter Retest und sichtbare Restpunkte"
+            ]
+          ]
+        },
+        {
+          "type": "text",
+          "text": "Gesucht ist kein pauschales Alles-sofort-patchen, sondern ein belastbarer Ablauf aus Eingrenzung, sauberem Patchfenster, Retest und nachvollziehbarem Abschluss."
+        }
+      ]
+    },
+    {
+      "id": "q01",
+      "type": "multi_select",
+      "title": "Erste Reaktion auf den Scanbericht",
+      "prompt": "Welche Schritte gehören jetzt in die erste Reaktion, bevor das Patchfenster startet? Mehrere Schritte können gleichzeitig notwendig sein.",
+      "options": [
+        {
+          "text": "Die Erreichbarkeit der Admin-Oberfläche sofort auf die freigegebenen Admin-Netze begrenzen.",
+          "correct": true,
+          "rationale": "Breit erreichbare Admin-Pfade sollten nicht bis zum Patchfenster offen bleiben."
+        },
+        {
+          "text": "Die alten Schreibrechte auf dem Paketshare für das auslaufende Team direkt entziehen oder stark eingrenzen.",
+          "correct": true,
+          "rationale": "Unnötig breite Schreibrechte sind sofort reduzierbar und müssen nicht auf den Patch warten."
+        },
+        {
+          "text": "Für den Upload-Dienst betroffene Version, Zielversion und nötigen Testumfang für das nächste Wartungsfenster festziehen.",
+          "correct": true,
+          "rationale": "Der Patch muss technisch und fachlich vorbereitet werden, statt nur pauschal angekündigt zu werden."
+        },
+        {
+          "text": "Befund, Zeitpunkt, betroffene Systeme und erste Zuständigkeiten direkt dokumentieren.",
+          "correct": true,
+          "rationale": "Ohne frühen Stand gehen Priorität und Verantwortlichkeit schnell auseinander."
+        },
+        {
+          "text": "Mit der Einordnung bis zum nächsten Monatsreport warten, damit alle Scanbefunde gesammelt betrachtet werden können.",
+          "correct": false,
+          "rationale": "Hier liegt bereits ein konkreter und zeitnaher Handlungsbedarf vor."
+        },
+        {
+          "text": "Den Retest können wir später weglassen, wenn der Change im Wartungsfenster formal abgeschlossen wurde.",
+          "correct": false,
+          "rationale": "Gerade bei Schwachstellen braucht der Abschluss einen sichtbaren Retest und nicht nur einen Change-Status."
+        }
+      ],
+      "feedback": {
+        "correct": "Die erste Reaktion auf die Befunde wurde stimmig priorisiert.",
+        "wrong": "Achten Sie auf sofort eingrenzbare Zugriffe, vorbereiteten Patchpfad und frühe Dokumentation."
+      },
+      "progressLinks": [
+        "qus2_schwachstellenlage_priorisieren",
+        "qus2_zwischenmassnahmen_und_patchfenster"
+      ]
+    },
+    {
+      "id": "q02",
+      "type": "single_choice",
+      "title": "Tragfähiger Umgang mit dem Upload-Dienst",
+      "prompt": "Welche Vorgehensweise ist für die veraltete Bibliothek im Upload-Dienst am tragfähigsten?",
+      "options": [
+        {
+          "text": "Das Update bis zur nächsten grossen Plattformmodernisierung offen lassen, solange intern noch kein Störfall sichtbar ist.",
+          "rationale": "Fehlende Störung im Alltag ersetzt keine saubere Behandlung eines bestätigten Befunds."
+        },
+        {
+          "text": "Zwischenmassnahmen dokumentieren, Zielversion und Testumfang für das freigegebene Fenster festlegen und den Retest danach verbindlich einplanen.",
+          "rationale": "So werden Risikobegrenzung, geordnete Umsetzung und belastbarer Abschluss verbunden."
+        },
+        {
+          "text": "Den Dienst ohne Vorbereitung sofort im laufenden Betrieb aktualisieren, damit der Befund möglichst schnell verschwindet.",
+          "rationale": "Ohne Vorbereitung und Test kann aus dem Sicherheitsbefund leicht ein Betriebsproblem werden."
+        },
+        {
+          "text": "Den Scan-Screenshot als Nachweis ablegen und die eigentliche Entscheidung erst nach Rückmeldung des Auftraggebers treffen.",
+          "rationale": "Der Befund ist intern bereits bekannt und muss bearbeitet werden, nicht nur archiviert."
+        }
+      ],
+      "correctIndex": 1,
+      "feedback": {
+        "correct": "Die tragfähigste Vorgehensweise für den Upload-Dienst wurde richtig erkannt.",
+        "wrong": "Gesucht ist eine Linie, die Zwischenmassnahme, Patchfenster, Test und Retest miteinander verbindet."
+      },
+      "progressLinks": [
+        "qus2_schwachstellenlage_priorisieren",
+        "qus2_zwischenmassnahmen_und_patchfenster"
+      ]
+    },
+    {
+      "id": "f02",
+      "type": "followup_divider",
+      "title": "Befunde in einen umsetzbaren Änderungsstand überführen",
+      "from": "releasekoordination@secubridge-service.example",
+      "to": "patchkoordination@ausbildungsbetrieb.example",
+      "subject": "Massnahmenmatrix für Mittwoch vorbereiten",
+      "date": "2026-03-26",
+      "body": "Hallo zusammen,\n\nbevor ich das Wartungsfenster final bestätige, brauche ich pro Befund eine klare Aussage dazu, was sofort eingegrenzt wird, was im Fenster umgesetzt wird und welcher erste Nachweis den Stand später trägt. Bitte zieht technische Änderung, fachlichen Test und Retest in einem gemeinsamen Bild zusammen.\n\nViele Grüsse\nReleasekoordination"
+    },
+    {
+      "id": "q03",
+      "type": "table_fill",
+      "title": "Massnahme und erster Nachweis je Befund",
+      "prompt": "Ergänzen Sie pro Befund die naheliegendste erste Massnahme und den ersten passenden Nachweis.",
+      "columns": [
+        "Befund",
+        "Erste Massnahme",
+        "Erster passender Nachweis"
+      ],
+      "rows": [
+        [
+          "Admin-Oberfläche des Update-Proxy ist zu breit erreichbar",
+          {
+            "key": "action_row_1",
+            "label": "Update-Proxy / Massnahme",
+            "expected": "Zugriff per Firewall- oder ACL-Regel auf freigegebene Admin-Netze begrenzen.",
+            "inputType": "select",
+            "placeholder": "Massnahme wählen",
+            "options": [
+              "Zugriff per Firewall- oder ACL-Regel auf freigegebene Admin-Netze begrenzen.",
+              "Nur einen Hinweis im Betriebshandbuch ergänzen.",
+              "Den Proxy-Namen umbenennen, damit die Oberfläche schwerer auffällt.",
+              "Bis zum Monatsende nur beobachten, ob wirklich jemand darauf zugreift."
+            ]
+          },
+          {
+            "key": "proof_row_1",
+            "label": "Update-Proxy / Nachweis",
+            "expected": "Änderungsnachweis der Netzregel mit Zielsystem und Zeitstempel.",
+            "inputType": "select",
+            "placeholder": "Nachweis wählen",
+            "options": [
+              "Änderungsnachweis der Netzregel mit Zielsystem und Zeitstempel.",
+              "Screenshot der Scanner-Mail ohne Bezug zur Umsetzung.",
+              "Kalendereintrag für das Wartungsfenster.",
+              "Allgemeines Organigramm des Admin-Teams."
+            ]
+          }
+        ],
+        [
+          "Upload-Dienst nutzt eine veraltete Bibliothek",
+          {
+            "key": "action_row_2",
+            "label": "Upload-Dienst / Massnahme",
+            "expected": "Zielversion, Testumfang und Patchschritt für das Wartungsfenster verbindlich festlegen.",
+            "inputType": "select",
+            "placeholder": "Massnahme wählen",
+            "options": [
+              "Zielversion, Testumfang und Patchschritt für das Wartungsfenster verbindlich festlegen.",
+              "Den Dienst vorsichtshalber mehrere Tage unangekündigt abschalten.",
+              "Nur den Scanbericht an den Hersteller weiterleiten und intern abwarten.",
+              "Die Uploads manuell weiterbearbeiten und auf einen Patch verzichten."
+            ]
+          },
+          {
+            "key": "proof_row_2",
+            "label": "Upload-Dienst / Nachweis",
+            "expected": "Change- oder Patchticket mit betroffener Version, Zielversion und Testverantwortung.",
+            "inputType": "select",
+            "placeholder": "Nachweis wählen",
+            "options": [
+              "Change- oder Patchticket mit betroffener Version, Zielversion und Testverantwortung.",
+              "Kurze Notiz, dass der Dienst bislang stabil wirkt.",
+              "Nur die allgemeine Release-Roadmap des Quartals.",
+              "Screenshot einer Projektbesprechung ohne Versionsbezug."
+            ]
+          }
+        ],
+        [
+          "Auf dem alten Paketshare bestehen noch Schreibrechte",
+          {
+            "key": "action_row_3",
+            "label": "Paketshare / Massnahme",
+            "expected": "Nicht mehr benötigte Gruppenrechte sofort entziehen und den Restzugriff neu bestätigen.",
+            "inputType": "select",
+            "placeholder": "Massnahme wählen",
+            "options": [
+              "Nicht mehr benötigte Gruppenrechte sofort entziehen und den Restzugriff neu bestätigen.",
+              "Den Ordnernamen ändern, damit das frühere Team ihn schlechter findet.",
+              "Nur den freien Speicherplatz auf dem Share überwachen.",
+              "Den Befund bis zum nächsten Grossprojekt gesammelt offen lassen."
+            ]
+          },
+          {
+            "key": "proof_row_3",
+            "label": "Paketshare / Nachweis",
+            "expected": "Berechtigungsauszug vor und nach der Änderung mit markierter Alt-Gruppe.",
+            "inputType": "select",
+            "placeholder": "Nachweis wählen",
+            "options": [
+              "Berechtigungsauszug vor und nach der Änderung mit markierter Alt-Gruppe.",
+              "Allgemeiner Screenshot des Datei-Explorers.",
+              "Telefonnotiz, dass das Team die Freigabe wohl nicht mehr braucht.",
+              "Liste aller Rollout-Pakete ohne Rechtebezug."
+            ]
+          }
+        ]
+      ],
+      "feedback": {
+        "correct": "Befund, erste Massnahme und erster Nachweis wurden stimmig verbunden.",
+        "wrong": "Prüfen Sie, welche Massnahme wirklich eingrenzt oder vorbereitet und welcher Nachweis später die Umsetzung tragen kann."
+      },
+      "progressLinks": [
+        "qus2_schwachstellenlage_priorisieren",
+        "qus2_zwischenmassnahmen_und_patchfenster"
+      ]
+    },
+    {
+      "id": "q04",
+      "type": "match_pairs",
+      "title": "Rollen im Patchablauf",
+      "prompt": "Welche Rolle übernimmt welche erste Verantwortung in diesem Schwachstellenfall?",
+      "layout": "table",
+      "columns": [
+        "Rolle",
+        "erste Verantwortung"
+      ],
+      "pairs": [
+        {
+          "key": "role_1",
+          "left": "Informationssicherheit",
+          "right": "Befunde priorisieren und Rest- oder Ausnahmebewertung sichtbar halten"
+        },
+        {
+          "key": "role_2",
+          "left": "Plattformbetrieb",
+          "right": "Netzregel und Rechteänderung technisch umsetzen und dokumentieren"
+        },
+        {
+          "key": "role_3",
+          "left": "Anwendungsverantwortung Upload-Dienst",
+          "right": "Testumfang für den Bibliothekswechsel festlegen und den fachlichen Diensttest begleiten"
+        },
+        {
+          "key": "role_4",
+          "left": "Releasekoordination",
+          "right": "Patchfenster, Rückfallweg und Retest-Abschluss zusammenziehen"
+        }
+      ],
+      "options": [
+        "Befunde priorisieren und Rest- oder Ausnahmebewertung sichtbar halten",
+        "Netzregel und Rechteänderung technisch umsetzen und dokumentieren",
+        "Testumfang für den Bibliothekswechsel festlegen und den fachlichen Diensttest begleiten",
+        "Patchfenster, Rückfallweg und Retest-Abschluss zusammenziehen"
+      ],
+      "feedback": {
+        "correct": "Die Rollen wurden mit ihren ersten Verantwortungen passend verbunden.",
+        "wrong": "Achten Sie darauf, wer bewertet, wer technisch umsetzt, wer testet und wer das Fenster samt Abschluss steuert."
+      },
+      "progressLinks": [
+        "qus2_zwischenmassnahmen_und_patchfenster"
+      ]
+    },
+    {
+      "id": "q05",
+      "type": "short_text",
+      "title": "Kurzstand für die Teamleitung",
+      "prompt": "Schreiben Sie eine kurze Notiz (4-6 Sätze) mit priorisiertem Befund, Zwischenmassnahme, Patchfenster und geplantem Retest.",
+      "minChars": 180,
+      "requiredKeywords": [
+        "zwischenmassnahme",
+        "patchfenster",
+        "retest"
+      ],
+      "expectedOutline": "Kurz darlegen, was priorisiert ist, was sofort eingegrenzt wurde, was im Fenster umgesetzt wird und wie der Retest abgesichert ist.",
+      "feedback": {
+        "correct": "Der Kurzstand ist knapp, steuerbar und belastbar formuliert.",
+        "wrong": "Bitte priorisierten Befund, Zwischenmassnahme, Patchfenster und Retest klarer voneinander trennen."
+      },
+      "progressLinks": [
+        "qus2_zwischenmassnahmen_und_patchfenster"
+      ]
+    },
+    {
+      "id": "f03",
+      "type": "followup_divider",
+      "title": "Retest und Abschluss für Donnerstag absichern",
+      "from": "revision@secubridge-service.example",
+      "to": "patchkoordination@ausbildungsbetrieb.example",
+      "subject": "Abschlussbild für Scanbefunde und Retest liefern",
+      "date": "2026-03-26",
+      "body": "Hallo zusammen,\n\nfür Donnerstag brauche ich keinen reinen Scanvergleich, sondern einen lesbaren Abschluss dazu, welche Befunde eingegrenzt, gepatcht, retestet oder bewusst mit Restpunkt offengelassen wurden. Bitte macht auch sichtbar, welche Nachweise schon vorliegen und was noch auf Wiedervorlage steht.\n\nViele Grüsse\nRevision"
+    },
+    {
+      "id": "q06",
+      "type": "multi_select",
+      "title": "Was im Abschlussbild stehen muss",
+      "prompt": "Welche Unterlagen oder Ergebnisse müssen nach dem Patchfenster vorliegen, damit der Schwachstellenstand belastbar abgeschlossen werden kann?",
+      "options": [
+        {
+          "text": "Je Befund eine Entscheidung mit aktuellem Status und kurzer Begründung.",
+          "correct": true,
+          "rationale": "Der Abschluss braucht einen klaren Stand pro Befund und nicht nur eine Gesamtaussage."
+        },
+        {
+          "text": "Nachweise zu umgesetzten Zwischenmassnahmen oder Patches mit Bezug zum betroffenen System.",
+          "correct": true,
+          "rationale": "Nur so lässt sich später erkennen, was wirklich umgesetzt wurde."
+        },
+        {
+          "text": "Retest-Ergebnis oder begründeter offener Restpunkt mit verantwortlicher Stelle.",
+          "correct": true,
+          "rationale": "Gerade der Retest trennt den belastbaren Abschluss vom blossen Umsetzungsversprechen."
+        },
+        {
+          "text": "Wiedervorlage oder Folgetermin für alles, was nach dem Fenster bewusst offen bleibt.",
+          "correct": true,
+          "rationale": "Offene Punkte müssen lesbar weitergesteuert werden."
+        },
+        {
+          "text": "Ein einzelner Screenshot aus dem Scanner, sofern die Ampel danach grüner aussieht.",
+          "correct": false,
+          "rationale": "Ohne Umsetzung, Entscheidung und Retest bleibt das zu schmal."
+        },
+        {
+          "text": "Eine allgemeine Einschätzung, dass die Plattform jetzt wieder sicher wirken sollte.",
+          "correct": false,
+          "rationale": "Ein Eindruck ersetzt keinen nachvollziehbaren Abschluss."
+        }
+      ],
+      "feedback": {
+        "correct": "Die nötigen Bestandteile des Abschlussbilds wurden vollständig erkannt.",
+        "wrong": "Achten Sie auf Entscheidung, Umsetzungsnachweis, Retest und sichtbare Restpunkte statt auf Momentaufnahmen."
+      },
+      "progressLinks": [
+        "qus2_retest_und_abschlussnachweise"
+      ]
+    },
+    {
+      "id": "q07",
+      "type": "ordering",
+      "title": "Vom Scan zum belastbaren Abschluss",
+      "prompt": "Bringen Sie die Schritte in eine sinnvolle Reihenfolge, damit aus dem Scanbericht ein steuerbarer Abschluss wird.",
+      "items": [
+        "Befunde, betroffene Systeme und Dringlichkeit sauber bestätigen.",
+        "Sofort eingrenzbare Zugriffe oder Rechte direkt reduzieren und dokumentieren.",
+        "Patchfenster, Testumfang und Rückfallweg für die verbleibenden Änderungen festziehen.",
+        "Umsetzung und anschliessenden Retest mit Systembezug nachweisen.",
+        "Abschlussbild mit Status, Restpunkt und Wiedervorlage freigeben."
+      ],
+      "correctOrder": [
+        "Befunde, betroffene Systeme und Dringlichkeit sauber bestätigen.",
+        "Sofort eingrenzbare Zugriffe oder Rechte direkt reduzieren und dokumentieren.",
+        "Patchfenster, Testumfang und Rückfallweg für die verbleibenden Änderungen festziehen.",
+        "Umsetzung und anschliessenden Retest mit Systembezug nachweisen.",
+        "Abschlussbild mit Status, Restpunkt und Wiedervorlage freigeben."
+      ],
+      "feedback": {
+        "correct": "Die Reihenfolge führt sauber vom Befund über Eingrenzung und Patchfenster bis zum Retest-Abschluss.",
+        "wrong": "Erst müssen Befund und Sofortmassnahme stehen, dann das Fenster, danach Retest und ganz am Ende der Abschluss."
+      },
+      "progressLinks": [
+        "qus2_schwachstellenlage_priorisieren",
+        "qus2_zwischenmassnahmen_und_patchfenster",
+        "qus2_retest_und_abschlussnachweise"
+      ]
+    }
+  ]
+}

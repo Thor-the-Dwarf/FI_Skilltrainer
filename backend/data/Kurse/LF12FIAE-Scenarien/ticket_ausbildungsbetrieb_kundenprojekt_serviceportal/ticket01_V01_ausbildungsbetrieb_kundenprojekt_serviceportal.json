@@ -1,0 +1,711 @@
+{
+  "scenario": {
+    "company": "Ausbildungsbetrieb IT-Service",
+    "scale": "Mittelstand, 280 Mitarbeitende",
+    "context": "Station 01: Kundenprojektstart mit mehreren Folgeaufträgen bis zur Abnahmevorbereitung.",
+    "mission": "Sie bearbeiten den Startauftrag und mehrere Folgeaufträge entlang des Projektverlaufs mit steigender Verantwortung.",
+    "station": {
+      "id": "LF12FIAE-ST-01",
+      "department": "Kundenspezifische Anwendungsentwicklung",
+      "profile": "Projektstart, Zielsetzung, Planung, Umsetzung, Test und Übergabe",
+      "constraints": [
+        "Kundenanforderungen messbar machen",
+        "Entscheidungen wirtschaftlich begründen",
+        "Risiken und Restpunkte transparent halten"
+      ]
+    },
+    "customerRequest": {
+      "from": "auftraggeber@kundenprojekt.example",
+      "to": "projektteam@ausbildungsbetrieb.example",
+      "subject": "Station 01: Startauftrag Kundenmodul Serviceportal",
+      "date": "2026-03-13",
+      "body": "Bitte starten Sie ein Kundenprojekt für ein Priorisierungsmodul im Serviceportal.\n\nNach dem Startauftrag folgen weitere Projektanfragen zur Zielanpassung, Wirtschaftlichkeit, Projektdurchführung und Abnahmevorbereitung."
+    }
+  },
+  "questions": [
+    {
+      "id": "q01",
+      "type": "single_choice",
+      "title": "Projektstart strukturieren",
+      "prompt": "Welcher erste Schritt ist für den Start eines Kundenprojekts am sinnvollsten?",
+      "options": [
+        {
+          "text": "Sofort implementieren ohne Rollen- und Zielklärung",
+          "rationale": "Führt zu Reibung und Fehlarbeit."
+        },
+        {
+          "text": "Projektrollen, Kommunikationswege und Zielbild gemeinsam festlegen",
+          "rationale": "Schafft die notwendige Startklarheit."
+        },
+        {
+          "text": "Nur den Endtermin nennen und auf den Rest verzichten",
+          "rationale": "Ohne Struktur steigt Projektrisiko."
+        }
+      ],
+      "correctIndex": 1,
+      "feedback": {
+        "correct": "Richtig: Rollen- und Zielklarheit sind der saubere Projektstart.",
+        "wrong": "Nicht passend: Ohne Startklarheit wird das Projekt instabil."
+      },
+      "progressLinks": [
+        "lf12fiae_pm_grundlagen_organisation"
+      ]
+    },
+    {
+      "id": "q02",
+      "type": "multi_select",
+      "title": "Zielsetzung des Kundenauftrags",
+      "prompt": "Welche Inhalte gehören in eine belastbare Zielsetzung? (Mehrfachauswahl)",
+      "options": [
+        {
+          "text": "Messbare Zielkriterien und klare Abgrenzung",
+          "correct": true,
+          "rationale": "Sichert prüfbaren Projekterfolg."
+        },
+        {
+          "text": "Abnahmekriterien mit dem Auftraggeber abstimmen",
+          "correct": true,
+          "rationale": "Verhindert spätere Missverständnisse."
+        },
+        {
+          "text": "Offene Anforderungen ungeprüft übernehmen",
+          "correct": false,
+          "rationale": "Erhöht Nacharbeitsrisiko."
+        },
+        {
+          "text": "Unklare Punkte aktiv in Rückfragen überführen",
+          "correct": true,
+          "rationale": "Fördert Verbindlichkeit."
+        },
+        {
+          "text": "Zieländerungen ohne Dokumentation einbauen",
+          "correct": false,
+          "rationale": "Widerspricht sauberer Projektsteuerung."
+        }
+      ],
+      "feedback": {
+        "correct": "Richtig: Die Zielsetzung ist fachlich belastbar.",
+        "wrong": "Teilweise falsch: Bitte Messbarkeit und Abnahmebezug stärker sichern."
+      },
+      "progressLinks": [
+        "lf12fiae_kundenauftrag_zielsetzung"
+      ]
+    },
+    {
+      "id": "q03",
+      "type": "ordering",
+      "title": "Planung in die Umsetzung überführen",
+      "prompt": "Ordnen Sie die Schritte vom Zielbild zur belastbaren Projektplanung.",
+      "items": [
+        "Projektziel und Lieferumfang bestätigen",
+        "Arbeitspakete und Meilensteine strukturieren",
+        "Aufwand und Kosten abschätzen",
+        "Risiken und Puffer einplanen",
+        "Planungsannahmen dokumentieren"
+      ],
+      "correctOrder": [
+        "Projektziel und Lieferumfang bestätigen",
+        "Arbeitspakete und Meilensteine strukturieren",
+        "Aufwand und Kosten abschätzen",
+        "Risiken und Puffer einplanen",
+        "Planungsannahmen dokumentieren"
+      ],
+      "feedback": {
+        "correct": "Richtig: Das ist eine sauber aufgebaute Projektplanung.",
+        "wrong": "Nicht optimal: Bitte vom Ziel über Aufwand/Risiko zur Doku planen."
+      },
+      "progressLinks": [
+        "lf12fiae_projektplanung_wirtschaftlichkeit"
+      ]
+    },
+    {
+      "id": "q04",
+      "type": "number",
+      "title": "Startpaket kalkulieren",
+      "prompt": "Ein Startpaket umfasst 16 Stunden Analyse bei 68 EUR pro Stunde. Wie hoch sind die Kosten?",
+      "expected": 1088,
+      "toleranceAbs": 1,
+      "showExpectedFormula": "16 * 68 = 1088 EUR",
+      "feedback": {
+        "correct": "Richtig gerechnet.",
+        "wrong": "Bitte Stunden und Satz korrekt multiplizieren."
+      },
+      "progressLinks": [
+        "lf12fiae_projektplanung_wirtschaftlichkeit"
+      ]
+    },
+    {
+      "id": "q05",
+      "type": "short_text",
+      "title": "Startbriefing an den Auftraggeber",
+      "prompt": "Formulieren Sie ein Startbriefing (4-6 Sätze) mit Zielbild, grobem Plan und einem Restrisiko.",
+      "minChars": 150,
+      "requiredKeywords": [
+        "zielbild",
+        "plan",
+        "risiko"
+      ],
+      "expectedOutline": "Klares Zielbild, belastbarer Planansatz und benanntes Restrisiko.",
+      "feedback": {
+        "correct": "Richtig: Das Briefing ist klar und entscheidungsfähig.",
+        "wrong": "Bitte Zielbild, Plan und Risiko klarer trennen."
+      },
+      "progressLinks": [
+        "lf12fiae_kundenauftrag_zielsetzung",
+        "lf12fiae_projektplanung_wirtschaftlichkeit"
+      ]
+    },
+    {
+      "id": "q06",
+      "type": "multi_select",
+      "title": "Zieländerung professionell verarbeiten",
+      "prompt": "Welche Schritte sind bei geänderter Zielsetzung sinnvoll? (Mehrfachauswahl)",
+      "options": [
+        {
+          "text": "Änderung und Auswirkungen auf Scope dokumentieren",
+          "correct": true,
+          "rationale": "Sichert Transparenz."
+        },
+        {
+          "text": "Abnahmekriterien gemeinsam nachschärfen",
+          "correct": true,
+          "rationale": "Vermeidet Abnahmerisiken."
+        },
+        {
+          "text": "Änderung ohne Rücksprache direkt in Produktion nehmen",
+          "correct": false,
+          "rationale": "Zu riskant ohne Absicherung."
+        },
+        {
+          "text": "Zuständigkeiten im Projektteam neu abstimmen",
+          "correct": true,
+          "rationale": "Nötig bei erweitertem Scope."
+        },
+        {
+          "text": "Altplanung unverändert weiterlaufen lassen",
+          "correct": false,
+          "rationale": "Widerspricht Zieländerung."
+        }
+      ],
+      "feedback": {
+        "correct": "Richtig: Die Änderung wird kontrolliert verarbeitet.",
+        "wrong": "Teilweise falsch: Bitte Scope-, Abnahme- und Teambezug stärker absichern."
+      },
+      "progressLinks": [
+        "lf12fiae_kundenauftrag_zielsetzung",
+        "lf12fiae_pm_grundlagen_organisation"
+      ]
+    },
+    {
+      "id": "q07",
+      "type": "single_choice",
+      "title": "Projektorganisation anpassen",
+      "prompt": "Welche Reaktion passt bei neuer VIP-Funktion am besten?",
+      "options": [
+        {
+          "text": "Neue Funktion ignorieren, um den Plan nicht zu gefährden",
+          "rationale": "Widerspricht dem Auftrag."
+        },
+        {
+          "text": "Rollen und Verantwortungen für Monitoring und Fachabstimmung klar erweitern",
+          "rationale": "Holt die Zieländerung in die Organisation."
+        },
+        {
+          "text": "Nur das UI-Team informieren und sonst nichts ändern",
+          "rationale": "Zu eng für den Scope."
+        }
+      ],
+      "correctIndex": 1,
+      "feedback": {
+        "correct": "Richtig: Organisation und Verantwortung müssen mitwachsen.",
+        "wrong": "Nicht passend: Die Zieländerung braucht eine angepasste Organisationslogik."
+      },
+      "progressLinks": [
+        "lf12fiae_pm_grundlagen_organisation"
+      ]
+    },
+    {
+      "id": "q08",
+      "type": "number",
+      "title": "Scopeaufschlag berechnen",
+      "prompt": "Die Zieländerung erfordert 9 Zusatzstunden bei 72 EUR pro Stunde. Wie hoch ist der Zusatzaufwand?",
+      "expected": 648,
+      "toleranceAbs": 1,
+      "showExpectedFormula": "9 * 72 = 648 EUR",
+      "feedback": {
+        "correct": "Richtig gerechnet.",
+        "wrong": "Bitte Zusatzstunden und Satz korrekt multiplizieren."
+      },
+      "progressLinks": [
+        "lf12fiae_projektplanung_wirtschaftlichkeit"
+      ]
+    },
+    {
+      "id": "q09",
+      "type": "ordering",
+      "title": "Änderungsprozess",
+      "prompt": "Ordnen Sie den Ablauf bei einer geänderten Kundenanforderung.",
+      "items": [
+        "Änderung erfassen",
+        "Auswirkungen auf Zeit, Kosten und Risiko analysieren",
+        "Abstimmung mit Auftraggeber durchführen",
+        "Plan und Verantwortungen aktualisieren",
+        "Änderung dokumentiert freigeben"
+      ],
+      "correctOrder": [
+        "Änderung erfassen",
+        "Auswirkungen auf Zeit, Kosten und Risiko analysieren",
+        "Abstimmung mit Auftraggeber durchführen",
+        "Plan und Verantwortungen aktualisieren",
+        "Änderung dokumentiert freigeben"
+      ],
+      "feedback": {
+        "correct": "Richtig: Das ist ein sauberer Change-Ablauf.",
+        "wrong": "Nicht optimal: Bitte Analyse und Abstimmung vor die Freigabe setzen."
+      },
+      "progressLinks": [
+        "lf12fiae_projektdurchfuehrung"
+      ]
+    },
+    {
+      "id": "sep_f1",
+      "type": "followup_divider",
+      "title": "Folgeauftrag 1 - Budgetgrenze und Wirtschaftlichkeit",
+      "from": "controlling@kundenprojekt.example",
+      "to": "projektteam@ausbildungsbetrieb.example",
+      "subject": "Kostenobergrenze je Sprint und Priorisierung",
+      "date": "2026-03-13",
+      "body": "Für den nächsten Sprint gilt ein Kostenlimit. Bitte priorisieren Sie Arbeitspakete, bewerten Sie Nutzen und stellen Sie die Budgetwirkung transparent dar."
+    },
+    {
+      "id": "q10",
+      "type": "single_choice",
+      "title": "Wirtschaftlichkeit bei Budgetdeckel",
+      "prompt": "Wie reagieren Sie fachlich am besten auf den Budgetdeckel?",
+      "options": [
+        {
+          "text": "Leistungsumfang ungeprüft kürzen",
+          "rationale": "Kann Kernziele gefährden."
+        },
+        {
+          "text": "Arbeitspakete priorisieren, Nutzenbezug prüfen und Kostenwirkung transparent machen",
+          "rationale": "Wirtschaftlich und zielorientiert."
+        },
+        {
+          "text": "Budgetvorgabe ignorieren",
+          "rationale": "Nicht verfahrenskonform."
+        }
+      ],
+      "correctIndex": 1,
+      "feedback": {
+        "correct": "Richtig: Priorisierung und Transparenz sind hier zentral.",
+        "wrong": "Nicht passend: Budgetsteuerung braucht klare Priorisierung und Wirkungssicht."
+      },
+      "progressLinks": [
+        "lf12fiae_projektplanung_wirtschaftlichkeit"
+      ]
+    },
+    {
+      "id": "q11",
+      "type": "multi_select",
+      "title": "Kosten-Nutzen sauber abwägen",
+      "prompt": "Welche Punkte gehören in eine belastbare Wirtschaftlichkeitsbeurteilung? (Mehrfachauswahl)",
+      "options": [
+        {
+          "text": "Kernnutzen je Arbeitspaket benennen",
+          "correct": true,
+          "rationale": "Macht Priorisierung begründbar."
+        },
+        {
+          "text": "Einmal- und Folgekosten unterscheiden",
+          "correct": true,
+          "rationale": "Verhindert Fehlentscheidungen."
+        },
+        {
+          "text": "Risiken ausblenden, um schneller freizugeben",
+          "correct": false,
+          "rationale": "Erhöht Projektrisiko."
+        },
+        {
+          "text": "Alternativen mit Vor- und Nachteilen vergleichen",
+          "correct": true,
+          "rationale": "Fördert fundierte Entscheidungen."
+        },
+        {
+          "text": "Nur den niedrigsten Preis ohne Zielbezug wählen",
+          "correct": false,
+          "rationale": "Kann Zielerreichung gefährden."
+        }
+      ],
+      "feedback": {
+        "correct": "Richtig: So wird Wirtschaftlichkeit fachlich belastbar.",
+        "wrong": "Teilweise falsch: Bitte Nutzen, Kostenstruktur und Risiken gemeinsam bewerten."
+      },
+      "progressLinks": [
+        "lf12fiae_projektplanung_wirtschaftlichkeit"
+      ]
+    },
+    {
+      "id": "q12",
+      "type": "number",
+      "title": "Sprintkosten summieren",
+      "prompt": "Drei Arbeitspakete kosten 2150 EUR, 1980 EUR und 2410 EUR. Wie hoch sind die Gesamtkosten?",
+      "expected": 6540,
+      "toleranceAbs": 1,
+      "showExpectedFormula": "2150 + 1980 + 2410 = 6540 EUR",
+      "feedback": {
+        "correct": "Richtig gerechnet.",
+        "wrong": "Bitte alle Arbeitspakete korrekt aufsummieren."
+      },
+      "progressLinks": [
+        "lf12fiae_projektplanung_wirtschaftlichkeit"
+      ]
+    },
+    {
+      "id": "q13",
+      "type": "short_text",
+      "title": "Budgetanpassung begründen",
+      "prompt": "Schreiben Sie eine kurze Notiz (4-6 Sätze), wie der Plan unter dem Budgetdeckel angepasst wird.",
+      "minChars": 150,
+      "requiredKeywords": [
+        "priorisierung",
+        "nutzen",
+        "budget"
+      ],
+      "expectedOutline": "Priorisierung, Nutzenbezug und Budgetkonsequenz in einer klaren Entscheidung.",
+      "feedback": {
+        "correct": "Richtig: Die Notiz ist wirtschaftlich und fachlich nachvollziehbar.",
+        "wrong": "Bitte Priorisierung, Nutzen und Budgetwirkung konkreter darstellen."
+      },
+      "progressLinks": [
+        "lf12fiae_projektplanung_wirtschaftlichkeit",
+        "lf12fiae_kundenauftrag_zielsetzung"
+      ]
+    },
+    {
+      "id": "q14",
+      "type": "ordering",
+      "title": "Plananpassung unter Kostenlimit",
+      "prompt": "Ordnen Sie den Ablauf für eine Plananpassung unter Kostenlimit.",
+      "items": [
+        "Budgetgrenze und Muss-Ziele festhalten",
+        "Arbeitspakete nach Nutzen priorisieren",
+        "Kosten- und Risikoauswirkungen berechnen",
+        "Angepassten Plan abstimmen",
+        "Freigegebenen Plan dokumentieren"
+      ],
+      "correctOrder": [
+        "Budgetgrenze und Muss-Ziele festhalten",
+        "Arbeitspakete nach Nutzen priorisieren",
+        "Kosten- und Risikoauswirkungen berechnen",
+        "Angepassten Plan abstimmen",
+        "Freigegebenen Plan dokumentieren"
+      ],
+      "feedback": {
+        "correct": "Richtig: Der Ablauf ist wirtschaftlich und projektlogisch sauber.",
+        "wrong": "Nicht optimal: Bitte erst Muss-Ziele, dann Priorisierung und Abstimmung durchlaufen."
+      },
+      "progressLinks": [
+        "lf12fiae_projektdurchfuehrung"
+      ]
+    },
+    {
+      "id": "sep_f2",
+      "type": "followup_divider",
+      "title": "Folgeauftrag 2 - API-Risiko in der Durchführung",
+      "from": "dev.lead@ausbildungsbetrieb.example",
+      "to": "projektteam@ausbildungsbetrieb.example",
+      "subject": "Instabile API gefährdet Kernfunktion",
+      "date": "2026-03-13",
+      "body": "Eine externe API reagiert instabil. Bitte steuern Sie Risiko und Lieferfähigkeit kontrolliert und dokumentieren Sie den Zusatzaufwand."
+    },
+    {
+      "id": "q15",
+      "type": "multi_select",
+      "title": "Risikosteuerung in der Durchführung",
+      "prompt": "Welche Massnahmen helfen bei einem API-Blocker? (Mehrfachauswahl)",
+      "options": [
+        {
+          "text": "Blocker mit Priorität und Auswirkung dokumentieren",
+          "correct": true,
+          "rationale": "Macht Handlungsdruck transparent."
+        },
+        {
+          "text": "Fallback-Strategie für kritische Funktionen einplanen",
+          "correct": true,
+          "rationale": "Sichert Lieferfähigkeit."
+        },
+        {
+          "text": "Problem ignorieren bis kurz vor Abgabe",
+          "correct": false,
+          "rationale": "Erhöht Ausfallrisiko."
+        },
+        {
+          "text": "Status und Entscheidungspunkte regelmässig im Team spiegeln",
+          "correct": true,
+          "rationale": "Unterstützt koordinierte Steuerung."
+        },
+        {
+          "text": "Änderungen ohne Dokumentation umsetzen",
+          "correct": false,
+          "rationale": "Widerspricht kontrollierter Durchführung."
+        }
+      ],
+      "feedback": {
+        "correct": "Richtig: Das Risiko wird aktiv und steuerbar behandelt.",
+        "wrong": "Teilweise falsch: Bitte Blockertransparenz und Fallbackstrategie stärker absichern."
+      },
+      "progressLinks": [
+        "lf12fiae_projektdurchfuehrung"
+      ]
+    },
+    {
+      "id": "q16",
+      "type": "single_choice",
+      "title": "Lieferobjekt trotz Störung sichern",
+      "prompt": "Welche Entscheidung ist bei instabiler API am tragfähigsten?",
+      "options": [
+        {
+          "text": "Lieferung stoppen ohne Information an Auftraggeber",
+          "rationale": "Fehlende Transparenz."
+        },
+        {
+          "text": "Teilfunktion mit klarer Restpunktdoku liefern und Nachzug terminieren",
+          "rationale": "Haltbare Zwischenlieferung mit Risikooffenlegung."
+        },
+        {
+          "text": "Ergebnisse schönreden und Problem verschweigen",
+          "rationale": "Gefährdet Vertrauen und Abnahme."
+        }
+      ],
+      "correctIndex": 1,
+      "feedback": {
+        "correct": "Richtig: So bleibt das Projekt steuerbar und transparent.",
+        "wrong": "Nicht passend: Durchführung braucht klare Restpunkt- und Kommunikationslogik."
+      },
+      "progressLinks": [
+        "lf12fiae_projektdurchfuehrung"
+      ]
+    },
+    {
+      "id": "q17",
+      "type": "number",
+      "title": "Pufferzeit berechnen",
+      "prompt": "Geplant waren 42 Stunden, tatsächlich werden 47 Stunden benötigt. Wie gross ist der Zusatzbedarf?",
+      "expected": 5,
+      "toleranceAbs": 1,
+      "showExpectedFormula": "47 - 42 = 5 Stunden",
+      "feedback": {
+        "correct": "Richtig gerechnet.",
+        "wrong": "Bitte Differenz zwischen Ist und Plan korrekt berechnen."
+      },
+      "progressLinks": [
+        "lf12fiae_projektdurchfuehrung"
+      ]
+    },
+    {
+      "id": "q18",
+      "type": "ordering",
+      "title": "Statuskommunikation bei Blockern",
+      "prompt": "Ordnen Sie den Ablauf für eine belastbare Blockerkommunikation.",
+      "items": [
+        "Blocker und Auswirkung erfassen",
+        "Lösungsoptionen mit Aufwand aufzeigen",
+        "Empfehlung mit Risiko benennen",
+        "Entscheidung abstimmen",
+        "Status und nächsten Schritt dokumentieren"
+      ],
+      "correctOrder": [
+        "Blocker und Auswirkung erfassen",
+        "Lösungsoptionen mit Aufwand aufzeigen",
+        "Empfehlung mit Risiko benennen",
+        "Entscheidung abstimmen",
+        "Status und nächsten Schritt dokumentieren"
+      ],
+      "feedback": {
+        "correct": "Richtig: Das ist eine klare Kommunikationskette.",
+        "wrong": "Nicht optimal: Bitte erst Lagebild, dann Optionen und Entscheidung darstellen."
+      },
+      "progressLinks": [
+        "lf12fiae_projektdurchfuehrung",
+        "lf12fiae_praesentation"
+      ]
+    },
+    {
+      "id": "sep_f3",
+      "type": "followup_divider",
+      "title": "Folgeauftrag 3 - Statuskommunikation vor Abnahme",
+      "from": "projektleitung@kundenprojekt.example",
+      "to": "projektteam@ausbildungsbetrieb.example",
+      "subject": "Blockerstatus und Abnahmeschritt abstimmen",
+      "date": "2026-03-13",
+      "body": "Bitte liefern Sie eine belastbare Statuskommunikation mit klarer Entscheidungsvorlage und priorisierten nächsten Schritten."
+    },
+    {
+      "id": "q19",
+      "type": "short_text",
+      "title": "Blocker-Statusmeldung",
+      "prompt": "Formulieren Sie eine kurze Statusmeldung (4-6 Sätze) mit Problem, Auswirkung und nächster Aktion.",
+      "minChars": 150,
+      "requiredKeywords": [
+        "problem",
+        "auswirkung",
+        "nächste aktion"
+      ],
+      "expectedOutline": "Klarer Blockerstatus mit Auswirkung und handlungsfähigem nächstem Schritt.",
+      "feedback": {
+        "correct": "Richtig: Die Meldung ist für Team und Auftraggeber nutzbar.",
+        "wrong": "Bitte Problem, Auswirkung und nächste Aktion expliziter strukturieren."
+      },
+      "progressLinks": [
+        "lf12fiae_projektdurchfuehrung",
+        "lf12fiae_testen_dokumentieren"
+      ]
+    },
+    {
+      "id": "q20",
+      "type": "single_choice",
+      "title": "Testnachweise priorisieren",
+      "prompt": "Was ist für die Abnahmevorbereitung am wichtigsten?",
+      "options": [
+        {
+          "text": "Nur Demo zeigen und auf Testprotokolle verzichten",
+          "rationale": "Nicht abnahmefähig."
+        },
+        {
+          "text": "Testfälle aus Abnahmekriterien ableiten und Ergebnisse dokumentieren",
+          "rationale": "Schafft belastbare Nachweise."
+        },
+        {
+          "text": "Nur Codeänderungen auflisten",
+          "rationale": "Fehlender Funktionsnachweis."
+        }
+      ],
+      "correctIndex": 1,
+      "feedback": {
+        "correct": "Richtig: Genau diese Nachweise braucht die Abnahme.",
+        "wrong": "Nicht passend: Ohne Testbezug bleibt die Freigabe unsicher."
+      },
+      "progressLinks": [
+        "lf12fiae_testen_dokumentieren"
+      ]
+    },
+    {
+      "id": "q21",
+      "type": "multi_select",
+      "title": "Abnahmeunterlagen komplettieren",
+      "prompt": "Welche Unterlagen sollten für die Abnahme bereitliegen? (Mehrfachauswahl)",
+      "options": [
+        {
+          "text": "Testprotokoll mit offenen Punkten",
+          "correct": true,
+          "rationale": "Zeigt Reifegrad und Restarbeiten."
+        },
+        {
+          "text": "Kurz-Dokumentation für Nutzung und Betrieb",
+          "correct": true,
+          "rationale": "Unterstützt Übergabe."
+        },
+        {
+          "text": "Unkommentierte Rohnotizen ohne Struktur",
+          "correct": false,
+          "rationale": "Nicht nutzbar für Abnahme."
+        },
+        {
+          "text": "Präsentationsleitfaden mit Kernnutzen und Grenzen",
+          "correct": true,
+          "rationale": "Hilft bei adressatengerechter Vorstellung."
+        },
+        {
+          "text": "Restpunkte ohne Termin und Verantwortliche",
+          "correct": false,
+          "rationale": "Fehlende Steuerbarkeit."
+        }
+      ],
+      "feedback": {
+        "correct": "Richtig: Das ist eine vollständige Abnahmebasis.",
+        "wrong": "Teilweise falsch: Bitte Test-, Doku- und Restpunktlogik konsequent absichern."
+      },
+      "progressLinks": [
+        "lf12fiae_testen_dokumentieren",
+        "lf12fiae_praesentation"
+      ]
+    },
+    {
+      "id": "sep_f4",
+      "type": "followup_divider",
+      "title": "Folgeauftrag 4 - Testnachweise und Abschluss",
+      "from": "auftraggeber@kundenprojekt.example",
+      "to": "projektteam@ausbildungsbetrieb.example",
+      "subject": "Abnahmefenster morgen 09:00",
+      "date": "2026-03-13",
+      "body": "Bitte finalisieren Sie Testnachweise, Restpunktdoku und Abschlussnotiz für die morgige Abnahme."
+    },
+    {
+      "id": "q22",
+      "type": "ordering",
+      "title": "Abnahmestrecke bis Reflexion",
+      "prompt": "Ordnen Sie den Ablauf von Test bis erster Projektreflexion.",
+      "items": [
+        "Abnahmekriterien gegen Testfälle prüfen",
+        "Testergebnisse und Restpunkte dokumentieren",
+        "Lösung mit Kernnutzen präsentieren",
+        "Auftraggeberfragen beantworten",
+        "Lessons Learned kurz festhalten"
+      ],
+      "correctOrder": [
+        "Abnahmekriterien gegen Testfälle prüfen",
+        "Testergebnisse und Restpunkte dokumentieren",
+        "Lösung mit Kernnutzen präsentieren",
+        "Auftraggeberfragen beantworten",
+        "Lessons Learned kurz festhalten"
+      ],
+      "feedback": {
+        "correct": "Richtig: Das ist eine durchgängige Abschlusskette.",
+        "wrong": "Nicht optimal: Bitte erst prüfen/dokumentieren, dann präsentieren und reflektieren."
+      },
+      "progressLinks": [
+        "lf12fiae_testen_dokumentieren",
+        "lf12fiae_praesentation",
+        "lf12fiae_bewertung_reflexion"
+      ]
+    },
+    {
+      "id": "q23",
+      "type": "number",
+      "title": "Testabdeckung bewerten",
+      "prompt": "Von 28 geplanten Abnahmetests wurden 25 erfolgreich abgeschlossen. Wie hoch ist die Erfolgsquote in Prozent (gerundet)?",
+      "expected": 89,
+      "toleranceAbs": 1,
+      "showExpectedFormula": "25/28*100 = 89,29 % ~ 89 %",
+      "feedback": {
+        "correct": "Richtig gerechnet.",
+        "wrong": "Bitte den Anteil erfolgreicher Tests korrekt berechnen."
+      },
+      "progressLinks": [
+        "lf12fiae_testen_dokumentieren"
+      ]
+    },
+    {
+      "id": "q24",
+      "type": "short_text",
+      "title": "Abnahme- und Reflexionsnotiz",
+      "prompt": "Schreiben Sie eine Abschlussnotiz (5-7 Sätze) mit Zielerreichung, offenem Punkt, Risiko und nächstem Schritt.",
+      "minChars": 180,
+      "requiredKeywords": [
+        "zielerreichung",
+        "offener punkt",
+        "nächster schritt"
+      ],
+      "expectedOutline": "Klarer Zielstand, offene Punkte mit Risiko und verbindlicher nächster Schritt.",
+      "feedback": {
+        "correct": "Richtig: Die Notiz ist für Abnahme und Folgearbeit sofort nutzbar.",
+        "wrong": "Bitte Zielerreichung, offene Punkte und nächsten Schritt deutlicher ausarbeiten."
+      },
+      "progressLinks": [
+        "lf12fiae_bewertung_reflexion",
+        "lf12fiae_testen_dokumentieren"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,158 @@
+{
+  "scenario": {
+    "company": "Ausbildungsbetrieb IT-Service",
+    "scale": "Regional, 210 Mitarbeitende",
+    "context": "Station 8 des Tageslaufs: Dokumentation, Learnings und Reflexion abschliessen.",
+    "mission": "Sie sichern einen Servicefall durch nachvollziehbare Dokumentation und reflektieren Verbesserungen für Folgefälle.",
+    "station": {
+      "id": "LF06-ST-08",
+      "department": "Service Management",
+      "profile": "Ticketdokumentation, Learnings, Nachverfolgung und Prozessreflexion",
+      "constraints": [
+        "Verlauf und Entscheidungen sichtbar machen",
+        "Lerntransfer im Team absichern",
+        "Restpunkte und Folgeaktionen benennen"
+      ]
+    },
+    "customerRequest": {
+      "from": "service.manager@ausbildungsbetrieb.example",
+      "to": "service.desk@ausbildungsbetrieb.example",
+      "subject": "Station 08: Servicefall dokumentieren und reflektieren",
+      "date": "2026-03-13",
+      "body": "Bitte bereiten Sie für einen abgeschlossenen Servicefall eine gute Dokumentation mit Learnings, Restpunkten und einer kurzen Prozessreflexion vor."
+    }
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "type": "single_choice",
+      "title": "Wert guter Servicedokumentation",
+      "prompt": "Welche Aussage beschreibt gute Service-Dokumentation am treffendsten?",
+      "options": [
+        {
+          "text": "Entscheidungen, Befunde, Schritte und Learnings so festhalten, dass Folgefälle schneller bearbeitet werden können",
+          "rationale": "Das verbindet Nachvollziehbarkeit mit Prozessverbesserung."
+        },
+        {
+          "text": "Nur den Endstatus notieren, damit Tickets kurz bleiben",
+          "rationale": "Ohne Verlauf fehlen Lern- und Nachweisbasis."
+        },
+        {
+          "text": "Dokumentation nie für Teamlernen nutzen",
+          "rationale": "Das verhindert Verbesserungen im Serviceprozess."
+        }
+      ],
+      "correctIndex": 0,
+      "feedback": {
+        "correct": "Richtig: So wird Doku zum Qualitätshebel im Service.",
+        "wrong": "Nicht passend: Gute Doku muss Verlauf, Begründung und Lerntransfer enthalten."
+      },
+      "progressLinks": [
+        "lf06_dokumentation_reflexion"
+      ]
+    },
+    {
+      "id": "q2",
+      "type": "multi_select",
+      "title": "Bestandteile einer guten Abschlussdoku",
+      "prompt": "Welche Punkte sollten in einer guten Abschlussdokumentation enthalten sein? (Mehrfachauswahl)",
+      "options": [
+        {
+          "text": "Ausgangslage, Befunde und durchgeführte Schritte",
+          "correct": true,
+          "rationale": "So bleibt der Verlauf nachvollziehbar."
+        },
+        {
+          "text": "Entscheidungen, Restpunkte und nächste Folgeaktionen",
+          "correct": true,
+          "rationale": "Nur so bleibt Nachverfolgung möglich."
+        },
+        {
+          "text": "Learnings oder Known-Issue-Hinweise für Folgefälle",
+          "correct": true,
+          "rationale": "Das sichert den Lerntransfer ins Team."
+        },
+        {
+          "text": "Nur der Name des Bearbeiters ohne weitere Inhalte",
+          "correct": false,
+          "rationale": "Das reicht für Doku und Lernen nicht aus."
+        },
+        {
+          "text": "Verweise auf Testergebnisse oder Monitoringbefunde, wenn relevant",
+          "correct": true,
+          "rationale": "Datenbezug macht Aussagen belastbarer."
+        }
+      ],
+      "feedback": {
+        "correct": "Richtig: So wird die Doku für Team und Nachverfolgung nutzbar.",
+        "wrong": "Teilweise falsch: Bitte Verlauf, Restpunkte und Learnings stärker priorisieren."
+      },
+      "progressLinks": [
+        "lf06_dokumentation_reflexion"
+      ]
+    },
+    {
+      "id": "q3",
+      "type": "ordering",
+      "title": "Abschluss und Reflexion",
+      "prompt": "Ordnen Sie die Schritte für einen guten Abschluss.",
+      "items": [
+        "Follow-up oder Known-Issue für Folgefälle festhalten",
+        "Ausgangslage und Bearbeitungsverlauf zusammenfassen",
+        "Restpunkte und nächste Aktionen benennen",
+        "Befunde und Entscheidungen strukturiert festhalten",
+        "Kurze Prozessreflexion für das Team ableiten"
+      ],
+      "correctOrder": [
+        "Ausgangslage und Bearbeitungsverlauf zusammenfassen",
+        "Befunde und Entscheidungen strukturiert festhalten",
+        "Restpunkte und nächste Aktionen benennen",
+        "Kurze Prozessreflexion für das Team ableiten",
+        "Follow-up oder Known-Issue für Folgefälle festhalten"
+      ],
+      "feedback": {
+        "correct": "Richtig: So wird der Abschluss nachvollziehbar und lernwirksam.",
+        "wrong": "Nicht optimal: Bitte erst Verlauf und Befunde, dann Restpunkte, Reflexion und Folgepunkte staffeln."
+      },
+      "progressLinks": [
+        "lf06_dokumentation_reflexion"
+      ]
+    },
+    {
+      "id": "q4",
+      "type": "number",
+      "title": "Quote sauber dokumentierter Tickets",
+      "prompt": "Von 28 abgeschlossenen Tickets sind 21 vollständig dokumentiert. Wie hoch ist die Quote in Prozent?",
+      "expected": 75,
+      "toleranceAbs": 0.5,
+      "showExpectedFormula": "21 / 28 * 100 = 75 %",
+      "feedback": {
+        "correct": "Richtig gerechnet.",
+        "wrong": "Bitte vollständig dokumentierte Tickets durch die Gesamtzahl teilen und in Prozent umrechnen."
+      },
+      "progressLinks": [
+        "lf06_dokumentation_reflexion"
+      ]
+    },
+    {
+      "id": "q5",
+      "type": "short_text",
+      "title": "Abschlussnotiz mit Learning",
+      "prompt": "Formulieren Sie in 4-6 Sätzen eine Abschlussnotiz mit Ergebnis, Learning, Restpunkt und nächstem Schritt.",
+      "minChars": 170,
+      "requiredKeywords": [
+        "ergebnis",
+        "learning",
+        "restpunkt"
+      ],
+      "expectedOutline": "Ergebnis benennen, ein Learning ableiten und einen klaren Folgepunkt festhalten.",
+      "feedback": {
+        "correct": "Richtig: Die Abschlussnotiz ist knapp, nutzbar und lernorientiert.",
+        "wrong": "Bitte Ergebnis, Learning und Restpunkt klarer miteinander verbinden."
+      },
+      "progressLinks": [
+        "lf06_dokumentation_reflexion"
+      ]
+    }
+  ]
+}

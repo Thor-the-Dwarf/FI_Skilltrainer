@@ -1,0 +1,159 @@
+{
+  "scenario": {
+    "company": "Ausbildungsbetrieb IT-Service",
+    "scale": "Regional, 120 Mitarbeitende",
+    "context": "Station 2 des Tageslaufs: Kompatibilität und Anschlüsse prüfen.",
+    "mission": "Sie prüfen, ob ausgewählte Hardware und Peripherie technisch zusammenpassen.",
+    "station": {
+      "id": "NS-ST-02",
+      "department": "Vertrieb",
+      "profile": "2 Monitore, Docking, Headset, LAN",
+      "constraints": [
+        "Nur kompatible Komponenten freigeben",
+        "Fehlkaufquote minimieren",
+        "Prüfentscheidung kurz dokumentieren"
+      ]
+    },
+    "customerRequest": {
+      "from": "it.leitung@ausbildungsbetrieb.example",
+      "to": "rollout.team@systemhaus.example",
+      "subject": "Kompatibilitätsprüfung für Station NS-ST-02",
+      "date": "2026-03-13",
+      "body": "Bitte prüfen Sie für Station NS-ST-02 die geplanten Komponenten auf Kompatibilität. Fokus: Monitoranschlüsse, Docking, Headset und Netzwerk.\n\nWir brauchen eine kurze, nachvollziehbare Freigabeentscheidung mit Begründung."
+    }
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "type": "single_choice",
+      "title": "Passender Anschluss für zwei Monitore",
+      "prompt": "Welche Aussage ist für einen Standard-Büroarbeitsplatz mit 2 Monitoren am sinnvollsten?",
+      "options": [
+        {
+          "text": "Ein einzelner USB-2.0-Port reicht immer für zwei Monitore aus",
+          "rationale": "USB 2.0 ist dafür ohne passende Grafiklösung nicht geeignet."
+        },
+        {
+          "text": "Dock oder Gerät braucht zwei passende Videoausgänge (z. B. HDMI/DisplayPort)",
+          "rationale": "Das deckt die fachliche Anforderung direkt ab."
+        },
+        {
+          "text": "Wenn LAN funktioniert, sind Videoanschlüsse egal",
+          "rationale": "Netzwerk ersetzt keine Monitoranschlüsse."
+        }
+      ],
+      "correctIndex": 1,
+      "feedback": {
+        "correct": "Richtig: Die Zahl und Art der Videoausgänge ist entscheidend.",
+        "wrong": "Nicht passend: Bitte Anforderungen an Bildausgabe gezielt prüfen."
+      },
+      "progressLinks": [
+        "lf02_kompatibilitaet_pruefen"
+      ]
+    },
+    {
+      "id": "q2",
+      "type": "multi_select",
+      "title": "Kompatibilitätscheck vor Freigabe",
+      "prompt": "Welche Prüfpunkte sind vor einer Freigabe sinnvoll? (Mehrfachauswahl)",
+      "options": [
+        {
+          "text": "Anschlussarten von Dock, Monitor und Gerät vergleichen",
+          "correct": true,
+          "rationale": "Direkter Kernpunkt der Kompatibilitätsprüfung."
+        },
+        {
+          "text": "Treiber- und Betriebssystemunterstützung prüfen",
+          "correct": true,
+          "rationale": "Komponenten müssen auch softwareseitig nutzbar sein."
+        },
+        {
+          "text": "Nur die Gehäusefarbe der Geräte vergleichen",
+          "correct": false,
+          "rationale": "Optik ist kein technischer Kompatibilitätsnachweis."
+        },
+        {
+          "text": "Leistungsdaten gegen den Einsatzzweck abgleichen",
+          "correct": true,
+          "rationale": "Kompatibel ist nur sinnvoll, wenn auch der Bedarf passt."
+        },
+        {
+          "text": "Private Wunschsoftware ohne Rücksprache vorinstallieren",
+          "correct": false,
+          "rationale": "Nicht standardkonform."
+        }
+      ],
+      "feedback": {
+        "correct": "Richtig: Sie prüfen technisch und einsatzbezogen.",
+        "wrong": "Teilweise falsch: Bitte fachliche Prüfpunkte stärker gewichten."
+      },
+      "progressLinks": [
+        "lf02_kompatibilitaet_pruefen"
+      ]
+    },
+    {
+      "id": "q3",
+      "type": "ordering",
+      "title": "Reihenfolge der Kompatibilitätsprüfung",
+      "prompt": "Bringen Sie die Schritte in eine sinnvolle Reihenfolge.",
+      "items": [
+        "Freigabe mit kurzer Begründung dokumentieren",
+        "Anforderungen des Arbeitsplatzes erfassen",
+        "Anschluss- und Leistungsdaten vergleichen",
+        "Treiber/OS-Unterstützung prüfen",
+        "Kurzen Funktionstest mit Referenzgerät durchführen"
+      ],
+      "correctOrder": [
+        "Anforderungen des Arbeitsplatzes erfassen",
+        "Anschluss- und Leistungsdaten vergleichen",
+        "Treiber/OS-Unterstützung prüfen",
+        "Kurzen Funktionstest mit Referenzgerät durchführen",
+        "Freigabe mit kurzer Begründung dokumentieren"
+      ],
+      "feedback": {
+        "correct": "Richtig: So entsteht eine nachvollziehbare Prüfkette.",
+        "wrong": "Nicht optimal: Die Prüfung sollte vom Bedarf zur dokumentierten Freigabe laufen."
+      },
+      "progressLinks": [
+        "lf02_kompatibilitaet_pruefen"
+      ]
+    },
+    {
+      "id": "q4",
+      "type": "number",
+      "title": "Kleine Materialrechnung",
+      "prompt": "2 Docks zu je 89 EUR, 2 Adapter zu je 24 EUR, 3 Kabel zu je 12 EUR. Wie hoch ist die Summe (ohne Steuer)?",
+      "expected": 262,
+      "toleranceAbs": 1,
+      "showExpectedFormula": "2*89 + 2*24 + 3*12 = 262 EUR",
+      "feedback": {
+        "correct": "Richtig gerechnet.",
+        "wrong": "Bitte Multiplikation je Position und Gesamtsumme prüfen."
+      },
+      "progressLinks": [
+        "lf02_rechnen_abschaetzen"
+      ]
+    },
+    {
+      "id": "q5",
+      "type": "short_text",
+      "title": "Freigabehinweis",
+      "prompt": "Schreiben Sie ein kurzes Freigabe-Statement (4-5 Sätze) mit Prüfergebnis und Begründung.",
+      "minChars": 120,
+      "requiredKeywords": [
+        "kompatibel",
+        "begründung",
+        "funktionstest"
+      ],
+      "expectedOutline": "Klarer Befund: kompatibel/nicht kompatibel, technische Begründung, kurzer Testbezug.",
+      "feedback": {
+        "correct": "Richtig: Aussage ist klar und technisch nachvollziehbar.",
+        "wrong": "Bitte Ergebnis, Begründung und Testbezug klarer benennen."
+      },
+      "progressLinks": [
+        "lf02_dokumentation",
+        "lf02_benutzer_kundenkommunikation"
+      ]
+    }
+  ]
+}

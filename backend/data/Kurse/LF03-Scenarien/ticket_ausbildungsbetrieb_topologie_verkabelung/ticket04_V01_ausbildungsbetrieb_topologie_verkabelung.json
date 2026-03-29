@@ -1,0 +1,158 @@
+{
+  "scenario": {
+    "company": "Ausbildungsbetrieb IT-Service",
+    "scale": "Regional, 140 Mitarbeitende",
+    "context": "Station 4 des Tageslaufs: Topologie und strukturierte Verkabelung planen.",
+    "mission": "Sie bewerten Netzwerktopologien und leiten eine nachvollziehbare Verkabelungsentscheidung für einen Arbeitsbereich ab.",
+    "station": {
+      "id": "LF03-ST-04",
+      "department": "Infrastruktur",
+      "profile": "Sternstruktur, Anschlussdosen, Patchfeld und Leitungsführung",
+      "constraints": [
+        "Topologie und Verkabelung aufeinander beziehen",
+        "Reserve mitdenken",
+        "Praktische Wartbarkeit begründen"
+      ]
+    },
+    "customerRequest": {
+      "from": "infra.teamlead@ausbildungsbetrieb.example",
+      "to": "support.team@ausbildungsbetrieb.example",
+      "subject": "Station 04: Verkabelungskonzept für einen neuen Arbeitsbereich vorbereiten",
+      "date": "2026-03-13",
+      "body": "Bitte bewerten Sie für einen neuen Arbeitsbereich die passende Netzwerktopologie und ein einfaches Verkabelungskonzept. Die Freigabe soll kurz, aber technisch nachvollziehbar sein."
+    }
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "type": "single_choice",
+      "title": "Typische LAN-Topologie im Büro",
+      "prompt": "Welche Topologie ist für moderne Büroarbeitsplätze am verbreitetsten und praktikabelsten?",
+      "options": [
+        {
+          "text": "Sternstruktur über zentrale Switches",
+          "rationale": "Sie ist gut wartbar, verbreitet und sauber skalierbar."
+        },
+        {
+          "text": "Vollvermaschung zwischen allen Clients",
+          "rationale": "Das ist für Standardarbeitsplätze unnötig komplex."
+        },
+        {
+          "text": "Ringstruktur für jeden einzelnen Arbeitsplatz",
+          "rationale": "Das ist in dieser Form für typische Büro-LANs unüblich."
+        }
+      ],
+      "correctIndex": 0,
+      "feedback": {
+        "correct": "Richtig: Das entspricht der gängigen Praxis im Arbeitsplatznetz.",
+        "wrong": "Nicht passend: Für Büro-LANs ist eine andere Struktur typischer."
+      },
+      "progressLinks": [
+        "lf03_topologien_verkabelung"
+      ]
+    },
+    {
+      "id": "q2",
+      "type": "multi_select",
+      "title": "Bestandteile strukturierter Verkabelung",
+      "prompt": "Welche Punkte gehören in ein ordentliches Verkabelungskonzept? (Mehrfachauswahl)",
+      "options": [
+        {
+          "text": "Patchfeld oder Patchpanel im Technikbereich",
+          "correct": true,
+          "rationale": "Das schafft eine zentrale und wartbare Anbindung."
+        },
+        {
+          "text": "Beschriftete Anschlussdosen am Arbeitsplatz",
+          "correct": true,
+          "rationale": "Das verbessert Zuordnung und Support."
+        },
+        {
+          "text": "Dokumentierte Leitungsführung und klare Zuordnung",
+          "correct": true,
+          "rationale": "Ohne Nachweis sinkt die Wartbarkeit deutlich."
+        },
+        {
+          "text": "Lose, unbeschriftete Kabel ohne Plan",
+          "correct": false,
+          "rationale": "Das erschwert Betrieb und Fehlersuche."
+        },
+        {
+          "text": "Reserveanschlüsse für spätere Erweiterungen",
+          "correct": true,
+          "rationale": "Reserve erhöht Flexibilität und reduziert spätere Umbauten."
+        }
+      ],
+      "feedback": {
+        "correct": "Richtig: Das Konzept ist wartbar und zukunftstauglich.",
+        "wrong": "Teilweise falsch: Bitte Beschriftung, Zentralisierung und Reserve stärker beachten."
+      },
+      "progressLinks": [
+        "lf03_topologien_verkabelung"
+      ]
+    },
+    {
+      "id": "q3",
+      "type": "ordering",
+      "title": "Ablauf der Verkabelungsplanung",
+      "prompt": "Ordnen Sie die Schritte für eine sinnvolle Planung.",
+      "items": [
+        "Abnahmetest und Dokumentation abschliessen",
+        "Leitungswege und Patchfeld-Zuordnung festlegen",
+        "Arbeitsplätze und Anschlussbedarf erfassen",
+        "Anschlussdosen je Platz planen",
+        "Beschriftung und Reserve mit einplanen"
+      ],
+      "correctOrder": [
+        "Arbeitsplätze und Anschlussbedarf erfassen",
+        "Anschlussdosen je Platz planen",
+        "Leitungswege und Patchfeld-Zuordnung festlegen",
+        "Beschriftung und Reserve mit einplanen",
+        "Abnahmetest und Dokumentation abschliessen"
+      ],
+      "feedback": {
+        "correct": "Richtig: Der Ablauf führt sauber vom Bedarf zur Abnahme.",
+        "wrong": "Nicht optimal: Bitte erst Bedarf, dann technische Ausgestaltung und zuletzt Nachweis."
+      },
+      "progressLinks": [
+        "lf03_topologien_verkabelung"
+      ]
+    },
+    {
+      "id": "q4",
+      "type": "number",
+      "title": "Anschlusszahl berechnen",
+      "prompt": "In einem Bereich werden 8 Doppelanschlussdosen vorgesehen. Wie viele RJ45-Anschlüsse stehen damit insgesamt zur Verfügung?",
+      "expected": 16,
+      "toleranceAbs": 0,
+      "showExpectedFormula": "8 * 2 = 16 Anschlüsse",
+      "feedback": {
+        "correct": "Richtig gerechnet.",
+        "wrong": "Bitte jede Doppelanschlussdose mit zwei Ports ansetzen."
+      },
+      "progressLinks": [
+        "lf03_topologien_verkabelung"
+      ]
+    },
+    {
+      "id": "q5",
+      "type": "short_text",
+      "title": "Verkabelungskonzept begründen",
+      "prompt": "Formulieren Sie in 4-6 Sätzen ein kurzes Verkabelungskonzept mit Sternstruktur, Patchfeld und Reserve.",
+      "minChars": 150,
+      "requiredKeywords": [
+        "stern",
+        "patchfeld",
+        "reserve"
+      ],
+      "expectedOutline": "Topologie, zentrale Zuordnung, Reserve und Wartungsvorteil kurz erklären.",
+      "feedback": {
+        "correct": "Richtig: Das Konzept ist nachvollziehbar und betriebsnah.",
+        "wrong": "Bitte Topologie, Zentraleinbindung und Reserve klarer begründen."
+      },
+      "progressLinks": [
+        "lf03_topologien_verkabelung"
+      ]
+    }
+  ]
+}

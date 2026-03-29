@@ -1,0 +1,159 @@
+{
+  "scenario": {
+    "company": "Ausbildungsbetrieb IT-Service",
+    "scale": "Mittelstand, 90 Mitarbeitende",
+    "context": "Station 06 des Tageslaufs: Team-Präsentation vorbereiten und planen.",
+    "mission": "Sie strukturieren eine Teampräsentation über den Ausbildungsbetrieb inklusive Rollen, Zeit und Qualitätskriterien.",
+    "station": {
+      "id": "LF01-ST-06",
+      "department": "Ausbildungsteam",
+      "profile": "Teamvorbereitung, Inhaltsstruktur, Zeitplanung",
+      "constraints": [
+        "zielgruppenorientiert planen",
+        "Rollen im Team klar verteilen",
+        "Zeit und Inhalt konsistent halten"
+      ]
+    },
+    "customerRequest": {
+      "from": "ausbildungsleitung@ausbildungsbetrieb.example",
+      "to": "klasse.fiae@berufsschule.example",
+      "subject": "Station 06: Teampräsentation vorbereiten",
+      "date": "2026-03-13",
+      "body": "Bitte planen Sie eine Teampräsentation über den Ausbildungsbetrieb. Erwartet werden Zielgruppenbezug, klare Rollen, belastbare Zeitplanung und eine Probe mit Feedbackschleife."
+    }
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "type": "single_choice",
+      "title": "Zielgruppe zuerst klären",
+      "prompt": "Was ist der wichtigste erste Schritt in der Präsentationsplanung?",
+      "options": [
+        {
+          "text": "Direkt Folien bauen ohne Zielgruppe",
+          "rationale": "Führt oft zu unpassenden Inhalten."
+        },
+        {
+          "text": "Zielgruppe und Kernziel der Präsentation festlegen",
+          "rationale": "Das steuert Aufbau und Detailtiefe."
+        },
+        {
+          "text": "Nur Designvorlage auswählen",
+          "rationale": "Layout ersetzt keine inhaltliche Planung."
+        }
+      ],
+      "correctIndex": 1,
+      "feedback": {
+        "correct": "Richtig: Zielgruppe und Ziel steuern die gesamte Planung.",
+        "wrong": "Nicht passend: Ohne Zielgruppe fehlt die Leitlinie."
+      },
+      "progressLinks": [
+        "lf01_praesentation_teamvorbereitung"
+      ]
+    },
+    {
+      "id": "q2",
+      "type": "multi_select",
+      "title": "Rollen im Team verteilen",
+      "prompt": "Welche Rollen sind für eine Teampräsentation sinnvoll? (Mehrfachauswahl)",
+      "options": [
+        {
+          "text": "Moderation und Zeitführung",
+          "correct": true,
+          "rationale": "Sichert Ablauf und Fokus."
+        },
+        {
+          "text": "Inhaltsverantwortung je Themenblock",
+          "correct": true,
+          "rationale": "Erhöht Klarheit im Team."
+        },
+        {
+          "text": "Keine feste Verantwortung",
+          "correct": false,
+          "rationale": "Führt zu Lücken und Doppelungen."
+        },
+        {
+          "text": "Qualitätscheck vor der Probe",
+          "correct": true,
+          "rationale": "Verbessert Ergebnis vorab."
+        },
+        {
+          "text": "Rückfragen absichtlich vermeiden",
+          "correct": false,
+          "rationale": "Rückfragen verbessern Verständnis."
+        }
+      ],
+      "feedback": {
+        "correct": "Richtig: Die Rollenverteilung ist funktional und belastbar.",
+        "wrong": "Teilweise falsch: Bitte Verbindlichkeit und Qualitätscheck stärker gewichten."
+      },
+      "progressLinks": [
+        "lf01_praesentation_teamvorbereitung"
+      ]
+    },
+    {
+      "id": "q3",
+      "type": "ordering",
+      "title": "Planungsschritte für den Vortrag",
+      "prompt": "Ordnen Sie die Planungsschritte für eine Teampräsentation.",
+      "items": [
+        "Ziel und Zielgruppe klären",
+        "Inhalte strukturieren",
+        "Rollen und Zeitfenster zuweisen",
+        "Probe mit Feedback durchführen",
+        "Finale Anpassungen umsetzen"
+      ],
+      "correctOrder": [
+        "Ziel und Zielgruppe klären",
+        "Inhalte strukturieren",
+        "Rollen und Zeitfenster zuweisen",
+        "Probe mit Feedback durchführen",
+        "Finale Anpassungen umsetzen"
+      ],
+      "feedback": {
+        "correct": "Richtig: Das ist ein sauberer Planungsprozess.",
+        "wrong": "Nicht optimal: Bitte Zielklärung, Struktur und Probe logisch staffeln."
+      },
+      "progressLinks": [
+        "lf01_praesentation_teamvorbereitung"
+      ]
+    },
+    {
+      "id": "q4",
+      "type": "number",
+      "title": "Zeitbudget berechnen",
+      "prompt": "Fünf Themenblöcke dauern je 3 Minuten. Dazu kommen 4 Minuten Einstieg und 6 Minuten Fragen. Wie lang ist der gesamte Vortrag?",
+      "expected": 25,
+      "toleranceAbs": 1,
+      "showExpectedFormula": "5 * 3 + 4 + 6 = 25 Minuten",
+      "feedback": {
+        "correct": "Richtig gerechnet.",
+        "wrong": "Bitte Blöcke, Einstieg und Fragen gemeinsam kalkulieren."
+      },
+      "progressLinks": [
+        "lf01_praesentation_teamvorbereitung"
+      ]
+    },
+    {
+      "id": "q5",
+      "type": "short_text",
+      "title": "Teamplanung dokumentieren",
+      "prompt": "Formulieren Sie eine kurze Planungsnotiz (4-6 Sätze) mit Zielgruppe, Rollen und Zeitplan.",
+      "minChars": 150,
+      "requiredKeywords": [
+        "zielgruppe",
+        "rolle",
+        "zeitplan"
+      ],
+      "expectedOutline": "Klarer Zielgruppenbezug, Rollenzuordnung, realistischer Zeitplan.",
+      "feedback": {
+        "correct": "Richtig: Die Planungsnotiz ist umsetzungsfähig.",
+        "wrong": "Bitte Zielgruppe, Rollen und Zeitplan konkreter ausformulieren."
+      },
+      "progressLinks": [
+        "lf01_praesentation_teamvorbereitung",
+        "lf01_reflexion_verbesserung"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,161 @@
+{
+  "scenario": {
+    "company": "Ausbildungsbetrieb IT-Service",
+    "scale": "Regional, 140 Mitarbeitende",
+    "context": "Station 6 des Tageslaufs: Clientintegration, Cloud-Dienste und Benutzeranmeldung.",
+    "mission": "Sie bereiten die produktive Nutzung eines neuen Clients mit zentraler Anmeldung und Cloud-Arbeitsumgebung vor.",
+    "station": {
+      "id": "LF03-ST-06",
+      "department": "Workplace Services",
+      "profile": "Zentrale Benutzeranmeldung, Cloud-Ordner und Standardprofil",
+      "constraints": [
+        "Zugriff und Identität sauber prüfen",
+        "Betriebliche Standards einhalten",
+        "Nutzbarkeit kurz dokumentieren"
+      ]
+    },
+    "customerRequest": {
+      "from": "arbeitsplatz.service@ausbildungsbetrieb.example",
+      "to": "support.team@ausbildungsbetrieb.example",
+      "subject": "Station 06: Produktive Anmeldung und Cloud-Nutzung vorbereiten",
+      "date": "2026-03-13",
+      "body": "Bitte bereiten Sie einen neuen Arbeitsplatz für die produktive Nutzung vor. Im Fokus stehen zentrale Benutzeranmeldung, Zugriff auf den Cloud-Arbeitsordner und eine kurze Betriebsfreigabe."
+    }
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "type": "single_choice",
+      "title": "Vorteil zentraler Benutzeranmeldung",
+      "prompt": "Welcher Vorteil einer zentralen Benutzeranmeldung ist für den Betrieb besonders wichtig?",
+      "options": [
+        {
+          "text": "Rechte und Identität können standardisiert verwaltet werden",
+          "rationale": "Das erleichtert Betrieb, Support und sichere Zuweisung."
+        },
+        {
+          "text": "Jeder Client braucht dann keine Netzverbindung mehr",
+          "rationale": "Die Anmeldung entfällt dadurch nicht von der Infrastruktur."
+        },
+        {
+          "text": "Dokumentation wird dadurch unnötig",
+          "rationale": "Auch zentrale Systeme brauchen nachvollziehbare Dokumentation."
+        }
+      ],
+      "correctIndex": 0,
+      "feedback": {
+        "correct": "Richtig: Standardisierte Identitäten sind ein echter Betriebshebel.",
+        "wrong": "Nicht passend: Bitte den organisatorischen und sicherheitstechnischen Vorteil beachten."
+      },
+      "progressLinks": [
+        "lf03_client_integration"
+      ]
+    },
+    {
+      "id": "q2",
+      "type": "multi_select",
+      "title": "Voraussetzungen für Cloud- und Benutzerzugriff",
+      "prompt": "Welche Punkte müssen vor der produktiven Nutzung geprüft werden? (Mehrfachauswahl)",
+      "options": [
+        {
+          "text": "Benutzerkonto und Gruppenrechte sind vorbereitet",
+          "correct": true,
+          "rationale": "Ohne Rechte kein sauberer Zugriff."
+        },
+        {
+          "text": "Netzverbindung, Zeitbasis und notwendige Dienste sind erreichbar",
+          "correct": true,
+          "rationale": "Cloud- und Anmeldedienste hängen von Basisdiensten ab."
+        },
+        {
+          "text": "Lokaler Speicher oder Cache reicht für die geplante Nutzung aus",
+          "correct": true,
+          "rationale": "Auch Cloud-Nutzung braucht lokal tragfähige Rahmenbedingungen."
+        },
+        {
+          "text": "Es reicht ein privates Fremdkonto ohne Betriebsfreigabe",
+          "correct": false,
+          "rationale": "Betriebliche Identitäten dürfen nicht ersetzt werden."
+        },
+        {
+          "text": "Mehrfaktor- oder Sicherheitsvorgaben aus dem Betrieb sind umgesetzt",
+          "correct": true,
+          "rationale": "Die Anmeldung muss zum Sicherheitsrahmen passen."
+        }
+      ],
+      "feedback": {
+        "correct": "Richtig: Sie sichern Identität, Dienste und Nutzbarkeit gemeinsam ab.",
+        "wrong": "Teilweise falsch: Bitte Konto, Dienstbasis und Sicherheitsvorgaben enger zusammen denken."
+      },
+      "progressLinks": [
+        "lf03_client_integration",
+        "lf03_komponenten_konfigurieren"
+      ]
+    },
+    {
+      "id": "q3",
+      "type": "ordering",
+      "title": "Ablauf bis zur produktiven Nutzung",
+      "prompt": "Ordnen Sie die Schritte für die Inbetriebnahme sinnvoll.",
+      "items": [
+        "Cloud-Ordner und zentrale Anwendungen prüfen",
+        "Client ins Netz bringen und Basisparameter prüfen",
+        "Gerät nach Standard aufnehmen oder registrieren",
+        "Benutzeranmeldung mit dem vorbereiteten Konto testen",
+        "Kurze Freigabedokumentation erstellen"
+      ],
+      "correctOrder": [
+        "Client ins Netz bringen und Basisparameter prüfen",
+        "Gerät nach Standard aufnehmen oder registrieren",
+        "Benutzeranmeldung mit dem vorbereiteten Konto testen",
+        "Cloud-Ordner und zentrale Anwendungen prüfen",
+        "Kurze Freigabedokumentation erstellen"
+      ],
+      "feedback": {
+        "correct": "Richtig: Der Weg führt sauber von der Basis zum produktiven Zugriff.",
+        "wrong": "Nicht optimal: Bitte erst Netz und Standardaufnahme, dann Anmeldung und Dienste prüfen."
+      },
+      "progressLinks": [
+        "lf03_client_integration",
+        "lf03_komponenten_konfigurieren"
+      ]
+    },
+    {
+      "id": "q4",
+      "type": "number",
+      "title": "Start-Sync abschätzen",
+      "prompt": "25 Nutzerinnen und Nutzer erhalten je 2,5 GB Start-Sync für ihren Cloud-Arbeitsordner. Wie gross ist das gesamte Datenvolumen?",
+      "expected": 62.5,
+      "toleranceAbs": 0.1,
+      "showExpectedFormula": "25 * 2,5 GB = 62,5 GB",
+      "feedback": {
+        "correct": "Richtig gerechnet.",
+        "wrong": "Bitte die Datenmenge pro Person mit der Anzahl der Nutzenden multiplizieren."
+      },
+      "progressLinks": [
+        "lf03_client_integration"
+      ]
+    },
+    {
+      "id": "q5",
+      "type": "short_text",
+      "title": "Freigabehinweis zur produktiven Nutzung",
+      "prompt": "Formulieren Sie in 4-6 Sätzen einen Freigabehinweis mit Anmeldestatus, Cloud-Zugriff und aktuellem Stand.",
+      "minChars": 150,
+      "requiredKeywords": [
+        "anmeldung",
+        "cloud",
+        "status"
+      ],
+      "expectedOutline": "Nutzbarkeit, erfolgreicher Zugriff und kurzer Restpunkt oder nächster Schritt.",
+      "feedback": {
+        "correct": "Richtig: Die Freigabe ist klar, knapp und betriebsnah formuliert.",
+        "wrong": "Bitte Anmeldung, Cloud-Zugriff und Status klarer voneinander trennen."
+      },
+      "progressLinks": [
+        "lf03_client_integration",
+        "lf03_komponenten_konfigurieren"
+      ]
+    }
+  ]
+}

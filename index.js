@@ -1,0 +1,16 @@
+import "./frontend/effects/halo-background.js";
+import "./frontend/i18n/ui-i18n.js";
+import "./frontend/challenge/data.js";
+import "./frontend/challenge/runtime.js";
+import "./frontend/challenge/zuordnen.js";
+import "./frontend/challenge/falscher-treffer.js";
+import "./frontend/challenge/reihenfolge-sprint.js";
+import "./frontend/challenge/fallende-karten.js";
+import "./frontend/challenge/quick-code.js";
+import "./frontend/presenter/data.js";
+import "./frontend/presenter/studio-store.js";
+import "./frontend/presenter/studio-recorder.js";
+import "./frontend/presenter/studio-ui.js";
+import "./frontend/presenter/runtime.js";
+import "./frontend/app/main.js";
+import "./frontend/comment-mode/runtime.js";

@@ -1,0 +1,1139 @@
+{
+  "scenario": {
+    "company": "MediPort Praxissoftware GmbH",
+    "scale": "Spezialisierter Softwareanbieter für Termin- und Praxisprozesse, 110 Mitarbeitende",
+    "context": "Prüfungsvorbereitung FIAE im Stationsformat mit zusammenhängenden Folgeaufträgen zu Programmiersprachen, Modellierung, Webanwendung, Sicherheit und Teststrategie.",
+    "mission": "Sie begleiten die Entwicklung einer Terminplattform für Gemeinschaftspraxen und bearbeiten dazu Fragen zu Programmiersprachen, Bibliotheken, UML, Datenmodellierung, Usability, Webtechnik, Verschlüsselung und Qualitätssicherung.",
+    "source": {
+      "kind": "Pseudonymisierte Prüfungsvorlage",
+      "reference": "AP2 FIAE Teil 1, Winter 2021/22",
+      "note": "Die fachliche Aufgabenreihenfolge bleibt erhalten; Unternehmens- und Projektbezug wurden in das Kursformat überführt. Für diesen Import stand nur die Aufgaben-PDF zur Verfügung."
+    },
+    "station": {
+      "id": "PV1FIAE-ST-04",
+      "department": "Prüfungsvorbereitung Anwendungsentwicklung",
+      "profile": "Programmiersprachen, UML, Webanwendung, Sicherheit und Testen",
+      "constraints": [
+        "Die vier Hauptaufgaben bleiben als fachlich zusammenhängende Folgeaufträge sichtbar",
+        "Offene Erklär- und Modellierungsaufgaben werden möglichst auto-auswertbar, aber fachlich gleichwertig umgesetzt",
+        "Visuals werden nur dort eingesetzt, wo die Quelle selbst eine Darstellung oder ein fachliches Artefakt vorgibt"
+      ]
+    },
+    "customerRequest": {
+      "from": "projektleitung@mediport-praxis.example",
+      "to": "projektteam@ausbildungsbetrieb.example",
+      "subject": "Terminplattform für Gemeinschaftspraxen konzipieren und absichern",
+      "date": "2026-03-20",
+      "body": "Guten Tag,\n\nwir entwickeln eine Software zur Terminvergabe in Gemeinschaftspraxen. Im Projekt müssen gleichzeitig Programmiersprachen- und Bibliotheksentscheidungen, UML- und Datenmodellierungsfragen, Anforderungen an die Webanwendung sowie Sicherheits- und Testaspekte geklärt werden.\n\nBitte bearbeiten Sie die Teilaufträge in der vorgegebenen Reihenfolge. Zuerst geht es um Programmiersprachen, Klassenbibliotheken und Versionsverwaltung. Danach folgen Terminlogik und Datenmodell für eine Gemeinschaftspraxis. Im dritten Schritt stehen Usability, Barrierefreiheit, Login-Modell und HTTP-Grundlagen im Fokus. Abschliessend sollen Verschlüsselung, Softwarequalität und Testarten eingeordnet werden.\n\nViele Grüsse\nProjektleitung"
+    }
+  },
+  "questions": [
+    {
+      "id": "ctx01",
+      "type": "context_card",
+      "title": "Kontext zum Projektstart",
+      "contentBlocks": [
+        {
+          "type": "text",
+          "text": "MediPort entwickelt ein neues Terminprodukt für Arztpraxen. Bereits in der Vorbereitungsphase müssen grundlegende Technikentscheidungen getroffen werden. Dazu gehören die Einordnung von Compiler- und Interpretersprachen, der Umgang mit Klassenbibliotheken sowie die Frage, wie ein grösseres Team den gemeinsamen Entwicklungsstand sauber verwaltet."
+        }
+      ]
+    },
+    {
+      "id": "q01",
+      "type": "table_fill",
+      "title": "Compiler- und Interpretersprachen unterscheiden",
+      "prompt": "Ordnen Sie den beiden Kategorien jeweils ein passendes Beispiel und die treffendste Kurzbeschreibung des Ausführungsprinzips zu.",
+      "columns": [
+        "Kategorie",
+        "Beispielsprache",
+        "Kurzbeschreibung"
+      ],
+      "rows": [
+        [
+          "Compilersprache",
+          {
+            "key": "lang_compiler_example",
+            "label": "Compilersprache / Beispiel",
+            "expected": "C++",
+            "inputType": "select",
+            "placeholder": "Sprache wählen",
+            "options": [
+              "C++",
+              "Python",
+              "JavaScript",
+              "PHP"
+            ]
+          },
+          {
+            "key": "lang_compiler_desc",
+            "label": "Compilersprache / Beschreibung",
+            "expected": "Der Quelltext wird vor der Ausführung in ausführbaren Code übersetzt.",
+            "inputType": "select",
+            "placeholder": "Beschreibung wählen",
+            "options": [
+              "Der Quelltext wird vor der Ausführung in ausführbaren Code übersetzt.",
+              "Anweisungen werden erst während der Ausführung Schritt für Schritt ausgewertet.",
+              "Der Quelltext darf nur direkt in einer Datenbank gespeichert werden.",
+              "Die Sprache ist nur für grafische Oberflächen geeignet."
+            ]
+          }
+        ],
+        [
+          "Interpretersprache",
+          {
+            "key": "lang_interpreter_example",
+            "label": "Interpretersprache / Beispiel",
+            "expected": "Python",
+            "inputType": "select",
+            "placeholder": "Sprache wählen",
+            "options": [
+              "C",
+              "C++",
+              "Python",
+              "Rust"
+            ]
+          },
+          {
+            "key": "lang_interpreter_desc",
+            "label": "Interpretersprache / Beschreibung",
+            "expected": "Anweisungen werden erst während der Ausführung Schritt für Schritt ausgewertet.",
+            "inputType": "select",
+            "placeholder": "Beschreibung wählen",
+            "options": [
+              "Der Quelltext wird immer vollständig in Maschinencode eingebrannt.",
+              "Anweisungen werden erst während der Ausführung Schritt für Schritt ausgewertet.",
+              "Die Sprache ist ausschliesslich für Datenbanken gedacht.",
+              "Die Sprache darf nur ohne Bibliotheken verwendet werden."
+            ]
+          }
+        ]
+      ],
+      "feedback": {
+        "correct": "Beispielsprachen und Ausführungsprinzip sind den beiden Kategorien stimmig zugeordnet.",
+        "wrong": "Achten Sie auf den Unterschied zwischen vorherigem Übersetzen und der Auswertung während der Laufzeit."
+      },
+      "progressLinks": [
+        "pv1fiae_programmiersprachen_bibliotheken_versionsverwaltung"
+      ]
+    },
+    {
+      "id": "q02",
+      "type": "table_fill",
+      "title": "Interpreter gegen Compiler abwägen",
+      "prompt": "Ordnen Sie dem Interpreter-Ansatz einen typischen Vorteil und einen typischen Nachteil gegenüber einem Compiler zu.",
+      "columns": [
+        "Aspekt",
+        "Passende Aussage"
+      ],
+      "rows": [
+        [
+          "Vorteil",
+          {
+            "key": "interp_advantage",
+            "label": "Interpreter / Vorteil",
+            "expected": "Änderungen lassen sich meist direkt ausprobieren, ohne erst einen separaten Compile-Schritt abzuwarten.",
+            "inputType": "select",
+            "placeholder": "Aussage wählen",
+            "options": [
+              "Änderungen lassen sich meist direkt ausprobieren, ohne erst einen separaten Compile-Schritt abzuwarten.",
+              "Interpretersprachen liefern grundsätzlich immer die schnellste Programmausführung.",
+              "Interpretersprachen benötigen niemals externe Laufzeitumgebungen.",
+              "Ein Interpreter verhindert jede Form von Programmfehlern automatisch."
+            ]
+          }
+        ],
+        [
+          "Nachteil",
+          {
+            "key": "interp_disadvantage",
+            "label": "Interpreter / Nachteil",
+            "expected": "Die Ausführung ist häufig langsamer, weil die Anweisungen erst zur Laufzeit ausgewertet werden.",
+            "inputType": "select",
+            "placeholder": "Aussage wählen",
+            "options": [
+              "Die Ausführung ist häufig langsamer, weil die Anweisungen erst zur Laufzeit ausgewertet werden.",
+              "Mit Interpretersprachen können grundsätzlich keine Bibliotheken genutzt werden.",
+              "Ein Interpreter erzwingt immer eine manuelle Speicherverwaltung in Assembler.",
+              "Interpretersprachen sind nur für Einweg-Skripte ohne Benutzeroberfläche zulässig."
+            ]
+          }
+        ]
+      ],
+      "feedback": {
+        "correct": "Vorteil und Nachteil des Interpreter-Ansatzes sind treffend eingeordnet.",
+        "wrong": "Denken Sie an schnelle Erprobung ohne separaten Build-Schritt, aber auch an die häufig geringere Laufzeitleistung."
+      },
+      "progressLinks": [
+        "pv1fiae_programmiersprachen_bibliotheken_versionsverwaltung"
+      ]
+    },
+    {
+      "id": "q03",
+      "type": "multi_select",
+      "title": "Klassenbibliothek mit Vorteil und Nachteil bewerten",
+      "prompt": "Welche Aussagen benennen einen fachlich passenden Vorteil und einen fachlich passenden Nachteil einer umfangreichen Klassenbibliothek? Wählen Sie alle passenden Antworten.",
+      "options": [
+        {
+          "text": "Viele Standardfunktionen sind bereits vorhanden, wodurch Entwicklungszeit eingespart und Bewährtes wiederverwendet werden kann.",
+          "correct": true,
+          "rationale": "Wiederverwendung und weniger Eigenentwicklung sind ein klassischer Vorteil grosser Bibliotheken."
+        },
+        {
+          "text": "Die Bibliothek kann Abhängigkeiten, Einarbeitungsaufwand oder zusätzliche Komplexität mitbringen.",
+          "correct": true,
+          "rationale": "Eine grosse Bibliothek spart nicht nur Zeit, sondern bringt auch Risiken und Lernaufwand mit."
+        },
+        {
+          "text": "Durch den Einsatz einer Bibliothek ist Dokumentation für eigene Klassen grundsätzlich unnötig.",
+          "correct": false,
+          "rationale": "Eigene Erweiterungen müssen weiterhin nachvollziehbar dokumentiert werden."
+        },
+        {
+          "text": "Eine Bibliothek ersetzt automatisch jede Form von Versionsverwaltung im Team.",
+          "correct": false,
+          "rationale": "Bibliotheken und Versionsverwaltung lösen unterschiedliche Aufgaben."
+        },
+        {
+          "text": "Bibliotheken verhindern grundsätzlich, dass sich Sicherheitslücken einschleichen.",
+          "correct": false,
+          "rationale": "Auch Bibliotheken müssen gepflegt, verstanden und sicher eingebunden werden."
+        }
+      ],
+      "feedback": {
+        "correct": "Vorteil und Nachteil einer umfassenden Bibliothek sind fachlich passend erkannt.",
+        "wrong": "Achten Sie auf Wiederverwendung und Zeitgewinn, aber auch auf Abhängigkeiten, Einarbeitung und zusätzliche Komplexität."
+      },
+      "progressLinks": [
+        "pv1fiae_programmiersprachen_bibliotheken_versionsverwaltung"
+      ]
+    },
+    {
+      "id": "q04",
+      "type": "multi_select",
+      "title": "Eigene Bibliotheksklassen sauber dokumentieren",
+      "prompt": "Welche Punkte sollten in der Dokumentation eigener Klassen, die die Bibliothek erweitern, besonders beachtet werden? Wählen Sie alle passenden Antworten.",
+      "options": [
+        {
+          "text": "Zweck und Verantwortungsbereich der Klasse",
+          "correct": true,
+          "rationale": "Nutzende müssen verstehen, wofür die Klasse gedacht ist."
+        },
+        {
+          "text": "Öffentliche Methoden mit Parametern und Rückgabewerten",
+          "correct": true,
+          "rationale": "Die Schnittstelle einer Klasse gehört zu den zentralen Dokumentationsinhalten."
+        },
+        {
+          "text": "Voraussetzungen, Abhängigkeiten oder wichtige Einsatzregeln",
+          "correct": true,
+          "rationale": "Vorbedingungen und Abhängigkeiten helfen beim sicheren Einsatz der Klasse."
+        },
+        {
+          "text": "Kurze Nutzungsbeispiele oder typische Aufrufmuster",
+          "correct": true,
+          "rationale": "Praxisnahe Beispiele machen die Klasse schneller verständlich."
+        },
+        {
+          "text": "Eine Liste aller Lieblingsfarben des Entwicklungsteams",
+          "correct": false,
+          "rationale": "Das hat keinen fachlichen Mehrwert für die Klassendokumentation."
+        },
+        {
+          "text": "Nur der Dateiname ohne jede fachliche Beschreibung",
+          "correct": false,
+          "rationale": "Ohne Zweck, Schnittstelle und Einsatzregeln bleibt die Doku unbrauchbar."
+        }
+      ],
+      "feedback": {
+        "correct": "Die zentralen Dokumentationspunkte für eigene Bibliotheksklassen sind passend gewählt.",
+        "wrong": "Denken Sie an Zweck, Schnittstelle, Einsatzregeln und kurze Beispiele statt an formale Platzhalter ohne Inhalt."
+      },
+      "progressLinks": [
+        "pv1fiae_programmiersprachen_bibliotheken_versionsverwaltung"
+      ]
+    },
+    {
+      "id": "q05",
+      "type": "multi_select",
+      "title": "Versionsverwaltung im Team begründen",
+      "prompt": "Welche Gründe sprechen in einem zehnköpfigen Entwicklungsteam fachlich für den Einsatz einer Versionsverwaltung? Wählen Sie alle passenden Antworten.",
+      "options": [
+        {
+          "text": "Parallel bearbeitete Änderungen lassen sich nachvollziehen und zusammenführen.",
+          "correct": true,
+          "rationale": "Gerade bei mehreren Beteiligten hilft Versionsverwaltung beim Zusammenführen von Arbeit."
+        },
+        {
+          "text": "Änderungshistorie und frühere Stande können bei Bedarf wiederhergestellt werden.",
+          "correct": true,
+          "rationale": "Historie und Rücksprünge sind zentrale Vorteile von Versionsverwaltung."
+        },
+        {
+          "text": "Fehlerhafte oder ungewollte Änderungen lassen sich leichter identifizieren.",
+          "correct": true,
+          "rationale": "Nachvollziehbare Commits und Vergleiche helfen bei der Fehlersuche."
+        },
+        {
+          "text": "Die Zusammenarbeit wird strukturiert, statt Dateien manuell hin- und herzuschicken.",
+          "correct": true,
+          "rationale": "Versionsverwaltung ersetzt unsichere manuelle Dateiverteilung durch einen geordneten Prozess."
+        },
+        {
+          "text": "Im Team dürfen dann keine Konflikte oder Merge-Probleme mehr auftreten.",
+          "correct": false,
+          "rationale": "Versionsverwaltung hilft beim Umgang mit Konflikten, verhindert sie aber nicht vollständig."
+        },
+        {
+          "text": "Damit wird jede Dokumentation automatisch überflüssig.",
+          "correct": false,
+          "rationale": "Versionsverwaltung ersetzt keine inhaltliche Projektdokumentation."
+        }
+      ],
+      "feedback": {
+        "correct": "Der Nutzen von Versionsverwaltung für ein grösseres Team ist treffend beschrieben.",
+        "wrong": "Achten Sie auf parallele Zusammenarbeit, Historie, Rücksprünge und die strukturierte Teamarbeit."
+      },
+      "progressLinks": [
+        "pv1fiae_programmiersprachen_bibliotheken_versionsverwaltung"
+      ]
+    },
+    {
+      "id": "f02",
+      "type": "followup_divider",
+      "title": "Terminlogik und Datenmodell der Gemeinschaftspraxis abstimmen",
+      "from": "fachkonzept@mediport-praxis.example",
+      "to": "projektteam@ausbildungsbetrieb.example",
+      "subject": "Use Cases und Datenmodell für das Buchungssystem konkretisieren",
+      "date": "2026-03-20",
+      "body": "Hallo,\n\nfür die Terminplattform müssen jetzt die wichtigsten Anwendungsfälle sowie das fachliche Datenmodell einer Gemeinschaftspraxis abgestimmt werden. Patienten und Praxisangestellte arbeiten mit demselben Buchungssystem, allerdings mit unterschiedlichen Aufgaben und Berechtigungen.\n\nBitte ordnen Sie zuerst die Use-Case-Logik und danach die Beziehungen im Datenmodell der Gemeinschaftspraxis ein.\n\nViele Grüsse\nFachkonzept"
+    },
+    {
+      "id": "ctx02",
+      "type": "context_card",
+      "title": "Kontext zu Buchungssystem und Praxisdaten",
+      "contentBlocks": [
+        {
+          "type": "text",
+          "text": "Für das Buchungssystem gelten diese Regeln:\n- Patienten und Praxisangestellte arbeiten mit dem System.\n- Ein Login ist für die Nutzung des Buchungssystems erforderlich.\n- Patienten können Termine anfragen und bei Bedarf eine spezielle Terminart auswählen.\n- Praxisangestellte lassen sich zunächst eine Liste offener Terminanfragen anzeigen.\n- Danach schliessen sie eine Anfrage ab, also bestätigen oder lehnen sie ab.\n- Falls eine spezielle Terminart angefragt wurde, müssen beim Abschluss die benötigten Ressourcen mitgeplant werden.\n\nFür das Datenmodell gilt ausserdem:\n- Jeder Patient hat genau einen Arzt, der ihn regulär betreut.\n- Ärzte können sich gegenseitig vertreten; für Vertretungen werden Start- und Enddatum erfasst.\n- Ein Patient kann mehrere Termine haben; jedem Termin ist genau ein Patient zugeordnet.\n- Zu einem Termin wird genau ein Arzt und genau eine Terminart zugewiesen.\n- Eine Terminart kann mehrere Ressourcen benötigen, und eine Ressource kann bei mehreren Terminarten vorkommen."
+        }
+      ]
+    },
+    {
+      "id": "q06",
+      "type": "multi_select",
+      "title": "Akteure des Buchungssystems erkennen",
+      "prompt": "Welche Rollen sind in der beschriebenen Use-Case-Logik die eigentlichen Akteure des Buchungssystems? Wählen Sie alle passenden Antworten.",
+      "options": [
+        {
+          "text": "Patient",
+          "correct": true,
+          "rationale": "Patienten stellen Terminanfragen und können spezielle Terminarten auswählen."
+        },
+        {
+          "text": "Praxisangestellte",
+          "correct": true,
+          "rationale": "Praxisangestellte bearbeiten und schliessen Terminanfragen ab."
+        },
+        {
+          "text": "Drucker im Empfangsbereich",
+          "correct": false,
+          "rationale": "Ein Drucker ist hier kein fachlicher Akteur des Use-Case-Diagramms."
+        },
+        {
+          "text": "HTTP-Statuscode 404",
+          "correct": false,
+          "rationale": "Ein Statuscode ist kein Akteur, sondern ein technisches Rückgabeergebnis."
+        }
+      ],
+      "feedback": {
+        "correct": "Die fachlichen Akteure des Buchungssystems sind korrekt erkannt.",
+        "wrong": "Achten Sie auf die Rollen, die tatsächlich mit dem Buchungssystem interagieren."
+      },
+      "progressLinks": [
+        "pv1fiae_praxissoftware_usecases_datenmodell"
+      ]
+    },
+    {
+      "id": "q07",
+      "type": "match_pairs",
+      "title": "Use Cases den passenden Akteuren zuordnen",
+      "prompt": "Ordnen Sie die beschriebenen Use Cases der passenden Rolle zu.",
+      "layout": "table",
+      "columns": [
+        "Use Case",
+        "Passende Rolle"
+      ],
+      "pairs": [
+        {
+          "key": "uc_login",
+          "left": "Login",
+          "right": "Beide"
+        },
+        {
+          "key": "uc_request",
+          "left": "Termin anfragen",
+          "right": "Patient"
+        },
+        {
+          "key": "uc_special",
+          "left": "Spezielle Terminart auswählen",
+          "right": "Patient"
+        },
+        {
+          "key": "uc_list",
+          "left": "Liste der Terminanfragen anzeigen",
+          "right": "Praxisangestellte"
+        },
+        {
+          "key": "uc_close",
+          "left": "Terminanfrage abschliessen",
+          "right": "Praxisangestellte"
+        },
+        {
+          "key": "uc_resources",
+          "left": "Ressourcen planen",
+          "right": "Praxisangestellte"
+        }
+      ],
+      "options": [
+        "Patient",
+        "Praxisangestellte",
+        "Beide"
+      ],
+      "feedback": {
+        "correct": "Die Use Cases sind den Rollen fachlich stimmig zugeordnet.",
+        "wrong": "Prüfen Sie, welche Schritte von Patienten ausgelöst werden und welche in der Bearbeitung durch Praxisangestellte liegen."
+      },
+      "progressLinks": [
+        "pv1fiae_praxissoftware_usecases_datenmodell"
+      ]
+    },
+    {
+      "id": "q08",
+      "type": "table_fill",
+      "title": "Pflicht- und Optionalschritte im Buchungssystem verstehen",
+      "prompt": "Ordnen Sie den drei Schritten des Buchungssystems die fachlich passende Einordnung zu.",
+      "columns": [
+        "Schritt im Buchungssystem",
+        "Passende Einordnung"
+      ],
+      "rows": [
+        [
+          "Login in das Buchungssystem",
+          {
+            "key": "booking_login_logic",
+            "label": "Einordnung Login",
+            "expected": "Allgemeine Voraussetzung für die Nutzung des Systems",
+            "inputType": "select",
+            "placeholder": "Einordnung wählen",
+            "options": [
+              "Allgemeine Voraussetzung für die Nutzung des Systems",
+              "Optionaler Schritt nur für Patienten",
+              "Zusatzschritt nur bei spezieller Terminart",
+              "Bearbeitungsschritt erst nach abgeschlossener Ressourcenplanung"
+            ]
+          }
+        ],
+        [
+          "Auswahl einer speziellen Terminart",
+          {
+            "key": "booking_special_type_logic",
+            "label": "Einordnung spezielle Terminart",
+            "expected": "Optionaler Schritt bei Bedarf",
+            "inputType": "select",
+            "placeholder": "Einordnung wählen",
+            "options": [
+              "Optionaler Schritt bei Bedarf",
+              "Allgemeine Voraussetzung für jede Anfrage",
+              "Nur von Praxisangestellten nach der Anfrage auszuführen",
+              "Nur nach dem Build des Clients möglich"
+            ]
+          }
+        ],
+        [
+          "Ressourcenplanung durch Praxisangestellte",
+          {
+            "key": "booking_resource_logic",
+            "label": "Einordnung Ressourcenplanung",
+            "expected": "Zusätzlicher Bearbeitungsschritt im Spezialfall",
+            "inputType": "select",
+            "placeholder": "Einordnung wählen",
+            "options": [
+              "Zusätzlicher Bearbeitungsschritt im Spezialfall",
+              "Pflichtschritt für jede Anfrage durch Patienten",
+              "Vorbedingung vor dem Login",
+              "Reine Darstellungsoption ohne Fachbezug"
+            ]
+          }
+        ]
+      ],
+      "feedback": {
+        "correct": "Die Pflicht- und Optionalschritte des Buchungssystems sind korrekt eingeordnet.",
+        "wrong": "Achten Sie darauf, was allgemein Voraussetzung ist, was optional bleibt und welcher Schritt nur im Spezialfall zusätzlich entsteht."
+      },
+      "progressLinks": [
+        "pv1fiae_praxissoftware_usecases_datenmodell"
+      ]
+    },
+    {
+      "id": "q09",
+      "type": "single_choice",
+      "title": "Passendes Datenmodell für die Gemeinschaftspraxis auswählen",
+      "prompt": "Welches Modell beschreibt die Beziehungen der Gemeinschaftspraxis fachlich am besten?",
+      "options": [
+        {
+          "text": "Modell A: Jeder Patient hat genau einen regulär betreuenden Arzt. Ärzte können sich gegenseitig vertreten; dabei werden Start- und Enddatum der Vertretung gespeichert. Ein Patient kann mehrere Termine haben, jedem Termin ist genau ein Patient, genau ein Arzt und genau eine Terminart zugeordnet. Eine Terminart kann mehrere Ressourcen benötigen, und eine Ressource kann bei mehreren Terminarten vorkommen.",
+          "rationale": "Dieses Modell bildet die beschriebenen Kardinalitäten und die Vertretungslogik vollständig ab."
+        },
+        {
+          "text": "Modell B: Patienten können gleichzeitig beliebig viele regulär betreuende Ärzte besitzen, während ein Termin mehreren Patienten gleichzeitig zugeordnet sein darf.",
+          "rationale": "Das widerspricht der Beschreibung eines festen regulären Arztes und eines einzelnen Patienten je Termin."
+        },
+        {
+          "text": "Modell C: Termine benötigen keine eigene Terminart; stattdessen werden alle Ressourcen direkt am Patienten gespeichert.",
+          "rationale": "Terminarten und Ressourcenlogik gehören in die Terminplanung, nicht pauschal an den Patienten."
+        },
+        {
+          "text": "Modell D: Eine Ressource darf immer nur einer einzigen Terminart zugeordnet sein, damit keine Überschneidungen möglich sind.",
+          "rationale": "Die Aufgabenbeschreibung sagt ausdrücklich, dass eine Ressource bei mehreren Terminarten vorkommen kann."
+        }
+      ],
+      "correctIndex": 0,
+      "feedback": {
+        "correct": "Das ausgewählte Modell bildet Arzt-, Patient-, Termin-, Terminart- und Ressourcenlogik korrekt ab.",
+        "wrong": "Achten Sie auf den einen regulären Arzt pro Patient, genau einen Patienten pro Termin und die n:m-Beziehung zwischen Terminart und Ressource."
+      },
+      "progressLinks": [
+        "pv1fiae_praxissoftware_usecases_datenmodell"
+      ]
+    },
+    {
+      "id": "q10",
+      "type": "multi_select",
+      "title": "Kernaussagen des Praxisdatenmodells prüfen",
+      "prompt": "Welche Aussagen müssen für ein fachlich passendes Datenmodell der Gemeinschaftspraxis gelten? Wählen Sie alle passenden Antworten.",
+      "options": [
+        {
+          "text": "Jeder Patient hat genau einen Arzt, der ihn für gewöhnlich betreut.",
+          "correct": true,
+          "rationale": "Diese 1:n-Betreuungslogik ist explizit vorgegeben."
+        },
+        {
+          "text": "Ärzte können sich gegenseitig vertreten; Start- und Enddatum gehören zu dieser Vertretungsbeziehung.",
+          "correct": true,
+          "rationale": "Die Zeitangaben beschreiben die konkrete Vertretung und sind ein zentraler Teil der Beziehung."
+        },
+        {
+          "text": "Ein Termin ist genau einem Patienten, genau einem Arzt und genau einer Terminart zugeordnet.",
+          "correct": true,
+          "rationale": "Damit werden die Vorgaben für Terminbezug, Zuweisung und Terminart sauber erfasst."
+        },
+        {
+          "text": "Terminart und Ressource stehen in einer n:m-Beziehung.",
+          "correct": true,
+          "rationale": "Eine Terminart kann mehrere Ressourcen brauchen, und eine Ressource kann in mehreren Terminarten vorkommen."
+        },
+        {
+          "text": "Ein Termin muss immer mehreren Patienten gleichzeitig zugeordnet sein, damit Sammeltermine möglich bleiben.",
+          "correct": false,
+          "rationale": "Die Aufgabenbeschreibung legt pro Termin genau einen Patienten fest."
+        },
+        {
+          "text": "Ressourcen dürfen nie mehrfach verwendet werden und gehören immer exklusiv genau zu einer Terminart.",
+          "correct": false,
+          "rationale": "Gerade die Mehrfachzuordnung von Ressourcen zu mehreren Terminarten ist erlaubt."
+        }
+      ],
+      "feedback": {
+        "correct": "Die wichtigsten Modellregeln der Gemeinschaftspraxis sind richtig erkannt.",
+        "wrong": "Prüfen Sie noch einmal Betreuungsarzt, Vertretungsbeziehung, Terminzuordnung und die Ressourcenzuordnung zu Terminarten."
+      },
+      "progressLinks": [
+        "pv1fiae_praxissoftware_usecases_datenmodell"
+      ]
+    },
+    {
+      "id": "f03",
+      "type": "followup_divider",
+      "title": "Webanwendung auf Benutzerfreundlichkeit und Loginlogik prüfen",
+      "from": "webteam@mediport-praxis.example",
+      "to": "projektteam@ausbildungsbetrieb.example",
+      "subject": "Usability, Barrierefreiheit und Login-Klassenmodell abstimmen",
+      "date": "2026-03-20",
+      "body": "Hallo,\n\nfür die Webapplikation der Terminbuchung müssen Akzeptanz, positive User Experience und Barrierefreiheit von Anfang an mitgedacht werden. Zusätzlich soll die Loginlogik als einfaches Klassenmodell beschrieben werden, und ein technischer Fehlerfall aus dem Browsertest ist ebenfalls einzuordnen.\n\nViele Grüsse\nWebteam"
+    },
+    {
+      "id": "ctx03",
+      "type": "context_card",
+      "title": "Kontext zur Webapplikation",
+      "contentBlocks": [
+        {
+          "type": "text",
+          "text": "Für die Webanwendung der Terminbuchung gelten diese Leitgedanken:\n- Die Benutzung soll intuitiv, effizient und vertrauenswuerdig wirken.\n- Die Anwendung soll barrierefrei nutzbar sein.\n- Die Güte der Usability soll regelmässig geprüft und verbessert werden.\n- Beim Login eines `User` werden `email` und `password` verwendet.\n- Das eingegebene Passwort wird über `encryptPassword()` verschlüsselt.\n- Das Ergebnis wird später mit dem hinterlegten Datenbankwert über `validatePassword()` verglichen; bei Übereinstimmung wird `true` zurückgegeben."
+        }
+      ]
+    },
+    {
+      "id": "q11",
+      "type": "multi_select",
+      "title": "Usability und positive User Experience verstehen",
+      "prompt": "Welche Punkte gehören zu einer benutzerfreundlichen Website mit positiver User Experience? Wählen Sie alle passenden Antworten.",
+      "options": [
+        {
+          "text": "Die Navigation ist nachvollziehbar und wichtige Aktionen sind leicht auffindbar.",
+          "correct": true,
+          "rationale": "Eine klare Orientierung ist ein Grundpfeiler guter Usability."
+        },
+        {
+          "text": "Rückmeldungen des Systems sind verständlich und helfen bei Erfolg oder Fehlern weiter.",
+          "correct": true,
+          "rationale": "Verständliche Rückmeldungen stärken Kontrolle und Vertrauen."
+        },
+        {
+          "text": "Typische Aufgaben lassen sich effizient und ohne unnötige Umwege erledigen.",
+          "correct": true,
+          "rationale": "Gute Usability zeigt sich auch an wenig Reibung im Ablauf."
+        },
+        {
+          "text": "Gestaltung und Verhalten wirken konsistent und schaffen ein positives Nutzungsgefühl.",
+          "correct": true,
+          "rationale": "Konsistenz und ein stimmiges Erlebnis sind wichtige Teile positiver UX."
+        },
+        {
+          "text": "Benutzerfreundlichkeit bedeutet, dass möglichst viele Fachbegriffe ohne Erklärung verwendet werden.",
+          "correct": false,
+          "rationale": "Ungeklärte Fachsprache kann Nutzende eher abschrecken."
+        },
+        {
+          "text": "Je mehr Klicks nötig sind, desto professioneller wirkt eine Anwendung.",
+          "correct": false,
+          "rationale": "Unnötige Schritte verschlechtern die Nutzbarkeit."
+        }
+      ],
+      "feedback": {
+        "correct": "Die zentralen Kriterien für Usability und positive UX sind treffend erkannt.",
+        "wrong": "Achten Sie auf Orientierung, Rückmeldung, effiziente Erledigung von Aufgaben und ein konsistentes Nutzungserlebnis."
+      },
+      "progressLinks": [
+        "pv1fiae_usability_barrierefreiheit_webgrundlagen"
+      ]
+    },
+    {
+      "id": "q12",
+      "type": "short_text",
+      "title": "Barrierefreiheit fachlich einordnen",
+      "prompt": "Beschreiben Sie in 1-3 Sätzen, was Barrierefreiheit für diese Webanwendung bedeutet.",
+      "minChars": 90,
+      "requiredKeywords": [
+        "einschränkungen",
+        "nutzen"
+      ],
+      "expectedOutline": "Erklärt, dass die Anwendung so gestaltet sein soll, dass Menschen mit unterschiedlichen Einschränkungen sie möglichst ohne fremde Hilfe bzw. ohne unnötige Hürden nutzen können.",
+      "feedback": {
+        "correct": "Barrierefreiheit ist fachlich passend beschrieben.",
+        "wrong": "Gesucht ist ein Ansatz, der möglichst vielen Menschen den Zugang zur Anwendung erleichtert statt Nutzung künstlich einzuschränken."
+      },
+      "progressLinks": [
+        "pv1fiae_usability_barrierefreiheit_webgrundlagen"
+      ]
+    },
+    {
+      "id": "q13",
+      "type": "multi_select",
+      "title": "Benutzerfreundlichkeit periodisch testen",
+      "prompt": "Welche Verfahren eignen sich, um die Benutzerfreundlichkeit der Webapplikation regelmässig zu prüfen und zu verbessern? Wählen Sie alle passenden Antworten.",
+      "options": [
+        {
+          "text": "Usability-Tests mit reprasentativen Nutzenden und typischen Aufgaben",
+          "correct": true,
+          "rationale": "Direkte Beobachtung echter Nutzung ist ein sehr wirksamer Weg zur Usability-Prüfung."
+        },
+        {
+          "text": "Heuristische Evaluation oder Expert Review der Oberfläche",
+          "correct": true,
+          "rationale": "Experten können typische Nutzungsprobleme systematisch identifizieren."
+        },
+        {
+          "text": "Feedback-Auswertungen, kurze Befragungen oder Nutzungsanalysen",
+          "correct": true,
+          "rationale": "Rückmeldungen und Nutzungsdaten helfen, reale Probleme über die Zeit sichtbar zu machen."
+        },
+        {
+          "text": "Nur die Dateigrösse der CSS-Dateien messen",
+          "correct": false,
+          "rationale": "Dateigrösse allein sagt nichts über die Benutzerfreundlichkeit aus."
+        },
+        {
+          "text": "Ausschliesslich Compiler-Warnungen zählen und daraus auf UX schliessen",
+          "correct": false,
+          "rationale": "Compiler-Warnungen betreffen Codequalität, nicht direkt die Nutzbarkeit der Oberfläche."
+        }
+      ],
+      "feedback": {
+        "correct": "Geeignete Verfahren zur Usability-Prüfung sind korrekt erkannt.",
+        "wrong": "Denken Sie an Verfahren mit realer Nutzung, Experteneinschätzung und systematischem Feedback statt an rein technische Nebenkriterien."
+      },
+      "progressLinks": [
+        "pv1fiae_usability_barrierefreiheit_webgrundlagen"
+      ]
+    },
+    {
+      "id": "q14",
+      "type": "table_fill",
+      "title": "Elemente des Login-Klassenmodells zuordnen",
+      "prompt": "Ordnen Sie den vorgegebenen Bezeichnern die passende Art und den passenden Datentyp bzw. Rückgabewert zu.",
+      "columns": [
+        "Bezeichner",
+        "Art",
+        "Datentyp oder Rückgabewert"
+      ],
+      "rows": [
+        [
+          "email",
+          {
+            "key": "login_email_kind",
+            "label": "email / Art",
+            "expected": "Attribut",
+            "inputType": "select",
+            "placeholder": "Art wählen",
+            "options": [
+              "Attribut",
+              "Operation"
+            ]
+          },
+          {
+            "key": "login_email_type",
+            "label": "email / Typ",
+            "expected": "String",
+            "inputType": "select",
+            "placeholder": "Typ wählen",
+            "options": [
+              "String",
+              "Boolean",
+              "Integer",
+              "void"
+            ]
+          }
+        ],
+        [
+          "password",
+          {
+            "key": "login_password_kind",
+            "label": "password / Art",
+            "expected": "Attribut",
+            "inputType": "select",
+            "placeholder": "Art wählen",
+            "options": [
+              "Attribut",
+              "Operation"
+            ]
+          },
+          {
+            "key": "login_password_type",
+            "label": "password / Typ",
+            "expected": "String",
+            "inputType": "select",
+            "placeholder": "Typ wählen",
+            "options": [
+              "String",
+              "Boolean",
+              "Integer",
+              "void"
+            ]
+          }
+        ],
+        [
+          "encryptPassword()",
+          {
+            "key": "login_encrypt_kind",
+            "label": "encryptPassword / Art",
+            "expected": "Operation",
+            "inputType": "select",
+            "placeholder": "Art wählen",
+            "options": [
+              "Attribut",
+              "Operation"
+            ]
+          },
+          {
+            "key": "login_encrypt_type",
+            "label": "encryptPassword / Rückgabe",
+            "expected": "String",
+            "inputType": "select",
+            "placeholder": "Rückgabewert wählen",
+            "options": [
+              "String",
+              "Boolean",
+              "Integer",
+              "void"
+            ]
+          }
+        ],
+        [
+          "validatePassword()",
+          {
+            "key": "login_validate_kind",
+            "label": "validatePassword / Art",
+            "expected": "Operation",
+            "inputType": "select",
+            "placeholder": "Art wählen",
+            "options": [
+              "Attribut",
+              "Operation"
+            ]
+          },
+          {
+            "key": "login_validate_type",
+            "label": "validatePassword / Rückgabe",
+            "expected": "Boolean",
+            "inputType": "select",
+            "placeholder": "Rückgabewert wählen",
+            "options": [
+              "String",
+              "Boolean",
+              "Integer",
+              "void"
+            ]
+          }
+        ]
+      ],
+      "feedback": {
+        "correct": "Attribute, Operationen und Rückgabetypen des Login-Klassenmodells sind stimmig zugeordnet.",
+        "wrong": "Achten Sie darauf, welche Begriffe Datenfelder sind und welche Begriffe Funktionen beschreiben; `validatePassword()` liefert einen Wahrheitswert zurück."
+      },
+      "progressLinks": [
+        "pv1fiae_usability_barrierefreiheit_webgrundlagen"
+      ]
+    },
+    {
+      "id": "q15",
+      "type": "short_text",
+      "title": "HTTP Error 404 einordnen",
+      "prompt": "Erklären Sie in 1-3 Sätzen, was ein HTTP Error 404 im Browsertest in diesem Projektkontext am ehesten bedeutet.",
+      "minChars": 80,
+      "requiredKeywords": [
+        "ressource",
+        "nicht"
+      ],
+      "expectedOutline": "Erklärt, dass die angeforderte URL bzw. Ressource unter dem erwarteten Pfad auf dem Server nicht gefunden wurde und deshalb der 404-Status zurückkommt.",
+      "feedback": {
+        "correct": "Die typische Ursache eines HTTP 404 ist korrekt erkannt.",
+        "wrong": "Achten Sie auf die Bedeutung des Statuscodes: Angefordert wurde etwas, das unter der erwarteten Adresse nicht vorhanden ist."
+      },
+      "progressLinks": [
+        "pv1fiae_usability_barrierefreiheit_webgrundlagen"
+      ]
+    },
+    {
+      "id": "f04",
+      "type": "followup_divider",
+      "title": "Client-Sicherheit und Softwarequalität absichern",
+      "from": "architektur@mediport-praxis.example",
+      "to": "projektteam@ausbildungsbetrieb.example",
+      "subject": "Verschlüsselung, Signierung und Teststrategie für den Client bewerten",
+      "date": "2026-03-20",
+      "body": "Hallo,\n\nfür den Client müssen die verschlüsselte Übertragung, die Vertrauenswuerdigkeit der Anwendung und die Qualitätssicherung vor dem Release sauber eingeordnet werden. Bitte bewerten Sie zuerst das vorgeschlagene Verschlüsselungsverfahren, dann die Meldung zur nicht vertrauenswuerdigen Quelle und abschliessend die vorgesehenen QS-Massnahmen und Testarten.\n\nViele Grüsse\nArchitektur"
+    },
+    {
+      "id": "ctx04",
+      "type": "context_card",
+      "title": "Kurznotiz zu Transportverschlüsselung und Vertrauenspruefung",
+      "contentBlocks": [
+        {
+          "type": "text",
+          "text": "Wenn Client und Server denselben geheimen Schlüssel verwenden, handelt es sich um ein symmetrisches Verfahren. Das Problem bei verteilter Client-Software ist dabei vor allem die sichere Verteilung und der Schutz dieses gemeinsamen Geheimnisses.\n\nFür Client-Server-Verbindungen werden deshalb häufig asymmetrische oder hybride Verfahren mit Zertifikat eingesetzt. Die Meldung, dass ein Programm aus einer nicht vertrauenswuerdigen Quelle stammt, betrifft dagegen nicht die Transportverschlüsselung selbst, sondern die fehlende oder nicht vertrauenswuerdige Signatur des Programms."
+        }
+      ]
+    },
+    {
+      "id": "q16",
+      "type": "table_fill",
+      "title": "Verschlüsselung mit Lizenzschlüssel einordnen",
+      "prompt": "Ordnen Sie den beiden Beobachtungen zum vorgeschlagenen Lizenzschlüssel-Verfahren die passende fachliche Einordnung zu.",
+      "columns": [
+        "Beobachtung",
+        "Passende Einordnung"
+      ],
+      "rows": [
+        [
+          "Client und Server verwenden denselben Lizenzschlüssel für die Übertragung.",
+          {
+            "key": "crypto_same_key_type",
+            "label": "Einordnung gleicher Schlüssel",
+            "expected": "Symmetrische Verschlüsselung mit gemeinsamem Geheimnis",
+            "inputType": "select",
+            "placeholder": "Einordnung wählen",
+            "options": [
+              "Symmetrische Verschlüsselung mit gemeinsamem Geheimnis",
+              "Reine asymmetrische Verschlüsselung mit Public- und Private-Key-Paar",
+              "Hashing ohne Rückrechenbarkeit",
+              "Steganografie"
+            ]
+          }
+        ],
+        [
+          "Das gemeinsame Geheimnis muss auf beide Seiten verteilt und dort geschützt werden.",
+          {
+            "key": "crypto_same_key_consequence",
+            "label": "Einordnung Verteilproblem",
+            "expected": "Typisches Grundproblem eines symmetrischen Shared-Secret-Ansatzes im Client",
+            "inputType": "select",
+            "placeholder": "Einordnung wählen",
+            "options": [
+              "Typisches Grundproblem eines symmetrischen Shared-Secret-Ansatzes im Client",
+              "Beweis für eine gültige Code-Signatur des Release-Builds",
+              "Hinweis auf eine automatisch gefundene 404-Ressource",
+              "Merkmal einer rein visuellen Barrierefreiheitsprüfung"
+            ]
+          }
+        ]
+      ],
+      "feedback": {
+        "correct": "Das Verfahren ist korrekt als symmetrische Verschlüsselung mit gemeinsamem Geheimnis eingeordnet.",
+        "wrong": "Achten Sie darauf, ob beide Seiten denselben Schlüssel benutzen oder ein Schlüsselpaar zum Einsatz kommt."
+      },
+      "progressLinks": [
+        "pv1fiae_verschluesselung_softwarequalitaet_testarten"
+      ]
+    },
+    {
+      "id": "q17",
+      "type": "short_text",
+      "title": "Passende Alternative zur Schlüsselweitergabe wählen",
+      "prompt": "Benennen Sie in 2-4 Sätzen die geeignetere Alternative für die Transportverschlüsselung und begründen Sie kurz, warum sie das Problem des gemeinsamen Lizenzschlüssels besser löst.",
+      "minChars": 130,
+      "requiredKeywords": [
+        "asymmetrisch",
+        "zertifikat",
+        "geheimnis"
+      ],
+      "expectedOutline": "Nennt eine asymmetrische bzw. hybride Transportverschlüsselung mit Zertifikat/Public-Key-Verfahren und erklärt, dass dadurch kein identisches gemeinsames Geheimnis offen an alle Clients verteilt werden muss.",
+      "feedback": {
+        "correct": "Die geeignetere Alternative für eine sichere Transportverschlüsselung ist richtig gewählt.",
+        "wrong": "Gesucht ist ein Verfahren, das nicht auf einem offen im Client wiederverwendbaren gemeinsamen Geheimnis beruht."
+      },
+      "progressLinks": [
+        "pv1fiae_verschluesselung_softwarequalitaet_testarten"
+      ]
+    },
+    {
+      "id": "q18",
+      "type": "multi_select",
+      "title": "Vorteil und Nachteil der sicheren Alternative verstehen",
+      "prompt": "Welche Aussagen beschreiben einen passenden Vorteil und einen möglichen Nachteil der asymmetrischen bzw. hybriden Alternative? Wählen Sie alle passenden Antworten.",
+      "options": [
+        {
+          "text": "Ein gemeinsames Geheimnis muss nicht in identischer Form an alle Clients verteilt und dort verborgen werden.",
+          "correct": true,
+          "rationale": "Genau dieses Problem der symmetrischen Lizenzschlüssel-Idee wird damit entschärft."
+        },
+        {
+          "text": "Zertifikate, Schlüsselmaterial und deren Verwaltung machen das Verfahren organisatorisch aufwendiger.",
+          "correct": true,
+          "rationale": "Schlüssel- und Zertifikatsmanagement ist ein realistischer Nachteil."
+        },
+        {
+          "text": "Das Verfahren macht Signierung und Vertrauenspruefung einer Anwendung automatisch überflüssig.",
+          "correct": false,
+          "rationale": "Transportverschlüsselung und Signierung lösen unterschiedliche Sicherheitsfragen."
+        },
+        {
+          "text": "Mit dem Verfahren verschwinden automatisch alle Logik- und Fachfehler der Anwendung.",
+          "correct": false,
+          "rationale": "Verschlüsselung beseitigt keine allgemeinen Softwarefehler."
+        },
+        {
+          "text": "Es gibt dabei nie Performance- oder Konfigurationsaufwand.",
+          "correct": false,
+          "rationale": "Sichere Verfahren können sehr wohl zusätzlichen Aufwand mitbringen."
+        }
+      ],
+      "feedback": {
+        "correct": "Vorteil und möglicher Nachteil der sicheren Alternative sind fachlich passend erfasst.",
+        "wrong": "Achten Sie auf die sichere Schlüsselverteilung als Vorteil und auf zusätzliches Zertifikats- bzw. Verwaltungsaufkommen als möglichen Nachteil."
+      },
+      "progressLinks": [
+        "pv1fiae_verschluesselung_softwarequalitaet_testarten"
+      ]
+    },
+    {
+      "id": "q19",
+      "type": "short_text",
+      "title": "Nicht vertrauenswuerdige Quelle deuten",
+      "prompt": "Erklären Sie in 1-3 Sätzen, was die Meldung `Das Programm stammt aus einer nicht vertrauenswuerdigen Quelle` beim Start der Client-Anwendung fachlich bedeutet.",
+      "minChars": 110,
+      "requiredKeywords": [
+        "signiert",
+        "zertifikat"
+      ],
+      "expectedOutline": "Erklärt, dass die Anwendung nicht oder nicht mit einem vertrauenswuerdigen Zertifikat signiert ist und Herausgeber bzw. Integrität deshalb aus Sicht des Systems nicht ausreichend verifiziert werden können.",
+      "feedback": {
+        "correct": "Die Bedeutung der Vertrauenswarnung ist fachlich richtig eingeordnet.",
+        "wrong": "Denken Sie an Signatur, Zertifikat und die Verifizierbarkeit des Herausgebers statt an Laufzeit- oder Loginprobleme."
+      },
+      "progressLinks": [
+        "pv1fiae_verschluesselung_softwarequalitaet_testarten"
+      ]
+    },
+    {
+      "id": "q20",
+      "type": "table_fill",
+      "title": "Problem über Kompilierungs- oder Build-Einstellungen beheben",
+      "prompt": "Ordnen Sie den beiden Release-Zielen die fachlich passende Massnahme zu.",
+      "columns": [
+        "Release-Ziel",
+        "Passende Massnahme"
+      ],
+      "rows": [
+        [
+          "Herausgeber und Integrität des Release-Builds sollen für das Betriebssystem nachvollziehbar sein.",
+          {
+            "key": "release_trust_measure",
+            "label": "Massnahme für Release-Vertrauen",
+            "expected": "Release-Build mit gültiger Code-Signatur bzw. vertrauenswuerdigem Zertifikat signieren",
+            "inputType": "select",
+            "placeholder": "Massnahme wählen",
+            "options": [
+              "Release-Build mit gültiger Code-Signatur bzw. vertrauenswuerdigem Zertifikat signieren",
+              "Nur im Debug-Modus kompilieren",
+              "Programmnamen in Grossbuchstaben schreiben",
+              "CSS-Datei des Loginfensters minifizieren"
+            ]
+          }
+        ],
+        [
+          "Eine Vertrauenswarnung soll mit einer Build-Änderung fachlich sauber statt nur optisch übergangen werden.",
+          {
+            "key": "release_trust_reasoning",
+            "label": "Massnahme gegen Vertrauenswarnung",
+            "expected": "Code Signing statt Debug- oder Oberflächenanpassung",
+            "inputType": "select",
+            "placeholder": "Massnahme wählen",
+            "options": [
+              "Code Signing statt Debug- oder Oberflächenanpassung",
+              "Minifiziertes CSS statt Zertifikat",
+              "Nur Umbenennung der Programmdatei",
+              "Debug-Build ohne weitere Sicherheitsmassnahmen"
+            ]
+          }
+        ]
+      ],
+      "feedback": {
+        "correct": "Die passende Build-Massnahme gegen die Vertrauenswarnung ist korrekt erkannt.",
+        "wrong": "Gesucht ist keine Oberflächen- oder Debug-Änderung, sondern eine saubere Signierung des Release-Builds."
+      },
+      "progressLinks": [
+        "pv1fiae_verschluesselung_softwarequalitaet_testarten"
+      ]
+    },
+    {
+      "id": "q21",
+      "type": "match_pairs",
+      "title": "ISO-9126-Qualitätsmerkmale zuordnen",
+      "prompt": "Ordnen Sie den beiden Qualitätsmerkmalen die passende Erläuterung zu.",
+      "layout": "table",
+      "columns": [
+        "Qualitätsmerkmal",
+        "Passende Erläuterung"
+      ],
+      "pairs": [
+        {
+          "key": "iso_eff",
+          "left": "Effizienz",
+          "right": "Die Software erbringt ihre Leistung mit einem angemessenen Verhältnis aus Ergebnis und benötigten Ressourcen wie Zeit oder Speicher."
+        },
+        {
+          "key": "iso_change",
+          "left": "Änderbarkeit",
+          "right": "Die Software kann mit vertretbarem Aufwand angepasst, erweitert oder korrigiert werden."
+        }
+      ],
+      "options": [
+        "Die Software erbringt ihre Leistung mit einem angemessenen Verhältnis aus Ergebnis und benötigten Ressourcen wie Zeit oder Speicher.",
+        "Die Software kann mit vertretbarem Aufwand angepasst, erweitert oder korrigiert werden."
+      ],
+      "feedback": {
+        "correct": "Die beiden ISO-9126-Qualitätsmerkmale sind korrekt zugeordnet.",
+        "wrong": "Achten Sie darauf, ob es um Ressourceneinsatz oder um die Leichtigkeit späterer Anpassungen geht."
+      },
+      "progressLinks": [
+        "pv1fiae_verschluesselung_softwarequalitaet_testarten"
+      ]
+    },
+    {
+      "id": "q22",
+      "type": "multi_select",
+      "title": "Automatische Code-Reviews und Unit-Tests allein?",
+      "prompt": "Welche Aussagen sprechen dagegen, die Qualitätssicherung ausschliesslich auf automatische Code-Reviews und Unit-Tests zu beschränken? Wählen Sie alle passenden Antworten.",
+      "options": [
+        {
+          "text": "Integration, Zusammenspiel mehrerer Komponenten und reale Benutzerabläufe werden dadurch nicht vollständig abgedeckt.",
+          "correct": true,
+          "rationale": "Unit-Tests und statische Checks prüfen nicht automatisch das gesamte Systemverhalten."
+        },
+        {
+          "text": "Benutzerfreundlichkeit, Barrierefreiheit oder fachliche Missverständnisse müssen oft zusätzlich anders geprüft werden.",
+          "correct": true,
+          "rationale": "Viele qualitative und nutzungsnahe Aspekte brauchen weitere QS-Massnahmen."
+        },
+        {
+          "text": "Sicherheits-, Explorations- oder Abnahmesicht können weitere Testformen notwendig machen.",
+          "correct": true,
+          "rationale": "Automatisierte Basisprüfungen sind wichtig, aber nicht die einzige QS-Perspektive."
+        },
+        {
+          "text": "Weil Unit-Tests und automatische Reviews grundsätzlich wertlos sind und nie eingesetzt werden sollten.",
+          "correct": false,
+          "rationale": "Sie sind sehr wertvoll, aber eben nicht allein ausreichend."
+        },
+        {
+          "text": "Weil jede Software auch ohne jegliche Tests produktiv gesetzt werden kann.",
+          "correct": false,
+          "rationale": "Das wäre gerade kein Argument für verantwortungsvolle QS."
+        }
+      ],
+      "feedback": {
+        "correct": "Die Grenzen einer ausschliesslich automatisierten Basis-QS sind fachlich richtig erkannt.",
+        "wrong": "Achten Sie darauf, welche Aspekte ausserhalb von Unit-Tests und automatischen Reviews liegen, etwa Integration, Nutzung und Abnahme."
+      },
+      "progressLinks": [
+        "pv1fiae_verschluesselung_softwarequalitaet_testarten"
+      ]
+    },
+    {
+      "id": "q23",
+      "type": "match_pairs",
+      "title": "Black-Box- und White-Box-Test abgrenzen",
+      "prompt": "Ordnen Sie den beiden Testarten die passende Beschreibung zu.",
+      "layout": "table",
+      "columns": [
+        "Testart",
+        "Passende Beschreibung"
+      ],
+      "pairs": [
+        {
+          "key": "test_black",
+          "left": "Black-Box-Test",
+          "right": "Die Tests orientieren sich am erwarteten Verhalten von aussen, ohne die interne Programmlogik im Detail auszunutzen."
+        },
+        {
+          "key": "test_white",
+          "left": "White-Box-Test",
+          "right": "Die interne Struktur, Pfade oder Entscheidungslogik des Codes werden gezielt für die Testfallauswahl berücksichtigt."
+        }
+      ],
+      "options": [
+        "Die Tests orientieren sich am erwarteten Verhalten von aussen, ohne die interne Programmlogik im Detail auszunutzen.",
+        "Die interne Struktur, Pfade oder Entscheidungslogik des Codes werden gezielt für die Testfallauswahl berücksichtigt."
+      ],
+      "feedback": {
+        "correct": "Black-Box- und White-Box-Test sind fachlich sauber voneinander abgegrenzt.",
+        "wrong": "Prüfen Sie, ob die Testart von aussen auf Verhalten schaut oder bewusst die innere Code-Struktur einbezieht."
+      },
+      "progressLinks": [
+        "pv1fiae_verschluesselung_softwarequalitaet_testarten"
+      ]
+    }
+  ]
+}

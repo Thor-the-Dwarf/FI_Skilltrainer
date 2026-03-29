@@ -1,0 +1,419 @@
+{
+  "scenario": {
+    "company": "SecuBridge Service GmbH",
+    "scale": "IT service provider for home office, municipal workplaces and medical practice environments, 95 employees",
+    "context": "Ahead of the next external audit, a scheduled permission review is due for the service portal, document repository and support mailbox because role changes, substitutions and legacy accounts were only partially updated.",
+    "mission": "Define review scope, critical accounts, exceptions, permission revocation and evidence for the current access status.",
+    "source": {
+      "kind": "Internal review and access request",
+      "reference": "Quarterly access review service portal, 2026-03-31",
+      "note": "Based on recent role changes in support, temporary substitutions, still active legacy accounts and the requirement to confirm approved access per system in a traceable way."
+    },
+    "station": {
+      "id": "QUS2-ST-06",
+      "department": "Identity, operations and domain coordination",
+      "profile": "Access review, role changes, exceptions and evidence",
+      "constraints": [
+        "Person binding, role need and system access must be confirmed, adjusted or revoked per account",
+        "Substitutions and exceptions may only remain with a reason, end date or follow-up review",
+        "For audit and team leadership a readable closure with decisions, implementation and residual points is required"
+      ]
+    },
+    "customerRequest": {
+      "from": "fachbereich@secubridge-service.example",
+      "to": "zugriffsreview@ausbildungsbetrieb.example",
+      "subject": "Prepare access review for service portal and DMS by Friday",
+      "date": "2026-03-26",
+      "body": "Good day,\n\nbefore the external audit we must cleanly straighten the access status for the service portal, document repository and support mailbox. In recent weeks there were role changes in support, several substitutions without a clear end date, and still active accounts from an expired partner project.\n\nPlease prepare a reliable status by Friday: which accounts must be clarified immediately, which permissions can be revoked or reduced, which exceptions are justified and which evidence we will provide.\n\nKind regards\nDomain department"
+    }
+  },
+  "questions": [
+    {
+      "id": "ctx01",
+      "type": "context_card",
+      "title": "Framework for the access review",
+      "contentBlocks": [
+        {
+          "type": "text",
+          "text": "SecuBridge reviews the current access status for several operational areas before the audit. The critical point is not the number of accounts, but whether current role, domain need and technical permission still match for each person."
+        },
+        {
+          "type": "table",
+          "columns": [
+            "Area",
+            "Current finding"
+          ],
+          "rows": [
+            [
+              "Service portal",
+              "Role changes in support, old profiles still active in parallel"
+            ],
+            [
+              "Document repository",
+              "Former project accounts and expired partner access still visible"
+            ],
+            [
+              "Support mailbox",
+              "Read access after substitutions not fully cleaned up"
+            ],
+            [
+              "Admin access document gateway",
+              "Elevated rights from earlier maintenance are under review"
+            ],
+            [
+              "Expectation for Friday",
+              "A clear decision per account or access with evidence and residual point"
+            ]
+          ]
+        },
+        {
+          "type": "text",
+          "text": "The goal is not a large list export, but a review that consolidates standard cases, special rights, exceptions and technical implementation into a traceable working status."
+        }
+      ]
+    },
+    {
+      "id": "q01",
+      "type": "multi_select",
+      "title": "Review priorities",
+      "prompt": "Which accounts or situations must be clarified first in the access review? Several points can be critical at the same time.",
+      "options": [
+        {
+          "text": "Accounts of departed staff or expired project partners that are still active.",
+          "correct": true,
+          "rationale": "Legacy accounts without current need are among the first review cases."
+        },
+        {
+          "text": "Substitution or emergency rights without end date or clear approval.",
+          "correct": true,
+          "rationale": "Temporary additional rights quickly lose legitimacy without limits."
+        },
+        {
+          "text": "Role changes where old and new permissions remained in parallel.",
+          "correct": true,
+          "rationale": "Parallel old and new roles often expand access unnoticed."
+        },
+        {
+          "text": "Shared or no longer clearly attributable accounts in the support context.",
+          "correct": true,
+          "rationale": "Without clear person binding there is no reliable accountability later."
+        },
+        {
+          "text": "Accounts in unchanged standard profiles should be reviewed in depth first; special rights and legacy accounts can follow later.",
+          "correct": false,
+          "rationale": "Priority here is on abnormal or overly broad permissions, not quiet standard cases."
+        },
+        {
+          "text": "A shared mailbox can be excluded from the review as long as at least one responsible person has access.",
+          "correct": false,
+          "rationale": "Shared access also needs a clear and current permission logic."
+        }
+      ],
+      "feedback": {
+        "correct": "Critical cases for the review start were prioritized correctly.",
+        "wrong": "Focus on legacy accounts, special rights, role changes and missing person binding."
+      },
+      "progressLinks": [
+        "qus2_berechtigungsreview_und_scope"
+      ]
+    },
+    {
+      "id": "q02",
+      "type": "single_choice",
+      "title": "Review approach for Friday",
+      "prompt": "What most clearly indicates a reliable access review here?",
+      "options": [
+        {
+          "text": "Export all rights once and store the list as evidence; domain confirmations can follow later.",
+          "rationale": "An export alone shows neither current need nor the decision per account."
+        },
+        {
+          "text": "For each system, check accounts, current role, actual need, special rights and exceptions against each other and document the decision per access.",
+          "rationale": "This is how technical lists, domain need and reliable decisions are connected."
+        },
+        {
+          "text": "Only review admin and partner accounts, because standard roles rarely matter for the audit.",
+          "rationale": "Standard roles also belong to the review when role and need must be verified."
+        },
+        {
+          "text": "Deactivate all accounts as a precaution and then clarify in daily business who gets access again.",
+          "rationale": "That causes uncontrolled disruption instead of a governed, traceable review."
+        }
+      ],
+      "correctIndex": 1,
+      "feedback": {
+        "correct": "The reliable review approach was correctly identified.",
+        "wrong": "The target is a process that ties system list, role need, special rights and documented decisions together."
+      },
+      "progressLinks": [
+        "qus2_berechtigungsreview_und_scope",
+        "qus2_rollenrezertifizierung_und_ausnahmen"
+      ]
+    },
+    {
+      "id": "f02",
+      "type": "followup_divider",
+      "title": "Align systems, roles and evidence cleanly",
+      "from": "zugangssteuerung@secubridge-service.example",
+      "to": "zugriffsreview@ausbildungsbetrieb.example",
+      "subject": "Build review matrix for critical areas",
+      "date": "2026-03-26",
+      "body": "Hello everyone,\n\nbefore I hand the status to team leadership, I need a clear statement per area on what exactly is reviewed and which first evidence will carry the decision later. Please do not split service portal, document repository and elevated access apart, but combine them into one shared review picture.\n\nKind regards\nAccess governance"
+    },
+    {
+      "id": "q03",
+      "type": "table_fill",
+      "title": "Focus and evidence per area",
+      "prompt": "For each area, add the most important review focus and the first appropriate evidence.",
+      "columns": [
+        "Area",
+        "Most important review focus",
+        "First appropriate evidence"
+      ],
+      "rows": [
+        [
+          "Service portal case handling",
+          {
+            "key": "focus_row_1",
+            "label": "Service portal / focus",
+            "expected": "Check current team role, required access scope and remaining old rights after role changes.",
+            "inputType": "select",
+            "placeholder": "Select focus",
+            "options": [
+              "Check current team role, required access scope and remaining old rights after role changes.",
+              "Only check whether the password was changed recently.",
+              "Sort the latest citizen requests by urgency.",
+              "Only count how long the account already exists."
+            ]
+          },
+          {
+            "key": "proof_row_1",
+            "label": "Service portal / evidence",
+            "expected": "Role export with account owner, current profile and domain confirmation from team leadership.",
+            "inputType": "select",
+            "placeholder": "Select evidence",
+            "options": [
+              "Role export with account owner, current profile and domain confirmation from team leadership.",
+              "Screenshot of a chat thread about spontaneous substitutions.",
+              "Calendar entry for a team meeting without account reference.",
+              "General org chart slide without access status."
+            ]
+          }
+        ],
+        [
+          "Document repository project folders",
+          {
+            "key": "focus_row_2",
+            "label": "Document repository / focus",
+            "expected": "Check former project accounts, expired partner access and temporary substitutions against the current project status.",
+            "inputType": "select",
+            "placeholder": "Select focus",
+            "options": [
+              "Check former project accounts, expired partner access and temporary substitutions against the current project status.",
+              "Only compare the used storage size of the folders.",
+              "Review only the file names from the last week.",
+              "Standardize the folder color of the most important projects."
+            ]
+          },
+          {
+            "key": "proof_row_2",
+            "label": "Document repository / evidence",
+            "expected": "Folder permission list matched to project staffing with marked legacy accounts.",
+            "inputType": "select",
+            "placeholder": "Select evidence",
+            "options": [
+              "Folder permission list matched to project staffing with marked legacy accounts.",
+              "Only a file overview sorted by date.",
+              "A photo of the whiteboard from the last project meeting.",
+              "A general list of all open tasks without folder reference."
+            ]
+          }
+        ],
+        [
+          "Admin access document gateway",
+          {
+            "key": "focus_row_3",
+            "label": "Gateway / focus",
+            "expected": "Elevated rights must exist only with person binding, approval and time limitation.",
+            "inputType": "select",
+            "placeholder": "Select focus",
+            "options": [
+              "Elevated rights must exist only with person binding, approval and time limitation.",
+              "It is enough if the accounts are still technically functional.",
+              "Most important is whether the last maintenance seemed successful.",
+              "The number of all administrators should remain constant over several months."
+            ]
+          },
+          {
+            "key": "proof_row_3",
+            "label": "Gateway / evidence",
+            "expected": "Approval document or ticket with account name, purpose, time limit and technical implementation.",
+            "inputType": "select",
+            "placeholder": "Select evidence",
+            "options": [
+              "Approval document or ticket with account name, purpose, time limit and technical implementation.",
+              "Short note that the partner has worked with the system for a long time.",
+              "Screenshot of the gateway start page.",
+              "General maintenance planning without reference to specific accounts."
+            ]
+          }
+        ]
+      ],
+      "feedback": {
+        "correct": "Review focus and first evidence were matched consistently per area.",
+        "wrong": "Check which focus actually clarifies permissions and which evidence is more than context or habit."
+      },
+      "progressLinks": [
+        "qus2_berechtigungsreview_und_scope",
+        "qus2_rollenrezertifizierung_und_ausnahmen"
+      ]
+    },
+    {
+      "id": "q04",
+      "type": "match_pairs",
+      "title": "Responsibilities in the review",
+      "prompt": "Which role takes which initial responsibility in the access review?",
+      "layout": "table",
+      "columns": [
+        "Role",
+        "Initial responsibility"
+      ],
+      "pairs": [
+        {
+          "key": "role_1",
+          "left": "Support team lead",
+          "right": "Confirm current domain need and required standard roles per person"
+        },
+        {
+          "key": "role_2",
+          "left": "IAM operations",
+          "right": "Prepare account and role exports and implement revocation or downgrades technically"
+        },
+        {
+          "key": "role_3",
+          "left": "Information security",
+          "right": "Assess special rights, partner access and shared accounts with high risk"
+        },
+        {
+          "key": "role_4",
+          "left": "Quality assurance",
+          "right": "Consolidate decisions, exceptions, residual points and evidence storage in the closure"
+        }
+      ],
+      "options": [
+        "Confirm current domain need and required standard roles per person",
+        "Prepare account and role exports and implement revocation or downgrades technically",
+        "Assess special rights, partner access and shared accounts with high risk",
+        "Consolidate decisions, exceptions, residual points and evidence storage in the closure"
+      ],
+      "feedback": {
+        "correct": "The roles were matched with their initial responsibilities.",
+        "wrong": "Focus on who confirms need, who implements technically, who assesses risk and who consolidates the closure."
+      },
+      "progressLinks": [
+        "qus2_rollenrezertifizierung_und_ausnahmen"
+      ]
+    },
+    {
+      "id": "q05",
+      "type": "number",
+      "title": "Immediate actions in numbers",
+      "prompt": "In the service portal, 41 active accounts are reviewed. 28 remain unchanged, 4 remain as temporary substitutions with an end date and 3 still require domain clarification. How many accounts can be revoked or downgraded directly in the review?",
+      "expected": 6,
+      "toleranceAbs": 0,
+      "showExpectedFormula": "41 - 28 - 4 - 3 = 6 accounts",
+      "feedback": {
+        "correct": "The directly actionable amount was calculated correctly.",
+        "wrong": "Please subtract confirmed, temporarily continued and still open cases from all active accounts."
+      },
+      "progressLinks": [
+        "qus2_rechteentzug_und_nachweise"
+      ]
+    },
+    {
+      "id": "f03",
+      "type": "followup_divider",
+      "title": "Prepare closure for audit and team leadership",
+      "from": "revision@secubridge-service.example",
+      "to": "zugriffsreview@ausbildungsbetrieb.example",
+      "subject": "Complete access review reliably by Friday",
+      "date": "2026-03-26",
+      "body": "Hello everyone,\n\nfor the audit I do not need a large rights export, but a readable closure on which accounts are confirmed, revoked, downgraded or temporarily continued as exceptions. Please also make visible which open points remain and when these will be reviewed again.\n\nKind regards\nAudit"
+    },
+    {
+      "id": "q06",
+      "type": "multi_select",
+      "title": "Closure documents for audit",
+      "prompt": "Which documents or results must be available after the access review so audit and team leadership can understand the status?",
+      "options": [
+        {
+          "text": "A review list per account or access with decision and short justification.",
+          "correct": true,
+          "rationale": "Without documented decisions, the status is not traceable later."
+        },
+        {
+          "text": "Evidence of which revocations or downgrades were already implemented technically.",
+          "correct": true,
+          "rationale": "Closure must show implementation, not only intent."
+        },
+        {
+          "text": "An exceptions list with reason, responsible person and end date or follow-up review.",
+          "correct": true,
+          "rationale": "Temporary deviations must not silently slip into normal operations."
+        },
+        {
+          "text": "Open residual points with responsible persons and the next review date.",
+          "correct": true,
+          "rationale": "Open cases must remain visible for audit and leadership."
+        },
+        {
+          "text": "A full screenshot of all user lists without any evaluation.",
+          "correct": false,
+          "rationale": "Without decision, implementation and justification the screenshot lacks meaning."
+        },
+        {
+          "text": "A short email stating that access now looks clean overall.",
+          "correct": false,
+          "rationale": "An impression does not replace a reliable review closure."
+        }
+      ],
+      "feedback": {
+        "correct": "The required closure documents were fully identified.",
+        "wrong": "Focus on decisions, technical implementation, exceptions and open residual points rather than raw lists or impressions."
+      },
+      "progressLinks": [
+        "qus2_rollenrezertifizierung_und_ausnahmen",
+        "qus2_rechteentzug_und_nachweise"
+      ]
+    },
+    {
+      "id": "q07",
+      "type": "ordering",
+      "title": "Clean review sequence",
+      "prompt": "Put the steps in a sensible order so the access review can be closed reliably.",
+      "items": [
+        "Collect affected systems, account types and reference lists for the review.",
+        "Review flagged accounts, role changes, partner access and exceptions from a domain perspective.",
+        "Decide per account on revocation, downgrade, confirmation or temporary continuation.",
+        "Verify technical implementation and evidence storage.",
+        "Release the closure with residual points and follow-up review for audit and team leadership."
+      ],
+      "correctOrder": [
+        "Collect affected systems, account types and reference lists for the review.",
+        "Review flagged accounts, role changes, partner access and exceptions from a domain perspective.",
+        "Decide per account on revocation, downgrade, confirmation or temporary continuation.",
+        "Verify technical implementation and evidence storage.",
+        "Release the closure with residual points and follow-up review for audit and team leadership."
+      ],
+      "feedback": {
+        "correct": "The order leads cleanly from scope to audit-ready closure.",
+        "wrong": "First scope and review cases, then decision per account, then implementation and only then the closure."
+      },
+      "progressLinks": [
+        "qus2_berechtigungsreview_und_scope",
+        "qus2_rollenrezertifizierung_und_ausnahmen",
+        "qus2_rechteentzug_und_nachweise"
+      ]
+    }
+  ]
+}

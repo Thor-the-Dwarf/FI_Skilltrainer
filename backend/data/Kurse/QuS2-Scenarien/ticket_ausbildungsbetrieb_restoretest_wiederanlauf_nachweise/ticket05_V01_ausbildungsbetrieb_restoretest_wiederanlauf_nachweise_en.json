@@ -1,0 +1,393 @@
+{
+  "scenario": {
+    "company": "SecuBridge Service GmbH",
+    "scale": "IT service provider for home office, municipal workplaces and medical practice environments, 95 employees",
+    "context": "A planned restore test is due for the citizen portal because backups show green jobs, but the last documented recovery test is several months old.",
+    "mission": "Define restore scope, priorities, dependencies, success criteria and evidence for the recovery test.",
+    "source": {
+      "kind": "Internal recovery and evidence request",
+      "reference": "Restore test citizen portal, 2026-03-29",
+      "note": "Based on productive backups for scheduling and document data, an outdated record of the last restore test and the requirement to prove recovery in a test environment."
+    },
+    "station": {
+      "id": "QUS2-ST-05",
+      "department": "Operations, quality assurance and domain coordination",
+      "profile": "Restore test, recovery, dependencies, success criteria and completion evidence",
+      "constraints": [
+        "Restore test and production operations must remain strictly separated",
+        "A successful recovery requires technical and domain evidence, not just a green backup status",
+        "Components, sequence and residual points must be documented clearly for the Monday meeting"
+      ]
+    },
+    "customerRequest": {
+      "from": "betrieb@secubridge-service.example",
+      "to": "wiederanlauf@ausbildungsbetrieb.example",
+      "subject": "Prepare restore test for scheduling and document data",
+      "date": "2026-03-26",
+      "body": "Good day,\n\nbefore the next internal audit we need a reliable restore test for the citizen portal. Backup jobs run without visible errors, but the last documented recovery test for scheduling and document data is clearly older than our current operational baseline.\n\nThe test must restore at least the scheduling database, the upload storage and the permissions configuration in a separate environment and verify them from a domain perspective. Please prepare test scope, priorities, success criteria, roles and evidence for this.\n\nKind regards\nOperations"
+    }
+  },
+  "questions": [
+    {
+      "id": "ctx01",
+      "type": "context_card",
+      "title": "Framework for the restore test",
+      "contentBlocks": [
+        {
+          "type": "text",
+          "text": "SecuBridge runs multiple components for the citizen portal that must work together in recovery. A green backup job alone is not enough if it was never verified that data, roles and document access truly function in a restore case."
+        },
+        {
+          "type": "table",
+          "columns": [
+            "Component",
+            "Current status"
+          ],
+          "rows": [
+            [
+              "Scheduling database",
+              "Nightly database backup"
+            ],
+            [
+              "Upload storage",
+              "Regular snapshot for document copies"
+            ],
+            [
+              "Permissions configuration",
+              "Daily export of role assignments"
+            ],
+            [
+              "Last documented test",
+              "Several months old"
+            ],
+            [
+              "Expectation for Monday",
+              "Reliable evidence of restore scope, test finding and residual point"
+            ]
+          ]
+        },
+        {
+          "type": "text",
+          "text": "The focus now is on the test environment, restore sequence, domain sampling and a completion that can be proven rather than merely claimed."
+        }
+      ]
+    },
+    {
+      "id": "q01",
+      "type": "multi_select",
+      "title": "Prepare the restore test reliably",
+      "prompt": "Which points must be clearly defined before the restore test? Several points can be mandatory.",
+      "options": [
+        {
+          "text": "Which backup states are used for the individual components.",
+          "correct": true,
+          "rationale": "Without a clear state, the test cannot be reproduced later."
+        },
+        {
+          "text": "In which separate environment the recovery is performed.",
+          "correct": true,
+          "rationale": "Restore test and production must not be mixed."
+        },
+        {
+          "text": "Which domain samples will show success for appointments, documents and permissions.",
+          "correct": true,
+          "rationale": "A technical restore without domain evidence is incomplete."
+        },
+        {
+          "text": "Who is responsible for operations, technology and domain view during the test.",
+          "correct": true,
+          "rationale": "Roles must be clear before the test."
+        },
+        {
+          "text": "That the backup jobs are marked green in the overview without further checks.",
+          "correct": false,
+          "rationale": "A job status does not replace recovery or domain validation."
+        },
+        {
+          "text": "Use the production environment briefly for the restore if needed.",
+          "correct": false,
+          "rationale": "That would mix test and production in an unsafe way."
+        }
+      ],
+      "feedback": {
+        "correct": "The key prerequisites for the restore test were correctly identified.",
+        "wrong": "Focus on backup state, test environment, domain sampling and clear roles instead of only backup status."
+      },
+      "progressLinks": [
+        "qus2_restoreumfang_priorisieren",
+        "qus2_wiederanlauf_und_abhangigkeiten"
+      ]
+    },
+    {
+      "id": "q02",
+      "type": "single_choice",
+      "title": "Identify a reliable success criterion",
+      "prompt": "Which evidence best shows that the restore test was truly successful?",
+      "options": [
+        {
+          "text": "The files were technically restored; further checks can follow later.",
+          "rationale": "Without domain and role checks, the test remains too shallow."
+        },
+        {
+          "text": "Database, uploads and permissions configuration were restored in the test environment, a domain sample is documented and the completion finding lists residual points.",
+          "rationale": "This combination connects technology, domain validation and traceable closure."
+        },
+        {
+          "text": "Operations feel that the backups are probably sufficient after the test.",
+          "rationale": "A feeling does not replace reproducible evidence."
+        },
+        {
+          "text": "There is a screenshot of the backup console with the current date.",
+          "rationale": "That proves only a job status, not recovery."
+        }
+      ],
+      "correctIndex": 1,
+      "feedback": {
+        "correct": "The most reliable success criterion was correctly identified.",
+        "wrong": "Focus on the difference between backup status and a truly tested recovery."
+      },
+      "progressLinks": [
+        "qus2_restore_nachweise_und_freigabe"
+      ]
+    },
+    {
+      "id": "f02",
+      "type": "followup_divider",
+      "title": "Lock in components, sequence and evidence",
+      "from": "qualitaetssicherung@secubridge-service.example",
+      "to": "wiederanlauf@ausbildungsbetrieb.example",
+      "subject": "Align restore scope and order for the test",
+      "date": "2026-03-26",
+      "body": "Hello everyone,\n\nbefore I approve the test, I need a status on which components are restored in which order, which backup state applies for each and how we will recognize success later. Please keep technology, domain view and completion evidence together in one test picture.\n\nKind regards\nQuality assurance"
+    },
+    {
+      "id": "q03",
+      "type": "table_fill",
+      "title": "Restore source and first evidence",
+      "prompt": "For each component, add the most likely restore source and the first appropriate success evidence.",
+      "columns": [
+        "Component",
+        "Restore source",
+        "First success evidence"
+      ],
+      "rows": [
+        [
+          "Scheduling database",
+          {
+            "key": "source_row_1",
+            "label": "Scheduling database / source",
+            "expected": "Nightly database backup for the approved state.",
+            "inputType": "select",
+            "placeholder": "Select source",
+            "options": [
+              "Nightly database backup for the approved state.",
+              "Any export from a presentation file.",
+              "Only a note that the data existed sometime in the past.",
+              "A manually rebuilt sample table without reference to the backup state."
+            ]
+          },
+          {
+            "key": "proof_row_1",
+            "label": "Scheduling database / evidence",
+            "expected": "Sample check of restored appointments and status values in the test environment.",
+            "inputType": "select",
+            "placeholder": "Select evidence",
+            "options": [
+              "Sample check of restored appointments and status values in the test environment.",
+              "Only the statement that the database instance could be started.",
+              "A screenshot of the team calendar without system reference.",
+              "A list of open questions without test reference."
+            ]
+          }
+        ],
+        [
+          "Upload storage",
+          {
+            "key": "source_row_2",
+            "label": "Upload storage / source",
+            "expected": "Snapshot of the upload storage for the approved test state.",
+            "inputType": "select",
+            "placeholder": "Select source",
+            "options": [
+              "Snapshot of the upload storage for the approved test state.",
+              "Any local copies from private working folders.",
+              "Only the list of file names without actual files.",
+              "A messenger attachment from a previous support case."
+            ]
+          },
+          {
+            "key": "proof_row_2",
+            "label": "Upload storage / evidence",
+            "expected": "Sample check that selected documents open and can be assigned in the test environment.",
+            "inputType": "select",
+            "placeholder": "Select evidence",
+            "options": [
+              "Sample check that selected documents open and can be assigned in the test environment.",
+              "The folder is visible in size only.",
+              "A short chat note from operations saying uploads used to work.",
+              "Only the count difference between two folders."
+            ]
+          }
+        ],
+        [
+          "Permissions configuration",
+          {
+            "key": "source_row_3",
+            "label": "Permissions configuration / source",
+            "expected": "Export of role assignments for the approved state.",
+            "inputType": "select",
+            "placeholder": "Select source",
+            "options": [
+              "Export of role assignments for the approved state.",
+              "A verbal memory of how permissions used to be set.",
+              "A general org chart without system roles.",
+              "Any values from previous years without reference to current operations."
+            ]
+          },
+          {
+            "key": "proof_row_3",
+            "label": "Permissions configuration / evidence",
+            "expected": "A test account with a documented role can use the approved functions in the test environment.",
+            "inputType": "select",
+            "placeholder": "Select evidence",
+            "options": [
+              "A test account with a documented role can use the approved functions in the test environment.",
+              "Only the export file exists in the project folder.",
+              "A handwritten list of former contacts.",
+              "The ticket was marked internally as important."
+            ]
+          }
+        ]
+      ],
+      "feedback": {
+        "correct": "Restore source and first success evidence were matched consistently.",
+        "wrong": "Check which source truly fits the test state and which evidence is more than a technical heartbeat."
+      },
+      "progressLinks": [
+        "qus2_restoreumfang_priorisieren",
+        "qus2_restore_nachweise_und_freigabe"
+      ]
+    },
+    {
+      "id": "q04",
+      "type": "match_pairs",
+      "title": "Responsibilities in the recovery test",
+      "prompt": "Which role takes which initial task in the restore test?",
+      "layout": "table",
+      "columns": [
+        "Role",
+        "Initial task"
+      ],
+      "pairs": [
+        {
+          "key": "role_1",
+          "left": "Platform operations",
+          "right": "Provide backup states and start the technical restore in the test environment"
+        },
+        {
+          "key": "role_2",
+          "left": "Domain coordination citizen portal",
+          "right": "Support domain sampling for appointments and document access"
+        },
+        {
+          "key": "role_3",
+          "left": "Quality assurance",
+          "right": "Consolidate success criteria, residual points and completion finding"
+        },
+        {
+          "key": "role_4",
+          "left": "Service management",
+          "right": "Coordinate test window, communication and approval status"
+        }
+      ],
+      "options": [
+        "Provide backup states and start the technical restore in the test environment",
+        "Support domain sampling for appointments and document access",
+        "Consolidate success criteria, residual points and completion finding",
+        "Coordinate test window, communication and approval status"
+      ],
+      "feedback": {
+        "correct": "The roles were matched with their initial tasks.",
+        "wrong": "Focus on who owns technology, domain view, evidence and test coordination first."
+      },
+      "progressLinks": [
+        "qus2_wiederanlauf_und_abhangigkeiten"
+      ]
+    },
+    {
+      "id": "q05",
+      "type": "number",
+      "title": "Reserve in the test window",
+      "prompt": "The test window is 180 minutes. 45 minutes go to the scheduling database, 35 minutes to upload storage, 20 minutes to permissions configuration and 30 minutes to domain sampling. How many minutes of reserve remain?",
+      "expected": 50,
+      "toleranceAbs": 0,
+      "showExpectedFormula": "180 - 45 - 35 - 20 - 30 = 50 minutes",
+      "feedback": {
+        "correct": "The reserve in the test window was calculated correctly.",
+        "wrong": "Please subtract all planned restore and validation times from the total window."
+      },
+      "progressLinks": [
+        "qus2_wiederanlauf_und_abhangigkeiten"
+      ]
+    },
+    {
+      "id": "f03",
+      "type": "followup_divider",
+      "title": "Prepare the completion status for Monday",
+      "from": "revision@secubridge-service.example",
+      "to": "wiederanlauf@ausbildungsbetrieb.example",
+      "subject": "Deliver evidence for the restore test by Monday",
+      "date": "2026-03-26",
+      "body": "Hello everyone,\n\nfor Monday I do not need general reassurance, but clear evidence of which components were restored, which domain samples succeeded and which residual points remain. Please also make visible if the recovery worked technically but something is still open from a domain perspective.\n\nKind regards\nAudit"
+    },
+    {
+      "id": "q06",
+      "type": "short_text",
+      "title": "Short note on restore status",
+      "prompt": "Create a short note (4-6 sentences) with test scope, success criterion, open risk and next step.",
+      "minChars": 170,
+      "requiredKeywords": [
+        "success criterion",
+        "risk",
+        "next step"
+      ],
+      "expectedOutline": "Briefly explain what was tested, how success is measured, which residual point remains and how to proceed.",
+      "feedback": {
+        "correct": "The restore note is concise, reliable and actionable.",
+        "wrong": "Please separate test scope, success criterion, open risk and next step more clearly."
+      },
+      "progressLinks": [
+        "qus2_restore_nachweise_und_freigabe"
+      ]
+    },
+    {
+      "id": "q07",
+      "type": "ordering",
+      "title": "Build recovery cleanly",
+      "prompt": "Put the steps in a sensible order so the restore test becomes reliable.",
+      "items": [
+        "Finalize test environment, backup state and scope.",
+        "Order components and dependencies for recovery.",
+        "Perform the technical restore and secure log status.",
+        "Run domain sampling for appointments, documents and permissions.",
+        "Document completion finding, residual points and follow-up review."
+      ],
+      "correctOrder": [
+        "Finalize test environment, backup state and scope.",
+        "Order components and dependencies for recovery.",
+        "Perform the technical restore and secure log status.",
+        "Run domain sampling for appointments, documents and permissions.",
+        "Document completion finding, residual points and follow-up review."
+      ],
+      "feedback": {
+        "correct": "The order leads cleanly from test preparation to reliable completion.",
+        "wrong": "First scope and order, then technical restore, then domain sampling and only at the end the completion."
+      },
+      "progressLinks": [
+        "qus2_restoreumfang_priorisieren",
+        "qus2_wiederanlauf_und_abhangigkeiten",
+        "qus2_restore_nachweise_und_freigabe"
+      ]
+    }
+  ]
+}

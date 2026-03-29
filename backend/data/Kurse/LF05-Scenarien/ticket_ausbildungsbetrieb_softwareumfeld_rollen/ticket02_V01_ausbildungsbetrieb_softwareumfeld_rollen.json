@@ -1,0 +1,159 @@
+{
+  "scenario": {
+    "company": "Ausbildungsbetrieb IT-Service",
+    "scale": "Mittelstand, 160 Mitarbeitende",
+    "context": "Station 2 des Tageslaufs: Softwareumfeld und Rollen analysieren.",
+    "mission": "Sie ordnen Anpassungsmöglichkeiten, Projektrollen und ein kleines Vorhaben im Softwareumfeld ein.",
+    "station": {
+      "id": "LF05-ST-02",
+      "department": "Fachbereich und Entwicklung",
+      "profile": "Bestehende Anwendung, kleine Erweiterung, Rollen und Zustimmungswege",
+      "constraints": [
+        "Konfiguration und Entwicklung trennen",
+        "Rollen klar benennen",
+        "Steuerbarkeit im kleinen Projekt sichern"
+      ]
+    },
+    "customerRequest": {
+      "from": "dev.teamlead@ausbildungsbetrieb.example",
+      "to": "dev.team@ausbildungsbetrieb.example",
+      "subject": "Station 02: Softwareumfeld und Rollen sauber abgrenzen",
+      "date": "2026-03-13",
+      "body": "Bitte bereiten Sie einen kompakten Überblick zu Rollen, Anpassungsmöglichkeiten und dem Zuschnitt eines kleinen Entwicklungsvorhabens vor."
+    }
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "type": "single_choice",
+      "title": "Konfiguration oder Entwicklung",
+      "prompt": "Welche Änderung ist am ehesten eine Entwicklungsaufgabe?",
+      "options": [
+        {
+          "text": "Neue Validierungslogik für Importdaten programmieren",
+          "rationale": "Hier wird fachliche Logik neu implementiert."
+        },
+        {
+          "text": "Ein vorhandenes Filterprofil aktivieren",
+          "rationale": "Das ist typischerweise Konfiguration."
+        },
+        {
+          "text": "Nur die Reihenfolge von Spalten ändern",
+          "rationale": "Das ist eher eine Oberflächenanpassung."
+        }
+      ],
+      "correctIndex": 0,
+      "feedback": {
+        "correct": "Richtig: Neue Logik ist eine Entwicklungsleistung.",
+        "wrong": "Nicht passend: Bitte Konfiguration und echte Entwicklung sauber trennen."
+      },
+      "progressLinks": [
+        "lf05_softwareumfeld_rollen"
+      ]
+    },
+    {
+      "id": "q2",
+      "type": "multi_select",
+      "title": "Rollen im Vorhaben",
+      "prompt": "Welche Aussagen zu Rollen und Zusammenarbeit treffen zu? (Mehrfachauswahl)",
+      "options": [
+        {
+          "text": "Der Fachbereich beschreibt Nutzen und fachliche Anforderungen",
+          "correct": true,
+          "rationale": "Er kennt Zielbild und Einsatzkontext."
+        },
+        {
+          "text": "Die Entwicklung plant Umsetzung und technische Testbarkeit",
+          "correct": true,
+          "rationale": "Das ist ihre Kernaufgabe."
+        },
+        {
+          "text": "Der Betrieb denkt Übergabe und Nutzung im Alltag mit",
+          "correct": true,
+          "rationale": "Das verbessert Einführung und Wartbarkeit."
+        },
+        {
+          "text": "Rollen müssen nicht dokumentiert werden",
+          "correct": false,
+          "rationale": "Ohne Klarheit sinkt die Steuerbarkeit."
+        },
+        {
+          "text": "Eine Person sollte alles ohne Abstimmung entscheiden",
+          "correct": false,
+          "rationale": "Das erhöht Missverständnisse und Risiko."
+        }
+      ],
+      "feedback": {
+        "correct": "Richtig: Sie ordnen Fachbereich, Entwicklung und Betrieb sauber ein.",
+        "wrong": "Teilweise falsch: Bitte Rollen und Abstimmungspflicht klarer gewichten."
+      },
+      "progressLinks": [
+        "lf05_softwareumfeld_rollen",
+        "lf05_projekt_prozessdenken"
+      ]
+    },
+    {
+      "id": "q3",
+      "type": "ordering",
+      "title": "Kleines Vorhaben aufsetzen",
+      "prompt": "Ordnen Sie die Schritte sinnvoll.",
+      "items": [
+        "Rückmeldung und Übergabe organisieren",
+        "Zielbild und Auftrag klären",
+        "Arbeitspakete und Abhängigkeiten zuschneiden",
+        "Test- und Abnahmesicht vorbereiten",
+        "Umsetzung durchführen"
+      ],
+      "correctOrder": [
+        "Zielbild und Auftrag klären",
+        "Arbeitspakete und Abhängigkeiten zuschneiden",
+        "Test- und Abnahmesicht vorbereiten",
+        "Umsetzung durchführen",
+        "Rückmeldung und Übergabe organisieren"
+      ],
+      "feedback": {
+        "correct": "Richtig: So bleibt das Vorhaben klein, klar und steuerbar.",
+        "wrong": "Nicht optimal: Bitte erst Ziel und Zuschnitt, dann Testsicht, Umsetzung und Übergabe."
+      },
+      "progressLinks": [
+        "lf05_projekt_prozessdenken"
+      ]
+    },
+    {
+      "id": "q4",
+      "type": "number",
+      "title": "Gesamtaufwand aus drei Paketen",
+      "prompt": "Arbeitspakete dauern 4 Stunden, 3 Stunden und 5 Stunden. Wie hoch ist der Gesamtaufwand?",
+      "expected": 12,
+      "toleranceAbs": 0,
+      "showExpectedFormula": "4 + 3 + 5 = 12 Stunden",
+      "feedback": {
+        "correct": "Richtig gerechnet.",
+        "wrong": "Bitte die Aufwände addieren."
+      },
+      "progressLinks": [
+        "lf05_projekt_prozessdenken"
+      ]
+    },
+    {
+      "id": "q5",
+      "type": "short_text",
+      "title": "Softwareumfeld kurz einordnen",
+      "prompt": "Erklären Sie in 4-6 Sätzen, wie Fachbereich, Entwicklung und Betrieb bei einer kleinen Softwareanpassung zusammenspielen.",
+      "minChars": 150,
+      "requiredKeywords": [
+        "fachbereich",
+        "entwicklung",
+        "betrieb"
+      ],
+      "expectedOutline": "Rollen kurz erklären und ihre Zusammenarbeit im kleinen Vorhaben darstellen.",
+      "feedback": {
+        "correct": "Richtig: Der Rollenmix ist praxisnah und verständlich beschrieben.",
+        "wrong": "Bitte Fachbereich, Entwicklung und Betrieb klarer voneinander abgrenzen und verknüpfen."
+      },
+      "progressLinks": [
+        "lf05_softwareumfeld_rollen"
+      ]
+    }
+  ]
+}

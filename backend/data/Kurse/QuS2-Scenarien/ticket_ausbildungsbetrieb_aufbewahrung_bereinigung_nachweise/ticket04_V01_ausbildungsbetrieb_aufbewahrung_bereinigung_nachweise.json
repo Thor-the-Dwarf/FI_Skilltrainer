@@ -1,0 +1,418 @@
+{
+  "scenario": {
+    "company": "SecuBridge Service GmbH",
+    "scale": "IT-Dienstleister für Homeoffice, kommunale Arbeitsplätze und Praxisumgebungen, 95 Mitarbeitende",
+    "context": "Im Termin- und Uploadbereich des Bürgerbüros liegen Alt-Daten aus Exportordnern, Upload-Cache und Shared-Mailbox, die unterschiedlich behandelt werden müssen.",
+    "mission": "Aufbewahrung, Bereinigung, Ausnahmen und Nachweise für die Alt-Daten sauber ordnen.",
+    "source": {
+      "kind": "Interne Bereinigungs- und Aufbewahrungsprüfung",
+      "reference": "Datenbereinigung Termin- und Uploadbereich, 2026-04-02",
+      "note": "Grundlage sind Alt-Daten aus mehreren Betriebsquellen, interne Fristen für Cache und Arbeitskopien sowie offene Fälle, die einer pauschalen Bereinigung entgegenstehen können."
+    },
+    "station": {
+      "id": "QUS2-ST-04",
+      "department": "Datenschutzkoordination und Betriebsdokumentation",
+      "profile": "Aufbewahrung, Löschentscheidung, Ausnahmen, Nachweise und Wiedervorlage",
+      "constraints": [
+        "Aktive Vorgange, Nachweisbedarf und rein technische Arbeitskopien müssen sauber getrennt werden",
+        "Bereinigung darf nur dort pauschal laufen, wo Datenart, Ausnahmegrund und Verantwortlichkeit klar sind",
+        "Der Endstand muss über Protokoll, Ausnahmenliste und Wiedervorlage nachvollziehbar bleiben"
+      ]
+    },
+    "customerRequest": {
+      "from": "buergerbuero@secubridge-service.example",
+      "to": "datenkoordination@ausbildungsbetrieb.example",
+      "subject": "Alt-Daten aus Termin- und Uploadbereich bereinigen",
+      "date": "2026-04-02",
+      "body": "Guten Tag,\n\nim Pilotbetrieb und in den ersten Produktivwochen haben sich mehrere Alt-Bestände angesammelt: Tagesexporte für Terminabgleiche, temporäre Upload-Kopien, alte Bestätigungen in der Shared-Mailbox und Screenshots aus Supportfällen.\n\nEin Teil davon wird noch für offene Rückfragen oder dokumentierte Nachweise gebraucht, anderes sollte nicht länger im Betrieb liegen. Wir brauchen bis Freitag einen klaren Stand dazu, was standardmässig bereinigt wird, welche Ausnahmen bleiben dürfen und wie der Nachweis für den Bereinigungsstand aussieht.\n\nViele Grüsse\nBürgerbüro"
+    }
+  },
+  "questions": [
+    {
+      "id": "ctx01",
+      "type": "context_card",
+      "title": "Alt-Bestände im Überblick",
+      "contentBlocks": [
+        {
+          "type": "text",
+          "text": "SecuBridge betreut für das Bürgerbüro mehrere Betriebsquellen rund um Termin- und Dokumentenprozesse. Nach Pilot und Anlaufphase liegen dort noch Daten aus Exporten, Uploads, Mailboxen und Supportfällen, die nicht alle denselben Zweck und dieselbe Restlaufzeit haben."
+        },
+        {
+          "type": "table",
+          "columns": [
+            "Datenquelle",
+            "Aktueller Befund"
+          ],
+          "rows": [
+            [
+              "Exportordner",
+              "Tagesexporte für Terminabgleiche, teils älter als 30 Tage"
+            ],
+            [
+              "Upload-Cache",
+              "temporäre Dokumentkopien, teils älter als 14 Tage"
+            ],
+            [
+              "Shared-Mailbox",
+              "Bestätigungen und Rückfragen, teils älter als 180 Tage"
+            ],
+            [
+              "Support-Screenshots",
+              "Anhänge aus Störungsfällen, nicht immer mit Ticketreferenz"
+            ],
+            [
+              "Offene Vorgange",
+              "einzelne Rückfragen und Widersprüche laufen noch"
+            ]
+          ]
+        },
+        {
+          "type": "text",
+          "text": "Entscheidend ist jetzt nicht eine schnelle Pauschallösung, sondern eine Trennung nach Datenart, Ausnahmegrund und Nachweisbedarf. Erst danach kann technisch sauber bereinigt werden."
+        }
+      ]
+    },
+    {
+      "id": "q01",
+      "type": "multi_select",
+      "title": "Bereinigungsfall zuerst sauber trennen",
+      "prompt": "Welche Unterscheidungen müssen zuerst sauber getroffen werden, bevor Daten gelöscht, befristet behalten oder übernommen werden?",
+      "options": [
+        {
+          "text": "Ob ein Datensatz noch zu einem offenen oder aktiven Vorgang gehört.",
+          "correct": true,
+          "rationale": "Offene Fälle können einer Standardbereinigung entgegenstehen."
+        },
+        {
+          "text": "Ob es sich um Fachdaten oder nur um technische Arbeits- und Cachekopien handelt.",
+          "correct": true,
+          "rationale": "Beide Gruppen haben oft unterschiedliche Aufbewahrungs- und Bereinigungslogiken."
+        },
+        {
+          "text": "Ob ein dokumentierter Ausnahmegrund oder ein offener Nachweisbedarf vorliegt.",
+          "correct": true,
+          "rationale": "Genau daran hängen Wiedervorlagen und befristete Ausnahmen."
+        },
+        {
+          "text": "Ob die Datenquelle gerade viel Speicherplatz belegt.",
+          "correct": false,
+          "rationale": "Speicherplatz allein ist kein tragfähiger Ersatz für eine saubere Bereinigungsentscheidung."
+        },
+        {
+          "text": "Ob sich das Team bei älteren Daten spontan auf eine Komplettlöschung einigen kann.",
+          "correct": false,
+          "rationale": "Ohne Datenart, Ausnahmegrund und Nachweis bleibt eine Komplettlöschung riskant."
+        },
+        {
+          "text": "Ob Inhalte als dokumentationspflichtige Nachweise gebraucht werden oder nur als Arbeitskopie entstanden sind.",
+          "correct": true,
+          "rationale": "Nachweis und reine Arbeitskopie dürfen nicht gleich behandelt werden."
+        }
+      ],
+      "feedback": {
+        "correct": "Die tragenden Unterscheidungen für den Bereinigungsfall wurden korrekt erkannt.",
+        "wrong": "Achten Sie auf offene Vorgange, Datenart, Ausnahmegründe und Nachweisbedarf statt auf rein praktische Abkürzungen."
+      },
+      "progressLinks": [
+        "qus2_aufbewahrung_und_ausnahmen"
+      ]
+    },
+    {
+      "id": "q02",
+      "type": "single_choice",
+      "title": "Gefährlichste Fehlentscheidung",
+      "prompt": "Welcher Ansatz wäre in dieser Lage am riskantesten?",
+      "options": [
+        {
+          "text": "Alle Alt-Daten pauschal löschen, bevor offene Fälle, Ausnahmegründe und Nachweise geprüft wurden.",
+          "rationale": "Das kann gleichzeitig Nachweise vernichten und offene Vorgange beschädigen."
+        },
+        {
+          "text": "Zuerst die Datenarten und offenen Ausnahmen in einer Übersicht trennen.",
+          "rationale": "Das ist die nötige Grundlage für spätere Standard- und Ausnahmeentscheidungen."
+        },
+        {
+          "text": "Mit den Bereichen die problematischsten Quellen zuerst priorisieren.",
+          "rationale": "Eine Priorisierung ist sinnvoll, solange Standard und Ausnahmen sauber getrennt bleiben."
+        },
+        {
+          "text": "Den Bereinigungsstand erst nach einer kurzen Stichprobe technisch umsetzen.",
+          "rationale": "Stichproben helfen, wenn die Entscheidungslogik davor sauber steht."
+        }
+      ],
+      "correctIndex": 0,
+      "feedback": {
+        "correct": "Die riskanteste Fehlentscheidung wurde richtig erkannt.",
+        "wrong": "Achten Sie darauf, welche Vorgehensweise offene Fälle und Nachweise gleichzeitig gefährdet."
+      },
+      "progressLinks": [
+        "qus2_aufbewahrung_und_ausnahmen"
+      ]
+    },
+    {
+      "id": "f02",
+      "type": "followup_divider",
+      "title": "Datenarten, Ausnahmen und Standardbehandlung festziehen",
+      "from": "datenschutzkoordination@secubridge-service.example",
+      "to": "datenkoordination@ausbildungsbetrieb.example",
+      "subject": "Matrix zu Datenart, Ausnahme und Nachweis vorbereiten",
+      "date": "2026-04-02",
+      "body": "Hallo zusammen,\n\nbitte zieht den Fall nicht nur über Fristen, sondern über Datenarten und Ausnahmen auf. Ich brauche eine kleine Matrix dazu, was standardmässig bereinigt wird, wo ein offener Vorgang oder Nachweisbedarf dagegensteht und welcher Nachweis den Endstand später trägt.\n\nViele Grüsse\nDatenschutzkoordination"
+    },
+    {
+      "id": "q03",
+      "type": "table_fill",
+      "title": "Standardbehandlung und Ausnahmepunkt prüfen",
+      "prompt": "Ergänzen Sie pro Datenart die naheliegendste Standardbehandlung und den passenden Ausnahmepunkt.",
+      "columns": [
+        "Datenart",
+        "Standardbehandlung",
+        "Ausnahmepunkt"
+      ],
+      "rows": [
+        [
+          "Upload-Cache ohne offenen Vorgang",
+          {
+            "key": "rule_row_1",
+            "label": "Upload-Cache / Standard",
+            "expected": "Nach interner Frist technisch bereinigen und die Bereinigung protokollieren.",
+            "inputType": "select",
+            "placeholder": "Standard wählen",
+            "options": [
+              "Nach interner Frist technisch bereinigen und die Bereinigung protokollieren.",
+              "Unbegrenzt im Cache belassen, solange Speicher verfügbar ist.",
+              "Nur die Dateinamen löschen, den Inhalt aber liegen lassen.",
+              "Ohne Sichtung direkt in private Sicherungsordner kopieren."
+            ]
+          },
+          {
+            "key": "exception_row_1",
+            "label": "Upload-Cache / Ausnahme",
+            "expected": "Besteht noch ein offener Fall- oder Nachweisbezug?",
+            "inputType": "select",
+            "placeholder": "Ausnahme wählen",
+            "options": [
+              "Besteht noch ein offener Fall- oder Nachweisbezug?",
+              "Ist die Datei für das Team gerade leichter auffindbar als im Fachsystem?",
+              "Hat der Ordner im Dateisystem einen besonders langen Namen?",
+              "Wurde die Datei von mehreren Mitarbeitenden gesehen?"
+            ]
+          }
+        ],
+        [
+          "Terminbestätigungen in der Shared-Mailbox",
+          {
+            "key": "rule_row_2",
+            "label": "Shared-Mailbox / Standard",
+            "expected": "Nach interner Frist aus der Mailbox entfernen, wenn der Inhalt anderweitig gesichert oder nicht mehr nötig ist.",
+            "inputType": "select",
+            "placeholder": "Standard wählen",
+            "options": [
+              "Nach interner Frist aus der Mailbox entfernen, wenn der Inhalt anderweitig gesichert oder nicht mehr nötig ist.",
+              "Alle Nachrichten vorsichtshalber dauerhaft in der Mailbox behalten.",
+              "Nur ungelesene Nachrichten bereinigen, gelesene aber unbegrenzt behalten.",
+              "In unstrukturierte Sammelordner verschieben, damit sie formal nicht gelöscht wurden."
+            ]
+          },
+          {
+            "key": "exception_row_2",
+            "label": "Shared-Mailbox / Ausnahme",
+            "expected": "Läuft noch eine Rückfrage, ein Widerspruch oder ein dokumentierter Nachweisbedarf?",
+            "inputType": "select",
+            "placeholder": "Ausnahme wählen",
+            "options": [
+              "Läuft noch eine Rückfrage, ein Widerspruch oder ein dokumentierter Nachweisbedarf?",
+              "Ist die Nachricht inhaltlich besonders interessant für spätere Teamrunden?",
+              "Hat der Absender ausserhalb der Kernzeit geschrieben?",
+              "Gibt es mehrere Antworten in derselben Mailkette?"
+            ]
+          }
+        ],
+        [
+          "Support-Screenshots aus Störungsfällen",
+          {
+            "key": "rule_row_3",
+            "label": "Support-Screenshot / Standard",
+            "expected": "Nur mit Ticketreferenz befristet behalten; ohne Bezug nach Abschluss entfernen.",
+            "inputType": "select",
+            "placeholder": "Standard wählen",
+            "options": [
+              "Nur mit Ticketreferenz befristet behalten; ohne Bezug nach Abschluss entfernen.",
+              "Immer komplett archivieren, weil Screenshots grundsätzlich hilfreich sein können.",
+              "Beliebig in Teamchats verteilen, solange der Fall schon gelöst ist.",
+              "Nur die sichtbaren Fehlerstellen beschneiden und den Rest unbegrenzt lassen."
+            ]
+          },
+          {
+            "key": "exception_row_3",
+            "label": "Support-Screenshot / Ausnahme",
+            "expected": "Ist der Screenshot noch Teil eines offenen Tickets oder eines dokumentierten Befunds?",
+            "inputType": "select",
+            "placeholder": "Ausnahme wählen",
+            "options": [
+              "Ist der Screenshot noch Teil eines offenen Tickets oder eines dokumentierten Befunds?",
+              "Wurde der Screenshot in einer internen Präsentation genutzt?",
+              "Ist das Bild farbig statt schwarz-weiss gespeichert?",
+              "Wurde die Datei in derselben Woche aufgenommen?"
+            ]
+          }
+        ]
+      ],
+      "feedback": {
+        "correct": "Datenarten, Standardbehandlung und Ausnahmepunkte wurden stimmig verbunden.",
+        "wrong": "Prüfen Sie, welche Standardlogik bei Cache, Mailbox und Support-Screenshots trägt und wo offene Fälle oder Nachweise Ausnahmen begründen."
+      },
+      "progressLinks": [
+        "qus2_aufbewahrung_und_ausnahmen",
+        "qus2_loeschentscheidungen_und_nachweise"
+      ]
+    },
+    {
+      "id": "q04",
+      "type": "match_pairs",
+      "title": "Rollen in der Bereinigung",
+      "prompt": "Welche Rolle übernimmt welche erste Verantwortung im Bereinigungsfall?",
+      "layout": "table",
+      "columns": [
+        "Rolle",
+        "erste Verantwortung"
+      ],
+      "pairs": [
+        {
+          "key": "role_1",
+          "left": "Bürgerbüro",
+          "right": "Offene Bürgeranliegen und fachliche Ausnahmen bestätigen"
+        },
+        {
+          "key": "role_2",
+          "left": "Datenschutzkoordination",
+          "right": "Bereinigungslogik, Ausnahmegrenzen und Nachweisrahmen freigeben"
+        },
+        {
+          "key": "role_3",
+          "left": "Plattformbetrieb",
+          "right": "Cache, Ordner oder technische Kopien bereinigen und Protokolle liefern"
+        },
+        {
+          "key": "role_4",
+          "left": "Service Desk",
+          "right": "Mailbox-, Ticket- und Screenshot-Bezüge zusammenziehen"
+        }
+      ],
+      "options": [
+        "Offene Bürgeranliegen und fachliche Ausnahmen bestätigen",
+        "Bereinigungslogik, Ausnahmegrenzen und Nachweisrahmen freigeben",
+        "Cache, Ordner oder technische Kopien bereinigen und Protokolle liefern",
+        "Mailbox-, Ticket- und Screenshot-Bezüge zusammenziehen"
+      ],
+      "feedback": {
+        "correct": "Die Rollen sind mit ihren ersten Verantwortungen stimmig verbunden.",
+        "wrong": "Achten Sie darauf, wer Fachausnahmen bestätigt, wer die Logik freigibt, wer technisch bereinigt und wer die Bezüge aus Ticket und Mailbox zusammenführt."
+      },
+      "progressLinks": [
+        "qus2_aufbewahrung_und_ausnahmen",
+        "qus2_bereinigung_steuern"
+      ]
+    },
+    {
+      "id": "q05",
+      "type": "number",
+      "title": "Standardbereinigung im Upload-Cache",
+      "prompt": "Im Upload-Cache liegen 48 Dateien. 17 gehören noch zu offenen Vorgängen, 9 müssen für dokumentierte Rückfragen vorerst verbleiben. Wie viele Dateien können in der Standardbereinigung entfernt werden?",
+      "expected": 22,
+      "toleranceAbs": 0,
+      "showExpectedFormula": "48 - 17 - 9 = 22 Dateien",
+      "feedback": {
+        "correct": "Die Menge für die Standardbereinigung wurde korrekt berechnet.",
+        "wrong": "Bitte vom Gesamtbestand die offenen Vorgange und die dokumentierten Ausnahmen abziehen."
+      },
+      "progressLinks": [
+        "qus2_bereinigung_steuern"
+      ]
+    },
+    {
+      "id": "f03",
+      "type": "followup_divider",
+      "title": "Nachweise für Freitag zusammenziehen",
+      "from": "betrieb@secubridge-service.example",
+      "to": "datenkoordination@ausbildungsbetrieb.example",
+      "subject": "Nachweise und offene Ausnahmen bis Freitag liefern",
+      "date": "2026-04-02",
+      "body": "Hallo zusammen,\n\nfür Freitag brauche ich einen Stand, der nicht nur sagt, dass Daten gelöscht wurden, sondern auch zeigt, welche Datenarten wie behandelt wurden, welche Ausnahmen offen bleiben und woran wir den neuen Zustand später noch erkennen können. Bitte zieht Löschprotokoll, Ausnahmenliste und Wiedervorlage in einem lesbaren Abschluss zusammen.\n\nViele Grüsse\nBetrieb"
+    },
+    {
+      "id": "q06",
+      "type": "multi_select",
+      "title": "Was am Ende vorliegen muss",
+      "prompt": "Welche Unterlagen oder Ergebnisse brauchen wir nach der Bereinigung, damit der Stand später nachvollziehbar bleibt?",
+      "options": [
+        {
+          "text": "Eine Liste der Datenarten mit Entscheidung und kurzer Begründung",
+          "correct": true,
+          "rationale": "Ohne Kategorien und Entscheidungslogik bleibt der Endstand später nicht lesbar."
+        },
+        {
+          "text": "Ein Lösch- oder Bereinigungsprotokoll mit Datum, Umfang und verantwortlicher Stelle",
+          "correct": true,
+          "rationale": "Damit wird sichtbar, was technisch wirklich umgesetzt wurde."
+        },
+        {
+          "text": "Offene Ausnahmen mit Grund, Verantwortlichen und Wiedervorlage",
+          "correct": true,
+          "rationale": "Genau dort entscheidet sich, ob Ausnahmen später unkontrolliert liegenbleiben."
+        },
+        {
+          "text": "Ein Stichproben- oder Systemnachweis, dass Mailbox, Ordner oder Cache im neuen Stand sind",
+          "correct": true,
+          "rationale": "Der Abschluss braucht neben der Liste auch einen sichtbaren technischen Befund."
+        },
+        {
+          "text": "Eine kurze Chat-Nachricht mit dem Hinweis, man habe aufgeräumt",
+          "correct": false,
+          "rationale": "Das signalisiert Tempo, ersetzt aber keinen belastbaren Abschluss."
+        },
+        {
+          "text": "Vorsichtshalber alle Originaldateien noch einmal in privaten Ablagen kopieren",
+          "correct": false,
+          "rationale": "Das würde die Bereinigung unterlaufen und neue Schattenbestände schaffen."
+        }
+      ],
+      "feedback": {
+        "correct": "Die tragenden Abschlussunterlagen für den Bereinigungsstand wurden richtig erkannt.",
+        "wrong": "Achten Sie auf Entscheidungslogik, technisches Protokoll, offene Ausnahmen und einen sichtbaren Zielzustand."
+      },
+      "progressLinks": [
+        "qus2_loeschentscheidungen_und_nachweise",
+        "qus2_bereinigung_steuern"
+      ]
+    },
+    {
+      "id": "q07",
+      "type": "ordering",
+      "title": "Von Alt-Daten zu sauberem Bereinigungsstand",
+      "prompt": "Bringen Sie die Schritte in eine Reihenfolge, mit der aus Alt-Daten ein belastbarer Bereinigungsstand wird.",
+      "items": [
+        "Datenquellen und Kategorien vollständig aufnehmen.",
+        "Offene Fälle, Nachweisbedarf und Ausnahmen markieren.",
+        "Standardbehandlung je Datenart festlegen.",
+        "Bereinigung technisch durchführen und protokollieren.",
+        "Ergebnis, Ausnahmen und Wiedervorlage kommunizieren."
+      ],
+      "correctOrder": [
+        "Datenquellen und Kategorien vollständig aufnehmen.",
+        "Offene Fälle, Nachweisbedarf und Ausnahmen markieren.",
+        "Standardbehandlung je Datenart festlegen.",
+        "Bereinigung technisch durchführen und protokollieren.",
+        "Ergebnis, Ausnahmen und Wiedervorlage kommunizieren."
+      ],
+      "feedback": {
+        "correct": "Die Reihenfolge führt sauber von der Sichtung der Alt-Bestände zum belastbaren Bereinigungsstand.",
+        "wrong": "Erst müssen Quellen, Ausnahmen und Standardlogik stehen, danach die technische Bereinigung und erst zum Schluss der Abschluss mit Wiedervorlage."
+      },
+      "progressLinks": [
+        "qus2_bereinigung_steuern",
+        "qus2_loeschentscheidungen_und_nachweise"
+      ]
+    }
+  ]
+}

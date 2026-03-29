@@ -1,0 +1,159 @@
+{
+  "scenario": {
+    "company": "Training Company IT Service",
+    "scale": "Mid-sized company, 90 employees",
+    "context": "Station 08 of the day flow: Review and reflect on lessons and operational work.",
+    "mission": "You close the day flow with target-vs-actual review, lessons learned and a concrete follow-up plan.",
+    "station": {
+      "id": "LF01-ST-08",
+      "department": "Training and team coordination",
+      "profile": "Reflection, evaluation logic, improvement planning",
+      "constraints": [
+        "keep target-vs-actual assessment traceable",
+        "prioritize improvements",
+        "record next steps as binding"
+      ]
+    },
+    "customerRequest": {
+      "from": "ausbildungsleitung@ausbildungsbetrieb.example",
+      "to": "klasse.fiae@berufsschule.example",
+      "subject": "Station 08: LF01 final reflection",
+      "date": "2026-03-13",
+      "body": "Please create a short reflection to close the day flow: goal achievement, open items, lessons learned and next development steps."
+    }
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "type": "single_choice",
+      "title": "Start target-vs-actual properly",
+      "prompt": "What is the best start for a final reflection?",
+      "options": [
+        {
+          "text": "Only note subjective gut feeling",
+          "rationale": "Not robust enough."
+        },
+        {
+          "text": "Compare goals and achieved results in a structured way",
+          "rationale": "This makes the reflection traceable."
+        },
+        {
+          "text": "List only the most difficult tasks",
+          "rationale": "Missing goal reference."
+        }
+      ],
+      "correctIndex": 1,
+      "feedback": {
+        "correct": "Correct: target-vs-actual comparison is the solid basis.",
+        "wrong": "Not appropriate: reflection needs goal reference and facts."
+      },
+      "progressLinks": [
+        "lf01_reflexion_verbesserung"
+      ]
+    },
+    {
+      "id": "q2",
+      "type": "multi_select",
+      "title": "Derive lessons learned",
+      "prompt": "Which statements help create robust lessons learned? (Multiple selection)",
+      "options": [
+        {
+          "text": "Clearly name cause and effect of a problem",
+          "correct": true,
+          "rationale": "Makes learning reproducible."
+        },
+        {
+          "text": "Assign improvements with owner and date",
+          "correct": true,
+          "rationale": "Increases the chance of implementation."
+        },
+        {
+          "text": "Leave critical points out out of consideration",
+          "correct": false,
+          "rationale": "Prevents real improvement."
+        },
+        {
+          "text": "Document positive patterns for follow-up tasks",
+          "correct": true,
+          "rationale": "Strengthens effective approaches."
+        },
+        {
+          "text": "Capture measures without priorities",
+          "correct": false,
+          "rationale": "Makes implementation harder."
+        }
+      ],
+      "feedback": {
+        "correct": "Correct: the lessons learned are set up for implementation.",
+        "wrong": "Partially wrong: please secure cause reference and accountability more strongly."
+      },
+      "progressLinks": [
+        "lf01_reflexion_verbesserung"
+      ]
+    },
+    {
+      "id": "q3",
+      "type": "ordering",
+      "title": "LF01 closing process",
+      "prompt": "Order the sequence for a professional LF01 closure.",
+      "items": [
+        "Check goal achievement",
+        "Analyze deviations",
+        "Prioritize improvements",
+        "Schedule next steps",
+        "Communicate closure status"
+      ],
+      "correctOrder": [
+        "Check goal achievement",
+        "Analyze deviations",
+        "Prioritize improvements",
+        "Schedule next steps",
+        "Communicate closure status"
+      ],
+      "feedback": {
+        "correct": "Correct: this is a clear closing process.",
+        "wrong": "Not optimal: please put analysis and prioritization before communication."
+      },
+      "progressLinks": [
+        "lf01_reflexion_verbesserung"
+      ]
+    },
+    {
+      "id": "q4",
+      "type": "number",
+      "title": "LF01 completion rate",
+      "prompt": "Out of 18 planned learning goals, 15 were achieved. What is the completion rate in percent (rounded)?",
+      "expected": 83,
+      "toleranceAbs": 1,
+      "showExpectedFormula": "15 / 18 * 100 = 83.33 % ~ 83 %",
+      "feedback": {
+        "correct": "Correct calculation.",
+        "wrong": "Please calculate the share of achieved goals correctly."
+      },
+      "progressLinks": [
+        "lf01_reflexion_verbesserung"
+      ]
+    },
+    {
+      "id": "q5",
+      "type": "short_text",
+      "title": "Closing note for the trainer",
+      "prompt": "Formulate a closing note (4-6 sentences) with goal achievement, open risk and next development step.",
+      "minChars": 160,
+      "requiredKeywords": [
+        "goal achievement",
+        "risk",
+        "next step"
+      ],
+      "expectedOutline": "Clear closure with goal status, residual risk and binding follow-up action.",
+      "feedback": {
+        "correct": "Correct: the note is directly usable for the training discussion.",
+        "wrong": "Please describe goal achievement, risk and next step more explicitly."
+      },
+      "progressLinks": [
+        "lf01_reflexion_verbesserung",
+        "lf01_berufs_lebensplanung"
+      ]
+    }
+  ]
+}

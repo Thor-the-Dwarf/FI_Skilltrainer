@@ -1,0 +1,1659 @@
+{
+  "scenario": {
+    "company": "Rheinkern IT GmbH",
+    "scale": "IT-Dienstleister für kleine und mittlere Unternehmen, 88 Mitarbeitende",
+    "context": "Prüfungsvorbereitung WISO im Stationsformat mit Personal-, Betriebsrats- und Marktfragen.",
+    "mission": "Sie bearbeiten eine zusammenhängende Fachsituation zu Bewerbung, Ausbildung, Sozialversicherung, Betriebsverfassung, Unternehmensformen, Umwelt, Konjunktur und Gleichbehandlung.",
+    "source": {
+      "kind": "Pseudonymisierte Prüfungsvorlage",
+      "reference": "AP2 Wirtschafts- und Sozialkunde, Sommer 2023",
+      "note": "Die fachliche Reihenfolge bleibt erhalten; Namen, Orte und Unternehmensbezug wurden in das Kursformat überführt."
+    },
+    "station": {
+      "id": "PV3WISO-ST-02",
+      "department": "Prüfungsvorbereitung Wirtschafts- und Sozialkunde",
+      "profile": "Bewerbung, Sozialversicherung, Betriebsverfassung, Unternehmensformen und Markt",
+      "constraints": [
+        "Die Themenblöcke der Quelle bleiben als zusammenhängende Folgeaufträge sichtbar",
+        "Mehrere Ziffern- und Rechenaufgaben werden in auto-auswertbare Formate überführt",
+        "Briefe, Tabellen und Rechtskontexte bleiben quellenah, aber sprachlich sauber pseudonymisiert"
+      ]
+    },
+    "customerRequest": {
+      "from": "personalentwicklung@rheinkern-it.example",
+      "to": "projektteam@ausbildungsbetrieb.example",
+      "subject": "Bitte ein neues WISO-Trainingspaket für Personal-, Betriebsrats- und Marktfragen aufsetzen",
+      "date": "2026-03-20",
+      "body": "Guten Tag,\n\nwir möchten unser nächstes WISO-Trainingspaket vorbereiten. Diesmal sollen unsere Auszubildenden prüfungsnahe Fälle zu Bewerbung, Ausbildungsrecht, Sozialversicherung, Betriebsversammlung, Unternehmensformen, Kündigungsfristen, Umweltgrundsätzen, Konjunktur und Gleichbehandlung bearbeiten.\n\nBitte strukturieren Sie die Inhalte wieder als zusammenhängende Station mit klaren Folgeaufträgen. Wo möglich, sollen die Antworten direkt auswertbar sein.\n\nViele Grüsse\nPersonalentwicklung"
+    }
+  },
+  "questions": [
+    {
+      "id": "q01",
+      "type": "table_fill",
+      "title": "Fragen im Bewerbungsgespräch einordnen",
+      "prompt": "Ordnen Sie zu, welche Fragen im Bewerbungsgespräch für die Stelle typischerweise zulässig sind.",
+      "columns": [
+        "Frage",
+        "Einordnung"
+      ],
+      "rows": [
+        [
+          "Welche Vergütung stellen Sie sich für die Stelle vor?",
+          {
+            "key": "bewerbung_a",
+            "label": "Frage nach der Vergütung",
+            "expected": "Zulässig",
+            "inputType": "select",
+            "placeholder": "Auswahl treffen",
+            "options": [
+              "Zulässig",
+              "Unzulässig"
+            ]
+          }
+        ],
+        [
+          "Planen Sie in den nächsten zwei Jahren zu heiraten?",
+          {
+            "key": "bewerbung_b",
+            "label": "Frage nach Heiratsplänen",
+            "expected": "Unzulässig",
+            "inputType": "select",
+            "placeholder": "Auswahl treffen",
+            "options": [
+              "Zulässig",
+              "Unzulässig"
+            ]
+          }
+        ],
+        [
+          "Gehören Sie einer politischen Partei an?",
+          {
+            "key": "bewerbung_c",
+            "label": "Frage nach Parteizugehörigkeit",
+            "expected": "Unzulässig",
+            "inputType": "select",
+            "placeholder": "Auswahl treffen",
+            "options": [
+              "Zulässig",
+              "Unzulässig"
+            ]
+          }
+        ],
+        [
+          "Wie hoch sind Ihre privaten Ersparnisse?",
+          {
+            "key": "bewerbung_d",
+            "label": "Frage nach privaten Ersparnissen",
+            "expected": "Unzulässig",
+            "inputType": "select",
+            "placeholder": "Auswahl treffen",
+            "options": [
+              "Zulässig",
+              "Unzulässig"
+            ]
+          }
+        ],
+        [
+          "Welche Krankheiten hatten Sie in Ihrem bisherigen Leben?",
+          {
+            "key": "bewerbung_e",
+            "label": "Pauschale Frage nach Krankheiten",
+            "expected": "Unzulässig",
+            "inputType": "select",
+            "placeholder": "Auswahl treffen",
+            "options": [
+              "Zulässig",
+              "Unzulässig"
+            ]
+          }
+        ]
+      ],
+      "feedback": {
+        "correct": "Die Fragen wurden passend nach beruflichem Bezug und Privatsphäre eingeordnet.",
+        "wrong": "Achten Sie darauf, ob die Information für die konkrete Stelle sachlich erforderlich ist oder in die geschützte Privatsphäre eingreift."
+      },
+      "progressLinks": [
+        "pv3wiso_arbeitsrecht_ausbildung"
+      ]
+    },
+    {
+      "id": "q02",
+      "type": "single_choice",
+      "title": "Pflichtunterlage vor Ausbildungsbeginn bestimmen",
+      "prompt": "Luca Hansen ist 17 Jahre alt und beginnt eine Ausbildung als Fachinformatiker. Welche Unterlage muss er vor Ausbildungsbeginn zwingend vorlegen?",
+      "options": [
+        {
+          "text": "Sein letztes Schulzeugnis",
+          "rationale": "Das kann wichtig sein, ist aber nicht die zwingende jugendarbeitsschutzrechtliche Pflichtunterlage."
+        },
+        {
+          "text": "Seine Geburtsurkunde",
+          "rationale": "Sie ist nicht die typische gesetzliche Pflichtunterlage für den Ausbildungsstart."
+        },
+        {
+          "text": "Eine Praktikumsbescheinigung",
+          "rationale": "Diese ist nicht allgemeine Voraussetzung."
+        },
+        {
+          "text": "Eine notariell beglaubigte Ausweiskopie",
+          "rationale": "So eine Beglaubigung ist nicht vorgeschrieben."
+        },
+        {
+          "text": "Den Nachweis der jugendarbeitsschutzrechtlichen Erstuntersuchung",
+          "rationale": "Für minderjährige Auszubildende ist dieser Nachweis vor Beschäftigungsbeginn erforderlich."
+        }
+      ],
+      "correctIndex": 4,
+      "feedback": {
+        "correct": "Die verpflichtende Unterlage wurde richtig zugeordnet.",
+        "wrong": "Bei minderjährigen Auszubildenden ist vor allem die Erstuntersuchung entscheidend."
+      },
+      "progressLinks": [
+        "pv3wiso_jugendarbeitsschutz_urlaub"
+      ]
+    },
+    {
+      "id": "q03",
+      "type": "single_choice",
+      "title": "Rechtsgrundlage der Probezeit in der Ausbildung",
+      "prompt": "In den Ausbildungsverträgen der Rheinkern IT GmbH ist regelmässig eine Probezeit von drei Monaten vorgesehen. In welchem Regelwerk ist die Dauer der Probezeit für Berufsausbildungsverhältnisse geregelt?",
+      "options": [
+        {
+          "text": "Im Jugendarbeitsschutzgesetz",
+          "rationale": "Dieses Gesetz regelt Schutzvorschriften, aber nicht die allgemeine Probezeit im Ausbildungsvertrag."
+        },
+        {
+          "text": "Im Arbeitsschutzgesetz",
+          "rationale": "Auch hier geht es nicht um die Probezeit des Ausbildungsvertrags."
+        },
+        {
+          "text": "Im Berufsbildungsgesetz",
+          "rationale": "Dort sind die Kernregeln für das Berufsausbildungsverhältnis verankert."
+        },
+        {
+          "text": "Im Arbeitszeitgesetz",
+          "rationale": "Das Arbeitszeitgesetz regelt keine Probezeiten."
+        },
+        {
+          "text": "In der Ausbildungsordnung des Berufs",
+          "rationale": "Die Ausbildungsordnung beschreibt Inhalte und Struktur des Berufs, nicht die gesetzliche Probezeitregel."
+        }
+      ],
+      "correctIndex": 2,
+      "feedback": {
+        "correct": "Die Rechtsgrundlage wurde korrekt erkannt.",
+        "wrong": "Prüfen Sie, welches Gesetz das Berufsausbildungsverhältnis insgesamt regelt."
+      },
+      "progressLinks": [
+        "pv3wiso_arbeitsrecht_ausbildung"
+      ]
+    },
+    {
+      "id": "q04",
+      "type": "single_choice",
+      "title": "Umschulung von Weiterbildung abgrenzen",
+      "prompt": "Welche Massnahme ist am ehesten als Umschulung einzuordnen?",
+      "options": [
+        {
+          "text": "Ein IT-System-Kaufmann absolviert einen Zusatzlehrgang für die Ausbildereignung.",
+          "rationale": "Das ist eine Weiterbildung im bisherigen Berufsfeld."
+        },
+        {
+          "text": "Ein erfahrener Administrator besucht eine Fortbildung zu IT-Sicherheit.",
+          "rationale": "Auch das ist eine fachliche Weiterbildung."
+        },
+        {
+          "text": "Ein Fachinformatiker besucht ein eintäiges Seminar zu Netzwerken.",
+          "rationale": "Ein Tagesseminar ist keine Umschulung."
+        },
+        {
+          "text": "Eine bereits ausgebildete Einzelhändlerin beginnt eine neue Berufsausbildung zur Kauffrau für IT-System-Management.",
+          "rationale": "Hier erfolgt eine Neuqualifizierung für einen anderen Beruf."
+        },
+        {
+          "text": "Eine Auszubildende wechselt während ihrer laufenden Ausbildung nur den Betrieb.",
+          "rationale": "Ein Betriebswechsel allein ist keine Umschulung."
+        }
+      ],
+      "correctIndex": 3,
+      "feedback": {
+        "correct": "Die Umschulung ist korrekt von Fort- und Weiterbildung abgegrenzt.",
+        "wrong": "Achten Sie darauf, ob ein neuer Beruf erlernt wird oder ob die bestehende Qualifikation nur erweitert wird."
+      },
+      "progressLinks": [
+        "pv3wiso_arbeitsrecht_ausbildung"
+      ]
+    },
+    {
+      "id": "q05",
+      "type": "table_fill",
+      "title": "Pflichtreaktionen nach einem Arbeitsunfall einordnen",
+      "prompt": "Ordnen Sie zu, welche Schritte nach dem geschilderten Arbeitsunfall zur typischen Pflichtreaktion des Betriebs gehören.",
+      "columns": [
+        "Schritt",
+        "Typische Pflichtreaktion?"
+      ],
+      "rows": [
+        [
+          "Den Unfall intern dokumentieren und die Unfallanzeige vorbereiten.",
+          {
+            "key": "unfall_a",
+            "label": "Unfall intern dokumentieren",
+            "expected": "Ja",
+            "inputType": "select",
+            "placeholder": "Auswahl treffen",
+            "options": [
+              "Ja",
+              "Nein"
+            ]
+          }
+        ],
+        [
+          "Den Unfall der zuständigen Berufsgenossenschaft melden.",
+          {
+            "key": "unfall_b",
+            "label": "Unfall der Berufsgenossenschaft melden",
+            "expected": "Ja",
+            "inputType": "select",
+            "placeholder": "Auswahl treffen",
+            "options": [
+              "Ja",
+              "Nein"
+            ]
+          }
+        ],
+        [
+          "Den Unfall dem Technischen Überwachungsverein melden.",
+          {
+            "key": "unfall_c",
+            "label": "Unfall dem TUEV melden",
+            "expected": "Nein",
+            "inputType": "select",
+            "placeholder": "Auswahl treffen",
+            "options": [
+              "Ja",
+              "Nein"
+            ]
+          }
+        ],
+        [
+          "Den Unfall dem Ordnungsamt melden.",
+          {
+            "key": "unfall_d",
+            "label": "Unfall dem Ordnungsamt melden",
+            "expected": "Nein",
+            "inputType": "select",
+            "placeholder": "Auswahl treffen",
+            "options": [
+              "Ja",
+              "Nein"
+            ]
+          }
+        ],
+        [
+          "Die Arbeitsunfähigkeitsbescheinigung ersetzt jede weitere Meldung.",
+          {
+            "key": "unfall_e",
+            "label": "AU ersetzt weitere Meldung",
+            "expected": "Nein",
+            "inputType": "select",
+            "placeholder": "Auswahl treffen",
+            "options": [
+              "Ja",
+              "Nein"
+            ]
+          }
+        ]
+      ],
+      "feedback": {
+        "correct": "Die Pflichtreaktionen nach dem Arbeitsunfall wurden fachlich sauber eingeordnet.",
+        "wrong": "Wichtig sind die Dokumentation und die Meldung an die gesetzliche Unfallversicherung. Andere Stellen ersetzen diese Pflicht nicht."
+      },
+      "progressLinks": [
+        "pv3wiso_arbeitsschutz_umwelt_diversity"
+      ]
+    },
+    {
+      "id": "q06",
+      "type": "number",
+      "title": "Arbeitnehmeranteil zur Rentenversicherung berechnen",
+      "prompt": "Ein Mitarbeiter verdient künftig 3.500 EUR brutto im Monat. Der Beitragssatz der gesetzlichen Rentenversicherung liegt bei 18,6 %. Wie hoch ist der Arbeitnehmeranteil pro Monat?",
+      "expected": 325.5,
+      "toleranceAbs": 0.01,
+      "showExpectedFormula": "3.500 EUR x 9,3 % = 325,50 EUR.",
+      "feedback": {
+        "correct": "Der Arbeitnehmeranteil wurde korrekt berechnet.",
+        "wrong": "Denken Sie daran, dass der Gesamtbeitragssatz zwischen Arbeitgeber und Arbeitnehmer geteilt wird."
+      },
+      "progressLinks": [
+        "pv3wiso_mitbestimmung_tarif_sozialversicherung"
+      ]
+    },
+    {
+      "id": "q07",
+      "type": "single_choice",
+      "title": "Arbeitslosenversicherung zuordnen",
+      "prompt": "Aus dem Arbeitsverhältnis werden Beiträge zur gesetzlichen Arbeitslosenversicherung fällig. Wer trägt diese Beiträge?",
+      "options": [
+        {
+          "text": "Nur der Arbeitnehmer",
+          "rationale": "Die Finanzierung erfolgt nicht allein durch die beschäftigte Person."
+        },
+        {
+          "text": "Nur der Arbeitgeber",
+          "rationale": "Auch das ist nicht korrekt."
+        },
+        {
+          "text": "Die Bundesagentur für Arbeit alleine",
+          "rationale": "Sie finanziert sich gerade aus den Beitragszahlungen mit."
+        },
+        {
+          "text": "Arbeitgeberverband und Arbeitgeber zu gleichen Teilen",
+          "rationale": "Das trifft den Kreis der Beitragspflichtigen nicht."
+        },
+        {
+          "text": "Arbeitgeber und Arbeitnehmer zu gleichen Teilen",
+          "rationale": "Die Arbeitslosenversicherung wird grundsätzlich paritätisch finanziert."
+        }
+      ],
+      "correctIndex": 4,
+      "feedback": {
+        "correct": "Die Finanzierung der Arbeitslosenversicherung ist richtig eingeordnet.",
+        "wrong": "Prüfen Sie noch einmal, wer bei den gesetzlichen Sozialbeitragen typischerweise beteiligt ist."
+      },
+      "progressLinks": [
+        "pv3wiso_mitbestimmung_tarif_sozialversicherung"
+      ]
+    },
+    {
+      "id": "q08",
+      "type": "single_choice",
+      "title": "Versicherungspflichtgrenze der GKV bewerten",
+      "prompt": "Jonas Frey verdient seit 2023 mehr als die Jahresarbeitsentgeltgrenze der gesetzlichen Krankenversicherung. Welche Aussage trifft zu?",
+      "options": [
+        {
+          "text": "Er zahlt dann gar keine Beiträge mehr zur Krankenversicherung.",
+          "rationale": "Auch oberhalb der Grenze entfallen Krankenversicherungsbeiträge nicht pauschal."
+        },
+        {
+          "text": "Er muss zwingend in eine private Krankenversicherung wechseln.",
+          "rationale": "Ein automatischer Wechsel ist nicht vorgeschrieben."
+        },
+        {
+          "text": "Er kann in der gesetzlichen Krankenversicherung freiwillig versichert bleiben.",
+          "rationale": "Genau diese Möglichkeit besteht oberhalb der Jahresarbeitsentgeltgrenze."
+        },
+        {
+          "text": "Er muss wegen der Grenze in der gesetzlichen Krankenversicherung verbleiben.",
+          "rationale": "Die Grenze führt gerade nicht zu einer Pflicht zum Verbleib."
+        },
+        {
+          "text": "Er muss dann den gesamten GKV-Beitrag allein tragen.",
+          "rationale": "Diese Folge ergibt sich daraus nicht."
+        }
+      ],
+      "correctIndex": 2,
+      "feedback": {
+        "correct": "Die Folge der Jahresarbeitsentgeltgrenze wurde korrekt eingeordnet.",
+        "wrong": "Oberhalb der Grenze besteht Wahlfreiheit, aber kein Zwang zum Systemwechsel."
+      },
+      "progressLinks": [
+        "pv3wiso_mitbestimmung_tarif_sozialversicherung"
+      ]
+    },
+    {
+      "id": "q09",
+      "type": "single_choice",
+      "title": "Weniger Kaufkraft trotz Gehaltserhöhung",
+      "prompt": "Ein Mitarbeiter erhält monatlich 50 EUR mehr Gehalt. Trotzdem kann er sich wegen gestiegener Preise weniger leisten als zuvor. Welche Einkommensgrösse ist gesunken?",
+      "options": [
+        {
+          "text": "Das Bruttoeinkommen",
+          "rationale": "Das Bruttoeinkommen ist gerade gestiegen."
+        },
+        {
+          "text": "Das zu versteuernde Einkommen",
+          "rationale": "Die Aussage bezieht sich auf Kaufkraft, nicht auf die steuerliche Bemessungsgrundlage."
+        },
+        {
+          "text": "Das Nettoeinkommen",
+          "rationale": "Auch das kann zwar relevant sein, erklärt hier aber nicht den Kaufkraftverlust trotz nominalem Plus."
+        },
+        {
+          "text": "Das Realeinkommen",
+          "rationale": "Das Realeinkommen sinkt, wenn die Preise schneller steigen als das Einkommen."
+        },
+        {
+          "text": "Das Nominaleinkommen",
+          "rationale": "Das Nominaleinkommen ist in der Aufgabe gestiegen."
+        }
+      ],
+      "correctIndex": 3,
+      "feedback": {
+        "correct": "Der Kaufkraftverlust wurde richtig dem Realeinkommen zugeordnet.",
+        "wrong": "Trennen Sie nominale Einkommenshöhe und reale Kaufkraft."
+      },
+      "progressLinks": [
+        "pv3wiso_wirtschaftlichkeit_unternehmensanalyse"
+      ]
+    },
+    {
+      "id": "f02",
+      "type": "followup_divider",
+      "title": "Betriebsrat, Rechtsformen und Standortfragen",
+      "from": "betriebsrat@rheinkern-it.example",
+      "to": "projektteam@ausbildungsbetrieb.example",
+      "subject": "Bitte den nächsten Block zu Betriebsversammlung, Mitbestimmung und Unternehmensrecht vorbereiten",
+      "date": "2026-03-20",
+      "body": "Hallo zusammen,\n\nim zweiten Themenblock brauchen wir eine saubere Mischung aus Betriebsverfassungsrecht und Unternehmensrecht. Es geht um die Betriebsversammlung, Mitbestimmung bei Arbeitszeitregelungen, die KG, Haftung der GmbH, Standortwahl und die Aufgaben der Industrie- und Handelskammer.\n\nViele Grüsse\nBetriebsrat"
+    },
+    {
+      "id": "q10",
+      "type": "single_choice",
+      "title": "Gesetzliche Grundlage der Betriebsversammlung",
+      "prompt": "In welchem Gesetz sind Betriebsversammlungen geregelt?",
+      "options": [
+        {
+          "text": "Im Bürgerlichen Gesetzbuch",
+          "rationale": "Dort stehen allgemeine zivilrechtliche Regeln, aber nicht die Betriebsversammlung."
+        },
+        {
+          "text": "Im Berufsbildungsgesetz",
+          "rationale": "Das regelt die Berufsausbildung, nicht die Betriebsversammlung."
+        },
+        {
+          "text": "Im Tarifvertragsgesetz",
+          "rationale": "Tarifverträge und Betriebsversammlungen sind verschiedene Ebenen."
+        },
+        {
+          "text": "Im Betriebsverfassungsgesetz",
+          "rationale": "Dort sind Aufbau und Rechte der betrieblichen Mitbestimmung geregelt."
+        },
+        {
+          "text": "Im Arbeitszeitgesetz",
+          "rationale": "Das Arbeitszeitgesetz regelt keine Betriebsversammlungen."
+        }
+      ],
+      "correctIndex": 3,
+      "feedback": {
+        "correct": "Die Rechtsgrundlage ist korrekt erkannt.",
+        "wrong": "Die Betriebsversammlung gehört in das Gesetz zur betrieblichen Mitbestimmung."
+      },
+      "progressLinks": [
+        "pv3wiso_mitbestimmung_tarif_sozialversicherung"
+      ]
+    },
+    {
+      "id": "q11",
+      "type": "single_choice",
+      "title": "Teilnahme an der Betriebsversammlung einordnen",
+      "prompt": "Luca Hansen möchte an einer Betriebsversammlung teilnehmen, die während seiner Arbeitszeit stattfindet. Welche Folge ist richtig?",
+      "options": [
+        {
+          "text": "Er muss die ausgefallene Arbeitszeit an einem anderen Tag nachholen.",
+          "rationale": "Die Teilnahme an der Betriebsversammlung ist nicht einfach private Freizeit."
+        },
+        {
+          "text": "Er darf nur teilnehmen, wenn er mindestens ein halbes Jahr im Betrieb ist.",
+          "rationale": "Eine solche Mindestzugehörigkeit gilt dafür nicht."
+        },
+        {
+          "text": "Die Teilnahme gilt als Arbeitszeit und wird entsprechend vergütet.",
+          "rationale": "Genau das ist die zentrale Folge bei Versammlungen während der Arbeitszeit."
+        },
+        {
+          "text": "Die Teilnahme zählt nur als Arbeitszeit, wenn der Vorgesetzte sie genehmigt.",
+          "rationale": "Sie hängt nicht von einer zusätzlichen Vorgesetzten-Genehmigung ab."
+        }
+      ],
+      "correctIndex": 2,
+      "feedback": {
+        "correct": "Die Rechtsfolge der Teilnahme wurde richtig erkannt.",
+        "wrong": "Betriebsversammlungen während der Arbeitszeit werden nicht wie unbezahlte Freizeit behandelt."
+      },
+      "progressLinks": [
+        "pv3wiso_mitbestimmung_tarif_sozialversicherung"
+      ]
+    },
+    {
+      "id": "q12",
+      "type": "table_fill",
+      "title": "Mitbestimmungsfälle des Betriebsrats einordnen",
+      "prompt": "Ordnen Sie zu, in welchen Fällen der Betriebsrat ein Mitbestimmungsrecht hat.",
+      "columns": [
+        "Fall",
+        "Mitbestimmungsrecht?"
+      ],
+      "rows": [
+        [
+          "Eine neue Mitarbeiterin kündigt während der Probezeit, um eine besser bezahlte Stelle anzutreten.",
+          {
+            "key": "mitbestimmung_a",
+            "label": "Eigenkündigung während der Probezeit",
+            "expected": "Nein",
+            "inputType": "select",
+            "placeholder": "Auswahl treffen",
+            "options": [
+              "Ja",
+              "Nein"
+            ]
+          }
+        ],
+        [
+          "Die Rheinkern IT GmbH will in der Ferienzeit die tägliche Arbeitszeit von acht auf zehn Stunden verlängern.",
+          {
+            "key": "mitbestimmung_b",
+            "label": "Vorübergehende Verlängerung der täglichen Arbeitszeit",
+            "expected": "Ja",
+            "inputType": "select",
+            "placeholder": "Auswahl treffen",
+            "options": [
+              "Ja",
+              "Nein"
+            ]
+          }
+        ],
+        [
+          "Ein gekündigter Mitarbeiter möchte gegen seine Entlassung klagen.",
+          {
+            "key": "mitbestimmung_c",
+            "label": "Entscheidung über eine Kündigungsschutzklage",
+            "expected": "Nein",
+            "inputType": "select",
+            "placeholder": "Auswahl treffen",
+            "options": [
+              "Ja",
+              "Nein"
+            ]
+          }
+        ],
+        [
+          "Eine Auszubildende verlangt wegen nicht bestandener Prüfung die Verlängerung ihres Ausbildungsverhältnisses.",
+          {
+            "key": "mitbestimmung_d",
+            "label": "Verlängerung des Ausbildungsverhältnisses nach nicht bestandener Prüfung",
+            "expected": "Nein",
+            "inputType": "select",
+            "placeholder": "Auswahl treffen",
+            "options": [
+              "Ja",
+              "Nein"
+            ]
+          }
+        ],
+        [
+          "Eine Auszubildende möchte nach bestandener Prüfung den Arbeitgeber wechseln.",
+          {
+            "key": "mitbestimmung_e",
+            "label": "Arbeitgeberwechsel nach bestandener Prüfung",
+            "expected": "Nein",
+            "inputType": "select",
+            "placeholder": "Auswahl treffen",
+            "options": [
+              "Ja",
+              "Nein"
+            ]
+          }
+        ]
+      ],
+      "feedback": {
+        "correct": "Die Fälle wurden passend nach sozialer Mitbestimmung und individuellen Entscheidungen getrennt.",
+        "wrong": "Achten Sie besonders auf Arbeitszeitregelungen. Dort hat der Betriebsrat ein echtes Mitbestimmungsrecht."
+      },
+      "progressLinks": [
+        "pv3wiso_mitbestimmung_tarif_sozialversicherung"
+      ]
+    },
+    {
+      "id": "q13",
+      "type": "single_choice",
+      "title": "Haftung in der KG einordnen",
+      "prompt": "Welche Aussage trifft auf die Rechtsform der Kommanditgesellschaft zu?",
+      "options": [
+        {
+          "text": "Alle Gesellschafter haften unbeschränkt mit ihrem Privatvermögen.",
+          "rationale": "Das gilt nicht für die Kommanditisten."
+        },
+        {
+          "text": "Die KG benötigt ein gesetzliches Mindestkapital von 25.000 EUR.",
+          "rationale": "Eine solche starre Mindestkapitalgrenze besteht nicht."
+        },
+        {
+          "text": "Komplementäre haften nicht für Verluste der KG.",
+          "rationale": "Gerade die Komplementäre tragen die unbeschränkte Haftung."
+        },
+        {
+          "text": "Kommanditisten haften grundsätzlich nur bis zur Höhe ihrer Einlage.",
+          "rationale": "Das beschreibt die typische Haftungsbegrenzung der Kommanditisten."
+        },
+        {
+          "text": "Kommanditisten sind automatisch zur Geschäftsführung verpflichtet.",
+          "rationale": "Die Geschäftsführung liegt typischerweise bei den Komplementären."
+        }
+      ],
+      "correctIndex": 3,
+      "feedback": {
+        "correct": "Die Haftungslogik der KG ist korrekt erkannt.",
+        "wrong": "Unterscheiden Sie zwischen Komplementären und Kommanditisten."
+      },
+      "progressLinks": [
+        "pv3wiso_wirtschaftssektoren_unternehmensformen"
+      ]
+    },
+    {
+      "id": "q14",
+      "type": "single_choice",
+      "title": "Standortfaktor ohne Bedeutung finden",
+      "prompt": "Eine Fachinformatikerin möchte in Köln eine Werkstatt mit Ladengeschäft für IT-Dienstleistungen und den Vertrieb von E-Bike-Zubehör eröfnen. Welcher Gesichtspunkt spielt bei der Standortwahl keine echte Rolle?",
+      "options": [
+        {
+          "text": "Die Entfernung zur Zielkundschaft",
+          "rationale": "Die Nähe zum Markt ist ein klassischer Standortfaktor."
+        },
+        {
+          "text": "Die aktuelle Umsatzsteuerhoehe innerhalb Deutschlands",
+          "rationale": "Die Umsatzsteuer ist standortunabhängig und daher kein differenzierender Standortfaktor."
+        },
+        {
+          "text": "Behördliche Auflagen, etwa Umweltvorschriften",
+          "rationale": "Auch solche Auflagen können die Standortwahl beeinflussen."
+        },
+        {
+          "text": "Die Verkehrsanbindung für Kunden und Lieferanten",
+          "rationale": "Erreichbarkeit ist ein wichtiger Standortfaktor."
+        },
+        {
+          "text": "Die Höhe von Miete oder Pacht",
+          "rationale": "Fixkosten gehören klar zu den relevanten Faktoren."
+        }
+      ],
+      "correctIndex": 1,
+      "feedback": {
+        "correct": "Der nicht standortdifferenzierende Gesichtspunkt wurde richtig erkannt.",
+        "wrong": "Achten Sie darauf, welche Faktoren sich je nach Standort wirklich verändern."
+      },
+      "progressLinks": [
+        "pv3wiso_wirtschaftssektoren_unternehmensformen"
+      ]
+    },
+    {
+      "id": "q15",
+      "type": "table_fill",
+      "title": "Haftung der GmbH fachlich einordnen",
+      "prompt": "Ordnen Sie zu, welche Aussagen zur gesetzlichen Haftung einer GmbH zutreffen.",
+      "columns": [
+        "Aussage",
+        "Trifft zu?"
+      ],
+      "rows": [
+        [
+          "Die GmbH haftet mit ihrem Gesellschaftsvermögen.",
+          {
+            "key": "gmbhhaftung_a",
+            "label": "GmbH haftet mit Gesellschaftsvermögen",
+            "expected": "Ja",
+            "inputType": "select",
+            "placeholder": "Auswahl treffen",
+            "options": [
+              "Ja",
+              "Nein"
+            ]
+          }
+        ],
+        [
+          "Nach voller Einzahlung der Stammeinlage besteht nicht automatisch eine zusätzliche Privatvermögenshaftung der Gesellschafterin.",
+          {
+            "key": "gmbhhaftung_b",
+            "label": "Keine automatische zusätzliche Privatvermögenshaftung",
+            "expected": "Ja",
+            "inputType": "select",
+            "placeholder": "Auswahl treffen",
+            "options": [
+              "Ja",
+              "Nein"
+            ]
+          }
+        ],
+        [
+          "Die Haftung der GmbH ist stets auf 25.000 EUR begrenzt.",
+          {
+            "key": "gmbhhaftung_c",
+            "label": "Haftung stets auf 25000 EUR begrenzt",
+            "expected": "Nein",
+            "inputType": "select",
+            "placeholder": "Auswahl treffen",
+            "options": [
+              "Ja",
+              "Nein"
+            ]
+          }
+        ],
+        [
+          "Die GmbH haftet nur bei grober Pflichtverletzung.",
+          {
+            "key": "gmbhhaftung_d",
+            "label": "GmbH haftet nur bei grober Pflichtverletzung",
+            "expected": "Nein",
+            "inputType": "select",
+            "placeholder": "Auswahl treffen",
+            "options": [
+              "Ja",
+              "Nein"
+            ]
+          }
+        ],
+        [
+          "Die Gesellschafterin haftet immer parallel unbegrenzt mit ihrem Privatvermögen.",
+          {
+            "key": "gmbhhaftung_e",
+            "label": "Gesellschafterin haftet immer unbegrenzt privat",
+            "expected": "Nein",
+            "inputType": "select",
+            "placeholder": "Auswahl treffen",
+            "options": [
+              "Ja",
+              "Nein"
+            ]
+          }
+        ]
+      ],
+      "feedback": {
+        "correct": "Haftungsmasse der Gesellschaft und Privatvermögen der Gesellschafterin wurden sauber getrennt.",
+        "wrong": "Entscheidend ist die Haftung der GmbH mit ihrem Gesellschaftsvermögen und die fehlende automatische Privatvermögenshaftung."
+      },
+      "progressLinks": [
+        "pv3wiso_wirtschaftssektoren_unternehmensformen"
+      ]
+    },
+    {
+      "id": "q16",
+      "type": "single_choice",
+      "title": "Aufgabe der IHK erkennen",
+      "prompt": "Welche Aussage beschreibt eine typische Aufgabe der Industrie- und Handelskammer?",
+      "options": [
+        {
+          "text": "Sie führt verbindlich die Gehaltslisten aller Unternehmen.",
+          "rationale": "Das ist keine IHK-Aufgabe."
+        },
+        {
+          "text": "Sie prüft die Bilanzen aller Unternehmen.",
+          "rationale": "Auch das gehört nicht zum regulären Aufgabenprofil der IHK."
+        },
+        {
+          "text": "Sie unterstützt und berät Unternehmen unter anderem bei der Suche nach Fachkräften.",
+          "rationale": "Das trifft den Beratungs- und Serviceauftrag der IHK."
+        },
+        {
+          "text": "Sie legt die Gewerbesteuersaetze der jeweiligen Kommune fest.",
+          "rationale": "Darüber entscheiden nicht die Kammern."
+        },
+        {
+          "text": "Sie muss in allen arbeitsgerichtlichen Verfahren angehört werden.",
+          "rationale": "Eine solche generelle Beteiligung gibt es nicht."
+        }
+      ],
+      "correctIndex": 2,
+      "feedback": {
+        "correct": "Die IHK-Aufgabe wurde korrekt erkannt.",
+        "wrong": "Die IHK ist vor allem Kammer, Service- und Beratungsinstitution und keine Steuer- oder Gerichtsinstanz."
+      },
+      "progressLinks": [
+        "pv3wiso_wirtschaftssektoren_unternehmensformen"
+      ]
+    },
+    {
+      "id": "f03",
+      "type": "followup_divider",
+      "title": "Kennzahlen, Kündigungsfristen und Unternehmensziele",
+      "from": "controlling@rheinkern-it.example",
+      "to": "projektteam@ausbildungsbetrieb.example",
+      "subject": "Bitte den nächsten Block zu Kennzahlen, Kündigung und Unternehmensform aufbereiten",
+      "date": "2026-03-20",
+      "body": "Hallo,\n\nfür den dritten Teil benötigen wir Aufgaben zu Umsatzkennzahlen, Kündigungsfristen, Reaktionsmöglichkeiten des Betriebsrats, gerichtlicher Zuständigkeit sowie zu Aktiengesellschaft und Unternehmenszielen. Bitte halten Sie die Rechenwege transparent und die Rechtsfolgen eindeutig.\n\nViele Grüsse\nControlling"
+    },
+    {
+      "id": "ctx17",
+      "type": "context_card",
+      "title": "Umsatz je Mitarbeiter vergleichen",
+      "contentBlocks": [
+        {
+          "type": "text",
+          "text": "Die Geschäftsführung möchte prüfen, ob sich die Einstellung neuer Mitarbeitender positiv auf den Umsatz pro Kopf ausgewirkt hat. Für 2021 liegen bereits Vergleichsdaten vor."
+        },
+        {
+          "type": "table",
+          "columns": [
+            "Bezugsjahr",
+            "Wert"
+          ],
+          "rows": [
+            [
+              "Anzahl Mitarbeitende 2021",
+              "40"
+            ],
+            [
+              "Umsatz pro Mitarbeitendem 2021",
+              "98.000 EUR"
+            ],
+            [
+              "Anzahl Mitarbeitende 2022",
+              "45"
+            ],
+            [
+              "Gesamtumsatz 2022",
+              "4.590.000 EUR"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "id": "q17a",
+      "type": "number",
+      "title": "Umsatz pro Mitarbeitendem 2022 berechnen",
+      "prompt": "Wie hoch ist der Umsatz pro Mitarbeitendem im Jahr 2022?",
+      "expected": 102000,
+      "toleranceAbs": 1,
+      "showExpectedFormula": "4.590.000 EUR / 45 = 102.000 EUR.",
+      "feedback": {
+        "correct": "Der Umsatz pro Mitarbeitendem für 2022 wurde korrekt berechnet.",
+        "wrong": "Teilen Sie den Gesamtumsatz 2022 durch die Anzahl der Mitarbeitenden im Jahr 2022."
+      },
+      "progressLinks": [
+        "pv3wiso_wirtschaftlichkeit_unternehmensanalyse"
+      ]
+    },
+    {
+      "id": "q17b",
+      "type": "number",
+      "title": "Prozentuale Veränderung berechnen",
+      "prompt": "Um wie viel Prozent hat sich der Umsatz pro Mitarbeitendem von 2021 auf 2022 verändert? Runden Sie auf zwei Nachkommastellen.",
+      "expected": 4.08,
+      "toleranceAbs": 0.02,
+      "showExpectedFormula": "((102.000 - 98.000) / 98.000) x 100 = 4,08 %.",
+      "feedback": {
+        "correct": "Die prozentuale Veränderung wurde korrekt bestimmt.",
+        "wrong": "Nutzen Sie zuerst den neuen Umsatz pro Mitarbeitendem und vergleichen Sie ihn danach prozentual mit dem Vorjahreswert."
+      },
+      "progressLinks": [
+        "pv3wiso_wirtschaftlichkeit_unternehmensanalyse"
+      ]
+    },
+    {
+      "id": "ctx18",
+      "type": "context_card",
+      "title": "Kündigungsschreiben einer Arbeitnehmerin",
+      "contentBlocks": [
+        {
+          "type": "text",
+          "text": "Susanne Becker ist seit einem Jahr bei der Rheinkern IT GmbH beschäftigt. Für die Einordnung gelten zwei Kernregeln aus dem BGB:\n- Arbeitnehmerinnen und Arbeitnehmer können mit einer Frist von vier Wochen zum Fünfzehnten oder zum Monatsende kündigen.\n- Die längeren gestaffelten Fristen nach Betriebszugehörigkeit gelten für Kündigungen durch den Arbeitgeber."
+        },
+        {
+          "type": "document_card",
+          "layout": "letter_sheet",
+          "documentTitle": "Kündigungsschreiben",
+          "leftSections": [
+            {
+              "label": "An:",
+              "lines": [
+                "Rheinkern IT GmbH",
+                "Am Börsenplatz 1",
+                "50667 Köln"
+              ]
+            }
+          ],
+          "rightSections": [
+            {
+              "label": "Von:",
+              "lines": [
+                "Susanne Becker",
+                "Schillerstrasse 7",
+                "53225 Bonn"
+              ]
+            },
+            {
+              "label": "Datum:",
+              "value": "24.04.2023"
+            }
+          ],
+          "salutation": "Sehr geehrte Damen und Herren,",
+          "bodyLead": "hiermit kündige ich mein Arbeitsverhältnis fristgerecht zum 30.04.2023. Mein letzter Arbeitstag soll Freitag, der 28.04.2023, sein.",
+          "entries": [
+            "Am 01.05.2023 trete ich ein neues Arbeitsverhältnis bei einem anderen Arbeitgeber an."
+          ],
+          "signoff": "Freundliche Grüsse\nSusanne Becker"
+        }
+      ]
+    },
+    {
+      "id": "q18",
+      "type": "table_fill",
+      "title": "Aussagen zur Eigenkündigung prüfen",
+      "prompt": "Ordnen Sie zu, welche Aussagen zum Kündigungsschreiben fachlich zutreffen.",
+      "columns": [
+        "Aussage",
+        "Trifft zu?"
+      ],
+      "rows": [
+        [
+          "Die Arbeitnehmerin kündigt selbst.",
+          {
+            "key": "kündigung_a",
+            "label": "Arbeitnehmerin kündigt selbst",
+            "expected": "Ja",
+            "inputType": "select",
+            "placeholder": "Auswahl treffen",
+            "options": [
+              "Ja",
+              "Nein"
+            ]
+          }
+        ],
+        [
+          "Der genannte Termin 30.04.2023 ist bei Zugang am 24.04.2023 fristgerecht erreichbar.",
+          {
+            "key": "kündigung_b",
+            "label": "Termin 30042023 fristgerecht erreichbar",
+            "expected": "Nein",
+            "inputType": "select",
+            "placeholder": "Auswahl treffen",
+            "options": [
+              "Ja",
+              "Nein"
+            ]
+          }
+        ],
+        [
+          "Für Arbeitnehmerinnen und Arbeitnehmer gilt grundsätzlich die Frist von vier Wochen zum Fünfzehnten oder zum Monatsende.",
+          {
+            "key": "kündigung_c",
+            "label": "Arbeitnehmerfrist vier Wochen zum Fünfzehnten oder Monatsende",
+            "expected": "Ja",
+            "inputType": "select",
+            "placeholder": "Auswahl treffen",
+            "options": [
+              "Ja",
+              "Nein"
+            ]
+          }
+        ],
+        [
+          "Ein neuer Arbeitsplatz ersetzt die gesetzliche Kündigungsfrist.",
+          {
+            "key": "kündigung_d",
+            "label": "Neuer Arbeitsplatz ersetzt Kündigungsfrist",
+            "expected": "Nein",
+            "inputType": "select",
+            "placeholder": "Auswahl treffen",
+            "options": [
+              "Ja",
+              "Nein"
+            ]
+          }
+        ],
+        [
+          "Die längeren gestaffelten Fristen nach Betriebszugehörigkeit gelten in diesem Fall für die Arbeitnehmerseite.",
+          {
+            "key": "kündigung_e",
+            "label": "Gestaffelte Fristen gelten für Arbeitnehmerseite",
+            "expected": "Nein",
+            "inputType": "select",
+            "placeholder": "Auswahl treffen",
+            "options": [
+              "Ja",
+              "Nein"
+            ]
+          }
+        ]
+      ],
+      "feedback": {
+        "correct": "Schreiben, Frist und Rechtsfolge wurden sauber miteinander verknüpft.",
+        "wrong": "Prüfen Sie, welche Grundfrist für Arbeitnehmer gilt und warum der genannte Termin am 30.04. nicht erreicht wird."
+      },
+      "progressLinks": [
+        "pv3wiso_arbeitsrecht_ausbildung"
+      ]
+    },
+    {
+      "id": "q19",
+      "type": "single_choice",
+      "title": "Reaktionsmöglichkeit des Betriebsrats bei sozial ungerechtfertigter Kündigung",
+      "prompt": "Ein Arbeitnehmer hält eine betriebsbedingte Kündigung für sozial ungerechtfertigt und wendet sich an den Betriebsrat. Welche Aussage passt?",
+      "options": [
+        {
+          "text": "Hält der Betriebsrat die Kündigung für ungerechtfertigt, darf der Arbeitgeber nicht mehr kündigen.",
+          "rationale": "Der Betriebsrat kann nicht einfach jede Kündigung blockieren."
+        },
+        {
+          "text": "Widerspricht der Betriebsrat, kann der Arbeitnehmer innerhalb von drei Wochen Kündigungsschutzklage erheben.",
+          "rationale": "Das trifft die wichtige Reaktionsmöglichkeit des Arbeitnehmers."
+        },
+        {
+          "text": "Bei Kündigungen muss der Betriebsrat grundsätzlich nicht angehört werden.",
+          "rationale": "Gerade diese Anhörung ist vorgeschrieben."
+        },
+        {
+          "text": "Mit Zustimmung des Betriebsrats kann die Kündigungsfrist beliebig verkürzt werden.",
+          "rationale": "Der Betriebsrat kann gesetzliche Fristen nicht einfach aufheben."
+        },
+        {
+          "text": "Eine betriebsbedingte Kündigung ist immer wirksam, wenn der Betriebsrat informiert wurde.",
+          "rationale": "Die Information allein heilt keine sozial ungerechtfertigte Kündigung."
+        }
+      ],
+      "correctIndex": 1,
+      "feedback": {
+        "correct": "Die Reaktionsmöglichkeit wurde korrekt eingeordnet.",
+        "wrong": "Achten Sie auf die Rolle des Betriebsrats und auf die Frist der Kündigungsschutzklage."
+      },
+      "progressLinks": [
+        "pv3wiso_mitbestimmung_tarif_sozialversicherung"
+      ]
+    },
+    {
+      "id": "q20",
+      "type": "single_choice",
+      "title": "Zuständiges Gericht für Zeugnisstreit finden",
+      "prompt": "Nach einer Kündigung ist eine Arbeitnehmerin mit ihrem Arbeitszeugnis nicht einverstanden und will gerichtlich dagegen vorgehen. Welches Gericht ist zuständig?",
+      "options": [
+        {
+          "text": "Arbeitsgericht",
+          "rationale": "Streitigkeiten aus dem Arbeitsverhältnis werden dort verhandelt."
+        },
+        {
+          "text": "Verwaltungsgericht",
+          "rationale": "Das Verwaltungsgericht ist für öffentlich-rechtliche Streitigkeiten zuständig."
+        },
+        {
+          "text": "Amtsgericht",
+          "rationale": "Das Amtsgericht ist hier nicht die Fachgerichtsbarkeit."
+        },
+        {
+          "text": "Sozialgericht",
+          "rationale": "Das Sozialgericht befasst sich mit Sozialleistungs- und Versicherungsfragen."
+        },
+        {
+          "text": "Finanzgericht",
+          "rationale": "Das Finanzgericht ist für Steuer- und Abgabensachen zuständig."
+        }
+      ],
+      "correctIndex": 0,
+      "feedback": {
+        "correct": "Das zuständige Gericht wurde richtig bestimmt.",
+        "wrong": "Bei Streitigkeiten aus dem Arbeitsverhältnis ist die arbeitsgerichtliche Fachgerichtsbarkeit einschlägig."
+      },
+      "progressLinks": [
+        "pv3wiso_arbeitsrecht_ausbildung"
+      ]
+    },
+    {
+      "id": "q21",
+      "type": "multi_select",
+      "title": "Merkmale einer börsennotierten AG prüfen",
+      "prompt": "Die Nova AG bietet IT-Dienstleistungen an. Private Aktionäre erwarten Dividenden. Welche zwei Aussagen treffen zu?",
+      "options": [
+        {
+          "text": "Es handelt sich um ein Unternehmen des primären Sektors.",
+          "correct": false,
+          "rationale": "IT-Dienstleistungen gehören nicht in den primären Sektor."
+        },
+        {
+          "text": "Es handelt sich um ein Unternehmen des tertiären Sektors.",
+          "correct": true,
+          "rationale": "Dienstleistungen zählen zum tertiären Sektor."
+        },
+        {
+          "text": "Es ist ein erwerbswirtschaftliches Unternehmen.",
+          "correct": true,
+          "rationale": "Dividendenorientierung und Gewinnerzielung sprechen dafür."
+        },
+        {
+          "text": "Es ist ein gemeinwirtschaftliches Unternehmen.",
+          "correct": false,
+          "rationale": "Eine Dividendenorientierung passt nicht zu einem gemeinwirtschaftlichen Ziel."
+        },
+        {
+          "text": "Es ist eine Personengesellschaft.",
+          "correct": false,
+          "rationale": "Eine AG ist eine Kapitalgesellschaft."
+        },
+        {
+          "text": "Es ist eine Gesellschaft bürgerlichen Rechts.",
+          "correct": false,
+          "rationale": "Das trifft auf eine AG nicht zu."
+        }
+      ],
+      "feedback": {
+        "correct": "Sektor und Unternehmenscharakter der AG sind korrekt bestimmt.",
+        "wrong": "Prüfen Sie Rechtsform, Branche und Zielrichtung des Unternehmens getrennt voneinander."
+      },
+      "progressLinks": [
+        "pv3wiso_wirtschaftssektoren_unternehmensformen"
+      ]
+    },
+    {
+      "id": "q22",
+      "type": "single_choice",
+      "title": "Vorrangiges Ziel eines börsennotierten Unternehmens",
+      "prompt": "Die Nova AG ist börsenorientiert. Welches Ziel verfolgt sie vorrangig?",
+      "options": [
+        {
+          "text": "Kundenzufriedenheit",
+          "rationale": "Sie ist wichtig, aber nicht das vorrangige Oberziel eines börsennotierten Unternehmens."
+        },
+        {
+          "text": "Kostenmaximierung",
+          "rationale": "Kosten sollen nicht maximiert werden."
+        },
+        {
+          "text": "Bestmögliche Versorgung der Bevölkerung",
+          "rationale": "Das beschreibt eher einen gemeinwirtschaftlichen Auftrag."
+        },
+        {
+          "text": "Gewinnmaximierung",
+          "rationale": "Bei börsenorientierten Unternehmen steht die Gewinnerzielung typischerweise im Vordergrund."
+        },
+        {
+          "text": "Bilanzverlängerung",
+          "rationale": "Das ist kein eigenständiges Unternehmensziel."
+        }
+      ],
+      "correctIndex": 3,
+      "feedback": {
+        "correct": "Das vorrangige Ziel wurde korrekt erkannt.",
+        "wrong": "Denken Sie an die Erwartung der Aktionäre und die Gewinnorientierung."
+      },
+      "progressLinks": [
+        "pv3wiso_wirtschaftssektoren_unternehmensformen"
+      ]
+    },
+    {
+      "id": "f04",
+      "type": "followup_divider",
+      "title": "Unternehmensformen, Umwelt, Konjunktur und Gleichbehandlung",
+      "from": "qualitaet-und-nachhaltigkeit@rheinkern-it.example",
+      "to": "projektteam@ausbildungsbetrieb.example",
+      "subject": "Bitte den Abschlussblock zu Marktformen, Umwelt und AGG vervollständigen",
+      "date": "2026-03-20",
+      "body": "Hallo,\n\nzum Abschluss wollen wir noch Aufgaben zu verschiedenen Unternehmensformen, Verpackungsgrundsätzen, Umweltsiegeln, Konjunktur, Wirtschaftssektoren, zuständigen Stellen in der Ausbildung und zum AGG aufnehmen. Bitte behalten Sie auch hier die prüfungsnahe Reihenfolge bei.\n\nViele Grüsse\nQualität und Nachhaltigkeit"
+    },
+    {
+      "id": "q23",
+      "type": "table_fill",
+      "title": "Rechtsformen und Aussagen zuordnen",
+      "prompt": "Ordnen Sie jeder Aussage das passende Unternehmen zu. Ein Unternehmen kann mehrfach vorkommen.",
+      "columns": [
+        "Aussage",
+        "Unternehmen"
+      ],
+      "rows": [
+        [
+          "Alle Gesellschafter haften mit ihrem Privatvermögen und ihrer Einlage.",
+          {
+            "key": "company_a",
+            "label": "Haftung aller Gesellschafter mit Privatvermögen",
+            "expected": "Lenz & Co. OHG",
+            "inputType": "select",
+            "placeholder": "Unternehmen wählen",
+            "options": [
+              "Bergtal GmbH",
+              "Lenz & Co. OHG",
+              "Nova AG",
+              "Morgenrot eG"
+            ]
+          }
+        ],
+        [
+          "Die Unternehmensanteile können an der Börse gehandelt werden.",
+          {
+            "key": "company_b",
+            "label": "Unternehmensanteile können an der Börse gehandelt werden",
+            "expected": "Nova AG",
+            "inputType": "select",
+            "placeholder": "Unternehmen wählen",
+            "options": [
+              "Bergtal GmbH",
+              "Lenz & Co. OHG",
+              "Nova AG",
+              "Morgenrot eG"
+            ]
+          }
+        ],
+        [
+          "Die Gesellschafter haben Stimmrecht in der Gesellschafterversammlung.",
+          {
+            "key": "company_c",
+            "label": "Stimmrecht in der Gesellschafterversammlung",
+            "expected": "Bergtal GmbH",
+            "inputType": "select",
+            "placeholder": "Unternehmen wählen",
+            "options": [
+              "Bergtal GmbH",
+              "Lenz & Co. OHG",
+              "Nova AG",
+              "Morgenrot eG"
+            ]
+          }
+        ],
+        [
+          "Dieses Unternehmen ist in das Genossenschaftsregister eingetragen.",
+          {
+            "key": "company_d",
+            "label": "Eintragung in das Genossenschaftsregister",
+            "expected": "Morgenrot eG",
+            "inputType": "select",
+            "placeholder": "Unternehmen wählen",
+            "options": [
+              "Bergtal GmbH",
+              "Lenz & Co. OHG",
+              "Nova AG",
+              "Morgenrot eG"
+            ]
+          }
+        ],
+        [
+          "Das Stammkapital beträgt mindestens 25.000 EUR.",
+          {
+            "key": "company_e",
+            "label": "Stammkapital mindestens 25.000 EUR",
+            "expected": "Bergtal GmbH",
+            "inputType": "select",
+            "placeholder": "Unternehmen wählen",
+            "options": [
+              "Bergtal GmbH",
+              "Lenz & Co. OHG",
+              "Nova AG",
+              "Morgenrot eG"
+            ]
+          }
+        ]
+      ],
+      "feedback": {
+        "correct": "Die Unternehmensformen wurden den Aussagen korrekt zugeordnet.",
+        "wrong": "Vergleichen Sie Börsenhandel, Registerform, Haftung und Stammkapital noch einmal systematisch."
+      },
+      "progressLinks": [
+        "pv3wiso_wirtschaftssektoren_unternehmensformen"
+      ]
+    },
+    {
+      "id": "q24",
+      "type": "single_choice",
+      "title": "Verpackungsgrundsatz im Umweltschutz",
+      "prompt": "Welcher Grundsatz sollte bei der Verwendung von Verpackungen vorrangig berücksichtigt werden?",
+      "options": [
+        {
+          "text": "Papierverpackungen sind immer umweltfreundlich.",
+          "rationale": "So pauschal lässt sich das nicht sagen."
+        },
+        {
+          "text": "Unnötige Verpackung zu vermeiden ist besser als sie später zu entsorgen.",
+          "rationale": "Abfallvermeidung steht in der Regel vor der Entsorgung."
+        },
+        {
+          "text": "Recycelte Kunststoffverpackungen sind immer umweltfreundlich.",
+          "rationale": "Auch das ist zu pauschal."
+        },
+        {
+          "text": "Wiederverschliessbarkeit ist immer wichtiger als Ressourcenschonung.",
+          "rationale": "Das ist kein allgemeiner Umweltgrundsatz."
+        },
+        {
+          "text": "Jede Verpackung gehört nach Gebrauch grob gereinigt in den Restmüll.",
+          "rationale": "Das widerspricht der getrennten Entsorgung und Wiederverwertung."
+        }
+      ],
+      "correctIndex": 1,
+      "feedback": {
+        "correct": "Der Umweltgrundsatz wurde richtig erkannt.",
+        "wrong": "Im Verpackungsbereich gilt grundsätzlich: Vermeidung vor Entsorgung."
+      },
+      "progressLinks": [
+        "pv3wiso_arbeitsschutz_umwelt_diversity"
+      ]
+    },
+    {
+      "id": "q25",
+      "type": "single_choice",
+      "title": "Blauer Engel auf Kopierpapier",
+      "prompt": "Die Rheinkern IT GmbH nutzt Kopierpapier mit dem Umweltzeichen `Blauer Engel`. Wodurch wird damit der Umweltschutz am ehesten unterstützt?",
+      "options": [
+        {
+          "text": "Durch einen automatisch geringeren Papierverbrauch im Betrieb",
+          "rationale": "Das Zeichen ändert nicht automatisch das Verbrauchsverhalten."
+        },
+        {
+          "text": "Durch einen niedrigeren Energieverbrauch der Bürötage",
+          "rationale": "Dafür steht das Papierzeichen nicht unmittelbar."
+        },
+        {
+          "text": "Durch niedrigere Kosten des Papiers",
+          "rationale": "Kostenvorteile sind nicht der zentrale Umweltbeitrag."
+        },
+        {
+          "text": "Durch eine bessere Druckqualität",
+          "rationale": "Die Qualität ist nicht die eigentliche Umweltaussage."
+        },
+        {
+          "text": "Durch die Schonung von Rohstoffen in der Papierherstellung",
+          "rationale": "Das Umweltzeichen steht hier für ressourcenschonendes Papier."
+        }
+      ],
+      "correctIndex": 4,
+      "feedback": {
+        "correct": "Der Umweltbeitrag des Kopierpapiers wurde korrekt erkannt.",
+        "wrong": "Beim Papier mit Blauem Engel geht es vor allem um Ressourcenschonung."
+      },
+      "progressLinks": [
+        "pv3wiso_arbeitsschutz_umwelt_diversity"
+      ]
+    },
+    {
+      "id": "q26",
+      "type": "single_choice",
+      "title": "Merkmal einer Rezession erkennen",
+      "prompt": "Deutschland befindet sich in einer Rezession. Woran lässt sich das am ehesten erkennen?",
+      "options": [
+        {
+          "text": "Die Zahl der Arbeitslosen sinkt deutlich.",
+          "rationale": "Das wäre kein typisches Rezessionsmerkmal."
+        },
+        {
+          "text": "Tarifparteien einigen sich auf deutlich höhere Löhne.",
+          "rationale": "Das ist kein typischer Kernindikator für eine Rezession."
+        },
+        {
+          "text": "Güter- und Luftfracht nehmen stark zu.",
+          "rationale": "Das spricht eher nicht für eine Abschwungphase."
+        },
+        {
+          "text": "Die Verbraucherpreise steigen stark.",
+          "rationale": "Hohe Inflation allein kennzeichnet nicht zwingend eine Rezession."
+        },
+        {
+          "text": "Die Nachfrage nach Konsumgütern geht zurück.",
+          "rationale": "Nachfragerückgang ist ein typisches Zeichen des wirtschaftlichen Abschwungs."
+        }
+      ],
+      "correctIndex": 4,
+      "feedback": {
+        "correct": "Das passende Rezessionsmerkmal wurde korrekt erkannt.",
+        "wrong": "Achten Sie auf sinkende Nachfrage und wirtschaftliche Abschwächung."
+      },
+      "progressLinks": [
+        "pv3wiso_wirtschaftlichkeit_unternehmensanalyse"
+      ]
+    },
+    {
+      "id": "q27",
+      "type": "table_fill",
+      "title": "Wirtschaftssektoren zuordnen",
+      "prompt": "Ordnen Sie die Tätigkeiten dem richtigen Wirtschaftssektor zu. Verwenden Sie `1` für primär, `2` für sekundär und `3` für tertiär.",
+      "columns": [
+        "Tätigkeit",
+        "Sektor"
+      ],
+      "rows": [
+        [
+          "Eine Fachinformatikerin berät einen Kunden.",
+          {
+            "key": "sector_a",
+            "label": "Fachinformatikerin berät einen Kunden",
+            "expected": "3",
+            "inputType": "select",
+            "placeholder": "Sektor wählen",
+            "options": [
+              "1",
+              "2",
+              "3"
+            ]
+          }
+        ],
+        [
+          "Ein Winzer erntet Trauben im Weinberg.",
+          {
+            "key": "sector_b",
+            "label": "Winzer erntet Trauben",
+            "expected": "1",
+            "inputType": "select",
+            "placeholder": "Sektor wählen",
+            "options": [
+              "1",
+              "2",
+              "3"
+            ]
+          }
+        ],
+        [
+          "Eine Bankkauffrau bearbeitet einen Kreditantrag.",
+          {
+            "key": "sector_c",
+            "label": "Bankkauffrau bearbeitet einen Kreditantrag",
+            "expected": "3",
+            "inputType": "select",
+            "placeholder": "Sektor wählen",
+            "options": [
+              "1",
+              "2",
+              "3"
+            ]
+          }
+        ],
+        [
+          "Ein Bäcker backt Brot.",
+          {
+            "key": "sector_d",
+            "label": "Bäcker backt Brot",
+            "expected": "2",
+            "inputType": "select",
+            "placeholder": "Sektor wählen",
+            "options": [
+              "1",
+              "2",
+              "3"
+            ]
+          }
+        ],
+        [
+          "Ein Gärtner baut Freiland-Rosen an.",
+          {
+            "key": "sector_e",
+            "label": "Gärtner baut Freiland-Rosen an",
+            "expected": "1",
+            "inputType": "select",
+            "placeholder": "Sektor wählen",
+            "options": [
+              "1",
+              "2",
+              "3"
+            ]
+          }
+        ],
+        [
+          "Ein Schreiner baut einen Tisch.",
+          {
+            "key": "sector_f",
+            "label": "Schreiner baut einen Tisch",
+            "expected": "2",
+            "inputType": "select",
+            "placeholder": "Sektor wählen",
+            "options": [
+              "1",
+              "2",
+              "3"
+            ]
+          }
+        ]
+      ],
+      "feedback": {
+        "correct": "Die Tätigkeiten sind den Wirtschaftssektoren korrekt zugeordnet.",
+        "wrong": "Trennen Sie Gewinnung, Herstellung und Dienstleistungen noch einmal sauber voneinander."
+      },
+      "progressLinks": [
+        "pv3wiso_wirtschaftssektoren_unternehmensformen"
+      ]
+    },
+    {
+      "id": "q28",
+      "type": "single_choice",
+      "title": "Zuständige Stelle in der Ausbildung finden",
+      "prompt": "Luca Hansen soll Aufgaben übernehmen, die nicht zu seinem betrieblichen Ausbildungsplan passen. An welche für die betriebliche Ausbildung zuständige Stelle kann er sich wenden?",
+      "options": [
+        {
+          "text": "An die Berufsschule",
+          "rationale": "Die Berufsschule ist wichtig, aber nicht die zuständige Stelle für die betriebliche Ausbildung."
+        },
+        {
+          "text": "An die Industrie- und Handelskammer",
+          "rationale": "Die IHK ist die zuständige Stelle für viele betriebliche Ausbildungsverhältnisse."
+        },
+        {
+          "text": "An die Gewerbeaufsichtsbehörde",
+          "rationale": "Diese Behörde ist hier nicht die typische erste Adresse."
+        },
+        {
+          "text": "An die Berufsberatung",
+          "rationale": "Die Berufsberatung ist nicht die zuständige Stelle für die betriebliche Ausbildungsdurchführung."
+        },
+        {
+          "text": "An das Gesundheitsamt",
+          "rationale": "Das Gesundheitsamt ist dafür nicht zuständig."
+        }
+      ],
+      "correctIndex": 1,
+      "feedback": {
+        "correct": "Die zuständige Stelle wurde richtig benannt.",
+        "wrong": "Bei Problemen mit der betrieblichen Ausbildung ist die Kammer die zentrale Anlaufstelle."
+      },
+      "progressLinks": [
+        "pv3wiso_arbeitsrecht_ausbildung"
+      ]
+    },
+    {
+      "id": "q29",
+      "type": "table_fill",
+      "title": "AGG-Aussagen fachlich einordnen",
+      "prompt": "Ordnen Sie zu, welche Aussagen zum Allgemeinen Gleichbehandlungsgesetz zutreffen.",
+      "columns": [
+        "Aussage",
+        "Trifft zu?"
+      ],
+      "rows": [
+        [
+          "Das AGG gilt auch für Auszubildende.",
+          {
+            "key": "agg_a",
+            "label": "AGG gilt auch für Auszubildende",
+            "expected": "Ja",
+            "inputType": "select",
+            "placeholder": "Auswahl treffen",
+            "options": [
+              "Ja",
+              "Nein"
+            ]
+          }
+        ],
+        [
+          "Auch Bewerbungsverfahren werden vom AGG erfasst.",
+          {
+            "key": "agg_b",
+            "label": "Bewerbungsverfahren werden vom AGG erfasst",
+            "expected": "Ja",
+            "inputType": "select",
+            "placeholder": "Auswahl treffen",
+            "options": [
+              "Ja",
+              "Nein"
+            ]
+          }
+        ],
+        [
+          "Das AGG schützt nur Arbeitnehmerinnen und Arbeitnehmer aus Nicht-EU-Ländern.",
+          {
+            "key": "agg_c",
+            "label": "AGG schützt nur Nicht EU Arbeitnehmer",
+            "expected": "Nein",
+            "inputType": "select",
+            "placeholder": "Auswahl treffen",
+            "options": [
+              "Ja",
+              "Nein"
+            ]
+          }
+        ],
+        [
+          "Unangemessene persönliche Fragen im Bewerbungsgespräch können nach dem AGG unzulässig sein.",
+          {
+            "key": "agg_d",
+            "label": "Unangemessene persönliche Fragen können unzulässig sein",
+            "expected": "Ja",
+            "inputType": "select",
+            "placeholder": "Auswahl treffen",
+            "options": [
+              "Ja",
+              "Nein"
+            ]
+          }
+        ],
+        [
+          "Das AGG greift erst nach der Einstellung und nicht bei der Personalauswahl.",
+          {
+            "key": "agg_e",
+            "label": "AGG greift erst nach der Einstellung",
+            "expected": "Nein",
+            "inputType": "select",
+            "placeholder": "Auswahl treffen",
+            "options": [
+              "Ja",
+              "Nein"
+            ]
+          }
+        ]
+      ],
+      "feedback": {
+        "correct": "Die Schutzwirkung des AGG wurde über Bewerbungsverfahren, Ausbildungsverhältnisse und unzulässige Auswahlkriterien hinweg sauber eingeordnet.",
+        "wrong": "Denken Sie daran, dass das AGG bereits bei der Personalauswahl und im Bewerbungsverfahren greifen kann."
+      },
+      "progressLinks": [
+        "pv3wiso_arbeitsschutz_umwelt_diversity"
+      ]
+    },
+    {
+      "id": "q30",
+      "type": "single_choice",
+      "title": "Betriebliche Regeln gegen Diskriminierung anwenden",
+      "prompt": "In welchem Fall wurden betriebliche Regeln gegen Diskriminierung beachtet?",
+      "options": [
+        {
+          "text": "Henry Stone wird eingestellt, weil seine auffällige Haarfarbe besonders ins Team passt.",
+          "rationale": "Das ist keine sachliche Auswahl nach Eignung."
+        },
+        {
+          "text": "Henriette Schmitz wird wegen ihrer Haarfarbe bevorzugt behandelt.",
+          "rationale": "Auch das ist keine sachgerechte Personalauswahl."
+        },
+        {
+          "text": "Andreas Brandner wird nicht ins Team aufgenommen, weil er offen homosexüll lebt.",
+          "rationale": "Das ist ein klar diskriminierendes Auswahlkriterium."
+        },
+        {
+          "text": "Sandro Müller wird wegen fehlender Qualifikation nicht in das Team aufgenommen.",
+          "rationale": "Die Entscheidung knüpft an eine sachliche Anforderung der Stelle an."
+        },
+        {
+          "text": "Angelika Corleone wird bei einer internen Bewerbung wegen ihrer Religion nicht berücksichtigt.",
+          "rationale": "Auch das wäre diskriminierend."
+        }
+      ],
+      "correctIndex": 3,
+      "feedback": {
+        "correct": "Der diskriminierungsfreie Fall wurde korrekt erkannt.",
+        "wrong": "Massgeblich ist, ob die Entscheidung auf einer sachlichen beruflichen Anforderung oder auf einem geschützten Merkmal beruht."
+      },
+      "progressLinks": [
+        "pv3wiso_arbeitsschutz_umwelt_diversity"
+      ]
+    }
+  ]
+}

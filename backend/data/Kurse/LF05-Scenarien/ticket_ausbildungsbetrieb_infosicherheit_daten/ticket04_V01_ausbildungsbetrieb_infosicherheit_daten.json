@@ -1,0 +1,160 @@
+{
+  "scenario": {
+    "company": "Ausbildungsbetrieb IT-Service",
+    "scale": "Mittelstand, 160 Mitarbeitende",
+    "context": "Station 4 des Tageslaufs: Informationssicherheit bei Datenverwaltung berücksichtigen.",
+    "mission": "Sie bewerten Schutzbedarf, Berechtigungen und sichere Verarbeitung für die Datenverwaltungssoftware.",
+    "station": {
+      "id": "LF05-ST-04",
+      "department": "Fachbereich und IT",
+      "profile": "Datenhaltung, Berechtigungen, sichere Ablage und Übertragung",
+      "constraints": [
+        "Datenwert und Schutzbedarf koppeln",
+        "Mindestschutz realistisch halten",
+        "Sichere Verarbeitung vor Beqümlichkeit setzen"
+      ]
+    },
+    "customerRequest": {
+      "from": "sicherheitsteam@ausbildungsbetrieb.example",
+      "to": "dev.team@ausbildungsbetrieb.example",
+      "subject": "Station 04: Informationssicherheit für Datenverwaltung absichern",
+      "date": "2026-03-13",
+      "body": "Bitte bewerten Sie für die Datenverwaltungssoftware den Schutzbedarf, die Zugriffssicht und die wichtigsten Sicherheitsmassnahmen für Speicherung und Übertragung."
+    }
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "type": "single_choice",
+      "title": "Kernmassnahme für sensible Daten",
+      "prompt": "Welche Massnahme ist für sensible Fachbereichsdaten besonders wichtig?",
+      "options": [
+        {
+          "text": "Zugriffe rollenbasiert vergeben und regelmässig prüfen",
+          "rationale": "Das begrenzt unnötige Datenzugriffe direkt."
+        },
+        {
+          "text": "Alle Daten für alle sichtbar machen",
+          "rationale": "Das widerspricht dem Schutzbedarf sensibler Daten."
+        },
+        {
+          "text": "Nur die Schriftgrösse im Interface ändern",
+          "rationale": "Das löst kein Sicherheitsproblem."
+        }
+      ],
+      "correctIndex": 0,
+      "feedback": {
+        "correct": "Richtig: Rollenbasierte Zugriffe sind hier zentral.",
+        "wrong": "Nicht passend: Die Massnahme muss den Datenzugriff wirksam begrenzen."
+      },
+      "progressLinks": [
+        "lf05_infosicherheit_daten"
+      ]
+    },
+    {
+      "id": "q2",
+      "type": "multi_select",
+      "title": "Sicherheitsaspekte bei Datenhaltung",
+      "prompt": "Welche Punkte sind für Datenhaltung und Datenübertragung wichtig? (Mehrfachauswahl)",
+      "options": [
+        {
+          "text": "Berechtigungen am Schutzbedarf ausrichten",
+          "correct": true,
+          "rationale": "So werden Zugriffe auf das Notwendige begrenzt."
+        },
+        {
+          "text": "Sichere Übertragung und nachvollziehbare Freigaben nutzen",
+          "correct": true,
+          "rationale": "Das reduziert Missbrauch und Fehlversand."
+        },
+        {
+          "text": "Importdateien ohne jede Prüfung direkt produktiv verarbeiten",
+          "correct": false,
+          "rationale": "Das erhöht Risiko für Datenqualität und Sicherheit."
+        },
+        {
+          "text": "Schutzbedarf in Anpassungsentscheidungen einbeziehen",
+          "correct": true,
+          "rationale": "Sicherheitsniveau und Funktion dürfen nicht getrennt betrachtet werden."
+        },
+        {
+          "text": "Ablageorte und Datenflüsse unklar lassen",
+          "correct": false,
+          "rationale": "Ohne Klarheit sinkt die Kontrollfähigkeit."
+        }
+      ],
+      "feedback": {
+        "correct": "Richtig: Sie verbinden Datenwert, Zugriff und sichere Verarbeitung sauber.",
+        "wrong": "Teilweise falsch: Bitte Berechtigungen, sichere Übertragung und Schutzbedarf stärker koppeln."
+      },
+      "progressLinks": [
+        "lf05_infosicherheit_daten"
+      ]
+    },
+    {
+      "id": "q3",
+      "type": "ordering",
+      "title": "Sicherer Umgang mit einer Importdatei",
+      "prompt": "Ordnen Sie die Schritte für einen sicheren Ablauf.",
+      "items": [
+        "Importbefund und Ergebnis dokumentieren",
+        "Dateiherkunft und Freigabe prüfen",
+        "Datei in geschützter Umgebung validieren",
+        "Erst nach erfolgreicher Prüfung weiterverarbeiten",
+        "Zugriff und Ablage gemessen am Schutzbedarf festlegen"
+      ],
+      "correctOrder": [
+        "Dateiherkunft und Freigabe prüfen",
+        "Zugriff und Ablage gemessen am Schutzbedarf festlegen",
+        "Datei in geschützter Umgebung validieren",
+        "Erst nach erfolgreicher Prüfung weiterverarbeiten",
+        "Importbefund und Ergebnis dokumentieren"
+      ],
+      "feedback": {
+        "correct": "Richtig: Der Ablauf verbindet Schutz, Verarbeitung und Nachweis.",
+        "wrong": "Nicht optimal: Bitte erst Herkunft und Zugriff klären, dann Prüfung, Verarbeitung und Dokumentation."
+      },
+      "progressLinks": [
+        "lf05_infosicherheit_daten",
+        "lf05_dokumentation_evaluation"
+      ]
+    },
+    {
+      "id": "q4",
+      "type": "number",
+      "title": "Anteil verschlüsselter Ablagen",
+      "prompt": "Von 20 Ablagebereichen sind 15 verschlüsselt. Wie hoch ist der verschlüsselte Anteil in Prozent?",
+      "expected": 75,
+      "toleranceAbs": 0.5,
+      "showExpectedFormula": "15 / 20 * 100 = 75 %",
+      "feedback": {
+        "correct": "Richtig gerechnet.",
+        "wrong": "Bitte verschlüsselte Bereiche durch die Gesamtzahl teilen und in Prozent umrechnen."
+      },
+      "progressLinks": [
+        "lf05_infosicherheit_daten"
+      ]
+    },
+    {
+      "id": "q5",
+      "type": "short_text",
+      "title": "Sicherheitsnotiz für die Datenverwaltung",
+      "prompt": "Formulieren Sie in 4-6 Sätzen eine kurze Notiz mit Schutzbedarf, Zugriffsregel und einer Massnahme für sicheren Datentransfer.",
+      "minChars": 160,
+      "requiredKeywords": [
+        "schutzbedarf",
+        "zugriff",
+        "transfer"
+      ],
+      "expectedOutline": "Schutzbedarf nennen, Zugriff regeln und einen sicheren Transferweg begründen.",
+      "feedback": {
+        "correct": "Richtig: Die Notiz ist sicherheitsorientiert und alltagstauglich.",
+        "wrong": "Bitte Schutzbedarf, Zugriff und sicheren Transfer klarer verbinden."
+      },
+      "progressLinks": [
+        "lf05_infosicherheit_daten",
+        "lf05_dokumentation_evaluation"
+      ]
+    }
+  ]
+}

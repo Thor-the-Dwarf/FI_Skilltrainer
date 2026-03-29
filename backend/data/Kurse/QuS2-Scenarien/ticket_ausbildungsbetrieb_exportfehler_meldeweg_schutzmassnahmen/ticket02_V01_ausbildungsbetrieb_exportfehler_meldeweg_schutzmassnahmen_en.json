@@ -1,0 +1,421 @@
+{
+  "scenario": {
+    "company": "SecuBridge Service GmbH",
+    "scale": "IT service provider for home office, municipal workplaces and medical practice environments, 95 employees",
+    "context": "An export file from the scheduling module was sent via an open sharing link to the wrong distribution list.",
+    "mission": "Contain the incident, align immediate actions, define roles for reporting and evidence, and secure the export path against recurrence.",
+    "source": {
+      "kind": "Internal incident report from the pilot operation",
+      "reference": "Scheduling export incident, 2026-03-26 09:12",
+      "note": "Based on sending errors, an open link share, logged downloads and preparation of a reliable incident status."
+    },
+    "station": {
+      "id": "QUS2-ST-02",
+      "department": "Service operations and data protection coordination",
+      "profile": "Incident intake, immediate actions, reporting path, evidence and recurrence prevention",
+      "constraints": [
+        "Verified facts, assumptions and open points must be cleanly separated",
+        "Immediate actions, communication and evidence must remain controllable in parallel",
+        "Only measures that are technically and organizationally viable in operations are included for the export path"
+      ]
+    },
+    "customerRequest": {
+      "from": "praxisbetrieb@secubridge-service.example",
+      "to": "incidentteam@ausbildungsbetrieb.example",
+      "subject": "Export file from scheduling module accidentally shared to the wrong recipients",
+      "date": "2026-03-26",
+      "body": "Good day,\n\nduring the pilot for scheduling coordination, a CSV export from the scheduling module was created this morning. Instead of going to the internal project distribution list, the sharing link went to an external service provider and two additional wrong recipients.\n\nThe file contains names, email addresses, appointment time, location, appointment type and an internal note field. The link was not password protected. The system currently shows three downloads, but the full recipient circle has not yet been fully confirmed.\n\nPlease establish a reliable incident status by 13:00: immediate actions, roles, evidence and the next step for further assessment.\n\nKind regards\nPractice operations"
+    }
+  },
+  "questions": [
+    {
+      "id": "ctx01",
+      "type": "context_card",
+      "title": "Verified facts",
+      "contentBlocks": [
+        {
+          "type": "text",
+          "text": "SecuBridge is testing an export from the scheduling module in a pilot for coordination with a medical practice group. Shortly after sending, it becomes clear that the sharing link went not only internally, but also to an external service provider and two wrong recipients."
+        },
+        {
+          "type": "table",
+          "columns": [
+            "Point",
+            "Current status"
+          ],
+          "rows": [
+            [
+              "File",
+              "CSV export from the scheduling module dated 2026-03-26"
+            ],
+            [
+              "Content",
+              "Name, email, appointment time, location, appointment type, internal note field"
+            ],
+            [
+              "Access path",
+              "Open sharing link in an email"
+            ],
+            [
+              "Logged access",
+              "Three downloads, recipient circle not fully confirmed yet"
+            ],
+            [
+              "Expectation by 13:00",
+              "A containable incident status with immediate actions, roles and evidence"
+            ]
+          ]
+        },
+        {
+          "type": "text",
+          "text": "The focus now is not on blame discussions, but on stopping access, estimating the data scope, securing the recipient circle and setting up a traceable reporting path."
+        }
+      ]
+    },
+    {
+      "id": "q01",
+      "type": "multi_select",
+      "title": "Immediate actions after the export error",
+      "prompt": "What must be initiated immediately after the open link is discovered? Several steps may be necessary.",
+      "options": [
+        {
+          "text": "Disable the sharing link and temporarily stop further exports via the same path.",
+          "correct": true,
+          "rationale": "This limits further access and stops the next uncontrolled distribution."
+        },
+        {
+          "text": "Secure the recipient circle and ask wrong recipients to delete and provide brief confirmation.",
+          "correct": true,
+          "rationale": "This helps quickly narrow the reach and response."
+        },
+        {
+          "text": "Immediately record time, file name, data scope and known downloads in the incident log.",
+          "correct": true,
+          "rationale": "Without early documentation the most important facts are lost later."
+        },
+        {
+          "text": "Involve data protection coordination and service management directly.",
+          "correct": true,
+          "rationale": "Assessment, communication and the formal reporting path must not run in parallel without alignment."
+        },
+        {
+          "text": "Wait for a complete root cause analysis before escalating the case internally.",
+          "correct": false,
+          "rationale": "Containment must start immediately; you cannot wait for the full cause."
+        },
+        {
+          "text": "Send the file again to the same distribution list with a corrected subject so no follow-up questions arise.",
+          "correct": false,
+          "rationale": "This would expand the circle of uncontrolled recipients rather than stabilize it."
+        }
+      ],
+      "feedback": {
+        "correct": "The immediate actions were correctly identified.",
+        "wrong": "Focus on access stop, containment, documentation and early involvement of the right stakeholders."
+      },
+      "progressLinks": [
+        "qus2_vorfall_eingrenzen",
+        "qus2_sofortmassnahmen_absichern"
+      ]
+    },
+    {
+      "id": "q02",
+      "type": "single_choice",
+      "title": "Identify the most critical finding",
+      "prompt": "Which finding makes the case currently the most risky?",
+      "options": [
+        {
+          "text": "The link was open, the file contained appointment and contact data as well as an internal note field, and downloads are already logged.",
+          "rationale": "Data scope, uncontrolled access and confirmed downloads come together here."
+        },
+        {
+          "text": "The export comes from the pilot operation and not from regular operations.",
+          "rationale": "That explains the context, but is not the actual risk driver."
+        },
+        {
+          "text": "The sending happened in the morning and not late in the afternoon.",
+          "rationale": "The timing can affect response, but not the core criticality."
+        },
+        {
+          "text": "The file name is technical and not very descriptive for recipients.",
+          "rationale": "That is not a key factor in the risk assessment."
+        }
+      ],
+      "correctIndex": 0,
+      "feedback": {
+        "correct": "The most critical current finding was correctly prioritized.",
+        "wrong": "Focus on where data scope, open access and confirmed downloads combine."
+      },
+      "progressLinks": [
+        "qus2_vorfall_eingrenzen"
+      ]
+    },
+    {
+      "id": "f02",
+      "type": "followup_divider",
+      "title": "Assess and report the incident cleanly",
+      "from": "datenschutzkoordination@secubridge-service.example",
+      "to": "incidentteam@ausbildungsbetrieb.example",
+      "subject": "Prepare incident assessment and evidence by 13:00",
+      "date": "2026-03-26",
+      "body": "Hello everyone,\n\nby 13:00 I need a reliable status on what exactly was accessible, who could have had access, which immediate actions are already running and which points are still unconfirmed. Please clearly separate verified facts, assumptions and open points.\n\nKind regards\nData protection coordination"
+    },
+    {
+      "id": "q03",
+      "type": "table_fill",
+      "title": "Define evidence and initial lead role",
+      "prompt": "For each incident aspect, add the most appropriate evidence and the initial lead role.",
+      "columns": [
+        "Incident aspect",
+        "Required evidence",
+        "Initial lead role"
+      ],
+      "rows": [
+        [
+          "Access path via the sharing link",
+          {
+            "key": "evidence_row_1",
+            "label": "Sharing link / evidence",
+            "expected": "Link settings and access log from the system.",
+            "inputType": "select",
+            "placeholder": "Select evidence",
+            "options": [
+              "Link settings and access log from the system.",
+              "Secured export copy with field list and record count.",
+              "Sending log plus deletion and confirmations from recipients.",
+              "Sentiment snapshot from the team chat about the incident."
+            ]
+          },
+          {
+            "key": "owner_row_1",
+            "label": "Sharing link / role",
+            "expected": "Platform operations",
+            "inputType": "select",
+            "placeholder": "Select role",
+            "options": [
+              "Platform operations",
+              "Practice operations",
+              "Service management",
+              "Data protection coordination"
+            ]
+          }
+        ],
+        [
+          "Scope and sensitivity of the file",
+          {
+            "key": "evidence_row_2",
+            "label": "Data scope / evidence",
+            "expected": "Secured export copy with field list and record count.",
+            "inputType": "select",
+            "placeholder": "Select evidence",
+            "options": [
+              "Link settings and access log from the system.",
+              "Secured export copy with field list and record count.",
+              "Sending log plus deletion and confirmations from recipients.",
+              "General project presentation about the pilot operation."
+            ]
+          },
+          {
+            "key": "owner_row_2",
+            "label": "Data scope / role",
+            "expected": "Practice operations",
+            "inputType": "select",
+            "placeholder": "Select role",
+            "options": [
+              "Platform operations",
+              "Practice operations",
+              "Service management",
+              "Data protection coordination"
+            ]
+          }
+        ],
+        [
+          "Recipient circle and responses",
+          {
+            "key": "evidence_row_3",
+            "label": "Recipient circle / evidence",
+            "expected": "Sending log plus deletion and confirmations from recipients.",
+            "inputType": "select",
+            "placeholder": "Select evidence",
+            "options": [
+              "Link settings and access log from the system.",
+              "Secured export copy with field list and record count.",
+              "Sending log plus deletion and confirmations from recipients.",
+              "Calendar invitation for the coordination appointment."
+            ]
+          },
+          {
+            "key": "owner_row_3",
+            "label": "Recipient circle / role",
+            "expected": "Service management",
+            "inputType": "select",
+            "placeholder": "Select role",
+            "options": [
+              "Platform operations",
+              "Practice operations",
+              "Service management",
+              "Data protection coordination"
+            ]
+          }
+        ]
+      ],
+      "feedback": {
+        "correct": "Incident aspects, evidence and initial lead role were matched consistently.",
+        "wrong": "Check who can best secure access data, data scope and recipient reactions."
+      },
+      "progressLinks": [
+        "qus2_meldewege_rollen_nachweise"
+      ]
+    },
+    {
+      "id": "q04",
+      "type": "match_pairs",
+      "title": "Initial responsibility in the incident",
+      "prompt": "Which role takes which task in the first step?",
+      "layout": "table",
+      "columns": [
+        "Role",
+        "Initial task"
+      ],
+      "pairs": [
+        {
+          "key": "role_1",
+          "left": "Service management",
+          "right": "Coordinate communication with practice operations and wrong recipients"
+        },
+        {
+          "key": "role_2",
+          "left": "Platform operations",
+          "right": "Block the link, secure the export path and provide access logs"
+        },
+        {
+          "key": "role_3",
+          "left": "Data protection coordination",
+          "right": "Manage assessment, reporting path and formal incident documentation"
+        },
+        {
+          "key": "role_4",
+          "left": "Practice operations",
+          "right": "Assess the data scope and the practical impact of the file"
+        }
+      ],
+      "options": [
+        "Coordinate communication with practice operations and wrong recipients",
+        "Block the link, secure the export path and provide access logs",
+        "Manage assessment, reporting path and formal incident documentation",
+        "Assess the data scope and the practical impact of the file"
+      ],
+      "feedback": {
+        "correct": "The roles are matched with their initial responsibilities.",
+        "wrong": "Focus on who must first handle communication, technology, assessment and subject-matter evaluation."
+      },
+      "progressLinks": [
+        "qus2_meldewege_rollen_nachweise"
+      ]
+    },
+    {
+      "id": "q05",
+      "type": "short_text",
+      "title": "Status update for department leadership",
+      "prompt": "Write a short status update (4-6 sentences) with status, verified facts, an open point and the next step.",
+      "minChars": 170,
+      "requiredKeywords": [
+        "status",
+        "facts",
+        "next step"
+      ],
+      "expectedOutline": "Current situation, what is verified, which point is still open and how things continue immediately.",
+      "feedback": {
+        "correct": "The status update is concise, reliable and actionable.",
+        "wrong": "Please separate status, verified facts, open point and next step more clearly."
+      },
+      "progressLinks": [
+        "qus2_meldewege_rollen_nachweise"
+      ]
+    },
+    {
+      "id": "f03",
+      "type": "followup_divider",
+      "title": "Secure the export path against recurrence",
+      "from": "serviceleitung@secubridge-service.example",
+      "to": "incidentteam@ausbildungsbetrieb.example",
+      "subject": "Define immediate protection and recurrence protection for the export path",
+      "date": "2026-03-26",
+      "body": "Hello everyone,\n\nonce the incident status is established, I need a proposal on how we avoid repeating the same mistake next week. Relevant are link sharing, data minimization in exports and clear approvals for external recipients.\n\nKind regards\nService management"
+    },
+    {
+      "id": "q06",
+      "type": "multi_select",
+      "title": "Recurrence protection for the export path",
+      "prompt": "Which measures reduce the risk of the same error most effectively?",
+      "options": [
+        {
+          "text": "Create sharing links by default with an expiration date and role-based approval.",
+          "correct": true,
+          "rationale": "This limits open access technically rather than relying on organizational hope."
+        },
+        {
+          "text": "Remove internal note fields from the export template and output only necessary data.",
+          "correct": true,
+          "rationale": "Data minimization reduces potential damage before every send."
+        },
+        {
+          "text": "Allow external recipients or distribution lists for sensitive exports only after second approval.",
+          "correct": true,
+          "rationale": "This intercepts frequent sending errors organizationally."
+        },
+        {
+          "text": "Link sending and download evidence in a tamper-proof way with the incident and export path.",
+          "correct": true,
+          "rationale": "This improves not only investigation, but also later steering of comparable cases."
+        },
+        {
+          "text": "Remind staff once a month to be careful, but leave technical defaults unchanged.",
+          "correct": false,
+          "rationale": "Without technical and process changes the root problem remains."
+        },
+        {
+          "text": "Copy export files into multiple team folders so everyone sees the same version.",
+          "correct": false,
+          "rationale": "More copies increase spread rather than protection."
+        }
+      ],
+      "feedback": {
+        "correct": "The most effective protection measures for the export path were correctly identified.",
+        "wrong": "Look for combinations of technical limitation, data minimization, approval process and evidence."
+      },
+      "progressLinks": [
+        "qus2_sofortmassnahmen_absichern"
+      ]
+    },
+    {
+      "id": "q07",
+      "type": "ordering",
+      "title": "Structure incident handling cleanly",
+      "prompt": "Put the steps in a sensible order so containment, assessment and evidence fit together.",
+      "items": [
+        "Disable the sharing link and stop further access.",
+        "Secure data scope, recipient circle and log status.",
+        "Fix roles for assessment, communication and documentation.",
+        "Assess the risk for affected parties and operations.",
+        "Record measures, feedback and the open point in the incident report."
+      ],
+      "correctOrder": [
+        "Disable the sharing link and stop further access.",
+        "Secure data scope, recipient circle and log status.",
+        "Fix roles for assessment, communication and documentation.",
+        "Assess the risk for affected parties and operations.",
+        "Record measures, feedback and the open point in the incident report."
+      ],
+      "feedback": {
+        "correct": "The order cleanly leads from containment to a documented, assessable status.",
+        "wrong": "First stop access and secure facts, then roles and assessment, only after that close the report."
+      },
+      "progressLinks": [
+        "qus2_vorfall_eingrenzen",
+        "qus2_meldewege_rollen_nachweise",
+        "qus2_sofortmassnahmen_absichern"
+      ]
+    }
+  ]
+}

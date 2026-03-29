@@ -1,0 +1,731 @@
+{
+  "scenario": {
+    "company": "Ausbildungsbetrieb IT-Service",
+    "scale": "Regional, 140 Mitarbeitende",
+    "context": "Station 01: Startauftrag und Folgeaufträge zur Client-Einbindung im Betriebsnetz.",
+    "mission": "Sie bearbeiten den Startauftrag und mehrere Folgeaufträge rund um Netzparameter, Prüfung, Beschaffung und Betriebsfreigabe.",
+    "station": {
+      "id": "LF03-ST-01",
+      "department": "Interner IT-Service",
+      "profile": "Büro-Client mit LAN, DNS, DHCP, zentraler Anmeldung und Cloud-Zugriff",
+      "constraints": [
+        "Betriebssicherheit vor Tempo",
+        "Schritte nachvollziehbar dokumentieren",
+        "Sicherheits- und Verfügbarkeitsbasis absichern"
+      ]
+    },
+    "customerRequest": {
+      "from": "it.leitung@ausbildungsbetrieb.example",
+      "to": "support.team@ausbildungsbetrieb.example",
+      "subject": "Station 01: Client strukturiert ins Netzwerk integrieren",
+      "date": "2026-03-13",
+      "body": "Bitte binden Sie einen neuen Client für das Vertriebsteam in das bestehende Netzwerk ein.\n\nDanach folgen weitere Aufträge zur selben Umgebung mit steigender Verantwortung rund um Bereichswechsel, Störung, Beschaffung und Betriebsfreigabe."
+    }
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "type": "single_choice",
+      "title": "Basis-Netzparameter richtig zuordnen",
+      "prompt": "Welche Kombination ist für einen normalen Client im Unternehmens-LAN am sinnvollsten?",
+      "options": [
+        {
+          "text": "IP-Adresse, Subnetzmaske, Default Gateway und DNS-Server passend zum Netzbereich",
+          "rationale": "Diese Parameter bilden die notwendige Kommunikationsbasis."
+        },
+        {
+          "text": "Nur MAC-Adresse und Benutzername reichen aus",
+          "rationale": "Ohne IP-Parameter ist keine normale Netzkommunikation möglich."
+        },
+        {
+          "text": "Nur WLAN-Passwort, alle anderen Werte sind optional",
+          "rationale": "Das deckt LAN- und Dienstkommunikation nicht ab."
+        }
+      ],
+      "correctIndex": 0,
+      "feedback": {
+        "correct": "Richtig: Das sind die zentralen Basisparameter für den Client im Netz.",
+        "wrong": "Nicht passend: Für die Einbindung fehlen wesentliche Netzparameter."
+      },
+      "progressLinks": [
+        "lf03_ethernet_tcpip"
+      ]
+    },
+    {
+      "id": "q2",
+      "type": "multi_select",
+      "title": "Vorab-Prüfung für die Client-Integration",
+      "prompt": "Welche Punkte sollten vor der Einbindung geprüft werden? (Mehrfachauswahl)",
+      "options": [
+        {
+          "text": "Zielnetzbereich und Zugriffsanforderungen sind bekannt",
+          "correct": true,
+          "rationale": "Ohne klaren Zielbereich ist die Konfiguration fehleranfällig."
+        },
+        {
+          "text": "Switchport oder Anschluss ist technisch verfügbar",
+          "correct": true,
+          "rationale": "Physische und logische Verfügbarkeit ist Pflicht."
+        },
+        {
+          "text": "Benutzerkonto und Rechte sind vorbereitet",
+          "correct": true,
+          "rationale": "Die Anmeldung muss direkt funktionieren können."
+        },
+        {
+          "text": "Nur die Gehäusefarbe des Clients wurde abgestimmt",
+          "correct": false,
+          "rationale": "Das ist kein technisches Integrationskriterium."
+        },
+        {
+          "text": "Namensschema und Dokumentationspflicht sind geklärt",
+          "correct": true,
+          "rationale": "Vereinfacht Betrieb, Support und Nachvollziehbarkeit."
+        }
+      ],
+      "feedback": {
+        "correct": "Richtig: Sie sichern die Einbindung fachlich und organisatorisch ab.",
+        "wrong": "Teilweise falsch: Bitte die technisch notwendigen Vorabpunkte stärker gewichten."
+      },
+      "progressLinks": [
+        "lf03_client_integration"
+      ]
+    },
+    {
+      "id": "q3",
+      "type": "ordering",
+      "title": "Ablauf einer strukturierten Einbindung",
+      "prompt": "Bringen Sie die Schritte in eine sinnvolle Reihenfolge.",
+      "items": [
+        "Kurzen Funktionstest und Dokumentation abschliessen",
+        "Anforderungen und Zielnetzbereich klären",
+        "Netzparameter am Client setzen bzw. beziehen",
+        "Erreichbarkeit und Namensauflösung prüfen",
+        "Benutzeranmeldung und Freigaben testen"
+      ],
+      "correctOrder": [
+        "Anforderungen und Zielnetzbereich klären",
+        "Netzparameter am Client setzen bzw. beziehen",
+        "Erreichbarkeit und Namensauflösung prüfen",
+        "Benutzeranmeldung und Freigaben testen",
+        "Kurzen Funktionstest und Dokumentation abschliessen"
+      ],
+      "feedback": {
+        "correct": "Richtig: Der Ablauf führt strukturiert von Vorbereitung bis Nachweis.",
+        "wrong": "Nicht optimal: Bitte erst Basis herstellen, dann testen und dokumentieren."
+      },
+      "progressLinks": [
+        "lf03_client_integration"
+      ]
+    },
+    {
+      "id": "q4",
+      "type": "number",
+      "title": "Adressierung abschätzen",
+      "prompt": "Ein /27-Subnetz wird für einen Bereich genutzt. Wie viele nutzbare Host-Adressen stehen zur Verfügung?",
+      "expected": 30,
+      "toleranceAbs": 0,
+      "showExpectedFormula": "2^(32-27) - 2 = 30",
+      "feedback": {
+        "correct": "Richtig gerechnet.",
+        "wrong": "Bitte Hostanteil und reservierte Adressen (Netz/Broadcast) berücksichtigen."
+      },
+      "progressLinks": [
+        "lf03_schichtenmodelle_adressierung"
+      ]
+    },
+    {
+      "id": "q5",
+      "type": "short_text",
+      "title": "Kurzmeldung an den Teamlead",
+      "prompt": "Schreiben Sie eine kurze Meldung (4-6 Sätze) mit Integrationsstatus, Testlage und offenem Restrisiko.",
+      "minChars": 140,
+      "requiredKeywords": [
+        "status",
+        "test",
+        "risiko"
+      ],
+      "expectedOutline": "Klarer Status, wichtigste Testaussagen, ein realistischer Restrisikohinweis.",
+      "feedback": {
+        "correct": "Richtig: Die Meldung ist entscheidungsreif und nachvollziehbar.",
+        "wrong": "Bitte Status, Testlage und Restrisiko klarer strukturieren."
+      },
+      "progressLinks": [
+        "lf03_netzwerk_einfuehrung",
+        "lf03_pruefen_warten"
+      ]
+    },
+    {
+      "id": "sep_f1",
+      "type": "followup_divider",
+      "title": "Folgeauftrag 1 - Bereichswechsel in den Schulungsraum",
+      "from": "vertrieb.leitung@ausbildungsbetrieb.example",
+      "to": "support.team@ausbildungsbetrieb.example",
+      "subject": "Client muss in den Schulungsbereich umziehen",
+      "date": "2026-03-13",
+      "body": "Der vorbereitete Client soll nun doch im Schulungsbereich eingesetzt werden. Bitte prüfen Sie den Netzbereichswechsel, die Anschlussseite, die Benutzeranmeldung und den Zugriff auf den freigegebenen Cloud-Arbeitsordner."
+    },
+    {
+      "id": "q6",
+      "type": "single_choice",
+      "title": "Passende Struktur für den Bereichswechsel",
+      "prompt": "Welche Infrastruktur ist für einen standardisierten Client-Arbeitsplatz im Schulungsbereich am praktikabelsten?",
+      "options": [
+        {
+          "text": "Sternstruktur über einen zentralen Switch mit sauber dokumentierter Anschlussdose",
+          "rationale": "Das ist in Standardumgebungen gut wartbar und eindeutig prüfbar."
+        },
+        {
+          "text": "Direkte Vollvermaschung zwischen allen Clients im Raum",
+          "rationale": "Das ist für Standardarbeitsplätze zu komplex und unpraktisch."
+        },
+        {
+          "text": "Ringstruktur nur für diesen Arbeitsplatz",
+          "rationale": "Das ist für normale Büro-Clients untypisch."
+        }
+      ],
+      "correctIndex": 0,
+      "feedback": {
+        "correct": "Richtig: Das passt zur typischen LAN-Praxis im Betrieb.",
+        "wrong": "Nicht passend: Für den Standardbetrieb ist die gewählte Struktur unüblich."
+      },
+      "progressLinks": [
+        "lf03_topologien_verkabelung"
+      ]
+    },
+    {
+      "id": "q7",
+      "type": "multi_select",
+      "title": "Prüfpunkte für den Umzug",
+      "prompt": "Welche Punkte müssen für den Wechsel in einen anderen Netzbereich geprüft werden? (Mehrfachauswahl)",
+      "options": [
+        {
+          "text": "Zielnetzbereich sowie zugehörige DHCP- und DNS-Zuordnung prüfen",
+          "correct": true,
+          "rationale": "Die logische Einbindung muss zum neuen Bereich passen."
+        },
+        {
+          "text": "Passender Anschluss oder Access Point ist verfügbar",
+          "correct": true,
+          "rationale": "Ohne funktionierende Anbindung bleibt der Umzug unvollständig."
+        },
+        {
+          "text": "Benutzerkonto und Freigaben sind im neuen Bereich nutzbar",
+          "correct": true,
+          "rationale": "Arbeitsfähigkeit hängt von Anmeldung und Rechten ab."
+        },
+        {
+          "text": "Nur den Desktop-Hintergrund ändern",
+          "correct": false,
+          "rationale": "Das ist für die technische Einbindung irrelevant."
+        },
+        {
+          "text": "Standortdokumentation und Gerätename aktualisieren",
+          "correct": true,
+          "rationale": "Das vereinfacht Support und Bestandsführung."
+        }
+      ],
+      "feedback": {
+        "correct": "Richtig: Sie verbinden Technik, Zugriff und Dokumentation.",
+        "wrong": "Teilweise falsch: Bitte Netzbereich, Zugriff und Anschlussbasis stärker gewichten."
+      },
+      "progressLinks": [
+        "lf03_client_integration"
+      ]
+    },
+    {
+      "id": "q8",
+      "type": "ordering",
+      "title": "Vom Anschluss bis zum Cloud-Zugriff",
+      "prompt": "Ordnen Sie die Schritte für den Bereichswechsel sinnvoll.",
+      "items": [
+        "Cloud-Freigabe und Arbeitsordner prüfen",
+        "Netzanschluss oder Funkverbindung prüfen",
+        "Benutzer mit vorbereitetem Konto anmelden",
+        "Netzparameter beziehen oder setzen",
+        "Erreichbarkeit und Namensauflösung testen"
+      ],
+      "correctOrder": [
+        "Netzanschluss oder Funkverbindung prüfen",
+        "Netzparameter beziehen oder setzen",
+        "Erreichbarkeit und Namensauflösung testen",
+        "Benutzer mit vorbereitetem Konto anmelden",
+        "Cloud-Freigabe und Arbeitsordner prüfen"
+      ],
+      "feedback": {
+        "correct": "Richtig: Der Ablauf führt sauber von der Basis zur Nutzbarkeit.",
+        "wrong": "Nicht optimal: Bitte erst Verbindung und Parameter sichern, dann Dienste prüfen."
+      },
+      "progressLinks": [
+        "lf03_client_integration"
+      ]
+    },
+    {
+      "id": "q9",
+      "type": "number",
+      "title": "Portbedarf für den Schulungsbereich",
+      "prompt": "Im Schulungsbereich sollen 14 Clients, 1 Drucker, 1 Access Point und 2 Reserveports an einen Switch. Wie viele Ports werden mindestens benötigt?",
+      "expected": 18,
+      "toleranceAbs": 0,
+      "showExpectedFormula": "14 + 1 + 1 + 2 = 18 Ports",
+      "feedback": {
+        "correct": "Richtig gerechnet.",
+        "wrong": "Bitte alle aktiven Anschlüsse und die Reserve zusammenzählen."
+      },
+      "progressLinks": [
+        "lf03_hauptbestandteile_unterscheiden"
+      ]
+    },
+    {
+      "id": "q10",
+      "type": "short_text",
+      "title": "Freigabeempfehlung für den Bereichswechsel",
+      "prompt": "Formulieren Sie eine kurze Freigabeempfehlung (4-6 Sätze) mit Netzbereich, Zugriffsstatus und Dokumentationshinweis.",
+      "minChars": 150,
+      "requiredKeywords": [
+        "netzbereich",
+        "zugriff",
+        "dokumentation"
+      ],
+      "expectedOutline": "Klare Aussage zum Bereichswechsel, Nutzbarkeit und Nachweis in der Dokumentation.",
+      "feedback": {
+        "correct": "Richtig: Die Empfehlung ist fachlich klar und freigabefähig.",
+        "wrong": "Bitte Netzbereich, Zugriffslage und Dokumentationsbezug klarer benennen."
+      },
+      "progressLinks": [
+        "lf03_client_integration",
+        "lf03_pruefen_warten"
+      ]
+    },
+    {
+      "id": "sep_f2",
+      "type": "followup_divider",
+      "title": "Folgeauftrag 2 - Namensauflösung instabil",
+      "from": "service.desk@ausbildungsbetrieb.example",
+      "to": "support.team@ausbildungsbetrieb.example",
+      "subject": "Nach dem Umzug treten DNS-Probleme auf",
+      "date": "2026-03-13",
+      "body": "Im neuen Bereich ist die Verbindung grundsätzlich vorhanden, aber mehrere Namensabfragen schlagen sporadisch fehl. Bitte führen Sie eine saubere Erstdiagnose durch und geben Sie eine Zwischenmeldung mit nächstem Schritt."
+    },
+    {
+      "id": "q11",
+      "type": "single_choice",
+      "title": "Erste Trennung von DNS- und Routingproblem",
+      "prompt": "Welche Prüfung grenzt ein Namensauflösungsproblem am schnellsten gegen ein reines Routingproblem ab?",
+      "options": [
+        {
+          "text": "Zuerst ein Ziel per IP und danach denselben Dienst per Namen prüfen",
+          "rationale": "So trennen Sie Erreichbarkeit von Namensauflösung sehr schnell."
+        },
+        {
+          "text": "Nur das Hintergrundbild des Clients kontrollieren",
+          "rationale": "Das liefert keinen Bezug zur Netzdiagnose."
+        },
+        {
+          "text": "Sofort den kompletten Switch austauschen",
+          "rationale": "Das wäre ohne Diagnosebasis unverhältnismässig."
+        }
+      ],
+      "correctIndex": 0,
+      "feedback": {
+        "correct": "Richtig: Damit wird die Fehlerklasse schnell eingegrenzt.",
+        "wrong": "Nicht passend: Bitte erst mit einer einfachen, belastbaren Vergleichsprüfung starten."
+      },
+      "progressLinks": [
+        "lf03_ethernet_tcpip",
+        "lf03_pruefen_warten"
+      ]
+    },
+    {
+      "id": "q12",
+      "type": "multi_select",
+      "title": "Mögliche Ursachen für instabile Erreichbarkeit",
+      "prompt": "Welche Punkte können Datenübertragung oder Erreichbarkeit merklich verschlechtern? (Mehrfachauswahl)",
+      "options": [
+        {
+          "text": "Beschädigtes Kabel oder loser Link",
+          "correct": true,
+          "rationale": "Physische Probleme wirken sich direkt auf die Verbindung aus."
+        },
+        {
+          "text": "Fehlerhafte Treiber oder eine unpassende Netzwerkkarte",
+          "correct": true,
+          "rationale": "Die Client-Schnittstelle kann Ursache für instabiles Verhalten sein."
+        },
+        {
+          "text": "Überlasteter Access Point oder Funkstoerquellen",
+          "correct": true,
+          "rationale": "Bei Funkstrecken sinkt dadurch die Stabilität deutlich."
+        },
+        {
+          "text": "Sauber geführte Patchdokumentation",
+          "correct": false,
+          "rationale": "Das verbessert eher die Analyse, nicht die Störung."
+        },
+        {
+          "text": "Falsche DNS-Einträge oder ein unpassender DNS-Server",
+          "correct": true,
+          "rationale": "Das führt zu Fehlern bei der Namensauflösung."
+        }
+      ],
+      "feedback": {
+        "correct": "Richtig: Sie betrachten physische, logische und dienstbezogene Ursachen.",
+        "wrong": "Teilweise falsch: Bitte Medien, Clientschnittstelle und DNS-Basis stärker einbeziehen."
+      },
+      "progressLinks": [
+        "lf03_datenuebertragung_verstehen",
+        "lf03_netzwerkmedien_zugriff"
+      ]
+    },
+    {
+      "id": "q13",
+      "type": "ordering",
+      "title": "Schnelltest bei instabiler Namensauflösung",
+      "prompt": "Ordnen Sie die Schritte für einen sauberen Schnelltest.",
+      "items": [
+        "IP-Konfiguration des Clients prüfen",
+        "Ergebnis dokumentieren und bei Bedarf eskalieren",
+        "Namensauflösung gezielt testen",
+        "Physische Verbindung und Link-Status prüfen",
+        "Gateway und Zielsystem per IP testen"
+      ],
+      "correctOrder": [
+        "Physische Verbindung und Link-Status prüfen",
+        "IP-Konfiguration des Clients prüfen",
+        "Gateway und Zielsystem per IP testen",
+        "Namensauflösung gezielt testen",
+        "Ergebnis dokumentieren und bei Bedarf eskalieren"
+      ],
+      "feedback": {
+        "correct": "Richtig: Die Diagnose folgt der typischen Prüfkette von unten nach oben.",
+        "wrong": "Nicht optimal: Starten Sie bei Basisverbindung und gehen Sie dann in die Dienste."
+      },
+      "progressLinks": [
+        "lf03_pruefen_warten"
+      ]
+    },
+    {
+      "id": "q14",
+      "type": "number",
+      "title": "Erfolgsquote von Namensabfragen",
+      "prompt": "Von 40 DNS-Abfragen schlagen 6 fehl. Wie hoch ist die Erfolgsquote in Prozent?",
+      "expected": 85,
+      "toleranceAbs": 0.5,
+      "showExpectedFormula": "(40 - 6) / 40 * 100 = 85 %",
+      "feedback": {
+        "correct": "Richtig gerechnet.",
+        "wrong": "Bitte erfolgreiche Abfragen durch die Gesamtzahl teilen und in Prozent umrechnen."
+      },
+      "progressLinks": [
+        "lf03_pruefen_warten"
+      ]
+    },
+    {
+      "id": "q15",
+      "type": "short_text",
+      "title": "Zwischenmeldung an den Fachbereich",
+      "prompt": "Formulieren Sie eine Zwischenmeldung (4-6 Sätze) mit vermuteter Ursache, laufender Prüfung und nächstem Schritt.",
+      "minChars": 150,
+      "requiredKeywords": [
+        "ursache",
+        "prüfung",
+        "nächster schritt"
+      ],
+      "expectedOutline": "Kurzlage zur Störung, begründeter Prüfweg und klares Folgeupdate.",
+      "feedback": {
+        "correct": "Richtig: Die Meldung ist transparent und handlungsorientiert.",
+        "wrong": "Bitte Ursache, laufende Prüfung und Folgeaktion klarer voneinander trennen."
+      },
+      "progressLinks": [
+        "lf03_pruefen_warten"
+      ]
+    },
+    {
+      "id": "sep_f3",
+      "type": "followup_divider",
+      "title": "Folgeauftrag 3 - Beschaffung für weitere Arbeitsplätze",
+      "from": "einkauf@ausbildungsbetrieb.example",
+      "to": "support.team@ausbildungsbetrieb.example",
+      "subject": "Bitte technische Freigabe für 12 weitere Clients vorbereiten",
+      "date": "2026-03-13",
+      "body": "Für den neuen Bereich sollen 12 weitere Arbeitsplätze beschafft werden. Bitte prüfen Sie Netzwerkkarte, Switch-Kapazität, Anschlussreserve und technische Standards und geben Sie eine kurze Freigabeempfehlung."
+    },
+    {
+      "id": "q16",
+      "type": "single_choice",
+      "title": "Passende Netzwerkkarte für Standard-Clients",
+      "prompt": "Welche Netzwerkkarte ist für einen typischen Büro-Client am passendsten?",
+      "options": [
+        {
+          "text": "Gigabit-Ethernet mit passendem Treiber und betrieblicher Standardunterstützung",
+          "rationale": "Das passt zu typischen Client-Netzen und bleibt gut wartbar."
+        },
+        {
+          "text": "Beliebige Altkarte ohne Treibersupport",
+          "rationale": "Ohne Support steigt das Betriebsrisiko."
+        },
+        {
+          "text": "Nur eine Spezialkarte ohne Bezug zum vorhandenen Netz",
+          "rationale": "Das erschwert Standardisierung und Einsatz."
+        }
+      ],
+      "correctIndex": 0,
+      "feedback": {
+        "correct": "Richtig: Standardkonformität und Treibersicherheit sind hier zentral.",
+        "wrong": "Nicht passend: Bitte Standardnetz, Treibersupport und Wartbarkeit gemeinsam betrachten."
+      },
+      "progressLinks": [
+        "lf03_komponenten_standards"
+      ]
+    },
+    {
+      "id": "q17",
+      "type": "multi_select",
+      "title": "Kriterien für die Switch-Auswahl",
+      "prompt": "Welche Kriterien sind für die Auswahl eines Switches für 12 neue Clients sinnvoll? (Mehrfachauswahl)",
+      "options": [
+        {
+          "text": "Ausreichende Portzahl inklusive Reserve",
+          "correct": true,
+          "rationale": "Ohne Reserve fehlt später Flexibilität."
+        },
+        {
+          "text": "Passende Uplink-Kapazität zum restlichen Netz",
+          "correct": true,
+          "rationale": "Der Switch muss sauber ins Gesamtnetz eingebunden sein."
+        },
+        {
+          "text": "Verwaltbarkeit und Standardkompatibilität",
+          "correct": true,
+          "rationale": "Das erleichtert Betrieb und Fehlersuche."
+        },
+        {
+          "text": "Nur die Gehäusefarbe des Geräts",
+          "correct": false,
+          "rationale": "Das ist kein belastbares Auswahlkriterium."
+        },
+        {
+          "text": "Zufallsrabatt ohne technischen Abgleich",
+          "correct": false,
+          "rationale": "Preis ohne Eignungsbezug führt schnell zu Fehlkäufen."
+        }
+      ],
+      "feedback": {
+        "correct": "Richtig: Sie gewichten Kapazität, Einbindung und Standardisierung sauber.",
+        "wrong": "Teilweise falsch: Bitte Technik, Reserve und Wartbarkeit stärker priorisieren."
+      },
+      "progressLinks": [
+        "lf03_komponenten_standards"
+      ]
+    },
+    {
+      "id": "q18",
+      "type": "ordering",
+      "title": "Ablauf der technischen Beschaffungsfreigabe",
+      "prompt": "Ordnen Sie die Schritte sinnvoll.",
+      "items": [
+        "Freigabeempfehlung dokumentieren",
+        "Kompatibilität und Standards prüfen",
+        "Kosten, Portreserve und Einsatzrahmen abgleichen",
+        "Bedarf und Anzahl der Endpunkte erfassen",
+        "Anforderungen an Netzwerkkarte und Switch ableiten"
+      ],
+      "correctOrder": [
+        "Bedarf und Anzahl der Endpunkte erfassen",
+        "Anforderungen an Netzwerkkarte und Switch ableiten",
+        "Kompatibilität und Standards prüfen",
+        "Kosten, Portreserve und Einsatzrahmen abgleichen",
+        "Freigabeempfehlung dokumentieren"
+      ],
+      "feedback": {
+        "correct": "Richtig: So entsteht eine nachvollziehbare technische Freigabe.",
+        "wrong": "Nicht optimal: Bitte erst Bedarf, dann Eignung und danach die Freigabe bewerten."
+      },
+      "progressLinks": [
+        "lf03_komponenten_standards"
+      ]
+    },
+    {
+      "id": "q19",
+      "type": "number",
+      "title": "Freie Ports nach Erweiterung",
+      "prompt": "Ein 24-Port-Switch hat bereits 7 belegte Ports. Für 12 neue Clients, 2 Drucker und 1 Uplink werden weitere Ports benötigt. Wie viele Ports bleiben danach frei?",
+      "expected": 2,
+      "toleranceAbs": 0,
+      "showExpectedFormula": "24 - 7 - 12 - 2 - 1 = 2 Ports frei",
+      "feedback": {
+        "correct": "Richtig gerechnet.",
+        "wrong": "Bitte belegte und neue Ports sauber gegeneinander aufrechnen."
+      },
+      "progressLinks": [
+        "lf03_komponenten_standards"
+      ]
+    },
+    {
+      "id": "q20",
+      "type": "short_text",
+      "title": "Beschaffungshinweis an die IT-Leitung",
+      "prompt": "Schreiben Sie einen kurzen Hinweis (4-6 Sätze) mit Standardempfehlung, Portreserve und einem Restrisiko.",
+      "minChars": 140,
+      "requiredKeywords": [
+        "standard",
+        "portreserve",
+        "risiko"
+      ],
+      "expectedOutline": "Technische Empfehlung, begründete Reserve und ein realistischer Restpunkt.",
+      "feedback": {
+        "correct": "Richtig: Die Empfehlung ist technisch tragfähig und knapp begründet.",
+        "wrong": "Bitte Standard, Reserve und Risiko klarer benennen."
+      },
+      "progressLinks": [
+        "lf03_komponenten_standards"
+      ]
+    },
+    {
+      "id": "sep_f4",
+      "type": "followup_divider",
+      "title": "Folgeauftrag 4 - Sicherheits- und Verfügbarkeitsfreigabe",
+      "from": "it.leitung@ausbildungsbetrieb.example",
+      "to": "support.team@ausbildungsbetrieb.example",
+      "subject": "Vor produktiver Freigabe bitte Sicherheits- und Betriebsbasis absichern",
+      "date": "2026-03-13",
+      "body": "Die Clients können erst produktiv gehen, wenn Sicherheitsbasis, Verfügbarkeitsbetrachtung und nachhaltiger Netzbetrieb nachvollziehbar bewertet sind. Bitte liefern Sie eine Abschlussfreigabe mit Restrisiko und nächstem Schritt."
+    },
+    {
+      "id": "q21",
+      "type": "single_choice",
+      "title": "Priorität vor produktiver Freigabe",
+      "prompt": "Welche Massnahme hat vor der produktiven Freigabe die höchste Priorität?",
+      "options": [
+        {
+          "text": "Aktuelle Updates, Endpoint-Schutz und kleinste nötige Rechte sicherstellen",
+          "rationale": "Das schafft eine tragfähige Sicherheitsbasis für den Betrieb."
+        },
+        {
+          "text": "Ein gemeinsames lokales Admin-Konto für alle Clients einrichten",
+          "rationale": "Das erhöht das Risiko und widerspricht sauberer Rechtevergabe."
+        },
+        {
+          "text": "Alle Freigaben für alle Benutzer öffnen",
+          "rationale": "Das verletzt das Prinzip notwendiger Berechtigungen."
+        }
+      ],
+      "correctIndex": 0,
+      "feedback": {
+        "correct": "Richtig: Sicherheitsbasis und Rechtekonzept gehen vor Beqümlichkeit.",
+        "wrong": "Nicht passend: Vor Freigabe müssen Schutz und Rechte sauber gesetzt sein."
+      },
+      "progressLinks": [
+        "lf03_sicherheit_backup"
+      ]
+    },
+    {
+      "id": "q22",
+      "type": "multi_select",
+      "title": "Verfügbarkeit und nachhaltiger Netzbetrieb",
+      "prompt": "Welche Punkte verbessern Verfügbarkeit oder nachhaltigen Netzbetrieb? (Mehrfachauswahl)",
+      "options": [
+        {
+          "text": "Reserveports oder Ersatzgeräte für kritische Arbeitsplätze vorsehen",
+          "correct": true,
+          "rationale": "Das verkürzt Reaktionszeiten bei Ausfällen."
+        },
+        {
+          "text": "Regelmässige Updates und Wartungsfenster einplanen",
+          "correct": true,
+          "rationale": "Vorbeugende Pflege stabilisiert den Betrieb."
+        },
+        {
+          "text": "USV oder gesicherte Stromversorgung für zentrale Netzkomponenten nutzen",
+          "correct": true,
+          "rationale": "Damit sinkt das Risiko ungeplanter Ausfälle bei Stromproblemen."
+        },
+        {
+          "text": "Energiesparprofile ausserhalb der Nutzungszeiten sinnvoll einsetzen",
+          "correct": true,
+          "rationale": "Das verbindet Green-IT mit planbarem Betrieb."
+        },
+        {
+          "text": "Passwörter im Klartext am Monitor befestigen",
+          "correct": false,
+          "rationale": "Das ist ein klares Sicherheitsrisiko."
+        }
+      ],
+      "feedback": {
+        "correct": "Richtig: Sie verbinden Stabilität, Stromversorgung und Green-IT sauber.",
+        "wrong": "Teilweise falsch: Bitte Verfügbarkeit, Wartung und sichere Betriebsweise enger zusammendenken."
+      },
+      "progressLinks": [
+        "lf03_verfuegbarkeit_berechnen",
+        "lf03_stromversorgung_greenit",
+        "lf03_sicherheit_backup"
+      ]
+    },
+    {
+      "id": "q23",
+      "type": "ordering",
+      "title": "Abschluss vor der Betriebsfreigabe",
+      "prompt": "Ordnen Sie die Schritte für eine saubere Abschlussfreigabe.",
+      "items": [
+        "Abschlussdokumentation und Freigabehinweis erstellen",
+        "Offene Restrisiken festhalten",
+        "Sicherheitsbasis prüfen",
+        "Verbindung, Anmeldung und Cloud-Zugriff testen",
+        "Monitoring- oder Nachprüftermin vereinbaren"
+      ],
+      "correctOrder": [
+        "Sicherheitsbasis prüfen",
+        "Verbindung, Anmeldung und Cloud-Zugriff testen",
+        "Offene Restrisiken festhalten",
+        "Abschlussdokumentation und Freigabehinweis erstellen",
+        "Monitoring- oder Nachprüftermin vereinbaren"
+      ],
+      "feedback": {
+        "correct": "Richtig: So wird die Freigabe nachvollziehbar und betreibbar.",
+        "wrong": "Nicht optimal: Bitte erst Schutz und Funktion prüfen, dann Restrisiko und Nachverfolgung festhalten."
+      },
+      "progressLinks": [
+        "lf03_pruefen_warten",
+        "lf03_sicherheit_backup"
+      ]
+    },
+    {
+      "id": "q24",
+      "type": "number",
+      "title": "Maximale Ausfallzeit berechnen",
+      "prompt": "Ein zentraler Netzdienst soll in einem 30-Tage-Monat 99,8 % Verfügbarkeit erreichen. Wie viele Minuten Ausfall sind maximal enthalten?",
+      "expected": 86.4,
+      "toleranceAbs": 0.5,
+      "showExpectedFormula": "30 * 24 * 60 * 0,002 = 86,4 Minuten",
+      "feedback": {
+        "correct": "Richtig gerechnet.",
+        "wrong": "Bitte Gesamtminuten des Monats mit dem Ausfallanteil multiplizieren."
+      },
+      "progressLinks": [
+        "lf03_verfuegbarkeit_berechnen"
+      ]
+    },
+    {
+      "id": "q25",
+      "type": "short_text",
+      "title": "Abschlussnotiz zur Betriebsfreigabe",
+      "prompt": "Formulieren Sie eine Abschlussnotiz (4-6 Sätze) mit Freigabestatus, Restrisiko und nächstem Schritt.",
+      "minChars": 160,
+      "requiredKeywords": [
+        "freigabe",
+        "restrisiko",
+        "nächster schritt"
+      ],
+      "expectedOutline": "Klarer Freigabestatus, benanntes Restrisiko und konkrete Anschlussaktion.",
+      "feedback": {
+        "correct": "Richtig: Die Notiz ist für Betrieb und Nachverfolgung gut nutzbar.",
+        "wrong": "Bitte Freigabe, Restrisiko und Folgeaktion klarer herausarbeiten."
+      },
+      "progressLinks": [
+        "lf03_sicherheit_backup",
+        "lf03_pruefen_warten",
+        "lf03_stromversorgung_greenit"
+      ]
+    }
+  ]
+}

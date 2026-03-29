@@ -1,0 +1,710 @@
+{
+  "scenario": {
+    "company": "Training company IT service",
+    "scale": "Regional, 120 employees",
+    "context": "Station 01: Hardware profile and follow-up tickets in several waves.",
+    "mission": "You handle the initial assignment and multiple follow-up tasks for the same workstation group.",
+    "station": {
+      "id": "NS-V2-WS-03",
+      "department": "Sales",
+      "profile": "Office, browser, email, video conferencing, 2 monitors",
+      "constraints": [
+        "stay within the budget frame",
+        "ensure compatibility and operational safety",
+        "justify decisions briefly"
+      ]
+    },
+    "customerRequest": {
+      "from": "it.leitung@ausbildungsbetrieb.example",
+      "to": "rollout.team@systemhaus.example",
+      "subject": "Station 01: initial workstation profile assignment",
+      "date": "2026-03-13",
+      "body": "Please start by selecting a viable hardware profile for sales station NS-V2-WS-03.\n\nAfter that, additional customer tasks for the same station follow with increasing responsibility (compatibility, cost, prioritization, handover)."
+    }
+  },
+  "questions": [
+    {
+      "id": "q01",
+      "type": "single_choice",
+      "title": "Baseline selection for the profile",
+      "prompt": "Which configuration best fits office + browser + video conferencing with 2 monitors?",
+      "options": [
+        {
+          "text": "4 GB RAM, HDD, one video output",
+          "rationale": "Too weak and too inflexible for the profile."
+        },
+        {
+          "text": "8 GB RAM, SSD, one video output",
+          "rationale": "Memory is ok for basics, but ports are not suitable for 2 monitors."
+        },
+        {
+          "text": "16 GB RAM, SSD, dock with 2 video outputs",
+          "rationale": "Fits the workload profile and peripheral needs."
+        }
+      ],
+      "correctIndex": 2,
+      "feedback": {
+        "correct": "Correct: the combination covers performance and ports.",
+        "wrong": "Not viable: either performance or connectivity is insufficient."
+      },
+      "progressLinks": [
+        "lf02_arbeitsplaetze_planen_auswaehlen"
+      ]
+    },
+    {
+      "id": "q02",
+      "type": "number",
+      "title": "Package cost for 5 stations",
+      "prompt": "Per station: PC 580 EUR, 2 monitors at 155 EUR each, dock 88 EUR, setup 0.6 h at 60 EUR/h. What is the total for 5 stations (excluding tax)?",
+      "expected": 5070,
+      "toleranceAbs": 1,
+      "showExpectedFormula": "5 * (580 + 2*155 + 88 + 0.6*60) = 5,070 EUR",
+      "feedback": {
+        "correct": "Correct calculation.",
+        "wrong": "Please sum materials and time per station cleanly first."
+      },
+      "progressLinks": [
+        "lf02_rechnen_abschaetzen"
+      ]
+    },
+    {
+      "id": "q03",
+      "type": "multi_select",
+      "title": "Mandatory criteria for approval",
+      "prompt": "Which points must be met for technical approval? (Multiple selection)",
+      "options": [
+        {
+          "text": "Current updates and baseline protection enabled",
+          "correct": true,
+          "rationale": "Minimum security standard before handover."
+        },
+        {
+          "text": "Login test with company account successful",
+          "correct": true,
+          "rationale": "Usability must be verifiable."
+        },
+        {
+          "text": "Only case appearance assessed",
+          "correct": false,
+          "rationale": "Appearance is not an approval criterion."
+        },
+        {
+          "text": "Short functional test documented",
+          "correct": true,
+          "rationale": "Evidence for acceptance and support."
+        },
+        {
+          "text": "Private extensions installed without approval",
+          "correct": false,
+          "rationale": "Not compliant with standards."
+        }
+      ],
+      "feedback": {
+        "correct": "Correct: you prioritize security and operational criteria.",
+        "wrong": "Partially incorrect: please weigh hard approval criteria more strongly."
+      },
+      "progressLinks": [
+        "lf02_qualitaet_bewertung"
+      ]
+    },
+    {
+      "id": "q04",
+      "type": "short_text",
+      "title": "Short briefing to the team lead",
+      "prompt": "Write a short briefing (4-6 sentences) with the chosen solution, the main justification, and one residual risk.",
+      "minChars": 130,
+      "requiredKeywords": [
+        "solution",
+        "justification",
+        "risk"
+      ],
+      "expectedOutline": "Clear recommendation, professional justification, one realistic residual risk.",
+      "feedback": {
+        "correct": "Correct: the briefing is clear and decision-ready.",
+        "wrong": "Please separate solution, justification and residual risk more clearly."
+      },
+      "progressLinks": [
+        "lf02_benutzer_kundenkommunikation",
+        "lf02_dokumentation"
+      ]
+    },
+    {
+      "id": "q05",
+      "type": "ordering",
+      "title": "Start sequence in station 01",
+      "prompt": "Arrange the start sequence sensibly.",
+      "items": [
+        "Short test and documentation",
+        "Clarify requirements",
+        "Select components",
+        "Cross-check compatibility",
+        "Formulate the approval recommendation"
+      ],
+      "correctOrder": [
+        "Clarify requirements",
+        "Select components",
+        "Cross-check compatibility",
+        "Short test and documentation",
+        "Formulate the approval recommendation"
+      ],
+      "feedback": {
+        "correct": "Correct: the sequence is technically clean.",
+        "wrong": "Not optimal: please establish need and checks first, then approval."
+      },
+      "progressLinks": [
+        "lf02_arbeitsplaetze_planen_auswaehlen"
+      ]
+    },
+    {
+      "id": "sep_f1",
+      "type": "followup_divider",
+      "title": "Follow-up task 1 - Priority shift due to new software",
+      "from": "vertrieb.leitung@ausbildungsbetrieb.example",
+      "to": "rollout.team@systemhaus.example",
+      "subject": "New CRM version increases resource demand",
+      "date": "2026-03-13",
+      "body": "A new CRM version is being rolled out immediately. Please check whether the current hardware decision still provides enough performance headroom and adjust the recommendation if needed."
+    },
+    {
+      "id": "q06",
+      "type": "multi_select",
+      "title": "Impact on the hardware choice",
+      "prompt": "Which adjustments make professional sense for a higher workload profile? (Multiple selection)",
+      "options": [
+        {
+          "text": "Plan RAM headroom",
+          "correct": true,
+          "rationale": "Helps with parallel applications."
+        },
+        {
+          "text": "Make SSD instead of HDD mandatory",
+          "correct": true,
+          "rationale": "Improves responsiveness and daily performance."
+        },
+        {
+          "text": "Require a third monitor for everyone",
+          "correct": false,
+          "rationale": "Only sensible if the need exists."
+        },
+        {
+          "text": "Check CPU class for a viable mid-range",
+          "correct": true,
+          "rationale": "Processor performance must match the workload."
+        },
+        {
+          "text": "Ignore power supply capacity entirely",
+          "correct": false,
+          "rationale": "Core components must not be neglected."
+        }
+      ],
+      "feedback": {
+        "correct": "Correct: you respond purposefully to the changed load.",
+        "wrong": "Partially incorrect: tie workload profile and technical viability more tightly."
+      },
+      "progressLinks": [
+        "lf02_hardware_komponenten_verstehen"
+      ]
+    },
+    {
+      "id": "q07",
+      "type": "single_choice",
+      "title": "Quick plausibility check",
+      "prompt": "Which statement best fits as the first plausibility check?",
+      "options": [
+        {
+          "text": "Compare application profile, concurrent use and peripherals against the technical data",
+          "rationale": "Fast, professionally clean starting point for re-evaluation."
+        },
+        {
+          "text": "Only compare the current price with the old quote",
+          "rationale": "Price without technical context is not sufficient."
+        },
+        {
+          "text": "Automatically choose high-end components",
+          "rationale": "Often leads to over-dimensioning."
+        }
+      ],
+      "correctIndex": 0,
+      "feedback": {
+        "correct": "Correct: first align need and technology cleanly.",
+        "wrong": "Not fitting: the direct tech-to-need comparison is missing."
+      },
+      "progressLinks": [
+        "lf02_kompatibilitaet_pruefen"
+      ]
+    },
+    {
+      "id": "q08",
+      "type": "short_text",
+      "title": "Re-evaluation in 5 sentences",
+      "prompt": "Formulate a short re-evaluation with changed load, adjustment and justification.",
+      "minChars": 140,
+      "requiredKeywords": [
+        "workload",
+        "adjustment",
+        "justification"
+      ],
+      "expectedOutline": "Old vs. new, concrete adjustment, clear justification based on usage.",
+      "feedback": {
+        "correct": "Correct: the re-evaluation is plausible and practical.",
+        "wrong": "Please connect workload, adjustment and justification more clearly."
+      },
+      "progressLinks": [
+        "lf02_benutzer_kundenkommunikation"
+      ]
+    },
+    {
+      "id": "q09",
+      "type": "number",
+      "title": "Additional cost for a second monitor",
+      "prompt": "Out of 18 employees, 11 need a second monitor. One additional monitor costs 149 EUR. What are the additional costs?",
+      "expected": 1639,
+      "toleranceAbs": 1,
+      "showExpectedFormula": "11 * 149 = 1,639 EUR",
+      "feedback": {
+        "correct": "Correct calculation.",
+        "wrong": "Please multiply the required quantity by the unit price."
+      },
+      "progressLinks": [
+        "lf02_rechnen_abschaetzen"
+      ]
+    },
+    {
+      "id": "q10",
+      "type": "ordering",
+      "title": "Implement change cleanly",
+      "prompt": "Put the steps in a sensible order when requirements increase during the ongoing assignment.",
+      "items": [
+        "Document recommendation and impacts",
+        "Capture the new requirement clearly",
+        "Analyze technical impacts",
+        "Calculate cost impact",
+        "Align with the client"
+      ],
+      "correctOrder": [
+        "Capture the new requirement clearly",
+        "Analyze technical impacts",
+        "Calculate cost impact",
+        "Align with the client",
+        "Document recommendation and impacts"
+      ],
+      "feedback": {
+        "correct": "Correct: the change is secured technically and commercially.",
+        "wrong": "Not optimal: structure analysis, cost and alignment more clearly."
+      },
+      "progressLinks": [
+        "lf02_typische_mini_auftraege"
+      ]
+    },
+    {
+      "id": "sep_f2",
+      "type": "followup_divider",
+      "title": "Follow-up task 2 - SSD supply shortage",
+      "from": "einkauf@ausbildungsbetrieb.example",
+      "to": "rollout.team@systemhaus.example",
+      "subject": "Alternative configurations with the same target effect",
+      "date": "2026-03-13",
+      "body": "There is a short-term supply shortage for a specific SSD model. Please evaluate viable alternatives without compromising the station's ability to work."
+    },
+    {
+      "id": "q11",
+      "type": "single_choice",
+      "title": "Best response to the supply shortage",
+      "prompt": "Which approach makes the most sense for an SSD supply shortage?",
+      "options": [
+        {
+          "text": "Switch back to HDD so the price stays the same",
+          "rationale": "The technical target effect would drop significantly."
+        },
+        {
+          "text": "Check an alternative SSD with suitable performance and warranty parameters",
+          "rationale": "Preserves the target effect with controlled adjustment."
+        },
+        {
+          "text": "Stop the entire assignment and do not continue",
+          "rationale": "Unnecessary when viable alternatives exist."
+        }
+      ],
+      "correctIndex": 1,
+      "feedback": {
+        "correct": "Correct: the functional goal remains intact and the risk stays manageable.",
+        "wrong": "Not goal-oriented: the supply issue must be solved with a technical alternative."
+      },
+      "progressLinks": [
+        "lf02_qualitaet_bewertung"
+      ]
+    },
+    {
+      "id": "q12",
+      "type": "ordering",
+      "title": "Evaluate a replacement product",
+      "prompt": "Arrange the evaluation flow for a replacement product.",
+      "items": [
+        "Approve or reject the replacement product",
+        "List must-have criteria from the main assignment",
+        "Match technical data of the replacement product",
+        "Check warranty and availability risk",
+        "Document a short justification"
+      ],
+      "correctOrder": [
+        "List must-have criteria from the main assignment",
+        "Match technical data of the replacement product",
+        "Check warranty and availability risk",
+        "Approve or reject the replacement product",
+        "Document a short justification"
+      ],
+      "feedback": {
+        "correct": "Correct: criteria-based replacement decision.",
+        "wrong": "Please secure criteria first, then run the replacement check."
+      },
+      "progressLinks": [
+        "lf02_qualitaet_bewertung"
+      ]
+    },
+    {
+      "id": "q13",
+      "type": "multi_select",
+      "title": "Risk reduction for replacement parts",
+      "prompt": "Which measures reduce risk with replacement parts? (Multiple selection)",
+      "options": [
+        {
+          "text": "Check compatibility against existing peripherals",
+          "correct": true,
+          "rationale": "Prevents follow-up issues during go-live."
+        },
+        {
+          "text": "Compare warranty and support conditions",
+          "correct": true,
+          "rationale": "Important for operations and follow-up costs."
+        },
+        {
+          "text": "Look only at delivery time",
+          "correct": false,
+          "rationale": "Delivery time alone is not enough."
+        },
+        {
+          "text": "Run a short test with a reference configuration",
+          "correct": true,
+          "rationale": "A practical test adds confidence."
+        },
+        {
+          "text": "Approve the product without a datasheet",
+          "correct": false,
+          "rationale": "No clean decision without data."
+        }
+      ],
+      "feedback": {
+        "correct": "Correct: you combine data quality, testing and support view.",
+        "wrong": "Partially incorrect: consider technical and operational risks together."
+      },
+      "progressLinks": [
+        "lf02_kompatibilitaet_pruefen"
+      ]
+    },
+    {
+      "id": "q14",
+      "type": "short_text",
+      "title": "Justify the replacement decision",
+      "prompt": "Write a short decision note (4-6 sentences) explaining why the alternative is approved or rejected.",
+      "minChars": 140,
+      "requiredKeywords": [
+        "alternative",
+        "criterion",
+        "decision"
+      ],
+      "expectedOutline": "Criteria reference, clear judgment, short risk note.",
+      "feedback": {
+        "correct": "Correct: the note is suitable as an approval basis.",
+        "wrong": "Please connect alternative, criteria and decision more clearly."
+      },
+      "progressLinks": [
+        "lf02_benutzer_kundenkommunikation",
+        "lf02_dokumentation"
+      ]
+    },
+    {
+      "id": "sep_f3",
+      "type": "followup_divider",
+      "title": "Follow-up task 3 - Budget cap from procurement",
+      "from": "controlling@ausbildungsbetrieb.example",
+      "to": "rollout.team@systemhaus.example",
+      "subject": "Tighten cost cap per workstation",
+      "date": "2026-03-13",
+      "body": "Controlling sets a hard cost cap per workstation. Please optimize the configuration so that quality and minimum criteria remain intact."
+    },
+    {
+      "id": "q15",
+      "type": "number",
+      "title": "Calculate reserve uplift",
+      "prompt": "A configuration costs 4,250 EUR. A 12% reserve is added for uncertainty. What is the total value including the reserve?",
+      "expected": 4760,
+      "toleranceAbs": 1,
+      "showExpectedFormula": "4,250 * 1.12 = 4,760 EUR",
+      "feedback": {
+        "correct": "Correct calculation.",
+        "wrong": "Please apply the percentage uplift cleanly to the base value."
+      },
+      "progressLinks": [
+        "lf02_rechnen_abschaetzen"
+      ]
+    },
+    {
+      "id": "q16",
+      "type": "single_choice",
+      "title": "Reasonable saving measure",
+      "prompt": "Which saving measure is most defensible without missing the workload profile?",
+      "options": [
+        {
+          "text": "Reduce RAM from 16 GB to 4 GB",
+          "rationale": "High risk of performance issues."
+        },
+        {
+          "text": "Replace SSD with an old HDD",
+          "rationale": "Significantly worsens boot and response times."
+        },
+        {
+          "text": "Choose a suitable but cheaper dock model with the same core functions",
+          "rationale": "Cost reduction while maintaining functionality."
+        }
+      ],
+      "correctIndex": 2,
+      "feedback": {
+        "correct": "Correct: costs drop while the core function remains.",
+        "wrong": "Not goal-oriented: saving must not break minimum criteria."
+      },
+      "progressLinks": [
+        "lf02_qualitaet_bewertung"
+      ]
+    },
+    {
+      "id": "q17",
+      "type": "multi_select",
+      "title": "Minimum criteria despite budget pressure",
+      "prompt": "Which points must not be removed despite the budget cap? (Multiple selection)",
+      "options": [
+        {
+          "text": "Stable SSD-based system drive",
+          "correct": true,
+          "rationale": "Important for daily usability."
+        },
+        {
+          "text": "Matching monitor ports for 2 displays",
+          "correct": true,
+          "rationale": "Direct must-have from the profile."
+        },
+        {
+          "text": "Any gaming add-on features",
+          "correct": false,
+          "rationale": "Not required for the use case."
+        },
+        {
+          "text": "Security and update capability",
+          "correct": true,
+          "rationale": "Operational safety remains mandatory."
+        },
+        {
+          "text": "A third monitor without need",
+          "correct": false,
+          "rationale": "Not a must-have criterion."
+        }
+      ],
+      "feedback": {
+        "correct": "Correct: core requirements remain intact.",
+        "wrong": "Partially incorrect: budget optimization must not override minimum criteria."
+      },
+      "progressLinks": [
+        "lf02_qualitaet_bewertung"
+      ]
+    },
+    {
+      "id": "q18",
+      "type": "ordering",
+      "title": "Structured budget adjustment",
+      "prompt": "Arrange the flow for a late budget cap.",
+      "items": [
+        "Approve the adjusted recommendation",
+        "Fix minimum criteria",
+        "Look for savings without functional loss",
+        "Recalculate costs",
+        "Align the change with the client"
+      ],
+      "correctOrder": [
+        "Fix minimum criteria",
+        "Look for savings without functional loss",
+        "Recalculate costs",
+        "Align the change with the client",
+        "Approve the adjusted recommendation"
+      ],
+      "feedback": {
+        "correct": "Correct: the approach is professionally robust.",
+        "wrong": "Not optimal: first minimum criteria, then savings and alignment."
+      },
+      "progressLinks": [
+        "lf02_dokumentation"
+      ]
+    },
+    {
+      "id": "q19",
+      "type": "short_text",
+      "title": "Budget update to the customer",
+      "prompt": "Formulate a short budget update (4-6 sentences) with adjustment, impact and remaining risk.",
+      "minChars": 140,
+      "requiredKeywords": [
+        "budget",
+        "impact",
+        "risk"
+      ],
+      "expectedOutline": "Which adjustment, which technical impact, which residual risk remains.",
+      "feedback": {
+        "correct": "Correct: the update is decision-ready.",
+        "wrong": "Please present adjustment, impact and risk more clearly."
+      },
+      "progressLinks": [
+        "lf02_benutzer_kundenkommunikation",
+        "lf02_dokumentation"
+      ]
+    },
+    {
+      "id": "q20",
+      "type": "single_choice",
+      "title": "Edge-case decision",
+      "prompt": "A quote is 4% over budget but reduces later support time significantly. What is the most professional approach?",
+      "options": [
+        {
+          "text": "Reject immediately just because the budget is exceeded",
+          "rationale": "Can be uneconomical in the long run."
+        },
+        {
+          "text": "Present the deviation transparently with a justified benefit comparison",
+          "rationale": "Professional: make short- and long-term effects explicit."
+        },
+        {
+          "text": "Approve automatically without documentation",
+          "rationale": "A decision without evidence is not robust."
+        }
+      ],
+      "correctIndex": 1,
+      "feedback": {
+        "correct": "Correct: benefits and deviation must be weighed transparently.",
+        "wrong": "Not ideal: edge cases require transparent justification."
+      },
+      "progressLinks": [
+        "lf02_qualitaet_bewertung"
+      ]
+    },
+    {
+      "id": "sep_f4",
+      "type": "followup_divider",
+      "title": "Follow-up task 4 - Immediate handover today 15:00",
+      "from": "betrieb@ausbildungsbetrieb.example",
+      "to": "rollout.team@systemhaus.example",
+      "subject": "Acceptance today, remaining items tomorrow",
+      "date": "2026-03-13",
+      "body": "The station must be handed over to the business unit today by 15:00. Please prioritize acceptance criteria, document remaining items cleanly and plan the follow-up without operational risk."
+    },
+    {
+      "id": "q21",
+      "type": "ordering",
+      "title": "Prioritized handover under time pressure",
+      "prompt": "Arrange the steps for a clean handover by 15:00.",
+      "items": [
+        "Formally approve the workstation",
+        "Prioritize critical must-have tests",
+        "Schedule remaining items and follow-up",
+        "Document test results",
+        "Short alignment with the business unit"
+      ],
+      "correctOrder": [
+        "Prioritize critical must-have tests",
+        "Document test results",
+        "Short alignment with the business unit",
+        "Schedule remaining items and follow-up",
+        "Formally approve the workstation"
+      ],
+      "feedback": {
+        "correct": "Correct: prioritization and evidence are combined cleanly.",
+        "wrong": "Not optimal: under time pressure, must-have tests and documentation come first."
+      },
+      "progressLinks": [
+        "lf02_arbeitsplatzbereitstellung"
+      ]
+    },
+    {
+      "id": "q22",
+      "type": "number",
+      "title": "Leasing total cost",
+      "prompt": "Leasing rate 79 EUR per month and workstation, 7 workstations, term 24 months. What is the total cost?",
+      "expected": 13272,
+      "toleranceAbs": 1,
+      "showExpectedFormula": "79 * 7 * 24 = 13,272 EUR",
+      "feedback": {
+        "correct": "Correct calculation.",
+        "wrong": "Please multiply monthly rate, number of stations and term correctly."
+      },
+      "progressLinks": [
+        "lf02_rechnen_abschaetzen"
+      ]
+    },
+    {
+      "id": "q23",
+      "type": "multi_select",
+      "title": "Handle remaining items correctly",
+      "prompt": "Which statements describe a clean handling of remaining items? (Multiple selection)",
+      "options": [
+        {
+          "text": "Document remaining items with owner and due date",
+          "correct": true,
+          "rationale": "Ensures traceability."
+        },
+        {
+          "text": "Leave remaining items open without an entry",
+          "correct": false,
+          "rationale": "Creates opacity and risk."
+        },
+        {
+          "text": "Briefly state the risk impact",
+          "correct": true,
+          "rationale": "Important for operational decisions."
+        },
+        {
+          "text": "For security-critical items, no approval without a countermeasure",
+          "correct": true,
+          "rationale": "Protects operations from avoidable risk."
+        },
+        {
+          "text": "Mark all remaining items as done by default",
+          "correct": false,
+          "rationale": "Documentation quality would be unusable."
+        }
+      ],
+      "feedback": {
+        "correct": "Correct: remaining items are handled in a controllable and auditable way.",
+        "wrong": "Partially incorrect: remaining items need due date, responsibility and risk classification."
+      },
+      "progressLinks": [
+        "lf02_arbeitsplatzbereitstellung"
+      ]
+    },
+    {
+      "id": "q24",
+      "type": "short_text",
+      "title": "Final status message for station 01",
+      "prompt": "Write a final status message (5-7 sentences) with status, open items, risk and next step.",
+      "minChars": 170,
+      "requiredKeywords": [
+        "status",
+        "open items",
+        "next step"
+      ],
+      "expectedOutline": "Closure with a clear situation, documented open items and a concrete follow-up plan.",
+      "feedback": {
+        "correct": "Correct: the final message is directly usable for operations.",
+        "wrong": "Please phrase status, open items and next step more clearly and concretely."
+      },
+      "progressLinks": [
+        "lf02_dokumentation",
+        "lf02_benutzer_kundenkommunikation"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,241 @@
+{
+  "scenario": {
+    "company": "SafeBackup Betrieb GmbH",
+    "scale": "IT-Betrieb für kleinere Fachabteilungen und mobile Arbeitsplätze",
+    "context": "Die Sicherungsläufe wirken technisch grün, aber die Backup-Strategie ist noch nicht sauber beschrieben. Insbesondere Vollsicherung, inkrementell, differentiell und Generationenprinzip sollen klar sein.",
+    "mission": "Datensicherung, Backup-Strategien, Generationenprinzip, Offsite-Ablage und Restore-Test in einer klaren Themenstruktur abbilden.",
+    "source": {
+      "kind": "Interner Datensicherungsauftrag",
+      "reference": "Backuprahmen 2026-04",
+      "note": "Die Fachkoordination erwartet eine verständliche Trennung von Sicherungsart, Aufbewahrung, Wiederherstellung und Nachweis."
+    },
+    "station": {
+      "id": "QUS2-ST-14",
+      "department": "Betrieb, Archivierung und Wiederherstellung",
+      "profile": "Backup-Strategien, Generationenprinzip und Restore-Nachweise",
+      "constraints": [
+        "Backup-Strategie und Restore-Nachweis sollen klar getrennt, aber verbunden dargestellt werden",
+        "Generationenprinzip und Aufbewahrungsfrist müssen sichtbar sein",
+        "Ein grüner Jobstatus ersetzt keinen Restore-Test"
+      ]
+    },
+    "customerRequest": {
+      "from": "betrieb@safebackup.example",
+      "to": "datensicherung@safebackup.example",
+      "subject": "Backup-Strategie und Wiederherstellung nachvollziehbar aufbereiten",
+      "date": "2026-03-27",
+      "body": "Guten Tag,\n\nwir brauchen eine kompakte, aber belastbare Darstellung der Backup-Strategie. Bitte trennt Vollsicherung, inkrementell, differentiell, GFS und Restore-Test so auf, dass der Fachbereich die Logik später direkt nachvollziehen kann.\n\nViele Grüsse\nBetrieb"
+    }
+  },
+  "questions": [
+    {
+      "id": "ctx01",
+      "type": "context_card",
+      "title": "Rahmen für den Backupfall",
+      "contentBlocks": [
+        {
+          "type": "text",
+          "text": "Die Sicherungen laufen zwar regelmäßig, aber die Strategie ist noch nicht sauber benannt. Das Team soll jetzt die Begriffe für Sicherungsart, Generationen, Aufbewahrung, Restore-Test und Nachweis so einordnen, dass daraus ein tragfähiger Plan wird."
+        }
+      ]
+    },
+    {
+      "id": "q01",
+      "type": "single_choice",
+      "title": "Backup-Arten unterscheiden",
+      "prompt": "Welche Aussage beschreibt Voll-, inkrementelle und differentielle Sicherung am besten?",
+      "options": [
+        {
+          "text": "Eine Vollsicherung bildet einen kompletten Stand ab; inkrementell sichert Änderungen seit der letzten Sicherung; differentiell sichert Änderungen seit der letzten Vollsicherung.",
+          "rationale": "Das ist die fachlich richtige Trennung.",
+          "correct": true
+        },
+        {
+          "text": "Inkrementell und differentiell meinen dasselbe, nur mit anderem Namen.",
+          "rationale": "Das ist fachlich falsch.",
+          "correct": false
+        },
+        {
+          "text": "Differenziell sichert nur neue Ordner, inkrementell nur alte Ordner.",
+          "rationale": "Die Unterscheidung stimmt so nicht.",
+          "correct": false
+        },
+        {
+          "text": "Eine Vollsicherung ist nur ein Prüfprotokoll ohne eigentliche Daten.",
+          "rationale": "Das verwechselt Strategie und Nachweis.",
+          "correct": false
+        }
+      ],
+      "correctIndex": 0,
+      "feedback": {
+        "correct": "Die Sicherungsarten wurden korrekt unterschieden.",
+        "wrong": "Achten Sie auf den Bezug zur Vollsicherung und zu Änderungen seit der letzten Sicherung."
+      },
+      "progressLinks": [
+        "qus2_backup_generationen_strategien"
+      ]
+    },
+    {
+      "id": "q02",
+      "type": "multi_select",
+      "title": "Belastbare Backup-Strategie erkennen",
+      "prompt": "Welche Punkte gehören zu einer belastbaren Backup-Strategie? Mehrere Aussagen können zutreffen.",
+      "options": [
+        {
+          "text": "Vollsicherung und ergänzende Sicherungsarten sind geplant.",
+          "rationale": "Die Sicherungsart muss zum Schutzbedarf passen.",
+          "correct": true
+        },
+        {
+          "text": "Aufbewahrungsfristen sind festgelegt.",
+          "rationale": "Ohne Frist bleibt die Strategie unvollständig.",
+          "correct": true
+        },
+        {
+          "text": "Eine getrennte Ablage oder Offsite-Sicherung ist vorgesehen.",
+          "rationale": "So bleibt der Stand auch bei lokalen Problemen erhalten.",
+          "correct": true
+        },
+        {
+          "text": "Ein Restore-Test ist ausdrücklich eingeplant.",
+          "rationale": "Nur ein getesteter Restore macht die Sicherung belastbar.",
+          "correct": true
+        },
+        {
+          "text": "Sicherungsprotokolle werden für den Nachweis mitgeführt.",
+          "rationale": "Ohne Protokoll fehlt die Prüfspur.",
+          "correct": true
+        },
+        {
+          "text": "Eine grüne Jobmeldung reicht als Nachweis aus.",
+          "rationale": "Der Jobstatus ersetzt keinen Wiederherstellungstest.",
+          "correct": false
+        },
+        {
+          "text": "Backups brauchen keine Dokumentation, solange Speicherplatz frei ist.",
+          "rationale": "Speicherplatz allein sagt nichts über Wiederherstellbarkeit aus.",
+          "correct": false
+        }
+      ],
+      "feedback": {
+        "correct": "Die tragenden Elemente der Backup-Strategie wurden richtig erkannt.",
+        "wrong": "Denken Sie an Art, Frist, Ablage, Test und Protokoll statt nur an den Jobstatus."
+      },
+      "progressLinks": [
+        "qus2_backup_generationen_strategien",
+        "qus2_backup_restore_und_nachweise"
+      ]
+    },
+    {
+      "id": "q03",
+      "type": "ordering",
+      "title": "Backup- und Restore-Ablauf ordnen",
+      "prompt": "Welche Abfolge ist für Backup und Wiederherstellung sinnvoll?",
+      "items": [
+        "Datenumfang und Sicherungsziel festlegen.",
+        "Voll- und Folgesicherungen nach Plan ausführen.",
+        "Generationen und Aufbewahrung dokumentieren.",
+        "Restore-Test auf einem Prüfsystem ausführen.",
+        "Ergebnis und Restpunkte protokollieren."
+      ],
+      "correctOrder": [
+        "Datenumfang und Sicherungsziel festlegen.",
+        "Voll- und Folgesicherungen nach Plan ausführen.",
+        "Generationen und Aufbewahrung dokumentieren.",
+        "Restore-Test auf einem Prüfsystem ausführen.",
+        "Ergebnis und Restpunkte protokollieren."
+      ],
+      "feedback": {
+        "correct": "Die Abfolge für Sicherung und Wiederherstellung ist korrekt.",
+        "wrong": "Erst planen, dann sichern, danach testen und dokumentieren."
+      },
+      "progressLinks": [
+        "qus2_backup_generationen_strategien",
+        "qus2_backup_restore_und_nachweise"
+      ]
+    },
+    {
+      "id": "q04",
+      "type": "match_pairs",
+      "title": "Backup-Begriffe zuordnen",
+      "prompt": "Welche Beschreibung passt jeweils am besten zum Begriff?",
+      "layout": "table",
+      "columns": [
+        "Fachbegriff",
+        "Passende Beschreibung"
+      ],
+      "pairs": [
+        {
+          "key": "pair_1",
+          "left": "Vollsicherung",
+          "right": "Komplette Sicherung eines freigegebenen Datenstands."
+        },
+        {
+          "key": "pair_2",
+          "left": "Inkrementell",
+          "right": "Nur Änderungen seit der letzten Sicherung werden gespeichert."
+        },
+        {
+          "key": "pair_3",
+          "left": "Differenziell",
+          "right": "Nur Änderungen seit der letzten Vollsicherung werden gespeichert."
+        },
+        {
+          "key": "pair_4",
+          "left": "Großvater-Vater-Sohn",
+          "right": "Generationenrotation mit drei Ebenen für Sicherungen."
+        },
+        {
+          "key": "pair_5",
+          "left": "GFS",
+          "right": "Generationenprinzip für die strukturierte Aufbewahrung."
+        },
+        {
+          "key": "pair_6",
+          "left": "Offsite-Sicherung",
+          "right": "Sicherung wird getrennt vom Hauptort aufbewahrt."
+        },
+        {
+          "key": "pair_7",
+          "left": "Aufbewahrungsfrist",
+          "right": "Zeitraum, wie lange Backups behalten werden."
+        },
+        {
+          "key": "pair_8",
+          "left": "Backup-Fenster",
+          "right": "Geplanter Zeitraum, in dem Sicherungen ausgeführt werden."
+        },
+        {
+          "key": "pair_9",
+          "left": "Restore-Test",
+          "right": "Testet, ob die Wiederherstellung wirklich funktioniert."
+        },
+        {
+          "key": "pair_10",
+          "left": "Sicherungsprotokoll",
+          "right": "Dokumentierter Nachweis der Sicherung."
+        }
+      ],
+      "options": [
+        "Komplette Sicherung eines freigegebenen Datenstands.",
+        "Nur Änderungen seit der letzten Sicherung werden gespeichert.",
+        "Nur Änderungen seit der letzten Vollsicherung werden gespeichert.",
+        "Generationenrotation mit drei Ebenen für Sicherungen.",
+        "Generationenprinzip für die strukturierte Aufbewahrung.",
+        "Sicherung wird getrennt vom Hauptort aufbewahrt.",
+        "Zeitraum, wie lange Backups behalten werden.",
+        "Geplanter Zeitraum, in dem Sicherungen ausgeführt werden.",
+        "Testet, ob die Wiederherstellung wirklich funktioniert.",
+        "Dokumentierter Nachweis der Sicherung."
+      ],
+      "feedback": {
+        "correct": "Die Backup-Begriffe wurden stimmig zugeordnet.",
+        "wrong": "Prüfen Sie Art der Sicherung, Rotation, Ablage, Frist und Wiederherstellungstest."
+      },
+      "progressLinks": [
+        "qus2_backup_generationen_strategien",
+        "qus2_backup_restore_und_nachweise"
+      ]
+    }
+  ]
+}

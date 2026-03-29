@@ -1,0 +1,158 @@
+{
+  "scenario": {
+    "company": "Ausbildungsbetrieb IT-Service",
+    "scale": "Mittelstand, 220 Mitarbeitende",
+    "context": "Station 02 des Tageslaufs: Anforderungsspezifikation für eine Benutzerschnittstelle.",
+    "mission": "Sie erfassen Prozesse, strukturieren Anforderungen und sichern ein klares Akzeptanzbild.",
+    "station": {
+      "id": "LF10FIAE-ST-02",
+      "department": "Requirements",
+      "profile": "Anforderungsanalyse und Spezifikation",
+      "constraints": [
+        "Anforderungen messbar machen",
+        "Unklarheiten aktiv klären",
+        "Akzeptanzkriterien dokumentieren"
+      ]
+    },
+    "customerRequest": {
+      "from": "product.management@ausbildungsbetrieb.example",
+      "to": "dev.team@ausbildungsbetrieb.example",
+      "subject": "Station 02: Spezifikation",
+      "date": "2026-03-13",
+      "body": "Bitte erstellen Sie eine belastbare UI-Spezifikation für die Ticketaufnahme."
+    }
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "type": "single_choice",
+      "title": "Ist-Analyse starten",
+      "prompt": "Was gehört zuerst in die Ist-Analyse?",
+      "options": [
+        {
+          "text": "Nur Farben definieren",
+          "rationale": "Kein Prozessbezug."
+        },
+        {
+          "text": "Direkt Implementierung starten",
+          "rationale": "Zu früh ohne Spezifikation."
+        },
+        {
+          "text": "Nutzeraufgaben und Prozessschritte erfassen",
+          "rationale": "Grundlage für Sollbild."
+        }
+      ],
+      "correctIndex": 2,
+      "feedback": {
+        "correct": "Richtig: Prozess- und Nutzeranalyse zuerst.",
+        "wrong": "Nicht passend: Ohne Ist-Bild fehlt Spezifikationsbasis."
+      },
+      "progressLinks": [
+        "lf10fiae_anforderungsspezifikation"
+      ]
+    },
+    {
+      "id": "q2",
+      "type": "multi_select",
+      "title": "Spezifikationsqualität",
+      "prompt": "Welche Punkte verbessern die Spezifikation? (Mehrfachauswahl)",
+      "options": [
+        {
+          "text": "Muss-/Kann-Unterscheidung",
+          "correct": true,
+          "rationale": "Wichtig für Priorisierung."
+        },
+        {
+          "text": "Messbare Akzeptanzkriterien",
+          "correct": true,
+          "rationale": "Abnahme wird prüfbar."
+        },
+        {
+          "text": "Unklare Begriffe ohne Definition",
+          "correct": false,
+          "rationale": "Führt zu Interpretationsfehlern."
+        },
+        {
+          "text": "Nichtfunktionale Anforderungen dokumentieren",
+          "correct": true,
+          "rationale": "Leistungs- und UX-Aspekte werden sichtbar."
+        },
+        {
+          "text": "Scope und Nicht-Ziele ignorieren",
+          "correct": false,
+          "rationale": "Erhöht Scope-Risiko."
+        }
+      ],
+      "feedback": {
+        "correct": "Richtig: Die Spezifikation ist tragfähig aufgebaut.",
+        "wrong": "Teilweise falsch: Bitte Messbarkeit und Scopeklarheit stärker absichern."
+      },
+      "progressLinks": [
+        "lf10fiae_anforderungsspezifikation"
+      ]
+    },
+    {
+      "id": "q3",
+      "type": "ordering",
+      "title": "Von Bedarf zur Spezifikation",
+      "prompt": "Ordnen Sie den Ablauf zur fertigen Spezifikation.",
+      "items": [
+        "Ist-Prozess erfassen",
+        "Anforderungen clustern",
+        "Akzeptanzkriterien formulieren",
+        "Spezifikation reviewen",
+        "Version freigeben"
+      ],
+      "correctOrder": [
+        "Ist-Prozess erfassen",
+        "Anforderungen clustern",
+        "Akzeptanzkriterien formulieren",
+        "Spezifikation reviewen",
+        "Version freigeben"
+      ],
+      "feedback": {
+        "correct": "Richtig: Der Ablauf ist methodisch sauber.",
+        "wrong": "Nicht optimal: Bitte erst Analyse, dann Formulierung und Freigabe."
+      },
+      "progressLinks": [
+        "lf10fiae_anforderungsspezifikation"
+      ]
+    },
+    {
+      "id": "q4",
+      "type": "number",
+      "title": "Anforderungsvolumen",
+      "prompt": "Es gibt 11 Muss- und 7 Kann-Anforderungen. Wie viele Anforderungen insgesamt?",
+      "expected": 18,
+      "toleranceAbs": 1,
+      "showExpectedFormula": "11 + 7 = 18",
+      "feedback": {
+        "correct": "Richtig gerechnet.",
+        "wrong": "Bitte Muss und Kann korrekt summieren."
+      },
+      "progressLinks": [
+        "lf10fiae_anforderungsspezifikation"
+      ]
+    },
+    {
+      "id": "q5",
+      "type": "short_text",
+      "title": "Spezifikationsnotiz",
+      "prompt": "Formulieren Sie in 4-6 Sätzen eine Spezifikationsnotiz mit Ziel, Kernanforderung und Akzeptanzkriterium.",
+      "minChars": 150,
+      "requiredKeywords": [
+        "ziel",
+        "anforderung",
+        "akzeptanzkriterium"
+      ],
+      "expectedOutline": "Klares Ziel, priorisierte Anforderung und messbares Kriterium.",
+      "feedback": {
+        "correct": "Richtig: Die Notiz ist fachlich belastbar.",
+        "wrong": "Bitte Ziel, Anforderung und Kriterium konkreter ausformulieren."
+      },
+      "progressLinks": [
+        "lf10fiae_anforderungsspezifikation"
+      ]
+    }
+  ]
+}

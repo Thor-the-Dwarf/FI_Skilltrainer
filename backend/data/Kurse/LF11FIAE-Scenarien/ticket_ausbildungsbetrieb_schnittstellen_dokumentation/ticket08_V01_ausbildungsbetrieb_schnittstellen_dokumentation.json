@@ -1,0 +1,159 @@
+{
+  "scenario": {
+    "company": "Ausbildungsbetrieb IT-Service",
+    "scale": "Mittelstand, 240 Mitarbeitende",
+    "context": "Station 08 des Tageslaufs: Komponenten und Schnittstellen dokumentieren.",
+    "mission": "Sie erstellen eine wartbare Schnittstellendokumentation und leiten aus dem Projektverlauf konkrete Verbesserungen ab.",
+    "station": {
+      "id": "LF11FIAE-ST-08",
+      "department": "Dokumentation",
+      "profile": "Schnittstellenbeschreibung, Versionierung, Reflexion",
+      "constraints": [
+        "Schnittstellen eindeutig beschreiben",
+        "Fehlerfälle dokumentieren",
+        "Verbesserungen verbindlich ableiten"
+      ]
+    },
+    "customerRequest": {
+      "from": "tech.writer@ausbildungsbetrieb.example",
+      "to": "dev.team@ausbildungsbetrieb.example",
+      "subject": "Station 08: Doku und Projektabschluss",
+      "date": "2026-03-13",
+      "body": "Bitte liefern Sie eine klare Schnittstellendokumentation inkl. Fehlerfällen und kurzer Abschlussreflexion."
+    }
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "type": "single_choice",
+      "title": "Doku-Grundlage",
+      "prompt": "Welche Angabe ist für eine Schnittstellendoku unverzichtbar?",
+      "options": [
+        {
+          "text": "Eingaben, Ausgaben und Fehlerverhalten",
+          "rationale": "Kern jeder Schnittstellendefinition."
+        },
+        {
+          "text": "Nur interne Spitznamen für Funktionen",
+          "rationale": "Nicht eindeutig für andere Teams."
+        },
+        {
+          "text": "Ausschliesslich UI-Screenshots",
+          "rationale": "Keine vollständige Schnittstelleninfo."
+        }
+      ],
+      "correctIndex": 0,
+      "feedback": {
+        "correct": "Richtig: Diese Angaben sind verpflichtend für nutzbare Doku.",
+        "wrong": "Nicht passend: Doku braucht Ein-/Ausgabe und Fehlerverhalten."
+      },
+      "progressLinks": [
+        "lf11fiae_schnittstellen_dokumentation"
+      ]
+    },
+    {
+      "id": "q2",
+      "type": "multi_select",
+      "title": "Wartbare Doku",
+      "prompt": "Welche Punkte machen Dokumentation wartbar? (Mehrfachauswahl)",
+      "options": [
+        {
+          "text": "Version und Änderungshistorie pflegen",
+          "correct": true,
+          "rationale": "Sichert Nachvollziehbarkeit."
+        },
+        {
+          "text": "Beispiele für gültige und ungültige Requests angeben",
+          "correct": true,
+          "rationale": "Erhöht praktische Nutzbarkeit."
+        },
+        {
+          "text": "Fehlercodes nicht erklären",
+          "correct": false,
+          "rationale": "Erschwert Integration."
+        },
+        {
+          "text": "Vorbedingungen klar benennen",
+          "correct": true,
+          "rationale": "Reduziert Missverständnisse."
+        },
+        {
+          "text": "Doku nur als Chatnachricht verteilen",
+          "correct": false,
+          "rationale": "Nicht nachhaltig."
+        }
+      ],
+      "feedback": {
+        "correct": "Richtig: Das schafft eine belastbare Doku.",
+        "wrong": "Teilweise falsch: Bitte Versionierung, Beispiele und Fehlerbezug stärker absichern."
+      },
+      "progressLinks": [
+        "lf11fiae_schnittstellen_dokumentation"
+      ]
+    },
+    {
+      "id": "q3",
+      "type": "ordering",
+      "title": "Dokuprozess",
+      "prompt": "Ordnen Sie den Ablauf von der Schnittstelle bis zur Abschlussdoku.",
+      "items": [
+        "Schnittstellenumfang festlegen",
+        "Ein-/Ausgabe und Fehlerfälle beschreiben",
+        "Beispiele und Randfälle ergänzen",
+        "Version und Änderungsstand erfassen",
+        "Freigabe für Teamnutzung dokumentieren"
+      ],
+      "correctOrder": [
+        "Schnittstellenumfang festlegen",
+        "Ein-/Ausgabe und Fehlerfälle beschreiben",
+        "Beispiele und Randfälle ergänzen",
+        "Version und Änderungsstand erfassen",
+        "Freigabe für Teamnutzung dokumentieren"
+      ],
+      "feedback": {
+        "correct": "Richtig: Der Dokuprozess ist sauber aufgebaut.",
+        "wrong": "Nicht optimal: Bitte erst Umfang/Inhalt, dann Versionierung und Freigabe abschliessen."
+      },
+      "progressLinks": [
+        "lf11fiae_schnittstellen_dokumentation"
+      ]
+    },
+    {
+      "id": "q4",
+      "type": "number",
+      "title": "Dokuaufwand",
+      "prompt": "Für 6 Endpunkte sind je 18 Minuten Dokumentation eingeplant. Dazu kommen 24 Minuten Review. Wie viele Minuten insgesamt?",
+      "expected": 132,
+      "toleranceAbs": 1,
+      "showExpectedFormula": "6*18 + 24 = 132 Minuten",
+      "feedback": {
+        "correct": "Richtig gerechnet.",
+        "wrong": "Bitte Endpunktaufwand und Review korrekt summieren."
+      },
+      "progressLinks": [
+        "lf11fiae_schnittstellen_dokumentation"
+      ]
+    },
+    {
+      "id": "q5",
+      "type": "short_text",
+      "title": "Abschlussreflexion LF11",
+      "prompt": "Formulieren Sie in 4-6 Sätzen eine Reflexion mit Dokuqualität, offenem Punkt und Verbesserungsschritt.",
+      "minChars": 170,
+      "requiredKeywords": [
+        "dokuqualität",
+        "offener punkt",
+        "verbesserung"
+      ],
+      "expectedOutline": "Reflexion über Dokuqualität, Restpunkt und konkrete Verbesserung.",
+      "feedback": {
+        "correct": "Richtig: Die Reflexion ist klar und handlungsorientiert.",
+        "wrong": "Bitte Dokuqualität, offenen Punkt und Verbesserung deutlicher ausarbeiten."
+      },
+      "progressLinks": [
+        "lf11fiae_schnittstellen_dokumentation",
+        "lf11fiae_testverfahren_unittests"
+      ]
+    }
+  ]
+}

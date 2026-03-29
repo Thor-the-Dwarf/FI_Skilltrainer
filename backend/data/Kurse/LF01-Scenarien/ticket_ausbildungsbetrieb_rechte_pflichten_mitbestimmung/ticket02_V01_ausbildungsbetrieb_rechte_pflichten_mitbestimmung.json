@@ -1,0 +1,160 @@
+{
+  "scenario": {
+    "company": "Ausbildungsbetrieb IT-Service",
+    "scale": "Mittelstand, 90 Mitarbeitende",
+    "context": "Station 02 des Tageslaufs: Rechte und Pflichten im Arbeitsalltag anwenden.",
+    "mission": "Sie bearbeiten typische Alltagssituationen mit Fokus auf Verbindlichkeit, Meldung und Verantwortungsgrenzen.",
+    "station": {
+      "id": "LF01-ST-02",
+      "department": "IT-Service",
+      "profile": "Regelkonformität, Meldewege, Teamverhalten",
+      "constraints": [
+        "Regelbezug sauber herstellen",
+        "Entscheidungen kurz begründen",
+        "Meldewege korrekt anwenden"
+      ]
+    },
+    "customerRequest": {
+      "from": "ausbildung@ausbildungsbetrieb.example",
+      "to": "klasse.fiae@berufsschule.example",
+      "subject": "Station 02: Rechte und Pflichten im Alltag",
+      "date": "2026-03-13",
+      "body": "Bitte beurteilen Sie typische Alltagssituationen im Betrieb und zeigen Sie, wie Pflichten, Meldewege und Verantwortung praxisnah umgesetzt werden."
+    }
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "type": "single_choice",
+      "title": "Pflichtgerechte Reaktion",
+      "prompt": "Ein Ticket bleibt liegen, weil Informationen fehlen. Was ist der beste Schritt?",
+      "options": [
+        {
+          "text": "Ticket schliessen ohne Rückfrage",
+          "rationale": "Führt zu Qualitätsverlust."
+        },
+        {
+          "text": "Fehlende Informationen nachfordern und Vorgang dokumentieren",
+          "rationale": "Sichert Nachvollziehbarkeit und Qualität."
+        },
+        {
+          "text": "Problem an Kollegin weitergeben ohne Hinweis",
+          "rationale": "Keine klare Verantwortung."
+        }
+      ],
+      "correctIndex": 1,
+      "feedback": {
+        "correct": "Richtig: Rückfrage und Dokumentation sind hier entscheidend.",
+        "wrong": "Nicht passend: Verantwortung und Nachvollziehbarkeit müssen gewahrt bleiben."
+      },
+      "progressLinks": [
+        "lf01_rechte_pflichten_ausbildung"
+      ]
+    },
+    {
+      "id": "q2",
+      "type": "multi_select",
+      "title": "Meldewege sauber nutzen",
+      "prompt": "Welche Punkte sprechen für einen sauberen Meldeweg? (Mehrfachauswahl)",
+      "options": [
+        {
+          "text": "Zeitpunkt und Inhalt der Meldung festhalten",
+          "correct": true,
+          "rationale": "Erleichtert Nachverfolgung."
+        },
+        {
+          "text": "Zuständige Kontaktperson nutzen",
+          "correct": true,
+          "rationale": "Verkürzt Reaktionszeit."
+        },
+        {
+          "text": "Wichtige Details bewusst weglassen",
+          "correct": false,
+          "rationale": "Erzeugt Rückfragen und Risiko."
+        },
+        {
+          "text": "Dringlichkeit eindeutig markieren",
+          "correct": true,
+          "rationale": "Unterstützt Priorisierung."
+        },
+        {
+          "text": "Meldung nur mündlich ohne Nachweis",
+          "correct": false,
+          "rationale": "Fehlende Dokumentation."
+        }
+      ],
+      "feedback": {
+        "correct": "Richtig: Der Meldeweg ist belastbar umgesetzt.",
+        "wrong": "Teilweise falsch: Bitte Zuständigkeit und Nachweis stärker beachten."
+      },
+      "progressLinks": [
+        "lf01_rechte_pflichten_ausbildung"
+      ]
+    },
+    {
+      "id": "q3",
+      "type": "ordering",
+      "title": "Pflichtverletzung richtig bearbeiten",
+      "prompt": "Ordnen Sie den Ablauf bei einer festgestellten Pflichtverletzung.",
+      "items": [
+        "Sachverhalt dokumentieren",
+        "Verantwortliche informieren",
+        "Faktenlage kurz prüfen",
+        "Korrekturmassnahme abstimmen",
+        "Nachkontrolle einplanen"
+      ],
+      "correctOrder": [
+        "Faktenlage kurz prüfen",
+        "Sachverhalt dokumentieren",
+        "Verantwortliche informieren",
+        "Korrekturmassnahme abstimmen",
+        "Nachkontrolle einplanen"
+      ],
+      "feedback": {
+        "correct": "Richtig: Das Vorgehen ist klar und verlässlich.",
+        "wrong": "Nicht optimal: Erst prüfen und dokumentieren, dann informieren und nachsteuern."
+      },
+      "progressLinks": [
+        "lf01_rechte_pflichten_ausbildung",
+        "lf01_reflexion_verbesserung"
+      ]
+    },
+    {
+      "id": "q4",
+      "type": "number",
+      "title": "Bearbeitungsfenster berechnen",
+      "prompt": "Ein Vorfall muss in 30 Minuten bearbeitet sein. 8 Minuten entfallen auf Aufnahme, 11 auf Abstimmung. Wie viele Minuten bleiben für die Umsetzung?",
+      "expected": 11,
+      "toleranceAbs": 1,
+      "showExpectedFormula": "30 - 8 - 11 = 11 Minuten",
+      "feedback": {
+        "correct": "Richtig gerechnet.",
+        "wrong": "Bitte Restzeit korrekt berechnen."
+      },
+      "progressLinks": [
+        "lf01_rechte_pflichten_ausbildung"
+      ]
+    },
+    {
+      "id": "q5",
+      "type": "short_text",
+      "title": "Pflichtkonforme Rückmeldung",
+      "prompt": "Formulieren Sie eine kurze Rückmeldung (4-6 Sätze), wie Sie einen Fehler pflichtkonform melden und aufarbeiten.",
+      "minChars": 140,
+      "requiredKeywords": [
+        "meldung",
+        "dokumentation",
+        "massnahme"
+      ],
+      "expectedOutline": "Meldeweg, Dokumentation und konkrete Korrekturmassnahme.",
+      "feedback": {
+        "correct": "Richtig: Die Rückmeldung ist regelkonform und praxisnah.",
+        "wrong": "Bitte Meldung, Dokumentation und Massnahme klarer verbinden."
+      },
+      "progressLinks": [
+        "lf01_rechte_pflichten_ausbildung",
+        "lf01_reflexion_verbesserung"
+      ]
+    }
+  ]
+}

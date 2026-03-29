@@ -1,0 +1,161 @@
+{
+  "scenario": {
+    "company": "Nordufer Maschinenbau GmbH",
+    "scale": "Mittelstand, 2 Standorte, 310 Mitarbeitende",
+    "context": "Station 06 des Tageslaufs: Infrastruktur einrichten, Komponenten bereitstellen und den Rollout kontrolliert planen.",
+    "mission": "Sie bringen das technische Konzept in eine reproduzierbare Installations- und Rolloutlogik.",
+    "station": {
+      "id": "LF09-ST-06",
+      "department": "Rollout",
+      "profile": "Installation, Konfiguration und Bereitstellung",
+      "constraints": [
+        "Ablauf und Rückfalloptionen klar definieren",
+        "Konfigurationen nachvollziehbar halten",
+        "Abhängigkeiten zwischen Infrastruktur und Diensten beachten"
+      ]
+    },
+    "customerRequest": {
+      "from": "rollout.leitung@nordufer-maschinenbau.example",
+      "to": "infra.team@ausbildungsbetrieb.example",
+      "subject": "Station 06: Installation und Rollout",
+      "date": "2026-03-13",
+      "body": "Bitte bereiten Sie den Installations- und Rolloutablauf für den neuen Bereich vor."
+    }
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "type": "single_choice",
+      "title": "Rolloutbeginn absichern",
+      "prompt": "Was ist vor dem eigentlichen Rollout am wichtigsten?",
+      "options": [
+        {
+          "text": "Konfigurationsstand, Zeitfenster und Rückfallplan prüfen",
+          "rationale": "Damit wird der Rollout kontrollierbar und risikoärmer."
+        },
+        {
+          "text": "Direkt alle Komponenten gleichzeitig produktiv schalten",
+          "rationale": "Ohne Absicherung steigt das Projektrisiko stark."
+        },
+        {
+          "text": "Dokumentation bewusst später nachziehen",
+          "rationale": "Das erschwert Nachvollziehbarkeit und Übergabe."
+        }
+      ],
+      "correctIndex": 0,
+      "feedback": {
+        "correct": "Richtig: Ein kontrollierter Start ist entscheidend für den Rollout.",
+        "wrong": "Nicht passend: Vor dem Rollout müssen Absicherung und Rückfallweg stehen."
+      },
+      "progressLinks": [
+        "lf09_installation_konfiguration",
+        "lf09_rollout_uebergabe"
+      ]
+    },
+    {
+      "id": "q2",
+      "type": "ordering",
+      "title": "Bereitstellung strukturieren",
+      "prompt": "Ordnen Sie den Ablauf für eine saubere Bereitstellung.",
+      "items": [
+        "Grundinfrastruktur und Leitungswege bereitstellen",
+        "Netzwerkkomponenten installieren und basis-konfigurieren",
+        "Serverdienste und zentrale Rollen aufsetzen",
+        "Funktionsprüfung und Teilabnahmen durchführen",
+        "Betrieb und Support in den Stand übergeben"
+      ],
+      "correctOrder": [
+        "Grundinfrastruktur und Leitungswege bereitstellen",
+        "Netzwerkkomponenten installieren und basis-konfigurieren",
+        "Serverdienste und zentrale Rollen aufsetzen",
+        "Funktionsprüfung und Teilabnahmen durchführen",
+        "Betrieb und Support in den Stand übergeben"
+      ],
+      "feedback": {
+        "correct": "Richtig: Die Bereitstellung folgt einer logischen technischen Reihenfolge.",
+        "wrong": "Nicht optimal: Bitte Infrastruktur, Komponenten, Dienste und Übergabe sauber staffeln."
+      },
+      "progressLinks": [
+        "lf09_installation_konfiguration"
+      ]
+    },
+    {
+      "id": "q3",
+      "type": "multi_select",
+      "title": "Konfigurationsqualität sichern",
+      "prompt": "Welche Punkte helfen bei einer stabilen Konfigurationspraxis? (Mehrfachauswahl)",
+      "options": [
+        {
+          "text": "VLAN-, Port- und Regelwerke sauber dokumentieren",
+          "correct": true,
+          "rationale": "Steigert Nachvollziehbarkeit und Fehlersicherheit."
+        },
+        {
+          "text": "Zuständigkeiten und Freigaben je Änderung festlegen",
+          "correct": true,
+          "rationale": "Hilft bei kontrollierter Umsetzung."
+        },
+        {
+          "text": "Konfigurationen spontan im Produktivbetrieb ausprobieren",
+          "correct": false,
+          "rationale": "Erhöht das Störungsrisiko deutlich."
+        },
+        {
+          "text": "Konfigurationsstände versionierbar sichern",
+          "correct": true,
+          "rationale": "Erleichtert Rückverfolgung und Rollback."
+        },
+        {
+          "text": "Änderungen nur mündlich im Team erwähnen",
+          "correct": false,
+          "rationale": "Das reicht für einen kontrollierten Betrieb nicht aus."
+        }
+      ],
+      "feedback": {
+        "correct": "Richtig: Gute Konfigurationspraxis braucht Nachvollziehbarkeit und Kontrolle.",
+        "wrong": "Teilweise falsch: Bitte Versionierung, Freigaben und Dokumentation stärker beachten."
+      },
+      "progressLinks": [
+        "lf09_installation_konfiguration",
+        "lf09_rollout_uebergabe"
+      ]
+    },
+    {
+      "id": "q4",
+      "type": "short_text",
+      "title": "Rolloutnotiz formulieren",
+      "prompt": "Beschreiben Sie in 4-6 Sätzen, wie Sie einen Rolloutabschnitt so dokumentieren, dass Betrieb und Support danach sicher übernehmen können.",
+      "minChars": 170,
+      "requiredKeywords": [
+        "konfiguration",
+        "freigabe",
+        "restpunkt"
+      ],
+      "expectedOutline": "Dokumentationsansatz für nachvollziehbare Konfiguration, Freigabe und offene Restpunkte.",
+      "feedback": {
+        "correct": "Richtig: Die Rolloutdokumentation ist übergabefähig beschrieben.",
+        "wrong": "Bitte Konfigurationsstand, Freigabe und Restpunkte deutlicher hervorheben."
+      },
+      "progressLinks": [
+        "lf09_rollout_uebergabe",
+        "lf09_pruefung_dokumentation"
+      ]
+    },
+    {
+      "id": "q5",
+      "type": "number",
+      "title": "PoE-Last berechnen",
+      "prompt": "Vier Access Points benötigen jeweils 18 W PoE-Leistung. Wie hoch ist die gesamte PoE-Last in Watt?",
+      "expected": 72,
+      "toleranceAbs": 1,
+      "showExpectedFormula": "4 * 18 = 72 W",
+      "feedback": {
+        "correct": "Richtig gerechnet.",
+        "wrong": "Bitte Anzahl der Access Points und Leistung pro Gerät korrekt multiplizieren."
+      },
+      "progressLinks": [
+        "lf09_installation_konfiguration"
+      ]
+    }
+  ]
+}

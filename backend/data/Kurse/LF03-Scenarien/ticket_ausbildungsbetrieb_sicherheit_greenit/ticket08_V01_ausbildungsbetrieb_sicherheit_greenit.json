@@ -1,0 +1,161 @@
+{
+  "scenario": {
+    "company": "Ausbildungsbetrieb IT-Service",
+    "scale": "Regional, 140 Mitarbeitende",
+    "context": "Station 8 des Tageslaufs: Sicherheit, Verfügbarkeit und Green-IT abschliessen.",
+    "mission": "Sie bewerten Sicherheitsmassnahmen, Stromversorgung und einen nachhaltigen Abschluss für den Netzbetrieb.",
+    "station": {
+      "id": "LF03-ST-08",
+      "department": "IT-Betrieb",
+      "profile": "Backup, Verfügbarkeit, USV und Green-IT im Client-Netz",
+      "constraints": [
+        "Sicherheit und Betrieb gemeinsam denken",
+        "Messbare Punkte bevorzugen",
+        "Abschluss klar kommunizieren"
+      ]
+    },
+    "customerRequest": {
+      "from": "it.leitung@ausbildungsbetrieb.example",
+      "to": "support.team@ausbildungsbetrieb.example",
+      "subject": "Station 08: Sichere und nachhaltige Betriebsfreigabe vorbereiten",
+      "date": "2026-03-13",
+      "body": "Bitte bewerten Sie für den Client-Netzbetrieb die Sicherheitsbasis, die Stromversorgung und Green-IT-Massnahmen. Wir benötigen eine kurze Abschlussnotiz mit Verfügbarkeits- und Nachhaltigkeitsbezug."
+    }
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "type": "multi_select",
+      "title": "Sichere Betriebsfreigabe",
+      "prompt": "Welche Punkte gehören in eine sichere Betriebsfreigabe? (Mehrfachauswahl)",
+      "options": [
+        {
+          "text": "Aktuelle Updates und Schutzmassnahmen sind aktiv",
+          "correct": true,
+          "rationale": "Das schafft eine tragfähige Sicherheitsbasis."
+        },
+        {
+          "text": "Zugriffsrechte sind nachvollziehbar und auf das Notwendige begrenzt",
+          "correct": true,
+          "rationale": "So wird das Berechtigungskonzept eingehalten."
+        },
+        {
+          "text": "Relevante Daten sind durch Backup oder zentrale Synchronisation abgesichert",
+          "correct": true,
+          "rationale": "Betriebsrelevante Daten müssen wiederherstellbar bleiben."
+        },
+        {
+          "text": "Ein gemeinsames Admin-Passwort für alle ist ausreichend",
+          "correct": false,
+          "rationale": "Das widerspricht sicherem Rollen- und Rechtekonzept."
+        },
+        {
+          "text": "Offene Netzzugänge ohne Authentifizierung vereinfachen den Betrieb",
+          "correct": false,
+          "rationale": "Das wäre ein klares Sicherheitsrisiko."
+        }
+      ],
+      "feedback": {
+        "correct": "Richtig: Sie sichern Schutz, Rechte und Datenbasis zugleich ab.",
+        "wrong": "Teilweise falsch: Bitte Schutzmassnahmen, Rechte und Datensicherung enger zusammendenken."
+      },
+      "progressLinks": [
+        "lf03_sicherheit_backup"
+      ]
+    },
+    {
+      "id": "q2",
+      "type": "ordering",
+      "title": "Abschluss für sicheren Netzbetrieb",
+      "prompt": "Ordnen Sie die Schritte für eine saubere Abschlussfreigabe.",
+      "items": [
+        "Abschlussnotiz und Monitoringhinweis erstellen",
+        "Backup oder zentrale Datensicherung prüfen",
+        "Schutzmassnahmen und Rechtebasis kontrollieren",
+        "Stromversorgung und Ausfallvorsorge prüfen",
+        "Restrisiken für den Betrieb festhalten"
+      ],
+      "correctOrder": [
+        "Schutzmassnahmen und Rechtebasis kontrollieren",
+        "Backup oder zentrale Datensicherung prüfen",
+        "Stromversorgung und Ausfallvorsorge prüfen",
+        "Restrisiken für den Betrieb festhalten",
+        "Abschlussnotiz und Monitoringhinweis erstellen"
+      ],
+      "feedback": {
+        "correct": "Richtig: So bleibt die Freigabe sicher und nachvollziehbar.",
+        "wrong": "Nicht optimal: Bitte erst Schutz, Datensicherung und Versorgung prüfen, dann Restrisiken festhalten."
+      },
+      "progressLinks": [
+        "lf03_sicherheit_backup",
+        "lf03_verfuegbarkeit_berechnen"
+      ]
+    },
+    {
+      "id": "q3",
+      "type": "single_choice",
+      "title": "Umgang mit instabiler Stromversorgung",
+      "prompt": "Was ist für einen kleinen Netzschrank mit instabiler Stromversorgung am sinnvollsten?",
+      "options": [
+        {
+          "text": "USV einplanen und einen geordneten Shutdown dokumentieren",
+          "rationale": "Das verbessert Verfügbarkeit und reduziert Folgeschäden."
+        },
+        {
+          "text": "Stromausfälle ignorieren, solange es nur selten passiert",
+          "rationale": "Seltene Ausfälle können trotzdem zu Schaden führen."
+        },
+        {
+          "text": "Nur die Gehäusetemperatur notieren",
+          "rationale": "Das löst das Versorgungsproblem nicht."
+        }
+      ],
+      "correctIndex": 0,
+      "feedback": {
+        "correct": "Richtig: Versorgungssicherheit und geordneter Betrieb gehören zusammen.",
+        "wrong": "Nicht passend: Bitte Stromversorgung aktiv absichern und dokumentieren."
+      },
+      "progressLinks": [
+        "lf03_stromversorgung_greenit"
+      ]
+    },
+    {
+      "id": "q4",
+      "type": "number",
+      "title": "Energiebedarf abschätzen",
+      "prompt": "Ein Netzschrank benötigt durchschnittlich 420 Watt. Er läuft 10 Stunden pro Arbeitstag über 20 Arbeitstage. Wie hoch ist der Energiebedarf in kWh?",
+      "expected": 84,
+      "toleranceAbs": 0.5,
+      "showExpectedFormula": "0,42 kW * 10 h * 20 = 84 kWh",
+      "feedback": {
+        "correct": "Richtig gerechnet.",
+        "wrong": "Bitte Watt in kW umrechnen und dann mit Zeit multiplizieren."
+      },
+      "progressLinks": [
+        "lf03_stromversorgung_greenit"
+      ]
+    },
+    {
+      "id": "q5",
+      "type": "short_text",
+      "title": "Abschlussnotiz für den Betrieb",
+      "prompt": "Formulieren Sie in 4-6 Sätzen eine Abschlussnotiz mit Sicherheitsstatus, Verfügbarkeitsbezug und Energiehinweis.",
+      "minChars": 160,
+      "requiredKeywords": [
+        "sicherheit",
+        "verfügbarkeit",
+        "energie"
+      ],
+      "expectedOutline": "Sicherheitslage, Betriebsstabilität und Green-IT-Hinweis in einer kurzen Abschlussnotiz verbinden.",
+      "feedback": {
+        "correct": "Richtig: Die Abschlussnotiz verbindet Schutz, Betrieb und Nachhaltigkeit sinnvoll.",
+        "wrong": "Bitte Sicherheitsstatus, Verfügbarkeitsbezug und Energiehinweis klarer verbinden."
+      },
+      "progressLinks": [
+        "lf03_sicherheit_backup",
+        "lf03_verfuegbarkeit_berechnen",
+        "lf03_stromversorgung_greenit"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,161 @@
+{
+  "scenario": {
+    "company": "Ausbildungsbetrieb IT-Service",
+    "scale": "Mittelstand, 180 Mitarbeitende",
+    "context": "Station 5 des Tageslaufs: Technisch-organisatorische Massnahmen und Sicherheitsprozess anwenden.",
+    "mission": "Sie leiten geeignete Massnahmen ab und ordnen diese in einen nachvollziehbaren Sicherheitsprozess ein.",
+    "station": {
+      "id": "LF04-ST-05",
+      "department": "IT-Sicherheit",
+      "profile": "Rollenbasierte Zugriffe, Freigaben, Sicherheitsprozess und Nachverfolgung",
+      "constraints": [
+        "Wirksame Massnahmen priorisieren",
+        "Prozessschritte sauber trennen",
+        "Restpunkte transparent halten"
+      ]
+    },
+    "customerRequest": {
+      "from": "sicherheitsteam@ausbildungsbetrieb.example",
+      "to": "it.service@ausbildungsbetrieb.example",
+      "subject": "Station 05: TOMs und Sicherheitsprozess für den Arbeitsbereich ableiten",
+      "date": "2026-03-13",
+      "body": "Bitte leiten Sie für einen sensiblen Arbeitsbereich passende technisch-organisatorische Massnahmen ab und ordnen Sie diese in einen klaren Sicherheitsprozess ein."
+    }
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "type": "single_choice",
+      "title": "Wirksamste Sofortmassnahme",
+      "prompt": "Welche Massnahme bringt für sensible Arbeitsplatzdaten oft den grössten Sofortnutzen?",
+      "options": [
+        {
+          "text": "Zugriffe rollenbasiert vergeben und regelmässig prüfen",
+          "rationale": "Das begrenzt unnötige Zugriffe und senkt Missbrauchsrisiken."
+        },
+        {
+          "text": "Freigaberegeln lockern, damit Prozesse schneller laufen",
+          "rationale": "Das senkt das Sicherheitsniveau."
+        },
+        {
+          "text": "Nur das Hintergrundbild ändern",
+          "rationale": "Das ist als alleinige Massnahme wirkungslos."
+        }
+      ],
+      "correctIndex": 0,
+      "feedback": {
+        "correct": "Richtig: Rollenbasierte Zugriffe sind ein zentraler TOM-Baustein.",
+        "wrong": "Nicht passend: Die Massnahme muss wirksam und betrieblich tragfähig sein."
+      },
+      "progressLinks": [
+        "lf04_tom_massnahmen"
+      ]
+    },
+    {
+      "id": "q2",
+      "type": "multi_select",
+      "title": "Technisch-organisatorische Massnahmen erkennen",
+      "prompt": "Welche Punkte sind sinnvolle TOMs für den Arbeitsbereich? (Mehrfachauswahl)",
+      "options": [
+        {
+          "text": "Rollenbasierte Freigaben und regelmässige Rechteprüfung",
+          "correct": true,
+          "rationale": "Das reduziert unnötige Zugriffe."
+        },
+        {
+          "text": "Dokumentierte Melde- und Freigabewege",
+          "correct": true,
+          "rationale": "Organisatorische Absicherung gehört dazu."
+        },
+        {
+          "text": "Aktuelle Schutzmassnahmen und geregelte Updates",
+          "correct": true,
+          "rationale": "Technischer Mindestschutz muss stabil bleiben."
+        },
+        {
+          "text": "Unkontrollierte Freigaben auf Zuruf",
+          "correct": false,
+          "rationale": "Das unterläuft jeden geordneten Prozess."
+        },
+        {
+          "text": "Klare Verantwortlichkeiten für Umsetzung und Kontrolle",
+          "correct": true,
+          "rationale": "Nur so bleibt die Wirksamkeit nachverfolgbar."
+        }
+      ],
+      "feedback": {
+        "correct": "Richtig: Sie verbinden Technik, Organisation und Nachverfolgung sinnvoll.",
+        "wrong": "Teilweise falsch: Bitte Zugriff, Prozess und Verantwortlichkeit stärker zusammendenken."
+      },
+      "progressLinks": [
+        "lf04_tom_massnahmen",
+        "lf04_sicherheitsprozess_leitlinie"
+      ]
+    },
+    {
+      "id": "q3",
+      "type": "ordering",
+      "title": "Sicherheitsprozess mit Massnahmenplanung",
+      "prompt": "Ordnen Sie die Schritte sinnvoll.",
+      "items": [
+        "Massnahmen umsetzen und Verantwortliche festhalten",
+        "Schutzbedarf und Risiken bewerten",
+        "Rahmenvorgaben und Sicherheitsleitlinie aufnehmen",
+        "Wirksamkeit prüfen und Restpunkte dokumentieren",
+        "Prioritäten für Massnahmen ableiten"
+      ],
+      "correctOrder": [
+        "Rahmenvorgaben und Sicherheitsleitlinie aufnehmen",
+        "Schutzbedarf und Risiken bewerten",
+        "Prioritäten für Massnahmen ableiten",
+        "Massnahmen umsetzen und Verantwortliche festhalten",
+        "Wirksamkeit prüfen und Restpunkte dokumentieren"
+      ],
+      "feedback": {
+        "correct": "Richtig: Der Prozess führt sauber von der Vorgabe zur Wirksamkeitsprüfung.",
+        "wrong": "Nicht optimal: Bitte Rahmen, Bewertung, Priorisierung, Umsetzung und Nachverfolgung klar staffeln."
+      },
+      "progressLinks": [
+        "lf04_sicherheitsprozess_leitlinie",
+        "lf04_tom_massnahmen"
+      ]
+    },
+    {
+      "id": "q4",
+      "type": "number",
+      "title": "Umsetzungsstand berechnen",
+      "prompt": "Von 5 priorisierten Massnahmen sind 4 bereits umgesetzt. Wie hoch ist der Umsetzungsstand in Prozent?",
+      "expected": 80,
+      "toleranceAbs": 0.5,
+      "showExpectedFormula": "4 / 5 * 100 = 80 %",
+      "feedback": {
+        "correct": "Richtig gerechnet.",
+        "wrong": "Bitte umgesetzte Massnahmen durch die Gesamtzahl teilen und in Prozent umrechnen."
+      },
+      "progressLinks": [
+        "lf04_tom_massnahmen"
+      ]
+    },
+    {
+      "id": "q5",
+      "type": "short_text",
+      "title": "Massnahmenvorschlag formulieren",
+      "prompt": "Schreiben Sie in 4-6 Sätzen einen Massnahmenvorschlag mit Priorität, Verantwortlichkeit und Restpunkt.",
+      "minChars": 160,
+      "requiredKeywords": [
+        "priorität",
+        "verantwortlich",
+        "restpunkt"
+      ],
+      "expectedOutline": "Zwei starke Massnahmen, klare Verantwortlichkeit und ein transparenter Restpunkt.",
+      "feedback": {
+        "correct": "Richtig: Der Vorschlag ist wirksam und nachvollziehbar aufgebaut.",
+        "wrong": "Bitte Priorität, Verantwortung und Restpunkt klarer herausarbeiten."
+      },
+      "progressLinks": [
+        "lf04_tom_massnahmen",
+        "lf04_dokumentation_kommunikation"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,418 @@
+{
+  "scenario": {
+    "company": "SecuBridge Service GmbH",
+    "scale": "IT service provider for home office, municipal workplaces and medical practice environments, 95 employees",
+    "context": "A service tablet from the mobile citizen office has been missing since this morning. It ran appointment view, mail sync, document upload and a managed access for inquiries.",
+    "mission": "Define immediate lock, containment of sync access and residual data, and completion evidence for the device loss.",
+    "source": {
+      "kind": "Internal incident and containment request",
+      "reference": "Loss of service tablet mobile citizen office, 2026-03-26 07:55",
+      "note": "Based on the loss report from an employee, last MDM signals from the morning, active mail and appointment synchronization, an upload cache for documents and the requirement to set technical measures and evidence in parallel."
+    },
+    "station": {
+      "id": "QUS2-ST-09",
+      "department": "Mobile operations, information security and data protection coordination",
+      "profile": "Device loss, immediate lock, residual data, MDM evidence and closure",
+      "constraints": [
+        "Lock, containment and documentation must start immediately and must not wait for later root-cause clarification",
+        "Mail sync, appointment view, upload cache and technical tokens must be assessed separately and handled in a coordinated way",
+        "For leadership and audit, a readable closure with MDM status, open points and next follow-up is required"
+      ]
+    },
+    "customerRequest": {
+      "from": "mobilerdienst@secubridge-service.example",
+      "to": "incidentmobile@ausbildungsbetrieb.example",
+      "subject": "Service tablet from the mobile citizen office missing since this morning",
+      "date": "2026-03-26",
+      "body": "Good day,\n\nsince this morning a service tablet from the mobile citizen office cannot be found. The device was used for appointment viewing, email inquiries and uploading scanned documents. According to the last MDM signal it was still online around 07:42. It is unclear whether the device is currently locked in the vehicle or actually lost.\n\nPlease prepare a reliable status by 11:00: which immediate measures are running, which sync accesses or residual data must be contained, who owns which role and which evidence we need for further closure.\n\nKind regards\nMobile service"
+    }
+  },
+  "questions": [
+    {
+      "id": "ctx01",
+      "type": "context_card",
+      "title": "Current status of the service tablet",
+      "contentBlocks": [
+        {
+          "type": "text",
+          "text": "SecuBridge uses managed tablets in the mobile citizen office for appointment view, inquiries and document upload. In this case it is unclear whether the device was only misplaced or already lost outside the controlled environment. Therefore technical protection and data containment must run together immediately."
+        },
+        {
+          "type": "table",
+          "columns": [
+            "Point",
+            "Current finding"
+          ],
+          "rows": [
+            [
+              "Device",
+              "Managed service tablet for mobile citizen office"
+            ],
+            [
+              "Last MDM signal",
+              "2026-03-26 07:42 online"
+            ],
+            [
+              "Active functions",
+              "Appointment view, mail sync, document upload, inquiry access"
+            ],
+            [
+              "Local risks",
+              "Possible upload cache and cached mail attachments"
+            ],
+            [
+              "Expectation by 11:00",
+              "Lock status, containment of residual data and initial closure framework"
+            ]
+          ]
+        },
+        {
+          "type": "text",
+          "text": "The target is not a general loss note, but a controllable incident status on lock, sync paths, possible residual data and later closure via MDM and evidence."
+        }
+      ]
+    },
+    {
+      "id": "q01",
+      "type": "multi_select",
+      "title": "Immediate response to device loss",
+      "prompt": "Which steps must be initiated immediately now? Several steps can be necessary at the same time.",
+      "options": [
+        {
+          "text": "Lock the device via MDM or set it to lost mode and secure the current MDM status.",
+          "correct": true,
+          "rationale": "This limits access directly and makes the technical immediate status visible."
+        },
+        {
+          "text": "Review mail, appointment or app sessions and affected tokens and revoke mobile sync access if needed.",
+          "correct": true,
+          "rationale": "Active synchronization can remain a risk even without direct device contact."
+        },
+        {
+          "text": "Document time, last sighting, affected functions and known circumstances of the loss report.",
+          "correct": true,
+          "rationale": "Without early documentation the incident status becomes hard to reconstruct."
+        },
+        {
+          "text": "Involve domain view and data protection coordination early if mail, appointments and documents may be affected.",
+          "correct": true,
+          "rationale": "Technical lock and domain assessment must run in parallel here."
+        },
+        {
+          "text": "Wait to see whether the tablet turns up during the day before changing systems or tokens.",
+          "correct": false,
+          "rationale": "The first response must not depend on a hopeful scenario."
+        },
+        {
+          "text": "Only change the employee PIN; other technical measures are not necessary yet.",
+          "correct": false,
+          "rationale": "Device loss affects sessions, sync paths and local data, not just a single access code."
+        }
+      ],
+      "feedback": {
+        "correct": "The immediate containment steps were identified correctly.",
+        "wrong": "Focus on MDM lock, sync access, early documentation and involving the right stakeholders."
+      },
+      "progressLinks": [
+        "qus2_geraetverlust_und_sofortsperre"
+      ]
+    },
+    {
+      "id": "q02",
+      "type": "single_choice",
+      "title": "Most critical risk point",
+      "prompt": "Which finding is currently the most critical for further assessment?",
+      "options": [
+        {
+          "text": "The tablet is an older model and has already been used multiple times in field service.",
+          "rationale": "That describes context, but not the core assessment lever."
+        },
+        {
+          "text": "The device had active synchronization for appointments, mail and uploads, while it is still unclear whether local access to cache or attachments was possible.",
+          "rationale": "Here technical reachability, possible residual data and unclear device state come together."
+        },
+        {
+          "text": "The last MDM signal is from early morning, not from late morning.",
+          "rationale": "The timestamp matters, but only becomes decisive with active functions."
+        },
+        {
+          "text": "The mobile citizen office works regularly under time pressure at on-site appointments.",
+          "rationale": "That explains operational risk, but is not the core finding for acute assessment."
+        }
+      ],
+      "correctIndex": 1,
+      "feedback": {
+        "correct": "The most critical risk point was correctly prioritized.",
+        "wrong": "Focus on the combination of active sync, possible residual data and an unclear device state."
+      },
+      "progressLinks": [
+        "qus2_geraetverlust_und_sofortsperre",
+        "qus2_synczugriffe_und_restdaten_eingrenzen"
+      ]
+    },
+    {
+      "id": "f02",
+      "type": "followup_divider",
+      "title": "Contain sync paths and residual data in an ordered way",
+      "from": "informationssicherheit@secubridge-service.example",
+      "to": "incidentmobile@ausbildungsbetrieb.example",
+      "subject": "Build containment picture for tablet, sync and residual data",
+      "date": "2026-03-26",
+      "body": "Hello everyone,\n\nplease treat the case not only as device loss, but as a full picture of MDM status, active synchronizations and possible residual data on the tablet. For each area, document what must be checked or locked first and which evidence will later support the status.\n\nKind regards\nInformation security"
+    },
+    {
+      "id": "q03",
+      "type": "table_fill",
+      "title": "First containment and evidence per risk field",
+      "prompt": "For each risk field, add the most likely first measure and the first appropriate evidence.",
+      "columns": [
+        "Risk field",
+        "First measure",
+        "First appropriate evidence"
+      ],
+      "rows": [
+        [
+          "Device access via the tablet itself",
+          {
+            "key": "action_row_1",
+            "label": "Tablet / measure",
+            "expected": "Activate MDM lock or lost mode and secure the current device status.",
+            "inputType": "select",
+            "placeholder": "Select measure",
+            "options": [
+              "Activate MDM lock or lost mode and secure the current device status.",
+              "Only mark the serial number in the inventory and otherwise wait.",
+              "Read the tablet start page in the manual.",
+              "Wait until after working hours to check if someone saw the device."
+            ]
+          },
+          {
+            "key": "proof_row_1",
+            "label": "Tablet / evidence",
+            "expected": "MDM log or screenshot with lock status and timestamp.",
+            "inputType": "select",
+            "placeholder": "Select evidence",
+            "options": [
+              "MDM log or screenshot with lock status and timestamp.",
+              "Calendar entry of the mobile shift.",
+              "General inventory list without status.",
+              "Phone note without device evidence."
+            ]
+          }
+        ],
+        [
+          "Mail and appointment synchronization",
+          {
+            "key": "action_row_2",
+            "label": "Sync / measure",
+            "expected": "Review affected sessions or tokens and revoke mobile sync access if needed.",
+            "inputType": "select",
+            "placeholder": "Select measure",
+            "options": [
+              "Review affected sessions or tokens and revoke mobile sync access if needed.",
+              "Only send a new standard email to the team.",
+              "Leave synchronization unchanged as long as the tablet battery should soon be empty.",
+              "Only resort the calendar."
+            ]
+          },
+          {
+            "key": "proof_row_2",
+            "label": "Sync / evidence",
+            "expected": "Log of session or token revocation with service reference.",
+            "inputType": "select",
+            "placeholder": "Select evidence",
+            "options": [
+              "Log of session or token revocation with service reference.",
+              "Only the message that the employee reported the loss.",
+              "Screenshot of an appointment without access reference.",
+              "General password rules from onboarding."
+            ]
+          }
+        ],
+        [
+          "Local upload cache or mail attachments",
+          {
+            "key": "action_row_3",
+            "label": "Residual data / measure",
+            "expected": "Check which data could have been cached locally and document the assessment of possible residual data.",
+            "inputType": "select",
+            "placeholder": "Select measure",
+            "options": [
+              "Check which data could have been cached locally and document the assessment of possible residual data.",
+              "Assume mobile apps never store anything locally by default.",
+              "Only count the number of appointments for the day.",
+              "Ask the employee for their gut feeling about data status."
+            ]
+          },
+          {
+            "key": "proof_row_3",
+            "label": "Residual data / evidence",
+            "expected": "System or app status on cache usage plus documented assessment of affected data types.",
+            "inputType": "select",
+            "placeholder": "Select evidence",
+            "options": [
+              "System or app status on cache usage plus documented assessment of affected data types.",
+              "Photo of the deployment location without device reference.",
+              "General role description of the mobile service.",
+              "Vehicle weekly plan."
+            ]
+          }
+        ]
+      ],
+      "feedback": {
+        "correct": "Risk field, first measure and first evidence were matched consistently.",
+        "wrong": "Check which measure truly locks or contains and which evidence can later support the containment."
+      },
+      "progressLinks": [
+        "qus2_synczugriffe_und_restdaten_eingrenzen"
+      ]
+    },
+    {
+      "id": "q04",
+      "type": "match_pairs",
+      "title": "Roles in the mobile incident",
+      "prompt": "Which role takes which initial responsibility in this case?",
+      "layout": "table",
+      "columns": [
+        "Role",
+        "Initial responsibility"
+      ],
+      "pairs": [
+        {
+          "key": "role_1",
+          "left": "Mobile service",
+          "right": "Provide last usage, loss circumstances and possible deployment materials from the team perspective"
+        },
+        {
+          "key": "role_2",
+          "left": "Platform operations",
+          "right": "Implement MDM lock, session revocation and technical immediate measures"
+        },
+        {
+          "key": "role_3",
+          "left": "Data protection coordination",
+          "right": "Steer assessment, reporting path and evidence framework for affected data types"
+        },
+        {
+          "key": "role_4",
+          "left": "Information security",
+          "right": "Consolidate the risk picture on residual data, sync paths and open residual risk"
+        }
+      ],
+      "options": [
+        "Provide last usage, loss circumstances and possible deployment materials from the team perspective",
+        "Implement MDM lock, session revocation and technical immediate measures",
+        "Steer assessment, reporting path and evidence framework for affected data types",
+        "Consolidate the risk picture on residual data, sync paths and open residual risk"
+      ],
+      "feedback": {
+        "correct": "The roles were matched with their initial responsibilities.",
+        "wrong": "Focus on who provides team context, who locks technically, who assesses and who consolidates the risk picture."
+      },
+      "progressLinks": [
+        "qus2_geraetverlust_und_sofortsperre",
+        "qus2_synczugriffe_und_restdaten_eingrenzen"
+      ]
+    },
+    {
+      "id": "q05",
+      "type": "number",
+      "title": "Sync paths to lock immediately",
+      "prompt": "There were 9 active mobile connections on the tablet. 3 of them are already ineffective for location services only, 2 were already ended regularly before the loss report. How many connections still need to be actively locked or revoked now?",
+      "expected": 4,
+      "toleranceAbs": 0,
+      "showExpectedFormula": "9 - 3 - 2 = 4 connections",
+      "feedback": {
+        "correct": "The number of connections still to be locked was calculated correctly.",
+        "wrong": "Please subtract already ineffective and already ended paths from all active connections."
+      },
+      "progressLinks": [
+        "qus2_synczugriffe_und_restdaten_eingrenzen"
+      ]
+    },
+    {
+      "id": "f03",
+      "type": "followup_divider",
+      "title": "Prepare closure for leadership and audit",
+      "from": "revision@secubridge-service.example",
+      "to": "incidentmobile@ausbildungsbetrieb.example",
+      "subject": "Deliver evidence picture for the lost service tablet",
+      "date": "2026-03-26",
+      "body": "Hello everyone,\n\nfor the further course I do not need a simple loss note, but a readable status of what was locked, which possible residual data could be affected, which points remain open and what the later closure is based on. Please also make visible if MDM status or device whereabouts are not yet fully clarified.\n\nKind regards\nAudit"
+    },
+    {
+      "id": "q06",
+      "type": "multi_select",
+      "title": "Components of the closure picture",
+      "prompt": "Which documents or results must be available for a reliable closure of the device loss?",
+      "options": [
+        {
+          "text": "Evidence of MDM status with lock, lost mode or further device state.",
+          "correct": true,
+          "rationale": "Closure needs a clear technical status of the device itself."
+        },
+        {
+          "text": "Documented status of revoked sessions, tokens or mobile sync access.",
+          "correct": true,
+          "rationale": "Only then is it visible how accompanying access was limited."
+        },
+        {
+          "text": "Assessment of possible residual data or locally cached content with an open residual point.",
+          "correct": true,
+          "rationale": "Local data remnants must be handled visibly in closure."
+        },
+        {
+          "text": "Follow-up review or next check date if device recovery or remote wipe is still open.",
+          "correct": true,
+          "rationale": "Open points must not remain without follow-up control."
+        },
+        {
+          "text": "A short chat confirmation that the team knows about the loss now.",
+          "correct": false,
+          "rationale": "That signals communication but not a reliable incident closure."
+        },
+        {
+          "text": "The general inventory list of all tablets in the company.",
+          "correct": false,
+          "rationale": "Without reference to lock status, sync and residual data the list does not help closure."
+        }
+      ],
+      "feedback": {
+        "correct": "The key components of the closure picture were fully identified.",
+        "wrong": "Focus on MDM status, revoked access, residual data assessment and visible follow-up review instead of general context."
+      },
+      "progressLinks": [
+        "qus2_mdm_nachweise_und_abschluss"
+      ]
+    },
+    {
+      "id": "q07",
+      "type": "ordering",
+      "title": "From loss to reliable evidence status",
+      "prompt": "Put the steps in a sensible order so the device loss can be contained and closed cleanly.",
+      "items": [
+        "Record loss report, last sighting and affected functions cleanly.",
+        "Lock the device via MDM and contain accompanying sessions or tokens.",
+        "Assess possible residual data and local cache usage based on the apps.",
+        "Fix roles for assessment, reporting path and technical evidence.",
+        "Document closure picture with MDM status, residual point and follow-up review."
+      ],
+      "correctOrder": [
+        "Record loss report, last sighting and affected functions cleanly.",
+        "Lock the device via MDM and contain accompanying sessions or tokens.",
+        "Assess possible residual data and local cache usage based on the apps.",
+        "Fix roles for assessment, reporting path and technical evidence.",
+        "Document closure picture with MDM status, residual point and follow-up review."
+      ],
+      "feedback": {
+        "correct": "The order leads cleanly from loss report through lock and assessment to reliable closure.",
+        "wrong": "First loss status and lock, then residual data assessment, then roles and finally the closure."
+      },
+      "progressLinks": [
+        "qus2_geraetverlust_und_sofortsperre",
+        "qus2_synczugriffe_und_restdaten_eingrenzen",
+        "qus2_mdm_nachweise_und_abschluss"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,160 @@
+{
+  "scenario": {
+    "company": "Ausbildungsbetrieb IT-Service",
+    "scale": "Regional, 210 Mitarbeitende",
+    "context": "Station 5 des Tageslaufs: Lösungsbearbeitung im Team koordinieren.",
+    "mission": "Sie sichern Teamübergabe, Verantwortlichkeiten und abgestimmte Statuskommunikation in einem laufenden Servicefall.",
+    "station": {
+      "id": "LF06-ST-05",
+      "department": "Service Desk und Second-Level",
+      "profile": "Übergabe, Verantwortlichkeit, Eskalation und abgestimmter Status",
+      "constraints": [
+        "Faktenbasis vor Weitergabe sichern",
+        "Verantwortung klar benennen",
+        "Kundenstatus mit Teamstand abstimmen"
+      ]
+    },
+    "customerRequest": {
+      "from": "service.manager@ausbildungsbetrieb.example",
+      "to": "service.desk@ausbildungsbetrieb.example",
+      "subject": "Station 05: Teamkoordination für einen Servicefall absichern",
+      "date": "2026-03-13",
+      "body": "Bitte zeigen Sie an einem Störungsfall, wie eine saubere Teamübergabe, Eskalation und Statuspflege zwischen den Beteiligten abläuft."
+    }
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "type": "single_choice",
+      "title": "Kern einer guten Übergabe",
+      "prompt": "Was ist für eine gute Übergabe an das Second-Level am wichtigsten?",
+      "options": [
+        {
+          "text": "Ticket mit Fakten, Befunden und bisherigem Vorgehen aktualisieren",
+          "rationale": "Ohne belastbare Fakten sinkt die Übergabequalität."
+        },
+        {
+          "text": "Nur mündlich kurz Bescheid geben",
+          "rationale": "Das reicht für Nachvollziehbarkeit und Steuerung nicht aus."
+        },
+        {
+          "text": "Die Kundenkommunikation sofort beenden",
+          "rationale": "Statuspflege bleibt trotz Übergabe wichtig."
+        }
+      ],
+      "correctIndex": 0,
+      "feedback": {
+        "correct": "Richtig: Die Faktenbasis trägt jede saubere Übergabe.",
+        "wrong": "Nicht passend: Bitte Informationsbasis und Nachvollziehbarkeit stärker gewichten."
+      },
+      "progressLinks": [
+        "lf06_team_loesung"
+      ]
+    },
+    {
+      "id": "q2",
+      "type": "multi_select",
+      "title": "Koordination im Bearbeitungsteam",
+      "prompt": "Welche Punkte helfen bei der Teamkoordination? (Mehrfachauswahl)",
+      "options": [
+        {
+          "text": "Übergabeziel und Verantwortlichkeiten klar benennen",
+          "correct": true,
+          "rationale": "So werden Doppelarbeit und Lücken reduziert."
+        },
+        {
+          "text": "Kundenstatus mit abgestimmter Aussage aktualisieren",
+          "correct": true,
+          "rationale": "Ein gemeinsamer Kommunikationsstand verhindert Widersprüche."
+        },
+        {
+          "text": "Rückfragekanal für den Übergebenden offenhalten",
+          "correct": true,
+          "rationale": "So bleiben Detailfragen schnell klärbar."
+        },
+        {
+          "text": "Jede Stelle kommuniziert unabgestimmt eine eigene Vermutung",
+          "correct": false,
+          "rationale": "Das führt zu Unsicherheit und Widersprüchen."
+        },
+        {
+          "text": "Offene Punkte werden nur im Kopf behalten",
+          "correct": false,
+          "rationale": "Nicht dokumentierte Punkte gehen leicht verloren."
+        }
+      ],
+      "feedback": {
+        "correct": "Richtig: Sie verbinden Zielklarheit, Statuspflege und Rückfragen sinnvoll.",
+        "wrong": "Teilweise falsch: Bitte Verantwortlichkeiten, Statuspflege und Doku stärker betonen."
+      },
+      "progressLinks": [
+        "lf06_team_loesung",
+        "lf06_bearbeitungsprozess"
+      ]
+    },
+    {
+      "id": "q3",
+      "type": "ordering",
+      "title": "Saubere Teamübergabe",
+      "prompt": "Ordnen Sie die Schritte sinnvoll.",
+      "items": [
+        "Rückfragekanal offenhalten",
+        "Ticket mit Fakten und bisherigen Schritten aktualisieren",
+        "Übergabegrund und Ziel formulieren",
+        "Verantwortung und Statuspunkt abstimmen",
+        "Kundenstatus abgestimmt aktualisieren"
+      ],
+      "correctOrder": [
+        "Ticket mit Fakten und bisherigen Schritten aktualisieren",
+        "Übergabegrund und Ziel formulieren",
+        "Verantwortung und Statuspunkt abstimmen",
+        "Kundenstatus abgestimmt aktualisieren",
+        "Rückfragekanal offenhalten"
+      ],
+      "feedback": {
+        "correct": "Richtig: Die Übergabe ist fachlich und kommunikativ abgesichert.",
+        "wrong": "Nicht optimal: Bitte erst Faktenbasis, dann Ziel, Verantwortung, Status und Rückfragen ordnen."
+      },
+      "progressLinks": [
+        "lf06_team_loesung"
+      ]
+    },
+    {
+      "id": "q4",
+      "type": "number",
+      "title": "Puffer bis zum Statusupdate",
+      "prompt": "Die interne Abstimmung endet um 14:18, das zugesagte Kundenupdate ist für 14:30 geplant. Wie viele Minuten Puffer bleiben?",
+      "expected": 12,
+      "toleranceAbs": 0,
+      "showExpectedFormula": "14:30 - 14:18 = 12 Minuten",
+      "feedback": {
+        "correct": "Richtig gerechnet.",
+        "wrong": "Bitte die Differenz zwischen Abstimmungsende und Updatezeit bestimmen."
+      },
+      "progressLinks": [
+        "lf06_bearbeitungsprozess"
+      ]
+    },
+    {
+      "id": "q5",
+      "type": "short_text",
+      "title": "Abgestimmtes Statusupdate",
+      "prompt": "Formulieren Sie in 4-6 Sätzen ein Statusupdate mit abgestimmtem Stand, nächstem Schritt und Rückmeldezeit.",
+      "minChars": 160,
+      "requiredKeywords": [
+        "stand",
+        "nächster schritt",
+        "rückmeldezeit"
+      ],
+      "expectedOutline": "Abgestimmten Bearbeitungsstand nennen, nächste Aktion benennen und den Zeitbezug klären.",
+      "feedback": {
+        "correct": "Richtig: Das Update ist abgestimmt, klar und kundenfähig.",
+        "wrong": "Bitte Stand, nächsten Schritt und Zeitbezug klarer formulieren."
+      },
+      "progressLinks": [
+        "lf06_team_loesung",
+        "lf06_kundenkommunikation"
+      ]
+    }
+  ]
+}

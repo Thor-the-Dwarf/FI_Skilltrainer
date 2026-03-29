@@ -1,0 +1,160 @@
+{
+  "scenario": {
+    "company": "Nordhafen Verpackungstechnik GmbH",
+    "scale": "Produktionsnaher Mittelstand, 2 Hallen, 280 Mitarbeitende",
+    "context": "Station 04 des Tageslaufs: Daten-, Energie- und Informationsflüsse im Bestandssystem untersuchen.",
+    "mission": "Sie analysieren die Flüsse der Anlage und leiten daraus relevante Engpässe und Risiken ab.",
+    "station": {
+      "id": "LF07-ST-04",
+      "department": "Analyse",
+      "profile": "Bestandsanalyse und Flusssicht",
+      "constraints": [
+        "Flüsse klar voneinander trennen",
+        "Engpässe technisch begründen",
+        "Folgen für die Erweiterung sichtbar machen"
+      ]
+    },
+    "customerRequest": {
+      "from": "betriebsingenieur@nordhafen-verpackungstechnik.example",
+      "to": "cps.team@ausbildungsbetrieb.example",
+      "subject": "Station 04: Flussanalyse",
+      "date": "2026-03-13",
+      "body": "Bitte beschreiben Sie Daten-, Energie- und Informationsfluss der bestehenden Anlage und markieren Sie kritische Punkte."
+    }
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "type": "ordering",
+      "title": "Analyse strukturieren",
+      "prompt": "Ordnen Sie den Weg zu einer belastbaren Flussanalyse.",
+      "items": [
+        "Schnittstellen und Komponenten erfassen",
+        "Daten-, Energie- und Informationsfluss beschreiben",
+        "Verzögerungen oder Auslastungen beobachten",
+        "kritische Punkte priorisieren",
+        "Bedeutung für die Erweiterung ableiten"
+      ],
+      "correctOrder": [
+        "Schnittstellen und Komponenten erfassen",
+        "Daten-, Energie- und Informationsfluss beschreiben",
+        "Verzögerungen oder Auslastungen beobachten",
+        "kritische Punkte priorisieren",
+        "Bedeutung für die Erweiterung ableiten"
+      ],
+      "feedback": {
+        "correct": "Richtig: Die Analyse geht sauber von der Struktur zur Ableitung über.",
+        "wrong": "Nicht optimal: Bitte erst Struktur und Flüsse erfassen, dann Engpässe bewerten."
+      },
+      "progressLinks": [
+        "lf07_fluesse_analysieren"
+      ]
+    },
+    {
+      "id": "q2",
+      "type": "multi_select",
+      "title": "Flüsse fachlich trennen",
+      "prompt": "Welche Aussagen beschreiben die Flüsse korrekt? (Mehrfachauswahl)",
+      "options": [
+        {
+          "text": "Datenfluss meint transportierte Werte und Telegramme",
+          "correct": true,
+          "rationale": "Das ist die technische Datenebene."
+        },
+        {
+          "text": "Informationsfluss umfasst auch Meldungen, Entscheidungen und Alarmbedeutung",
+          "correct": true,
+          "rationale": "Er geht über Rohdaten hinaus."
+        },
+        {
+          "text": "Energiefluss betrifft Versorgung und Leistungsaufnahme physischer Komponenten",
+          "correct": true,
+          "rationale": "Genau darum geht es in dieser Sicht."
+        },
+        {
+          "text": "Alle drei Flüsse sind immer deckungsgleich",
+          "correct": false,
+          "rationale": "Die Trennung ist für Diagnose und Optimierung gerade wichtig."
+        },
+        {
+          "text": "Nur der Informationsfluss ist im CPS relevant",
+          "correct": false,
+          "rationale": "Ein CPS beruht auf dem Zusammenspiel aller Flüsse."
+        }
+      ],
+      "feedback": {
+        "correct": "Richtig: Die Flüsse sind fachlich sauber voneinander abgegrenzt.",
+        "wrong": "Teilweise falsch: Bitte Daten-, Energie- und Informationssicht klarer unterscheiden."
+      },
+      "progressLinks": [
+        "lf07_fluesse_analysieren"
+      ]
+    },
+    {
+      "id": "q3",
+      "type": "single_choice",
+      "title": "Engpassbefund deuten",
+      "prompt": "Welcher Befund spricht am ehesten für ein Problem im Datenfluss?",
+      "options": [
+        {
+          "text": "Der Hallenplan ist sauber archiviert",
+          "rationale": "Das sagt nichts über den Datenfluss aus."
+        },
+        {
+          "text": "Mehrere Meldungen treffen deutlich später ein als erwartet und die Warteschlange im Gateway steigt sichtbar an",
+          "rationale": "Das ist ein plausibler Engpasshinweis."
+        },
+        {
+          "text": "Die Projektgruppe hat einen neuen Kalendertermin",
+          "rationale": "Das hat mit dem technischen Fluss nichts zu tun."
+        }
+      ],
+      "correctIndex": 1,
+      "feedback": {
+        "correct": "Richtig: Verzögerung plus wachsende Warteschlange deuten auf ein Flussproblem hin.",
+        "wrong": "Nicht passend: Ein Engpass braucht einen beobachtbaren technischen Befund."
+      },
+      "progressLinks": [
+        "lf07_fluesse_analysieren",
+        "lf07_review_sicherheit_optimierung"
+      ]
+    },
+    {
+      "id": "q4",
+      "type": "short_text",
+      "title": "Analysefazit schreiben",
+      "prompt": "Beschreiben Sie in 4-6 Sätzen, welches Analyseergebnis für die geplante Erweiterung besonders wichtig ist und warum.",
+      "minChars": 160,
+      "requiredKeywords": [
+        "analyse",
+        "engpass",
+        "erweiterung"
+      ],
+      "expectedOutline": "Verdichtung eines relevanten Analyseergebnisses mit Bezug auf die Erweiterung.",
+      "feedback": {
+        "correct": "Richtig: Das Analysefazit ist sinnvoll auf die Erweiterung bezogen.",
+        "wrong": "Bitte Engpass oder Flussbefund stärker mit der Erweiterung verbinden."
+      },
+      "progressLinks": [
+        "lf07_fluesse_analysieren",
+        "lf07_dokumentation_teamkommunikation"
+      ]
+    },
+    {
+      "id": "q5",
+      "type": "number",
+      "title": "Gateway-Last berechnen",
+      "prompt": "Ein Gateway empfängt 9 Sensorwerte pro Minute von 16 Sensoren. Wie viele Werte empfängt es in 30 Minuten?",
+      "expected": 4320,
+      "toleranceAbs": 1,
+      "showExpectedFormula": "16 * 9 * 30 = 4320",
+      "feedback": {
+        "correct": "Richtig gerechnet.",
+        "wrong": "Bitte Sensoranzahl, Werte pro Minute und Zeitfenster korrekt kombinieren."
+      },
+      "progressLinks": [
+        "lf07_fluesse_analysieren"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,1730 @@
+{
+  "scenario": {
+    "company": "Lindwerk IT-Service GmbH",
+    "scale": "mittelständisches IT-Dienstleistungsunternehmen mit Software-, Infrastruktur- und Servicebereich",
+    "context": "Prüfungsvorbereitung WISO im Stationsformat mit Bewerbungs-, Mitbestimmungs-, Gründungs-, Tarif-, Unfallversicherungs- und Nachhaltigkeitsthemen.",
+    "mission": "Sie bearbeiten eine zusammenhängende Fachsituation zu Bewerbungsprozess, Lohnabrechnung, Betriebsrat, Jugendarbeitsschutz, Kündigung, GmbH, Tarifautonomie, Unfallversicherung und Nachhaltigkeit.",
+    "source": {
+      "kind": "Pseudonymisierte Prüfungsvorlage",
+      "reference": "AP2 Wirtschafts- und Sozialkunde, Winter 2023/24",
+      "note": "Die fachliche Reihenfolge bleibt erhalten; Namen, Orte und Unternehmensbezug wurden in das Kursformat überführt."
+    },
+    "station": {
+      "id": "PV3WISO-ST-07",
+      "department": "Prüfungsvorbereitung Wirtschafts- und Sozialkunde",
+      "profile": "Bewerbung, Mitbestimmung, Gründung und Nachhaltigkeit",
+      "constraints": [
+        "Die 30 Themenaufgaben bleiben in thematischen Folgeaufträgen erkennbar",
+        "Scanlastige Tabellen, Gesetzesauszüge und Schaubilder werden bei Bedarf textnah in vorhandene Aufgabenformate überführt",
+        "Rechen-, Zuordnungs- und Auswahlaufgaben sollen möglichst direkt auto-auswertbar bleiben"
+      ]
+    },
+    "customerRequest": {
+      "from": "qualitaet@ordnungsbetrieb.example",
+      "to": "projektteam@ausbildungsbetrieb.example",
+      "subject": "Bitte ein neues WISO-Trainingspaket zu Bewerbung, Mitbestimmung und Nachhaltigkeit aufsetzen",
+      "date": "2026-03-20",
+      "body": "Guten Tag,\n\nwir möchten ein weiteres WISO-Training im Stationsformat vorbereiten. Diesmal sollen vor allem Bewerbungsprozess, zulässige Fragen im Gespräch, benötigte Unterlagen, Lohnabrechnung, Handelsregister, Berufsgenossenschaft, Betriebsratswahl, Jugendarbeitsschutz, fristlose Kündigung, Kündigungsarten, GmbH, Eigenkapitalrentabilität, Mutterschutz, Tarifvertrag, gesetzliche Unfallversicherung, Nachhaltigkeit und Umweltentlastung vorkommen.\n\nBitte behalten Sie die Reihenfolge der Quelle erkennbar bei, formulieren Sie alles sauber pseudonymisiert und nutzen Sie vorhandene Aufgabenformate, damit die Antworten möglichst direkt auswertbar bleiben.\n\nViele Grüsse\nQualität"
+    }
+  },
+  "questions": [
+    {
+      "id": "q01",
+      "type": "ordering",
+      "title": "Einstellungsprozess in die richtige Reihenfolge bringen",
+      "prompt": "Bringen Sie die typischen Schritte von der Bewerbung bis zum Ende der Probezeit in die richtige Reihenfolge.",
+      "items": [
+        "Vorstellungsgespräch",
+        "Digitale Bewerbung um einen Arbeitsplatz",
+        "Abschluss des Arbeitsvertrags",
+        "Erster Arbeitstag",
+        "Ende der Probezeit",
+        "Überweisung der ersten Vergütung"
+      ],
+      "correctOrder": [
+        "Digitale Bewerbung um einen Arbeitsplatz",
+        "Vorstellungsgespräch",
+        "Abschluss des Arbeitsvertrags",
+        "Erster Arbeitstag",
+        "Überweisung der ersten Vergütung",
+        "Ende der Probezeit"
+      ],
+      "feedback": {
+        "correct": "Der Einstellungsprozess wurde korrekt geordnet.",
+        "wrong": "Ordnen Sie erst Bewerbung und Gespräch, dann Vertrag und Arbeitsbeginn und erst später Vergütung sowie Ende der Probezeit."
+      },
+      "progressLinks": [
+        "pv3wiso_arbeitsrecht_ausbildung"
+      ]
+    },
+    {
+      "id": "q02",
+      "type": "table_fill",
+      "title": "Fragen im Bewerbungsgespräch einordnen",
+      "prompt": "Ordnen Sie zu, welche Fragen in einem normalen Bewerbungsgespräch zulässig sind.",
+      "columns": [
+        "Frage",
+        "Zulässig?"
+      ],
+      "rows": [
+        [
+          "Frage nach einer Mitgliedschaft in einer Gewerkschaft",
+          {
+            "key": "interview_a",
+            "label": "Mitgliedschaft in einer Gewerkschaft",
+            "expected": "Nein",
+            "inputType": "select",
+            "placeholder": "Auswahl treffen",
+            "options": [
+              "Ja",
+              "Nein"
+            ]
+          }
+        ],
+        [
+          "Frage nach den Zusatzqualifikationen",
+          {
+            "key": "interview_b",
+            "label": "Zusatzqualifikationen",
+            "expected": "Ja",
+            "inputType": "select",
+            "placeholder": "Auswahl treffen",
+            "options": [
+              "Ja",
+              "Nein"
+            ]
+          }
+        ],
+        [
+          "Frage nach der Schulbildung",
+          {
+            "key": "interview_c",
+            "label": "Schulbildung",
+            "expected": "Ja",
+            "inputType": "select",
+            "placeholder": "Auswahl treffen",
+            "options": [
+              "Ja",
+              "Nein"
+            ]
+          }
+        ],
+        [
+          "Frage nach den vorherigen Beschäftigungen und der letzten Tätigkeit",
+          {
+            "key": "interview_d",
+            "label": "Vorherige Beschäftigungen",
+            "expected": "Ja",
+            "inputType": "select",
+            "placeholder": "Auswahl treffen",
+            "options": [
+              "Ja",
+              "Nein"
+            ]
+          }
+        ],
+        [
+          "Frage nach der Gehaltsvorstellung",
+          {
+            "key": "interview_e",
+            "label": "Gehaltsvorstellung",
+            "expected": "Ja",
+            "inputType": "select",
+            "placeholder": "Auswahl treffen",
+            "options": [
+              "Ja",
+              "Nein"
+            ]
+          }
+        ]
+      ],
+      "feedback": {
+        "correct": "Die Fragen wurden rechtlich sauber eingeordnet.",
+        "wrong": "Prüfen Sie noch einmal, welche Fragen die berufliche Eignung betreffen und welche in den geschützten persönlichen Bereich eingreifen."
+      },
+      "progressLinks": [
+        "pv3wiso_arbeitsrecht_ausbildung"
+      ]
+    },
+    {
+      "id": "q03",
+      "type": "multi_select",
+      "title": "Erforderliche Unterlagen für den neuen Arbeitgeber auswählen",
+      "prompt": "Welche zwei Unterlagen muss eine neue Mitarbeiterin ihrem Arbeitgeber auf Anforderung zukommen lassen?",
+      "options": [
+        {
+          "text": "Nachweis über eine private Unfallversicherung",
+          "correct": false,
+          "rationale": "Eine private Unfallversicherung gehört nicht zu den regulär erforderlichen Unterlagen."
+        },
+        {
+          "text": "Geburtsurkunde",
+          "correct": false,
+          "rationale": "Eine Geburtsurkunde wird dafür in der Regel nicht benötigt."
+        },
+        {
+          "text": "Urlaubsbescheinigung des letzten Arbeitgebers",
+          "correct": true,
+          "rationale": "Sie verhindert einen doppelten Urlaubsanspruch beim Arbeitgeberwechsel."
+        },
+        {
+          "text": "Nachweis über eine abgeschlossene Berufsunfähigkeitsversicherung",
+          "correct": false,
+          "rationale": "Ein solcher Versicherungsnachweis ist keine Standardunterlage für die Einstellung."
+        },
+        {
+          "text": "Steuerliche Identifikationsnummer",
+          "correct": true,
+          "rationale": "Sie wird für die Lohnsteuer und die korrekte Abführung von Beiträgen benötigt."
+        },
+        {
+          "text": "Nachweis über eine private Krankenzusatzversicherung",
+          "correct": false,
+          "rationale": "Eine private Zusatzversicherung ist für die Einstellung nicht erforderlich."
+        }
+      ],
+      "feedback": {
+        "correct": "Die benötigten Unterlagen wurden korrekt ausgewählt.",
+        "wrong": "Denken Sie an Unterlagen für Steuer, Sozialversicherung und die Vermeidung doppelter Urlaubsansprüche."
+      },
+      "progressLinks": [
+        "pv3wiso_arbeitsrecht_ausbildung"
+      ]
+    },
+    {
+      "id": "f02",
+      "type": "followup_divider",
+      "title": "Abrechnung, Register und Betriebsrat",
+      "from": "personalservice@ordnungsbetrieb.example",
+      "to": "projektteam@ausbildungsbetrieb.example",
+      "subject": "Bitte den zweiten Block zu Entgelt, Register und Mitbestimmung vorbereiten",
+      "date": "2026-03-20",
+      "body": "Hallo,\n\nim zweiten Themenblock brauchen wir Aufgaben zu Lohnabrechnung, Handelsregister, Berufsgenossenschaft und Betriebsratswahl. Bitte halten Sie Rechenwege, Zuständigkeiten und Wahlvoraussetzungen klar auseinander.\n\nViele Grüsse\nPersonalservice"
+    },
+    {
+      "id": "ctx04",
+      "type": "context_card",
+      "title": "Lohnabrechnung für November auswerten",
+      "contentBlocks": [
+        {
+          "type": "text",
+          "text": "Für den Monat November liegt für eine neue Mitarbeiterin der Lindwerk IT-Service GmbH folgende Abrechnungsbasis vor."
+        },
+        {
+          "type": "table",
+          "columns": [
+            "Abrechnungsangabe",
+            "Wert"
+          ],
+          "rows": [
+            [
+              "Bruttolohn pro Stunde",
+              "15,80 EUR"
+            ],
+            [
+              "Gearbeitete Stunden insgesamt",
+              "170 Stunden"
+            ],
+            [
+              "Davon Stunden an Samstagen",
+              "12 Stunden"
+            ],
+            [
+              "Zuschlag für Samstagsarbeit",
+              "30 % auf den Stundenlohn"
+            ],
+            [
+              "Zusatzleistung",
+              "Urlaubsgeld 250,00 EUR brutto"
+            ],
+            [
+              "Beitragssatz gesetzliche Rentenversicherung",
+              "18,6 %"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "id": "q04a",
+      "type": "number",
+      "title": "Bruttolohn für November berechnen",
+      "prompt": "Wie hoch ist der gesamte Bruttolohn für November?",
+      "expected": 2992.88,
+      "toleranceAbs": 0.01,
+      "showExpectedFormula": "(158 x 15,80 EUR) + (12 x 15,80 EUR x 1,30) + 250,00 EUR = 2.992,88 EUR.",
+      "feedback": {
+        "correct": "Der Bruttolohn wurde korrekt berechnet.",
+        "wrong": "Trennen Sie reguläre Stunden, Samstagsstunden mit Zuschlag und das zusätzliche Urlaubsgeld."
+      },
+      "progressLinks": [
+        "pv3wiso_wirtschaftlichkeit_unternehmensanalyse"
+      ]
+    },
+    {
+      "id": "q04b",
+      "type": "number",
+      "title": "Arbeitnehmeranteil zur Rentenversicherung berechnen",
+      "prompt": "Wie hoch ist der Arbeitnehmeranteil zur gesetzlichen Rentenversicherung auf dieser Abrechnung?",
+      "expected": 278.34,
+      "toleranceAbs": 0.01,
+      "showExpectedFormula": "2.992,88 EUR x 9,3 % = 278,34 EUR.",
+      "feedback": {
+        "correct": "Der Arbeitnehmeranteil zur Rentenversicherung wurde korrekt berechnet.",
+        "wrong": "Denken Sie daran, dass sich Arbeitgeber und Arbeitnehmer den Gesamtbeitragssatz zur Rentenversicherung grundsätzlich teilen."
+      },
+      "progressLinks": [
+        "pv3wiso_mitbestimmung_tarif_sozialversicherung"
+      ]
+    },
+    {
+      "id": "q05",
+      "type": "table_fill",
+      "title": "Aussagen zum Handelsregister einordnen",
+      "prompt": "Ordnen Sie die Aussagen passend dem Handelsregister zu.",
+      "columns": [
+        "Aussage",
+        "Einordnung"
+      ],
+      "rows": [
+        [
+          "Personengesellschaften werden in dieser Abteilung geführt.",
+          {
+            "key": "register_a",
+            "label": "Personengesellschaften",
+            "expected": "Abteilung A",
+            "inputType": "select",
+            "placeholder": "Einordnung wählen",
+            "options": [
+              "Abteilung A",
+              "Abteilung B",
+              "Allgemein richtig",
+              "Falsch"
+            ]
+          }
+        ],
+        [
+          "Kapitalgesellschaften werden in dieser Abteilung geführt.",
+          {
+            "key": "register_b",
+            "label": "Kapitalgesellschaften",
+            "expected": "Abteilung B",
+            "inputType": "select",
+            "placeholder": "Einordnung wählen",
+            "options": [
+              "Abteilung A",
+              "Abteilung B",
+              "Allgemein richtig",
+              "Falsch"
+            ]
+          }
+        ],
+        [
+          "Das Handelsregister wird vom Registergericht geführt.",
+          {
+            "key": "register_c",
+            "label": "Registergericht",
+            "expected": "Allgemein richtig",
+            "inputType": "select",
+            "placeholder": "Einordnung wählen",
+            "options": [
+              "Abteilung A",
+              "Abteilung B",
+              "Allgemein richtig",
+              "Falsch"
+            ]
+          }
+        ],
+        [
+          "Die Einteilung in die Abteilungen richtet sich nach der Unternehmensgrösse.",
+          {
+            "key": "register_d",
+            "label": "Unternehmensgrösse",
+            "expected": "Falsch",
+            "inputType": "select",
+            "placeholder": "Einordnung wählen",
+            "options": [
+              "Abteilung A",
+              "Abteilung B",
+              "Allgemein richtig",
+              "Falsch"
+            ]
+          }
+        ],
+        [
+          "Kleinunternehmen dürfen frei zwischen Abteilung A und B wählen.",
+          {
+            "key": "register_e",
+            "label": "Freie Wahl zwischen A und B",
+            "expected": "Falsch",
+            "inputType": "select",
+            "placeholder": "Einordnung wählen",
+            "options": [
+              "Abteilung A",
+              "Abteilung B",
+              "Allgemein richtig",
+              "Falsch"
+            ]
+          }
+        ]
+      ],
+      "feedback": {
+        "correct": "Die Aussagen zum Handelsregister wurden fachlich sauber eingeordnet.",
+        "wrong": "Trennen Sie noch einmal die Abteilungen A und B von allgemeinen Registerregeln und klar falschen Aussagen."
+      },
+      "progressLinks": [
+        "pv3wiso_wirtschaftssektoren_unternehmensformen"
+      ]
+    },
+    {
+      "id": "q06",
+      "type": "single_choice",
+      "title": "Zuständige Stelle für Unfallverhütung bestimmen",
+      "prompt": "Eine Mitarbeiterin soll künftig Sicherheitsaufgaben in ihrer Abteilung mitbetreuen. An welche Einrichtung kann sie sich für genauere Informationen zur Unfallverhütung wenden?",
+      "options": [
+        {
+          "text": "Gewerbeaufsichtsbehörde",
+          "rationale": "Die Aufsichtsbehörde ist nicht die nächstliegende Fachinstitution für diese Frage."
+        },
+        {
+          "text": "Berufsgenossenschaft",
+          "rationale": "Genau die Berufsgenossenschaft ist hier die zuständige Unfallversicherungseinrichtung."
+        },
+        {
+          "text": "Fachverband",
+          "rationale": "Ein Fachverband ersetzt nicht die gesetzliche Unfallversicherung."
+        },
+        {
+          "text": "Deutscher Gewerkschaftsbund",
+          "rationale": "Der DGB ist keine Unfallverhütungseinrichtung."
+        },
+        {
+          "text": "Industrie- und Handelskammer",
+          "rationale": "Die IHK ist dafür nicht die zuständige Fachstelle."
+        }
+      ],
+      "correctIndex": 1,
+      "feedback": {
+        "correct": "Die zuständige Einrichtung wurde korrekt erkannt.",
+        "wrong": "Denken Sie an den Träger der gesetzlichen Unfallversicherung und seine Präventionsaufgaben."
+      },
+      "progressLinks": [
+        "pv3wiso_arbeitsschutz_umwelt_diversity"
+      ]
+    },
+    {
+      "id": "ctx07",
+      "type": "context_card",
+      "title": "Wahlberechtigung bei der Betriebsratswahl prüfen",
+      "contentBlocks": [
+        {
+          "type": "text",
+          "text": "Im Unternehmen wird ein neuer Betriebsrat gewählt. Nach den Regeln zur Wahlberechtigung sind alle Arbeitnehmerinnen und Arbeitnehmer des Betriebs wahlberechtigt, die das 16. Lebensjahr vollendet haben. Leiharbeitnehmer sind wahlberechtigt, wenn sie länger als drei Monate im Betrieb eingesetzt werden."
+        },
+        {
+          "type": "table",
+          "columns": [
+            "Personengruppe",
+            "Anzahl"
+          ],
+          "rows": [
+            [
+              "Volljährige Mitarbeitende ohne Auszubildende",
+              "45"
+            ],
+            [
+              "Volljährige Auszubildende",
+              "8"
+            ],
+            [
+              "Mitarbeitende aus Arbeitnehmerüberlassung, seit einem Monat eingesetzt",
+              "3"
+            ],
+            [
+              "Jugendliche Auszubildende, 17 Jahre alt",
+              "2"
+            ],
+            [
+              "Arbeitnehmer insgesamt",
+              "61"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "id": "q07",
+      "type": "number",
+      "title": "Zahl der Wahlberechtigten bestimmen",
+      "prompt": "Wie viele Personen können insgesamt an der Betriebsratswahl teilnehmen?",
+      "expected": 58,
+      "toleranceAbs": 0,
+      "showExpectedFormula": "Alle 61 Personen zählen mit Ausnahme der 3 Leiharbeitnehmer, die erst seit einem Monat eingesetzt sind: 61 - 3 = 58.",
+      "feedback": {
+        "correct": "Die Zahl der Wahlberechtigten wurde korrekt bestimmt.",
+        "wrong": "Berücksichtigen Sie die Altersgrenze von 16 Jahren und schliessen Sie Leiharbeitnehmer unter drei Monaten Einsatzdauer aus."
+      },
+      "progressLinks": [
+        "pv3wiso_mitbestimmung_tarif_sozialversicherung"
+      ]
+    },
+    {
+      "id": "q08",
+      "type": "table_fill",
+      "title": "Aussagen zur Wählbarkeit im Betriebsrat einordnen",
+      "prompt": "Ordnen Sie zu, welche Aussagen zur Wählbarkeit für den Betriebsrat zutreffen.",
+      "columns": [
+        "Aussage",
+        "Trifft zu?"
+      ],
+      "rows": [
+        [
+          "Mit Eintritt in den Betrieb ist jede Arbeitnehmerin sofort wählbar.",
+          {
+            "key": "election_a",
+            "label": "Sofort wählbar ab Eintritt",
+            "expected": "Nein",
+            "inputType": "select",
+            "placeholder": "Auswahl treffen",
+            "options": [
+              "Ja",
+              "Nein"
+            ]
+          }
+        ],
+        [
+          "Volljährigkeit allein reicht für die Wählbarkeit aus.",
+          {
+            "key": "election_b",
+            "label": "Volljährigkeit allein reicht aus",
+            "expected": "Nein",
+            "inputType": "select",
+            "placeholder": "Auswahl treffen",
+            "options": [
+              "Ja",
+              "Nein"
+            ]
+          }
+        ],
+        [
+          "Eine abgeschlossene Berufsausbildung ist Voraussetzung für die Wählbarkeit.",
+          {
+            "key": "election_c",
+            "label": "Abgeschlossene Berufsausbildung als Voraussetzung",
+            "expected": "Nein",
+            "inputType": "select",
+            "placeholder": "Auswahl treffen",
+            "options": [
+              "Ja",
+              "Nein"
+            ]
+          }
+        ],
+        [
+          "Wer dem Betrieb noch keine sechs Monate angehört, ist in der Regel nicht wählbar.",
+          {
+            "key": "election_d",
+            "label": "Sechs Monate Betriebszugehörigkeit",
+            "expected": "Ja",
+            "inputType": "select",
+            "placeholder": "Auswahl treffen",
+            "options": [
+              "Ja",
+              "Nein"
+            ]
+          }
+        ],
+        [
+          "Eine Gewerkschaftsmitgliedschaft ist keine Voraussetzung für die Wählbarkeit.",
+          {
+            "key": "election_e",
+            "label": "Keine Gewerkschaftsmitgliedschaft nötig",
+            "expected": "Ja",
+            "inputType": "select",
+            "placeholder": "Auswahl treffen",
+            "options": [
+              "Ja",
+              "Nein"
+            ]
+          }
+        ]
+      ],
+      "feedback": {
+        "correct": "Die Aussagen zur Wählbarkeit wurden korrekt eingeordnet.",
+        "wrong": "Prüfen Sie noch einmal die Voraussetzungen für eine Kandidatur und trennen Sie diese von irrelevanten Merkmalen wie Ausbildung oder Gewerkschaftsmitgliedschaft."
+      },
+      "progressLinks": [
+        "pv3wiso_mitbestimmung_tarif_sozialversicherung"
+      ]
+    },
+    {
+      "id": "q09",
+      "type": "single_choice",
+      "title": "Grundregel zur Wahl des Betriebsrats erkennen",
+      "prompt": "Welche Aussage über die Wahl des Betriebsrats ist zutreffend?",
+      "options": [
+        {
+          "text": "Ein Betriebsrat muss alle vier Jahre neu gewählt werden.",
+          "rationale": "Genau diese regelmässige Amtszeit gilt für den Betriebsrat."
+        },
+        {
+          "text": "Ein Betriebsrat muss je zur Hälfte aus Arbeitnehmerinnen und Arbeitnehmern gebildet werden.",
+          "rationale": "Eine solche starre Quotenregel gibt es nicht."
+        },
+        {
+          "text": "In einen Betriebsrat können nur Mitarbeitende gewählt werden, die mindestens zwei Jahre Betriebszugehörigkeit nachweisen können.",
+          "rationale": "Die erforderliche Betriebszugehörigkeit ist kürzer."
+        },
+        {
+          "text": "Ein Betriebsrat muss nur in Kapitalgesellschaften mit mehr als 500 Mitarbeitenden gewählt werden.",
+          "rationale": "Die Errichtung eines Betriebsrats hängt nicht an dieser Bedingung."
+        },
+        {
+          "text": "In den Betriebsrat können nur Mitarbeitende gewählt werden, die das 25. Lebensjahr vollendet haben.",
+          "rationale": "Auch das trifft nicht zu."
+        }
+      ],
+      "correctIndex": 0,
+      "feedback": {
+        "correct": "Die Grundregel zur Betriebsratswahl wurde korrekt erkannt.",
+        "wrong": "Achten Sie auf die regulare Amtszeit des Betriebsrats."
+      },
+      "progressLinks": [
+        "pv3wiso_mitbestimmung_tarif_sozialversicherung"
+      ]
+    },
+    {
+      "id": "q10",
+      "type": "multi_select",
+      "title": "Mitbestimmungsrechte des Betriebsrats auswählen",
+      "prompt": "In welchen zwei Angelegenheiten hat der Betriebsrat ein Mitbestimmungsrecht?",
+      "options": [
+        {
+          "text": "Einführung von Überwachungskameras im Warenlager",
+          "correct": true,
+          "rationale": "Technische Einrichtungen zur Verhaltens- oder Leistungskontrolle unterliegen der Mitbestimmung."
+        },
+        {
+          "text": "Planung des Personalbedarfs",
+          "correct": false,
+          "rationale": "Die Personalbedarfsplanung ist kein klassischer Mitbestimmungsfall nach dieser Vorschrift."
+        },
+        {
+          "text": "Festlegung von Beginn und Ende der täglichen Arbeitszeit",
+          "correct": true,
+          "rationale": "Beginn und Ende der täglichen Arbeitszeit gehören zu den sozialen Angelegenheiten mit Mitbestimmung."
+        },
+        {
+          "text": "Errichtung einer neuen Lagerhalle",
+          "correct": false,
+          "rationale": "Bauentscheidungen dieser Art sind nicht der typische Mitbestimmungsfall."
+        },
+        {
+          "text": "Gründung einer Filiale",
+          "correct": false,
+          "rationale": "Die Gründung einer Filiale unterliegt nicht diesem Mitbestimmungsrecht."
+        },
+        {
+          "text": "Umwandlung der Rechtsform",
+          "correct": false,
+          "rationale": "Auch die Rechtsformumwandlung ist kein Fall dieser sozialen Mitbestimmung."
+        }
+      ],
+      "feedback": {
+        "correct": "Die Mitbestimmungsrechte wurden korrekt ausgewählt.",
+        "wrong": "Konzentrieren Sie sich auf Arbeitszeitregelung und technische Kontrolleinrichtungen."
+      },
+      "progressLinks": [
+        "pv3wiso_mitbestimmung_tarif_sozialversicherung"
+      ]
+    },
+    {
+      "id": "f03",
+      "type": "followup_divider",
+      "title": "Jugendarbeitsschutz, Kündigung und Gründung",
+      "from": "betriebsorganisation@ordnungsbetrieb.example",
+      "to": "projektteam@ausbildungsbetrieb.example",
+      "subject": "Bitte den dritten Block zu Schutzvorschriften, Kündigung und Rechtsformen vorbereiten",
+      "date": "2026-03-20",
+      "body": "Hallo,\n\nim dritten Themenblock sollen Jugendarbeitsschutz, Ausbildereignung, fristlose Kündigung, Kündigungsarten, Rechtsformwahl, Rentabilität und besonderer Kündigungsschutz vorkommen. Bitte halten Sie Fristen, Voraussetzungen und Fallgruppen klar getrennt.\n\nViele Grüsse\nBetriebsorganisation"
+    },
+    {
+      "id": "ctx11",
+      "type": "context_card",
+      "title": "Dienstplan mit den Regeln des Jugendarbeitsschutzes abgleichen",
+      "contentBlocks": [
+        {
+          "type": "text",
+          "text": "Für Jugendliche müssen von vornherein feststehende Ruhepausen gewährt werden. Bei mehr als viereinhalb bis zu sechs Stunden Arbeitszeit sind mindestens 30 Minuten Pause nötig, bei mehr als sechs Stunden 60 Minuten. Länger als viereinhalb Stunden hintereinander dürfen Jugendliche nicht ohne Ruhepause beschäftigt werden."
+        },
+        {
+          "type": "table",
+          "columns": [
+            "Kennziffer",
+            "Wochentag",
+            "Beginn und Ende der Arbeitszeit",
+            "Beginn der ersten Pause"
+          ],
+          "rows": [
+            [
+              "1",
+              "Montag",
+              "08:00 bis 15:00 Uhr",
+              "11:30 Uhr"
+            ],
+            [
+              "2",
+              "Dienstag",
+              "09:00 bis 17:00 Uhr",
+              "12:00 Uhr"
+            ],
+            [
+              "3",
+              "Mittwoch",
+              "09:00 bis 17:00 Uhr",
+              "12:30 Uhr"
+            ],
+            [
+              "4",
+              "Donnerstag",
+              "09:30 bis 17:00 Uhr",
+              "13:00 Uhr"
+            ],
+            [
+              "5",
+              "Freitag",
+              "09:00 bis 17:30 Uhr",
+              "14:00 Uhr"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "id": "q11",
+      "type": "single_choice",
+      "title": "Verstoss gegen die Ruhepausenregel erkennen",
+      "prompt": "An welchem Wochentag beginnt die erste Pause zu spät und verstösst damit gegen die Schutzregel?",
+      "options": [
+        {
+          "text": "Montag",
+          "rationale": "Zwischen Arbeitsbeginn und erster Pause liegen hier weniger als viereinhalb Stunden."
+        },
+        {
+          "text": "Dienstag",
+          "rationale": "Auch hier beginnt die erste Pause noch rechtzeitig."
+        },
+        {
+          "text": "Mittwoch",
+          "rationale": "Die erste Pause liegt noch innerhalb des zulässigen Rahmens."
+        },
+        {
+          "text": "Donnerstag",
+          "rationale": "Von 09:30 Uhr bis 13:00 Uhr vergehen nur dreieinhalb Stunden."
+        },
+        {
+          "text": "Freitag",
+          "rationale": "Von 09:00 Uhr bis 14:00 Uhr werden Jugendliche zu lange ohne erste Ruhepause beschäftigt."
+        }
+      ],
+      "correctIndex": 4,
+      "feedback": {
+        "correct": "Der Verstoss gegen die Ruhepausenregel wurde korrekt erkannt.",
+        "wrong": "Prüfen Sie, an welchem Tag mehr als viereinhalb Stunden ohne erste Pause gearbeitet würde."
+      },
+      "progressLinks": [
+        "pv3wiso_jugendarbeitsschutz_urlaub"
+      ]
+    },
+    {
+      "id": "q12",
+      "type": "table_fill",
+      "title": "Voraussetzungen für eine Ausbildertätigkeit einordnen",
+      "prompt": "Ordnen Sie zu, welche Aussagen die Voraussetzungen für eine Ausbildertätigkeit passend beschreiben.",
+      "columns": [
+        "Aussage",
+        "Trifft zu?"
+      ],
+      "rows": [
+        [
+          "Eine Ausbilderin muss fachlich und persönlich geeignet sein.",
+          {
+            "key": "trainer_a",
+            "label": "Fachlich und persönlich geeignet",
+            "expected": "Ja",
+            "inputType": "select",
+            "placeholder": "Auswahl treffen",
+            "options": [
+              "Ja",
+              "Nein"
+            ]
+          }
+        ],
+        [
+          "Eine Mitgliedschaft im zuständigen Prüfungsausschuss ist immer erforderlich.",
+          {
+            "key": "trainer_b",
+            "label": "Prüfungsausschuss immer erforderlich",
+            "expected": "Nein",
+            "inputType": "select",
+            "placeholder": "Auswahl treffen",
+            "options": [
+              "Ja",
+              "Nein"
+            ]
+          }
+        ],
+        [
+          "Eine Führungsposition allein ersetzt die notwendige Eignung nicht.",
+          {
+            "key": "trainer_c",
+            "label": "Führungsposition ersetzt Eignung nicht",
+            "expected": "Ja",
+            "inputType": "select",
+            "placeholder": "Auswahl treffen",
+            "options": [
+              "Ja",
+              "Nein"
+            ]
+          }
+        ],
+        [
+          "Eine Gewerkschaftsmitgliedschaft ist Voraussetzung für die Ausbildertätigkeit.",
+          {
+            "key": "trainer_d",
+            "label": "Gewerkschaftsmitgliedschaft als Voraussetzung",
+            "expected": "Nein",
+            "inputType": "select",
+            "placeholder": "Auswahl treffen",
+            "options": [
+              "Ja",
+              "Nein"
+            ]
+          }
+        ],
+        [
+          "Eine pauschale Pflicht zu jährlichen IHK-Seminaren gilt für alle Ausbilderinnen.",
+          {
+            "key": "trainer_e",
+            "label": "Jährliches IHK-Seminar für alle Pflicht",
+            "expected": "Nein",
+            "inputType": "select",
+            "placeholder": "Auswahl treffen",
+            "options": [
+              "Ja",
+              "Nein"
+            ]
+          }
+        ]
+      ],
+      "feedback": {
+        "correct": "Die Voraussetzungen für die Ausbildertätigkeit wurden sauber über mehrere Aussagen hinweg eingeordnet.",
+        "wrong": "Konzentrieren Sie sich noch einmal auf die persönliche und fachliche Eignung und trennen Sie diese von Punkten, die dafür gesetzlich nicht verlangt werden."
+      },
+      "progressLinks": [
+        "pv3wiso_arbeitsrecht_ausbildung"
+      ]
+    },
+    {
+      "id": "q13",
+      "type": "single_choice",
+      "title": "Grund für eine fristlose Arbeitgeberkündigung erkennen",
+      "prompt": "Welche Ursache kann eine ausserordentliche fristlose Kündigung durch den Arbeitgeber rechtfertigen?",
+      "options": [
+        {
+          "text": "Arbeitsmangel",
+          "rationale": "Arbeitsmangel ist kein typischer Grund für eine fristlose Kündigung."
+        },
+        {
+          "text": "Diebstahl von Eigentum des Unternehmens",
+          "rationale": "Genau ein solcher schwerer Vertrauensbruch kann eine fristlose Kündigung rechtfertigen."
+        },
+        {
+          "text": "Einmaliges unentschuldigtes Fehlen",
+          "rationale": "Ein einzelner Vorfall reicht dafür nicht automatisch aus."
+        },
+        {
+          "text": "Tod eines Gesellschafters",
+          "rationale": "Das ist kein typischer wichtiger Grund gegenüber einer Arbeitnehmerin oder einem Arbeitnehmer."
+        },
+        {
+          "text": "Unverschuldete Krankheit",
+          "rationale": "Eine unverschuldete Krankheit begründet keine fristlose Kündigung."
+        }
+      ],
+      "correctIndex": 1,
+      "feedback": {
+        "correct": "Der wichtige Grund für eine fristlose Kündigung wurde korrekt erkannt.",
+        "wrong": "Achten Sie darauf, welcher Sachverhalt einen schweren sofortigen Vertrauensbruch darstellt."
+      },
+      "progressLinks": [
+        "pv3wiso_arbeitsrecht_ausbildung"
+      ]
+    },
+    {
+      "id": "q14",
+      "type": "table_fill",
+      "title": "Kündigungsfälle den Kündigungsarten zuordnen",
+      "prompt": "Ordnen Sie die Fälle der passenden Kündigungsart zu.",
+      "columns": [
+        "Fall",
+        "Kündigungsart"
+      ],
+      "rows": [
+        [
+          "Ein Mitarbeiter kopiert heimlich Kundendaten und verkauft sie an einen Wettbewerber.",
+          {
+            "key": "termination_a",
+            "label": "Kundendaten heimlich weiterverkauft",
+            "expected": "Verhaltensbedingte Kündigung",
+            "inputType": "select",
+            "placeholder": "Kündigungsart wählen",
+            "options": [
+              "Betriebsbedingte Kündigung",
+              "Personenbedingte Kündigung",
+              "Verhaltensbedingte Kündigung"
+            ]
+          }
+        ],
+        [
+          "Der Standort wird geschlossen und der Aufgabenbereich an ein externes Steuerbuero abgegeben.",
+          {
+            "key": "termination_b",
+            "label": "Standortschliessung und Auslagerung",
+            "expected": "Betriebsbedingte Kündigung",
+            "inputType": "select",
+            "placeholder": "Kündigungsart wählen",
+            "options": [
+              "Betriebsbedingte Kündigung",
+              "Personenbedingte Kündigung",
+              "Verhaltensbedingte Kündigung"
+            ]
+          }
+        ],
+        [
+          "Ein Programmierer erfüllt die fachlichen Anforderungen dauerhaft nicht mehr; seine Arbeit bleibt fehlerhaft und eine Fortbildung lehnt er ab.",
+          {
+            "key": "termination_c",
+            "label": "Dauerhafte fachliche Untererfüllung",
+            "expected": "Personenbedingte Kündigung",
+            "inputType": "select",
+            "placeholder": "Kündigungsart wählen",
+            "options": [
+              "Betriebsbedingte Kündigung",
+              "Personenbedingte Kündigung",
+              "Verhaltensbedingte Kündigung"
+            ]
+          }
+        ]
+      ],
+      "feedback": {
+        "correct": "Die Fälle wurden den Kündigungsarten korrekt zugeordnet.",
+        "wrong": "Trennen Sie betriebliche Ursachen, persönliche Eignung und steuerbares Fehlverhalten noch einmal sauber."
+      },
+      "progressLinks": [
+        "pv3wiso_arbeitsrecht_ausbildung"
+      ]
+    },
+    {
+      "id": "ctx15",
+      "type": "context_card",
+      "title": "Rechtsform für zwei Gründende auswählen",
+      "contentBlocks": [
+        {
+          "type": "text",
+          "text": "Zwei Gründende wollen gemeinsam ein IT-Serviceunternehmen aufbauen. Beide sollen gleichberechtigt geschäftsführen, die Haftung soll auf das Gesellschaftsvermögen beschränkt sein, und beide können jeweils 20.000,00 EUR Eigenkapital einbringen."
+        }
+      ]
+    },
+    {
+      "id": "q15",
+      "type": "single_choice",
+      "title": "Passende Rechtsform für die Gründung bestimmen",
+      "prompt": "Welche Rechtsform passt unter diesen Bedingungen am besten?",
+      "options": [
+        {
+          "text": "Aktiengesellschaft",
+          "rationale": "Eine AG ist für diese Ausgangslage nicht die naheliegendste Form."
+        },
+        {
+          "text": "Kommanditgesellschaft",
+          "rationale": "Die KG bietet keine vollständige Haftungsbeschränkung für alle Beteiligten."
+        },
+        {
+          "text": "Gesellschaft mit beschränkter Haftung",
+          "rationale": "Genau die GmbH verbindet Haftungsbeschränkung mit gemeinsam einbringbarem Stammkapital."
+        },
+        {
+          "text": "Eingetragene Genossenschaft",
+          "rationale": "Die eG ist für diese klassische Zwei-Personen-Gründung nicht die naheliegende Wahl."
+        },
+        {
+          "text": "Gesellschaft bürgerlichen Rechts",
+          "rationale": "Die GbR bietet keine Haftungsbeschränkung auf das Gesellschaftsvermögen."
+        }
+      ],
+      "correctIndex": 2,
+      "feedback": {
+        "correct": "Die passende Rechtsform wurde korrekt bestimmt.",
+        "wrong": "Achten Sie auf die Kombination aus gemeinsamer Geschäftsführung, Haftungsbeschränkung und eingebrachtem Eigenkapital."
+      },
+      "progressLinks": [
+        "pv3wiso_wirtschaftssektoren_unternehmensformen"
+      ]
+    },
+    {
+      "id": "q16",
+      "type": "number",
+      "title": "Eigenkapitalrentabilität der Gründung berechnen",
+      "prompt": "Im ersten Geschäftsjahr erzielt das Unternehmen 3.140,00 EUR Gewinn. Das eingesetzte Eigenkapital beträgt 40.000,00 EUR. Wie hoch ist die Eigenkapitalrentabilität in Prozent? Runden Sie auf zwei Nachkommastellen.",
+      "expected": 7.85,
+      "toleranceAbs": 0.01,
+      "showExpectedFormula": "3.140,00 EUR / 40.000,00 EUR x 100 = 7,85 %.",
+      "feedback": {
+        "correct": "Die Eigenkapitalrentabilität wurde korrekt berechnet.",
+        "wrong": "Setzen Sie den Gewinn ins Verhältnis zum eingesetzten Eigenkapital und rechnen Sie das Ergebnis in Prozent um."
+      },
+      "progressLinks": [
+        "pv3wiso_wirtschaftlichkeit_unternehmensanalyse"
+      ]
+    },
+    {
+      "id": "q17",
+      "type": "single_choice",
+      "title": "Fehlenden besonderen Kündigungsschutz erkennen",
+      "prompt": "Welche Personengruppe geniesst keinen besonderen gesetzlichen Kündigungsschutz?",
+      "options": [
+        {
+          "text": "Betriebsratsmitglieder",
+          "rationale": "Betriebsratsmitglieder stehen unter besonderem Kündigungsschutz."
+        },
+        {
+          "text": "Schwerbehinderte",
+          "rationale": "Auch schwerbehinderte Menschen sind besonders geschützt."
+        },
+        {
+          "text": "Werdende Mütter",
+          "rationale": "Für werdende Mütter besteht besonderer Schutz nach dem Mutterschutzrecht."
+        },
+        {
+          "text": "Leitende Angestellte",
+          "rationale": "Leitende Angestellte gehören nicht zu den besonders geschützten Personengruppen in diesem Sinn."
+        },
+        {
+          "text": "Auszubildende nach der Probezeit",
+          "rationale": "Auch Auszubildende nach der Probezeit geniessen einen erweiterten Schutz."
+        }
+      ],
+      "correctIndex": 3,
+      "feedback": {
+        "correct": "Die Personengruppe ohne besonderen Kündigungsschutz wurde korrekt erkannt.",
+        "wrong": "Prüfen Sie noch einmal, wer nach Spezialvorschriften besonders vor Kündigungen geschützt wird."
+      },
+      "progressLinks": [
+        "pv3wiso_arbeitsrecht_ausbildung"
+      ]
+    },
+    {
+      "id": "q18",
+      "type": "number",
+      "title": "Mutterschutzfrist nach der Geburt eintragen",
+      "prompt": "Wie viele Wochen Mutterschutz stehen einer Mutter nach einer normalen Entbindung zu?",
+      "expected": 8,
+      "toleranceAbs": 0,
+      "showExpectedFormula": "Die Schutzfrist endet bei einer normalen Geburt in der Regel 8 Wochen nach der Entbindung.",
+      "feedback": {
+        "correct": "Die Schutzfrist wurde korrekt eingetragen.",
+        "wrong": "Denken Sie an die reguläre Schutzfrist nach der Geburt ohne Besonderheiten wie Früh- oder Mehrlingsgeburt."
+      },
+      "progressLinks": [
+        "pv3wiso_arbeitsrecht_ausbildung"
+      ]
+    },
+    {
+      "id": "f04",
+      "type": "followup_divider",
+      "title": "GmbH, Tarifrecht und Wirtschaftsordnung",
+      "from": "fachkoordination@ordnungsbetrieb.example",
+      "to": "projektteam@ausbildungsbetrieb.example",
+      "subject": "Bitte den vierten Block zu GmbH, Businessplan und Tarifrecht vorbereiten",
+      "date": "2026-03-20",
+      "body": "Hallo,\n\nim vierten Themenblock brauchen wir Aufgaben zu GmbH-Merkmalen, Wirtschaftlichkeit, Leitungssystemen, Businessplan, Kartellen und Tarifautonomie. Bitte halten Sie Unternehmensformen und tarifrechtliche Rollen klar getrennt.\n\nViele Grüsse\nFachkoordination"
+    },
+    {
+      "id": "q19",
+      "type": "table_fill",
+      "title": "Merkmale der GmbH einordnen",
+      "prompt": "Ordnen Sie zu, welche Aussagen typische Merkmale einer GmbH beschreiben.",
+      "columns": [
+        "Aussage",
+        "Trifft auf die GmbH zu?"
+      ],
+      "rows": [
+        [
+          "Bei der Gründung ist ein Stammkapital von mindestens 25.000,00 EUR vorgesehen.",
+          {
+            "key": "gmbh_a",
+            "label": "Mindeststammkapital 25.000 EUR",
+            "expected": "Ja",
+            "inputType": "select",
+            "placeholder": "Auswahl treffen",
+            "options": [
+              "Ja",
+              "Nein"
+            ]
+          }
+        ],
+        [
+          "Die Gesellschafter haften grundsätzlich mit ihrem Privatvermögen für Verbindlichkeiten.",
+          {
+            "key": "gmbh_b",
+            "label": "Privatvermögen haftet grundsätzlich",
+            "expected": "Nein",
+            "inputType": "select",
+            "placeholder": "Auswahl treffen",
+            "options": [
+              "Ja",
+              "Nein"
+            ]
+          }
+        ],
+        [
+          "Die Leitung der GmbH liegt grundsätzlich bei den Geschäftsführern.",
+          {
+            "key": "gmbh_c",
+            "label": "Leitung durch Geschäftsführer",
+            "expected": "Ja",
+            "inputType": "select",
+            "placeholder": "Auswahl treffen",
+            "options": [
+              "Ja",
+              "Nein"
+            ]
+          }
+        ],
+        [
+          "GmbH-Anteile werden typischerweise an der Börse gehandelt.",
+          {
+            "key": "gmbh_d",
+            "label": "Börsenhandel der Anteile",
+            "expected": "Nein",
+            "inputType": "select",
+            "placeholder": "Auswahl treffen",
+            "options": [
+              "Ja",
+              "Nein"
+            ]
+          }
+        ],
+        [
+          "Ein Aufsichtsrat leitet die GmbH immer.",
+          {
+            "key": "gmbh_e",
+            "label": "Aufsichtsrat leitet immer",
+            "expected": "Nein",
+            "inputType": "select",
+            "placeholder": "Auswahl treffen",
+            "options": [
+              "Ja",
+              "Nein"
+            ]
+          }
+        ]
+      ],
+      "feedback": {
+        "correct": "Die Merkmale der GmbH wurden korrekt eingeordnet.",
+        "wrong": "Prüfen Sie noch einmal Mindestkapital, Haftungsprinzip und die Rolle der Geschäftsführung."
+      },
+      "progressLinks": [
+        "pv3wiso_wirtschaftssektoren_unternehmensformen"
+      ]
+    },
+    {
+      "id": "ctx20",
+      "type": "context_card",
+      "title": "Vier Aufträge nach ihrer Wirtschaftlichkeit vergleichen",
+      "contentBlocks": [
+        {
+          "type": "text",
+          "text": "Für vier erledigte Kundenaufträge liegen Aufwand und Ertrag vor. Gesucht ist der Auftrag mit dem besten Verhältnis von Ertrag zu Aufwand."
+        },
+        {
+          "type": "table",
+          "columns": [
+            "Auftrag",
+            "Aufwand (EUR)",
+            "Ertrag (EUR)"
+          ],
+          "rows": [
+            [
+              "1",
+              "300.000",
+              "360.000"
+            ],
+            [
+              "2",
+              "80.000",
+              "100.000"
+            ],
+            [
+              "3",
+              "80.000",
+              "104.000"
+            ],
+            [
+              "4",
+              "100.000",
+              "124.000"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "id": "q20",
+      "type": "number",
+      "title": "Wirtschaftlichsten Auftrag bestimmen",
+      "prompt": "Welche Auftragsnummer weist die höchste Wirtschaftlichkeit auf?",
+      "expected": 3,
+      "toleranceAbs": 0,
+      "showExpectedFormula": "Ertrag / Aufwand: Auftrag 1 = 1,20; Auftrag 2 = 1,25; Auftrag 3 = 1,30; Auftrag 4 = 1,24.",
+      "feedback": {
+        "correct": "Der wirtschaftlichste Auftrag wurde korrekt bestimmt.",
+        "wrong": "Vergleichen Sie nicht den absoluten Gewinn, sondern das Verhältnis von Ertrag zu Aufwand."
+      },
+      "progressLinks": [
+        "pv3wiso_wirtschaftlichkeit_unternehmensanalyse"
+      ]
+    },
+    {
+      "id": "q21",
+      "type": "single_choice",
+      "title": "Leitungssystem des Unternehmens erkennen",
+      "prompt": "Das im Schaubild der Quelle gezeigte Leitungssystem zeigt mehrere übergeordnete Stellen, die parallel Weisungen an mehrere untergeordnete Stellen geben. Welches Leitungssystem ist damit gemeint?",
+      "options": [
+        {
+          "text": "Einliniensystem",
+          "rationale": "Beim Einliniensystem hat jede Stelle nur einen direkten Vorgesetzten."
+        },
+        {
+          "text": "Matrixsystem",
+          "rationale": "Ein Matrixsystem würde typischerweise zwei unterschiedliche Strukturachsen betonen."
+        },
+        {
+          "text": "Mehrliniensystem",
+          "rationale": "Genau hier erhalten untergeordnete Stellen Weisungen von mehreren übergeordneten Stellen."
+        },
+        {
+          "text": "Stabliniensystem",
+          "rationale": "Ein Stabliniensystem erweitert eine Linienorganisation um beratende Stäbe."
+        },
+        {
+          "text": "Abteilungssystem",
+          "rationale": "Das beschreibt keine eigenständige klassische Leitungsform."
+        }
+      ],
+      "correctIndex": 2,
+      "feedback": {
+        "correct": "Das Leitungssystem wurde korrekt erkannt.",
+        "wrong": "Achten Sie darauf, wie viele Weisungswege von oben nach unten gleichzeitig bestehen."
+      },
+      "progressLinks": [
+        "pv3wiso_wirtschaftssektoren_unternehmensformen"
+      ]
+    },
+    {
+      "id": "q22",
+      "type": "table_fill",
+      "title": "Aussagen zum Businessplan einordnen",
+      "prompt": "Ordnen Sie zu, welche Aussagen die Funktion eines Businessplans passend beschreiben.",
+      "columns": [
+        "Aussage",
+        "Trifft zu?"
+      ],
+      "rows": [
+        [
+          "Im Businessplan werden unter anderem strategische Ziele eines Unternehmens festgelegt.",
+          {
+            "key": "businessplan_a",
+            "label": "Strategische Ziele festlegen",
+            "expected": "Ja",
+            "inputType": "select",
+            "placeholder": "Auswahl treffen",
+            "options": [
+              "Ja",
+              "Nein"
+            ]
+          }
+        ],
+        [
+          "Die zuständige IHK stellt den Businessplan für die Gründung aus.",
+          {
+            "key": "businessplan_b",
+            "label": "IHK stellt Businessplan aus",
+            "expected": "Nein",
+            "inputType": "select",
+            "placeholder": "Auswahl treffen",
+            "options": [
+              "Ja",
+              "Nein"
+            ]
+          }
+        ],
+        [
+          "Der Businessplan ist nur für die Aufnahme von Darlehen relevant.",
+          {
+            "key": "businessplan_c",
+            "label": "Nur für Darlehen relevant",
+            "expected": "Nein",
+            "inputType": "select",
+            "placeholder": "Auswahl treffen",
+            "options": [
+              "Ja",
+              "Nein"
+            ]
+          }
+        ],
+        [
+          "Auch andere Gründungsvorhaben als Kapitalgesellschaften können einen Businessplan brauchen.",
+          {
+            "key": "businessplan_d",
+            "label": "Auch ausserhalb von Kapitalgesellschaften sinnvoll",
+            "expected": "Ja",
+            "inputType": "select",
+            "placeholder": "Auswahl treffen",
+            "options": [
+              "Ja",
+              "Nein"
+            ]
+          }
+        ],
+        [
+          "Der Businessplan ist kein Dokument des Handelsregisters.",
+          {
+            "key": "businessplan_e",
+            "label": "Kein Handelsregisterdokument",
+            "expected": "Ja",
+            "inputType": "select",
+            "placeholder": "Auswahl treffen",
+            "options": [
+              "Ja",
+              "Nein"
+            ]
+          }
+        ]
+      ],
+      "feedback": {
+        "correct": "Die Aussagen zum Businessplan wurden passend eingeordnet.",
+        "wrong": "Denken Sie an den Businessplan als eigenes Planungs- und Kommunikationsinstrument der Gründung und nicht als amtliches Registerdokument."
+      },
+      "progressLinks": [
+        "pv3wiso_wirtschaftssektoren_unternehmensformen"
+      ]
+    },
+    {
+      "id": "q23",
+      "type": "single_choice",
+      "title": "Kernaussage zu Kartellen erkennen",
+      "prompt": "Welche Aussage über Kartelle trifft zu?",
+      "options": [
+        {
+          "text": "Kartelle sind Absprachen zwischen Unternehmen gleicher Produktionsstufe, um durch Beschränkung des Wettbewerbs wirtschaftlich stärker zu sein.",
+          "rationale": "Genau diese wettbewerbsbeschränkende Absprache beschreibt ein Kartell."
+        },
+        {
+          "text": "Kartelle senken Güterpreise durch besonders produktionsbedingte Vorteile.",
+          "rationale": "Das ist keine zutreffende Kerndefinition von Kartellen."
+        },
+        {
+          "text": "Kartelle sorgen für die Sanierung des Betriebs durch innerbetriebliche Neuorganisation.",
+          "rationale": "Auch das hat mit Kartellen nichts zu tun."
+        },
+        {
+          "text": "Kartelle sorgen für eine vollständige Haftungsbeschränkung.",
+          "rationale": "Haftungsfragen sind nicht der Kern von Kartellen."
+        },
+        {
+          "text": "Kartelle werden von den zuständigen Handelskammern geprüft.",
+          "rationale": "Die Handelskammern sind dafür nicht die zentrale Instanz."
+        }
+      ],
+      "correctIndex": 0,
+      "feedback": {
+        "correct": "Die Kernaussage zu Kartellen wurde korrekt erkannt.",
+        "wrong": "Konzentrieren Sie sich auf wettbewerbsbeschränkende Absprachen zwischen Unternehmen."
+      },
+      "progressLinks": [
+        "pv3wiso_wirtschaftssektoren_unternehmensformen"
+      ]
+    },
+    {
+      "id": "q24",
+      "type": "multi_select",
+      "title": "Tarifvertragsparteien korrekt auswählen",
+      "prompt": "Welche zwei Parteien schliessen in der Regel einen Tarifvertrag ab?",
+      "options": [
+        {
+          "text": "Bundesministerium für Arbeit und Soziales",
+          "correct": false,
+          "rationale": "Das Ministerium ist keine Tarifvertragspartei."
+        },
+        {
+          "text": "Arbeitgeberverband",
+          "correct": true,
+          "rationale": "Arbeitgeberverbände sind typische Tarifvertragsparteien."
+        },
+        {
+          "text": "Industrie- und Handelskammer",
+          "correct": false,
+          "rationale": "Die IHK schliesst keine Tarifverträge ab."
+        },
+        {
+          "text": "Berufsgenossenschaft",
+          "correct": false,
+          "rationale": "Die Berufsgenossenschaft ist Unfallversicherungsträger, keine Tarifvertragspartei."
+        },
+        {
+          "text": "Gewerkschaft",
+          "correct": true,
+          "rationale": "Gewerkschaften bilden die Arbeitnehmerseite des Tarifvertrags."
+        },
+        {
+          "text": "Bundesagentur für Arbeit",
+          "correct": false,
+          "rationale": "Die Bundesagentur für Arbeit ist keine Tarifvertragspartei."
+        }
+      ],
+      "feedback": {
+        "correct": "Die Tarifvertragsparteien wurden korrekt ausgewählt.",
+        "wrong": "Achten Sie auf die organisierte Arbeitgeber- und Arbeitnehmerseite."
+      },
+      "progressLinks": [
+        "pv3wiso_mitbestimmung_tarif_sozialversicherung"
+      ]
+    },
+    {
+      "id": "q25",
+      "type": "single_choice",
+      "title": "Fachbegriff für das selbstständige Regeln von Arbeitsbedingungen bestimmen",
+      "prompt": "Tarifvertragsparteien haben das Recht, Löhne, Gehälter und andere Arbeitsbedingungen unter Beachtung der gesetzlichen Vorschriften selbstständig zu regeln. Wie lautet der zutreffende Fachbegriff?",
+      "options": [
+        {
+          "text": "Generalnormvertrag",
+          "rationale": "Das ist nicht der passende Fachbegriff."
+        },
+        {
+          "text": "Allgemeinverbindlichkeit",
+          "rationale": "Allgemeinverbindlichkeit meint die Ausdehnung eines Tarifvertrags, nicht das Grundrecht der Parteien."
+        },
+        {
+          "text": "Freiwilligkeit",
+          "rationale": "Das beschreibt den Kern hier nicht."
+        },
+        {
+          "text": "Tarifautonomie",
+          "rationale": "Genau das selbstständige Regeln von Arbeitsbedingungen heisst Tarifautonomie."
+        },
+        {
+          "text": "Tarifbindung",
+          "rationale": "Tarifbindung beschreibt die Gebundenheit an einen Tarifvertrag, nicht den Grundsatz der autonomen Regelung."
+        }
+      ],
+      "correctIndex": 3,
+      "feedback": {
+        "correct": "Der Fachbegriff wurde korrekt bestimmt.",
+        "wrong": "Gesucht ist der Begriff für die eigenständige Regelungskompetenz der Tarifparteien."
+      },
+      "progressLinks": [
+        "pv3wiso_mitbestimmung_tarif_sozialversicherung"
+      ]
+    },
+    {
+      "id": "q26",
+      "type": "ordering",
+      "title": "Ablauf von Tarifverhandlungen in die richtige Reihenfolge bringen",
+      "prompt": "Bringen Sie die Schritte so in die richtige Reihenfolge, dass ein neuer Tarifvertrag zustande kommen kann.",
+      "items": [
+        "Schlichtung empfiehlt 3,5 % Lohnerhöhung",
+        "Urabstimmung und Streik",
+        "Ein Tarifvertragspartner kündigt den Gehaltstarifvertrag",
+        "Schlichter wird angerufen und eine Schlichtung eingeleitet",
+        "Erste Tarifverhandlungen",
+        "Der andere Tarifvertragspartner erklärt die Tarifverhandlungen für gescheitert",
+        "Schlichtung wird von den Tarifparteien angenommen"
+      ],
+      "correctOrder": [
+        "Ein Tarifvertragspartner kündigt den Gehaltstarifvertrag",
+        "Erste Tarifverhandlungen",
+        "Der andere Tarifvertragspartner erklärt die Tarifverhandlungen für gescheitert",
+        "Urabstimmung und Streik",
+        "Schlichter wird angerufen und eine Schlichtung eingeleitet",
+        "Schlichtung empfiehlt 3,5 % Lohnerhöhung",
+        "Schlichtung wird von den Tarifparteien angenommen"
+      ],
+      "feedback": {
+        "correct": "Die Tarifschritte wurden korrekt geordnet.",
+        "wrong": "Ordnen Sie erst Kündigung und Verhandlungen, dann Scheitern, Streik, Schlichtung und erst danach die Annahme der Schlichtung."
+      },
+      "progressLinks": [
+        "pv3wiso_mitbestimmung_tarif_sozialversicherung"
+      ]
+    },
+    {
+      "id": "ctx27",
+      "type": "context_card",
+      "title": "Kündigungsdatum nach dem BGB bestimmen",
+      "contentBlocks": [
+        {
+          "type": "text",
+          "text": "Ein Arbeitnehmer kündigt sein bisheriges Arbeitsverhältnis am 06.05.2023 schriftlich, nachdem er bereits die Zusage für eine neue Stelle erhalten hat. Nach dem BGB kann das Arbeitsverhältnis mit einer Frist von vier Wochen zum Fünfzehnten oder zum Ende eines Kalendermonats gekündigt werden."
+        }
+      ]
+    },
+    {
+      "id": "q27",
+      "type": "table_fill",
+      "title": "Frühestes Beendigungsdatum eintragen",
+      "prompt": "Tragen Sie das früheste Datum ein, zu dem das alte Arbeitsverhältnis enden kann.",
+      "columns": [
+        "Eintrag",
+        "Datum"
+      ],
+      "rows": [
+        [
+          "Frühestes Ende des alten Arbeitsverhältnisses",
+          {
+            "key": "termination_date",
+            "label": "Beendigungsdatum",
+            "expected": "15.06.2023",
+            "inputType": "text",
+            "placeholder": "TT.MM.JJJJ"
+          }
+        ]
+      ],
+      "feedback": {
+        "correct": "Das früheste Beendigungsdatum wurde korrekt eingetragen.",
+        "wrong": "Berücksichtigen Sie die Vierwochenfrist und die gesetzlich vorgegebenen Beendigungstermine zum 15. oder Monatsende."
+      },
+      "progressLinks": [
+        "pv3wiso_arbeitsrecht_ausbildung"
+      ]
+    },
+    {
+      "id": "q28",
+      "type": "table_fill",
+      "title": "Leistungen der gesetzlichen Unfallversicherung zuordnen",
+      "prompt": "Ordnen Sie den Leistungen der gesetzlichen Unfallversicherung die passende Beispielsnummer zu.",
+      "columns": [
+        "Leistung",
+        "Passende Beispielsnummer"
+      ],
+      "rows": [
+        [
+          "Verletztengeld",
+          {
+            "key": "insurance_a",
+            "label": "Verletztengeld",
+            "expected": "2",
+            "inputType": "select",
+            "placeholder": "Nummer wählen",
+            "options": [
+              "1",
+              "2",
+              "3",
+              "4"
+            ]
+          }
+        ],
+        [
+          "Heilbehandlungen",
+          {
+            "key": "insurance_b",
+            "label": "Heilbehandlungen",
+            "expected": "1",
+            "inputType": "select",
+            "placeholder": "Nummer wählen",
+            "options": [
+              "1",
+              "2",
+              "3",
+              "4"
+            ]
+          }
+        ],
+        [
+          "Rente",
+          {
+            "key": "insurance_c",
+            "label": "Rente",
+            "expected": "4",
+            "inputType": "select",
+            "placeholder": "Nummer wählen",
+            "options": [
+              "1",
+              "2",
+              "3",
+              "4"
+            ]
+          }
+        ],
+        [
+          "Pflegegeld",
+          {
+            "key": "insurance_d",
+            "label": "Pflegegeld",
+            "expected": "3",
+            "inputType": "select",
+            "placeholder": "Nummer wählen",
+            "options": [
+              "1",
+              "2",
+              "3",
+              "4"
+            ]
+          }
+        ]
+      ],
+      "feedback": {
+        "correct": "Die Leistungen der gesetzlichen Unfallversicherung wurden korrekt zugeordnet.",
+        "wrong": "Vergleichen Sie noch einmal Einkommensersatz, Behandlung, Rentenleistung und Pflegeunterstützung."
+      },
+      "progressLinks": [
+        "pv3wiso_mitbestimmung_tarif_sozialversicherung"
+      ]
+    },
+    {
+      "id": "q29",
+      "type": "multi_select",
+      "title": "Nachhaltige Massnahmen im Betrieb auswählen",
+      "prompt": "Welche zwei Massnahmen unterstützen Nachhaltigkeit im Unternehmen?",
+      "options": [
+        {
+          "text": "Für Mitarbeitende und Kunden werden Ladepunkte für Elektrofahrzeuge bereitgestellt.",
+          "correct": true,
+          "rationale": "Diese Massnahme kann nachhaltige Mobilität fördern."
+        },
+        {
+          "text": "Geschäftsreisen werden wegen der Zeitersparnis künftig nur noch mit dem Flugzeug erledigt.",
+          "correct": false,
+          "rationale": "Das fördert Nachhaltigkeit gerade nicht."
+        },
+        {
+          "text": "Beim Einkauf werden nur die günstigsten Produkte bevorzugt, unabhängig von ihrer Herkunft.",
+          "correct": false,
+          "rationale": "Allein der günstigste Preis ist kein Nachhaltigkeitskriterium."
+        },
+        {
+          "text": "Dokumente werden möglichst immer auf schwerem Hochglanzpapier ausgedruckt.",
+          "correct": false,
+          "rationale": "Das erhöht Materialeinsatz und Ressourcenverbrauch."
+        },
+        {
+          "text": "Bewerber werden nur eingestellt, wenn sie über 30 Jahre alt sind.",
+          "correct": false,
+          "rationale": "Das ist keine Nachhaltigkeitsmassnahme und zudem diskriminierend."
+        },
+        {
+          "text": "To-go-Becher und Mitnahmeverpackungen in der Kantine bestehen aus nachwachsenden Rohstoffen.",
+          "correct": true,
+          "rationale": "Der Einsatz nachwachsender Rohstoffe unterstützt nachhaltigere Materialkreislaufe."
+        }
+      ],
+      "feedback": {
+        "correct": "Die nachhaltigen Massnahmen wurden korrekt ausgewählt.",
+        "wrong": "Achten Sie auf Ressourcenschonung, nachhaltige Mobilität und verantwortungsvollen Materialeinsatz."
+      },
+      "progressLinks": [
+        "pv3wiso_arbeitsschutz_umwelt_diversity"
+      ]
+    },
+    {
+      "id": "q30",
+      "type": "table_fill",
+      "title": "Umweltmassnahmen fachlich einordnen",
+      "prompt": "Ordnen Sie zu, welche Massnahmen der Vermeidung oder Verringerung von Umweltbelastungen dienen.",
+      "columns": [
+        "Massnahme",
+        "Verringert Umweltbelastungen?"
+      ],
+      "rows": [
+        [
+          "Bei der Sanierung des Lagerdachs wird bewusst keine Photovoltaikanlage installiert.",
+          {
+            "key": "environment_a",
+            "label": "Keine Photovoltaikanlage installieren",
+            "expected": "Nein",
+            "inputType": "select",
+            "placeholder": "Auswahl treffen",
+            "options": [
+              "Ja",
+              "Nein"
+            ]
+          }
+        ],
+        [
+          "Kartons werden durch mehrlagiges Einwegplastik als Umverpackung ersetzt.",
+          {
+            "key": "environment_b",
+            "label": "Einwegplastik statt Kartons",
+            "expected": "Nein",
+            "inputType": "select",
+            "placeholder": "Auswahl treffen",
+            "options": [
+              "Ja",
+              "Nein"
+            ]
+          }
+        ],
+        [
+          "Für den Konferenzraum wird ein hochwertiger, aber wenig robuster Teppich angeschafft.",
+          {
+            "key": "environment_c",
+            "label": "Wenig robuster Teppich",
+            "expected": "Nein",
+            "inputType": "select",
+            "placeholder": "Auswahl treffen",
+            "options": [
+              "Ja",
+              "Nein"
+            ]
+          }
+        ],
+        [
+          "Der Fuhrpark wird von Batterie-Elektro- und Hybrid-Fahrzeugen auf Diesel umgestellt.",
+          {
+            "key": "environment_d",
+            "label": "Fuhrpark auf Diesel umstellen",
+            "expected": "Nein",
+            "inputType": "select",
+            "placeholder": "Auswahl treffen",
+            "options": [
+              "Ja",
+              "Nein"
+            ]
+          }
+        ],
+        [
+          "Verpackungen aus Recyclingpapier werden nicht mehr aus dem Ausland, sondern von einem lokalen Hersteller bezogen.",
+          {
+            "key": "environment_e",
+            "label": "Recyclingpapier lokal beziehen",
+            "expected": "Ja",
+            "inputType": "select",
+            "placeholder": "Auswahl treffen",
+            "options": [
+              "Ja",
+              "Nein"
+            ]
+          }
+        ]
+      ],
+      "feedback": {
+        "correct": "Die Umweltmassnahmen wurden fachlich korrekt eingeordnet.",
+        "wrong": "Achten Sie besonders auf Recycling, Langlebigkeit, Antriebsart und möglichst kurze Transportwege."
+      },
+      "progressLinks": [
+        "pv3wiso_arbeitsschutz_umwelt_diversity"
+      ]
+    }
+  ]
+}

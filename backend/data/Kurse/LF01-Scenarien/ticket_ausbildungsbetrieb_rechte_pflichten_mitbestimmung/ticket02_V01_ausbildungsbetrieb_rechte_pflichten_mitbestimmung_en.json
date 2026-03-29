@@ -1,0 +1,160 @@
+{
+  "scenario": {
+    "company": "Training Company IT Service",
+    "scale": "Mid-sized company, 90 employees",
+    "context": "Station 02 of the day flow: Apply rights and duties in daily work.",
+    "mission": "You handle typical daily situations with a focus on accountability, reporting and responsibility boundaries.",
+    "station": {
+      "id": "LF01-ST-02",
+      "department": "IT Service",
+      "profile": "Compliance, reporting paths, team behavior",
+      "constraints": [
+        "establish a clear link to rules",
+        "briefly justify decisions",
+        "apply reporting paths correctly"
+      ]
+    },
+    "customerRequest": {
+      "from": "ausbildung@ausbildungsbetrieb.example",
+      "to": "klasse.fiae@berufsschule.example",
+      "subject": "Station 02: Rights and duties in daily work",
+      "date": "2026-03-13",
+      "body": "Please assess typical daily situations in the company and show how duties, reporting paths and responsibility are implemented in practice."
+    }
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "type": "single_choice",
+      "title": "Duty-compliant follow-up response",
+      "prompt": "A ticket remains unattended because information is missing. What is the best step?",
+      "options": [
+        {
+          "text": "Close the ticket without asking",
+          "rationale": "Leads to quality loss."
+        },
+        {
+          "text": "Request the missing information and document the case",
+          "rationale": "Ensures traceability and quality."
+        },
+        {
+          "text": "Pass the problem to a colleague without a note",
+          "rationale": "No clear responsibility."
+        }
+      ],
+      "correctIndex": 1,
+      "feedback": {
+        "correct": "Correct: asking and documenting are decisive here.",
+        "wrong": "Not appropriate: responsibility and traceability must be maintained."
+      },
+      "progressLinks": [
+        "lf01_rechte_pflichten_ausbildung"
+      ]
+    },
+    {
+      "id": "q2",
+      "type": "multi_select",
+      "title": "Use reporting paths cleanly",
+      "prompt": "Which points indicate a clean reporting path? (Multiple selection)",
+      "options": [
+        {
+          "text": "Record the time and content of the report",
+          "correct": true,
+          "rationale": "Eases follow-up."
+        },
+        {
+          "text": "Use the responsible contact person",
+          "correct": true,
+          "rationale": "Shortens response time."
+        },
+        {
+          "text": "Deliberately omit important details",
+          "correct": false,
+          "rationale": "Creates questions and risk."
+        },
+        {
+          "text": "Clearly mark urgency",
+          "correct": true,
+          "rationale": "Supports prioritization."
+        },
+        {
+          "text": "Report only orally without evidence",
+          "correct": false,
+          "rationale": "Missing documentation."
+        }
+      ],
+      "feedback": {
+        "correct": "Correct: the reporting path is implemented reliably.",
+        "wrong": "Partially wrong: please pay closer attention to responsibility and evidence."
+      },
+      "progressLinks": [
+        "lf01_rechte_pflichten_ausbildung"
+      ]
+    },
+    {
+      "id": "q3",
+      "type": "ordering",
+      "title": "Handle a duty violation correctly",
+      "prompt": "Order the sequence when a duty violation is identified.",
+      "items": [
+        "Document the situation",
+        "Inform the responsible parties",
+        "Briefly verify the facts",
+        "Align a corrective measure",
+        "Plan a follow-up check"
+      ],
+      "correctOrder": [
+        "Briefly verify the facts",
+        "Document the situation",
+        "Inform the responsible parties",
+        "Align a corrective measure",
+        "Plan a follow-up check"
+      ],
+      "feedback": {
+        "correct": "Correct: the approach is clear and reliable.",
+        "wrong": "Not optimal: verify and document first, then inform and follow up."
+      },
+      "progressLinks": [
+        "lf01_rechte_pflichten_ausbildung",
+        "lf01_reflexion_verbesserung"
+      ]
+    },
+    {
+      "id": "q4",
+      "type": "number",
+      "title": "Calculate the handling window",
+      "prompt": "An incident must be handled in 30 minutes. 8 minutes are for intake, 11 for alignment. How many minutes remain for implementation?",
+      "expected": 11,
+      "toleranceAbs": 1,
+      "showExpectedFormula": "30 - 8 - 11 = 11 minutes",
+      "feedback": {
+        "correct": "Correct calculation.",
+        "wrong": "Please calculate the remaining time correctly."
+      },
+      "progressLinks": [
+        "lf01_rechte_pflichten_ausbildung"
+      ]
+    },
+    {
+      "id": "q5",
+      "type": "short_text",
+      "title": "Duty-compliant response",
+      "prompt": "Formulate a short response (4-6 sentences) on how you report and work through an error in a duty-compliant way.",
+      "minChars": 140,
+      "requiredKeywords": [
+        "report",
+        "documentation",
+        "measure"
+      ],
+      "expectedOutline": "Reporting path, documentation and concrete corrective measure.",
+      "feedback": {
+        "correct": "Correct: the response is compliant and practical.",
+        "wrong": "Please connect report, documentation and measure more clearly."
+      },
+      "progressLinks": [
+        "lf01_rechte_pflichten_ausbildung",
+        "lf01_reflexion_verbesserung"
+      ]
+    }
+  ]
+}

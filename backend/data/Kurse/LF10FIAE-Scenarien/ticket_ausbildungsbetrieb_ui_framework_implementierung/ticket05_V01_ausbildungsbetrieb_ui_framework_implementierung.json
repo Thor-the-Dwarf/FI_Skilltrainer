@@ -1,0 +1,160 @@
+{
+  "scenario": {
+    "company": "Ausbildungsbetrieb IT-Service",
+    "scale": "Mittelstand, 220 Mitarbeitende",
+    "context": "Station 05 des Tageslaufs: Frameworks auswählen und UI implementieren.",
+    "mission": "Sie treffen eine belastbare Technologieentscheidung und planen eine wartbare Umsetzung in Python/Java/Web.",
+    "station": {
+      "id": "LF10FIAE-ST-05",
+      "department": "Implementation",
+      "profile": "Frameworkwahl und Umsetzungspfad",
+      "constraints": [
+        "Technologieentscheidung begründen",
+        "Wartbarkeit sichern",
+        "Integrationsfähigkeit prüfen"
+      ]
+    },
+    "customerRequest": {
+      "from": "tech.lead@ausbildungsbetrieb.example",
+      "to": "dev.team@ausbildungsbetrieb.example",
+      "subject": "Station 05: Implementierungsstrategie",
+      "date": "2026-03-13",
+      "body": "Bitte wählen Sie das passende UI-Framework und leiten Sie den Implementierungsplan ab."
+    }
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "type": "multi_select",
+      "title": "Frameworkentscheidung",
+      "prompt": "Welche Kriterien gehören in eine belastbare Frameworkentscheidung? (Mehrfachauswahl)",
+      "options": [
+        {
+          "text": "Wartbarkeit und Teamkompetenz",
+          "correct": true,
+          "rationale": "Langfristiger Betrieb entscheidend."
+        },
+        {
+          "text": "LTS- und Security-Situation",
+          "correct": true,
+          "rationale": "Wichtig für Stabilität."
+        },
+        {
+          "text": "Nur Trendpopularität",
+          "correct": false,
+          "rationale": "Kein ausreichendes Kriterium."
+        },
+        {
+          "text": "Integrationsfähigkeit mit bestehender Architektur",
+          "correct": true,
+          "rationale": "Reduziert Integrationsrisiken."
+        },
+        {
+          "text": "Dokumentationslage ignorieren",
+          "correct": false,
+          "rationale": "Erschwert Wissensaufbau."
+        }
+      ],
+      "feedback": {
+        "correct": "Richtig: Die Auswahl ist fachlich fundiert.",
+        "wrong": "Teilweise falsch: Bitte Wartbarkeit, Security und Integration stärker gewichten."
+      },
+      "progressLinks": [
+        "lf10fiae_implementierung_frameworks"
+      ]
+    },
+    {
+      "id": "q2",
+      "type": "single_choice",
+      "title": "Umsetzungspfad priorisieren",
+      "prompt": "Was ist für den Start der Realisierung am sinnvollsten?",
+      "options": [
+        {
+          "text": "Dokumentation bis zum Ende aussetzen",
+          "rationale": "Erhöht Wissensverlust."
+        },
+        {
+          "text": "Kernnutzerfluss zuerst implementieren und validieren",
+          "rationale": "Sichert frühes Feedback auf kritischem Pfad."
+        },
+        {
+          "text": "Nur Randfunktionen zuerst bauen",
+          "rationale": "Kernrisiken bleiben offen."
+        }
+      ],
+      "correctIndex": 1,
+      "feedback": {
+        "correct": "Richtig: Kernfluss zuerst reduziert Projektrisiko.",
+        "wrong": "Nicht passend: Kritische Nutzerpfade sollten priorisiert werden."
+      },
+      "progressLinks": [
+        "lf10fiae_implementierung_python_java_web"
+      ]
+    },
+    {
+      "id": "q3",
+      "type": "ordering",
+      "title": "Implementierungsfahrplan",
+      "prompt": "Ordnen Sie den Ablauf für eine stabile UI-Implementierung.",
+      "items": [
+        "Technologieentscheidung finalisieren",
+        "Kernkomponenten umsetzen",
+        "Validierung/Fehlermeldungen integrieren",
+        "Integrationstest fahren",
+        "Doku aktualisieren"
+      ],
+      "correctOrder": [
+        "Technologieentscheidung finalisieren",
+        "Kernkomponenten umsetzen",
+        "Validierung/Fehlermeldungen integrieren",
+        "Integrationstest fahren",
+        "Doku aktualisieren"
+      ],
+      "feedback": {
+        "correct": "Richtig: Der Fahrplan ist praxisnah und stabil.",
+        "wrong": "Nicht optimal: Bitte Technologie- und Kernkomponentenphase vor Test/Doku setzen."
+      },
+      "progressLinks": [
+        "lf10fiae_implementierung_frameworks",
+        "lf10fiae_implementierung_python_java_web"
+      ]
+    },
+    {
+      "id": "q4",
+      "type": "number",
+      "title": "Implementierungsbudget",
+      "prompt": "Für UI-Komponenten sind 26 Stunden zu 74 EUR eingeplant. Wie hoch ist das Budget?",
+      "expected": 1924,
+      "toleranceAbs": 1,
+      "showExpectedFormula": "26 * 74 = 1924 EUR",
+      "feedback": {
+        "correct": "Richtig gerechnet.",
+        "wrong": "Bitte Stunden und Satz korrekt multiplizieren."
+      },
+      "progressLinks": [
+        "lf10fiae_implementierung_python_java_web"
+      ]
+    },
+    {
+      "id": "q5",
+      "type": "short_text",
+      "title": "Technologieentscheidung begründen",
+      "prompt": "Begründen Sie in 4-6 Sätzen die Framework- und Umsetzungsauswahl.",
+      "minChars": 160,
+      "requiredKeywords": [
+        "wartbarkeit",
+        "integration",
+        "entscheidung"
+      ],
+      "expectedOutline": "Technologiebegründung über Wartbarkeit, Integrationsfit und Teamfähigkeit.",
+      "feedback": {
+        "correct": "Richtig: Die Entscheidung ist nachvollziehbar abgesichert.",
+        "wrong": "Bitte Wartbarkeit, Integration und Entscheidung klarer verknüpfen."
+      },
+      "progressLinks": [
+        "lf10fiae_implementierung_frameworks",
+        "lf10fiae_ui_dokumentation"
+      ]
+    }
+  ]
+}

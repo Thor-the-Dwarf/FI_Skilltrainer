@@ -1,0 +1,158 @@
+{
+  "scenario": {
+    "company": "Ausbildungsbetrieb IT-Service",
+    "scale": "Mittelstand, 280 Mitarbeitende",
+    "context": "Station 02 des Tageslaufs: Projektmanagementstandards und Projektorganisation.",
+    "mission": "Sie wählen passende PM-Standards aus und strukturieren Rollen sowie Kommunikationswege für ein Kundenprojekt.",
+    "station": {
+      "id": "LF12FIAE-ST-02",
+      "department": "Projektmanagement",
+      "profile": "PM-Standards, Rollen, Projektorganisation",
+      "constraints": [
+        "Standards kontextbezogen einordnen",
+        "Rollen eindeutig zuweisen",
+        "Kommunikationswege verlässlich planen"
+      ]
+    },
+    "customerRequest": {
+      "from": "pm.office@ausbildungsbetrieb.example",
+      "to": "projektteam@ausbildungsbetrieb.example",
+      "subject": "Station 02: PM-Standard und Organisation",
+      "date": "2026-03-13",
+      "body": "Bitte legen Sie für ein neues Kundenprojekt den PM-Ansatz fest und beschreiben Sie eine tragfähige Projektorganisation."
+    }
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "type": "single_choice",
+      "title": "PM-Standard wählen",
+      "prompt": "Woran sollte die Auswahl eines PM-Standards ausgerichtet sein?",
+      "options": [
+        {
+          "text": "Nur an persönlicher Präferenz",
+          "rationale": "Zu eng für Projektkontext."
+        },
+        {
+          "text": "An Projektkomplexität, Teamgrösse und Compliance-Anforderungen",
+          "rationale": "Kontextbezogene Auswahl ist belastbar."
+        },
+        {
+          "text": "Nur am günstigsten Tool",
+          "rationale": "Werkzeug ersetzt keinen methodischen Fit."
+        }
+      ],
+      "correctIndex": 1,
+      "feedback": {
+        "correct": "Richtig: Genau diese Faktoren bestimmen den Standardfit.",
+        "wrong": "Nicht passend: Der Standard muss zum Projektkontext passen."
+      },
+      "progressLinks": [
+        "lf12fiae_pm_grundlagen_organisation"
+      ]
+    },
+    {
+      "id": "q2",
+      "type": "multi_select",
+      "title": "Projektorganisation belastbar machen",
+      "prompt": "Welche Elemente sind für eine klare Projektorganisation wichtig? (Mehrfachauswahl)",
+      "options": [
+        {
+          "text": "Rollen und Entscheidungsbefugnisse dokumentieren",
+          "correct": true,
+          "rationale": "Verhindert Unklarheiten."
+        },
+        {
+          "text": "Kommunikationsrhythmus für Status und Risiken festlegen",
+          "correct": true,
+          "rationale": "Sichert Steuerbarkeit."
+        },
+        {
+          "text": "Verantwortungen absichtlich offen lassen",
+          "correct": false,
+          "rationale": "Führt zu Reibung."
+        },
+        {
+          "text": "Eskalationswege mit Ansprechpartnern definieren",
+          "correct": true,
+          "rationale": "Nötig bei Störungen."
+        },
+        {
+          "text": "Änderungen nur informell weitergeben",
+          "correct": false,
+          "rationale": "Nicht verlässlich."
+        }
+      ],
+      "feedback": {
+        "correct": "Richtig: Die Organisation ist klar und handlungsfähig.",
+        "wrong": "Teilweise falsch: Bitte Verantwortungen und Eskalation sauber absichern."
+      },
+      "progressLinks": [
+        "lf12fiae_pm_grundlagen_organisation"
+      ]
+    },
+    {
+      "id": "q3",
+      "type": "ordering",
+      "title": "Organisationsaufbau im Projekt",
+      "prompt": "Ordnen Sie den Aufbau einer Projektorganisation.",
+      "items": [
+        "Projektziel und Rahmen klären",
+        "Rollen und Verantwortungen definieren",
+        "Kommunikationswege festlegen",
+        "Entscheidungs- und Eskalationsregeln abstimmen",
+        "Organisation dokumentiert freigeben"
+      ],
+      "correctOrder": [
+        "Projektziel und Rahmen klären",
+        "Rollen und Verantwortungen definieren",
+        "Kommunikationswege festlegen",
+        "Entscheidungs- und Eskalationsregeln abstimmen",
+        "Organisation dokumentiert freigeben"
+      ],
+      "feedback": {
+        "correct": "Richtig: Der Organisationsaufbau ist logisch und belastbar.",
+        "wrong": "Nicht optimal: Bitte Ziel-/Rollenklärung vor Regeln und Freigabe setzen."
+      },
+      "progressLinks": [
+        "lf12fiae_pm_grundlagen_organisation"
+      ]
+    },
+    {
+      "id": "q4",
+      "type": "number",
+      "title": "Meetingaufwand pro Woche",
+      "prompt": "Wöchentlich sind 3 Statusmeetings zu je 25 Minuten und 1 Risiko-Review mit 40 Minuten geplant. Wie viele Minuten ergeben sich insgesamt?",
+      "expected": 115,
+      "toleranceAbs": 1,
+      "showExpectedFormula": "3*25 + 40 = 115 Minuten",
+      "feedback": {
+        "correct": "Richtig gerechnet.",
+        "wrong": "Bitte alle Meetingzeiten korrekt addieren."
+      },
+      "progressLinks": [
+        "lf12fiae_pm_grundlagen_organisation"
+      ]
+    },
+    {
+      "id": "q5",
+      "type": "short_text",
+      "title": "Projektorganisation kurz darstellen",
+      "prompt": "Beschreiben Sie in 4-6 Sätzen eine passende Projektorganisation für einen Kundenauftrag.",
+      "minChars": 150,
+      "requiredKeywords": [
+        "rolle",
+        "kommunikation",
+        "eskalation"
+      ],
+      "expectedOutline": "Rollenbild, Kommunikationslogik und Eskalationsweg in einer kompakten Struktur.",
+      "feedback": {
+        "correct": "Richtig: Die Organisation ist nachvollziehbar beschrieben.",
+        "wrong": "Bitte Rollen, Kommunikation und Eskalation konkreter ausarbeiten."
+      },
+      "progressLinks": [
+        "lf12fiae_pm_grundlagen_organisation"
+      ]
+    }
+  ]
+}

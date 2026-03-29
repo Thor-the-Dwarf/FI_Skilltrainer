@@ -1,0 +1,248 @@
+{
+  "scenario": {
+    "company": "QualiWerk Service GmbH",
+    "scale": "IT and process service provider for specialist departments with 68 employees",
+    "context": "For the new operating process there is still no clean separation between QM and QS, no verifiable quality goals and no reliable evidence of workplace and project quality.",
+    "mission": "Map the basics of QM and QS, standards, audit, certification, PDCA and documented workplace and project quality in a clear structure.",
+    "source": {
+      "kind": "Internal quality request",
+      "reference": "Quality package 2026-04",
+      "note": "Domain coordination wants to recognize and apply the terms in everyday project work, not only read them theoretically."
+    },
+    "station": {
+      "id": "QUS2-ST-11",
+      "department": "Quality management and domain coordination",
+      "profile": "QM, QS, standards, audit, PDCA and evidence",
+      "constraints": [
+        "QM and QS must be separated conceptually but stay connected in the process",
+        "Standards, audit and certification should be readable as a reliable framework",
+        "Project and workplace documentation must appear as visible evidence"
+      ]
+    },
+    "customerRequest": {
+      "from": "qualitaetskoordination@qualiwerk.example",
+      "to": "betrieb@qualiwerk.example",
+      "subject": "QM/QS basics, audit and evidence for the new process",
+      "date": "2026-03-27",
+      "body": "Good day,\n\nfor the new process we need a concise but reliable summary of QM and QS. Please separate the terms cleanly, show the PDCA cycle in a clear way, and make visible which evidence truly supports workplace and project quality later.\n\nKind regards\nQuality coordination"
+    }
+  },
+  "questions": [
+    {
+      "id": "ctx01",
+      "type": "context_card",
+      "title": "Framework for the quality case",
+      "contentBlocks": [
+        {
+          "type": "text",
+          "text": "In the new service process, tasks, acceptances and logs are still mixed up. The team should now organize the terms QM, QS, planning, control, audit and certification so the process remains traceable in review later."
+        }
+      ]
+    },
+    {
+      "id": "q01",
+      "type": "single_choice",
+      "title": "Separate QM and QS",
+      "prompt": "Which statement best separates quality management and quality assurance?",
+      "options": [
+        {
+          "text": "QM describes the steering and management system for quality, QS the planned measures in the process.",
+          "rationale": "QM sets the framework, QS ensures operational quality assurance.",
+          "correct": true
+        },
+        {
+          "text": "QM is only the final inspection, QS only the formal approval.",
+          "rationale": "That swaps the terms and misses the core concept.",
+          "correct": false
+        },
+        {
+          "text": "QM and QS mean the same in this case and do not need separation.",
+          "rationale": "The terms belong together but are conceptually distinct.",
+          "correct": false
+        },
+        {
+          "text": "QS refers only to technology, QM only to people.",
+          "rationale": "This separation is too narrow and falls short conceptually.",
+          "correct": false
+        }
+      ],
+      "correctIndex": 0,
+      "feedback": {
+        "correct": "QM and QS are cleanly separated yet connected in the process.",
+        "wrong": "Focus on management system, planned measures and the operational process."
+      },
+      "progressLinks": [
+        "qus2_qmqs_grundlagen_normen_audit"
+      ]
+    },
+    {
+      "id": "q02",
+      "type": "multi_select",
+      "title": "Define quality planning",
+      "prompt": "Which points belong to a reliable quality plan and ongoing quality control? Several statements can apply.",
+      "options": [
+        {
+          "text": "Measurable quality goals are defined in advance.",
+          "rationale": "Without measurable goals the plan cannot be verified later.",
+          "correct": true
+        },
+        {
+          "text": "Criteria, evidence and checkpoints are defined.",
+          "rationale": "This makes quality visible later instead of only claimed.",
+          "correct": true
+        },
+        {
+          "text": "Responsibilities and roles are clearly assigned.",
+          "rationale": "Only with role logic does implementation remain binding.",
+          "correct": true
+        },
+        {
+          "text": "Feedback loops and corrections are planned.",
+          "rationale": "Quality control needs a visible response logic.",
+          "correct": true
+        },
+        {
+          "text": "Details are added only after project completion.",
+          "rationale": "That removes exactly the binding logic needed here.",
+          "correct": false
+        },
+        {
+          "text": "A good intention is sufficient evidence.",
+          "rationale": "That is too weak; the plan must be verifiable.",
+          "correct": false
+        }
+      ],
+      "feedback": {
+        "correct": "The key elements of quality planning were correctly identified.",
+        "wrong": "Focus on goals, criteria, roles, evidence and feedback loops."
+      },
+      "progressLinks": [
+        "qus2_qmqs_pdca_und_qualitaetsplanung",
+        "qus2_qualitaetsziele_priorisieren"
+      ]
+    },
+    {
+      "id": "q03",
+      "type": "ordering",
+      "title": "Order the PDCA cycle",
+      "prompt": "Put the PDCA cycle in the correct order.",
+      "items": [
+        "Plan",
+        "Do",
+        "Check",
+        "Act"
+      ],
+      "correctOrder": [
+        "Plan",
+        "Do",
+        "Check",
+        "Act"
+      ],
+      "feedback": {
+        "correct": "The PDCA cycle order is correct.",
+        "wrong": "First plan, then do, check and act."
+      },
+      "progressLinks": [
+        "qus2_qmqs_pdca_und_qualitaetsplanung"
+      ]
+    },
+    {
+      "id": "q04",
+      "type": "match_pairs",
+      "title": "Assign quality terms",
+      "prompt": "Which description best fits each technical term?",
+      "layout": "table",
+      "columns": [
+        "Technical term",
+        "Matching description"
+      ],
+      "pairs": [
+        {
+          "key": "pair_1",
+          "left": "Quality management",
+          "right": "Systematic leadership and control of quality."
+        },
+        {
+          "key": "pair_2",
+          "left": "Quality assurance",
+          "right": "Planned measures to secure and improve quality."
+        },
+        {
+          "key": "pair_3",
+          "left": "Quality planning",
+          "right": "Define goals, criteria, responsibilities and evidence in advance."
+        },
+        {
+          "key": "pair_4",
+          "left": "Quality control",
+          "right": "Implement and steer quality in the ongoing process."
+        },
+        {
+          "key": "pair_5",
+          "left": "PDCA cycle",
+          "right": "Plan, Do, Check, Act."
+        },
+        {
+          "key": "pair_6",
+          "left": "Audit",
+          "right": "Structured check against requirements."
+        },
+        {
+          "key": "pair_7",
+          "left": "Certification",
+          "right": "Formal confirmation by an independent body."
+        },
+        {
+          "key": "pair_8",
+          "left": "Quality goal",
+          "right": "A goal formulated in a measurable and verifiable way."
+        },
+        {
+          "key": "pair_9",
+          "left": "Workplace record",
+          "right": "Documented setup and baseline of a workplace."
+        },
+        {
+          "key": "pair_10",
+          "left": "Project-accompanying QA",
+          "right": "Accompany and document quality throughout the project."
+        }
+      ],
+      "options": [
+        "Systematic leadership and control of quality.",
+        "Planned measures to secure and improve quality.",
+        "Define goals, criteria, responsibilities and evidence in advance.",
+        "Implement and steer quality in the ongoing process.",
+        "Plan, Do, Check, Act.",
+        "Structured check against requirements.",
+        "Formal confirmation by an independent body.",
+        "A goal formulated in a measurable and verifiable way.",
+        "Documented setup and baseline of a workplace.",
+        "Accompany and document quality throughout the project."
+      ],
+      "feedback": {
+        "correct": "The technical terms were assigned consistently.",
+        "wrong": "Check whether it is about leadership, assurance, planning, audit or evidence."
+      },
+      "progressLinks": [
+        "qus2_qmqs_grundlagen_normen_audit",
+        "qus2_qmqs_pdca_und_qualitaetsplanung",
+        "qus2_qmqs_arbeitsplatz_und_nachweise"
+      ]
+    },
+    {
+      "id": "q05",
+      "type": "number",
+      "title": "Count PDCA phases",
+      "prompt": "How many phases does the PDCA cycle have?",
+      "expected": 4,
+      "feedback": {
+        "correct": "The PDCA cycle has four phases.",
+        "wrong": "It consists of Plan, Do, Check and Act."
+      },
+      "progressLinks": [
+        "qus2_qmqs_pdca_und_qualitaetsplanung"
+      ]
+    }
+  ]
+}

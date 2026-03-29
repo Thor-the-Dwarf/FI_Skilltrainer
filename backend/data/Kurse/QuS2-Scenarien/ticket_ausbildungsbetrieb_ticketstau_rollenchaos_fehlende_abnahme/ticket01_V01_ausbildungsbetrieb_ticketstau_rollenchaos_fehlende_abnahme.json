@@ -1,0 +1,512 @@
+{
+  "scenario": {
+    "company": "SecuBridge Service GmbH",
+    "scale": "IT-Dienstleister für Homeoffice, kommunale Arbeitsplätze und Praxisumgebungen, 95 Mitarbeitende",
+    "context": "Mehrere Beschwerden aus Service, Rechtevergabe und Abnahme deuten schon im Projektstart auf eine gemeinsame Prozessschwäche hin.",
+    "mission": "Reklamationen, Rollen- und Abnahmelogik für den Projektstart ordnen und daraus messbare Qualitätsziele, Nachweise und Verantwortungen ableiten.",
+    "source": {
+      "kind": "Interner Projektauftrag mit Reklamationslage",
+      "reference": "Kick-off Service- und Sicherheitskonzept, 2026-03-26",
+      "note": "Grundlage sind aktuelle Beschwerden aus Service, Rechtevergabe und Abnahme sowie die Vorbereitung des Projektstarts."
+    },
+    "station": {
+      "id": "QUS2-ST-01",
+      "department": "Qualitätsmanagement und Sicherheitskoordination",
+      "profile": "Fehlerursachenanalyse, Qualitätsziele, Rollen und Startnachweise",
+      "constraints": [
+        "Offene Reklamationen aus Service und Abnahme müssen vor dem Kick-off in einen gemeinsamen Bearbeitungsstand überführt werden",
+        "Rollen, Freigaben und Abnahmekriterien müssen nachvollziehbar dokumentiert sein und dürfen nicht nur mündlich abgestimmt werden",
+        "Bis zum nächsten Lenkungstermin wird ein kurzes Startprotokoll mit Verantwortung, Risiko und nächstem Schritt benötigt"
+      ]
+    },
+    "customerRequest": {
+      "from": "programmleitung@secubridge-service.example",
+      "to": "projektteam@ausbildungsbetrieb.example",
+      "subject": "Projektstart absichern: Reklamationen, Rollen und Abnahmen ordnen",
+      "date": "2026-03-26",
+      "body": "Guten Tag,\n\nfür unser neues Service- und Sicherheitskonzept laufen parallel Vorbereitungen für Homeoffice, kommunales Bürgerbüro und eine Praxisgemeinschaft mit sensiblen Daten. Schon vor dem Starttermin sehen wir an mehreren Stellen dieselben Störbilder: Tickets bleiben zu lange in Bearbeitung, Berechtigungen werden uneinheitlich ausgelegt und Abnahmen sind nicht sauber nachweisbar.\n\nBitte bereiten Sie für den Termin einen gemeinsamen Arbeitsstand zu drei Punkten vor:\n- vermutete Hauptursachen hinter den Reklamationen\n- drei messbare Qualitätsziele inklusive Nachweis\n- Rollen, Risiken und nächster Schritt im Startprotokoll\n\nViele Grüsse\nProgrammleitung"
+    }
+  },
+  "questions": [
+    {
+      "id": "ctx01",
+      "type": "context_card",
+      "title": "Kontext zum Projektstart",
+      "contentBlocks": [
+        {
+          "type": "text",
+          "text": "SecuBridge startet ein neues Service- und Sicherheitskonzept für drei Kundensegmente: Homeoffice, kommunales Bürgerbüro und eine Praxisgemeinschaft. Noch bevor technische Massnahmen festgelegt sind, zeigen sich bereits drei Störbilder, die wahrscheinlich auf dieselbe Prozessschwäche zurückgehen."
+        },
+        {
+          "type": "table",
+          "columns": [
+            "Beobachtung",
+            "Sichtbarer Effekt"
+          ],
+          "rows": [
+            [
+              "Ticketbearbeitung dauert zu lange",
+              "Kundinnen und Kunden fragen mehrfach nach demselben Stand"
+            ],
+            [
+              "Berechtigungen sind uneinheitlich",
+              "gleiche Fälle werden je nach Rolle unterschiedlich gesehen oder verändert"
+            ],
+            [
+              "Abnahmen fehlen oder sind unsauber",
+              "intern gilt etwas als erledigt, beim Kunden bleibt es gefühlt offen"
+            ]
+          ]
+        },
+        {
+          "type": "text",
+          "text": "Für den Termin werden dazu drei konkrete Arbeitsstände benötigt: eine nachvollziehbare Fehlerursachenlogik, drei priorisierte Qualitätsziele und ein Startprotokoll mit Verantwortung, Risiko und nächstem Schritt."
+        }
+      ]
+    },
+    {
+      "id": "q01",
+      "type": "multi_select",
+      "title": "Prozessschwäche eingrenzen",
+      "prompt": "Welche Beobachtungen stützen die Annahme, dass die Reklamationen auf dieselbe Prozessschwäche zurückgehen? Mehrere Aussagen können zutreffen.",
+      "options": [
+        {
+          "text": "Mehrere Störbilder treten genau an Übergaben zwischen Rollen und Statuswechseln auf.",
+          "correct": true,
+          "rationale": "Wenn dieselbe Schwäche an mehreren Übergaben sichtbar wird, spricht das stark für ein Prozessproblem."
+        },
+        {
+          "text": "Die Symptome betreffen Reaktionszeit, Rechte und Abnahme gleichzeitig und deuten damit auf fehlende Verbindlichkeit im Prozess.",
+          "correct": true,
+          "rationale": "Gerade die Kombination aus Zeit, Rollenlogik und Nachweis spricht für eine gemeinsame Prozesswurzel."
+        },
+        {
+          "text": "Zwischen internem Ticketstatus und Kundensicht entsteht ein Widerspruch.",
+          "correct": true,
+          "rationale": "Der Bruch zwischen interner Erledigung und externer Wahrnehmung ist ein klassisches Signal für fehlende Nachweis- und Abschlusslogik."
+        },
+        {
+          "text": "Wenn dieselbe Störung in verschiedenen Teams auftaucht, liegt das meistens nur an unterschiedlichen Arbeitsstilen der Mitarbeitenden und noch nicht an einer Prozessschwäche.",
+          "correct": false,
+          "rationale": "Unterschiedliche Arbeitsstile können Symptome verstärken, erklären aber nicht die wiederkehrenden Brüche an denselben Übergaben."
+        },
+        {
+          "text": "Solange jede Seite intern ihren eigenen Bearbeitungsstand dokumentiert, ist ein fehlender gemeinsamer Nachweis noch kein Hinweis auf ein systemisches Problem.",
+          "correct": false,
+          "rationale": "Gerade getrennte Einzelsichten ohne gemeinsamen Nachweis sprechen für eine fehlende verbindliche Prozesslogik."
+        },
+        {
+          "text": "Schon für die ersten Arbeitspakete fehlen Nachweise und klare Verantwortungen.",
+          "correct": true,
+          "rationale": "Fehlende Verantwortung und Evidenz im Projektstart verstärken genau die beobachteten Störbilder."
+        }
+      ],
+      "feedback": {
+        "correct": "Die Hinweise auf eine gemeinsame Prozesswurzel sind korrekt erkannt.",
+        "wrong": "Achten Sie auf Signale, die Übergaben, Rollenverbindlichkeit, Kundensicht und Nachweise gemeinsam betreffen."
+      },
+      "progressLinks": [
+        "qus2_fehlerursachen_analyse"
+      ]
+    },
+    {
+      "id": "q02",
+      "type": "match_pairs",
+      "title": "Hauptursachen zuordnen",
+      "prompt": "Welche Hauptursache passt jeweils am ehesten zur Beobachtung?",
+      "layout": "table",
+      "columns": [
+        "Beobachtung",
+        "naheliegendste Ursache"
+      ],
+      "pairs": [
+        {
+          "key": "cause_1",
+          "left": "Tickets bleiben lange offen",
+          "right": "Übergaben und Eskalationsschritte sind nicht verbindlich geregelt"
+        },
+        {
+          "key": "cause_2",
+          "left": "Berechtigungen werden unterschiedlich ausgelegt",
+          "right": "Rollen- und Rechtekonzept ist nicht sauber dokumentiert und freigegeben"
+        },
+        {
+          "key": "cause_3",
+          "left": "Abnahmen sind unklar oder fehlen",
+          "right": "Abnahmekriterien und Nachweise sind im Prozess nicht verbindlich verankert"
+        },
+        {
+          "key": "cause_4",
+          "left": "Der Kunde erlebt einen Fall trotz internem Erledigt-Status als offen",
+          "right": "Kundensicht und interner Status sind nicht über einen gemeinsamen Nachweis gekoppelt"
+        }
+      ],
+      "options": [
+        "Übergaben und Eskalationsschritte sind nicht verbindlich geregelt",
+        "Rollen- und Rechtekonzept ist nicht sauber dokumentiert und freigegeben",
+        "Abnahmekriterien und Nachweise sind im Prozess nicht verbindlich verankert",
+        "Kundensicht und interner Status sind nicht über einen gemeinsamen Nachweis gekoppelt"
+      ],
+      "feedback": {
+        "correct": "Die Beobachtungen sind mit den plausibelsten Hauptursachen verbunden.",
+        "wrong": "Prüfen Sie noch einmal, ob es um Rollenlogik, Übergaben, Rechte oder fehlende Nachweise geht."
+      },
+      "progressLinks": [
+        "qus2_fehlerursachen_analyse"
+      ]
+    },
+    {
+      "id": "f02",
+      "type": "followup_divider",
+      "title": "Qualitätsziele festlegen",
+      "from": "qualitaetskoordination@secubridge-service.example",
+      "to": "projektteam@ausbildungsbetrieb.example",
+      "subject": "Drei messbare Qualitätsziele für den Projektstart festlegen",
+      "date": "2026-03-26",
+      "body": "Hallo zusammen,\n\nfür den Starttermin brauche ich drei Ziele, die wir später nicht nur behaupten, sondern anhand klarer Nachweise prüfen können. Bitte formuliert die Ziele so, dass Reaktionszeit, Rollenlogik und Abnahme eindeutig beschrieben und später belegt werden können.\n\nViele Grüsse\nQualitätskoordination"
+    },
+    {
+      "id": "q03",
+      "type": "single_choice",
+      "title": "Messbares Qualitätsziel festlegen",
+      "prompt": "Welche Formulierung eignet sich am besten, wenn Reaktionszeit, Rollenlogik und Nachweis in einem Ziel festgelegt werden sollen?",
+      "options": [
+        {
+          "text": "Für priorisierte Störungen ist innerhalb von 30 Minuten ein dokumentierter Erstkontakt sichtbar; jeder Statuswechsel ist einer Rolle zugeordnet und jede Abnahme endet mit Ergebnis, Datum und verantwortlicher Person.",
+          "rationale": "Diese Formulierung verbindet Ziel, Messbarkeit, Rollenlogik und konkreten Nachweis in einem belastbaren Satz."
+        },
+        {
+          "text": "Für priorisierte Störungen soll spätestens am selben Arbeitstag reagiert werden; die genaue Rollen- und Abnahmelogik wird nach dem Pilotbetrieb nachgezogen.",
+          "rationale": "Die Zeitvorgabe klingt konkret, aber Rollen- und Nachweislogik bleiben gerade ausgespart."
+        },
+        {
+          "text": "Jede beteiligte Rolle dokumentiert ihren Bearbeitungsstand eigenständig, damit später ein Gesamtbild entsteht.",
+          "rationale": "Das klingt organisiert, erzeugt aber ohne gemeinsame Kriterien keinen belastbaren Nachweis."
+        },
+        {
+          "text": "Der Kunde soll künftig früher informiert werden, damit Rückfragen abnehmen und der Ablauf ruhiger wirkt.",
+          "rationale": "Das ist als Kommunikationsabsicht sinnvoll, bleibt aber ohne messbaren Prüfpunkt zu weich."
+        }
+      ],
+      "correctIndex": 0,
+      "feedback": {
+        "correct": "Das prüfbare Qualitätsziel ist korrekt erkannt.",
+        "wrong": "Suchen Sie nach einer Formulierung, die nicht nur gut klingt, sondern Zeit, Rollen und Nachweis konkret macht."
+      },
+      "progressLinks": [
+        "qus2_qualitaetsziele_priorisieren"
+      ]
+    },
+    {
+      "id": "q04",
+      "type": "table_fill",
+      "title": "Ziele und Nachweise je Störbild festlegen",
+      "prompt": "Ergänzen Sie pro Beobachtung das passende Ziel und den passenden Nachweis.",
+      "columns": [
+        "Beobachtung",
+        "Qualitätsziel",
+        "Nachweis"
+      ],
+      "rows": [
+        [
+          "Ticketbearbeitung dauert zu lange",
+          {
+            "key": "goal_row_1",
+            "label": "Ticketlaufzeit / Qualitätsziel",
+            "expected": "Erstkontakt und Statusübergänge werden mit Zeitstempeln verbindlich dokumentiert.",
+            "inputType": "select",
+            "placeholder": "Qualitätsziel wählen",
+            "options": [
+              "Erstkontakt und Statusübergänge werden mit Zeitstempeln verbindlich dokumentiert.",
+              "Rollen und Freigaben sind je Rolle eindeutig festgelegt und freigegeben.",
+              "Abnahmekriterien und Ergebnis werden je Arbeitspaket verbindlich protokolliert.",
+              "Rückmeldungen werden bevorzugt im Teamchat abgestimmt, damit Statuswechsel schneller wirken."
+            ]
+          },
+          {
+            "key": "evidence_row_1",
+            "label": "Ticketlaufzeit / Nachweis",
+            "expected": "Ticketprotokoll mit Zeitstempeln und Eskalationspunkt.",
+            "inputType": "select",
+            "placeholder": "Nachweis wählen",
+            "options": [
+              "Ticketprotokoll mit Zeitstempeln und Eskalationspunkt.",
+              "Rollen- und Rechteuebersicht mit Freigabestand.",
+              "Abnahmeprotokoll mit Ergebnis, Datum und Verantwortlichen.",
+              "Wochenreport mit gemittelten Ticketlaufzeiten ohne Fallbezug."
+            ]
+          }
+        ],
+        [
+          "Berechtigungen sind uneinheitlich",
+          {
+            "key": "goal_row_2",
+            "label": "Berechtigungen / Qualitätsziel",
+            "expected": "Rollen und Freigaben sind je Rolle eindeutig festgelegt und freigegeben.",
+            "inputType": "select",
+            "placeholder": "Qualitätsziel wählen",
+            "options": [
+              "Erstkontakt und Statusübergänge werden mit Zeitstempeln verbindlich dokumentiert.",
+              "Rollen und Freigaben sind je Rolle eindeutig festgelegt und freigegeben.",
+              "Abnahmekriterien und Ergebnis werden je Arbeitspaket verbindlich protokolliert.",
+              "Jede Rolle beschreibt ihren Zugriffsspielraum in eigenen Worten im Kick-off-Protokoll."
+            ]
+          },
+          {
+            "key": "evidence_row_2",
+            "label": "Berechtigungen / Nachweis",
+            "expected": "Rollen- und Rechteuebersicht mit Freigabestand.",
+            "inputType": "select",
+            "placeholder": "Nachweis wählen",
+            "options": [
+              "Ticketprotokoll mit Zeitstempeln und Eskalationspunkt.",
+              "Rollen- und Rechteuebersicht mit Freigabestand.",
+              "Abnahmeprotokoll mit Ergebnis, Datum und Verantwortlichen.",
+              "Liste offener Rückfragen aus dem Rollenworkshop."
+            ]
+          }
+        ],
+        [
+          "Abnahmen fehlen oder sind unsauber",
+          {
+            "key": "goal_row_3",
+            "label": "Abnahme / Qualitätsziel",
+            "expected": "Abnahmekriterien und Ergebnis werden je Arbeitspaket verbindlich protokolliert.",
+            "inputType": "select",
+            "placeholder": "Qualitätsziel wählen",
+            "options": [
+              "Erstkontakt und Statusübergänge werden mit Zeitstempeln verbindlich dokumentiert.",
+              "Rollen und Freigaben sind je Rolle eindeutig festgelegt und freigegeben.",
+              "Abnahmekriterien und Ergebnis werden je Arbeitspaket verbindlich protokolliert.",
+              "Erledigt-Status darf nur noch von der Projektmoderation gesetzt werden."
+            ]
+          },
+          {
+            "key": "evidence_row_3",
+            "label": "Abnahme / Nachweis",
+            "expected": "Abnahmeprotokoll mit Ergebnis, Datum und Verantwortlichen.",
+            "inputType": "select",
+            "placeholder": "Nachweis wählen",
+            "options": [
+              "Ticketprotokoll mit Zeitstempeln und Eskalationspunkt.",
+              "Rollen- und Rechteuebersicht mit Freigabestand.",
+              "Abnahmeprotokoll mit Ergebnis, Datum und Verantwortlichen.",
+              "Freigabemail der Projektleitung ohne dokumentierte Kriterien und Ergebnis."
+            ]
+          }
+        ]
+      ],
+      "feedback": {
+        "correct": "Beobachtung, Qualitätsziel und Nachweis wurden stimmig zusammengeführt.",
+        "wrong": "Prüfen Sie, welches Ziel wirklich zur Beobachtung passt und welcher Nachweis später belastbar zeigen kann, dass das Ziel erreicht wurde."
+      },
+      "progressLinks": [
+        "qus2_qualitaetsziele_priorisieren",
+        "qus2_startprotokoll_und_nachweise"
+      ]
+    },
+    {
+      "id": "q05",
+      "type": "single_choice",
+      "title": "Vertrauensrisiko priorisieren",
+      "prompt": "Welcher Befund schädigt das Vertrauen des Kunden in dieser Lage am schnellsten?",
+      "options": [
+        {
+          "text": "Intern steht ein Arbeitspaket auf erledigt, aber eine belastbare Abnahme mit Ergebnis fehlt.",
+          "rationale": "Genau hier klaffen Leistung, Nachweis und Kundensicht direkt auseinander; das untergräbt Vertrauen am schnellsten."
+        },
+        {
+          "text": "Die erste Reaktionszeit wird mehrfach verfehlt, der Bearbeitungsstand bleibt für den Kunden aber transparent sichtbar.",
+          "rationale": "Das ist ernst, aber Transparenz und nachvollziehbarer Status federn den Vertrauensschaden noch eher ab."
+        },
+        {
+          "text": "Rollenrechte sind intern noch nicht vollständig harmonisiert, ohne dass bereits falsche Freigaben beim Kunden angekommen sind.",
+          "rationale": "Das ist riskant, untergräbt Vertrauen aber meist weniger unmittelbar als ein scheinbar abgeschlossener Fall ohne Abnahmenachweis."
+        },
+        {
+          "text": "Für die spätere KPI-Auswertung ist noch nicht entschieden, welche Kennzahl zuerst berichtet wird.",
+          "rationale": "Das ist ein Steuerungsdefizit, aber nicht der schnellste Vertrauensbruch in der aktuellen Kundensicht."
+        }
+      ],
+      "correctIndex": 0,
+      "feedback": {
+        "correct": "Das stärkste Vertrauensrisiko wurde passend priorisiert.",
+        "wrong": "Denken Sie daran, was beim Kunden sofort am härtesten wirkt: ein Status ohne belastbaren Nachweis."
+      },
+      "progressLinks": [
+        "qus2_qualitaetsziele_priorisieren"
+      ]
+    },
+    {
+      "id": "f03",
+      "type": "followup_divider",
+      "title": "Startprotokoll absichern",
+      "from": "projektmoderation@secubridge-service.example",
+      "to": "projektteam@ausbildungsbetrieb.example",
+      "subject": "Startprotokoll für den Projektstart vorbereiten",
+      "date": "2026-03-26",
+      "body": "Hallo zusammen,\n\nbevor wir in Testplanung und Sicherheitsmassnahmen gehen, brauche ich einen dokumentierten Startstand. Im Protokoll müssen Ziel, Rollen, erste Risiken, offene Fragen und der nächste verbindliche Schritt sauber festgehalten sein. Bitte ordnet die Verantwortungen zu und nehmt nur Punkte auf, die wir im weiteren Verlauf auch nachweisen oder nachhalten können.\n\nViele Grüsse\nProjektmoderation"
+    },
+    {
+      "id": "ctx02",
+      "type": "context_card",
+      "title": "Kontext zum Startprotokoll",
+      "contentBlocks": [
+        {
+          "type": "text",
+          "text": "Das Startprotokoll muss für den ersten Abschnitt klar zeigen, welches Ziel gilt, wer wofür steht, welche Risiken oder offenen Fragen schon sichtbar sind und welcher nächste Schritt verbindlich folgt.\n\nFür den Auftakt sollen die folgenden Rollen bereits einen klaren ersten Fokus bekommen."
+        },
+        {
+          "type": "table",
+          "columns": [
+            "Rolle",
+            "erster Fokus"
+          ],
+          "rows": [
+            [
+              "Serviceleitung",
+              "Reklamationsbild und Reaktionszeit transparent machen"
+            ],
+            [
+              "Technik und Support",
+              "Rechte, Statusübergänge und operative Stolperstellen sichten"
+            ],
+            [
+              "Qualitätskoordination",
+              "Ursache-Ziel-Nachweis-Logik moderieren"
+            ],
+            [
+              "Projektmoderation",
+              "Risiken, offene Fragen und nächsten Schritt verbindlich festhalten"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "id": "q06",
+      "type": "multi_select",
+      "title": "Mindestinhalt des Startprotokolls",
+      "prompt": "Welche vier Punkte müssen für diesen Projektstart zwingend im Startprotokoll stehen?",
+      "options": [
+        {
+          "text": "Ziel des ersten Projektabschnitts und was am Ende sichtbar vorliegen muss",
+          "correct": true,
+          "rationale": "Ohne klares Zielbild bleibt der Projektstart unverbindlich."
+        },
+        {
+          "text": "Rollen mit Verantwortung und sichtbar gemachtem Risiko",
+          "correct": true,
+          "rationale": "Verantwortung und Risiko müssen früh benannt werden, damit später nichts in der Schwebe bleibt."
+        },
+        {
+          "text": "Offene Fragen und der nächste verbindliche Schritt",
+          "correct": true,
+          "rationale": "Ein belastbares Startprotokoll zeigt, was noch unklar ist und wie es weitergeht."
+        },
+        {
+          "text": "Benötigte Nachweise oder Prüfpunkte für die ersten Entscheidungen",
+          "correct": true,
+          "rationale": "Gerade der Nachweis trennt einen echten Projektstart von guten Absichten."
+        },
+        {
+          "text": "Eine vollständige Detailarchitektur für alle Sicherheits- und Servicebausteine",
+          "correct": false,
+          "rationale": "Das kann später nötig werden, ist aber für das Startprotokoll noch zu tief und ersetzt keine Ziel- oder Nachweislogik."
+        },
+        {
+          "text": "Ein ausformulierter Testkatalog für alle späteren Massnahmen bis zum Projektabschluss",
+          "correct": false,
+          "rationale": "Der Testkatalog gehört in die weitere Planung; im Startprotokoll geht es erst um Ziel, Risiko, Verantwortung und nächsten Schritt."
+        },
+        {
+          "text": "Eine verbindliche Gesamtkostenrechnung für die komplette Projektlaufzeit",
+          "correct": false,
+          "rationale": "Kosten können relevant werden, sind aber nicht einer der zwingenden Kernbestandteile des belastbaren Startprotokolls."
+        }
+      ],
+      "feedback": {
+        "correct": "Die tragenden Bestandteile des Startprotokolls wurden korrekt ausgewählt.",
+        "wrong": "Achten Sie auf Ziel, Verantwortung, Risiko, Nachweis und den nächsten verbindlichen Schritt statt auf Nebenthemen."
+      },
+      "progressLinks": [
+        "qus2_startprotokoll_und_nachweise",
+        "qus2_rollen_und_verantwortung"
+      ]
+    },
+    {
+      "id": "q07",
+      "type": "match_pairs",
+      "title": "Startverantwortungen zuordnen",
+      "prompt": "Welche erste Verantwortung passt zu welcher Rolle?",
+      "layout": "table",
+      "columns": [
+        "Rolle",
+        "erste Verantwortung"
+      ],
+      "pairs": [
+        {
+          "key": "role_1",
+          "left": "Serviceleitung",
+          "right": "Reklamationsbild und Reaktionszeit transparent machen"
+        },
+        {
+          "key": "role_2",
+          "left": "Technik und Support",
+          "right": "Rechte, Statusübergänge und operative Stolperstellen fachlich sichten"
+        },
+        {
+          "key": "role_3",
+          "left": "Qualitätskoordination",
+          "right": "Ursache-Ziel-Nachweis-Logik moderieren"
+        },
+        {
+          "key": "role_4",
+          "left": "Projektmoderation",
+          "right": "Startprotokoll, offene Fragen und nächsten Schritt verbindlich festhalten"
+        }
+      ],
+      "options": [
+        "Reklamationsbild und Reaktionszeit transparent machen",
+        "Rechte, Statusübergänge und operative Stolperstellen fachlich sichten",
+        "Ursache-Ziel-Nachweis-Logik moderieren",
+        "Startprotokoll, offene Fragen und nächsten Schritt verbindlich festhalten"
+      ],
+      "feedback": {
+        "correct": "Die Rollen sind mit ihren ersten Startverantwortungen stimmig verbunden.",
+        "wrong": "Prüfen Sie, wer eher Reklamationssicht, Rechtekonzept, Qualitätslogik oder Protokollführung verantwortet."
+      },
+      "progressLinks": [
+        "qus2_rollen_und_verantwortung"
+      ]
+    },
+    {
+      "id": "q08",
+      "type": "ordering",
+      "title": "Projektstart sinnvoll aufbauen",
+      "prompt": "Bringen Sie die Schritte in eine sinnvolle Reihenfolge, damit der Projektstart sauber vorbereitet ist.",
+      "items": [
+        "Ziel und Erwartung für den ersten Abschnitt festhalten.",
+        "Reklamationen, Rechtechaos und fehlende Abnahmen gemeinsam sichtbar machen.",
+        "Daraus drei messbare Qualitätsziele mit Nachweisen ableiten.",
+        "Das stärkste Vertrauensrisiko priorisieren und begründen.",
+        "Rollen, Risiken, offene Fragen und den nächsten Schritt im Startprotokoll festhalten."
+      ],
+      "correctOrder": [
+        "Ziel und Erwartung für den ersten Abschnitt festhalten.",
+        "Reklamationen, Rechtechaos und fehlende Abnahmen gemeinsam sichtbar machen.",
+        "Daraus drei messbare Qualitätsziele mit Nachweisen ableiten.",
+        "Das stärkste Vertrauensrisiko priorisieren und begründen.",
+        "Rollen, Risiken, offene Fragen und den nächsten Schritt im Startprotokoll festhalten."
+      ],
+      "feedback": {
+        "correct": "Die Reihenfolge führt von der Sichtung der Störbilder zu einem belastbaren Projektstart.",
+        "wrong": "Erst Kick-off und Fehlerbild, dann Ziele und Priorität, erst danach das verbindliche Startprotokoll."
+      },
+      "progressLinks": [
+        "qus2_startprotokoll_und_nachweise",
+        "qus2_rollen_und_verantwortung"
+      ]
+    }
+  ]
+}

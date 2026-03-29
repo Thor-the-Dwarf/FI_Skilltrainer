@@ -1,0 +1,159 @@
+{
+  "scenario": {
+    "company": "Nordufer Maschinenbau GmbH",
+    "scale": "Mittelstand, 2 Standorte, 310 Mitarbeitende",
+    "context": "Station 02 des Tageslaufs: Unternehmensanforderungen und Ist-Analyse für unterschiedliche Standortgrössen.",
+    "mission": "Sie strukturieren Anforderungen, unterscheiden Netzgrössen und leiten daraus ein belastbares Ausgangsbild ab.",
+    "station": {
+      "id": "LF09-ST-02",
+      "department": "Planung",
+      "profile": "Anforderungsaufnahme und Ist-Soll-Vorbereitung",
+      "constraints": [
+        "Unternehmensgrösse mit technischen Folgen verbinden",
+        "Bedarf und Ist-Bild sauber trennen",
+        "Planungsreserven nachvollziehbar ausweisen"
+      ]
+    },
+    "customerRequest": {
+      "from": "projektleitung@nordufer-maschinenbau.example",
+      "to": "infra.team@ausbildungsbetrieb.example",
+      "subject": "Station 02: Anforderungen und Ist-Analyse",
+      "date": "2026-03-13",
+      "body": "Bitte bereiten Sie für drei Standorttypen eine belastbare Anforderungs- und Ist-Sicht vor."
+    }
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "type": "single_choice",
+      "title": "Unternehmensanforderung priorisieren",
+      "prompt": "Welche Information beeinflusst die Netzplanung am stärksten?",
+      "options": [
+        {
+          "text": "Ob ein vorhandener Switch optisch noch gut aussieht",
+          "rationale": "Hat kaum Einfluss auf die Zielarchitektur."
+        },
+        {
+          "text": "Welche Schreibtischordnung im Büro bevorzugt wird",
+          "rationale": "Ist für das Netzdesign nur indirekt relevant."
+        },
+        {
+          "text": "Welche Dienste kritisch sind, wie viele Nutzer versorgt werden und welches Wachstum erwartet wird",
+          "rationale": "Genau daraus ergeben sich Kapazität, Segmentierung und Redundanzbedarf."
+        }
+      ],
+      "correctIndex": 2,
+      "feedback": {
+        "correct": "Richtig: Dienste, Nutzerzahl und Wachstum treiben die Netzplanung.",
+        "wrong": "Nicht passend: Technisch relevante Unternehmensanforderungen müssen zuerst klar sein."
+      },
+      "progressLinks": [
+        "lf09_unternehmensanforderungen"
+      ]
+    },
+    {
+      "id": "q2",
+      "type": "multi_select",
+      "title": "Standortgrössen unterscheiden",
+      "prompt": "Welche Kriterien helfen dabei, kleine, mittlere und grosse Netzwerke sinnvoll zu unterscheiden? (Mehrfachauswahl)",
+      "options": [
+        {
+          "text": "Anzahl der Standorte und zu versorgenden Nutzer",
+          "correct": true,
+          "rationale": "Das ist ein zentraler Skalierungsfaktor."
+        },
+        {
+          "text": "Kritikalität der Dienste und geforderte Verfügbarkeit",
+          "correct": true,
+          "rationale": "Davon hängt der technische Zuschnitt stark ab."
+        },
+        {
+          "text": "Ob das Firmenlogo modern wirkt",
+          "correct": false,
+          "rationale": "Hat für die Netzgrösse keine fachliche Relevanz."
+        },
+        {
+          "text": "Segmentierungs- und Sicherheitsbedarf",
+          "correct": true,
+          "rationale": "Beeinflusst Design und Betriebsaufwand direkt."
+        },
+        {
+          "text": "Die Lieblingsfarbe des Einkaufs",
+          "correct": false,
+          "rationale": "Ist für die Planung kein belastbares Kriterium."
+        }
+      ],
+      "feedback": {
+        "correct": "Richtig: Netzgrösse ergibt sich aus Betriebsbedarf, nicht aus Oberflächendetails.",
+        "wrong": "Teilweise falsch: Bitte Nutzer, Dienste und Schutzbedarf stärker gewichten."
+      },
+      "progressLinks": [
+        "lf09_unternehmensanforderungen"
+      ]
+    },
+    {
+      "id": "q3",
+      "type": "ordering",
+      "title": "Ist-Analyse systematisch aufbauen",
+      "prompt": "Ordnen Sie die Schritte einer sauberen Ist-Analyse.",
+      "items": [
+        "Bestehende Komponenten und Leitungswege aufnehmen",
+        "Dienste, Abhängigkeiten und Engpässe erfassen",
+        "Schwachstellen und Ausfallrisiken markieren",
+        "Soll-Annahmen und Abweichungen ableiten",
+        "Ergebnis für das Lastenheft verdichten"
+      ],
+      "correctOrder": [
+        "Bestehende Komponenten und Leitungswege aufnehmen",
+        "Dienste, Abhängigkeiten und Engpässe erfassen",
+        "Schwachstellen und Ausfallrisiken markieren",
+        "Soll-Annahmen und Abweichungen ableiten",
+        "Ergebnis für das Lastenheft verdichten"
+      ],
+      "feedback": {
+        "correct": "Richtig: Die Ist-Analyse führt nachvollziehbar zur Soll-Vorbereitung.",
+        "wrong": "Nicht optimal: Bitte vom Bestand über Risiken zum verdichteten Ergebnis gehen."
+      },
+      "progressLinks": [
+        "lf09_istanalyse_lastenheft"
+      ]
+    },
+    {
+      "id": "q4",
+      "type": "number",
+      "title": "Portplanung für Nebenstandort",
+      "prompt": "Ein Nebenstandort benötigt 24 Notebooks, 8 VoIP-Telefone, 4 Drucker und 2 Access Points. Wie viele Ports sind mit 20 % Reserve einzuplanen? Runden Sie auf ganze Ports auf.",
+      "expected": 46,
+      "toleranceAbs": 1,
+      "showExpectedFormula": "(24 + 8 + 4 + 2) * 1,20 = 45,6 -> 46 Ports",
+      "feedback": {
+        "correct": "Richtig gerechnet.",
+        "wrong": "Bitte alle Geräte und die Reserve korrekt berücksichtigen."
+      },
+      "progressLinks": [
+        "lf09_unternehmensanforderungen",
+        "lf09_istanalyse_lastenheft"
+      ]
+    },
+    {
+      "id": "q5",
+      "type": "short_text",
+      "title": "Aus Ist wird Soll",
+      "prompt": "Beschreiben Sie in 4-6 Sätzen, wie Sie aus der Ist-Analyse ein priorisiertes Sollbild für das Lastenheft ableiten würden.",
+      "minChars": 160,
+      "requiredKeywords": [
+        "ist",
+        "soll",
+        "priorität"
+      ],
+      "expectedOutline": "Ableitung eines priorisierten Sollbilds aus Bestand, Abweichung und Risiko.",
+      "feedback": {
+        "correct": "Richtig: Der Weg von der Ist-Sicht zum Sollbild ist schlüssig beschrieben.",
+        "wrong": "Bitte Ist-Bild, Soll-Annahme und Priorisierung klarer verbinden."
+      },
+      "progressLinks": [
+        "lf09_istanalyse_lastenheft"
+      ]
+    }
+  ]
+}

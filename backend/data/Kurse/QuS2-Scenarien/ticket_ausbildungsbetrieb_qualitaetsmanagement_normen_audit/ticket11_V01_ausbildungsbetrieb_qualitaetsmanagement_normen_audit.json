@@ -1,0 +1,248 @@
+{
+  "scenario": {
+    "company": "QualiWerk Service GmbH",
+    "scale": "IT- und Prozessdienstleister für Fachabteilungen mit 68 Mitarbeitenden",
+    "context": "Für den neuen Betriebsprozess fehlen noch eine saubere Trennung von QM und QS, prüfbare Qualitätsziele und ein belastbarer Nachweis für Arbeitsplatz- und Projektqualität.",
+    "mission": "Grundlagen von QM und QS, Normen, Audit, Zertifizierung, PDCA sowie dokumentierte Arbeitsplatz- und Projektqualität in einer klaren Struktur abbilden.",
+    "source": {
+      "kind": "Interner Qualitätsauftrag",
+      "reference": "Qualitätspaket 2026-04",
+      "note": "Die Fachkoordination will die Begriffe nicht nur theoretisch lesen, sondern im Projektalltag wiedererkennen und anwenden können."
+    },
+    "station": {
+      "id": "QUS2-ST-11",
+      "department": "Qualitätsmanagement und Fachkoordination",
+      "profile": "QM, QS, Normen, Audit, PDCA und Nachweise",
+      "constraints": [
+        "QM und QS müssen fachlich getrennt, aber im Ablauf miteinander verbunden bleiben",
+        "Normen, Audit und Zertifizierung sollen als belastbarer Rahmen lesbar sein",
+        "Projekt- und Arbeitsplatzdokumentation müssen als sichtbare Nachweise vorkommen"
+      ]
+    },
+    "customerRequest": {
+      "from": "qualitaetskoordination@qualiwerk.example",
+      "to": "betrieb@qualiwerk.example",
+      "subject": "QM/QS-Grundlagen, Audit und Nachweise für den neuen Prozess",
+      "date": "2026-03-27",
+      "body": "Guten Tag,\n\nwir brauchen für den neuen Prozess eine knappe, aber belastbare Aufbereitung zu QM und QS. Bitte trennt die Begriffe sauber, zeigt den PDCA-Zyklus verständlich, und macht sichtbar, welche Nachweise für Arbeitsplatz- und Projektqualität später wirklich tragen.\n\nViele Grüsse\nQualitätskoordination"
+    }
+  },
+  "questions": [
+    {
+      "id": "ctx01",
+      "type": "context_card",
+      "title": "Rahmen für den Qualitätsfall",
+      "contentBlocks": [
+        {
+          "type": "text",
+          "text": "Im neuen Serviceprozess gehen Aufgaben, Abnahmen und Protokolle noch durcheinander. Das Team soll die Begriffe QM, QS, Planung, Lenkung, Audit und Zertifizierung jetzt so ordnen, dass der Ablauf später auch im Review nachvollziehbar bleibt."
+        }
+      ]
+    },
+    {
+      "id": "q01",
+      "type": "single_choice",
+      "title": "QM und QS trennen",
+      "prompt": "Welche Aussage trennt Qualitätsmanagement und Qualitätssicherung am besten?",
+      "options": [
+        {
+          "text": "QM beschreibt das Steuerungs- und Führungssystem für Qualität, QS die geplanten Maßnahmen im Prozess.",
+          "rationale": "QM setzt den Rahmen, QS sorgt für die operative Qualitätssicherung.",
+          "correct": true
+        },
+        {
+          "text": "QM ist nur die abschließende Prüfung, QS nur die formale Freigabe.",
+          "rationale": "Das vertauscht die Begriffe und trifft den fachlichen Kern nicht.",
+          "correct": false
+        },
+        {
+          "text": "QM und QS meinen in diesem Fall dasselbe und müssen nicht getrennt werden.",
+          "rationale": "Die Begriffe gehören zusammen, bleiben fachlich aber unterscheidbar.",
+          "correct": false
+        },
+        {
+          "text": "QS bezieht sich nur auf Technik, QM nur auf Personen.",
+          "rationale": "Die Trennung ist so zu eng und greift fachlich zu kurz.",
+          "correct": false
+        }
+      ],
+      "correctIndex": 0,
+      "feedback": {
+        "correct": "QM und QS sind sauber getrennt und doch im Ablauf verbunden.",
+        "wrong": "Achten Sie auf Führungssystem, geplante Maßnahmen und den operativen Prozess."
+      },
+      "progressLinks": [
+        "qus2_qmqs_grundlagen_normen_audit"
+      ]
+    },
+    {
+      "id": "q02",
+      "type": "multi_select",
+      "title": "Qualitätsplanung festlegen",
+      "prompt": "Welche Punkte gehören zu einem tragfähigen Qualitätsplan und zur laufenden Qualitätslenkung? Mehrere Aussagen können zutreffen.",
+      "options": [
+        {
+          "text": "Messbare Qualitätsziele sind vorab festgelegt.",
+          "rationale": "Ohne messbares Ziel bleibt der Plan später nicht prüfbar.",
+          "correct": true
+        },
+        {
+          "text": "Kriterien, Nachweise und Prüfpunkte sind benannt.",
+          "rationale": "So wird Qualität später sichtbar und nicht nur behauptet.",
+          "correct": true
+        },
+        {
+          "text": "Zuständigkeiten und Rollen sind klar zugeordnet.",
+          "rationale": "Nur mit Rollenlogik bleibt die Umsetzung verbindlich.",
+          "correct": true
+        },
+        {
+          "text": "Rückmeldeschleifen und Korrekturen sind eingeplant.",
+          "rationale": "Qualitätslenkung braucht eine sichtbare Reaktionslogik.",
+          "correct": true
+        },
+        {
+          "text": "Die Details werden erst nach Projektende nachgereicht.",
+          "rationale": "Dann fehlt genau die Verbindlichkeit, die hier gebraucht wird.",
+          "correct": false
+        },
+        {
+          "text": "Eine gute Absicht reicht als Nachweis völlig aus.",
+          "rationale": "Das ist zu weich; der Plan muss prüfbar sein.",
+          "correct": false
+        }
+      ],
+      "feedback": {
+        "correct": "Die tragenden Elemente der Qualitätsplanung wurden korrekt erkannt.",
+        "wrong": "Achten Sie auf Ziele, Kriterien, Rollen, Nachweise und Reaktionsschleifen."
+      },
+      "progressLinks": [
+        "qus2_qmqs_pdca_und_qualitaetsplanung",
+        "qus2_qualitaetsziele_priorisieren"
+      ]
+    },
+    {
+      "id": "q03",
+      "type": "ordering",
+      "title": "PDCA-Zyklus ordnen",
+      "prompt": "Bringen Sie den PDCA-Zyklus in die richtige Reihenfolge.",
+      "items": [
+        "Plan",
+        "Do",
+        "Check",
+        "Act"
+      ],
+      "correctOrder": [
+        "Plan",
+        "Do",
+        "Check",
+        "Act"
+      ],
+      "feedback": {
+        "correct": "Die Reihenfolge des PDCA-Zyklus ist korrekt.",
+        "wrong": "Erst planen, dann umsetzen, prüfen und nachsteuern."
+      },
+      "progressLinks": [
+        "qus2_qmqs_pdca_und_qualitaetsplanung"
+      ]
+    },
+    {
+      "id": "q04",
+      "type": "match_pairs",
+      "title": "Qualitätsbegriffe zuordnen",
+      "prompt": "Welche Beschreibung passt jeweils am besten zum Fachbegriff?",
+      "layout": "table",
+      "columns": [
+        "Fachbegriff",
+        "Passende Beschreibung"
+      ],
+      "pairs": [
+        {
+          "key": "pair_1",
+          "left": "Qualitätsmanagement",
+          "right": "Systematische Führung und Steuerung von Qualität."
+        },
+        {
+          "key": "pair_2",
+          "left": "Qualitätssicherung",
+          "right": "Geplante Maßnahmen zur Sicherung und Verbesserung von Qualität."
+        },
+        {
+          "key": "pair_3",
+          "left": "Qualitätsplanung",
+          "right": "Ziele, Kriterien, Zuständigkeiten und Nachweise vorab festlegen."
+        },
+        {
+          "key": "pair_4",
+          "left": "Qualitätslenkung",
+          "right": "Qualität im laufenden Prozess umsetzen und steuern."
+        },
+        {
+          "key": "pair_5",
+          "left": "PDCA-Zyklus",
+          "right": "Plan, Do, Check, Act."
+        },
+        {
+          "key": "pair_6",
+          "left": "Audit",
+          "right": "Strukturierte Prüfung gegen Vorgaben."
+        },
+        {
+          "key": "pair_7",
+          "left": "Zertifizierung",
+          "right": "Formale Bestätigung durch eine unabhängige Stelle."
+        },
+        {
+          "key": "pair_8",
+          "left": "Qualitätsziel",
+          "right": "Messbar und prüfbar formuliertes Ziel."
+        },
+        {
+          "key": "pair_9",
+          "left": "Arbeitsplatzprotokoll",
+          "right": "Dokumentierte Einrichtung und Ausgangslage eines Arbeitsplatzes."
+        },
+        {
+          "key": "pair_10",
+          "left": "Projektbegleitende QS",
+          "right": "Qualität während des Projekts laufend begleiten und dokumentieren."
+        }
+      ],
+      "options": [
+        "Systematische Führung und Steuerung von Qualität.",
+        "Geplante Maßnahmen zur Sicherung und Verbesserung von Qualität.",
+        "Ziele, Kriterien, Zuständigkeiten und Nachweise vorab festlegen.",
+        "Qualität im laufenden Prozess umsetzen und steuern.",
+        "Plan, Do, Check, Act.",
+        "Strukturierte Prüfung gegen Vorgaben.",
+        "Formale Bestätigung durch eine unabhängige Stelle.",
+        "Messbar und prüfbar formuliertes Ziel.",
+        "Dokumentierte Einrichtung und Ausgangslage eines Arbeitsplatzes.",
+        "Qualität während des Projekts laufend begleiten und dokumentieren."
+      ],
+      "feedback": {
+        "correct": "Die Fachbegriffe wurden stimmig zugeordnet.",
+        "wrong": "Prüfen Sie, ob es um Führung, Sicherung, Planung, Audit oder Nachweis geht."
+      },
+      "progressLinks": [
+        "qus2_qmqs_grundlagen_normen_audit",
+        "qus2_qmqs_pdca_und_qualitaetsplanung",
+        "qus2_qmqs_arbeitsplatz_und_nachweise"
+      ]
+    },
+    {
+      "id": "q05",
+      "type": "number",
+      "title": "PDCA-Zyklus zählen",
+      "prompt": "Wie viele Phasen hat der PDCA-Zyklus?",
+      "expected": 4,
+      "feedback": {
+        "correct": "Der PDCA-Zyklus hat vier Phasen.",
+        "wrong": "Er besteht klassisch aus Plan, Do, Check und Act."
+      },
+      "progressLinks": [
+        "qus2_qmqs_pdca_und_qualitaetsplanung"
+      ]
+    }
+  ]
+}

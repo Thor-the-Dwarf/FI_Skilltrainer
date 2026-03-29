@@ -1,0 +1,159 @@
+{
+  "scenario": {
+    "company": "Ausbildungsbetrieb IT-Service",
+    "scale": "Mittelstand, 160 Mitarbeitende",
+    "context": "Station 7 des Tageslaufs: Datenbanken modellieren und SQL anwenden.",
+    "mission": "Sie leiten aus einer Fachfrage ein kleines relationales Modell und eine passende SQL-Sicht ab.",
+    "station": {
+      "id": "LF05-ST-07",
+      "department": "Datenmanagement",
+      "profile": "Kunde, Status, Auswertung, relationale Struktur und SQL-Abfrage",
+      "constraints": [
+        "Fachsicht in Datenmodell übersetzen",
+        "Eindeutigkeit und Beziehungen beachten",
+        "Abfragen nachvollziehbar halten"
+      ]
+    },
+    "customerRequest": {
+      "from": "fachbereich.leitung@ausbildungsbetrieb.example",
+      "to": "dev.team@ausbildungsbetrieb.example",
+      "subject": "Station 07: Datenmodell und SQL-Auswertung vorbereiten",
+      "date": "2026-03-13",
+      "body": "Bitte bereiten Sie für die Auswertung aktiver Kunden eine einfache relationale Sicht und eine passende SQL-Perspektive vor."
+    }
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "type": "single_choice",
+      "title": "Primarschlüssel verstehen",
+      "prompt": "Welche Aussage beschreibt einen Primarschlüssel am besten?",
+      "options": [
+        {
+          "text": "Er identifiziert einen Datensatz eindeutig",
+          "rationale": "Das ist die Kernaufgabe eines Primarschlüssels."
+        },
+        {
+          "text": "Er ist nur eine farbliche Markierung in der Oberfläche",
+          "rationale": "Das hat mit Datenmodellierung nichts zu tun."
+        },
+        {
+          "text": "Er wird nur für Testdaten benötigt",
+          "rationale": "Auch produktive Daten brauchen eindeutige Schlüssel."
+        }
+      ],
+      "correctIndex": 0,
+      "feedback": {
+        "correct": "Richtig: Ein Primarschlüssel sorgt für eindeutige Identifikation.",
+        "wrong": "Nicht passend: Bitte die Rolle eindeutiger Schlüssel im Modell stärker beachten."
+      },
+      "progressLinks": [
+        "lf05_datenbanken_sql"
+      ]
+    },
+    {
+      "id": "q2",
+      "type": "multi_select",
+      "title": "Relationale Struktur sauber denken",
+      "prompt": "Welche Aussagen sind für ein kleines relationales Modell sinnvoll? (Mehrfachauswahl)",
+      "options": [
+        {
+          "text": "Entitäten wie Kunde und Status sollten nachvollziehbar modelliert werden",
+          "correct": true,
+          "rationale": "So entsteht eine saubere Fachstruktur."
+        },
+        {
+          "text": "Beziehungen zwischen Datenobjekten müssen konsistent beschrieben werden",
+          "correct": true,
+          "rationale": "Ohne Beziehungen wird das Modell unstimmig."
+        },
+        {
+          "text": "SQL-Abfragen sollen die fachliche Frage klar ausdrücken",
+          "correct": true,
+          "rationale": "Die Abfrage muss die Fachsicht sauber abbilden."
+        },
+        {
+          "text": "Alle Spalten können ohne Typen und Regeln übernommen werden",
+          "correct": false,
+          "rationale": "Ohne Struktur sinkt die Datenqualität."
+        },
+        {
+          "text": "SQLite kann für kleine Anwendungen ein praktikabler Start sein",
+          "correct": true,
+          "rationale": "Für kleine Lösungen ist das oft passend."
+        }
+      ],
+      "feedback": {
+        "correct": "Richtig: Sie verbinden Modellierung und Abfrage sauber mit dem Fachbedarf.",
+        "wrong": "Teilweise falsch: Bitte Entitäten, Beziehungen und klare SQL-Sicht stärker betonen."
+      },
+      "progressLinks": [
+        "lf05_datenbanken_sql"
+      ]
+    },
+    {
+      "id": "q3",
+      "type": "ordering",
+      "title": "Von der Fachfrage zur SQL-Sicht",
+      "prompt": "Ordnen Sie die Schritte sinnvoll.",
+      "items": [
+        "SQL-Abfrage oder Sicht formulieren",
+        "Fachliche Auswertung klären",
+        "Entitäten und Beziehungen festhalten",
+        "Testdaten und erwartetes Ergebnis definieren",
+        "Abfrage gegen Beispieldaten prüfen"
+      ],
+      "correctOrder": [
+        "Fachliche Auswertung klären",
+        "Entitäten und Beziehungen festhalten",
+        "SQL-Abfrage oder Sicht formulieren",
+        "Testdaten und erwartetes Ergebnis definieren",
+        "Abfrage gegen Beispieldaten prüfen"
+      ],
+      "feedback": {
+        "correct": "Richtig: So wird die Auswertung fachlich und technisch sauber aufgebaut.",
+        "wrong": "Nicht optimal: Bitte von der Fachfrage über das Modell zur prüfbaren Abfrage gehen."
+      },
+      "progressLinks": [
+        "lf05_datenbanken_sql"
+      ]
+    },
+    {
+      "id": "q4",
+      "type": "number",
+      "title": "Aktive Kunden bestimmen",
+      "prompt": "In der Tabelle `kunden` gibt es 8.500 Einträge. 12 % sind als `inaktiv` markiert. Wie viele aktive Kunden bleiben?",
+      "expected": 7480,
+      "toleranceAbs": 1,
+      "showExpectedFormula": "8.500 * 0,88 = 7.480",
+      "feedback": {
+        "correct": "Richtig gerechnet.",
+        "wrong": "Bitte den Anteil aktiv sauber aus der Gesamtzahl ableiten."
+      },
+      "progressLinks": [
+        "lf05_datenbanken_sql"
+      ]
+    },
+    {
+      "id": "q5",
+      "type": "short_text",
+      "title": "Datenbankanpassung erklären",
+      "prompt": "Erklären Sie in 4-6 Sätzen die Idee eines kleinen Datenmodells für Kundenstatus und die passende SQL-Sicht.",
+      "minChars": 160,
+      "requiredKeywords": [
+        "kunde",
+        "status",
+        "sql"
+      ],
+      "expectedOutline": "Entitäten benennen, Beziehung erklären und SQL-Zweck kurz darstellen.",
+      "feedback": {
+        "correct": "Richtig: Die Modellidee ist nachvollziehbar und fachnah beschrieben.",
+        "wrong": "Bitte Entitäten, Statussicht und SQL-Zweck klarer verbinden."
+      },
+      "progressLinks": [
+        "lf05_datenbanken_sql",
+        "lf05_dokumentation_evaluation"
+      ]
+    }
+  ]
+}

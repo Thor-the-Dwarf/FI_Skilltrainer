@@ -1,0 +1,560 @@
+{
+  "title": "LF02 Aufgabentypen Demo",
+  "version": "1.0",
+  "meta": {
+    "description": "Ein Beispiel pro Aufgabentyp auf Erwachsenen-/Praxisniveau",
+    "note": "Die HTML-Datei rendert diese Aufgaben dynamisch per type-Feld."
+  },
+  "tasks": [
+    {
+      "id": "t01",
+      "type": "cloze_free",
+      "idea": "Lückentext freie Eingabe",
+      "prompt": "Ergänze die Fachbegriffe.",
+      "text": "Die {{b1}} ist flüchtiger Speicher, während {{b2}} Daten dauerhaft speichert.",
+      "blanks": [
+        {
+          "id": "b1",
+          "answer": "RAM"
+        },
+        {
+          "id": "b2",
+          "answer": "SSD"
+        }
+      ]
+    },
+    {
+      "id": "t02",
+      "type": "cloze_select",
+      "idea": "Lückentext Auswahl-Lücken",
+      "prompt": "Wähle je Lücke den passenden Begriff.",
+      "text": "Ein {{b1}} verbindet Endgeräte kabelgebunden, während {{b2}} drahtlos arbeitet.",
+      "blanks": [
+        {
+          "id": "b1",
+          "options": [
+            "LAN",
+            "HDMI",
+            "USB"
+          ],
+          "answer": "LAN"
+        },
+        {
+          "id": "b2",
+          "options": [
+            "WLAN",
+            "DisplayPort",
+            "SATA"
+          ],
+          "answer": "WLAN"
+        }
+      ]
+    },
+    {
+      "id": "t03",
+      "type": "cloze_dragdrop",
+      "idea": "Lückentext Drag-and-Drop",
+      "prompt": "Ziehe die Tokens in die passenden Felder.",
+      "tokens": [
+        "CPU",
+        "RAM",
+        "SSD",
+        "Netzteil"
+      ],
+      "zones": [
+        {
+          "id": "z1",
+          "label": "rechnet",
+          "answer": "CPU"
+        },
+        {
+          "id": "z2",
+          "label": "kurzfristiger Speicher",
+          "answer": "RAM"
+        },
+        {
+          "id": "z3",
+          "label": "dauerhafter Speicher",
+          "answer": "SSD"
+        }
+      ]
+    },
+    {
+      "id": "t04",
+      "type": "text_correction",
+      "idea": "Fehlertext korrigieren",
+      "prompt": "Korrigiere den fachlich falschen Text.",
+      "wrongText": "Das Netzteil speichert Programme, der RAM speichert dauerhaft Daten, LAN ist eine Bildschnittstelle.",
+      "requiredKeywords": [
+        "Netzteil",
+        "Strom",
+        "RAM",
+        "flüchtig",
+        "LAN",
+        "Netzwerk",
+        "HDMI"
+      ]
+    },
+    {
+      "id": "t05",
+      "type": "matching",
+      "idea": "Zuordnung",
+      "prompt": "Ordne Begriff und Definition zu.",
+      "left": [
+        "CPU",
+        "Mainboard",
+        "SSD",
+        "Betriebssystem"
+      ],
+      "right": [
+        "Verwaltet Ressourcen und Prozesse",
+        "Dauerhafter Speicher ohne Mechanik",
+        "Verbindet zentrale Komponenten",
+        "Führt Berechnungen aus"
+      ],
+      "pairs": {
+        "CPU": "Führt Berechnungen aus",
+        "Mainboard": "Verbindet zentrale Komponenten",
+        "SSD": "Dauerhafter Speicher ohne Mechanik",
+        "Betriebssystem": "Verwaltet Ressourcen und Prozesse"
+      }
+    },
+    {
+      "id": "t06",
+      "type": "ordering",
+      "idea": "Reihenfolge",
+      "prompt": "Sortiere den Beschaffungsprozess.",
+      "items": [
+        "Angebotsvergleich",
+        "Bedarfserhebung",
+        "Abnahme",
+        "Bestellung",
+        "Lastenheft"
+      ],
+      "correctOrder": [
+        "Bedarfserhebung",
+        "Lastenheft",
+        "Angebotsvergleich",
+        "Bestellung",
+        "Abnahme"
+      ]
+    },
+    {
+      "id": "t07",
+      "type": "weighted_matrix",
+      "idea": "Matrix-Aufgabe",
+      "prompt": "Bewerte drei Angebote über eine gewichtete Matrix.",
+      "criteria": [
+        {
+          "name": "Preis",
+          "weight": 0.25
+        },
+        {
+          "name": "Leistung",
+          "weight": 0.2
+        },
+        {
+          "name": "Wartbarkeit",
+          "weight": 0.2
+        },
+        {
+          "name": "Sicherheit",
+          "weight": 0.2
+        },
+        {
+          "name": "Lieferzeit",
+          "weight": 0.15
+        }
+      ],
+      "offers": [
+        "A",
+        "B",
+        "C"
+      ],
+      "recommended": "B"
+    },
+    {
+      "id": "t08",
+      "type": "multi_select_partial",
+      "idea": "Mehrfachauswahl mit Teilpunkten",
+      "prompt": "Wähle alle sinnvollen Massnahmen für stabile Rollouts.",
+      "options": [
+        {
+          "text": "Pilotierung vor Massenrollout",
+          "points": 2,
+          "correct": true
+        },
+        {
+          "text": "Ungeprüfte Treiber direkt auf alle Systeme",
+          "points": -2,
+          "correct": false
+        },
+        {
+          "text": "Rollback-Plan definieren",
+          "points": 2,
+          "correct": true
+        },
+        {
+          "text": "Abnahme ohne Nachweise",
+          "points": -2,
+          "correct": false
+        },
+        {
+          "text": "KPIs für Stabilität vereinbaren",
+          "points": 2,
+          "correct": true
+        }
+      ],
+      "maxPoints": 6
+    },
+    {
+      "id": "t09",
+      "type": "justification",
+      "idea": "Begründungsaufgabe",
+      "prompt": "Empfehle A, B oder C für 40 Arbeitsplätze und begründe.",
+      "requiredAspects": [
+        "technisch",
+        "wirtschaftlich",
+        "organisatorisch",
+        "risiko",
+        "kpi"
+      ]
+    },
+    {
+      "id": "t10",
+      "type": "case_triage",
+      "idea": "Falltriage",
+      "prompt": "Der Rechner startet langsam, Teams ruckelt, SSD fast voll. Was prüfst du zuerst?",
+      "choices": [
+        {
+          "id": "a",
+          "label": "Wallpaper ändern und neu starten",
+          "score": 0,
+          "outcome": "Keine ursachennahe Massnahme."
+        },
+        {
+          "id": "b",
+          "label": "Messung von Auslastung, Speicherstand, I/O und Autostarts",
+          "score": 3,
+          "outcome": "Guter erster Diagnoseschritt mit Datenbasis."
+        },
+        {
+          "id": "c",
+          "label": "Sofortige Neuinstallation ohne Analyse",
+          "score": 1,
+          "outcome": "Kann helfen, ist aber fachlich riskant ohne Diagnose."
+        }
+      ],
+      "bestChoice": "b"
+    },
+    {
+      "id": "t11",
+      "type": "root_cause_tree",
+      "idea": "Root-Cause-Aufgabe",
+      "prompt": "Symptom: sporadische Abstürze unter Last nach Hardwareupgrade.",
+      "causes": [
+        {
+          "id": "c1",
+          "label": "Netzteil ohne Leistungsreserve",
+          "primary": true
+        },
+        {
+          "id": "c2",
+          "label": "Falscher Bildschirmhintergrund",
+          "primary": false
+        },
+        {
+          "id": "c3",
+          "label": "Treiberkonflikt",
+          "primary": true
+        },
+        {
+          "id": "c4",
+          "label": "Defektes LAN-Kabel",
+          "primary": false
+        }
+      ]
+    },
+    {
+      "id": "t12",
+      "type": "log_analysis",
+      "idea": "Log-/Screenshot-Interpretation",
+      "prompt": "Interpretiere den Logauszug und bestimme die wahrscheinlichste Hauptursache.",
+      "logLines": [
+        "2026-03-12 09:15:21 WARN Disk C: free space 2.1%",
+        "2026-03-12 09:15:22 INFO Update service retry queue length=87",
+        "2026-03-12 09:15:25 WARN Paging spike detected",
+        "2026-03-12 09:15:28 ERROR Write operation delayed > 900ms"
+      ],
+      "options": [
+        "GPU zu schwach",
+        "Massiver Speicherplatzengpass und I/O-Problem",
+        "Monitorfalscheingang"
+      ],
+      "answer": "Massiver Speicherplatzengpass und I/O-Problem"
+    },
+    {
+      "id": "t13",
+      "type": "calculation_chain",
+      "idea": "Rechenkette",
+      "prompt": "Berechne TCO und Zwischenwerte.",
+      "steps": [
+        {
+          "id": "s1",
+          "label": "CAPEX + 1 Jahr OPEX",
+          "answer": 109000
+        },
+        {
+          "id": "s2",
+          "label": "TCO über 5 Jahre",
+          "answer": 191500
+        },
+        {
+          "id": "s3",
+          "label": "Durchschnitt je Jahr",
+          "answer": 38300
+        }
+      ],
+      "tolerance": 0.02
+    },
+    {
+      "id": "t14",
+      "type": "sensitivity_analysis",
+      "idea": "Sensitivitätsaufgabe",
+      "prompt": "Berechne die Wirkung von +10% OPEX und -20% Produktivitätseffekt.",
+      "baseline": {
+        "opexYear": 18500,
+        "productivityYear": 27000,
+        "years": 5
+      },
+      "expected": {
+        "opexPlus10": 20350,
+        "prodMinus20": 21600
+      }
+    },
+    {
+      "id": "t15",
+      "type": "offer_comparison",
+      "idea": "Angebotsvergleich",
+      "prompt": "Vergleiche Angebote über 36 Monate inkl. Betriebskosten.",
+      "years": 3,
+      "offers": [
+        {
+          "id": "A",
+          "capex": 17400,
+          "opexYear": 1500
+        },
+        {
+          "id": "B",
+          "capex": 18300,
+          "opexYear": 900
+        },
+        {
+          "id": "C",
+          "capex": 17900,
+          "opexYear": 1200
+        }
+      ],
+      "bestByTco": "B"
+    },
+    {
+      "id": "t16",
+      "type": "contract_redflags",
+      "idea": "Vertrags-/AGB-Check",
+      "prompt": "Markiere Red Flags.",
+      "clauses": [
+        {
+          "id": "k1",
+          "text": "Reaktionszeit nach bestem Bemühen ohne Frist",
+          "redFlag": true
+        },
+        {
+          "id": "k2",
+          "text": "SLA: Erstreaktion <= 4h werktags",
+          "redFlag": false
+        },
+        {
+          "id": "k3",
+          "text": "Haftung für Datenverlust pauschal ausgeschlossen",
+          "redFlag": true
+        },
+        {
+          "id": "k4",
+          "text": "Abnahme mit dokumentierten Kriterien",
+          "redFlag": false
+        }
+      ]
+    },
+    {
+      "id": "t17",
+      "type": "communication_output",
+      "idea": "Kommunikationsaufgabe",
+      "prompt": "Schreibe eine kurze Entscheidungsmail an die Geschäftsführung.",
+      "requiredSections": [
+        "entscheidung",
+        "begründung",
+        "restrisiko",
+        "nächster schritt"
+      ]
+    },
+    {
+      "id": "t18",
+      "type": "peer_review",
+      "idea": "Peer-Review-Aufgabe",
+      "prompt": "Bewerte die Musterantwort anhand Rubrik.",
+      "sampleAnswer": "Wir nehmen Angebot A, weil es am billigsten ist. Details stehen im Anhang.",
+      "rubric": [
+        "Technische Tragfähigkeit",
+        "Wirtschaftliche Begründung",
+        "Risikobetrachtung",
+        "Kommunikationsqualität"
+      ],
+      "scaleMax": 5
+    },
+    {
+      "id": "t19",
+      "type": "branching_scenario",
+      "idea": "Branching-Szenario",
+      "prompt": "Du leitest den Rollout. Ein Pilotgerät fällt nach Update aus.",
+      "nodes": {
+        "start": {
+          "text": "Wie gehst du vor?",
+          "choices": [
+            {
+              "label": "Sofort alle Geräte updaten, um Zeit zu sparen",
+              "next": "bad"
+            },
+            {
+              "label": "Rollout stoppen, Root Cause analysieren, Rollback prüfen",
+              "next": "good"
+            }
+          ]
+        },
+        "good": {
+          "text": "Gute Entscheidung: Ausfallausbreitung verhindert, Ursache klärbar."
+        },
+        "bad": {
+          "text": "Risikoreich: Flächiger Ausfall möglich, hoher Betriebsimpact."
+        }
+      }
+    },
+    {
+      "id": "t20",
+      "type": "adaptive_path",
+      "idea": "Adaptive Schwierigkeit",
+      "prompt": "Wähle dein Niveau und bearbeite die passende Folgefrage.",
+      "levels": {
+        "basis": "Nenne 3 Kriterien für Hardwareauswahl.",
+        "fortgeschritten": "Gewichte 5 Kriterien und begründe die Gewichtung.",
+        "expert": "Leite ein Entscheidungsmodell mit Restrisiko und KPI-Set ab."
+      }
+    },
+    {
+      "id": "t21",
+      "type": "confidence_rating",
+      "idea": "Confidence-Scoring",
+      "prompt": "Welche Komponente speichert Daten dauerhaft?",
+      "options": [
+        "RAM",
+        "SSD",
+        "CPU"
+      ],
+      "answer": "SSD"
+    },
+    {
+      "id": "t22",
+      "type": "timed_decision",
+      "idea": "Zeitdruck-Modus",
+      "prompt": "Innerhalb von 45 Sekunden: Was ist der beste erste Schritt bei Incident-Triage?",
+      "timerSec": 45,
+      "options": [
+        "Messdaten sichern und Hypothesen priorisieren",
+        "Zufällig Komponente tauschen",
+        "Problem ignorieren und warten"
+      ],
+      "answer": "Messdaten sichern und Hypothesen priorisieren"
+    },
+    {
+      "id": "t23",
+      "type": "collaborative_roleplay",
+      "idea": "Kollaborative Aufgabe",
+      "prompt": "Trefft gemeinsam eine Beschaffungsentscheidung aus drei Rollenperspektiven.",
+      "roles": [
+        "IT-Betrieb: Stabilität und Supportbarkeit",
+        "Einkauf: Budget und Vertragsrisiko",
+        "Fachbereich: Performance und Nutzbarkeit"
+      ],
+      "jointGoal": "Gemeinsame Entscheidung mit 3 Kriterien und 1 Restrisikoplan"
+    },
+    {
+      "id": "t24",
+      "type": "random_parameter_item",
+      "idea": "Item-Bank mit Zufallsparametern",
+      "prompt": "Berechne den TCO (3 Jahre) aus zufälligen CAPEX/OPEX-Werten.",
+      "params": {
+        "capex": {
+          "min": 15000,
+          "max": 28000,
+          "step": 500
+        },
+        "opexYear": {
+          "min": 800,
+          "max": 2400,
+          "step": 100
+        },
+        "years": 3
+      },
+      "formula": "tco = capex + opexYear * years"
+    },
+    {
+      "id": "t25",
+      "type": "step_scored_calculation",
+      "idea": "Teilpunkte für Rechenweg",
+      "prompt": "Rechne den Angebotspreis in drei Schritten.",
+      "steps": [
+        {
+          "id": "p1",
+          "label": "Selbstkosten",
+          "points": 2,
+          "answer": 60
+        },
+        {
+          "id": "p2",
+          "label": "Marge (15%)",
+          "points": 2,
+          "answer": 9
+        },
+        {
+          "id": "p3",
+          "label": "Angebotssatz",
+          "points": 2,
+          "answer": 69
+        }
+      ],
+      "tolerance": 0.02
+    },
+    {
+      "id": "t26",
+      "type": "instant_feedback_quiz",
+      "idea": "Sofortfeedback auf Kriterienebene",
+      "prompt": "Welche Aussage ist fachlich am tragfähigsten?",
+      "options": [
+        {
+          "label": "Wir wählen immer den niedrigsten Einkaufspreis.",
+          "correct": false,
+          "feedback": "Kriterium Wirtschaftlichkeit ist unvollständig ohne Betriebskosten und Risiken."
+        },
+        {
+          "label": "Wir entscheiden auf Basis von TCO, Risiko und Betriebsanforderungen.",
+          "correct": true,
+          "feedback": "Korrekt: Entscheidung berücksichtigt technische und wirtschaftliche Tragfähigkeit."
+        },
+        {
+          "label": "Sicherheitsupdates können nach Bedarf später kommen.",
+          "correct": false,
+          "feedback": "Kriterium Sicherheit/Compliance wäre verletzt."
+        }
+      ]
+    }
+  ]
+}

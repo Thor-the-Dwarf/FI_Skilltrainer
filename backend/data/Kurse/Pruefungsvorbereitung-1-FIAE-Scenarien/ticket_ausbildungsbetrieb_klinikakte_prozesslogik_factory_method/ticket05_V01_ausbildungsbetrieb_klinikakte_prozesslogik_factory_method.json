@@ -1,0 +1,1067 @@
+{
+  "scenario": {
+    "company": "NordCare Digital Solutions GmbH",
+    "scale": "IT- und Cloud-Dienstleister für Klinikverbünde, 240 Mitarbeitende",
+    "context": "Prüfungsvorbereitung FIAE im Stationsformat mit zusammenhängenden Folgeaufträgen zu Projektumfeld, Datenmodellierung, Aktivitätslogik und Design Patterns.",
+    "mission": "Sie begleiten ein Digitalisierungsprojekt im Gesundheitswesen und bearbeiten dazu Projektumfeld, digitale Klinikakte, Prozessdigitalisierung und Factory-Method-Entscheidungen.",
+    "source": {
+      "kind": "Pseudonymisierte Prüfungsvorlage",
+      "reference": "AP2 FIAE Teil 1, Sommer 2025",
+      "note": "Die fachliche Aufgabenreihenfolge bleibt erhalten; Namen und Unternehmensbezug wurden in das Kursformat überführt. Die Lösungs-PDF diente nur zur Klärung fachlich offener Details."
+    },
+    "station": {
+      "id": "PV1FIAE-ST-05",
+      "department": "Prüfungsvorbereitung Anwendungsentwicklung",
+      "profile": "Projektumfeld, digitale Klinikakte, Aktivitätslogik und Factory Method",
+      "constraints": [
+        "Die vier Hauptaufgaben bleiben als fachlich zusammenhängende Folgeaufträge sichtbar",
+        "Offene Projekt-, Modellierungs- und Pattern-Aufgaben werden möglichst auto-auswertbar, aber fachlich gleichwertig umgesetzt",
+        "Visuals werden nur dort eingesetzt, wo die Quelle selbst fachliche Artefakte wie Modelle oder Oberflächenvorgaben zeigt"
+      ]
+    },
+    "customerRequest": {
+      "from": "vorstand@nordcare-digital.example",
+      "to": "projektteam@ausbildungsbetrieb.example",
+      "subject": "Digitale Klinikakte und Prozessdigitalisierung vorbereiten",
+      "date": "2026-03-20",
+      "body": "Guten Tag,\n\nmehrere Klinikstandorte arbeiten noch mit heterogenen Hardware-, Netzwerk- und Softwarelandschaften. Im Zuge einer strategischen Neuausrichtung sollen Patientenakten, Stationsabläufe und interne Unterlagen schrittweise digitalisiert werden.\n\nBitte bearbeiten Sie die Teilaufträge in der vorgegebenen Reihenfolge. Zunächst müssen Projektumfeld, Stakeholder und Abschlussprotokoll eingeordnet werden. Anschliessend brauchen wir ein passendes Datenmodell für die digitale Klinikakte, eine geeignete Eingabemaske und eine sichere Passwortspeicherung. Danach geht es um die Aktivitätslogik eines Stationsbesuchs und um konkrete Probleme, die durch Digitalisierung gelöst werden können. Abschliessend sollen Factory Method, abstrakte Klassen und die Erweiterung einer Etikettenhierarchie bewertet werden.\n\nViele Grüsse\nVorstand"
+    }
+  },
+  "questions": [
+    {
+      "id": "ctx01",
+      "type": "context_card",
+      "title": "Kontext zum Projektstart",
+      "contentBlocks": [
+        {
+          "type": "text",
+          "text": "NordCare begleitet die digitale Transformation eines Klinikverbunds. Kostendruck, Klinikschliessungen und die Bündelung von Ressourcen haben das Projekt beschleunigt. Gleichzeitig treffen im Alltag heterogene Hardware, unterschiedliche Netzwerke und verschiedene Softwarestände aufeinander.\n\nVor dem Projektstart müssen deshalb Umfeldanalyse, relevante Stakeholder und die Vorbereitung eines Abschlussprotokolls sauber geklärt werden."
+        }
+      ]
+    },
+    {
+      "id": "q01",
+      "type": "multi_select",
+      "title": "Technisches und rechtliches Umfeld einordnen",
+      "prompt": "Welche Aspekte gehören in dieser Fachsituation besonders plausibel zur Umfeldanalyse aus technischem und rechtlichem Umfeld? Wählen Sie alle passenden Antworten.",
+      "options": [
+        {
+          "text": "Vorhandene Hardware- und Netzwerkinfrastruktur an den Klinikstandorten",
+          "correct": true,
+          "rationale": "Die technische Ausgangsbasis der Kliniken ist für eine Digitalisierungsplanung zentral."
+        },
+        {
+          "text": "Bestehende Softwarelandschaft und Datenstrukturen der Kliniken",
+          "correct": true,
+          "rationale": "Ohne Kenntnis vorhandener Systeme und Daten wird Integration kaum sauber planbar."
+        },
+        {
+          "text": "Gesetzliche Anforderungen an Datenschutz und IT-Sicherheit",
+          "correct": true,
+          "rationale": "Gerade im Gesundheitswesen sind rechtliche und sicherheitsbezogene Vorgaben wesentlich."
+        },
+        {
+          "text": "Beliebtheit einzelner Teamnamen für interne Projektchats",
+          "correct": false,
+          "rationale": "Das hat keinen fachlichen Bezug zur technischen oder rechtlichen Umfeldanalyse."
+        },
+        {
+          "text": "Gesetzliche Vorgaben zur Verarbeitung sensibler Gesundheitsdaten",
+          "correct": true,
+          "rationale": "Die Verarbeitung medizinischer Daten unterliegt strengen rechtlichen Rahmenbedingungen."
+        },
+        {
+          "text": "Lieblingsfarben des Klinikpersonals für die Smartphone-Wallpaper",
+          "correct": false,
+          "rationale": "Das ist für die hier geforderte Umfeldanalyse nicht relevant."
+        }
+      ],
+      "feedback": {
+        "correct": "Die zentralen Aspekte des technischen und rechtlichen Umfelds sind passend erkannt.",
+        "wrong": "Achten Sie auf Infrastruktur, Systemlandschaft, Datenstrukturen sowie Datenschutz- und Sicherheitsvorgaben statt auf themenfremde Details."
+      },
+      "progressLinks": [
+        "pv1fiae_projektumfeld_stakeholder_abschluss"
+      ]
+    },
+    {
+      "id": "q02",
+      "type": "multi_select",
+      "title": "Stakeholder mit Erwartungen und Befürchtungen verstehen",
+      "prompt": "Welche Aussagen beschreiben in dieser Situation plausible Kombinationen aus Stakeholder, Erwartung und Befürchtung? Wählen Sie alle passenden Antworten.",
+      "options": [
+        {
+          "text": "Die Geschäftsführung des Softwareanbieters erwartet ein erfolgreiches Projekt und Gewinne, fürchtet aber hohe Komplexität und Abhängigkeit von externen Providern.",
+          "correct": true,
+          "rationale": "Genau diese Mischung aus wirtschaftlicher Erwartung und Umsetzungsrisiko ist in solchen Projekten plausibel."
+        },
+        {
+          "text": "IT-Fachkräfte in den Kliniken erwarten Standardisierung und vereinfachte Abläufe, fürchten aber Jobverlust oder umständliche, wenn auch sichere Prozesse.",
+          "correct": true,
+          "rationale": "Diese Kombination passt gut zu zentraleren digitalen Strukturen in Kliniken."
+        },
+        {
+          "text": "Verwaltungsmitarbeitende der Kliniken erwarten mehr Standardisierung, fürchten aber Überforderung durch neue und komplexe Anwendungen.",
+          "correct": true,
+          "rationale": "Auch das ist eine typische Spannbreite aus Entlastungshoffnung und Veränderungsangst."
+        },
+        {
+          "text": "Klinisches Fachpersonal erwartet ergonomische und arbeitserleichternde Anwendungen, fürchtet aber zusätzlichen Zeitverlust durch Sicherheitsanforderungen.",
+          "correct": true,
+          "rationale": "Diese Spannung zwischen Nutzwert und Sicherheitsaufwand ist im Klinikalltag realistisch."
+        },
+        {
+          "text": "Klinikvorstände erwarten grundsätzlich möglichst viele manuelle Zwischenschritte, weil nur dadurch Digitalisierung professionell wirkt.",
+          "correct": false,
+          "rationale": "Mehr manuelle Zwischenschritte sind kein plausibles Digitalisierungsziel."
+        },
+        {
+          "text": "Externe Provider erwarten, dass das Projekt ohne jede Schnittstelle und ohne Betriebsverantwortung umgesetzt wird.",
+          "correct": false,
+          "rationale": "Gerade Provider sind typischerweise über Schnittstellen und Betriebsfragen eingebunden."
+        }
+      ],
+      "feedback": {
+        "correct": "Die Stakeholder-Kombinationen aus Erwartungen und Befürchtungen sind fachlich passend gewählt.",
+        "wrong": "Prüfen Sie, welche Gruppen vom Projekterfolg profitieren wollen, aber auch welche Risiken sie jeweils sehen könnten."
+      },
+      "progressLinks": [
+        "pv1fiae_projektumfeld_stakeholder_abschluss"
+      ]
+    },
+    {
+      "id": "q03",
+      "type": "multi_select",
+      "title": "Abschlussprotokoll vorbereiten",
+      "prompt": "Welche Aufgaben sind für die Vorbereitung eines Abschlussprotokolls zum Projektende besonders passend? Wählen Sie alle passenden Antworten.",
+      "options": [
+        {
+          "text": "Soll-Ist-Vergleich bezüglich der vereinbarten Anforderungen und Ergebnisse",
+          "correct": true,
+          "rationale": "Ein Abschlussprotokoll sollte festhalten, wie Projektziel und Ergebnis zueinander stehen."
+        },
+        {
+          "text": "Offene Folgeaktivitäten oder sinnvolle Anschlussmassnahmen identifizieren",
+          "correct": true,
+          "rationale": "Ein Projektabschluss zeigt oft auch, was anschliessend noch umgesetzt werden sollte."
+        },
+        {
+          "text": "Ausschliesslich alle Team-Avatare für den Messenger exportieren",
+          "correct": false,
+          "rationale": "Das ist kein sinnvoller Bestandteil eines Abschlussprotokolls."
+        },
+        {
+          "text": "Nur die Uhrzeiten aller Meetings der letzten Monate alphabetisch sortieren",
+          "correct": false,
+          "rationale": "Meeting-Zeiten allein ersetzen keine inhaltliche Abschlussbewertung."
+        }
+      ],
+      "feedback": {
+        "correct": "Die passenden Vorbereitungsschritte für ein Abschlussprotokoll sind erkannt.",
+        "wrong": "Achten Sie vor allem auf Ergebnisabgleich und sinnvolle Anschlussthemen statt auf rein organisatorische Nebendaten."
+      },
+      "progressLinks": [
+        "pv1fiae_projektumfeld_stakeholder_abschluss"
+      ]
+    },
+    {
+      "id": "f02",
+      "type": "followup_divider",
+      "title": "Digitale Klinikakte fachlich modellieren",
+      "from": "facharchitektur@nordcare-digital.example",
+      "to": "projektteam@ausbildungsbetrieb.example",
+      "subject": "Datenmodell, Eingabemaske und Passwortspeicherung für die Klinikakte abstimmen",
+      "date": "2026-03-20",
+      "body": "Hallo,\n\nfür die digitale Klinikakte sollen Patientendaten, Diagnosen, Medikation und Behandlungsbeziehungen sauber modelliert werden. Darauf aufbauend brauchen wir eine passende Eingabemaske für Stammdaten und eine sichere Lösung zur Speicherung von Zugangsdaten.\n\nViele Grüsse\nFacharchitektur"
+    },
+    {
+      "id": "ctx02",
+      "type": "context_card",
+      "title": "Kontext zur Klinikakte",
+      "contentBlocks": [
+        {
+          "type": "text",
+          "text": "Für die digitale Klinikakte gelten diese Regeln:\n- Patienten werden mit Nachname, Vorname, Geburtsdatum, Krankenkasse und Versicherungsnummer erfasst.\n- Medikamente haben Hersteller und Wirkstoff.\n- Ein Patient kann mehrere Medikamente einnehmen; für jede Einnahme wird der Zeitpunkt hinterlegt.\n- Ärzte werden mit Nachname, Vorname und Spezialgebiet erfasst.\n- Ein Patient kann von verschiedenen Ärzten behandelt werden.\n- Für jede Behandlung werden Zeitstempel und Bericht gespeichert.\n- Ein Patient kann mehrere Diagnosen haben; für jede Diagnose werden Feststellungsdatum und Bezeichnung der Erkrankung erfasst."
+        }
+      ]
+    },
+    {
+      "id": "q04",
+      "type": "single_choice",
+      "title": "Passendes ER-Modell für die digitale Klinikakte auswählen",
+      "prompt": "Welches ER-Modell bildet die beschriebenen Regeln der digitalen Klinikakte fachlich am besten ab?",
+      "options": [
+        {
+          "label": "Modell A",
+          "diagram": {
+            "type": "erm",
+            "width": 920,
+            "height": 500,
+            "entities": [
+              {
+                "id": "arzt",
+                "title": "ARZT",
+                "x": 32,
+                "y": 80,
+                "width": 190,
+                "fields": [
+                  "PK arzt_id",
+                  "vorname",
+                  "nachname",
+                  "spezialgebiet"
+                ]
+              },
+              {
+                "id": "patient",
+                "title": "PATIENT",
+                "x": 350,
+                "y": 36,
+                "width": 220,
+                "fields": [
+                  "PK patient_id",
+                  "vorname",
+                  "nachname",
+                  "geburtsdatum",
+                  "krankenkasse",
+                  "versichertennummer"
+                ]
+              },
+              {
+                "id": "diagnose",
+                "title": "DIAGNOSE",
+                "x": 316,
+                "y": 300,
+                "width": 240,
+                "fields": [
+                  "PK diagnose_id",
+                  "erkrankung",
+                  "feststellungsdatum"
+                ]
+              },
+              {
+                "id": "medikament",
+                "title": "MEDIKAMENT",
+                "x": 678,
+                "y": 300,
+                "width": 210,
+                "fields": [
+                  "PK medikament_id",
+                  "hersteller",
+                  "wirkstoff"
+                ]
+              }
+            ],
+            "relations": [
+              {
+                "from": "arzt",
+                "to": "patient",
+                "label": "behandelt (Zeitstempel, Bericht)",
+                "fromCard": "0..n",
+                "toCard": "0..n"
+              },
+              {
+                "from": "patient",
+                "to": "diagnose",
+                "label": "hat",
+                "fromCard": "1",
+                "toCard": "0..n"
+              },
+              {
+                "from": "patient",
+                "to": "medikament",
+                "label": "nimmt ein (Einnahmezeitpunkt)",
+                "fromCard": "0..n",
+                "toCard": "0..n"
+              }
+            ]
+          },
+          "rationale": "Dieses Modell bildet Patienten, Ärzte, Diagnosen und Medikamente mit den richtigen Beziehungsregeln und Beziehungsattributen ab."
+        },
+        {
+          "label": "Modell B",
+          "diagram": {
+            "type": "erm",
+            "width": 920,
+            "height": 470,
+            "entities": [
+              {
+                "id": "arzt",
+                "title": "ARZT",
+                "x": 32,
+                "y": 70,
+                "width": 190,
+                "fields": [
+                  "PK arzt_id",
+                  "vorname",
+                  "nachname",
+                  "spezialgebiet",
+                  "bericht",
+                  "zeitstempel"
+                ]
+              },
+              {
+                "id": "patient",
+                "title": "PATIENT",
+                "x": 360,
+                "y": 36,
+                "width": 220,
+                "fields": [
+                  "PK patient_id",
+                  "vorname",
+                  "nachname",
+                  "geburtsdatum",
+                  "krankenkasse",
+                  "versichertennummer"
+                ]
+              },
+              {
+                "id": "diagnose",
+                "title": "DIAGNOSE",
+                "x": 340,
+                "y": 280,
+                "width": 220,
+                "fields": [
+                  "PK diagnose_id",
+                  "erkrankung",
+                  "feststellungsdatum"
+                ]
+              },
+              {
+                "id": "medikament",
+                "title": "MEDIKAMENT",
+                "x": 678,
+                "y": 280,
+                "width": 220,
+                "fields": [
+                  "PK medikament_id",
+                  "hersteller",
+                  "wirkstoff",
+                  "einnahmezeitpunkt"
+                ]
+              }
+            ],
+            "relations": [
+              {
+                "from": "arzt",
+                "to": "patient",
+                "label": "behandelt",
+                "fromCard": "1",
+                "toCard": "0..n"
+              },
+              {
+                "from": "patient",
+                "to": "diagnose",
+                "label": "hat",
+                "fromCard": "1",
+                "toCard": "0..n"
+              },
+              {
+                "from": "patient",
+                "to": "medikament",
+                "label": "nimmt ein",
+                "fromCard": "1",
+                "toCard": "0..n"
+              }
+            ]
+          },
+          "rationale": "Hier liegen Beziehungsattribute an den falschen Stellen und die Arzt-Patient-Logik wird unnötig verengt."
+        },
+        {
+          "label": "Modell C",
+          "diagram": {
+            "type": "erm",
+            "width": 920,
+            "height": 470,
+            "entities": [
+              {
+                "id": "arzt",
+                "title": "ARZT",
+                "x": 40,
+                "y": 80,
+                "width": 190,
+                "fields": [
+                  "PK arzt_id",
+                  "vorname",
+                  "nachname",
+                  "spezialgebiet"
+                ]
+              },
+              {
+                "id": "patient",
+                "title": "PATIENT",
+                "x": 360,
+                "y": 40,
+                "width": 220,
+                "fields": [
+                  "PK patient_id",
+                  "vorname",
+                  "nachname",
+                  "geburtsdatum",
+                  "krankenkasse",
+                  "versichertennummer"
+                ]
+              },
+              {
+                "id": "diagnose",
+                "title": "DIAGNOSE",
+                "x": 660,
+                "y": 70,
+                "width": 220,
+                "fields": [
+                  "PK diagnose_id",
+                  "erkrankung",
+                  "feststellungsdatum"
+                ]
+              },
+              {
+                "id": "medikament",
+                "title": "MEDIKAMENT",
+                "x": 360,
+                "y": 300,
+                "width": 220,
+                "fields": [
+                  "PK medikament_id",
+                  "hersteller",
+                  "wirkstoff"
+                ]
+              }
+            ],
+            "relations": [
+              {
+                "from": "arzt",
+                "to": "patient",
+                "label": "behandelt",
+                "fromCard": "1",
+                "toCard": "1"
+              },
+              {
+                "from": "arzt",
+                "to": "diagnose",
+                "label": "stellt fest",
+                "fromCard": "1",
+                "toCard": "0..n"
+              },
+              {
+                "from": "patient",
+                "to": "medikament",
+                "label": "nimmt ein (Einnahmezeitpunkt)",
+                "fromCard": "1",
+                "toCard": "0..n"
+              }
+            ]
+          },
+          "rationale": "Die Arzt-Patient-Behandlung wird hier zu eng modelliert und Diagnosen werden falsch an den Arzt statt an den Patienten geknüpft."
+        },
+        {
+          "label": "Modell D",
+          "diagram": {
+            "type": "erm",
+            "width": 920,
+            "height": 470,
+            "entities": [
+              {
+                "id": "arzt",
+                "title": "ARZT",
+                "x": 46,
+                "y": 80,
+                "width": 200,
+                "fields": [
+                  "PK arzt_id",
+                  "vorname",
+                  "nachname",
+                  "spezialgebiet"
+                ]
+              },
+              {
+                "id": "patient",
+                "title": "PATIENT",
+                "x": 356,
+                "y": 36,
+                "width": 220,
+                "fields": [
+                  "PK patient_id",
+                  "vorname",
+                  "nachname",
+                  "geburtsdatum",
+                  "krankenkasse",
+                  "versichertennummer",
+                  "erkrankung",
+                  "feststellungsdatum"
+                ]
+              },
+              {
+                "id": "medikament",
+                "title": "MEDIKAMENT",
+                "x": 678,
+                "y": 300,
+                "width": 210,
+                "fields": [
+                  "PK medikament_id",
+                  "hersteller",
+                  "wirkstoff"
+                ]
+              }
+            ],
+            "relations": [
+              {
+                "from": "arzt",
+                "to": "patient",
+                "label": "behandelt (Zeitstempel, Bericht)",
+                "fromCard": "1",
+                "toCard": "0..n"
+              },
+              {
+                "from": "patient",
+                "to": "medikament",
+                "label": "nimmt ein",
+                "fromCard": "1",
+                "toCard": "0..n"
+              }
+            ]
+          },
+          "rationale": "Diagnosen werden hier nicht als eigene Entität modelliert und die Medikation verliert den erforderlichen Einnahmezeitpunkt an der Beziehung."
+        }
+      ],
+      "correctIndex": 0,
+      "feedback": {
+        "correct": "Das ER-Modell bildet Behandlungsbeziehung, Diagnosen und Medikation fachlich korrekt ab.",
+        "wrong": "Achten Sie darauf, wo Beziehungsattribute wie `Zeitstempel`, `Bericht` und `Einnahmezeitpunkt` hingehören und welche Kardinalitäten wirklich gefordert sind."
+      },
+      "progressLinks": [
+        "pv1fiae_klinikakte_erd_ui_passwort"
+      ]
+    },
+    {
+      "id": "q05",
+      "type": "multi_select",
+      "title": "Kernaussagen des ER-Modells absichern",
+      "prompt": "Welche Aussagen müssen für ein fachlich passendes Modell der digitalen Klinikakte gelten? Wählen Sie alle passenden Antworten.",
+      "options": [
+        {
+          "text": "Zeitstempel und Bericht gehören an die Behandlungsbeziehung zwischen Arzt und Patient.",
+          "correct": true,
+          "rationale": "Beide Werte beschreiben den konkreten Behandlungsvorgang und nicht den Arzt oder Patienten allein."
+        },
+        {
+          "text": "Ein Patient kann mehrere Diagnosen haben; die Diagnose ist deshalb als eigene Entität mit Datum und Erkrankung sinnvoll.",
+          "correct": true,
+          "rationale": "So lassen sich mehrere Diagnosen pro Patient sauber modellieren."
+        },
+        {
+          "text": "Einnahmezeitpunkt gehört an die Beziehung zwischen Patient und Medikament.",
+          "correct": true,
+          "rationale": "Der Zeitpunkt beschreibt die konkrete Einnahme und nicht das Medikament an sich."
+        },
+        {
+          "text": "Patient und Arzt müssen in einer strengen 1:1-Beziehung stehen.",
+          "correct": false,
+          "rationale": "Ein Patient kann laut Aufgabenstellung von verschiedenen Ärzten behandelt werden."
+        },
+        {
+          "text": "Diagnosen sollten direkt als Textfelder im Patienten-Stammdatensatz gespeichert werden, damit keine eigene Entität nötig ist.",
+          "correct": false,
+          "rationale": "Damit gingen Mehrfachdiagnosen und eigene Diagnoseattribute als Struktur verloren."
+        }
+      ],
+      "feedback": {
+        "correct": "Die Schlüsselaussagen des ER-Modells sind fachlich richtig erkannt.",
+        "wrong": "Prüfen Sie noch einmal, welche Informationen Stammdaten sind und welche an konkrete Beziehungen oder wiederholbare Einträge gehören."
+      },
+      "progressLinks": [
+        "pv1fiae_klinikakte_erd_ui_passwort"
+      ]
+    },
+    {
+      "id": "q06",
+      "type": "table_fill",
+      "title": "Passende Eingabemaske für Patientendaten wählen",
+      "prompt": "Ordnen Sie den Anforderungen an die Eingabemaske die passende Umsetzung zu.",
+      "columns": [
+        "Anforderung an die Eingabemaske",
+        "Passende Umsetzung"
+      ],
+      "rows": [
+        [
+          "Patienten-Stammdaten wie Nachname, Vorname, Geburtsdatum und Versichertennummer erfassen",
+          {
+            "key": "clinic_form_masterdata",
+            "label": "Umsetzung Stammdaten",
+            "expected": "Mehrere manuelle Eingabefelder für die einzelnen Stammdaten",
+            "inputType": "select",
+            "placeholder": "Umsetzung wählen",
+            "options": [
+              "Mehrere manuelle Eingabefelder für die einzelnen Stammdaten",
+              "Nur ein einziges Freitextfeld für alle Angaben",
+              "Nur automatischer Import ohne sichtbare Eingabe",
+              "Ein zusätzliches Passwortfeld statt Stammdatenfeldern"
+            ]
+          }
+        ],
+        [
+          "Krankenkasse passend auswählbar machen",
+          {
+            "key": "clinic_form_insurance",
+            "label": "Umsetzung Krankenkasse",
+            "expected": "Auswahlfeld bzw. Dropdown für die Krankenkasse",
+            "inputType": "select",
+            "placeholder": "Umsetzung wählen",
+            "options": [
+              "Auswahlfeld bzw. Dropdown für die Krankenkasse",
+              "Verstecktes Feld ohne Benutzereingabe",
+              "Nur ein Hinweistext ohne Eingabemöglichkeit",
+              "Ein weiteres Passwortfeld"
+            ]
+          }
+        ],
+        [
+          "Eingabe fachlich sauber abschliessen oder abbrechen",
+          {
+            "key": "clinic_form_actions",
+            "label": "Umsetzung Aktionen",
+            "expected": "Schaltflächen für Speichern und Abbrechen",
+            "inputType": "select",
+            "placeholder": "Umsetzung wählen",
+            "options": [
+              "Schaltflächen für Speichern und Abbrechen",
+              "Nur ein Button Weiter ohne Rücknahme",
+              "Automatisches Senden ohne Bestätigung",
+              "Ausschliesslich ein Link zur Startseite"
+            ]
+          }
+        ]
+      ],
+      "feedback": {
+        "correct": "Die Maske trifft die Vorgaben der Quelle fachlich am besten.",
+        "wrong": "Achten Sie auf die manuellen Eingabefelder, die Auswahl für die Krankenkasse und auf Speichern plus Abbrechen bzw. Zurück."
+      },
+      "progressLinks": [
+        "pv1fiae_klinikakte_erd_ui_passwort"
+      ]
+    },
+    {
+      "id": "q07",
+      "type": "short_text",
+      "title": "Passwortspeicherung sicher lösen",
+      "prompt": "Beschreiben Sie in 1-3 Sätzen, wie Passwörter für diese Anwendung sicher in der Datenbank gespeichert werden sollten.",
+      "minChars": 110,
+      "requiredKeywords": [
+        "hash",
+        "salt"
+      ],
+      "expectedOutline": "Erklärt, dass Passwörter nicht im Klartext oder nur kodiert, sondern gehasht und möglichst zusätzlich mit Salt gespeichert werden sollten.",
+      "feedback": {
+        "correct": "Die sichere Richtung für die Passwortspeicherung ist richtig erkannt.",
+        "wrong": "Gesucht ist keine reversible oder leicht lesbare Speicherung, sondern eine Hash-basierte Lösung."
+      },
+      "progressLinks": [
+        "pv1fiae_klinikakte_erd_ui_passwort"
+      ]
+    },
+    {
+      "id": "f03",
+      "type": "followup_divider",
+      "title": "Stationsbesuch als Aktivitätslogik digitalisieren",
+      "from": "prozessmanagement@nordcare-digital.example",
+      "to": "projektteam@ausbildungsbetrieb.example",
+      "subject": "Stationsvisite als Aktivitätsdiagramm und Problemlösung beschreiben",
+      "date": "2026-03-20",
+      "body": "Hallo,\n\ndie Bearbeitung einer Patientenakte erfolgt auf der Station oft direkt im Behandlungszimmer. Bitte überführen Sie den beschriebenen Stationsablauf in eine saubere Aktivitätslogik und leiten Sie anschliessend ab, welche aktuellen Probleme durch Digitalisierung sinnvoll gelöst werden können.\n\nViele Grüsse\nProzessmanagement"
+    },
+    {
+      "id": "ctx03",
+      "type": "context_card",
+      "title": "Kontext zur Stationsvisite",
+      "contentBlocks": [
+        {
+          "type": "text",
+          "text": "Der Stationsablauf beginnt bereits mit diesen vorgegebenen Aktivitäten:\n- Ärzte und Krankenpflegende versammeln sich.\n- Laborergebnisse werden abgefragt.\n- Die Reihenfolge der Patienten wird geplant.\n- Danach wird die Patientenakte geöffnet.\n\nIm weiteren Ablauf gilt:\n- Vitalwerte werden geprüft und in der Akte notiert.\n- Arzt und Pflege fragen gemeinsam nach auftretenden Symptomen.\n- Wenn Symptome vorliegen, werden sie in der Akte notiert, der Behandlungsplan angepasst und mit dem Patienten besprochen.\n- Wenn neue Laborergebnisse vorliegen, werden diese zusätzlich besprochen.\n- Anschliessend folgen ärztliche Untersuchungen, deren Ergebnisse zunächst handschriftlich bzw. lokal festgehalten und später in die vorhandene Software übernommen werden."
+        }
+      ]
+    },
+    {
+      "id": "q08",
+      "type": "multi_select",
+      "title": "Aktivitäten des weiteren Stationsablaufs erkennen",
+      "prompt": "Welche Aktivitäten müssen im weiteren Verlauf des Aktivitätsdiagramms nach dem Öffnen der Patientenakte vorkommen? Wählen Sie alle passenden Antworten.",
+      "options": [
+        {
+          "text": "Vitalwerte überprüfen",
+          "correct": true,
+          "rationale": "Die Kontrolle der Vitalwerte ist explizit Teil des beschriebenen Ablaufs."
+        },
+        {
+          "text": "Vitalwerte in der Patientenakte notieren",
+          "correct": true,
+          "rationale": "Nach dem Prüfen werden die Werte dokumentiert."
+        },
+        {
+          "text": "Nach auftretenden Symptomen fragen",
+          "correct": true,
+          "rationale": "Symptomabfrage gehört zur Stationsvisite."
+        },
+        {
+          "text": "Symptome in der Patientenakte notieren",
+          "correct": true,
+          "rationale": "Bei vorhandenen Symptomen werden sie dokumentiert."
+        },
+        {
+          "text": "Behandlungsplan ändern und die Änderungen besprechen",
+          "correct": true,
+          "rationale": "Genau dieser Schritt folgt, wenn Symptome oder Anpassungsbedarf vorliegen."
+        },
+        {
+          "text": "Untersuchungen durchführen und die Änderungen später in die Software übernehmen",
+          "correct": true,
+          "rationale": "Die Untersuchungen und das spätere Übertragen in die Software sind Teil des Zielablaufs."
+        },
+        {
+          "text": "Noch vor der Symptomabfrage alle Laborgeräte neu kalibrieren",
+          "correct": false,
+          "rationale": "Das ist kein Bestandteil des beschriebenen Stationsprozesses."
+        },
+        {
+          "text": "Patientenakte direkt löschen, sobald keine neuen Laborwerte vorliegen",
+          "correct": false,
+          "rationale": "Das wäre fachlich unsinnig und kommt in der Aufgabenlogik nicht vor."
+        }
+      ],
+      "feedback": {
+        "correct": "Die relevanten Aktivitäten des weiteren Stationsablaufs sind richtig erkannt.",
+        "wrong": "Achten Sie auf Vitalwerte, Symptomabfrage, mögliche Anpassung des Behandlungsplans, Untersuchungen und die abschliessende Übernahme in die Software."
+      },
+      "progressLinks": [
+        "pv1fiae_aktivitaetsdiagramme_digitalisierung_klinik"
+      ]
+    },
+    {
+      "id": "q09",
+      "type": "table_fill",
+      "title": "Verzweigungen im Aktivitätsdiagramm richtig lesen",
+      "prompt": "Ordnen Sie den Bedingungen im Stationsablauf die passende Prozessfolge zu.",
+      "columns": [
+        "Bedingung oder Prozesslage",
+        "Passende Prozessfolge"
+      ],
+      "rows": [
+        [
+          "Symptome sind vorhanden",
+          {
+            "key": "ward_symptoms_branch",
+            "label": "Folge bei Symptomen",
+            "expected": "Symptome dokumentieren, Behandlungsplan anpassen und mit dem Patienten besprechen",
+            "inputType": "select",
+            "placeholder": "Prozessfolge wählen",
+            "options": [
+              "Symptome dokumentieren, Behandlungsplan anpassen und mit dem Patienten besprechen",
+              "Stationsbesuch sofort beenden und keine Untersuchung mehr durchführen",
+              "Akte löschen und neue Patientenreihenfolge planen",
+              "Laborgeräte neu kalibrieren und auf den nächsten Tag verschieben"
+            ]
+          }
+        ],
+        [
+          "Es liegen keine neuen Laborergebnisse vor",
+          {
+            "key": "ward_labs_branch",
+            "label": "Folge ohne neue Laborergebnisse",
+            "expected": "Die zusätzliche Besprechung der neuen Laborergebnisse wird übersprungen",
+            "inputType": "select",
+            "placeholder": "Prozessfolge wählen",
+            "options": [
+              "Die zusätzliche Besprechung der neuen Laborergebnisse wird übersprungen",
+              "Die Akte darf nicht geöffnet werden",
+              "Der gesamte Stationsablauf startet wieder bei der Reihenfolgeplanung",
+              "Die Übernahme in die Software muss vorgezogen werden"
+            ]
+          }
+        ],
+        [
+          "Die bedingten Teilschritte sind abgeschlossen",
+          {
+            "key": "ward_merge_after_branches",
+            "label": "Gemeinsamer Fortgang",
+            "expected": "Untersuchungen durchführen und Änderungen später in die Software übernehmen",
+            "inputType": "select",
+            "placeholder": "Prozessfolge wählen",
+            "options": [
+              "Untersuchungen durchführen und Änderungen später in die Software übernehmen",
+              "Die Software sofort schliessen und keine weiteren Schritte dokumentieren",
+              "Alle Patientenakten exportieren und danach die Untersuchung planen",
+              "Zuerst die fertigen Untersuchungsergebnisse importieren, dann erst untersuchen"
+            ]
+          }
+        ]
+      ],
+      "feedback": {
+        "correct": "Die Verzweigungs- und Zusammenführungslogik des Aktivitätsdiagramms ist korrekt erkannt.",
+        "wrong": "Prüfen Sie, welche Schritte nur unter Bedingungen laufen und an welcher Stelle der gemeinsame Prozess wieder zusammenläuft."
+      },
+      "progressLinks": [
+        "pv1fiae_aktivitaetsdiagramme_digitalisierung_klinik"
+      ]
+    },
+    {
+      "id": "q10",
+      "type": "match_pairs",
+      "title": "Aktuelle Prozessprobleme mit Digitalisierungsvorteilen verbinden",
+      "prompt": "Ordnen Sie die beschriebenen Probleme der passenden möglichen Verbesserung durch Digitalisierung zu.",
+      "layout": "table",
+      "columns": [
+        "Problem",
+        "Passende Digitalisierungsidee"
+      ],
+      "pairs": [
+        {
+          "key": "proc_1",
+          "left": "Priorisierung der Reihenfolge erfolgt manuell",
+          "right": "Das System kann auf Basis neuer Laborwerte, aktueller Vitalwerte und anstehender Behandlungen priorisierte Vorschläge machen."
+        },
+        {
+          "key": "proc_2",
+          "left": "Laborergebnisse müssen manuell der Patientenakte zugeordnet werden",
+          "right": "Daten können schneller und fehlerärmer direkt der Akte zugeführt werden, statt auf manuelle Zuordnung oder Verzögerungen zu warten."
+        },
+        {
+          "key": "proc_3",
+          "left": "Vitalwerte werden manuell in die Patientenakte übertragen",
+          "right": "Messgeräte können Werte direkt übermitteln, was Fehler verringert und engere Messintervalle ermöglicht."
+        },
+        {
+          "key": "proc_4",
+          "left": "Änderungen des Behandlungsplans müssen anschliessend vielen Stellen separat mitgeteilt werden",
+          "right": "Eine zentrale Änderung kann Abhängigkeiten automatisch auflösen und Folgeschritte oder Benachrichtigungen direkt auslösen."
+        },
+        {
+          "key": "proc_5",
+          "left": "Behandlungsplan-Änderungen erfolgen nur anhand menschlicher Erfahrung",
+          "right": "Das System kann ähnliche Fälle vergleichen und alternative Behandlungsvorschläge unterstützen."
+        }
+      ],
+      "options": [
+        "Das System kann auf Basis neuer Laborwerte, aktueller Vitalwerte und anstehender Behandlungen priorisierte Vorschläge machen.",
+        "Daten können schneller und fehlerärmer direkt der Akte zugeführt werden, statt auf manuelle Zuordnung oder Verzögerungen zu warten.",
+        "Messgeräte können Werte direkt übermitteln, was Fehler verringert und engere Messintervalle ermöglicht.",
+        "Eine zentrale Änderung kann Abhängigkeiten automatisch auflösen und Folgeschritte oder Benachrichtigungen direkt auslösen.",
+        "Das System kann ähnliche Fälle vergleichen und alternative Behandlungsvorschläge unterstützen."
+      ],
+      "feedback": {
+        "correct": "Die Prozessprobleme sind den passenden Digitalisierungsansätzen korrekt zugeordnet.",
+        "wrong": "Achten Sie darauf, welches Problem eher Priorisierung, Datenübernahme, Messwerterfassung, Kommunikationsaufwand oder fachliche Entscheidungsunterstützung betrifft."
+      },
+      "progressLinks": [
+        "pv1fiae_aktivitaetsdiagramme_digitalisierung_klinik"
+      ]
+    },
+    {
+      "id": "f04",
+      "type": "followup_divider",
+      "title": "Etikettenlogik mit Factory Method erweitern",
+      "from": "softwarearchitektur@nordcare-digital.example",
+      "to": "projektteam@ausbildungsbetrieb.example",
+      "subject": "Factory Method, abstrakte Klassen und neue Etikettenarten abstimmen",
+      "date": "2026-03-20",
+      "body": "Hallo,\n\nfür unterschiedliche Unterlagen und Etiketten im Klinikalltag wollen wir die Erstellung über das Entwurfsmuster Factory Method strukturieren. Bitte ordnen Sie zuerst die Grundidee und die Klassenstruktur ein und leiten Sie danach ab, wie die bestehende Hierarchie für Hilfsmittel-Etiketten erweitert werden muss.\n\nViele Grüsse\nSoftwarearchitektur"
+    },
+    {
+      "id": "ctx04",
+      "type": "context_card",
+      "title": "Kontext zur Factory Method",
+      "contentBlocks": [
+        {
+          "type": "text",
+          "text": "Die Factory Method verlagert die eigentliche Objekterzeugung in eine Methode einer Basisklasse, die in Unterklassen für konkrete Produkttypen überschrieben werden kann.\n\nFür die Etikettenlogik gibt es bereits eine abstrakte Oberklasse `EtikettFabrik` mit konkreten Unterklassen für `Laborbrief` und `EKG`. Auf Produktebene existiert eine gemeinsame abstrakte Klasse `Etikett` mit konkreten Unterklassen `LaborbriefEtikett` und `EKGEtikett`."
+        }
+      ]
+    },
+    {
+      "id": "q11",
+      "type": "multi_select",
+      "title": "Factory Method fachlich erklären",
+      "prompt": "Welche Aussagen beschreiben das Entwurfsmuster Factory Method passend? Wählen Sie alle passenden Antworten.",
+      "options": [
+        {
+          "text": "Eine Basisklasse stellt eine Schnittstelle oder Methode für die Objekterzeugung bereit.",
+          "correct": true,
+          "rationale": "Die Erzeugungslogik wird zentral über eine Factory-Methode angeboten."
+        },
+        {
+          "text": "Unterklassen können festlegen, welcher konkrete Produkttyp erzeugt wird.",
+          "correct": true,
+          "rationale": "Gerade die Spezialisierung der Erzeugung in Unterklassen ist der Kern des Musters."
+        },
+        {
+          "text": "Der direkte Konstruktoraufruf wird aus Teilen des Client-Codes in eine dedizierte Methode verlagert.",
+          "correct": true,
+          "rationale": "Damit wird die Erzeugung besser kapselbar und austauschbar."
+        },
+        {
+          "text": "Factory Method bedeutet, dass es im gesamten System nur noch genau ein Objekt geben darf.",
+          "correct": false,
+          "rationale": "Das wäre eher die Richtung des Singleton-Musters."
+        },
+        {
+          "text": "Mit Factory Method werden Interfaces und abstrakte Klassen generell überflüssig.",
+          "correct": false,
+          "rationale": "Im Gegenteil: gemeinsame Produkttypen oder Basisklassen sind hier oft sehr hilfreich."
+        }
+      ],
+      "feedback": {
+        "correct": "Die Grundidee der Factory Method ist fachlich sauber erkannt.",
+        "wrong": "Achten Sie auf die Verlagerung der Objekterzeugung und die Spezialisierung in Unterklassen statt auf fremde Pattern-Eigenschaften."
+      },
+      "progressLinks": [
+        "pv1fiae_factory_method_abstraktion_kliniketiketten"
+      ]
+    },
+    {
+      "id": "q12",
+      "type": "table_fill",
+      "title": "Wichtige Einschränkung der Klassenstruktur",
+      "prompt": "Ordnen Sie den beiden Beobachtungen zur Factory Method die passende Schlussfolgerung für die Klassenstruktur zu.",
+      "columns": [
+        "Beobachtung",
+        "Passende Schlussfolgerung"
+      ],
+      "rows": [
+        [
+          "Die Factory-Methode soll trotz unterschiedlicher konkreter Etiketten einen einheitlichen Produkttyp zurückgeben.",
+          {
+            "key": "factory_common_product_type",
+            "label": "Schlussfolgerung gemeinsamer Produkttyp",
+            "expected": "Die Produkte brauchen eine gemeinsame Basisklasse oder ein gemeinsames Interface",
+            "inputType": "select",
+            "placeholder": "Schlussfolgerung wählen",
+            "options": [
+              "Die Produkte brauchen eine gemeinsame Basisklasse oder ein gemeinsames Interface",
+              "Alle konkreten Produktklassen müssen dieselbe Dateigrösse haben",
+              "Die Factory-Methode darf in Unterklassen nie überschrieben werden",
+              "Abstrakte Klassen dürfen keine Vererbungsbeziehungen besitzen"
+            ]
+          }
+        ],
+        [
+          "Unterklassen der Fabrik spezialisieren nur die konkrete Erzeugung, nicht den allgemeinen Rückgabetyp.",
+          {
+            "key": "factory_return_type_reason",
+            "label": "Schlussfolgerung Rückgabetyp",
+            "expected": "Ein gemeinsamer Produkttyp macht die verschiedenen konkreten Etiketten für den Client austauschbar",
+            "inputType": "select",
+            "placeholder": "Schlussfolgerung wählen",
+            "options": [
+              "Ein gemeinsamer Produkttyp macht die verschiedenen konkreten Etiketten für den Client austauschbar",
+              "Der Client muss jeden Produkttyp direkt mit new erzeugen",
+              "Factory Method funktioniert nur ohne abstrakte Klassen",
+              "Unterschiedliche konkrete Produkte dürfen nie dieselbe Oberklasse teilen"
+            ]
+          }
+        ]
+      ],
+      "feedback": {
+        "correct": "Die entscheidende Einschränkung der Produktklassen ist korrekt erkannt.",
+        "wrong": "Achten Sie darauf, was die Factory-Methode sinnvollerweise als gemeinsamen Rückgabetyp haben muss."
+      },
+      "progressLinks": [
+        "pv1fiae_factory_method_abstraktion_kliniketiketten"
+      ]
+    },
+    {
+      "id": "q13",
+      "type": "multi_select",
+      "title": "Abstrakte Klasse gegenüber Interface und gewöhnlicher Klasse abgrenzen",
+      "prompt": "Welche Aussagen beschreiben wesentliche Merkmale abstrakter Klassen passend? Wählen Sie alle passenden Antworten.",
+      "options": [
+        {
+          "text": "Eine abstrakte Klasse kann sowohl konkrete als auch abstrakte Methoden enthalten.",
+          "correct": true,
+          "rationale": "Damit kombiniert sie gemeinsame Implementierung mit offenen Erweiterungspunkten."
+        },
+        {
+          "text": "Von einer abstrakten Klasse können nicht direkt Objekte erzeugt werden.",
+          "correct": true,
+          "rationale": "Instanziierbar sind in der Regel erst konkrete Unterklassen."
+        },
+        {
+          "text": "Eine abstrakte Klasse kann Attribute und gemeinsamen Zustand bereitstellen.",
+          "correct": true,
+          "rationale": "Das unterscheidet sie oft von reinen Interface-Definitionen."
+        },
+        {
+          "text": "Eine abstrakte Klasse ist exakt dasselbe wie ein Interface und darf deshalb keinen Zustand enthalten.",
+          "correct": false,
+          "rationale": "Abstrakte Klassen und Interfaces unterscheiden sich gerade in Implementierungs- und Zustandsmöglichkeiten."
+        },
+        {
+          "text": "Eine abstrakte Klasse ist automatisch immer eine gewöhnliche, direkt instanziierbare Klasse.",
+          "correct": false,
+          "rationale": "Gerade die direkte Instanziierung ist typischerweise ausgeschlossen."
+        }
+      ],
+      "feedback": {
+        "correct": "Die Abgrenzung der abstrakten Klasse ist fachlich richtig getroffen.",
+        "wrong": "Prüfen Sie, was abstrakte Klassen an Implementierung und Zustand enthalten dürfen und ob sie direkt erzeugbar sind."
+      },
+      "progressLinks": [
+        "pv1fiae_factory_method_abstraktion_kliniketiketten"
+      ]
+    },
+    {
+      "id": "q14",
+      "type": "multi_select",
+      "title": "Klassenmodell für Hilfsmittel-Etiketten erweitern",
+      "prompt": "Welche Erweiterungen passen fachlich am besten, wenn zusätzlich Etiketten für Hilfsmittel gedruckt werden sollen? Wählen Sie alle passenden Antworten.",
+      "options": [
+        {
+          "text": "Eine konkrete Klasse `HilfsmittelEtikettFabrik`, die von `EtikettFabrik` erbt und das Erzeugen eines Hilfsmittel-Etiketts übernimmt.",
+          "correct": true,
+          "rationale": "So bleibt die Factory-Hierarchie für einen neuen Produkttyp konsistent erweiterbar."
+        },
+        {
+          "text": "Eine konkrete Produktklasse `HilfsmittelEtikett`, die von `Etikett` erbt.",
+          "correct": true,
+          "rationale": "Ein neuer Produkttyp braucht auch auf Produktebene eine passende konkrete Klasse."
+        },
+        {
+          "text": "Die neue Fabrik gibt weiterhin den gemeinsamen Produkttyp `Etikett` zurück, konkret erzeugt sie aber `HilfsmittelEtikett`.",
+          "correct": true,
+          "rationale": "Das entspricht genau der Logik einer gemeinsamen Produktbasis mit spezialisierter Erzeugung."
+        },
+        {
+          "text": "Der Client erzeugt `HilfsmittelEtikett` direkt mit `new`, damit die Factory-Hierarchie unverändert bleibt.",
+          "correct": false,
+          "rationale": "Damit würde die Erzeugungslogik gerade wieder aus dem Pattern herausgezogen."
+        },
+        {
+          "text": "Es wird nur ein weiteres Attribut in `LaborbriefEtikett` eingeführt; eine eigene Produktklasse für Hilfsmittel ist unnötig.",
+          "correct": false,
+          "rationale": "Ein fachlich neuer Produkttyp sollte als eigener konkreter Typ modelliert werden."
+        }
+      ],
+      "feedback": {
+        "correct": "Die sinnvollen Erweiterungen der Factory- und Produkt-Hierarchie sind korrekt erkannt.",
+        "wrong": "Achten Sie darauf, dass sowohl die Fabrikseite als auch die Produktseite für den neuen Etikettentyp sauber erweitert werden müssen."
+      },
+      "progressLinks": [
+        "pv1fiae_factory_method_abstraktion_kliniketiketten"
+      ]
+    },
+    {
+      "id": "q15",
+      "type": "short_text",
+      "title": "Weiteres Entwurfsmuster benennen und einordnen",
+      "prompt": "Benennen Sie in 1-3 Sätzen das Entwurfsmuster, bei dem mehrere abhängige Anzeigen oder Komponenten automatisch informiert werden, wenn sich ein Objektzustand ändert, und ordnen Sie es kurz ein.",
+      "minChars": 90,
+      "requiredKeywords": [
+        "observer",
+        "zustand"
+      ],
+      "expectedOutline": "Nennt das Observer-Pattern und erklärt kurz, dass abhängige Beobachter bei Zustandsänderungen eines beobachteten Objekts benachrichtigt werden.",
+      "feedback": {
+        "correct": "Das weitere Entwurfsmuster ist mit seiner Beschreibung passend erkannt.",
+        "wrong": "Achten Sie darauf, welche kurze Beschreibung wirklich zu einem bekannten Pattern passt."
+      },
+      "progressLinks": [
+        "pv1fiae_factory_method_abstraktion_kliniketiketten"
+      ]
+    }
+  ]
+}

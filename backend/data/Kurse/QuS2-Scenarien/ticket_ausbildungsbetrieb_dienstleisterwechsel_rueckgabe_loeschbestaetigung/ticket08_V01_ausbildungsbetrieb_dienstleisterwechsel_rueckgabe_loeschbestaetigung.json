@@ -1,0 +1,418 @@
+{
+  "scenario": {
+    "company": "SecuBridge Service GmbH",
+    "scale": "IT-Dienstleister für Homeoffice, kommunale Arbeitsplätze und Praxisumgebungen, 95 Mitarbeitende",
+    "context": "Ein externer Dienstleister für Dokumentensichtung und Rückfragebearbeitung scheidet zum Monatsende aus. Datenrückgabe, Restzugriffe und Löschbestätigung müssen davor sauber abgeschlossen werden.",
+    "mission": "Rückgabeumfang, Zugriffsentzug, offene Ausnahmen und Abschlussnachweise für das Dienstleister-Offboarding belastbar festlegen.",
+    "source": {
+      "kind": "Interner Offboarding- und Übergabeauftrag",
+      "reference": "Dienstleisterwechsel Dokumentensichtung, 2026-03-27",
+      "note": "Grundlage sind ein auslaufender Vertrag, verbleibende Projektordner im Partnerportal, technische API-Zugänge, ein Supportpostfach für Rückfragen und die Pflicht zu nachvollziehbarer Datenrückgabe und Löschbestätigung."
+    },
+    "station": {
+      "id": "QUS2-ST-08",
+      "department": "Einkauf, Datenschutzkoordination und Betriebsübergang",
+      "profile": "Dienstleister-Offboarding, Datenrückgabe, Zugriffsentzug und Abschlussnachweise",
+      "constraints": [
+        "Rückgabe, Löschung und Zugriffsentzug müssen für jeden betroffenen Bereich sauber getrennt und dokumentiert werden",
+        "Offene Rückfragen oder Reklamationen dürfen nur als begründete Ausnahme in den Übergang gehen",
+        "Zum Vertragsende wird ein lesbarer Abschluss mit Rückgabestand, technischer Umsetzung und Löschbestätigung benötigt"
+      ]
+    },
+    "customerRequest": {
+      "from": "einkauf@secubridge-service.example",
+      "to": "providerwechsel@ausbildungsbetrieb.example",
+      "subject": "Offboarding des Sichtungsdienstleisters bis Monatsende vorbereiten",
+      "date": "2026-03-26",
+      "body": "Guten Tag,\n\nunser externer Dienstleister für die Sichtung eingehender Dokumente und Rückfragen scheidet zum Monatsende aus. Im Partnerportal liegen noch Projektordner, für den Datenaustausch besteht ein API-Zugang, und im gemeinsamen Supportpostfach befinden sich noch offene Rückfragen zu einzelnen Fällen.\n\nBitte bereiten Sie bis Freitag einen belastbaren Stand vor: Welche Daten oder Unterlagen müssen aktiv zurückgegeben oder übernommen werden, welche Zugriffe werden entzogen, welche Ausnahmen bleiben noch befristet offen und welche Nachweise brauchen wir für Rückgabe, Löschung und Abschluss.\n\nViele Grüsse\nEinkauf"
+    }
+  },
+  "questions": [
+    {
+      "id": "ctx01",
+      "type": "context_card",
+      "title": "Offboarding-Lage im Überblick",
+      "contentBlocks": [
+        {
+          "type": "text",
+          "text": "SecuBridge beendet die Zusammenarbeit mit einem Dienstleister, der Dokumente vorsortiert und Rückfragen aus einem gemeinsamen Betriebsprozess beantwortet hat. Der kritische Punkt ist nicht nur die Vertragsbeendigung, sondern der saubere Übergang von Daten, offenen Fällen und technischen Zugriffen."
+        },
+        {
+          "type": "table",
+          "columns": [
+            "Bereich",
+            "Aktueller Befund"
+          ],
+          "rows": [
+            [
+              "Partnerportal",
+              "Projektordner und Zwischenstände liegen noch im Zugriff des Dienstleisters"
+            ],
+            [
+              "API-Zugang",
+              "automatischer Datenaustausch für Rückfragen ist noch aktiv"
+            ],
+            [
+              "Supportpostfach",
+              "mehrere offene Rückfragen laufen noch über die gemeinsame Adresse"
+            ],
+            [
+              "Vertragsende",
+              "Monatsende, danach kein regulärer Zugriff mehr vorgesehen"
+            ],
+            [
+              "Erwartung für Freitag",
+              "Rückgabe, Entzug, Ausnahmen und Löschbestätigung in einem Abschlussbild"
+            ]
+          ]
+        },
+        {
+          "type": "text",
+          "text": "Gesucht ist kein formaler Vertragsvermerk, sondern ein sauberer Offboarding-Stand, der Datenrückgabe, Restzugriffe, offene Fälle und spätere Nachweisbarkeit zusammenhält."
+        }
+      ]
+    },
+    {
+      "id": "q01",
+      "type": "multi_select",
+      "title": "Kritische Punkte vor dem Vertragsende",
+      "prompt": "Welche Punkte müssen vor dem Vertragsende zuerst geklärt oder eingeleitet werden? Mehrere Punkte können gleichzeitig zwingend sein.",
+      "options": [
+        {
+          "text": "Welche Daten und Arbeitsstände noch beim Dienstleister liegen und in welcher Form sie übernommen oder zurückgegeben werden müssen.",
+          "correct": true,
+          "rationale": "Ohne sauberen Rückgabeumfang bleibt unklar, was nach Vertragsende noch fehlt."
+        },
+        {
+          "text": "Welche technischen Zugriffe, Tokens oder Konten mit dem Vertragsende entzogen werden müssen.",
+          "correct": true,
+          "rationale": "Vertragsende ohne technischen Entzug lässt leicht Restzugriffe offen."
+        },
+        {
+          "text": "Welche offenen Rückfragen oder Reklamationen als befristete Ausnahme noch nicht abgeschlossen werden können.",
+          "correct": true,
+          "rationale": "Gerade offene Fälle dürfen nicht still in den Abschluss rutschen."
+        },
+        {
+          "text": "Welche Nachweise für Rückgabe, Löschung und Abschluss später vorliegen müssen.",
+          "correct": true,
+          "rationale": "Der Abschluss braucht früh definierte Nachweise und nicht erst einen späten Sammelversuch."
+        },
+        {
+          "text": "Das Offboarding kann auf einen einfachen Vertragsvermerk reduziert werden, solange fachlich keine neue Eskalation auftritt.",
+          "correct": false,
+          "rationale": "Ohne Daten-, Zugriffs- und Nachweisbezug bleibt das Offboarding zu oberflächlich."
+        },
+        {
+          "text": "Offene Projektordner können vorsorglich beim Dienstleister liegenbleiben, wenn intern bekannt ist, worum es geht.",
+          "correct": false,
+          "rationale": "Gerade verbliebene Projektordner müssen im Übergang aktiv behandelt werden."
+        }
+      ],
+      "feedback": {
+        "correct": "Die kritischen Punkte vor dem Vertragsende wurden passend erkannt.",
+        "wrong": "Achten Sie auf Rückgabeumfang, Zugriffsentzug, Ausnahmen und Nachweisführung statt auf einen rein formalen Abschluss."
+      },
+      "progressLinks": [
+        "qus2_dienstleister_offboarding_und_scope"
+      ]
+    },
+    {
+      "id": "q02",
+      "type": "single_choice",
+      "title": "Belastbare Offboarding-Linie",
+      "prompt": "Welche Linie zeigt hier am ehesten ein belastbares Dienstleister-Offboarding?",
+      "options": [
+        {
+          "text": "Den Vertrag beenden, alle Ordner intern als erledigt markieren und technische Zugriffe bei Gelegenheit später prüfen.",
+          "rationale": "So bleiben Rückgabe und technische Restzugriffe zu lange offen."
+        },
+        {
+          "text": "Pro Bereich Rückgabe oder Übernahme klären, Zugriffe entziehen, offene Ausnahmen mit Frist festhalten und Lösch- oder Rückgabenachweise sammeln.",
+          "rationale": "Genau so werden Daten, technische Entzüge und Abschlussnachweise sauber zusammengeführt."
+        },
+        {
+          "text": "Nur die API-Zugänge entziehen, weil Daten in Projektordnern und Postfächern im Zweifel später nachgezogen werden können.",
+          "rationale": "Das reduziert zwar einen Teil des Risikos, lässt aber Daten- und Nachweisfragen offen."
+        },
+        {
+          "text": "Alle offenen Rückfragen sofort schliessen, damit keine Ausnahme mehr dokumentiert werden muss.",
+          "rationale": "Ein erzwungener Abschluss ersetzt keine fachlich saubere Übergabe."
+        }
+      ],
+      "correctIndex": 1,
+      "feedback": {
+        "correct": "Die belastbare Offboarding-Linie wurde richtig erkannt.",
+        "wrong": "Gesucht ist ein Vorgehen, das Rückgabe, Entzug, Ausnahmen und Nachweise gemeinsam steuert."
+      },
+      "progressLinks": [
+        "qus2_dienstleister_offboarding_und_scope",
+        "qus2_datenrueckgabe_und_zugriffsentzug"
+      ]
+    },
+    {
+      "id": "f02",
+      "type": "followup_divider",
+      "title": "Rückgabe und technische Entzüge sauber aufteilen",
+      "from": "datenschutzkoordination@secubridge-service.example",
+      "to": "providerwechsel@ausbildungsbetrieb.example",
+      "subject": "Übergabematrix für Rückgabe, Entzug und Ausnahmen erstellen",
+      "date": "2026-03-26",
+      "body": "Hallo zusammen,\n\nbitte zieht mir den Fall pro Bereich auseinander: Was muss aktiv übernommen oder zurückgegeben werden, welcher Zugriff endet technisch zum Vertragsende, und welche offenen Punkte können nur noch befristet als Ausnahme stehen bleiben. Ich brauche dazu pro Bereich einen ersten Nachweis, der später den Abschluss trägt.\n\nViele Grüsse\nDatenschutzkoordination"
+    },
+    {
+      "id": "q03",
+      "type": "table_fill",
+      "title": "Erste Massnahme und Nachweis je Bereich",
+      "prompt": "Ergänzen Sie pro Bereich die naheliegendste erste Massnahme und den ersten passenden Nachweis.",
+      "columns": [
+        "Bereich",
+        "Erste Massnahme",
+        "Erster passender Nachweis"
+      ],
+      "rows": [
+        [
+          "Partnerportal mit Projektordnern",
+          {
+            "key": "action_row_1",
+            "label": "Partnerportal / Massnahme",
+            "expected": "Rückgabe oder interne Übernahme der benötigten Ordner organisieren und verbleibende Alt-Bestände markieren.",
+            "inputType": "select",
+            "placeholder": "Massnahme wählen",
+            "options": [
+              "Rückgabe oder interne Übernahme der benötigten Ordner organisieren und verbleibende Alt-Bestände markieren.",
+              "Nur die Ordnernamen in einer Mail auflisten und die Dateien unverändert liegenlassen.",
+              "Den Portalzugang offen lassen, bis sich intern jemand später um die Ablage kümmert.",
+              "Die Ordner vorerst umbenennen, damit sie im Portal weniger auffallen."
+            ]
+          },
+          {
+            "key": "proof_row_1",
+            "label": "Partnerportal / Nachweis",
+            "expected": "Übergabeliste oder Rückgabeprotokoll mit Ordnerbezug und Status.",
+            "inputType": "select",
+            "placeholder": "Nachweis wählen",
+            "options": [
+              "Übergabeliste oder Rückgabeprotokoll mit Ordnerbezug und Status.",
+              "Screenshot der Startseite des Portals ohne Dateibezug.",
+              "Kalendereintrag zum Vertragsende.",
+              "Allgemeine Projektpräsentation ohne Übergabestand."
+            ]
+          }
+        ],
+        [
+          "API-Zugang für Rückfragen",
+          {
+            "key": "action_row_2",
+            "label": "API-Zugang / Massnahme",
+            "expected": "Token oder technisches Konto zum Vertragsende deaktivieren und verbleibende Schnittstellenprüfung einplanen.",
+            "inputType": "select",
+            "placeholder": "Massnahme wählen",
+            "options": [
+              "Token oder technisches Konto zum Vertragsende deaktivieren und verbleibende Schnittstellenprüfung einplanen.",
+              "Nur die API-Dokumentation archivieren und den Zugang unverändert lassen.",
+              "Den Token an den Nachfolgedienstleister weitergeben, damit nichts ausfällt.",
+              "Die Schnittstelle bis zum nächsten Quartal parallel offen lassen."
+            ]
+          },
+          {
+            "key": "proof_row_2",
+            "label": "API-Zugang / Nachweis",
+            "expected": "Änderungsnachweis zur Deaktivierung mit Systembezug und Zeitstempel.",
+            "inputType": "select",
+            "placeholder": "Nachweis wählen",
+            "options": [
+              "Änderungsnachweis zur Deaktivierung mit Systembezug und Zeitstempel.",
+              "Nur eine technische Architekturfolie ohne Umsetzungsstand.",
+              "Notiz, dass der Dienstleister den Zugang vermutlich nicht mehr nutzt.",
+              "Liste allgemeiner API-Endpunkte ohne Kontobezug."
+            ]
+          }
+        ],
+        [
+          "Gemeinsames Supportpostfach mit offenen Rückfragen",
+          {
+            "key": "action_row_3",
+            "label": "Supportpostfach / Massnahme",
+            "expected": "Offene Fälle intern übernehmen, Ausnahmen mit Frist kennzeichnen und den externen Zugriff beenden.",
+            "inputType": "select",
+            "placeholder": "Massnahme wählen",
+            "options": [
+              "Offene Fälle intern übernehmen, Ausnahmen mit Frist kennzeichnen und den externen Zugriff beenden.",
+              "Das Postfach bis auf Weiteres unverändert weiterlaufen lassen.",
+              "Alle Rückfragen ohne Prüfung schliessen, damit keine Ausnahme offen bleibt.",
+              "Nur die Betreffzeilen exportieren und den Rest später sortieren."
+            ]
+          },
+          {
+            "key": "proof_row_3",
+            "label": "Supportpostfach / Nachweis",
+            "expected": "Fallliste mit Übernahmestand, Ausnahmen und Nachweis zum entzogenen Postfachzugriff.",
+            "inputType": "select",
+            "placeholder": "Nachweis wählen",
+            "options": [
+              "Fallliste mit Übernahmestand, Ausnahmen und Nachweis zum entzogenen Postfachzugriff.",
+              "Screenshot eines einzelnen Postfachordners.",
+              "Telefonnotiz ohne Fallreferenzen.",
+              "Kalenderblocker für die Teamrunde am Freitag."
+            ]
+          }
+        ]
+      ],
+      "feedback": {
+        "correct": "Bereich, erste Massnahme und erster Nachweis wurden stimmig verbunden.",
+        "wrong": "Prüfen Sie, welche Massnahme wirklich Rückgabe oder Entzug steuert und welcher Nachweis später den Abschluss tragen kann."
+      },
+      "progressLinks": [
+        "qus2_datenrueckgabe_und_zugriffsentzug"
+      ]
+    },
+    {
+      "id": "q04",
+      "type": "match_pairs",
+      "title": "Zuständigkeiten im Dienstleister-Offboarding",
+      "prompt": "Welche Rolle übernimmt welche erste Verantwortung im Offboarding-Fall?",
+      "layout": "table",
+      "columns": [
+        "Rolle",
+        "erste Verantwortung"
+      ],
+      "pairs": [
+        {
+          "key": "role_1",
+          "left": "Einkauf",
+          "right": "Vertragsende, formale Rückgabeanforderung und Fristen gegenüber dem Dienstleister ziehen"
+        },
+        {
+          "key": "role_2",
+          "left": "Plattformbetrieb",
+          "right": "API-Zugang, Konten und technische Restfreigaben deaktivieren oder eingrenzen"
+        },
+        {
+          "key": "role_3",
+          "left": "Fachbereich Dokumentensichtung",
+          "right": "Offene Rückfragen, benötigte Unterlagen und fachliche Ausnahmen bestätigen"
+        },
+        {
+          "key": "role_4",
+          "left": "Datenschutzkoordination",
+          "right": "Löschbestätigung, Ausnahmelogik und Abschlussnachweise zusammenziehen"
+        }
+      ],
+      "options": [
+        "Vertragsende, formale Rückgabeanforderung und Fristen gegenüber dem Dienstleister ziehen",
+        "API-Zugang, Konten und technische Restfreigaben deaktivieren oder eingrenzen",
+        "Offene Rückfragen, benötigte Unterlagen und fachliche Ausnahmen bestätigen",
+        "Löschbestätigung, Ausnahmelogik und Abschlussnachweise zusammenziehen"
+      ],
+      "feedback": {
+        "correct": "Die Rollen wurden mit ihren ersten Verantwortungen passend verbunden.",
+        "wrong": "Achten Sie darauf, wer Vertrag und Frist zieht, wer technisch entzieht, wer Fachausnahmen bestätigt und wer den Abschluss absichert."
+      },
+      "progressLinks": [
+        "qus2_datenrueckgabe_und_zugriffsentzug",
+        "qus2_loeschbestaetigung_und_abschluss"
+      ]
+    },
+    {
+      "id": "q05",
+      "type": "number",
+      "title": "Ordner für die direkte Abschlussfreigabe",
+      "prompt": "Im Partnerportal liegen 34 Projektordner. 10 müssen intern übernommen werden, 5 bleiben wegen offener Rückfragen befristet als Ausnahme markiert und 7 wurden bereits sauber zurückgegeben. Wie viele Ordner können jetzt direkt in die Lösch- oder Abschlussbestätigung gehen?",
+      "expected": 12,
+      "toleranceAbs": 0,
+      "showExpectedFormula": "34 - 10 - 5 - 7 = 12 Ordner",
+      "feedback": {
+        "correct": "Die Menge für die direkte Abschlussfreigabe wurde korrekt berechnet.",
+        "wrong": "Bitte vom Gesamtbestand die Übernahmen, Ausnahmen und bereits erledigten Rückgaben abziehen."
+      },
+      "progressLinks": [
+        "qus2_datenrueckgabe_und_zugriffsentzug"
+      ]
+    },
+    {
+      "id": "f03",
+      "type": "followup_divider",
+      "title": "Abschluss für Vertragsende vorbereiten",
+      "from": "revision@secubridge-service.example",
+      "to": "providerwechsel@ausbildungsbetrieb.example",
+      "subject": "Rückgabe- und Löschstand für Monatsende liefern",
+      "date": "2026-03-26",
+      "body": "Hallo zusammen,\n\nfür Monatsende brauche ich keinen reinen Vertragsvermerk, sondern einen lesbaren Stand dazu, welche Daten zurückgegeben oder übernommen wurden, welche technischen Zugriffe beendet sind, welche Ausnahmen mit Frist offen bleiben und worauf sich die Lösch- oder Abschlussbestätigung stützt. Bitte macht auch sichtbar, wenn ein Bereich noch nicht vollständig abgeschlossen werden konnte.\n\nViele Grüsse\nRevision"
+    },
+    {
+      "id": "q06",
+      "type": "multi_select",
+      "title": "Was im Abschluss zwingend sichtbar sein muss",
+      "prompt": "Welche Unterlagen oder Ergebnisse müssen für einen belastbaren Offboarding-Abschluss vorliegen?",
+      "options": [
+        {
+          "text": "Eine Übersicht je Bereich mit Rückgabe-, Übernahme- oder Löschentscheidung.",
+          "correct": true,
+          "rationale": "Ohne klare Entscheidung je Bereich bleibt der Abschluss später nicht lesbar."
+        },
+        {
+          "text": "Nachweise zu entzogenen Konten, Tokens oder technischen Restzugriffen.",
+          "correct": true,
+          "rationale": "Der Abschluss braucht sichtbare technische Umsetzung und nicht nur eine Absicht."
+        },
+        {
+          "text": "Ausnahmen mit Grund, Frist und verantwortlicher Stelle.",
+          "correct": true,
+          "rationale": "Befristete Reste dürfen nicht ohne Steuerung offenbleiben."
+        },
+        {
+          "text": "Rückgabe- oder Löschbestätigungen mit Bezug zu den betroffenen Daten oder Ordnern.",
+          "correct": true,
+          "rationale": "Genau daran hängt die spätere Nachvollziehbarkeit des Offboardings."
+        },
+        {
+          "text": "Eine kurze Sammelmail, dass der Dienstleister jetzt planmässig raus ist.",
+          "correct": false,
+          "rationale": "Eine Sammelmail ersetzt weder Rückgabe- noch Lösch- oder Entzugsnachweis."
+        },
+        {
+          "text": "Nur die Vertragskündigung, weil fachliche und technische Fragen intern bekannt sind.",
+          "correct": false,
+          "rationale": "Der formale Vertragspunkt allein deckt den eigentlichen Übergabe- und Nachweisbedarf nicht ab."
+        }
+      ],
+      "feedback": {
+        "correct": "Die nötigen Bestandteile des Offboarding-Abschlusses wurden vollständig erkannt.",
+        "wrong": "Achten Sie auf Entscheidungen, technische Entzüge, Ausnahmen und Rückgabe- oder Löschbezug statt auf reine Formalien."
+      },
+      "progressLinks": [
+        "qus2_loeschbestaetigung_und_abschluss"
+      ]
+    },
+    {
+      "id": "q07",
+      "type": "ordering",
+      "title": "Offboarding sauber abschliessen",
+      "prompt": "Bringen Sie die Schritte in eine sinnvolle Reihenfolge, damit das Dienstleister-Offboarding belastbar abgeschlossen werden kann.",
+      "items": [
+        "Betroffene Daten, Ordner, Postfächer und technischen Zugänge vollständig zusammenziehen.",
+        "Rückgabe, Übernahme und offene fachliche Ausnahmen pro Bereich klären.",
+        "Konten, Tokens und sonstige Restzugriffe technisch entziehen oder begrenzen.",
+        "Rückgabe-, Entzugs- und Löschnachweise je Bereich sichern.",
+        "Abschluss mit Ausnahmen und Restpunkten für Monatsende freigeben."
+      ],
+      "correctOrder": [
+        "Betroffene Daten, Ordner, Postfächer und technischen Zugänge vollständig zusammenziehen.",
+        "Rückgabe, Übernahme und offene fachliche Ausnahmen pro Bereich klären.",
+        "Konten, Tokens und sonstige Restzugriffe technisch entziehen oder begrenzen.",
+        "Rückgabe-, Entzugs- und Löschnachweise je Bereich sichern.",
+        "Abschluss mit Ausnahmen und Restpunkten für Monatsende freigeben."
+      ],
+      "feedback": {
+        "correct": "Die Reihenfolge führt sauber vom Scope über Rückgabe und Entzug bis zum Abschluss.",
+        "wrong": "Erst müssen Umfang und Ausnahmen stehen, dann der technische Entzug, danach die Nachweise und erst am Ende der Abschluss."
+      },
+      "progressLinks": [
+        "qus2_dienstleister_offboarding_und_scope",
+        "qus2_datenrueckgabe_und_zugriffsentzug",
+        "qus2_loeschbestaetigung_und_abschluss"
+      ]
+    }
+  ]
+}

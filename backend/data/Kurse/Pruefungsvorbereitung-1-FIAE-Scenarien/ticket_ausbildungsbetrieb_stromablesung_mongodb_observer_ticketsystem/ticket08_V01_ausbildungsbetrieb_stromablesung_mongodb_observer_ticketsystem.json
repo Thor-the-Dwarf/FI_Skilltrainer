@@ -1,0 +1,767 @@
+{
+  "scenario": {
+    "company": "NordVolt Netzservice AG",
+    "scale": "Regionaler Energieversorger mit Netzbetrieb, Störungsdienst und 430 Mitarbeitenden",
+    "context": "Prüfungsvorbereitung FIAE im Stationsformat mit zusammenhängenden Folgeaufträgen zu Vorgehensmodellen, App-Architektur, NoSQL, Observer-Pattern und Websicherheit.",
+    "mission": "Sie begleiten die Digitalisierung der Stromablesung und Störungsabrechnung und bearbeiten dazu Vorgehensmodelle, Stakeholder, App-Anforderungen, MongoDB, Smart Meter, Observer, OAuth und TLS.",
+    "source": {
+      "kind": "Pseudonymisierte Prüfungsvorlage",
+      "reference": "AP2 FIAE Teil 1, Sommer 2022",
+      "note": "Die fachliche Aufgabenreihenfolge bleibt erhalten; Unternehmens- und Projektdaten wurden in das Kursformat überführt. Für diesen Import stand nur die Aufgaben-PDF zur Verfügung."
+    },
+    "station": {
+      "id": "PV1FIAE-ST-08",
+      "department": "Prüfungsvorbereitung Anwendungsentwicklung",
+      "profile": "Vorgehensmodelle, Mobile App, NoSQL, Observer und Websicherheit",
+      "constraints": [
+        "Die vier Hauptaufgaben bleiben als fachlich zusammenhängende Folgeaufträge sichtbar",
+        "Offene Erklär-, Diagramm- und Architekturaufgaben werden möglichst auto-auswertbar, aber fachlich gleichwertig umgesetzt",
+        "Visuals werden nur dort eingesetzt, wo die Quelle selbst konkrete Artefakte wie Textauszüge, Klassen, Sequenzen oder Protokollflüsse zeigt"
+      ]
+    },
+    "customerRequest": {
+      "from": "vorstand@nordvolt-netz.example",
+      "to": "projektteam@ausbildungsbetrieb.example",
+      "subject": "Stromablesung, Smart Meter und Ticketsystem digital absichern",
+      "date": "2026-03-20",
+      "body": "Guten Tag,\n\nwir wollen Prozesse rund um Störungsabrechnung und Stromablesung weiter digitalisieren. Dazu sollen Mitarbeitende im Aussendienst mit mobilen Apps unterstützt werden. Gleichzeitig müssen Vorgehensmodell, Einführungsrisiken, App-Anforderungen und Datenhaltung sauber bewertet werden.\n\nBitte bearbeiten Sie die Teilaufträge in der vorgegebenen Reihenfolge. Zunächst geht es um klassisches und agiles Vorgehen sowie um Befürchtungen der beteiligten Gruppen. Anschliessend brauchen wir eine Entscheidungshilfe für Eigen- oder Fremdentwicklung, fachlich passende App-Anforderungen und eine Bewertung von MongoDB. Danach sollen Smart-Meter-Anzeigen, Observer-Logik und Sequenzablaeufe verstanden werden. Abschliessend müssen Ticketsystem, OAuth und die Sicherung des Webservers per TLS eingeordnet werden.\n\nViele Grüsse\nVorstand"
+    }
+  },
+  "questions": [
+    {
+      "id": "ctx01",
+      "type": "context_card",
+      "title": "Kontext zum Projektstart",
+      "contentBlocks": [
+        {
+          "type": "text",
+          "text": "NordVolt digitalisiert Prozesse rund um Stromablesung und Störungsabrechnung. Stromableser erfassen Informationen, unterstützen bei Störungsbeseitigungen und beraten Kundinnen und Kunden. Für diese Tätigkeiten sollen mobile Apps eingeführt werden.\n\nVor dem Start müssen Vorgehensmodell, Einführungsrisiken und Stakeholder-Perspektiven sauber eingeordnet werden."
+        }
+      ]
+    },
+    {
+      "id": "q01",
+      "type": "table_fill",
+      "title": "Klassische und agile Vorgehensmodelle unterscheiden",
+      "prompt": "Ordnen Sie den beiden Kategorien jeweils die treffendste Kurzbeschreibung und ein passendes Beispiel zu.",
+      "columns": [
+        "Kategorie",
+        "Kurzbeschreibung",
+        "Beispiel"
+      ],
+      "rows": [
+        [
+          "Klassisch",
+          {
+            "key": "process_classic_desc",
+            "label": "Klassisch / Beschreibung",
+            "expected": "Das Vorgehen ist eher phasenorientiert und wird zu Beginn weitgehend vorgeplant; spätere Änderungen sind meist teurer.",
+            "inputType": "select",
+            "placeholder": "Beschreibung wählen",
+            "options": [
+              "Das Vorgehen ist eher phasenorientiert und wird zu Beginn weitgehend vorgeplant; spätere Änderungen sind meist teurer.",
+              "Das Vorgehen arbeitet in kurzen Iterationen mit häufigem Feedback und laufender Anpassung.",
+              "Das Vorgehen ist ausschliesslich für Datenbanken geeignet.",
+              "Das Vorgehen verzichtet grundsätzlich auf jede Dokumentation."
+            ]
+          },
+          {
+            "key": "process_classic_example",
+            "label": "Klassisch / Beispiel",
+            "expected": "Wasserfallmodell",
+            "inputType": "select",
+            "placeholder": "Beispiel wählen",
+            "options": [
+              "Wasserfallmodell",
+              "Scrum",
+              "Kanban",
+              "Extreme Programming"
+            ]
+          }
+        ],
+        [
+          "Agil",
+          {
+            "key": "process_agile_desc",
+            "label": "Agil / Beschreibung",
+            "expected": "Das Vorgehen arbeitet in kurzen Iterationen mit häufigem Feedback und laufender Anpassung.",
+            "inputType": "select",
+            "placeholder": "Beschreibung wählen",
+            "options": [
+              "Das Vorgehen ist eher phasenorientiert und wird zu Beginn weitgehend vorgeplant; spätere Änderungen sind meist teurer.",
+              "Das Vorgehen arbeitet in kurzen Iterationen mit häufigem Feedback und laufender Anpassung.",
+              "Das Vorgehen setzt zwingend voraus, dass es keine Anforderungen gibt.",
+              "Das Vorgehen nutzt ausschliesslich hierarchische Freigaben ohne Teamabstimmung."
+            ]
+          },
+          {
+            "key": "process_agile_example",
+            "label": "Agil / Beispiel",
+            "expected": "Scrum",
+            "inputType": "select",
+            "placeholder": "Beispiel wählen",
+            "options": [
+              "V-Modell",
+              "Wasserfallmodell",
+              "Scrum",
+              "Phasenmodell ohne Iteration"
+            ]
+          }
+        ]
+      ],
+      "feedback": {
+        "correct": "Die beiden Kategorien von Vorgehensmodellen sind korrekt eingeordnet.",
+        "wrong": "Achten Sie auf den Unterschied zwischen planungsgetriebenen Phasenmodellen und iterativen, feedbackorientierten Arbeitsweisen."
+      },
+      "progressLinks": [
+        "pv1fiae_vorgehensmodelle_stakeholder_energiedigitalisierung"
+      ]
+    },
+    {
+      "id": "q02",
+      "type": "multi_select",
+      "title": "Befürchtungen und Gegenmassnahmen einordnen",
+      "prompt": "Welche Kombinationen aus betroffener Gruppe, Befürchtung und passender Gegenmassnahme sind in diesem Einführungsprojekt besonders plausibel? Wählen Sie alle passenden Antworten.",
+      "options": [
+        {
+          "text": "Der Vorstand befürchtet hohe Einführungs- und Projektkosten; ein stufenweises Rollout mit belastbarer Kosten-Nutzen-Planung ist eine passende Gegenmassnahme.",
+          "correct": true,
+          "rationale": "Vorstände betrachten typischerweise Budget, Wirtschaftlichkeit und Rollout-Risiken."
+        },
+        {
+          "text": "Der Vorstand befürchtet Störungen im laufenden Betrieb; Pilotbetrieb, Tests und eine geplante Einführungsphase sind passende Gegenmassnahmen.",
+          "correct": true,
+          "rationale": "Ein gestufter Produktivstart reduziert operative Risiken im Tagesgeschäft."
+        },
+        {
+          "text": "Stromableser befürchten stärkere Kontrolle oder Rollenverlust; transparente Kommunikation, frühe Einbindung und klare Datenschutzregeln sind passende Gegenmassnahmen.",
+          "correct": true,
+          "rationale": "Akzeptanzfragen im Aussendienst sind in solchen Projekten realistisch."
+        },
+        {
+          "text": "Stromableser befürchten technische Überforderung im Alltag; Schulungen, Support und praxistaugliche Endgeräte sind passende Gegenmassnahmen.",
+          "correct": true,
+          "rationale": "Neue mobile Werkzeuge müssen begleitet und trainiert werden."
+        },
+        {
+          "text": "Der Vorstand befürchtet zu wenig Papierformulare; deshalb sollte die Digitalisierung möglichst gar nicht begonnen werden.",
+          "correct": false,
+          "rationale": "Das ist weder eine plausible Hauptsorge noch eine sinnvolle Massnahme."
+        },
+        {
+          "text": "Stromableser befürchten Kundenkontakt; deshalb sollten ihnen keine Informationen mehr in der App angezeigt werden.",
+          "correct": false,
+          "rationale": "Gerade Informationen für Beratung und Einsatz sind Teil ihrer Aufgaben."
+        }
+      ],
+      "feedback": {
+        "correct": "Die plausiblen Befürchtungen und Gegenmassnahmen sind fachlich passend erkannt.",
+        "wrong": "Prüfen Sie, welche Sorgen Vorstand und Aussendienst in einem Einführungsprojekt realistischerweise haben und wie sich diese bearbeiten lassen."
+      },
+      "progressLinks": [
+        "pv1fiae_vorgehensmodelle_stakeholder_energiedigitalisierung"
+      ]
+    },
+    {
+      "id": "f02",
+      "type": "followup_divider",
+      "title": "Mobile App und Datenhaltung fachlich absichern",
+      "from": "projektleitung@nordvolt-netz.example",
+      "to": "projektteam@ausbildungsbetrieb.example",
+      "subject": "Eigen- oder Fremdentwicklung, Anforderungen und MongoDB bewerten",
+      "date": "2026-03-20",
+      "body": "Hallo,\n\nfür den Aussendienst soll eine mobile App bereitgestellt werden. Deren Entwicklung kann intern oder durch einen externen Anbieter erfolgen. Gleichzeitig müssen funktionale und nichtfunktionale Anforderungen benannt und die Eignung von MongoDB für die Speicherung der App-Daten eingeordnet werden.\n\nViele Grüsse\nProjektleitung",
+      "visuals": [
+        {
+          "type": "code_block",
+          "eyebrow": "Gegebener Informationstext",
+          "title": "Kerngedanken aus dem MongoDB-Textauszug",
+          "codeTitle": "mongodb.txt",
+          "language": "text",
+          "code": "Flexible data models\n- flexible Schemas erleichtern Änderungen und das schrittweise Erweitern einer Anwendung\n\nFast qüries\n- Daten, die häufig gemeinsam genutzt werden, können zusammen gespeichert werden\n- dadurch sind weniger aufwendige Join-Operationen nötig\n\nEasy for developers\n- Dokumentstrukturen ähneln gängigen Programmierdatenstrukturen und lassen sich gut im Anwendungscode nutzen"
+        }
+      ]
+    },
+    {
+      "id": "q03",
+      "type": "multi_select",
+      "title": "Fremdvergabe einer App-Entwicklung abwägen",
+      "prompt": "Welche Aussagen benennen in dieser Situation fachlich passende Vor- und Nachteile einer Fremdvergabe? Wählen Sie alle passenden Antworten.",
+      "options": [
+        {
+          "text": "Externe Anbieter bringen oft spezialisiertes Know-how und erprobte Entwicklungserfahrung mit.",
+          "correct": true,
+          "rationale": "Das ist ein klassischer Vorteil einer Fremdvergabe."
+        },
+        {
+          "text": "Interne Teams können entlastet werden und parallel den laufenden Betrieb absichern.",
+          "correct": true,
+          "rationale": "Gerade in Betriebsorganisationen kann das ein wichtiger Vorteil sein."
+        },
+        {
+          "text": "Abhängigkeit vom Dienstleister und zusätzlicher Abstimmungsaufwand können Nachteile sein.",
+          "correct": true,
+          "rationale": "Fremdvergabe verschiebt nicht nur Arbeit, sondern erzeugt auch Schnittstellen- und Steuerungsaufwand."
+        },
+        {
+          "text": "Fachspezifisches Prozesswissen des Energieversorgers muss oft erst aufwendig an Externe übertragen werden.",
+          "correct": true,
+          "rationale": "Domänenwissen bleibt häufig intern und muss strukturiert vermittelt werden."
+        },
+        {
+          "text": "Mit Fremdvergabe entfallen Anforderungen und Fachabstimmungen weitgehend automatisch.",
+          "correct": false,
+          "rationale": "Gerade bei externer Umsetzung sind saubere Anforderungen besonders wichtig."
+        },
+        {
+          "text": "Externe Entwicklung ist immer risikofrei und garantiert in jedem Fall die billigste Option.",
+          "correct": false,
+          "rationale": "Kosten und Risikohaushalt hängen vom konkreten Projekt und Vertrag ab."
+        }
+      ],
+      "feedback": {
+        "correct": "Die passenden Vor- und Nachteile einer Fremdvergabe sind erkannt.",
+        "wrong": "Achten Sie auf Know-how und Entlastung als Chancen, aber auch auf Abhängigkeit, Abstimmung und Wissensübergabe als Risiken."
+      },
+      "progressLinks": [
+        "pv1fiae_fremdvergabe_anforderungen_mongodb"
+      ]
+    },
+    {
+      "id": "q04",
+      "type": "multi_select",
+      "title": "Funktionale Anforderungen der App auswählen",
+      "prompt": "Welche Anforderungen beschreiben Leistungen, die die App fachlich erbringen soll? Wählen Sie alle passenden Antworten.",
+      "options": [
+        {
+          "text": "Zählerstände und zugehörige Informationen vor Ort erfassen",
+          "correct": true,
+          "rationale": "Das ist eine fachliche Kernfunktion der mobilen App."
+        },
+        {
+          "text": "Arbeitsabläufe bei Störungsbeseitigungen mobil unterstützen",
+          "correct": true,
+          "rationale": "Auch Störungskontext und Bearbeitung gehören zu den beschriebenen Aufgaben."
+        },
+        {
+          "text": "Kundendaten oder einsatzrelevante Informationen für Beratung anzeigen",
+          "correct": true,
+          "rationale": "Die App soll den Aussendienst in Beratung und Einsatz unterstützen."
+        },
+        {
+          "text": "Kurze Reaktionszeiten auch bei vielen Datensätzen",
+          "correct": false,
+          "rationale": "Das beschreibt eher eine Qualitätseigenschaft als eine Funktion."
+        },
+        {
+          "text": "Hohe Verfügbarkeit und sichere Datenverarbeitung",
+          "correct": false,
+          "rationale": "Auch das sind eher nichtfunktionale Anforderungen."
+        }
+      ],
+      "feedback": {
+        "correct": "Die funktionalen Anforderungen sind korrekt erkannt.",
+        "wrong": "Prüfen Sie, welche Aussagen konkrete Leistungen der App beschreiben und welche eher Qualitätsmerkmale sind."
+      },
+      "progressLinks": [
+        "pv1fiae_fremdvergabe_anforderungen_mongodb"
+      ]
+    },
+    {
+      "id": "q05",
+      "type": "multi_select",
+      "title": "Nichtfunktionale Anforderungen der App auswählen",
+      "prompt": "Welche Anforderungen beschreiben eher Qualitätsmerkmale des Systems als konkrete Fachfunktionen? Wählen Sie alle passenden Antworten.",
+      "options": [
+        {
+          "text": "Die App soll auch unter Aussendienstbedingungen gut bedienbar sein.",
+          "correct": true,
+          "rationale": "Usability ist ein typisches nichtfunktionales Merkmal."
+        },
+        {
+          "text": "Die App soll sicher mit personenbezogenen Daten umgehen.",
+          "correct": true,
+          "rationale": "Sicherheit ist ein zentrales nichtfunktionales Kriterium."
+        },
+        {
+          "text": "Die App soll zuverlässig verfügbar sein und bei schlechter Verbindung robust reagieren.",
+          "correct": true,
+          "rationale": "Verfügbarkeit und Robustheit sind klassische nichtfunktionale Anforderungen."
+        },
+        {
+          "text": "Die App soll Kundeninformationen anzeigen.",
+          "correct": false,
+          "rationale": "Das ist eine konkrete Fachfunktion."
+        },
+        {
+          "text": "Die App soll Zählerstände erfassen und speichern.",
+          "correct": false,
+          "rationale": "Auch das beschreibt eine konkrete fachliche Leistung."
+        }
+      ],
+      "feedback": {
+        "correct": "Die nichtfunktionalen Anforderungen sind passend ausgewählt.",
+        "wrong": "Achten Sie auf Bedienbarkeit, Sicherheit und Verfügbarkeit statt auf konkrete Fachfunktionen."
+      },
+      "progressLinks": [
+        "pv1fiae_fremdvergabe_anforderungen_mongodb"
+      ]
+    },
+    {
+      "id": "q06",
+      "type": "multi_select",
+      "title": "MongoDB gegenüber relationaler Speicherung einordnen",
+      "prompt": "Welche Vorteile von MongoDB werden durch den gegebenen Textausschnitt fachlich plausibel unterstützt? Wählen Sie alle passenden Antworten.",
+      "options": [
+        {
+          "text": "Flexible Schemata erleichtern Änderungen und spätere Erweiterungen.",
+          "correct": true,
+          "rationale": "Genau darauf verweist der Abschnitt zu `Flexible data models`."
+        },
+        {
+          "text": "Hauefig gemeinsam benötigte Daten können so gespeichert werden, dass weniger aufwendige Joins nötig sind.",
+          "correct": true,
+          "rationale": "Das ist die Kernaussage des Abschnitts zu `Fast queries`."
+        },
+        {
+          "text": "Dokumentstrukturen lassen sich oft gut auf Datenstrukturen im Anwendungscode abbilden.",
+          "correct": true,
+          "rationale": "Der Abschnitt `Easy for developers` begründet genau diesen Punkt."
+        },
+        {
+          "text": "MongoDB erzwingt für jede Änderung ein starres relationales Migrationsschema mit vielen Tabellen.",
+          "correct": false,
+          "rationale": "Das widerspricht gerade dem Argument der flexiblen Schemata."
+        },
+        {
+          "text": "MongoDB ist nur sinnvoll, wenn ausschliesslich SQL-Join-Operationen im Mittelpunkt stehen.",
+          "correct": false,
+          "rationale": "Der Text argumentiert eher mit weniger Joins als Vorteil."
+        }
+      ],
+      "feedback": {
+        "correct": "Die aus dem Text ableitbaren Vorteile von MongoDB sind korrekt erkannt.",
+        "wrong": "Denken Sie an flexible Modelle, Join-arme Zugriffsmuster und die gute Abbildung auf Programmstrukturen."
+      },
+      "progressLinks": [
+        "pv1fiae_fremdvergabe_anforderungen_mongodb"
+      ]
+    },
+    {
+      "id": "f03",
+      "type": "followup_divider",
+      "title": "Smart-Meter-Anzeigen und Observer-Logik modellieren",
+      "from": "softwarearchitektur@nordvolt-netz.example",
+      "to": "projektteam@ausbildungsbetrieb.example",
+      "subject": "SmartMeter-Klasse, Observer-Beziehungen und Sequenzlogik abstimmen",
+      "date": "2026-03-20",
+      "body": "Hallo,\n\nfür intelligente Stromzähler sollen unterschiedliche Anzeigen bereitgestellt werden, etwa eine Liste der Ablesungen und ein Fenster für den durchschnittlichen Monatsverbrauch. Die Aktualisierung der Anzeigen soll über das Observer-Muster erfolgen. Bitte ordnen Sie Klasse, Beziehungen, Sequenzlogik und Pseudocode fachlich sauber ein.\n\nViele Grüsse\nSoftwarearchitektur",
+      "visuals": [
+        {
+          "type": "code_block",
+          "eyebrow": "Gegebene Anzeigeidee",
+          "title": "ReadingsDisplay und AvgDisplay",
+          "codeTitle": "smartmeter.txt",
+          "language": "text",
+          "code": "Stromzähler 1HAG1000384497\n12.01.2022  22.008 kWh\n12.02.2022  22.410 kWh\n12.03.2022  22.822 kWh\n12.04.2022  23.230 kWh\n12.05.2022  23.651 kWh\n\nDurchschnittlicher monatlicher Verbrauch: 410,75 kWh"
+        }
+      ]
+    },
+    {
+      "id": "ctx02",
+      "type": "context_card",
+      "title": "Kontext zu SmartMeter und Observer",
+      "contentBlocks": [
+        {
+          "type": "text",
+          "text": "Für die Klasse `SmartMeter` sind private Instanzvariablen `meterNumber` für die Zählernummer und `counter` für den Zählerstand gefordert. Der Konstruktor sowie Set- und Get-Methode für `counter` sollen öffentlich sichtbar sein.\n\nIm Observer-Entwurf gibt es `MeterData`, das Interface `ObserverSubject`, das Interface `Observer` sowie die Anzeigen `AvgDisplay` und `ReadingsDisplay`. Die Anzeigen sollen über `update()` von `MeterData` benachrichtigt werden."
+        }
+      ]
+    },
+    {
+      "id": "q07",
+      "type": "single_choice",
+      "title": "Passenden Klassenausschnitt für `SmartMeter` wählen",
+      "prompt": "Welche Klassenbeschreibung bildet die Vorgaben für `SmartMeter` fachlich am besten ab?",
+      "options": [
+        {
+          "label": "Variante A",
+          "language": "text",
+          "code": "SmartMeter\n- meterNumber : String\n- counter : Double\n+ SmartMeter(meterNumber : String, counter : Double)\n+ setCounter(counter : Double) : void\n+ getCounter() : Double",
+          "rationale": "Diese Variante setzt private Instanzvariablen und die geforderten öffentlichen Methoden mit sinnvollen Datentypen um."
+        },
+        {
+          "label": "Variante B",
+          "language": "text",
+          "code": "SmartMeter\n+ meterNumber : String\n+ counter : Double\n- SmartMeter()\n- setCounter(counter : Double) : void\n- getCounter() : Double",
+          "rationale": "Hier stimmen Sichtbarkeiten von Attributen und Methoden nicht mit den Vorgaben überein."
+        },
+        {
+          "label": "Variante C",
+          "language": "text",
+          "code": "SmartMeter\n- meterNumber : String[]\n- counter : Boolean\n+ SmartMeter()\n+ getMeterNumber() : void",
+          "rationale": "Datentypen und Methodenauswahl passen nicht sinnvoll zur Aufgabenstellung."
+        },
+        {
+          "label": "Variante D",
+          "language": "text",
+          "code": "SmartMeter\n# meterNumber : String\n# counter : Double\n+ setCounter(counter : Double) : Double",
+          "rationale": "Hier fehlen Konstruktor und Getter, ausserdem ist die Sichtbarkeit nicht gefordert und die Rückgabe der Set-Methode unpassend."
+        }
+      ],
+      "correctIndex": 0,
+      "feedback": {
+        "correct": "Die Klasse `SmartMeter` ist fachlich passend aufgebaut.",
+        "wrong": "Achten Sie auf private Instanzvariablen, einen öffentlichen Konstruktor und Set-/Get-Methoden nur für den Zählerstand."
+      },
+      "progressLinks": [
+        "pv1fiae_smartmeter_observer_uml"
+      ]
+    },
+    {
+      "id": "q08",
+      "type": "single_choice",
+      "title": "Beziehung zwischen `MeterData` und `ObserverSubject` einordnen",
+      "prompt": "Welche Art von Beziehung liegt zwischen der Klasse `MeterData` und dem Interface `ObserverSubject` fachlich am treffendsten vor?",
+      "options": [
+        {
+          "text": "`MeterData` realisiert das Interface `ObserverSubject`.",
+          "rationale": "Eine Klasse, die die Methoden des Interfaces bereitstellt, realisiert dieses Interface."
+        },
+        {
+          "text": "`MeterData` erbt als Unterklasse von `ObserverSubject`.",
+          "rationale": "Bei einem Interface geht es hier nicht um klassische Vererbung einer Basisklasse."
+        },
+        {
+          "text": "`MeterData` steht in Komposition zu `ObserverSubject` und kann ohne dieses nicht existieren.",
+          "rationale": "Die gezeigte Beziehung beschreibt keine Ganzes-Teil-Existenzabhängigkeit."
+        },
+        {
+          "text": "`MeterData` ist mit `ObserverSubject` nur lose assoziiert, ohne Methoden zu übernehmen.",
+          "rationale": "Die Diagrammnotation zielt hier gerade auf die Realisierung eines Interfaces."
+        }
+      ],
+      "correctIndex": 0,
+      "feedback": {
+        "correct": "Die Beziehung zwischen `MeterData` und `ObserverSubject` ist korrekt eingeordnet.",
+        "wrong": "Prüfen Sie, ob `MeterData` das Interface implementiert oder ob eine andere UML-Beziehungsart gemeint wäre."
+      },
+      "progressLinks": [
+        "pv1fiae_smartmeter_observer_uml"
+      ]
+    },
+    {
+      "id": "q09",
+      "type": "multi_select",
+      "title": "Fehlende Methodensignaturen im Observer-Entwurf erkennen",
+      "prompt": "Welche Methodensignaturen fehlen gemäss Diagramm- und Pattern-Logik in den Klassen `MeterData`, `AvgDisplay` und `ReadingsDisplay`? Wählen Sie alle passenden Antworten.",
+      "options": [
+        {
+          "text": "`MeterData` benötigt `addObserver(observer : Observer) : void`.",
+          "correct": true,
+          "rationale": "Diese Signatur gehört zur Realisierung von `ObserverSubject`."
+        },
+        {
+          "text": "`MeterData` benötigt `notifyObservers() : void`.",
+          "correct": true,
+          "rationale": "Auch diese Methode gehört zum Subject-Interface."
+        },
+        {
+          "text": "`AvgDisplay` benötigt `update() : void`.",
+          "correct": true,
+          "rationale": "Als Observer muss die Anzeige ein `update()` bereitstellen."
+        },
+        {
+          "text": "`ReadingsDisplay` benötigt `update() : void`.",
+          "correct": true,
+          "rationale": "Auch das zweite Display wird über `update()` benachrichtigt."
+        },
+        {
+          "text": "`ObserverSubject` benötigt `display() : void`.",
+          "correct": false,
+          "rationale": "`display()` gehört zur konkreten Anzeige, nicht zum Subject-Interface."
+        },
+        {
+          "text": "`AvgDisplay` benötigt `setReadings_date(readings) : void`.",
+          "correct": false,
+          "rationale": "Die Rohdaten werden vom Subject gesetzt, nicht direkt im Display."
+        }
+      ],
+      "feedback": {
+        "correct": "Die fehlenden Signaturen im Observer-Entwurf sind korrekt erkannt.",
+        "wrong": "Achten Sie darauf, welche Methoden zum Subject gehören und welche Observer über `update()` bereitstellen müssen."
+      },
+      "progressLinks": [
+        "pv1fiae_smartmeter_observer_uml"
+      ]
+    },
+    {
+      "id": "q10",
+      "type": "single_choice",
+      "title": "Beziehung zwischen `Observer` und `AvgDisplay` begründen",
+      "prompt": "Welche Aussage beschreibt die Beziehung zwischen `Observer` und `AvgDisplay` am treffendsten und erklärt, warum sie hier sinnvoll ist?",
+      "options": [
+        {
+          "text": "`AvgDisplay` realisiert das Interface `Observer`; dadurch kann `MeterData` alle registrierten Anzeigen einheitlich über `update()` benachrichtigen.",
+          "rationale": "Genau das ist der Nutzen des Observer-Musters in diesem Kontext."
+        },
+        {
+          "text": "`AvgDisplay` kompositioniert `Observer`; dadurch verschwindet das Interface aus dem System.",
+          "rationale": "Das beschreibt weder die gezeigte Notation noch den Pattern-Nutzen."
+        },
+        {
+          "text": "`Observer` erbt von `AvgDisplay`; dadurch muss das Display keine Methode mehr besitzen.",
+          "rationale": "Das widerspricht Interface- und Rollenlogik im Diagramm."
+        },
+        {
+          "text": "`AvgDisplay` und `Observer` stehen in keiner sinnvollen Beziehung, weil Benachrichtigungen ausschliesslich über den Konstruktor erfolgen.",
+          "rationale": "Die Aktualisierung erfolgt gerade nicht nur über den Konstruktor."
+        }
+      ],
+      "correctIndex": 0,
+      "feedback": {
+        "correct": "Die Beziehung zwischen `Observer` und `AvgDisplay` ist korrekt verstanden.",
+        "wrong": "Achten Sie darauf, dass die Anzeige als Observer auftritt und über eine gemeinsame Schnittstelle benachrichtigt wird."
+      },
+      "progressLinks": [
+        "pv1fiae_smartmeter_observer_uml"
+      ]
+    },
+    {
+      "id": "q11",
+      "type": "single_choice",
+      "title": "Sequenzlogik des Observer-Ablaufs lesen",
+      "prompt": "Welche Ablaufbeschreibung bildet den beschriebenen Observer-Prozess mit `MeterData` und `AvgDisplay` fachlich am besten ab?",
+      "options": [
+        {
+          "label": "Variante A",
+          "language": "text",
+          "code": "Client erstellt MeterData und AvgDisplay.\nDer AvgDisplay-Konstruktor ruft addObserver(this) bei MeterData auf.\nClient ruft setReadings_date(readings) auf MeterData auf.\nMeterData startet notifyObservers().\nnotifyObservers() ruft update() auf AvgDisplay auf.\nAvgDisplay startet display() und liest über getAvgMonth() den Monatswert bei MeterData aus.",
+          "rationale": "Diese Variante trifft Registrierung, Datenaktualisierung, Benachrichtigung und Rücklesen des Anzeigewerts."
+        },
+        {
+          "label": "Variante B",
+          "language": "text",
+          "code": "Client ruft sofort update() auf AvgDisplay auf.\nAvgDisplay erstellt anschliessend MeterData.\nMeterData ruft danach addObserver() auf dem Client auf.",
+          "rationale": "Die Reihenfolge und beteiligten Rollen passen nicht zum beschriebenen Ablauf."
+        },
+        {
+          "label": "Variante C",
+          "language": "text",
+          "code": "MeterData fragt ständig selbstständig alle Displays ab, ohne dass Observers registriert werden.\nAvgDisplay sendet den Durchschnittswert per Konstruktor an den Client.",
+          "rationale": "Das verfehlt die Registrierungs- und Benachrichtigungslogik des Observer-Musters."
+        },
+        {
+          "label": "Variante D",
+          "language": "text",
+          "code": "Client erstellt nur AvgDisplay.\nDer Authorization Server berechnet den Durchschnitt.\nMeterData wird nicht benötigt, weil display() alle Werte direkt speichert.",
+          "rationale": "Diese Variante mischt fachfremde Rollen hinein und ignoriert das Subject der Daten."
+        }
+      ],
+      "correctIndex": 0,
+      "feedback": {
+        "correct": "Die Sequenzlogik des Observer-Ablaufs ist korrekt gelesen.",
+        "wrong": "Achten Sie auf die Reihenfolge Registrierung, Setzen der Daten, Benachrichtigung über `notifyObservers()` und anschliessendes Lesen des Durchschnittswerts."
+      },
+      "progressLinks": [
+        "pv1fiae_smartmeter_observer_uml"
+      ]
+    },
+    {
+      "id": "q12",
+      "type": "single_choice",
+      "title": "Methode `notifyObservers()` in Pseudocode umsetzen",
+      "prompt": "Welche Pseudocode-Variante bildet `notifyObservers()` fachlich am besten ab?",
+      "options": [
+        {
+          "label": "Variante A",
+          "language": "text",
+          "code": "for each (Observer o : observers) {\n  o.update()\n}",
+          "rationale": "Diese Schleife benachrichtigt alle registrierten Observer über ihre gemeinsame Schnittstelle."
+        },
+        {
+          "label": "Variante B",
+          "language": "text",
+          "code": "return observers",
+          "rationale": "Damit werden Observer nicht benachrichtigt, sondern nur zurückgegeben."
+        },
+        {
+          "label": "Variante C",
+          "language": "text",
+          "code": "for each (Observer o : observers) {\n  addObserver(o)\n}",
+          "rationale": "Hier werden Observer erneut registriert, aber nicht informiert."
+        },
+        {
+          "label": "Variante D",
+          "language": "text",
+          "code": "display()\ngetAvgMonth()",
+          "rationale": "Diese Aufrufe gehören nicht direkt in `notifyObservers()` des Subjects."
+        }
+      ],
+      "correctIndex": 0,
+      "feedback": {
+        "correct": "Die Pseudocode-Umsetzung von `notifyObservers()` ist korrekt erkannt.",
+        "wrong": "Prüfen Sie, dass das Subject alle registrierten Observer durch Aufruf von `update()` benachrichtigt."
+      },
+      "progressLinks": [
+        "pv1fiae_smartmeter_observer_uml"
+      ]
+    },
+    {
+      "id": "f04",
+      "type": "followup_divider",
+      "title": "Ticketsystem, OAuth und TLS absichern",
+      "from": "webplattform@nordvolt-netz.example",
+      "to": "projektteam@ausbildungsbetrieb.example",
+      "subject": "Ticketsystem-Einführung, OAuth-Login und SSL/TLS-Schutz bewerten",
+      "date": "2026-03-20",
+      "body": "Hallo,\n\nfür die Bearbeitung von Supportanfragen soll ein Ticketsystem eingeführt werden. Der Login soll per OAuth2 erfolgen, und der Webserver des Ticketsystems soll über ein SSL/TLS-Zertifikat abgesichert werden. Bitte ordnen Sie Nutzen, Prozessschritte und Sicherheitsmechanismen sauber ein.\n\nViele Grüsse\nWebplattform",
+      "visuals": [
+        {
+          "type": "code_block",
+          "eyebrow": "OAuth-Skizze",
+          "title": "Vereinfachter Autorisierungsfluss",
+          "codeTitle": "oauth.txt",
+          "language": "text",
+          "code": "Resource Owner -> Authorization Server : Authorization\nResource Owner -> Client : Auth. Code\nClient -> Authorization Server : [leer 1]\nAuthorization Server -> Client : [leer 2]\nClient -> Resource Server : [leer 3]\nResource Server -> Client : [leer 4]\n\nVerfügbare Begriffe:\n- Access Token\n- Protected Resource\n- Auth. Code"
+        }
+      ]
+    },
+    {
+      "id": "ctx03",
+      "type": "context_card",
+      "title": "Kontext zu Ticketsystem und TLS",
+      "contentBlocks": [
+        {
+          "type": "text",
+          "text": "Das Ticketsystem soll Supportfälle strukturiert erfassen und über einen Webserver bereitstellen. Für den Login ist ein OAuth2-Prozess vorgegeben. Um den Datenschutz beim Webzugriff abzusichern, soll der Webserver mit einem SSL/TLS-Zertifikat abgesichert werden."
+        }
+      ]
+    },
+    {
+      "id": "q13",
+      "type": "multi_select",
+      "title": "Vorteile und Nachteil eines Ticketsystems einordnen",
+      "prompt": "Welche Aussagen benennen in dieser Situation fachlich passende Vorteile und einen möglichen Nachteil eines Ticketsystems? Wählen Sie alle passenden Antworten.",
+      "options": [
+        {
+          "text": "Anfragen lassen sich strukturiert erfassen, priorisieren und einem Bearbeitungsstatus zuordnen.",
+          "correct": true,
+          "rationale": "Genau diese Strukturierung ist ein Kernnutzen eines Ticketsystems."
+        },
+        {
+          "text": "Verläufe, Zuständigkeiten und Bearbeitungsschritte werden nachvollziehbarer dokumentiert.",
+          "correct": true,
+          "rationale": "Ticketsysteme verbessern Transparenz und Nachvollziehbarkeit."
+        },
+        {
+          "text": "Ein möglicher Nachteil ist zusätzlicher Einführungs-, Pflege- oder Schulungsaufwand.",
+          "correct": true,
+          "rationale": "Auch sinnvolle Tools erzeugen Einführungs- und Betriebsaufwand."
+        },
+        {
+          "text": "Mit einem Ticketsystem werden alle technischen Störungen automatisch ohne Mitarbeit gelöst.",
+          "correct": false,
+          "rationale": "Ein Ticketsystem organisiert Bearbeitung, ersetzt aber keine fachliche Lösung."
+        },
+        {
+          "text": "Ein Ticketsystem macht Datenschutz und Berechtigungskonzepte überflüssig.",
+          "correct": false,
+          "rationale": "Gerade bei Supportdaten bleiben Datenschutz und Zugriffsregeln wichtig."
+        }
+      ],
+      "feedback": {
+        "correct": "Die Vorteile und der mögliche Nachteil eines Ticketsystems sind korrekt eingeordnet.",
+        "wrong": "Achten Sie auf Struktur, Transparenz und Einführungsaufwand statt auf unrealistische Vollautomatisierung."
+      },
+      "progressLinks": [
+        "pv1fiae_ticketsystem_oauth_tls"
+      ]
+    },
+    {
+      "id": "q14",
+      "type": "match_pairs",
+      "title": "Fehlende OAuth-Begriffe den Pfeilen zuordnen",
+      "prompt": "Ordnen Sie den vier leeren Pfeilbeschriftungen der OAuth-Skizze die passenden Begriffe zu. Ein Begriff wird dabei zweimal verwendet.",
+      "layout": "table",
+      "columns": [
+        "Pfeil in der Skizze",
+        "Begriff"
+      ],
+      "pairs": [
+        {
+          "key": "oauth_blank_1",
+          "left": "Client -> Authorization Server",
+          "right": "Auth. Code"
+        },
+        {
+          "key": "oauth_blank_2",
+          "left": "Authorization Server -> Client",
+          "right": "Access Token"
+        },
+        {
+          "key": "oauth_blank_3",
+          "left": "Client -> Resource Server",
+          "right": "Access Token"
+        },
+        {
+          "key": "oauth_blank_4",
+          "left": "Resource Server -> Client",
+          "right": "Protected Resource"
+        }
+      ],
+      "options": [
+        "Auth. Code",
+        "Access Token",
+        "Protected Resource"
+      ],
+      "feedback": {
+        "correct": "Die fehlenden OAuth-Begriffe sind korrekt zugeordnet.",
+        "wrong": "Denken Sie an den typischen Ablauf: Code zum Authorization Server, Token zurück, Token zum Resource Server und geschützte Ressource als Antwort."
+      },
+      "progressLinks": [
+        "pv1fiae_ticketsystem_oauth_tls"
+      ]
+    },
+    {
+      "id": "q15",
+      "type": "multi_select",
+      "title": "Sicherheitsmechanismen von SSL/TLS-Zertifikaten benennen",
+      "prompt": "Welche Sicherheitsmechanismen werden durch den Einsatz eines SSL/TLS-Zertifikats am Webserver fachlich passend unterstützt? Wählen Sie alle passenden Antworten.",
+      "options": [
+        {
+          "text": "Die Verbindung zwischen Browser und Webserver wird gegen unbefugtes Mitlesen geschützt.",
+          "correct": true,
+          "rationale": "Transportverschlüsselung sorgt für Vertraulichkeit während der Übertragung."
+        },
+        {
+          "text": "Der Browser kann die Identität des Webservers über das Zertifikat und die Vertrauenskette prüfen.",
+          "correct": true,
+          "rationale": "Zertifikate unterstützen die Authentizität des Kommunikationspartners."
+        },
+        {
+          "text": "Manipulationen an übertragenen Daten können erkannt werden.",
+          "correct": true,
+          "rationale": "TLS schützt neben Vertraulichkeit auch die Integrität der Übertragung."
+        },
+        {
+          "text": "Ein SSL/TLS-Zertifikat verschlüsselt automatisch alle Daten im Datenbankspeicher des Systems.",
+          "correct": false,
+          "rationale": "TLS schützt die Transportverbindung, nicht automatisch jede gespeicherte Datenhaltung."
+        },
+        {
+          "text": "Mit TLS verschwinden automatisch alle Schwachstellen auf Anwendungsebene.",
+          "correct": false,
+          "rationale": "TLS ist wichtig, ersetzt aber keine sichere Anwendungslogik."
+        }
+      ],
+      "feedback": {
+        "correct": "Die Sicherheitsmechanismen von SSL/TLS sind korrekt benannt.",
+        "wrong": "Achten Sie auf Vertraulichkeit, Authentizität und Integrität der Verbindung statt auf Wirkungen ausserhalb des Transportkanals."
+      },
+      "progressLinks": [
+        "pv1fiae_ticketsystem_oauth_tls"
+      ]
+    }
+  ]
+}

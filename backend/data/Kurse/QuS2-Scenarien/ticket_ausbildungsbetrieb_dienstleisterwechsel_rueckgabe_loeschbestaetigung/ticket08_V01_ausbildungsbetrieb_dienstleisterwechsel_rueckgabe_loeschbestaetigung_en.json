@@ -1,0 +1,418 @@
+{
+  "scenario": {
+    "company": "SecuBridge Service GmbH",
+    "scale": "IT service provider for home office, municipal workplaces and medical practice environments, 95 employees",
+    "context": "An external service provider for document review and inquiry handling leaves at month end. Data return, residual access and deletion confirmation must be completed before then.",
+    "mission": "Define return scope, access revocation, open exceptions and completion evidence for the provider offboarding.",
+    "source": {
+      "kind": "Internal offboarding and handover request",
+      "reference": "Provider change document review, 2026-03-27",
+      "note": "Based on an expiring contract, remaining project folders in the partner portal, technical API access, a support mailbox for inquiries and the obligation for traceable data return and deletion confirmation."
+    },
+    "station": {
+      "id": "QUS2-ST-08",
+      "department": "Procurement, data protection coordination and operations transition",
+      "profile": "Provider offboarding, data return, access revocation and completion evidence",
+      "constraints": [
+        "Return, deletion and access revocation must be separated and documented for each affected area",
+        "Open inquiries or complaints may only carry over as justified exceptions",
+        "At contract end a readable closure with return status, technical implementation and deletion confirmation is required"
+      ]
+    },
+    "customerRequest": {
+      "from": "einkauf@secubridge-service.example",
+      "to": "providerwechsel@ausbildungsbetrieb.example",
+      "subject": "Prepare offboarding of the document review provider by month end",
+      "date": "2026-03-26",
+      "body": "Good day,\n\nour external provider for reviewing incoming documents and handling inquiries is leaving at month end. The partner portal still contains project folders, data exchange uses an API access, and the shared support mailbox still holds open inquiries for individual cases.\n\nPlease prepare a reliable status by Friday: which data or documents must be actively returned or taken over, which accesses will be revoked, which exceptions remain temporarily open and which evidence we need for return, deletion and closure.\n\nKind regards\nProcurement"
+    }
+  },
+  "questions": [
+    {
+      "id": "ctx01",
+      "type": "context_card",
+      "title": "Offboarding status at a glance",
+      "contentBlocks": [
+        {
+          "type": "text",
+          "text": "SecuBridge ends the collaboration with a provider that pre-sorted documents and answered inquiries in a shared operational process. The critical point is not only contract termination, but the clean transition of data, open cases and technical access."
+        },
+        {
+          "type": "table",
+          "columns": [
+            "Area",
+            "Current finding"
+          ],
+          "rows": [
+            [
+              "Partner portal",
+              "Project folders and interim states are still accessible by the provider"
+            ],
+            [
+              "API access",
+              "Automated data exchange for inquiries is still active"
+            ],
+            [
+              "Support mailbox",
+              "Several open inquiries still run through the shared address"
+            ],
+            [
+              "Contract end",
+              "Month end, no regular access planned afterward"
+            ],
+            [
+              "Expectation for Friday",
+              "Return, revocation, exceptions and deletion confirmation in one closure picture"
+            ]
+          ]
+        },
+        {
+          "type": "text",
+          "text": "The goal is not a formal contract note, but a clean offboarding status that connects data return, residual access, open cases and later traceability."
+        }
+      ]
+    },
+    {
+      "id": "q01",
+      "type": "multi_select",
+      "title": "Critical points before contract end",
+      "prompt": "Which points must be clarified or initiated before contract end? Several points can be mandatory.",
+      "options": [
+        {
+          "text": "Which data and work states still sit with the provider and in what form they must be returned or taken over.",
+          "correct": true,
+          "rationale": "Without a clear return scope, it remains unclear what will be missing after contract end."
+        },
+        {
+          "text": "Which technical accesses, tokens or accounts must be revoked with contract end.",
+          "correct": true,
+          "rationale": "Contract end without technical revocation easily leaves residual access."
+        },
+        {
+          "text": "Which open inquiries or complaints cannot be closed yet and remain as temporary exceptions.",
+          "correct": true,
+          "rationale": "Open cases must not silently slip into the closure."
+        },
+        {
+          "text": "Which evidence for return, deletion and closure must be available later.",
+          "correct": true,
+          "rationale": "Closure needs early defined evidence, not a late collection attempt."
+        },
+        {
+          "text": "Offboarding can be reduced to a simple contract note as long as no new escalation occurs.",
+          "correct": false,
+          "rationale": "Without data, access and evidence focus, offboarding remains too superficial."
+        },
+        {
+          "text": "Open project folders can remain with the provider as long as internal teams know what they are.",
+          "correct": false,
+          "rationale": "Remaining project folders must be actively handled during the transition."
+        }
+      ],
+      "feedback": {
+        "correct": "The critical points before contract end were correctly identified.",
+        "wrong": "Focus on return scope, access revocation, exceptions and evidence instead of a purely formal closure."
+      },
+      "progressLinks": [
+        "qus2_dienstleister_offboarding_und_scope"
+      ]
+    },
+    {
+      "id": "q02",
+      "type": "single_choice",
+      "title": "Reliable offboarding line",
+      "prompt": "Which line most clearly shows reliable provider offboarding here?",
+      "options": [
+        {
+          "text": "End the contract, mark all folders internally as done and check technical access later when convenient.",
+          "rationale": "This leaves return and technical residual access open for too long."
+        },
+        {
+          "text": "Clarify return or takeover per area, revoke access, record open exceptions with deadlines and collect deletion or return evidence.",
+          "rationale": "This cleanly connects data, technical revocation and completion evidence."
+        },
+        {
+          "text": "Only revoke API access, because data in folders and mailboxes can be handled later if needed.",
+          "rationale": "That reduces some risk but leaves data and evidence questions open."
+        },
+        {
+          "text": "Close all open inquiries immediately so no exception needs to be documented.",
+          "rationale": "Forced closure does not replace a domain-clean transition."
+        }
+      ],
+      "correctIndex": 1,
+      "feedback": {
+        "correct": "The reliable offboarding line was correctly identified.",
+        "wrong": "The target is a process that steers return, revocation, exceptions and evidence together."
+      },
+      "progressLinks": [
+        "qus2_dienstleister_offboarding_und_scope",
+        "qus2_datenrueckgabe_und_zugriffsentzug"
+      ]
+    },
+    {
+      "id": "f02",
+      "type": "followup_divider",
+      "title": "Separate return and technical revocations cleanly",
+      "from": "datenschutzkoordination@secubridge-service.example",
+      "to": "providerwechsel@ausbildungsbetrieb.example",
+      "subject": "Create transition matrix for return, revocation and exceptions",
+      "date": "2026-03-26",
+      "body": "Hello everyone,\n\nplease break down the case per area: what must be actively taken over or returned, which access ends technically with the contract and which open points can only remain as temporary exceptions. I need a first evidence per area that will later support the closure.\n\nKind regards\nData protection coordination"
+    },
+    {
+      "id": "q03",
+      "type": "table_fill",
+      "title": "First measure and evidence per area",
+      "prompt": "For each area, add the most likely first measure and the first appropriate evidence.",
+      "columns": [
+        "Area",
+        "First measure",
+        "First appropriate evidence"
+      ],
+      "rows": [
+        [
+          "Partner portal with project folders",
+          {
+            "key": "action_row_1",
+            "label": "Partner portal / measure",
+            "expected": "Organize return or internal takeover of needed folders and mark remaining legacy stock.",
+            "inputType": "select",
+            "placeholder": "Select measure",
+            "options": [
+              "Organize return or internal takeover of needed folders and mark remaining legacy stock.",
+              "Only list folder names in an email and leave the files unchanged.",
+              "Keep portal access open until someone later handles storage internally.",
+              "Rename folders so they attract less attention in the portal."
+            ]
+          },
+          {
+            "key": "proof_row_1",
+            "label": "Partner portal / evidence",
+            "expected": "Handover list or return protocol with folder reference and status.",
+            "inputType": "select",
+            "placeholder": "Select evidence",
+            "options": [
+              "Handover list or return protocol with folder reference and status.",
+              "Screenshot of the portal start page without file reference.",
+              "Calendar entry for contract end.",
+              "General project presentation without handover status."
+            ]
+          }
+        ],
+        [
+          "API access for inquiries",
+          {
+            "key": "action_row_2",
+            "label": "API access / measure",
+            "expected": "Deactivate the token or technical account at contract end and plan remaining interface checks.",
+            "inputType": "select",
+            "placeholder": "Select measure",
+            "options": [
+              "Deactivate the token or technical account at contract end and plan remaining interface checks.",
+              "Only archive the API documentation and leave access unchanged.",
+              "Hand the token to the successor provider so nothing fails.",
+              "Leave the interface open in parallel until next quarter."
+            ]
+          },
+          {
+            "key": "proof_row_2",
+            "label": "API access / evidence",
+            "expected": "Change record for deactivation with system reference and timestamp.",
+            "inputType": "select",
+            "placeholder": "Select evidence",
+            "options": [
+              "Change record for deactivation with system reference and timestamp.",
+              "Only a technical architecture slide without implementation status.",
+              "Note that the provider likely no longer uses the access.",
+              "List of general API endpoints without account reference."
+            ]
+          }
+        ],
+        [
+          "Shared support mailbox with open inquiries",
+          {
+            "key": "action_row_3",
+            "label": "Support mailbox / measure",
+            "expected": "Take open cases internally, mark exceptions with a deadline and end external access.",
+            "inputType": "select",
+            "placeholder": "Select measure",
+            "options": [
+              "Take open cases internally, mark exceptions with a deadline and end external access.",
+              "Leave the mailbox running unchanged for now.",
+              "Close all inquiries without review so no exceptions remain open.",
+              "Export only subject lines and sort the rest later."
+            ]
+          },
+          {
+            "key": "proof_row_3",
+            "label": "Support mailbox / evidence",
+            "expected": "Case list with takeover status, exceptions and evidence of revoked mailbox access.",
+            "inputType": "select",
+            "placeholder": "Select evidence",
+            "options": [
+              "Case list with takeover status, exceptions and evidence of revoked mailbox access.",
+              "Screenshot of a single mailbox folder.",
+              "Phone note without case references.",
+              "Calendar block for the team meeting on Friday."
+            ]
+          }
+        ]
+      ],
+      "feedback": {
+        "correct": "Area, first measure and first evidence were matched consistently.",
+        "wrong": "Check which measure truly steers return or revocation and which evidence can later support the closure."
+      },
+      "progressLinks": [
+        "qus2_datenrueckgabe_und_zugriffsentzug"
+      ]
+    },
+    {
+      "id": "q04",
+      "type": "match_pairs",
+      "title": "Responsibilities in provider offboarding",
+      "prompt": "Which role takes which initial responsibility in the offboarding case?",
+      "layout": "table",
+      "columns": [
+        "Role",
+        "Initial responsibility"
+      ],
+      "pairs": [
+        {
+          "key": "role_1",
+          "left": "Procurement",
+          "right": "Drive contract end, formal return requirements and deadlines toward the provider"
+        },
+        {
+          "key": "role_2",
+          "left": "Platform operations",
+          "right": "Deactivate or restrict API access, accounts and technical residual approvals"
+        },
+        {
+          "key": "role_3",
+          "left": "Domain team document review",
+          "right": "Confirm open inquiries, required documents and domain exceptions"
+        },
+        {
+          "key": "role_4",
+          "left": "Data protection coordination",
+          "right": "Consolidate deletion confirmation, exception logic and completion evidence"
+        }
+      ],
+      "options": [
+        "Drive contract end, formal return requirements and deadlines toward the provider",
+        "Deactivate or restrict API access, accounts and technical residual approvals",
+        "Confirm open inquiries, required documents and domain exceptions",
+        "Consolidate deletion confirmation, exception logic and completion evidence"
+      ],
+      "feedback": {
+        "correct": "The roles were matched with their initial responsibilities.",
+        "wrong": "Focus on who drives contract and deadline, who revokes technically, who confirms domain exceptions and who secures the closure."
+      },
+      "progressLinks": [
+        "qus2_datenrueckgabe_und_zugriffsentzug",
+        "qus2_loeschbestaetigung_und_abschluss"
+      ]
+    },
+    {
+      "id": "q05",
+      "type": "number",
+      "title": "Folders for direct closure approval",
+      "prompt": "There are 34 project folders in the partner portal. 10 must be taken over internally, 5 remain as temporary exceptions due to open inquiries and 7 have already been returned cleanly. How many folders can now go directly into deletion or closure confirmation?",
+      "expected": 12,
+      "toleranceAbs": 0,
+      "showExpectedFormula": "34 - 10 - 5 - 7 = 12 folders",
+      "feedback": {
+        "correct": "The amount for direct closure approval was calculated correctly.",
+        "wrong": "Please subtract takeovers, exceptions and already completed returns from the total."
+      },
+      "progressLinks": [
+        "qus2_datenrueckgabe_und_zugriffsentzug"
+      ]
+    },
+    {
+      "id": "f03",
+      "type": "followup_divider",
+      "title": "Prepare closure for contract end",
+      "from": "revision@secubridge-service.example",
+      "to": "providerwechsel@ausbildungsbetrieb.example",
+      "subject": "Deliver return and deletion status for month end",
+      "date": "2026-03-26",
+      "body": "Hello everyone,\n\nfor month end I do not need a pure contract note, but a readable status on which data was returned or taken over, which technical accesses ended, which exceptions remain open with a deadline and what the deletion or closure confirmation is based on. Please also make visible if an area could not be fully closed.\n\nKind regards\nAudit"
+    },
+    {
+      "id": "q06",
+      "type": "multi_select",
+      "title": "What must be visible in the closure",
+      "prompt": "Which documents or results are required for a reliable offboarding closure?",
+      "options": [
+        {
+          "text": "An overview per area with return, takeover or deletion decision.",
+          "correct": true,
+          "rationale": "Without clear decisions per area, the closure is not readable later."
+        },
+        {
+          "text": "Evidence of revoked accounts, tokens or technical residual access.",
+          "correct": true,
+          "rationale": "Closure needs visible technical implementation, not only intent."
+        },
+        {
+          "text": "Exceptions with reason, deadline and responsible owner.",
+          "correct": true,
+          "rationale": "Temporary remnants must not remain open without control."
+        },
+        {
+          "text": "Return or deletion confirmations linked to the affected data or folders.",
+          "correct": true,
+          "rationale": "This is what later traceability of offboarding depends on."
+        },
+        {
+          "text": "A short broadcast email that the provider is now out as planned.",
+          "correct": false,
+          "rationale": "A broadcast email does not replace return, deletion or revocation evidence."
+        },
+        {
+          "text": "Only the contract termination, because domain and technical questions are known internally.",
+          "correct": false,
+          "rationale": "The formal contract point alone does not cover the actual handover and evidence need."
+        }
+      ],
+      "feedback": {
+        "correct": "The required components of offboarding closure were fully identified.",
+        "wrong": "Focus on decisions, technical revocations, exceptions and return or deletion evidence rather than pure formality."
+      },
+      "progressLinks": [
+        "qus2_loeschbestaetigung_und_abschluss"
+      ]
+    },
+    {
+      "id": "q07",
+      "type": "ordering",
+      "title": "Close offboarding cleanly",
+      "prompt": "Put the steps in a sensible order so provider offboarding can be closed reliably.",
+      "items": [
+        "Consolidate affected data, folders, mailboxes and technical accesses completely.",
+        "Clarify return, takeover and open domain exceptions per area.",
+        "Revoke or limit accounts, tokens and other residual access technically.",
+        "Secure return, revocation and deletion evidence per area.",
+        "Release closure with exceptions and residual points for month end."
+      ],
+      "correctOrder": [
+        "Consolidate affected data, folders, mailboxes and technical accesses completely.",
+        "Clarify return, takeover and open domain exceptions per area.",
+        "Revoke or limit accounts, tokens and other residual access technically.",
+        "Secure return, revocation and deletion evidence per area.",
+        "Release closure with exceptions and residual points for month end."
+      ],
+      "feedback": {
+        "correct": "The order leads cleanly from scope through return and revocation to closure.",
+        "wrong": "First scope and exceptions, then technical revocation, then evidence and only at the end the closure."
+      },
+      "progressLinks": [
+        "qus2_dienstleister_offboarding_und_scope",
+        "qus2_datenrueckgabe_und_zugriffsentzug",
+        "qus2_loeschbestaetigung_und_abschluss"
+      ]
+    }
+  ]
+}

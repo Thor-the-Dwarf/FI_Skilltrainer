@@ -1,0 +1,160 @@
+{
+  "scenario": {
+    "company": "Ausbildungsbetrieb IT-Service",
+    "scale": "Mittelstand, 240 Mitarbeitende",
+    "context": "Station 03 des Tageslaufs: Datenstrukturen planen und in Python/Java einsetzen.",
+    "mission": "Sie wählen passende Strukturen aus und begründen ihre Wahl für unterschiedliche Nutzungsszenarien.",
+    "station": {
+      "id": "LF11FIAE-ST-03",
+      "department": "Anwendungsentwicklung",
+      "profile": "Datenstrukturen und Sprachbezug",
+      "constraints": [
+        "Zugriffsmuster beachten",
+        "Sprachkontext berücksichtigen",
+        "Wahl begründen"
+      ]
+    },
+    "customerRequest": {
+      "from": "dev.lead@ausbildungsbetrieb.example",
+      "to": "dev.team@ausbildungsbetrieb.example",
+      "subject": "Station 03: Datenstrukturentscheidungen",
+      "date": "2026-03-13",
+      "body": "Bitte treffen Sie fundierte Datenstrukturentscheidungen für Python- und Java-Komponenten."
+    }
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "type": "multi_select",
+      "title": "Strukturwahl nach Zugriff",
+      "prompt": "Welche Zuordnungen sind sinnvoll? (Mehrfachauswahl)",
+      "options": [
+        {
+          "text": "Schlüsselzugriff -> assoziative Struktur",
+          "correct": true,
+          "rationale": "Typischer Lookup-Fall."
+        },
+        {
+          "text": "Duplikatfreie Sammlung -> Menge",
+          "correct": true,
+          "rationale": "Fachlich passend."
+        },
+        {
+          "text": "Reihenfolge egal -> zwingend Liste",
+          "correct": false,
+          "rationale": "Nicht zwingend."
+        },
+        {
+          "text": "Priorisierte Entnahme -> Prioritätsstruktur",
+          "correct": true,
+          "rationale": "Passt zum Zugriffsmuster."
+        },
+        {
+          "text": "Alle Fälle mit gleicher Struktur lösen",
+          "correct": false,
+          "rationale": "Ignoriert Fachkontext."
+        }
+      ],
+      "feedback": {
+        "correct": "Richtig: Zugriffsmuster und Struktur sind sauber zugeordnet.",
+        "wrong": "Teilweise falsch: Bitte Strukturwahl strikter am Zugriffsmuster ausrichten."
+      },
+      "progressLinks": [
+        "lf11fiae_datenstrukturen_planen"
+      ]
+    },
+    {
+      "id": "q2",
+      "type": "single_choice",
+      "title": "Python/Java Abwägung",
+      "prompt": "Was ist bei der Sprachwahl für Datenstrukturen besonders wichtig?",
+      "options": [
+        {
+          "text": "Nur Syntaxvorliebe beachten",
+          "rationale": "Zu kurz gedacht."
+        },
+        {
+          "text": "Bibliotheken, Performance und Teamkompetenz gemeinsam betrachten",
+          "rationale": "Praxisnahe Entscheidungsbasis."
+        },
+        {
+          "text": "Sprache zufällig wählen",
+          "rationale": "Nicht professionell."
+        }
+      ],
+      "correctIndex": 1,
+      "feedback": {
+        "correct": "Richtig: Entscheidung muss mehrdimensional begründet sein.",
+        "wrong": "Nicht passend: Sprachwahl braucht technische und organisatorische Kriterien."
+      },
+      "progressLinks": [
+        "lf11fiae_datenstrukturen_python_java"
+      ]
+    },
+    {
+      "id": "q3",
+      "type": "ordering",
+      "title": "Datenstrukturentscheidung aufbauen",
+      "prompt": "Ordnen Sie den Entscheidungsprozess.",
+      "items": [
+        "Zugriffsmuster analysieren",
+        "Mögliche Strukturen vergleichen",
+        "Sprachspezifische Optionen prüfen",
+        "Testdaten für Plausibilität nutzen",
+        "Entscheidung dokumentieren"
+      ],
+      "correctOrder": [
+        "Zugriffsmuster analysieren",
+        "Mögliche Strukturen vergleichen",
+        "Sprachspezifische Optionen prüfen",
+        "Testdaten für Plausibilität nutzen",
+        "Entscheidung dokumentieren"
+      ],
+      "feedback": {
+        "correct": "Richtig: Die Entscheidung ist methodisch sauber.",
+        "wrong": "Nicht optimal: Bitte Analyse und Vergleich vor die finale Doku setzen."
+      },
+      "progressLinks": [
+        "lf11fiae_datenstrukturen_planen",
+        "lf11fiae_datenstrukturen_python_java"
+      ]
+    },
+    {
+      "id": "q4",
+      "type": "number",
+      "title": "Lookupzeit abschätzen",
+      "prompt": "Eine Struktur benötigt 2 ms pro Lookup. Bei 65 Lookups: Wie viele ms insgesamt?",
+      "expected": 130,
+      "toleranceAbs": 1,
+      "showExpectedFormula": "65 * 2 = 130 ms",
+      "feedback": {
+        "correct": "Richtig gerechnet.",
+        "wrong": "Bitte Anzahl und Dauer korrekt multiplizieren."
+      },
+      "progressLinks": [
+        "lf11fiae_datenstrukturen_planen"
+      ]
+    },
+    {
+      "id": "q5",
+      "type": "short_text",
+      "title": "Strukturwahl begründen",
+      "prompt": "Formulieren Sie in 4-6 Sätzen die begründete Auswahl einer Datenstruktur für einen Ticketstatus-Cache.",
+      "minChars": 160,
+      "requiredKeywords": [
+        "zugriff",
+        "struktur",
+        "begründung"
+      ],
+      "expectedOutline": "Auswahlbegründung über Zugriffsmuster, Sprachkontext und Wartbarkeit.",
+      "feedback": {
+        "correct": "Richtig: Die Strukturwahl ist nachvollziehbar argumentiert.",
+        "wrong": "Bitte Zugriff, Struktur und Begründung konkreter verknüpfen."
+      },
+      "progressLinks": [
+        "lf11fiae_datenstrukturen_planen",
+        "lf11fiae_schnittstellen_dokumentation"
+      ]
+    }
+  ]
+}

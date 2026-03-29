@@ -1,0 +1,160 @@
+{
+  "scenario": {
+    "company": "Ausbildungsbetrieb IT-Service",
+    "scale": "Regional, 210 Mitarbeitende",
+    "context": "Station 4 des Tageslaufs: Servicefälle vertiefend analysieren und Tools passend einsetzen.",
+    "mission": "Sie grenzen einen Servicefall methodisch ein und nutzen Monitoring- sowie Analysetools nachvollziehbar.",
+    "station": {
+      "id": "LF06-ST-04",
+      "department": "Second-Level Support",
+      "profile": "Erstursachenanalyse, Logs, Monitoring und toolgestützte Eingrenzung",
+      "constraints": [
+        "Daten statt Vermutungen priorisieren",
+        "Befunde sauber dokumentieren",
+        "Nächsten Analysepunkt ableiten"
+      ]
+    },
+    "customerRequest": {
+      "from": "second.level@ausbildungsbetrieb.example",
+      "to": "service.desk@ausbildungsbetrieb.example",
+      "subject": "Station 04: Analysebasis für einen Servicefall aufbauen",
+      "date": "2026-03-13",
+      "body": "Bitte demonstrieren Sie an einem Störungsfall, wie Symptome, Monitoringdaten und Logbefunde zu einer sauberen Analysebasis zusammengeführt werden."
+    }
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "type": "single_choice",
+      "title": "Bester Start in die Analyse",
+      "prompt": "Welche Methode eignet sich für den Analyse-Start am besten?",
+      "options": [
+        {
+          "text": "Symptome sammeln, Gemeinsamkeiten suchen und Ursachen eingrenzen",
+          "rationale": "Das ist strukturiert und praxistauglich."
+        },
+        {
+          "text": "Beliebige Produktionsänderungen ohne Datenbasis auslösen",
+          "rationale": "Das erhöht Risiko ohne Erkenntnisgewinn."
+        },
+        {
+          "text": "Nur einer Vermutung folgen und alles andere ignorieren",
+          "rationale": "Ohne Daten fehlt die Belastbarkeit."
+        }
+      ],
+      "correctIndex": 0,
+      "feedback": {
+        "correct": "Richtig: Der Ansatz ist strukturiert und datenorientiert.",
+        "wrong": "Nicht passend: Bitte methodische Eingrenzung statt Aktionismus bevorzugen."
+      },
+      "progressLinks": [
+        "lf06_analysemethoden"
+      ]
+    },
+    {
+      "id": "q2",
+      "type": "multi_select",
+      "title": "Monitoring sinnvoll einsetzen",
+      "prompt": "Welche Aussagen zum Tooleinsatz treffen zu? (Mehrfachauswahl)",
+      "options": [
+        {
+          "text": "Monitoringdaten helfen, Zeitraum und Umfang einer Störung einzugrenzen",
+          "correct": true,
+          "rationale": "Zeitlicher Kontext beschleunigt die Analyse."
+        },
+        {
+          "text": "Toolbefunde sollten im Ticket protokolliert werden",
+          "correct": true,
+          "rationale": "Das ist für Übergaben und Nachvollziehbarkeit wichtig."
+        },
+        {
+          "text": "Das passende Tool hängt vom Problemtyp und der Datenlage ab",
+          "correct": true,
+          "rationale": "Kontextgerechte Auswahl verbessert die Trefferquote."
+        },
+        {
+          "text": "Tools ersetzen die fachliche Bewertung vollständig",
+          "correct": false,
+          "rationale": "Befunde müssen eingeordnet werden."
+        },
+        {
+          "text": "Ohne Logs ist jede Diagnose gleich stark",
+          "correct": false,
+          "rationale": "Fehlende Daten senken die Belastbarkeit."
+        }
+      ],
+      "feedback": {
+        "correct": "Richtig: Toolnutzung und fachliche Bewertung greifen sinnvoll ineinander.",
+        "wrong": "Teilweise falsch: Bitte Toolwahl, Protokollierung und Interpretation klarer trennen."
+      },
+      "progressLinks": [
+        "lf06_monitoring_tools"
+      ]
+    },
+    {
+      "id": "q3",
+      "type": "ordering",
+      "title": "Analyse-Schnelltest strukturieren",
+      "prompt": "Ordnen Sie die Schritte für einen sauberen Schnelltest.",
+      "items": [
+        "Wahrscheinliche Ursachen und nächste Prüfung ableiten",
+        "Gemeinsame Merkmale betroffener Nutzer sammeln",
+        "Basisverfügbarkeit des Dienstes prüfen",
+        "Monitoring- und Logdaten hinzuziehen",
+        "Befunde im Ticket dokumentieren"
+      ],
+      "correctOrder": [
+        "Gemeinsame Merkmale betroffener Nutzer sammeln",
+        "Basisverfügbarkeit des Dienstes prüfen",
+        "Monitoring- und Logdaten hinzuziehen",
+        "Wahrscheinliche Ursachen und nächste Prüfung ableiten",
+        "Befunde im Ticket dokumentieren"
+      ],
+      "feedback": {
+        "correct": "Richtig: Der Ablauf verbindet Symptome, Daten und Dokumentation sinnvoll.",
+        "wrong": "Nicht optimal: Bitte erst Merkmale und Basisprüfung, dann Datenlage und Befunddoku ordnen."
+      },
+      "progressLinks": [
+        "lf06_analysemethoden",
+        "lf06_monitoring_tools"
+      ]
+    },
+    {
+      "id": "q4",
+      "type": "number",
+      "title": "Fehlerquote aus Testaufrufen",
+      "prompt": "Von 80 Testaufrufen schlagen 12 fehl. Wie hoch ist die Fehlerquote in Prozent?",
+      "expected": 15,
+      "toleranceAbs": 0.5,
+      "showExpectedFormula": "12 / 80 * 100 = 15 %",
+      "feedback": {
+        "correct": "Richtig gerechnet.",
+        "wrong": "Bitte fehlgeschlagene Aufrufe durch die Gesamtzahl teilen und in Prozent umrechnen."
+      },
+      "progressLinks": [
+        "lf06_analysemethoden"
+      ]
+    },
+    {
+      "id": "q5",
+      "type": "short_text",
+      "title": "Analyse-Update formulieren",
+      "prompt": "Formulieren Sie in 4-6 Sätzen ein Analyse-Update mit Befund, vermuteter Ursache und nächstem Prüfschritt.",
+      "minChars": 160,
+      "requiredKeywords": [
+        "befund",
+        "ursache",
+        "nächster prüfschritt"
+      ],
+      "expectedOutline": "Befund benennen, Ursache begründen und nächste Analysehandlung ankundigen.",
+      "feedback": {
+        "correct": "Richtig: Das Update ist nachvollziehbar und fachlich nutzbar.",
+        "wrong": "Bitte Befund, Ursache und Folgeprüfung klarer strukturieren."
+      },
+      "progressLinks": [
+        "lf06_analysemethoden",
+        "lf06_monitoring_tools"
+      ]
+    }
+  ]
+}

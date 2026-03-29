@@ -1,0 +1,160 @@
+{
+  "scenario": {
+    "company": "Training Company IT Service",
+    "scale": "Mid-sized company, 90 employees",
+    "context": "Station 05 of the day flow: Understand market environment, value creation and economic relationships.",
+    "mission": "You classify market and process relationships and derive impacts for the company.",
+    "station": {
+      "id": "LF01-ST-05",
+      "department": "Sales and Service",
+      "profile": "Market environment, competition, value creation, economic cycle",
+      "constraints": [
+        "link market context with operational context",
+        "justify statements with facts",
+        "separate risks and opportunities cleanly"
+      ]
+    },
+    "customerRequest": {
+      "from": "vertrieb@ausbildungsbetrieb.example",
+      "to": "klasse.fiae@berufsschule.example",
+      "subject": "Station 05: Market environment and processes",
+      "date": "2026-03-13",
+      "body": "Please assess market situations and their impact on value creation, order volume and prioritization in the company."
+    }
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "type": "multi_select",
+      "title": "Analyze the market environment",
+      "prompt": "Which factors directly influence the market environment of an IT service provider? (Multiple selection)",
+      "options": [
+        {
+          "text": "Customer requirements and budget pressure",
+          "correct": true,
+          "rationale": "Direct impact on the service offering."
+        },
+        {
+          "text": "Competitors with similar portfolios",
+          "correct": true,
+          "rationale": "Influences price and differentiation."
+        },
+        {
+          "text": "Random team mood without process relevance",
+          "correct": false,
+          "rationale": "Not a market indicator."
+        },
+        {
+          "text": "Technological changes in the target market",
+          "correct": true,
+          "rationale": "Changes demand and service focus."
+        },
+        {
+          "text": "Complete disregard for demand development",
+          "correct": false,
+          "rationale": "Leads to mismanagement."
+        }
+      ],
+      "feedback": {
+        "correct": "Correct: these are central market influence factors.",
+        "wrong": "Partially wrong: please separate market and operational factors more clearly."
+      },
+      "progressLinks": [
+        "lf01_unternehmensumfeld_markt"
+      ]
+    },
+    {
+      "id": "q2",
+      "type": "single_choice",
+      "title": "Understand value creation",
+      "prompt": "Which statement best describes value creation in a service business?",
+      "options": [
+        {
+          "text": "Combine service steps so that a usable benefit is created for the customer",
+          "rationale": "This describes the core of value creation."
+        },
+        {
+          "text": "Collect only internal activities without customer relevance",
+          "rationale": "Without customer benefit there is no sustainable value creation."
+        },
+        {
+          "text": "Consider only the final price without process view",
+          "rationale": "Price alone does not explain how value is created."
+        }
+      ],
+      "correctIndex": 0,
+      "feedback": {
+        "correct": "Correct: value creation is customer-benefit oriented.",
+        "wrong": "Not appropriate: value creation needs process and customer benefit context."
+      },
+      "progressLinks": [
+        "lf01_prozesse_wertschoepfung"
+      ]
+    },
+    {
+      "id": "q3",
+      "type": "ordering",
+      "title": "From market impulse to service",
+      "prompt": "Order the sequence from market impulse to service delivery.",
+      "items": [
+        "Identify market demand",
+        "Adjust the service offering",
+        "Align internal processes",
+        "Roll out the service",
+        "Evaluate customer feedback"
+      ],
+      "correctOrder": [
+        "Identify market demand",
+        "Adjust the service offering",
+        "Align internal processes",
+        "Roll out the service",
+        "Evaluate customer feedback"
+      ],
+      "feedback": {
+        "correct": "Correct: this shows a market-oriented process chain.",
+        "wrong": "Not optimal: start with market impulse, then internal implementation, then feedback."
+      },
+      "progressLinks": [
+        "lf01_unternehmensumfeld_markt",
+        "lf01_prozesse_wertschoepfung"
+      ]
+    },
+    {
+      "id": "q4",
+      "type": "number",
+      "title": "Calculate demand development",
+      "prompt": "A service rises from 80 to 98 requests per month. By what percentage does demand increase (rounded)?",
+      "expected": 23,
+      "toleranceAbs": 1,
+      "showExpectedFormula": "(98 - 80) / 80 * 100 = 22.5 % ~ 23 %",
+      "feedback": {
+        "correct": "Correct calculation.",
+        "wrong": "Please relate the increase correctly to the initial value."
+      },
+      "progressLinks": [
+        "lf01_wirtschaftskreislauf_marktsituation"
+      ]
+    },
+    {
+      "id": "q5",
+      "type": "short_text",
+      "title": "Market context for training",
+      "prompt": "In 4-6 sentences, explain how a market change can affect daily training work in IT service.",
+      "minChars": 150,
+      "requiredKeywords": [
+        "market",
+        "impact",
+        "adjustment"
+      ],
+      "expectedOutline": "Market change, operational impact, concrete adjustment in training daily work.",
+      "feedback": {
+        "correct": "Correct: market and operational context are clearly linked.",
+        "wrong": "Please connect market change, impact and adjustment more concretely."
+      },
+      "progressLinks": [
+        "lf01_unternehmensumfeld_markt",
+        "lf01_wirtschaftskreislauf_marktsituation"
+      ]
+    }
+  ]
+}

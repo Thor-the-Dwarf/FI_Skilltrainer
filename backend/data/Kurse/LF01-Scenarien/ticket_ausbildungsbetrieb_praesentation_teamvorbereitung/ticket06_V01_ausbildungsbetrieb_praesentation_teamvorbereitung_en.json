@@ -1,0 +1,159 @@
+{
+  "scenario": {
+    "company": "Training Company IT Service",
+    "scale": "Mid-sized company, 90 employees",
+    "context": "Station 06 of the day flow: Prepare and plan a team presentation.",
+    "mission": "You structure a team presentation about the training company including roles, time and quality criteria.",
+    "station": {
+      "id": "LF01-ST-06",
+      "department": "Training team",
+      "profile": "Team preparation, content structure, time planning",
+      "constraints": [
+        "plan with the target audience in mind",
+        "assign team roles clearly",
+        "keep time and content consistent"
+      ]
+    },
+    "customerRequest": {
+      "from": "ausbildungsleitung@ausbildungsbetrieb.example",
+      "to": "klasse.fiae@berufsschule.example",
+      "subject": "Station 06: Prepare team presentation",
+      "date": "2026-03-13",
+      "body": "Please plan a team presentation about the training company. Expected are target audience alignment, clear roles, reliable time planning and a rehearsal with a feedback loop."
+    }
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "type": "single_choice",
+      "title": "Clarify target audience first",
+      "prompt": "What is the most important first step in presentation planning?",
+      "options": [
+        {
+          "text": "Build slides right away without defining the target audience",
+          "rationale": "Often leads to mismatched content."
+        },
+        {
+          "text": "Define the target audience and the core goal of the presentation",
+          "rationale": "This guides structure and level of detail."
+        },
+        {
+          "text": "Only select a design template",
+          "rationale": "Layout does not replace content planning."
+        }
+      ],
+      "correctIndex": 1,
+      "feedback": {
+        "correct": "Correct: target audience and goal steer the entire plan.",
+        "wrong": "Not appropriate: without a target audience the guiding line is missing."
+      },
+      "progressLinks": [
+        "lf01_praesentation_teamvorbereitung"
+      ]
+    },
+    {
+      "id": "q2",
+      "type": "multi_select",
+      "title": "Assign team roles",
+      "prompt": "Which roles are useful for a team presentation? (Multiple selection)",
+      "options": [
+        {
+          "text": "Moderation and timekeeping",
+          "correct": true,
+          "rationale": "Secures flow and focus."
+        },
+        {
+          "text": "Content ownership per topic block",
+          "correct": true,
+          "rationale": "Increases clarity in the team."
+        },
+        {
+          "text": "No fixed responsibility",
+          "correct": false,
+          "rationale": "Leads to gaps and duplication."
+        },
+        {
+          "text": "Quality check before the rehearsal",
+          "correct": true,
+          "rationale": "Improves the outcome in advance."
+        },
+        {
+          "text": "Deliberately avoid questions",
+          "correct": false,
+          "rationale": "Questions improve understanding."
+        }
+      ],
+      "feedback": {
+        "correct": "Correct: the role distribution is functional and reliable.",
+        "wrong": "Partially wrong: please emphasize commitment and quality checks more strongly."
+      },
+      "progressLinks": [
+        "lf01_praesentation_teamvorbereitung"
+      ]
+    },
+    {
+      "id": "q3",
+      "type": "ordering",
+      "title": "Planning steps for the presentation",
+      "prompt": "Order the planning steps for a team presentation.",
+      "items": [
+        "Clarify goal and target audience",
+        "Structure the content",
+        "Assign roles and time slots",
+        "Run a rehearsal with feedback",
+        "Implement final adjustments"
+      ],
+      "correctOrder": [
+        "Clarify goal and target audience",
+        "Structure the content",
+        "Assign roles and time slots",
+        "Run a rehearsal with feedback",
+        "Implement final adjustments"
+      ],
+      "feedback": {
+        "correct": "Correct: this is a clean planning process.",
+        "wrong": "Not optimal: please sequence goal clarification, structure and rehearsal logically."
+      },
+      "progressLinks": [
+        "lf01_praesentation_teamvorbereitung"
+      ]
+    },
+    {
+      "id": "q4",
+      "type": "number",
+      "title": "Calculate the time budget",
+      "prompt": "Five topic blocks take 3 minutes each. Add 4 minutes for the intro and 6 minutes for questions. How long is the full presentation?",
+      "expected": 25,
+      "toleranceAbs": 1,
+      "showExpectedFormula": "5 * 3 + 4 + 6 = 25 minutes",
+      "feedback": {
+        "correct": "Correct calculation.",
+        "wrong": "Please calculate blocks, intro and questions together."
+      },
+      "progressLinks": [
+        "lf01_praesentation_teamvorbereitung"
+      ]
+    },
+    {
+      "id": "q5",
+      "type": "short_text",
+      "title": "Document team planning",
+      "prompt": "Formulate a short planning note (4-6 sentences) with target audience, roles and timeline.",
+      "minChars": 150,
+      "requiredKeywords": [
+        "target audience",
+        "role",
+        "timeline"
+      ],
+      "expectedOutline": "Clear target audience alignment, role assignment, realistic timeline.",
+      "feedback": {
+        "correct": "Correct: the planning note is actionable.",
+        "wrong": "Please spell out target audience, roles and timeline more concretely."
+      },
+      "progressLinks": [
+        "lf01_praesentation_teamvorbereitung",
+        "lf01_reflexion_verbesserung"
+      ]
+    }
+  ]
+}

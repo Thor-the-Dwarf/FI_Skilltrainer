@@ -1,0 +1,719 @@
+{
+  "scenario": {
+    "company": "Nordufer Maschinenbau GmbH",
+    "scale": "Mittelstand, 2 Standorte, 310 Mitarbeitende",
+    "context": "Station 01: Netzwerkprojekt für einen neuen Verwaltungs- und Servicebereich mit mehreren Folgeaufträgen.",
+    "mission": "Sie bearbeiten den Startauftrag und mehrere Folgeaufträge von der Anforderungsseite bis zur Prüfung und Übergabe.",
+    "station": {
+      "id": "LF09-ST-01",
+      "department": "Infrastruktur und Betrieb",
+      "profile": "Anforderungsanalyse, technische Planung, Rollout, Prüfung und Portfolioeinordnung",
+      "constraints": [
+        "Wirtschaftlichkeit und Schutzbedarf gemeinsam betrachten",
+        "Technische Entscheidungen nachvollziehbar begründen",
+        "Abnahme und Betrieb von Anfang an mitdenken"
+      ]
+    },
+    "customerRequest": {
+      "from": "it.leitung@nordufer-maschinenbau.example",
+      "to": "infra.team@ausbildungsbetrieb.example",
+      "subject": "Station 01: Netzwerkprojekt für neuen Verwaltungsbereich",
+      "date": "2026-03-13",
+      "body": "Bitte planen Sie für unseren neuen Verwaltungs- und Servicebereich die Basisbereitstellung von Netzwerk und zentralen Diensten.\n\nWir benötigen eine strukturierte Anforderungs- und Ist-Soll-Sicht, technische Kernentscheidungen, einen Rolloutplan sowie einen Prüf- und Übergabeansatz."
+    }
+  },
+  "questions": [
+    {
+      "id": "q01",
+      "type": "single_choice",
+      "title": "Projektstart sauber aufsetzen",
+      "prompt": "Welcher erste Schritt ist für dieses Netzwerkprojekt am sinnvollsten?",
+      "options": [
+        {
+          "text": "Direkt Komponenten bestellen, damit keine Zeit verloren geht",
+          "rationale": "Ohne Bedarfsbild drohen Fehlbeschaffung und Nacharbeit."
+        },
+        {
+          "text": "Kundenanforderungen, Nutzergruppen, Dienste und Wachstumsannahmen strukturiert erfassen",
+          "rationale": "Schafft die Basis für technische und wirtschaftliche Entscheidungen."
+        },
+        {
+          "text": "Nur den Grundriss des neuen Bereichs ausdrucken",
+          "rationale": "Ein Grundriss ersetzt keine fachliche Anforderungsaufnahme."
+        }
+      ],
+      "correctIndex": 1,
+      "feedback": {
+        "correct": "Richtig: Das Projekt braucht zuerst ein belastbares Anforderungsbild.",
+        "wrong": "Nicht passend: Ohne Anforderungen wird die Planung schnell unsauber."
+      },
+      "progressLinks": [
+        "lf09_unternehmensanforderungen"
+      ]
+    },
+    {
+      "id": "q02",
+      "type": "multi_select",
+      "title": "Kundenanforderungen erfassen",
+      "prompt": "Welche Informationen sollten zu Beginn unbedingt erhoben werden? (Mehrfachauswahl)",
+      "options": [
+        {
+          "text": "Anzahl der Arbeitsplätze und erwartetes Wachstum im Bereich",
+          "correct": true,
+          "rationale": "Beeinflusst Segmentierung, Portbedarf und Skalierung."
+        },
+        {
+          "text": "Kritische Dienste wie ERP, VoIP oder Dateiablage",
+          "correct": true,
+          "rationale": "Bestimmt Prioritäten und Verfügbarkeitsanforderungen."
+        },
+        {
+          "text": "Nur die Lieblingsmarke des Auftraggebers für Switches",
+          "correct": false,
+          "rationale": "Markenvorlieben ersetzen keine technische Anforderungsarbeit."
+        },
+        {
+          "text": "Sicherheits- und Zugriffsanforderungen für Mitarbeitende und Gäste",
+          "correct": true,
+          "rationale": "Wichtig für Netztrennung und Schutzbedarf."
+        },
+        {
+          "text": "Ob die Gehäusefarbe zum Konferenzraum passt",
+          "correct": false,
+          "rationale": "Hat für das Zielbild des Netzes kaum Relevanz."
+        }
+      ],
+      "feedback": {
+        "correct": "Richtig: Die Erhebung deckt Bedarf, Dienste und Schutzbedarf sinnvoll ab.",
+        "wrong": "Teilweise falsch: Bitte fachliche und technische Anforderungen stärker verknüpfen."
+      },
+      "progressLinks": [
+        "lf09_unternehmensanforderungen"
+      ]
+    },
+    {
+      "id": "q03",
+      "type": "ordering",
+      "title": "Von der Anfrage zum Zielbild",
+      "prompt": "Ordnen Sie die ersten Planungsschritte in eine sinnvolle Reihenfolge.",
+      "items": [
+        "Kundenanforderungen und Randbedingungen aufnehmen",
+        "Ist-Zustand und Abhängigkeiten analysieren",
+        "Sollbild für Netzwerk und Dienste formulieren",
+        "Umsetzungspakete priorisieren",
+        "Freigabefähige Grobplanung vorlegen"
+      ],
+      "correctOrder": [
+        "Kundenanforderungen und Randbedingungen aufnehmen",
+        "Ist-Zustand und Abhängigkeiten analysieren",
+        "Sollbild für Netzwerk und Dienste formulieren",
+        "Umsetzungspakete priorisieren",
+        "Freigabefähige Grobplanung vorlegen"
+      ],
+      "feedback": {
+        "correct": "Richtig: Der Ablauf führt methodisch sauber zum Zielbild.",
+        "wrong": "Nicht optimal: Erst Bedarf und Ist-Bild klären, dann das Soll und die Freigabe vorbereiten."
+      },
+      "progressLinks": [
+        "lf09_unternehmensanforderungen",
+        "lf09_istanalyse_lastenheft"
+      ]
+    },
+    {
+      "id": "q04",
+      "type": "number",
+      "title": "Portbedarf mit Reserve",
+      "prompt": "Im neuen Bereich sollen 38 PCs, 14 IP-Telefone, 6 Drucker und 4 Access Points angebunden werden. Wie viele Switch-Ports werden bei 15 % Reserve mindestens benötigt? Runden Sie auf ganze Ports auf.",
+      "expected": 72,
+      "toleranceAbs": 1,
+      "showExpectedFormula": "(38 + 14 + 6 + 4) * 1,15 = 71,3 -> 72 Ports",
+      "feedback": {
+        "correct": "Richtig gerechnet.",
+        "wrong": "Bitte alle Anschlüsse und die Reserve korrekt berücksichtigen."
+      },
+      "progressLinks": [
+        "lf09_unternehmensanforderungen",
+        "lf09_technische_anforderungen"
+      ]
+    },
+    {
+      "id": "q05",
+      "type": "short_text",
+      "title": "DevOps-Unterstuetzung einordnen",
+      "prompt": "Erlauetern Sie in 4-6 Sätzen, wie standardisierte Konfigurationsvorlagen und ein DevOps-naher Ablauf den Rollout dieses Netzprojekts absichern können.",
+      "minChars": 170,
+      "requiredKeywords": [
+        "devops",
+        "standard",
+        "rollout"
+      ],
+      "expectedOutline": "Bezug auf wiederholbare Konfiguration, Nachvollziehbarkeit und risikoarmen Rollout.",
+      "feedback": {
+        "correct": "Richtig: Die Rolle standardisierter Bereitstellung ist nachvollziehbar erklärt.",
+        "wrong": "Bitte DevOps-Bezug, Standardisierung und Rolloutnutzen deutlicher verknüpfen."
+      },
+      "progressLinks": [
+        "lf09_unternehmensanforderungen",
+        "lf09_rollout_uebergabe"
+      ]
+    },
+    {
+      "id": "q06",
+      "type": "single_choice",
+      "title": "Ist-Analyse priorisieren",
+      "prompt": "Welche Erhebung ist für die Ist-Analyse am wichtigsten?",
+      "options": [
+        {
+          "text": "Nur den Hersteller der bisherigen Switches notieren",
+          "rationale": "Ohne technische Details hilft das nur sehr begrenzt."
+        },
+        {
+          "text": "Direkt den finalen VLAN-Plan schreiben",
+          "rationale": "Dafür fehlt ohne Ist-Bild die Grundlage."
+        },
+        {
+          "text": "Leitungswege, vorhandene Segmente, Dienste, Engpässe und Abhängigkeiten aufnehmen",
+          "rationale": "Genau daraus ergeben sich realistische Migrations- und Ausbauentscheidungen."
+        }
+      ],
+      "correctIndex": 2,
+      "feedback": {
+        "correct": "Richtig: Die Ist-Analyse muss technische und betriebliche Abhängigkeiten sichtbar machen.",
+        "wrong": "Nicht passend: Ohne belastbare Ist-Analyse bleibt das Sollbild spekulativ."
+      },
+      "progressLinks": [
+        "lf09_istanalyse_lastenheft"
+      ]
+    },
+    {
+      "id": "q07",
+      "type": "multi_select",
+      "title": "Lastenheft vorbereiten",
+      "prompt": "Welche Punkte gehören in ein belastbares Lastenheft für dieses Projekt? (Mehrfachauswahl)",
+      "options": [
+        {
+          "text": "Ziele, Abgrenzungen und Rahmenbedingungen des Projekts",
+          "correct": true,
+          "rationale": "Schafft Klarheit über Umfang und Grenzen."
+        },
+        {
+          "text": "Erwartete Dienste und geforderte Verfügbarkeit",
+          "correct": true,
+          "rationale": "Wichtig für Netz- und Serverkonzept."
+        },
+        {
+          "text": "Ein bereits festgelegtes Produktmodell ohne Begründung",
+          "correct": false,
+          "rationale": "Das gehört eher in die technische Lösung, nicht in die reine Bedarfssicht."
+        },
+        {
+          "text": "Sicherheits- und Zugriffsanforderungen",
+          "correct": true,
+          "rationale": "Relevanter Bestandteil des Schutzbedarfs."
+        },
+        {
+          "text": "Unklare Aussagen wie 'muss irgendwie schnell sein'",
+          "correct": false,
+          "rationale": "Unpräzise Aussagen helfen weder in Planung noch Abnahme."
+        }
+      ],
+      "feedback": {
+        "correct": "Richtig: Das Lastenheft bleibt auf Bedarfs- und Zielniveau, aber klar genug für die Umsetzung.",
+        "wrong": "Teilweise falsch: Bitte Bedarf, Verfügbarkeit und Schutzbedarf klarer strukturieren."
+      },
+      "progressLinks": [
+        "lf09_istanalyse_lastenheft"
+      ]
+    },
+    {
+      "id": "q08",
+      "type": "ordering",
+      "title": "Planung nach Unternehmensgrösse",
+      "prompt": "Ordnen Sie den Denkweg für eine passende Netzplanung von klein nach gross.",
+      "items": [
+        "Standortgrösse und Nutzerzahl einordnen",
+        "Kritische Dienste und Redundanzbedarf festhalten",
+        "Netzsegmente und Kapazitäten ableiten",
+        "Hardware- und Dienstekonzept passend dimensionieren",
+        "Skalierungsreserven dokumentieren"
+      ],
+      "correctOrder": [
+        "Standortgrösse und Nutzerzahl einordnen",
+        "Kritische Dienste und Redundanzbedarf festhalten",
+        "Netzsegmente und Kapazitäten ableiten",
+        "Hardware- und Dienstekonzept passend dimensionieren",
+        "Skalierungsreserven dokumentieren"
+      ],
+      "feedback": {
+        "correct": "Richtig: So wird aus der Unternehmenssicht eine belastbare Planung.",
+        "wrong": "Nicht optimal: Bitte zuerst Unternehmensbedarf, dann technische Ableitungen und Reserven betrachten."
+      },
+      "progressLinks": [
+        "lf09_unternehmensanforderungen",
+        "lf09_istanalyse_lastenheft"
+      ]
+    },
+    {
+      "id": "f01",
+      "type": "followup_divider",
+      "title": "Folgeauftrag 1",
+      "prompt": "Die IT-Leitung gibt das Grobkonzept frei. Jetzt sollen die technischen Grundsatzentscheidungen für Protokolle, Komponenten und WAN-Anbindung konkretisiert werden."
+    },
+    {
+      "id": "q09",
+      "type": "single_choice",
+      "title": "Netzwerkgrundsatz festlegen",
+      "prompt": "Welche technische Grundrichtung ist für diesen Verwaltungsbereich am sinnvollsten?",
+      "options": [
+        {
+          "text": "Ein TCP/IP-basiertes Netz mit sauberer Segmentierung und klaren Dienstzonen",
+          "rationale": "Das ist für Verwaltung, Sicherheit und Erweiterbarkeit tragfähig."
+        },
+        {
+          "text": "Alle Systeme ungefiltert in ein einziges flaches Segment legen",
+          "rationale": "Erschwert Sicherheit, Fehlersuche und Wachstum."
+        },
+        {
+          "text": "Erst nach der Inbetriebnahme über Netztrennung nachdenken",
+          "rationale": "Das wäre für Planung und Schutzbedarf deutlich zu spät."
+        }
+      ],
+      "correctIndex": 0,
+      "feedback": {
+        "correct": "Richtig: Segmentierung und klare Dienstzonen sind für den Betrieb sinnvoll.",
+        "wrong": "Nicht passend: Die technische Grundrichtung muss Sicherheit und Skalierung früh absichern."
+      },
+      "progressLinks": [
+        "lf09_technische_anforderungen"
+      ]
+    },
+    {
+      "id": "q10",
+      "type": "multi_select",
+      "title": "Technische Kernkomponenten",
+      "prompt": "Welche Komponenten sind für das Zielbild besonders relevant? (Mehrfachauswahl)",
+      "options": [
+        {
+          "text": "Managed Switches mit VLAN- und Monitoringfähigkeit",
+          "correct": true,
+          "rationale": "Unterstützt Segmentierung und Betriebstransparenz."
+        },
+        {
+          "text": "Firewall oder Router mit klarer Regel- und Standortkopplung",
+          "correct": true,
+          "rationale": "Wichtig für WAN, Schutz und Standortanbindung."
+        },
+        {
+          "text": "Beliebige Heimrouter ohne zentrale Verwaltung",
+          "correct": false,
+          "rationale": "Passt schlecht zu betrieblichen Anforderungen."
+        },
+        {
+          "text": "Zentrale Dienste für DHCP, Namensauflösung und Authentisierung",
+          "correct": true,
+          "rationale": "Diese Dienste stiften Ordnung und Betriebsfähigkeit."
+        },
+        {
+          "text": "Ein nicht dokumentiertes Testgerät als einzige Kernkomponente",
+          "correct": false,
+          "rationale": "Nicht tragfähig für einen produktiven Rollout."
+        }
+      ],
+      "feedback": {
+        "correct": "Richtig: Die Auswahl berücksichtigt Netzbetrieb und Diensteintegration.",
+        "wrong": "Teilweise falsch: Bitte Kernnetz, Schutz und zentrale Dienste klarer zusammendenken."
+      },
+      "progressLinks": [
+        "lf09_technische_anforderungen"
+      ]
+    },
+    {
+      "id": "q11",
+      "type": "number",
+      "title": "WAN-Bandbreite abschätzen",
+      "prompt": "Für den Standort werden 84 Mitarbeitende mit einer Spitzenlast von 3,5 Mbit/s je Person angesetzt. Welche Gesamtlast in Mbit/s ist mindestens zu planen?",
+      "expected": 294,
+      "toleranceAbs": 1,
+      "showExpectedFormula": "84 * 3,5 = 294 Mbit/s",
+      "feedback": {
+        "correct": "Richtig gerechnet.",
+        "wrong": "Bitte Nutzerzahl und Last je Person korrekt multiplizieren."
+      },
+      "progressLinks": [
+        "lf09_technische_anforderungen"
+      ]
+    },
+    {
+      "id": "q12",
+      "type": "short_text",
+      "title": "Server- und Dienstekonzept begründen",
+      "prompt": "Beschreiben Sie in 4-6 Sätzen, wie Sie Server-Hardware, Server-Software und Ausfallsicherheit für diesen Bereich zusammen denken würden.",
+      "minChars": 170,
+      "requiredKeywords": [
+        "server",
+        "dienst",
+        "ausfallsicherheit"
+      ],
+      "expectedOutline": "Zusammenhang von Dienstrolle, Hardwarebasis und Verfügbarkeitsanforderung.",
+      "feedback": {
+        "correct": "Richtig: Das Zusammenspiel von Hardware, Dienstrolle und Verfügbarkeit ist nachvollziehbar dargestellt.",
+        "wrong": "Bitte Serverrolle, Dienste und Ausfallsicherheit konkreter miteinander verbinden."
+      },
+      "progressLinks": [
+        "lf09_technische_anforderungen"
+      ]
+    },
+    {
+      "id": "q13",
+      "type": "ordering",
+      "title": "Technische Auswahl absichern",
+      "prompt": "Ordnen Sie den Weg zu einer tragfähigen technischen Lösung.",
+      "items": [
+        "Anforderungsbezug für Protokolle und Dienste klären",
+        "Komponenten und Serverrollen gegeneinander abwägen",
+        "WAN- und Standortkopplung festlegen",
+        "Prüfkriterien für die Umsetzung definieren",
+        "Technischen Lösungsvorschlag freigeben lassen"
+      ],
+      "correctOrder": [
+        "Anforderungsbezug für Protokolle und Dienste klären",
+        "Komponenten und Serverrollen gegeneinander abwägen",
+        "WAN- und Standortkopplung festlegen",
+        "Prüfkriterien für die Umsetzung definieren",
+        "Technischen Lösungsvorschlag freigeben lassen"
+      ],
+      "feedback": {
+        "correct": "Richtig: Die technische Auswahl ist sauber vom Bedarf zur Freigabe geführt.",
+        "wrong": "Nicht optimal: Bitte Bedarf, Auswahl, Prüfung und Freigabe stringenter aufbauen."
+      },
+      "progressLinks": [
+        "lf09_technische_anforderungen",
+        "lf09_rollout_uebergabe"
+      ]
+    },
+    {
+      "id": "f02",
+      "type": "followup_divider",
+      "title": "Folgeauftrag 2",
+      "prompt": "Der Einkauf bittet um eine kurze Bewertung, wie Wirtschaftlichkeit, Sicherheit und Nachhaltigkeit in die technische Auswahl einfliessen sollen."
+    },
+    {
+      "id": "q14",
+      "type": "multi_select",
+      "title": "Wirtschaft und Schutzbedarf zusammenführen",
+      "prompt": "Welche Aspekte sollten in dieser Bewertung gemeinsam betrachtet werden? (Mehrfachauswahl)",
+      "options": [
+        {
+          "text": "Betriebskosten über die geplante Nutzungsdauer",
+          "correct": true,
+          "rationale": "Nicht nur der Einkaufspreis ist entscheidend."
+        },
+        {
+          "text": "Schutzbedarf für personenbezogene und betriebliche Daten",
+          "correct": true,
+          "rationale": "Sicherheitsanforderungen wirken auf Architektur und Komponentenwahl."
+        },
+        {
+          "text": "Energiebedarf und Erweiterbarkeit der Komponenten",
+          "correct": true,
+          "rationale": "Nachhaltigkeit und Zukunftsfähigkeit gehören zur Gesamtbewertung."
+        },
+        {
+          "text": "Ausschliesslich der niedrigste Anschaffungspreis",
+          "correct": false,
+          "rationale": "Kurzfristige Billiglösungen können im Betrieb teuer werden."
+        },
+        {
+          "text": "Nur der optische Eindruck im Rack",
+          "correct": false,
+          "rationale": "Das hat für die Entscheidung kaum fachliche Aussagekraft."
+        }
+      ],
+      "feedback": {
+        "correct": "Richtig: Die Bewertung verbindet Kosten, Schutz und Nachhaltigkeit sinnvoll.",
+        "wrong": "Teilweise falsch: Bitte Lebenszyklus, Schutzbedarf und Energie stärker zusammendenken."
+      },
+      "progressLinks": [
+        "lf09_wirtschaft_sicherheit_nachhaltigkeit"
+      ]
+    },
+    {
+      "id": "q15",
+      "type": "single_choice",
+      "title": "Beschaffungsentscheidung begründen",
+      "prompt": "Welche Entscheidung ist für den neuen Bereich am plausibelsten?",
+      "options": [
+        {
+          "text": "Ein günstiges Gerät ohne Monitoring und Sicherheitsfunktionen wählen",
+          "rationale": "Spart kurzfristig, erzeugt aber betriebliche Risiken."
+        },
+        {
+          "text": "Ein etwas teureres, energieeffizientes Modell mit zentraler Verwaltung und Sicherheitsfunktionen wählen",
+          "rationale": "Verbindet Betriebssicherheit, Nachhaltigkeit und verwaltbare Kosten."
+        },
+        {
+          "text": "Die Entscheidung allein vom Lagerbestand des Lieferanten abhängig machen",
+          "rationale": "Das ignoriert die fachlichen Anforderungen des Projekts."
+        }
+      ],
+      "correctIndex": 1,
+      "feedback": {
+        "correct": "Richtig: So wird nicht nur billig, sondern tragfähig entschieden.",
+        "wrong": "Nicht passend: Die Entscheidung muss Lebenszyklus und Schutzbedarf einbeziehen."
+      },
+      "progressLinks": [
+        "lf09_wirtschaft_sicherheit_nachhaltigkeit"
+      ]
+    },
+    {
+      "id": "q16",
+      "type": "number",
+      "title": "Energieeinsparung berechnen",
+      "prompt": "Ein bisher geplanter Switch-Verbund benötigt 610 W, die optimierte Variante 470 W. Bei 2200 Betriebsstunden pro Jahr und 0,32 EUR pro kWh: Wie hoch ist die jährliche Einsparung in EUR, gerundet?",
+      "expected": 99,
+      "toleranceAbs": 2,
+      "showExpectedFormula": "(0,61 - 0,47) * 2200 * 0,32 = 98,56 EUR -> 99 EUR",
+      "feedback": {
+        "correct": "Richtig gerechnet.",
+        "wrong": "Bitte Leistungsdifferenz, Betriebsstunden und Strompreis korrekt kombinieren."
+      },
+      "progressLinks": [
+        "lf09_wirtschaft_sicherheit_nachhaltigkeit"
+      ]
+    },
+    {
+      "id": "f03",
+      "type": "followup_divider",
+      "title": "Folgeauftrag 3",
+      "prompt": "Nach der Grundsatzfreigabe soll die Lösung in ein Pflichtenheft überführt und als kontrollierbarer Rollout vorbereitet werden."
+    },
+    {
+      "id": "q17",
+      "type": "ordering",
+      "title": "Vom Lastenheft ins Pflichtenheft",
+      "prompt": "Ordnen Sie die Schritte für eine saubere Überführung in das Pflichtenheft.",
+      "items": [
+        "Bedarf und Abgrenzung aus dem Lastenheft prüfen",
+        "Funktionale und nichtfunktionale Anforderungen konkretisieren",
+        "Technische Umsetzungspakete beschreiben",
+        "Abnahmekriterien formulieren",
+        "Pflichtenheft zur Freigabe vorlegen"
+      ],
+      "correctOrder": [
+        "Bedarf und Abgrenzung aus dem Lastenheft prüfen",
+        "Funktionale und nichtfunktionale Anforderungen konkretisieren",
+        "Technische Umsetzungspakete beschreiben",
+        "Abnahmekriterien formulieren",
+        "Pflichtenheft zur Freigabe vorlegen"
+      ],
+      "feedback": {
+        "correct": "Richtig: Das Pflichtenheft wird sauber aus dem Bedarf abgeleitet.",
+        "wrong": "Nicht optimal: Bitte vom Bedarf über die Konkretisierung bis zur Freigabe denken."
+      },
+      "progressLinks": [
+        "lf09_pflichtenheft_vergabe"
+      ]
+    },
+    {
+      "id": "q18",
+      "type": "short_text",
+      "title": "Anforderungen messbar formulieren",
+      "prompt": "Erläutern Sie in 4-6 Sätzen, wie Sie funktionale und nichtfunktionale Anforderungen für dieses Netzprojekt trennen und messbar machen würden.",
+      "minChars": 180,
+      "requiredKeywords": [
+        "funktional",
+        "nichtfunktional",
+        "messbar"
+      ],
+      "expectedOutline": "Unterscheidung von Leistungsinhalt und Qualitätskriterium mit messbarer Formulierung.",
+      "feedback": {
+        "correct": "Richtig: Die Trennung und Messbarkeit ist nachvollziehbar dargestellt.",
+        "wrong": "Bitte funktionale und nichtfunktionale Anforderungen deutlicher abgrenzen und messbar formulieren."
+      },
+      "progressLinks": [
+        "lf09_pflichtenheft_vergabe"
+      ]
+    },
+    {
+      "id": "q19",
+      "type": "multi_select",
+      "title": "Rolloutplan absichern",
+      "prompt": "Welche Punkte müssen im Rolloutplan enthalten sein? (Mehrfachauswahl)",
+      "options": [
+        {
+          "text": "Zeitfenster, Verantwortlichkeiten und Freigabepunkte",
+          "correct": true,
+          "rationale": "Schafft Verbindlichkeit für die Umsetzung."
+        },
+        {
+          "text": "Rückfalloptionen für kritische Schritte",
+          "correct": true,
+          "rationale": "Mindert Einführungsrisiken."
+        },
+        {
+          "text": "Prüf- und Nachtestpunkte vor der Endabnahme",
+          "correct": true,
+          "rationale": "Sichert die Qualität vor der Freigabe."
+        },
+        {
+          "text": "Keine Dokumentation, damit das Team flexibel bleibt",
+          "correct": false,
+          "rationale": "Das wäre für Projekt- und Betriebsübergabe problematisch."
+        },
+        {
+          "text": "Nur die Einkaufsrechnung als einziges Projektdokument",
+          "correct": false,
+          "rationale": "Das reicht für den Rollout nicht annahernd aus."
+        }
+      ],
+      "feedback": {
+        "correct": "Richtig: Der Rolloutplan ist steuerbar und kontrollierbar aufgebaut.",
+        "wrong": "Teilweise falsch: Bitte Steuerung, Rückfalloptionen und Prüfung gemeinsam absichern."
+      },
+      "progressLinks": [
+        "lf09_installation_konfiguration",
+        "lf09_rollout_uebergabe"
+      ]
+    },
+    {
+      "id": "q20",
+      "type": "single_choice",
+      "title": "Abnahmekriterium erkennen",
+      "prompt": "Welche Formulierung eignet sich als brauchbares Abnahmekriterium?",
+      "options": [
+        {
+          "text": "Das Netz muss insgesamt gut funktionieren",
+          "rationale": "Zu unpräzise für eine saubere Abnahme."
+        },
+        {
+          "text": "Die Nutzer sollen möglichst zufrieden sein",
+          "rationale": "Als Ziel sinnvoll, aber nicht messbar genug."
+        },
+        {
+          "text": "Alle 52 Arbeitsplätze erhalten innerhalb von 60 Sekunden nach Anmeldung eine gültige Adresse und Zugriff auf die freigegebenen Dienste",
+          "rationale": "Messbar, nachvollziehbar und direkt prüfbar."
+        }
+      ],
+      "correctIndex": 2,
+      "feedback": {
+        "correct": "Richtig: Dieses Kriterium ist klar, messbar und prüfbar.",
+        "wrong": "Nicht passend: Abnahmekriterien müssen konkret und messbar formuliert sein."
+      },
+      "progressLinks": [
+        "lf09_pflichtenheft_vergabe",
+        "lf09_pruefung_dokumentation"
+      ]
+    },
+    {
+      "id": "f04",
+      "type": "followup_divider",
+      "title": "Folgeauftrag 4",
+      "prompt": "Zum Abschluss sollen Prüfung, Dokumentation, Übergabe und eine kurze Einordnung von Virtualisierung und Managed Services vorbereitet werden."
+    },
+    {
+      "id": "q21",
+      "type": "multi_select",
+      "title": "Prüf- und Messplan",
+      "prompt": "Welche Punkte gehören in einen belastbaren Prüf- und Messplan? (Mehrfachauswahl)",
+      "options": [
+        {
+          "text": "Erreichbarkeit zentraler Dienste und Segmentgrenzen prüfen",
+          "correct": true,
+          "rationale": "Deckt Kernfunktion und Netztrennung ab."
+        },
+        {
+          "text": "Messpunkte, Sollwerte und Dokumentationsform festlegen",
+          "correct": true,
+          "rationale": "Nur so werden Ergebnisse nachvollziehbar."
+        },
+        {
+          "text": "Abweichungen und Restpunkte klassifizieren",
+          "correct": true,
+          "rationale": "Hilft bei Freigabe und Nacharbeit."
+        },
+        {
+          "text": "Fehler nur mündlich besprechen und nicht festhalten",
+          "correct": false,
+          "rationale": "Das wäre für Abnahme und Betrieb nicht tragfähig."
+        },
+        {
+          "text": "Messungen auf einen späteren Zeitpunkt nach Projektende verschieben",
+          "correct": false,
+          "rationale": "Prüfung muss vor der finalen Freigabe stattfinden."
+        }
+      ],
+      "feedback": {
+        "correct": "Richtig: Der Prüfplan ist fachlich und organisatorisch belastbar.",
+        "wrong": "Teilweise falsch: Bitte Sollwerte, Restpunkte und Nachvollziehbarkeit stärker absichern."
+      },
+      "progressLinks": [
+        "lf09_pruefung_dokumentation"
+      ]
+    },
+    {
+      "id": "q22",
+      "type": "number",
+      "title": "Messpunkt-Erfolgsquote",
+      "prompt": "Von 61 geplanten Messpunkten wurden 58 ohne Beanstandung bestanden. Wie hoch ist die Erfolgsquote in Prozent, gerundet?",
+      "expected": 95,
+      "toleranceAbs": 1,
+      "showExpectedFormula": "58 / 61 * 100 = 95,08 % -> 95 %",
+      "feedback": {
+        "correct": "Richtig gerechnet.",
+        "wrong": "Bitte bestandene Messpunkte korrekt ins Verhältnis setzen."
+      },
+      "progressLinks": [
+        "lf09_pruefung_dokumentation"
+      ]
+    },
+    {
+      "id": "q23",
+      "type": "short_text",
+      "title": "Virtualisierung kurz vorstellen",
+      "prompt": "Beschreiben Sie in 4-6 Sätzen, wie Sie dem Kunden den Nutzen von Virtualisierung und Managed-Service-Stufen für den weiteren Ausbau erklären würden.",
+      "minChars": 180,
+      "requiredKeywords": [
+        "virtualisierung",
+        "managed",
+        "nutzen"
+      ],
+      "expectedOutline": "Kundengerechte Einordnung von Flexibilität, Betriebsunterstützung und Nutzenversprechen.",
+      "feedback": {
+        "correct": "Richtig: Der Nutzen ist technisch korrekt und kundengerecht erklärt.",
+        "wrong": "Bitte Virtualisierung, Managed-Service-Stufen und Kundennutzen konkreter miteinander verbinden."
+      },
+      "progressLinks": [
+        "lf09_virtualisierung_portfolio"
+      ]
+    },
+    {
+      "id": "q24",
+      "type": "single_choice",
+      "title": "Übergabe an Betrieb und Support",
+      "prompt": "Was ist für die Übergabe nach erfolgreichem Rollout am wichtigsten?",
+      "options": [
+        {
+          "text": "Nur kurz mitteilen, dass das Projekt fertig ist",
+          "rationale": "Ohne Unterlagen und Restpunkte fehlt Betriebssicherheit."
+        },
+        {
+          "text": "Konfigurationen, Messergebnisse, Restpunkte und Eskalationswege sauber dokumentiert übergeben",
+          "rationale": "Sichert Betrieb, Support und Nacharbeit nachvollziehbar ab."
+        },
+        {
+          "text": "Die Projektdokumente zur Sicherheit gar nicht weitergeben",
+          "rationale": "Das würde die Betriebsübergabe massiv erschweren."
+        }
+      ],
+      "correctIndex": 1,
+      "feedback": {
+        "correct": "Richtig: Eine belastbare Übergabe ist Teil der Projektqualität.",
+        "wrong": "Nicht passend: Ohne saubere Übergabe werden Betrieb und Support ausgebremst."
+      },
+      "progressLinks": [
+        "lf09_rollout_uebergabe",
+        "lf09_pruefung_dokumentation"
+      ]
+    }
+  ]
+}

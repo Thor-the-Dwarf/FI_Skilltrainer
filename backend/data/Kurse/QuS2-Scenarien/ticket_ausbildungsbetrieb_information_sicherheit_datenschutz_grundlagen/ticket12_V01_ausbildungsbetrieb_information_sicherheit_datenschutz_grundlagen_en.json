@@ -1,0 +1,236 @@
+{
+  "scenario": {
+    "company": "MediTrust IT GmbH",
+    "scale": "IT operations for practice and administrative environments with personal data",
+    "context": "Multiple specialist applications process personal data. After an unclear export, we now need to clearly separate what belongs to data protection legally, organizationally and technically.",
+    "mission": "Classify the basics of information security and data protection, the three protection goals, TOM and the roles of GDPR, BDSG and the data protection officer.",
+    "source": {
+      "kind": "Internal data protection and security request",
+      "reference": "Datenschutzpaket 2026-04",
+      "note": "The functional coordination wants to understand the basics first before technical individual measures are reviewed."
+    },
+    "station": {
+      "id": "QUS2-ST-12",
+      "department": "Data protection coordination and operations support",
+      "profile": "Information security, data protection, TOM, GDPR and BDSG",
+      "constraints": [
+        "Legal requirements and operational rules must remain clearly distinguishable",
+        "Confidentiality, integrity and availability should appear as protection goals",
+        "The data protection officer and TOM must not be confused with purely technical individual measures"
+      ]
+    },
+    "customerRequest": {
+      "from": "datenschutzkoordination@meditrust.example",
+      "to": "betrieb@meditrust.example",
+      "subject": "Prepare information security and data protection for the department",
+      "date": "2026-03-27",
+      "body": "Hello,\n\nplease prepare the basics so the department can immediately see what is data protection, what is information security and what is an operational requirement. The result should connect to TOM, GDPR/BDSG and the role of the data protection officer.\n\nBest regards\nData Protection Coordination"
+    }
+  },
+  "questions": [
+    {
+      "id": "ctx01",
+      "type": "context_card",
+      "title": "Framework for the data protection case",
+      "contentBlocks": [
+        {
+          "type": "text",
+          "text": "In specialist operations, personal data, internal processes and technical safeguards come together. The team should not mix the basic terms but should clearly distinguish between data protection, information security, protection goals and operational implementation."
+        }
+      ]
+    },
+    {
+      "id": "q01",
+      "type": "single_choice",
+      "title": "Describe the protection goals correctly",
+      "prompt": "Which statement best describes confidentiality, integrity and availability?",
+      "options": [
+        {
+          "text": "Confidentiality protects against unauthorized access, integrity against unnoticed changes, availability against outages.",
+          "rationale": "The three protection goals are correctly and concisely stated here.",
+          "correct": true
+        },
+        {
+          "text": "Confidentiality means fast distribution, integrity only complete storage, availability only backups.",
+          "rationale": "This swaps the protective effect and is technically incorrect.",
+          "correct": false
+        },
+        {
+          "text": "All three goals relate only to passwords.",
+          "rationale": "That is too narrow; the goals cover the entire handling of information.",
+          "correct": false
+        },
+        {
+          "text": "Availability is the counterpart to data protection, integrity only applies to paper files.",
+          "rationale": "This also misses the technical core.",
+          "correct": false
+        }
+      ],
+      "correctIndex": 0,
+      "feedback": {
+        "correct": "The three protection goals were correctly classified.",
+        "wrong": "Focus on access, unchanged data and usability."
+      },
+      "progressLinks": [
+        "qus2_infosec_datenschutz_grundlagen"
+      ]
+    },
+    {
+      "id": "q02",
+      "type": "multi_select",
+      "title": "Data protection and TOM in operations",
+      "prompt": "Which points typically belong to operational requirements, data protection and technical or organizational measures? Multiple statements can be correct.",
+      "options": [
+        {
+          "text": "Internal processing rules are followed.",
+          "rationale": "Operational requirements must be visibly observed.",
+          "correct": true
+        },
+        {
+          "text": "Legal regulations are observed.",
+          "rationale": "Data protection is not robust without a legal framework.",
+          "correct": true
+        },
+        {
+          "text": "Only authorized people with a traceable role get access.",
+          "rationale": "This is a classic TOM and data protection point.",
+          "correct": true
+        },
+        {
+          "text": "Logging supports traceability.",
+          "rationale": "Without logging, the case is often not auditable.",
+          "correct": true
+        },
+        {
+          "text": "The data protection officer is only responsible for technical incidents.",
+          "rationale": "The role is much broader and advisory/supervisory.",
+          "correct": false
+        },
+        {
+          "text": "A topic is done once the internal solution is well meant.",
+          "rationale": "Good intentions do not replace rules and evidence.",
+          "correct": false
+        }
+      ],
+      "feedback": {
+        "correct": "The core operational obligations and TOM were correctly recognized.",
+        "wrong": "Think about rules, law, access, logging and the role of data protection."
+      },
+      "progressLinks": [
+        "qus2_infosec_tom_dsgvo_bdsg",
+        "qus2_infosec_datenschutz_grundlagen"
+      ]
+    },
+    {
+      "id": "q03",
+      "type": "ordering",
+      "title": "Handle a data protection incident",
+      "prompt": "Which order is fundamentally sensible in a data protection incident?",
+      "items": [
+        "Narrow down the situation and affected data.",
+        "Stop access or disclosure immediately.",
+        "Inform the responsible role and management.",
+        "Document measures and open items.",
+        "Record next steps and follow-up."
+      ],
+      "correctOrder": [
+        "Narrow down the situation and affected data.",
+        "Stop access or disclosure immediately.",
+        "Inform the responsible role and management.",
+        "Document measures and open items.",
+        "Record next steps and follow-up."
+      ],
+      "feedback": {
+        "correct": "The sequence for the basic approach is correct.",
+        "wrong": "First narrow down, then stop, inform, document and follow up."
+      },
+      "progressLinks": [
+        "qus2_meldewege_rollen_nachweise",
+        "qus2_sofortmassnahmen_absichern"
+      ]
+    },
+    {
+      "id": "q04",
+      "type": "match_pairs",
+      "title": "Assign basic terms",
+      "prompt": "Which description best matches each term?",
+      "layout": "table",
+      "columns": [
+        "Term",
+        "Matching description"
+      ],
+      "pairs": [
+        {
+          "key": "pair_1",
+          "left": "Information security",
+          "right": "Protection of confidentiality, integrity and availability of information."
+        },
+        {
+          "key": "pair_2",
+          "left": "Data protection",
+          "right": "Lawful handling of personal data."
+        },
+        {
+          "key": "pair_3",
+          "left": "Confidentiality",
+          "right": "Only authorized persons get access."
+        },
+        {
+          "key": "pair_4",
+          "left": "Integrity",
+          "right": "Data remains correct and unchanged."
+        },
+        {
+          "key": "pair_5",
+          "left": "Availability",
+          "right": "Data and systems are usable when needed."
+        },
+        {
+          "key": "pair_6",
+          "left": "TOM",
+          "right": "Technical and organizational measures."
+        },
+        {
+          "key": "pair_7",
+          "left": "GDPR",
+          "right": "European General Data Protection Regulation."
+        },
+        {
+          "key": "pair_8",
+          "left": "BDSG",
+          "right": "German supplement to data protection law."
+        },
+        {
+          "key": "pair_9",
+          "left": "Data protection officer",
+          "right": "Advises and monitors data protection in the organization."
+        },
+        {
+          "key": "pair_10",
+          "left": "Operational requirements",
+          "right": "Internal rules for secure and lawful processing."
+        }
+      ],
+      "options": [
+        "Protection of confidentiality, integrity and availability of information.",
+        "Lawful handling of personal data.",
+        "Only authorized persons get access.",
+        "Data remains correct and unchanged.",
+        "Data and systems are usable when needed.",
+        "Technical and organizational measures.",
+        "European General Data Protection Regulation.",
+        "German supplement to data protection law.",
+        "Advises and monitors data protection in the organization.",
+        "Internal rules for secure and lawful processing."
+      ],
+      "feedback": {
+        "correct": "The basic terms were assigned cleanly.",
+        "wrong": "Check the difference between protection, law, role and operational rule."
+      },
+      "progressLinks": [
+        "qus2_infosec_datenschutz_grundlagen",
+        "qus2_infosec_tom_dsgvo_bdsg"
+      ]
+    }
+  ]
+}

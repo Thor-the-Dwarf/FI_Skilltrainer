@@ -1,0 +1,418 @@
+{
+  "scenario": {
+    "company": "SecuBridge Service GmbH",
+    "scale": "IT service provider for home office, municipal workplaces and medical practice environments, 95 employees",
+    "context": "An external maintenance partner needs time-limited remote access for an update on a citizen office document gateway.",
+    "mission": "Define access path, minimum permissions, approvals, maintenance window and completion evidence for the remote maintenance.",
+    "source": {
+      "kind": "Internal change and maintenance request",
+      "reference": "Remote maintenance document gateway, 2026-03-28",
+      "note": "Based on a planned maintenance window, an external partner, earlier weaknesses in access approvals and the obligation for traceable completion evidence."
+    },
+    "station": {
+      "id": "QUS2-ST-03",
+      "department": "Operations, security and access coordination",
+      "profile": "Remote maintenance, minimum permissions, approvals, maintenance window and logging",
+      "constraints": [
+        "Access must be only as broad and as long as the approved work actually requires",
+        "Approval, rollback path and logging must be reliable before the maintenance window",
+        "Activation, use and shutdown of access must be clearly owned and verifiable"
+      ]
+    },
+    "customerRequest": {
+      "from": "kommunalbetrieb@secubridge-service.example",
+      "to": "zugangskoordination@ausbildungsbetrieb.example",
+      "subject": "Prepare remote maintenance access for the document gateway on Saturday",
+      "date": "2026-03-26",
+      "body": "Good day,\n\nour external partner Nordwart Systems must renew a certificate on the citizen office document gateway on Saturday between 21:30 and 23:00, restart the scan service and then test the connection path.\n\nThe system processes appointment and document uploads from the citizen office. In earlier maintenance windows we had overly broad VPN approvals, a shared vendor account and incomplete session logs.\n\nPlease prepare a reliable status for this window: access path, approvals, minimum permissions, rollback path and the evidence that must be available on Monday.\n\nKind regards\nMunicipal operations"
+    }
+  },
+  "questions": [
+    {
+      "id": "ctx01",
+      "type": "context_card",
+      "title": "Framework for remote maintenance",
+      "contentBlocks": [
+        {
+          "type": "text",
+          "text": "SecuBridge operates a document gateway for a citizen office between scanners, the appointment portal and line-of-business systems. A tightly limited maintenance window is planned for Saturday, in which an external partner should perform only the approved changes on the gateway."
+        },
+        {
+          "type": "table",
+          "columns": [
+            "Point",
+            "Current status"
+          ],
+          "rows": [
+            [
+              "Partner",
+              "Nordwart Systems"
+            ],
+            [
+              "Work",
+              "Renew certificate, restart scan service, test connection path"
+            ],
+            [
+              "Window",
+              "Saturday 21:30 to 23:00"
+            ],
+            [
+              "Earlier weaknesses",
+              "Shared account, overly broad approvals, incomplete session logs"
+            ],
+            [
+              "Expectation after the window",
+              "Access disabled, traceable change status and clear remaining points"
+            ]
+          ]
+        },
+        {
+          "type": "text",
+          "text": "The goal is not a convenient permanent access, but a controlled access with minimum permissions, clear responsibility and a closing state that remains verifiable on Monday."
+        }
+      ]
+    },
+    {
+      "id": "q01",
+      "type": "single_choice",
+      "title": "Access model for the maintenance window",
+      "prompt": "Which access model fits this case best?",
+      "options": [
+        {
+          "text": "A permanently active shared admin account with general VPN access for the partner.",
+          "rationale": "This may simplify access but contradicts least privilege, personal accountability and clean shutdown."
+        },
+        {
+          "text": "A person-bound, time-limited account with an approved target system, active logging and automatic deactivation after the window.",
+          "rationale": "This model combines least privilege, traceability and controlled end of access."
+        },
+        {
+          "text": "Ad-hoc remote maintenance via chat ID and a phone-shared password, as long as the partner is known.",
+          "rationale": "This is neither cleanly approved nor reliably documented."
+        },
+        {
+          "text": "A generic vendor account that only rotates the password after each maintenance.",
+          "rationale": "Without person binding and time limitation, access stays too coarse."
+        }
+      ],
+      "correctIndex": 1,
+      "feedback": {
+        "correct": "The appropriate access model was correctly identified.",
+        "wrong": "Focus on person binding, time limitation, target system and verifiable shutdown."
+      },
+      "progressLinks": [
+        "qus2_freigaben_minimalrechte"
+      ]
+    },
+    {
+      "id": "q02",
+      "type": "multi_select",
+      "title": "Lock in before the maintenance window",
+      "prompt": "Which points must be clarified and documented before the window starts? Several points can be mandatory.",
+      "options": [
+        {
+          "text": "Which exact tasks are approved and which systems may be affected.",
+          "correct": true,
+          "rationale": "Without a clear scope, least privilege cannot be reasonably limited."
+        },
+        {
+          "text": "Who is the responsible contact internally and externally during the window.",
+          "correct": true,
+          "rationale": "Maintenance, questions and possible rollback require clearly named people."
+        },
+        {
+          "text": "When access starts, the latest it ends and how deactivation is triggered.",
+          "correct": true,
+          "rationale": "Time limitation without a defined shutdown point remains only an intention."
+        },
+        {
+          "text": "Which rollback path applies if certificate replacement or service restart fails.",
+          "correct": true,
+          "rationale": "For productive maintenance the rollback path decides operational safety."
+        },
+        {
+          "text": "That the partner can decide on the fly which additional systems might be useful.",
+          "correct": false,
+          "rationale": "Access must not be expanded based on situational discretion."
+        },
+        {
+          "text": "Whether the partner knows the environment well and therefore needs fewer rules.",
+          "correct": false,
+          "rationale": "Trust does not replace least privilege or documented approvals."
+        }
+      ],
+      "feedback": {
+        "correct": "The key points before the maintenance window were correctly identified.",
+        "wrong": "Focus on scope, responsible persons, time limitation and rollback path instead of blind trust."
+      },
+      "progressLinks": [
+        "qus2_freigaben_minimalrechte",
+        "qus2_wartungsfenster_steuern"
+      ]
+    },
+    {
+      "id": "f02",
+      "type": "followup_divider",
+      "title": "Secure approval and minimum permissions",
+      "from": "sicherheitsteam@secubridge-service.example",
+      "to": "zugangskoordination@ausbildungsbetrieb.example",
+      "subject": "Define approval and minimum permissions for Saturday",
+      "date": "2026-03-26",
+      "body": "Hello everyone,\n\nbefore I give the security approval, I need a clear statement on which account will be used, which systems may be accessed, how access ends automatically and where the session or system logs are stored. Please document approval, minimum permissions and logging as one consistent status.\n\nKind regards\nSecurity team"
+    },
+    {
+      "id": "q03",
+      "type": "table_fill",
+      "title": "Connect requirements and evidence cleanly",
+      "prompt": "For each requirement, add the appropriate rule and the most important evidence artifact.",
+      "columns": [
+        "Requirement",
+        "Required rule",
+        "Most important evidence artifact"
+      ],
+      "rows": [
+        [
+          "The partner should work only on the document gateway.",
+          {
+            "key": "rule_row_1",
+            "label": "Gateway / rule",
+            "expected": "Person-bound account only for the gateway and approved admin rights during the window.",
+            "inputType": "select",
+            "placeholder": "Select rule",
+            "options": [
+              "Person-bound account only for the gateway and approved admin rights during the window.",
+              "General administrator account for multiple systems as long as the window is short.",
+              "Free system choice if the partner finds the needed solution faster.",
+              "Access only through a shared team account so questions are easier."
+            ]
+          },
+          {
+            "key": "proof_row_1",
+            "label": "Gateway / evidence",
+            "expected": "Approval record with account, time window and target system.",
+            "inputType": "select",
+            "placeholder": "Select evidence",
+            "options": [
+              "Approval record with account, time window and target system.",
+              "Screenshot of the messenger chat with appointment confirmation.",
+              "General partner presentation with service overview.",
+              "Note that the partner already knows the environment."
+            ]
+          }
+        ],
+        [
+          "The session should be traceable later.",
+          {
+            "key": "rule_row_2",
+            "label": "Logging / rule",
+            "expected": "Session or command logging is enabled and the storage location is defined in advance.",
+            "inputType": "select",
+            "placeholder": "Select rule",
+            "options": [
+              "Session or command logging is enabled and the storage location is defined in advance.",
+              "The partner notes at the end what happened from their perspective.",
+              "Logging can be skipped if the maintenance looks successful.",
+              "Only the start time is recorded; further steps are not needed."
+            ]
+          },
+          {
+            "key": "proof_row_2",
+            "label": "Logging / evidence",
+            "expected": "Session log or system log with timestamps and linkage to the maintenance window.",
+            "inputType": "select",
+            "placeholder": "Select evidence",
+            "options": [
+              "Session log or system log with timestamps and linkage to the maintenance window.",
+              "Short calendar note that the work is probably done.",
+              "Open task list without reference to the maintenance window.",
+              "Only the partner's phone feedback."
+            ]
+          }
+        ],
+        [
+          "Maintenance fails in the middle of the certificate change.",
+          {
+            "key": "rule_row_3",
+            "label": "Rollback / rule",
+            "expected": "Rollback path with responsible person, abort criterion and recovery step is defined in advance.",
+            "inputType": "select",
+            "placeholder": "Select rule",
+            "options": [
+              "Rollback path with responsible person, abort criterion and recovery step is defined in advance.",
+              "In case of problems the partner decides spontaneously what seems technically easiest.",
+              "A rollback path is only needed if errors are visible at the start.",
+              "The rollback decision is documented on Monday after the window."
+            ]
+          },
+          {
+            "key": "proof_row_3",
+            "label": "Rollback / evidence",
+            "expected": "Rollback plan with contact, go/no-go point and reset steps.",
+            "inputType": "select",
+            "placeholder": "Select evidence",
+            "options": [
+              "Rollback plan with contact, go/no-go point and reset steps.",
+              "General operations policy without system reference.",
+              "Partner logo and contact details in the ticket.",
+              "Verbal alignment without documented criteria."
+            ]
+          }
+        ]
+      ],
+      "feedback": {
+        "correct": "Rules and evidence were consistently linked for the remote maintenance.",
+        "wrong": "Check which rule truly secures least privilege, logging and rollback, and which evidence supports it later."
+      },
+      "progressLinks": [
+        "qus2_freigaben_minimalrechte",
+        "qus2_abschlussnachweise_fernwartung"
+      ]
+    },
+    {
+      "id": "q04",
+      "type": "match_pairs",
+      "title": "Responsibilities in the maintenance window",
+      "prompt": "Which role takes which initial task?",
+      "layout": "table",
+      "columns": [
+        "Role",
+        "Initial task"
+      ],
+      "pairs": [
+        {
+          "key": "role_1",
+          "left": "Access coordination",
+          "right": "Activate temporary access, verify it and revoke it after the window"
+        },
+        {
+          "key": "role_2",
+          "left": "Security team",
+          "right": "Secure minimum permissions, logging and security approval"
+        },
+        {
+          "key": "role_3",
+          "left": "Municipal operations",
+          "right": "Accompany the operational time window, tests and subject-matter approval"
+        },
+        {
+          "key": "role_4",
+          "left": "Nordwart Systems",
+          "right": "Perform only the approved work in the window and report findings"
+        }
+      ],
+      "options": [
+        "Activate temporary access, verify it and revoke it after the window",
+        "Secure minimum permissions, logging and security approval",
+        "Accompany the operational time window, tests and subject-matter approval",
+        "Perform only the approved work in the window and report findings"
+      ],
+      "feedback": {
+        "correct": "The responsibilities in the maintenance window were correctly assigned.",
+        "wrong": "Focus on who controls access, who approves security, who supports operations and who performs the maintenance."
+      },
+      "progressLinks": [
+        "qus2_freigaben_minimalrechte",
+        "qus2_wartungsfenster_steuern"
+      ]
+    },
+    {
+      "id": "q05",
+      "type": "number",
+      "title": "Net maintenance time in the window",
+      "prompt": "The maintenance window runs from 21:30 to 23:00. 15 minutes are for pre-checks and 20 minutes for final checks. How many minutes remain for the actual maintenance?",
+      "expected": 55,
+      "toleranceAbs": 0,
+      "showExpectedFormula": "90 - 15 - 20 = 55 minutes",
+      "feedback": {
+        "correct": "The net maintenance time was calculated correctly.",
+        "wrong": "First determine the total time of the window, then subtract pre-checks and final checks."
+      },
+      "progressLinks": [
+        "qus2_wartungsfenster_steuern"
+      ]
+    },
+    {
+      "id": "f03",
+      "type": "followup_divider",
+      "title": "Prepare the completion status for Monday",
+      "from": "betrieb@secubridge-service.example",
+      "to": "zugangskoordination@ausbildungsbetrieb.example",
+      "subject": "Secure completion evidence after remote maintenance",
+      "date": "2026-03-26",
+      "body": "Hello everyone,\n\nfor Monday I need a status that not only says the maintenance ran, but also shows who had access, what was changed, whether the gateway works cleanly again and whether the temporary access is really closed. Please also consider open residual points.\n\nKind regards\nOperations"
+    },
+    {
+      "id": "q06",
+      "type": "multi_select",
+      "title": "Completion evidence after remote maintenance",
+      "prompt": "Which documents or logs must be available after the window so the maintenance can be cleanly closed?",
+      "options": [
+        {
+          "text": "Session or system log with timestamps for the maintenance period",
+          "correct": true,
+          "rationale": "This keeps it traceable when and how access was used."
+        },
+        {
+          "text": "Short change and test result note for the gateway",
+          "correct": true,
+          "rationale": "The subject-matter and technical closure needs a readable finding."
+        },
+        {
+          "text": "Evidence that the temporary access was disabled or automatically expired",
+          "correct": true,
+          "rationale": "Without access closure the main risk remains unresolved."
+        },
+        {
+          "text": "Open point or residual risk with the next action",
+          "correct": true,
+          "rationale": "A clean closure does not hide residual points."
+        },
+        {
+          "text": "A short chat message saying 'working again'",
+          "correct": false,
+          "rationale": "That is a signal but not a reliable completion record."
+        },
+        {
+          "text": "A screenshot with the partner's logo in the remote maintenance tool",
+          "correct": false,
+          "rationale": "That proves neither change status nor shutdown or test results."
+        }
+      ],
+      "feedback": {
+        "correct": "The essential completion evidence was correctly identified.",
+        "wrong": "Focus on access proof, change evidence, deactivation and visible residual points."
+      },
+      "progressLinks": [
+        "qus2_abschlussnachweise_fernwartung"
+      ]
+    },
+    {
+      "id": "q07",
+      "type": "ordering",
+      "title": "Sequence of the maintenance window",
+      "prompt": "Put the steps in a sensible order so access, maintenance and completion fit together cleanly.",
+      "items": [
+        "Finalize approvals, account, time window and rollback path.",
+        "Activate temporary access at the start of the window and verify logging.",
+        "Perform the approved maintenance work on the gateway.",
+        "Run functional test, final check and deactivate access.",
+        "Document change status, logs and residual points."
+      ],
+      "correctOrder": [
+        "Finalize approvals, account, time window and rollback path.",
+        "Activate temporary access at the start of the window and verify logging.",
+        "Perform the approved maintenance work on the gateway.",
+        "Run functional test, final check and deactivate access.",
+        "Document change status, logs and residual points."
+      ],
+      "feedback": {
+        "correct": "The order leads cleanly from approval to maintenance to reliable completion.",
+        "wrong": "First approvals and access, then maintenance, then test, shutdown and documentation."
+      },
+      "progressLinks": [
+        "qus2_wartungsfenster_steuern",
+        "qus2_abschlussnachweise_fernwartung"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,729 @@
+{
+  "scenario": {
+    "company": "Ausbildungsbetrieb IT-Service",
+    "scale": "Mittelstand, 160 Mitarbeitende",
+    "context": "Station 01: Startauftrag und Folgeaufträge zur Anpassung einer vorhandenen Datenverwaltungssoftware.",
+    "mission": "Sie bearbeiten den Startauftrag und mehrere Folgeaufträge rund um Anforderungen, Datenstruktur, Werkzeuge, Datenbank, Test und Dokumentation.",
+    "station": {
+      "id": "LF05-ST-01",
+      "department": "Vertrieb und Innendienst",
+      "profile": "Datenpflege, Auswertung, CSV-Import, Basis-Reporting und kleine Softwareanpassungen",
+      "constraints": [
+        "Anforderungen und Lösungsschritte nachvollziehbar dokumentieren",
+        "Datenqualität und Informationssicherheit berücksichtigen",
+        "Test- und Abnahmefähigkeit sicherstellen"
+      ]
+    },
+    "customerRequest": {
+      "from": "fachbereich.leitung@ausbildungsbetrieb.example",
+      "to": "dev.team@ausbildungsbetrieb.example",
+      "subject": "Station 01: Anpassung der Datenverwaltungssoftware",
+      "date": "2026-03-13",
+      "body": "Bitte erweitern Sie unsere bestehende Datenverwaltungssoftware um eine nachvollziehbare Importprüfung und eine bessere Auswertung nach Kundenstatus.\n\nDanach folgen weitere Aufträge zur selben Anwendung mit steigender Verantwortung zu Projektplanung, Werkzeugwahl, Datenbank, Test und Dokumentation."
+    }
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "type": "single_choice",
+      "title": "Anforderung oder Wunsch?",
+      "prompt": "Welche Aussage ist am ehesten eine fachlich prüfbare Anforderung?",
+      "options": [
+        {
+          "text": "Die Anwendung soll sich moderner anfühlen",
+          "rationale": "Zu unscharf und nicht klar testbar."
+        },
+        {
+          "text": "CSV-Import muss Datensätze mit leerer Kunden-ID ablehnen und protokollieren",
+          "rationale": "Klar, testbar und fachlich nachvollziehbar."
+        },
+        {
+          "text": "Die Farbe der Schaltflächen soll beliebig sein",
+          "rationale": "Ohne fachlichen Nutzen keine priorisierte Kernanforderung."
+        }
+      ],
+      "correctIndex": 1,
+      "feedback": {
+        "correct": "Richtig: Die Aussage ist konkret spezifiziert und verifizierbar.",
+        "wrong": "Nicht passend: Bitte Testbarkeit und Eindeutigkeit stärker beachten."
+      },
+      "progressLinks": [
+        "lf05_anforderung_planung"
+      ]
+    },
+    {
+      "id": "q2",
+      "type": "multi_select",
+      "title": "Daten und Information unterscheiden",
+      "prompt": "Welche Aussagen treffen fachlich zu? (Mehrfachauswahl)",
+      "options": [
+        {
+          "text": "Rohwerte aus einem CSV sind Daten, eine berechnete Kennzahl ist Information",
+          "correct": true,
+          "rationale": "Information entsteht durch Kontext und Auswertung."
+        },
+        {
+          "text": "Datenherkunft beeinflusst die Verarbeitbarkeit und Qualitätsprüfung",
+          "correct": true,
+          "rationale": "Quelle und Erfassungsweg bestimmen Plausibilitätsbedarf."
+        },
+        {
+          "text": "Dateiformat ist egal, solange eine Datei existiert",
+          "correct": false,
+          "rationale": "Format beeinflusst Verarbeitbarkeit und Fehleranfälligkeit."
+        },
+        {
+          "text": "Datenmenge und Datentyp sind für Performance und Speicherplanung relevant",
+          "correct": true,
+          "rationale": "Beides ist für Ausführung und Infrastruktur wichtig."
+        },
+        {
+          "text": "Alle Daten sind ohne Kontext automatisch entscheidungsreif",
+          "correct": false,
+          "rationale": "Ohne Kontext fehlt Aussagekraft."
+        }
+      ],
+      "feedback": {
+        "correct": "Richtig: Sie trennen Daten, Information und Verarbeitungsaspekte sauber.",
+        "wrong": "Teilweise falsch: Bitte Kontext, Datenherkunft und Format stärker berücksichtigen."
+      },
+      "progressLinks": [
+        "lf05_daten_grundlagen"
+      ]
+    },
+    {
+      "id": "q3",
+      "type": "ordering",
+      "title": "Vom Bedarf zur Lösung",
+      "prompt": "Ordnen Sie die Schritte für eine kleine Softwareanpassung sinnvoll.",
+      "items": [
+        "Implementierung und technischer Test",
+        "Anforderungen mit Fachbereich klären",
+        "Lösungsentwurf und Datenmodell abstimmen",
+        "Abnahmekriterien festlegen",
+        "Dokumentation und Übergabe vorbereiten"
+      ],
+      "correctOrder": [
+        "Anforderungen mit Fachbereich klären",
+        "Abnahmekriterien festlegen",
+        "Lösungsentwurf und Datenmodell abstimmen",
+        "Implementierung und technischer Test",
+        "Dokumentation und Übergabe vorbereiten"
+      ],
+      "feedback": {
+        "correct": "Richtig: Der Ablauf verbindet Planung, Umsetzung und Nachweis sauber.",
+        "wrong": "Nicht optimal: Erst Bedarf und Kriterien, dann Entwurf und Umsetzung."
+      },
+      "progressLinks": [
+        "lf05_projekt_prozessdenken"
+      ]
+    },
+    {
+      "id": "q4",
+      "type": "number",
+      "title": "Datenmengen abschätzen",
+      "prompt": "Ein Datensatz hat im Mittel 2,4 KB. Pro Tag fallen 18.500 Datensätze an. Wie gross ist die Datenmenge pro Tag in MB (dezimal, 1 MB = 1000 KB)?",
+      "expected": 44.4,
+      "toleranceAbs": 0.2,
+      "showExpectedFormula": "18.500 * 2,4 KB = 44.400 KB = 44,4 MB",
+      "feedback": {
+        "correct": "Richtig gerechnet.",
+        "wrong": "Bitte Datensätze, Grösse pro Satz und Einheiten sauber umrechnen."
+      },
+      "progressLinks": [
+        "lf05_daten_grundlagen"
+      ]
+    },
+    {
+      "id": "q5",
+      "type": "short_text",
+      "title": "Lastenheft und Pflichtenheft einordnen",
+      "prompt": "Beschreiben Sie in 4-6 Sätzen den Unterschied und warum beides für die Anpassung wichtig ist.",
+      "minChars": 150,
+      "requiredKeywords": [
+        "lastenheft",
+        "pflichtenheft",
+        "umsetzung"
+      ],
+      "expectedOutline": "Fachliche Anforderungen vs. technische Realisierung, klare Rollen und Nutzen für die Umsetzung.",
+      "feedback": {
+        "correct": "Richtig: Die Abgrenzung ist praxisnah und umsetzungsorientiert.",
+        "wrong": "Bitte Rollen, Inhalt und Zweck der beiden Artefakte klarer trennen."
+      },
+      "progressLinks": [
+        "lf05_anforderung_planung",
+        "lf05_dokumentation_evaluation"
+      ]
+    },
+    {
+      "id": "sep_f1",
+      "type": "followup_divider",
+      "title": "Folgeauftrag 1 - Softwareumfeld und Projektplanung klären",
+      "from": "fachbereich.leitung@ausbildungsbetrieb.example",
+      "to": "dev.team@ausbildungsbetrieb.example",
+      "subject": "Bitte Rollen, Aufwand und Projektweg transparenter machen",
+      "date": "2026-03-13",
+      "body": "Vor der Freigabe will die Leitung eine kompakte Sicht auf Rollen, Softwareumfeld und Projektvorgehen. Bitte stellen Sie dar, was Konfiguration ist, was Entwicklung ist und wie der kleine Projektzuschnitt aussieht."
+    },
+    {
+      "id": "q6",
+      "type": "single_choice",
+      "title": "Konfiguration oder Entwicklung?",
+      "prompt": "Welche Änderung zählt am ehesten als kleine Softwareentwicklung und nicht nur als Konfiguration?",
+      "options": [
+        {
+          "text": "Eine neue Validierungslogik für CSV-Daten implementieren und protokollieren",
+          "rationale": "Hier wird fachliche Programmlogik neu gebaut."
+        },
+        {
+          "text": "Nur die Reihenfolge zweier Dashboard-Spalten ändern",
+          "rationale": "Das ist eher eine Oberflächen- oder Konfigurationsänderung."
+        },
+        {
+          "text": "Ein vorhandenes Filterprofil aktivieren",
+          "rationale": "Das ist typischerweise reine Konfiguration."
+        }
+      ],
+      "correctIndex": 0,
+      "feedback": {
+        "correct": "Richtig: Neue Validierungslogik ist eine Entwicklungsleistung.",
+        "wrong": "Nicht passend: Bitte Konfiguration und echte Entwicklungsarbeit sauber trennen."
+      },
+      "progressLinks": [
+        "lf05_softwareumfeld_rollen"
+      ]
+    },
+    {
+      "id": "q7",
+      "type": "multi_select",
+      "title": "Rollen im kleinen Entwicklungsprojekt",
+      "prompt": "Welche Aussagen zu Rollen und Zusammenarbeit treffen zu? (Mehrfachauswahl)",
+      "options": [
+        {
+          "text": "Der Fachbereich liefert fachliche Anforderungen und Abnahmesicht",
+          "correct": true,
+          "rationale": "Er kennt Nutzen und fachlichen Zielzustand."
+        },
+        {
+          "text": "Die Entwicklung plant technische Umsetzung und Testbarkeit",
+          "correct": true,
+          "rationale": "Technische Machbarkeit und Umsetzung liegen dort."
+        },
+        {
+          "text": "Der Betrieb denkt Deployment, Nutzung und Betreuung mit",
+          "correct": true,
+          "rationale": "Betriebssicht ist auch bei kleinen Vorhaben wichtig."
+        },
+        {
+          "text": "Nur eine Person sollte alles alleine ohne Abstimmung festlegen",
+          "correct": false,
+          "rationale": "Das erhöht Missverständnisse und Risiko."
+        },
+        {
+          "text": "Projektrollen müssen nicht dokumentiert werden",
+          "correct": false,
+          "rationale": "Ohne Klarheit sinkt die Steuerbarkeit."
+        }
+      ],
+      "feedback": {
+        "correct": "Richtig: Fachbereich, Entwicklung und Betrieb greifen sinnvoll ineinander.",
+        "wrong": "Teilweise falsch: Bitte Rollen, Abstimmung und Doku-Pflicht stärker beachten."
+      },
+      "progressLinks": [
+        "lf05_softwareumfeld_rollen",
+        "lf05_projekt_prozessdenken"
+      ]
+    },
+    {
+      "id": "q8",
+      "type": "ordering",
+      "title": "Kleines Projekt sauber zuschneiden",
+      "prompt": "Ordnen Sie die Schritte für ein kleines Anpassungsprojekt.",
+      "items": [
+        "Umsetzung und Review durchführen",
+        "Auftrag und Zielbild klären",
+        "Arbeitspakete und Abhängigkeiten schneiden",
+        "Test- und Abnahmesicht vorbereiten",
+        "Rückmeldung und Übergabe organisieren"
+      ],
+      "correctOrder": [
+        "Auftrag und Zielbild klären",
+        "Arbeitspakete und Abhängigkeiten schneiden",
+        "Test- und Abnahmesicht vorbereiten",
+        "Umsetzung und Review durchführen",
+        "Rückmeldung und Übergabe organisieren"
+      ],
+      "feedback": {
+        "correct": "Richtig: So bleibt das Vorhaben steuerbar und nachvollziehbar.",
+        "wrong": "Nicht optimal: Bitte erst Zielbild, dann Zuschnitt, Nachweis und Umsetzung ordnen."
+      },
+      "progressLinks": [
+        "lf05_projekt_prozessdenken"
+      ]
+    },
+    {
+      "id": "q9",
+      "type": "number",
+      "title": "Gesamtaufwand aus Arbeitspaketen",
+      "prompt": "Drei Arbeitspakete dauern 6 Stunden, 4 Stunden und 5 Stunden. Wie hoch ist der Gesamtaufwand?",
+      "expected": 15,
+      "toleranceAbs": 0,
+      "showExpectedFormula": "6 + 4 + 5 = 15 Stunden",
+      "feedback": {
+        "correct": "Richtig gerechnet.",
+        "wrong": "Bitte die Aufwände der Pakete addieren."
+      },
+      "progressLinks": [
+        "lf05_projekt_prozessdenken"
+      ]
+    },
+    {
+      "id": "q10",
+      "type": "short_text",
+      "title": "Projektplanungsskizze für die Leitung",
+      "prompt": "Schreiben Sie eine kurze Planungsskizze (4-6 Sätze) mit Rollen, Arbeitspaketen und einem Projektrisiko.",
+      "minChars": 150,
+      "requiredKeywords": [
+        "rolle",
+        "arbeitspaket",
+        "risiko"
+      ],
+      "expectedOutline": "Rollen verteilen, Arbeitspakete benennen und ein realistisches Projektrisiko aufführen.",
+      "feedback": {
+        "correct": "Richtig: Die Skizze ist kompakt und steuerungsfaehig.",
+        "wrong": "Bitte Rollen, Arbeitspakete und Projektrisiko klarer strukturieren."
+      },
+      "progressLinks": [
+        "lf05_softwareumfeld_rollen",
+        "lf05_projekt_prozessdenken"
+      ]
+    },
+    {
+      "id": "sep_f2",
+      "type": "followup_divider",
+      "title": "Folgeauftrag 2 - Werkzeugwahl und Python-Logik begründen",
+      "from": "dev.teamlead@ausbildungsbetrieb.example",
+      "to": "dev.team@ausbildungsbetrieb.example",
+      "subject": "Bitte Sprach- und Werkzeugwahl für die Importprüfung begründen",
+      "date": "2026-03-13",
+      "body": "Das Team möchte die geplante CSV-Validierung als kleine Python-Routine umsetzen. Bitte begründen Sie die Werkzeugwahl und beschreiben Sie den groben Aufbau der Lösung."
+    },
+    {
+      "id": "q11",
+      "type": "single_choice",
+      "title": "Sprache für CSV-Prüflogik",
+      "prompt": "Welche Wahl ist für eine kleine interne Validierungsroutine meist sinnvoll?",
+      "options": [
+        {
+          "text": "Eine gut lesbare Sprache mit schneller Entwicklungszeit und Bibliotheken für Dateiverarbeitung",
+          "rationale": "Passt zum kleinen Automatisierungsfall mit schneller Iteration."
+        },
+        {
+          "text": "Ausschliesslich eine Sprache, die im Team niemand beherrscht",
+          "rationale": "Erhöht Einarbeitung und Risiko unnötig."
+        },
+        {
+          "text": "Ohne Sprache direkt in Produktionsdatenbank editieren",
+          "rationale": "Unsicher und nicht reproduzierbar."
+        }
+      ],
+      "correctIndex": 0,
+      "feedback": {
+        "correct": "Richtig: Werkzeugwahl sollte Aufgabenfit und Teamfähigkeit kombinieren.",
+        "wrong": "Nicht passend: Bitte Wartbarkeit, Geschwindigkeit und Teamkompetenz berücksichtigen."
+      },
+      "progressLinks": [
+        "lf05_sprachen_werkzeuge"
+      ]
+    },
+    {
+      "id": "q12",
+      "type": "multi_select",
+      "title": "Python-Bausteine für die Importprüfung",
+      "prompt": "Welche Bausteine sind für eine robuste Importprüfung sinnvoll? (Mehrfachauswahl)",
+      "options": [
+        {
+          "text": "Funktionen für getrennte Validierungsschritte",
+          "correct": true,
+          "rationale": "Verbessert Struktur und Testbarkeit."
+        },
+        {
+          "text": "Exception-Handling für fehlerhafte Eingaben",
+          "correct": true,
+          "rationale": "Erhöht Stabilität bei ungültigen Daten."
+        },
+        {
+          "text": "Schleifen und Listenverarbeitung für Datensatzprüfungen",
+          "correct": true,
+          "rationale": "Das ist Kerntechnik für die Datensatzbearbeitung."
+        },
+        {
+          "text": "Unbegrenzter globaler Zustand ohne Struktur",
+          "correct": false,
+          "rationale": "Erschwert Wartung und Fehlersuche."
+        },
+        {
+          "text": "Direktes Löschen aller fehlerhaften Datensätze ohne Protokoll",
+          "correct": false,
+          "rationale": "Fehlende Nachvollziehbarkeit ist betrieblich problematisch."
+        }
+      ],
+      "feedback": {
+        "correct": "Richtig: Sie kombinieren Robustheit, Struktur und Nachvollziehbarkeit.",
+        "wrong": "Teilweise falsch: Bitte Testbarkeit und Fehlernachweis stärker gewichten."
+      },
+      "progressLinks": [
+        "lf05_python_grundlagen"
+      ]
+    },
+    {
+      "id": "q13",
+      "type": "ordering",
+      "title": "Ablauf eines einfachen CSV-Validators",
+      "prompt": "Ordnen Sie die Schritte für die Logik sinnvoll.",
+      "items": [
+        "Fehler sammeln und Protokoll schreiben",
+        "Datei einlesen und Datensätze durchlaufen",
+        "Prüfregeln auf einzelne Felder anwenden",
+        "Ergebnis für Import oder Ablehnung markieren",
+        "Grenzfälle und Ausnahmen abfangen"
+      ],
+      "correctOrder": [
+        "Datei einlesen und Datensätze durchlaufen",
+        "Prüfregeln auf einzelne Felder anwenden",
+        "Grenzfälle und Ausnahmen abfangen",
+        "Ergebnis für Import oder Ablehnung markieren",
+        "Fehler sammeln und Protokoll schreiben"
+      ],
+      "feedback": {
+        "correct": "Richtig: Die Logik führt sauber von Einlesen über Prüfung zum Nachweis.",
+        "wrong": "Nicht optimal: Bitte erst Einlesen, dann Regeln, Ausnahmebehandlung und Protokollierung ordnen."
+      },
+      "progressLinks": [
+        "lf05_python_grundlagen",
+        "lf05_sprachen_werkzeuge"
+      ]
+    },
+    {
+      "id": "q14",
+      "type": "number",
+      "title": "Anzahl der Einzelprüfungen",
+      "prompt": "4.500 Datensätze werden jeweils mit 3 Pflichtprüfungen kontrolliert. Wie viele Einzelprüfungen fallen an?",
+      "expected": 13500,
+      "toleranceAbs": 0,
+      "showExpectedFormula": "4.500 * 3 = 13.500",
+      "feedback": {
+        "correct": "Richtig gerechnet.",
+        "wrong": "Bitte Datensätze mit der Zahl der Prüfungen pro Satz multiplizieren."
+      },
+      "progressLinks": [
+        "lf05_python_grundlagen"
+      ]
+    },
+    {
+      "id": "q15",
+      "type": "short_text",
+      "title": "Werkzeugempfehlung für das Team",
+      "prompt": "Formulieren Sie eine kurze Empfehlung (4-6 Sätze) mit Sprache, Werkzeugvorteil und einem Wartbarkeitsaspekt.",
+      "minChars": 150,
+      "requiredKeywords": [
+        "sprache",
+        "werkzeug",
+        "wartbarkeit"
+      ],
+      "expectedOutline": "Werkzeugwahl begründen, Teamfit benennen und Wartbarkeit mitdenken.",
+      "feedback": {
+        "correct": "Richtig: Die Empfehlung ist praxisnah und teamfähig begründet.",
+        "wrong": "Bitte Sprache, Werkzeugvorteil und Wartbarkeit klarer verbinden."
+      },
+      "progressLinks": [
+        "lf05_sprachen_werkzeuge",
+        "lf05_python_grundlagen"
+      ]
+    },
+    {
+      "id": "sep_f3",
+      "type": "followup_divider",
+      "title": "Folgeauftrag 3 - Datenbank und SQL für die Auswertung anpassen",
+      "from": "fachbereich.leitung@ausbildungsbetrieb.example",
+      "to": "dev.team@ausbildungsbetrieb.example",
+      "subject": "Bitte Datenmodell und SQL-Sicht für aktive Kunden vorbereiten",
+      "date": "2026-03-13",
+      "body": "Der Fachbereich möchte eine bessere Auswertung nach Kundenstatus. Bitte leiten Sie ein einfaches relationales Denken ab und prüfen Sie die benötigte SQL-Sicht auf aktive Kundendaten."
+    },
+    {
+      "id": "q16",
+      "type": "single_choice",
+      "title": "Primarschlüssel im Datenmodell",
+      "prompt": "Welche Aussage beschreibt einen guten Primarschlüssel am besten?",
+      "options": [
+        {
+          "text": "Er identifiziert einen Datensatz eindeutig und sollte nicht beliebig doppelt vorkommen",
+          "rationale": "Genau das ist die Kernfunktion eines Primarschlüssels."
+        },
+        {
+          "text": "Er ist nur eine farbliche Markierung in der Oberfläche",
+          "rationale": "Das hat mit Datenmodellierung nichts zu tun."
+        },
+        {
+          "text": "Er wird nur bei Testdaten gebraucht",
+          "rationale": "Auch produktive Daten brauchen eindeutige Schlüssel."
+        }
+      ],
+      "correctIndex": 0,
+      "feedback": {
+        "correct": "Richtig: Ein Primarschlüssel sorgt für eindeutige Identifikation.",
+        "wrong": "Nicht passend: Bitte die Rolle eindeutiger Schlüssel im Modell stärker beachten."
+      },
+      "progressLinks": [
+        "lf05_datenbanken_sql"
+      ]
+    },
+    {
+      "id": "q17",
+      "type": "multi_select",
+      "title": "Relationale Modellierung und SQL",
+      "prompt": "Welche Aussagen sind für ein kleines relationales Datenmodell sinnvoll? (Mehrfachauswahl)",
+      "options": [
+        {
+          "text": "Entitäten wie Kunde und Status sollten nachvollziehbar modelliert werden",
+          "correct": true,
+          "rationale": "Das schafft eine saubere Fachstruktur."
+        },
+        {
+          "text": "Beziehungen zwischen Datenobjekten müssen konsistent beschrieben werden",
+          "correct": true,
+          "rationale": "Ohne Beziehungen wird das Modell unstimmig."
+        },
+        {
+          "text": "SQL-Abfragen sollen den gewünschten Fachfilter klar ausdrücken",
+          "correct": true,
+          "rationale": "Die Abfrage muss die fachliche Sicht sauber abbilden."
+        },
+        {
+          "text": "Alle CSV-Spalten können unprüft und ohne Datentypen übernommen werden",
+          "correct": false,
+          "rationale": "Ohne Typen und Struktur sinkt die Datenqualität."
+        },
+        {
+          "text": "SQLite-Anbindung kann für kleine Anwendungen ein passender Start sein",
+          "correct": true,
+          "rationale": "Für kleine Lösungen ist das oft praktikabel."
+        }
+      ],
+      "feedback": {
+        "correct": "Richtig: Sie verbinden Modellierung und Abfrage sauber mit dem Fachbedarf.",
+        "wrong": "Teilweise falsch: Bitte Entitäten, Beziehungen und klare SQL-Sicht stärker betonen."
+      },
+      "progressLinks": [
+        "lf05_datenbanken_sql"
+      ]
+    },
+    {
+      "id": "q18",
+      "type": "ordering",
+      "title": "Vom Fachbedarf zur SQL-Sicht",
+      "prompt": "Ordnen Sie die Schritte für eine kleine Auswertung sinnvoll.",
+      "items": [
+        "SQL-Abfrage oder Sicht für die Fachfrage formulieren",
+        "Fachliche Auswertung und benötigte Felder klären",
+        "Entitäten und Beziehungen im Modell festhalten",
+        "Testdaten und erwartete Ergebnisse festlegen",
+        "Abfrage gegen Beispieldaten prüfen"
+      ],
+      "correctOrder": [
+        "Fachliche Auswertung und benötigte Felder klären",
+        "Entitäten und Beziehungen im Modell festhalten",
+        "SQL-Abfrage oder Sicht für die Fachfrage formulieren",
+        "Testdaten und erwartete Ergebnisse festlegen",
+        "Abfrage gegen Beispieldaten prüfen"
+      ],
+      "feedback": {
+        "correct": "Richtig: So wird die Auswertung fachlich und technisch sauber aufgebaut.",
+        "wrong": "Nicht optimal: Bitte von der Fachfrage über das Modell zur prüfbaren SQL-Sicht gehen."
+      },
+      "progressLinks": [
+        "lf05_datenbanken_sql"
+      ]
+    },
+    {
+      "id": "q19",
+      "type": "number",
+      "title": "Aktive Kunden berechnen",
+      "prompt": "In der Tabelle `kunden` gibt es 12.400 Einträge. 18 % sind als `inaktiv` markiert. Wie viele aktive Kunden bleiben?",
+      "expected": 10168,
+      "toleranceAbs": 1,
+      "showExpectedFormula": "12.400 * 0,82 = 10.168",
+      "feedback": {
+        "correct": "Richtig gerechnet.",
+        "wrong": "Bitte Anteil inaktiv abziehen und auf aktive Datensätze beziehen."
+      },
+      "progressLinks": [
+        "lf05_datenbanken_sql"
+      ]
+    },
+    {
+      "id": "q20",
+      "type": "short_text",
+      "title": "Hinweis zur Datenbankanpassung",
+      "prompt": "Schreiben Sie eine kurze Notiz (4-6 Sätze) mit Datenmodell-Idee, SQL-Ziel und einem Datenqualitätsaspekt.",
+      "minChars": 160,
+      "requiredKeywords": [
+        "datenmodell",
+        "sql",
+        "datenqualität"
+      ],
+      "expectedOutline": "Fachmodell kurz erklären, SQL-Zweck benennen und Datenqualität einbeziehen.",
+      "feedback": {
+        "correct": "Richtig: Die Notiz ist fachlich klar und umsetzungsnah.",
+        "wrong": "Bitte Datenmodell, SQL-Sicht und Datenqualitätsaspekt klarer verbinden."
+      },
+      "progressLinks": [
+        "lf05_datenbanken_sql",
+        "lf05_dokumentation_evaluation"
+      ]
+    },
+    {
+      "id": "sep_f4",
+      "type": "followup_divider",
+      "title": "Folgeauftrag 4 - Test, Debug und Dokumentation abschliessen",
+      "from": "dev.teamlead@ausbildungsbetrieb.example",
+      "to": "dev.team@ausbildungsbetrieb.example",
+      "subject": "Bitte Test- und Freigabebasis für die Anpassung fertigstellen",
+      "date": "2026-03-13",
+      "body": "Die Leitung gibt die Anpassung nur frei, wenn Testfälle, Debug-Befunde und Entwicklungsdokumentation sauber vorliegen. Bitte liefern Sie eine abschliessende Freigabeempfehlung mit Restpunkt."
+    },
+    {
+      "id": "q21",
+      "type": "single_choice",
+      "title": "Hilfreichster Einstieg ins Debugging",
+      "prompt": "Was ist für die Fehlersuche an einer kleinen Importlogik am sinnvollsten?",
+      "options": [
+        {
+          "text": "Fehler reproduzierbar machen, Eingabedaten eingrenzen und dann den Ablauf schrittweise prüfen",
+          "rationale": "So entsteht eine belastbare Basis für die Analyse."
+        },
+        {
+          "text": "Ohne Analyse sofort beliebige Änderungen in der Logik machen",
+          "rationale": "Das verschleiert Ursachen und erzeugt neue Fehler."
+        },
+        {
+          "text": "Nur hoffen, dass der Fehler im nächsten Lauf verschwindet",
+          "rationale": "Ohne Analyse gibt es keinen belastbaren Fix."
+        }
+      ],
+      "correctIndex": 0,
+      "feedback": {
+        "correct": "Richtig: Reproduzierbarkeit und systematisches Prüfen sind hier entscheidend.",
+        "wrong": "Nicht passend: Debugging braucht einen nachvollziehbaren Analyseweg."
+      },
+      "progressLinks": [
+        "lf05_testen_debuggen"
+      ]
+    },
+    {
+      "id": "q22",
+      "type": "multi_select",
+      "title": "Kriterien guter Entwicklungsdokumentation",
+      "prompt": "Welche Kriterien sind für gute Doku im Projekt wichtig? (Mehrfachauswahl)",
+      "options": [
+        {
+          "text": "Nachvollziehbare Entscheidungen und Annahmen festhalten",
+          "correct": true,
+          "rationale": "Erleichtert Betrieb und Weiterentwicklung."
+        },
+        {
+          "text": "Änderungen und Versionen transparent dokumentieren",
+          "correct": true,
+          "rationale": "Wichtig für Nachverfolgung und Fehlersuche."
+        },
+        {
+          "text": "Abnahmekriterien und Testergebnisse referenzieren",
+          "correct": true,
+          "rationale": "Verbindet Entwicklung mit Qualitätsnachweis."
+        },
+        {
+          "text": "Nur persönliche Kurznotizen ohne Kontext",
+          "correct": false,
+          "rationale": "Nicht teamfähig und schwer wartbar."
+        },
+        {
+          "text": "Codekommentare als Ersatz für jede andere Dokumentation",
+          "correct": false,
+          "rationale": "Kommentare allein decken Projektkontext nicht vollständig ab."
+        }
+      ],
+      "feedback": {
+        "correct": "Richtig: Die Doku wird damit fachlich und betrieblich belastbar.",
+        "wrong": "Teilweise falsch: Bitte Nachvollziehbarkeit und Teamnutzung stärker priorisieren."
+      },
+      "progressLinks": [
+        "lf05_dokumentation_evaluation"
+      ]
+    },
+    {
+      "id": "q23",
+      "type": "ordering",
+      "title": "Testprozess für die Anpassung",
+      "prompt": "Ordnen Sie eine sinnvolle Testabfolge nach der Implementierung.",
+      "items": [
+        "Freigabeempfehlung mit Befund erstellen",
+        "Testfälle und erwartete Ergebnisse definieren",
+        "Testdaten vorbereiten (normal und fehlerhaft)",
+        "Funktionstests und Grenzfalltests ausführen",
+        "Fehler analysieren und Korrekturen nachtesten"
+      ],
+      "correctOrder": [
+        "Testfälle und erwartete Ergebnisse definieren",
+        "Testdaten vorbereiten (normal und fehlerhaft)",
+        "Funktionstests und Grenzfalltests ausführen",
+        "Fehler analysieren und Korrekturen nachtesten",
+        "Freigabeempfehlung mit Befund erstellen"
+      ],
+      "feedback": {
+        "correct": "Richtig: Die Abfolge sichert reproduzierbare Qualität.",
+        "wrong": "Nicht optimal: Bitte erst Testdesign, dann Ausführung und Nachtest."
+      },
+      "progressLinks": [
+        "lf05_testen_debuggen"
+      ]
+    },
+    {
+      "id": "q24",
+      "type": "number",
+      "title": "Fehlerquote aus Testlauf",
+      "prompt": "Von 40 Testfällen schlagen 5 im ersten Lauf fehl. Wie hoch ist die Fehlerquote in Prozent?",
+      "expected": 12.5,
+      "toleranceAbs": 0.5,
+      "showExpectedFormula": "5 / 40 * 100 = 12,5 %",
+      "feedback": {
+        "correct": "Richtig gerechnet.",
+        "wrong": "Bitte fehlgeschlagene Testfälle durch die Gesamtzahl teilen und in Prozent umrechnen."
+      },
+      "progressLinks": [
+        "lf05_testen_debuggen"
+      ]
+    },
+    {
+      "id": "q25",
+      "type": "short_text",
+      "title": "Abschlussnotiz zur Freigabe",
+      "prompt": "Schreiben Sie eine Abschlussnotiz (5-7 Sätze) mit Teststatus, wichtigstem Befund und nächstem Schritt.",
+      "minChars": 180,
+      "requiredKeywords": [
+        "teststatus",
+        "befund",
+        "nächster schritt"
+      ],
+      "expectedOutline": "Teststatus, zentraler Befund, Restpunkt und klares weiteres Vorgehen.",
+      "feedback": {
+        "correct": "Richtig: Die Notiz ist für Team und Fachbereich gut nutzbar.",
+        "wrong": "Bitte Teststatus, Befund und Folgeaktion klarer strukturieren."
+      },
+      "progressLinks": [
+        "lf05_testen_debuggen",
+        "lf05_dokumentation_evaluation"
+      ]
+    }
+  ]
+}

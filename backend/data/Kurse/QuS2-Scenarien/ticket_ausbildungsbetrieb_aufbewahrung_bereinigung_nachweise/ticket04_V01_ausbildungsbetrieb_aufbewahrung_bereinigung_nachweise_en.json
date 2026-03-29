@@ -1,0 +1,418 @@
+{
+  "scenario": {
+    "company": "SecuBridge Service GmbH",
+    "scale": "IT service provider for home office, municipal workplaces and medical practice environments, 95 employees",
+    "context": "Legacy data from export folders, upload cache and shared mailbox exist in the scheduling and upload area of the citizen office and must be handled differently.",
+    "mission": "Organize retention, cleanup, exceptions and evidence for the legacy data.",
+    "source": {
+      "kind": "Internal cleanup and retention review",
+      "reference": "Data cleanup scheduling and upload area, 2026-04-02",
+      "note": "Based on legacy data from multiple operational sources, internal deadlines for cache and working copies, and open cases that may conflict with blanket cleanup."
+    },
+    "station": {
+      "id": "QUS2-ST-04",
+      "department": "Data protection coordination and operations documentation",
+      "profile": "Retention, deletion decision, exceptions, evidence and follow-up review",
+      "constraints": [
+        "Active cases, evidence needs and purely technical working copies must be clearly separated",
+        "Cleanup may run as a blanket process only where data type, exception reason and responsibility are clear",
+        "The final status must remain traceable through log, exceptions list and follow-up review"
+      ]
+    },
+    "customerRequest": {
+      "from": "buergerbuero@secubridge-service.example",
+      "to": "datenkoordination@ausbildungsbetrieb.example",
+      "subject": "Clean up legacy data from scheduling and upload area",
+      "date": "2026-04-02",
+      "body": "Good day,\n\nduring the pilot and the first production weeks several legacy stocks accumulated: daily exports for appointment reconciliations, temporary upload copies, old confirmations in the shared mailbox and screenshots from support cases.\n\nPart of it is still needed for open inquiries or documented evidence, other parts should not remain in operations. We need a clear status by Friday on what is cleaned by default, which exceptions may remain and how the evidence for the cleanup status looks.\n\nKind regards\nCitizen office"
+    }
+  },
+  "questions": [
+    {
+      "id": "ctx01",
+      "type": "context_card",
+      "title": "Overview of legacy stocks",
+      "contentBlocks": [
+        {
+          "type": "text",
+          "text": "SecuBridge supports multiple operational sources for the citizen office around scheduling and document processes. After pilot and ramp-up, data from exports, uploads, mailboxes and support cases remains there, not all with the same purpose or retention period."
+        },
+        {
+          "type": "table",
+          "columns": [
+            "Data source",
+            "Current finding"
+          ],
+          "rows": [
+            [
+              "Export folders",
+              "Daily exports for appointment reconciliation, some older than 30 days"
+            ],
+            [
+              "Upload cache",
+              "Temporary document copies, some older than 14 days"
+            ],
+            [
+              "Shared mailbox",
+              "Confirmations and inquiries, some older than 180 days"
+            ],
+            [
+              "Support screenshots",
+              "Attachments from incident cases, not always with a ticket reference"
+            ],
+            [
+              "Open cases",
+              "Some inquiries and contradictions are still ongoing"
+            ]
+          ]
+        },
+        {
+          "type": "text",
+          "text": "What matters now is not a quick blanket solution, but separation by data type, exception reason and evidence need. Only then can cleanup be performed correctly."
+        }
+      ]
+    },
+    {
+      "id": "q01",
+      "type": "multi_select",
+      "title": "Separate the cleanup case first",
+      "prompt": "Which distinctions must be made first before data is deleted, retained temporarily or carried over?",
+      "options": [
+        {
+          "text": "Whether a record still belongs to an open or active case.",
+          "correct": true,
+          "rationale": "Open cases can block a standard cleanup."
+        },
+        {
+          "text": "Whether it is business data or only technical working and cache copies.",
+          "correct": true,
+          "rationale": "These groups often have different retention and cleanup logics."
+        },
+        {
+          "text": "Whether a documented exception reason or open evidence need exists.",
+          "correct": true,
+          "rationale": "This is where follow-up reviews and temporary exceptions are anchored."
+        },
+        {
+          "text": "Whether the data source currently consumes a lot of storage.",
+          "correct": false,
+          "rationale": "Storage alone is not a reliable substitute for a clean cleanup decision."
+        },
+        {
+          "text": "Whether the team can spontaneously agree on a full deletion of older data.",
+          "correct": false,
+          "rationale": "Without data type, exception reason and evidence need, full deletion is risky."
+        },
+        {
+          "text": "Whether the contents are required as documentary evidence or only exist as a working copy.",
+          "correct": true,
+          "rationale": "Evidence and mere working copies must not be treated the same."
+        }
+      ],
+      "feedback": {
+        "correct": "The key distinctions for the cleanup case were correctly identified.",
+        "wrong": "Focus on open cases, data type, exception reasons and evidence need instead of convenient shortcuts."
+      },
+      "progressLinks": [
+        "qus2_aufbewahrung_und_ausnahmen"
+      ]
+    },
+    {
+      "id": "q02",
+      "type": "single_choice",
+      "title": "Most dangerous wrong decision",
+      "prompt": "Which approach would be most risky in this situation?",
+      "options": [
+        {
+          "text": "Delete all legacy data in a blanket way before checking open cases, exception reasons and evidence.",
+          "rationale": "This can destroy evidence and damage open cases at the same time."
+        },
+        {
+          "text": "First separate data types and open exceptions in an overview.",
+          "rationale": "This is the necessary basis for later standard and exception decisions."
+        },
+        {
+          "text": "Prioritize the most problematic sources first with the departments.",
+          "rationale": "Prioritization is sensible as long as standard and exceptions remain cleanly separated."
+        },
+        {
+          "text": "Implement the cleanup technically only after a short sample review.",
+          "rationale": "Samples help if the decision logic is cleanly defined beforehand."
+        }
+      ],
+      "correctIndex": 0,
+      "feedback": {
+        "correct": "The riskiest wrong decision was correctly identified.",
+        "wrong": "Focus on which approach endangers open cases and evidence at the same time."
+      },
+      "progressLinks": [
+        "qus2_aufbewahrung_und_ausnahmen"
+      ]
+    },
+    {
+      "id": "f02",
+      "type": "followup_divider",
+      "title": "Lock in data types, exceptions and standard handling",
+      "from": "datenschutzkoordination@secubridge-service.example",
+      "to": "datenkoordination@ausbildungsbetrieb.example",
+      "subject": "Prepare matrix for data type, exception and evidence",
+      "date": "2026-04-02",
+      "body": "Hello everyone,\n\nplease do not decide the case only by time limits, but by data types and exceptions. I need a small matrix on what is cleaned by default, where an open case or evidence need blocks that and which evidence supports the final status later.\n\nKind regards\nData protection coordination"
+    },
+    {
+      "id": "q03",
+      "type": "table_fill",
+      "title": "Check standard handling and exception point",
+      "prompt": "For each data type, add the most likely standard handling and the matching exception point.",
+      "columns": [
+        "Data type",
+        "Standard handling",
+        "Exception point"
+      ],
+      "rows": [
+        [
+          "Upload cache without an open case",
+          {
+            "key": "rule_row_1",
+            "label": "Upload cache / standard",
+            "expected": "Clean up technically after the internal deadline and log the cleanup.",
+            "inputType": "select",
+            "placeholder": "Select standard",
+            "options": [
+              "Clean up technically after the internal deadline and log the cleanup.",
+              "Keep indefinitely in the cache as long as storage is available.",
+              "Delete only file names but leave the content.",
+              "Copy directly into private backup folders without review."
+            ]
+          },
+          {
+            "key": "exception_row_1",
+            "label": "Upload cache / exception",
+            "expected": "Is there still an open case or evidence link?",
+            "inputType": "select",
+            "placeholder": "Select exception",
+            "options": [
+              "Is there still an open case or evidence link?",
+              "Is the file easier to find for the team than in the business system?",
+              "Does the folder have a particularly long name in the file system?",
+              "Has the file been seen by multiple employees?"
+            ]
+          }
+        ],
+        [
+          "Appointment confirmations in the shared mailbox",
+          {
+            "key": "rule_row_2",
+            "label": "Shared mailbox / standard",
+            "expected": "Remove from the mailbox after the internal deadline if the content is otherwise secured or no longer needed.",
+            "inputType": "select",
+            "placeholder": "Select standard",
+            "options": [
+              "Remove from the mailbox after the internal deadline if the content is otherwise secured or no longer needed.",
+              "Keep all messages permanently in the mailbox just in case.",
+              "Clean only unread messages and keep read messages indefinitely.",
+              "Move into unstructured collection folders so they are not formally deleted."
+            ]
+          },
+          {
+            "key": "exception_row_2",
+            "label": "Shared mailbox / exception",
+            "expected": "Is there still an inquiry, a contradiction or a documented evidence need?",
+            "inputType": "select",
+            "placeholder": "Select exception",
+            "options": [
+              "Is there still an inquiry, a contradiction or a documented evidence need?",
+              "Is the message particularly interesting for later team rounds?",
+              "Did the sender write outside the core hours?",
+              "Are there multiple replies in the same email thread?"
+            ]
+          }
+        ],
+        [
+          "Support screenshots from incident cases",
+          {
+            "key": "rule_row_3",
+            "label": "Support screenshot / standard",
+            "expected": "Keep temporarily only with a ticket reference; remove without reference after completion.",
+            "inputType": "select",
+            "placeholder": "Select standard",
+            "options": [
+              "Keep temporarily only with a ticket reference; remove without reference after completion.",
+              "Always archive completely because screenshots can be helpful.",
+              "Distribute freely in team chats as long as the case is already solved.",
+              "Crop only visible error areas and keep the rest indefinitely."
+            ]
+          },
+          {
+            "key": "exception_row_3",
+            "label": "Support screenshot / exception",
+            "expected": "Is the screenshot still part of an open ticket or a documented finding?",
+            "inputType": "select",
+            "placeholder": "Select exception",
+            "options": [
+              "Is the screenshot still part of an open ticket or a documented finding?",
+              "Was the screenshot used in an internal presentation?",
+              "Is the image stored in color instead of black and white?",
+              "Was the file created in the same week?"
+            ]
+          }
+        ]
+      ],
+      "feedback": {
+        "correct": "Data types, standard handling and exception points were matched consistently.",
+        "wrong": "Check which standard logic applies to cache, mailbox and support screenshots and where open cases or evidence justify exceptions."
+      },
+      "progressLinks": [
+        "qus2_aufbewahrung_und_ausnahmen",
+        "qus2_loeschentscheidungen_und_nachweise"
+      ]
+    },
+    {
+      "id": "q04",
+      "type": "match_pairs",
+      "title": "Roles in the cleanup",
+      "prompt": "Which role takes which initial responsibility in the cleanup case?",
+      "layout": "table",
+      "columns": [
+        "Role",
+        "Initial responsibility"
+      ],
+      "pairs": [
+        {
+          "key": "role_1",
+          "left": "Citizen office",
+          "right": "Confirm open citizen issues and subject-matter exceptions"
+        },
+        {
+          "key": "role_2",
+          "left": "Data protection coordination",
+          "right": "Approve cleanup logic, exception boundaries and evidence framework"
+        },
+        {
+          "key": "role_3",
+          "left": "Platform operations",
+          "right": "Clean cache, folders or technical copies and provide logs"
+        },
+        {
+          "key": "role_4",
+          "left": "Service desk",
+          "right": "Pull together mailbox, ticket and screenshot references"
+        }
+      ],
+      "options": [
+        "Confirm open citizen issues and subject-matter exceptions",
+        "Approve cleanup logic, exception boundaries and evidence framework",
+        "Clean cache, folders or technical copies and provide logs",
+        "Pull together mailbox, ticket and screenshot references"
+      ],
+      "feedback": {
+        "correct": "The roles are matched with their initial responsibilities.",
+        "wrong": "Focus on who confirms exceptions, who approves the logic, who cleans technically and who consolidates ticket and mailbox references."
+      },
+      "progressLinks": [
+        "qus2_aufbewahrung_und_ausnahmen",
+        "qus2_bereinigung_steuern"
+      ]
+    },
+    {
+      "id": "q05",
+      "type": "number",
+      "title": "Standard cleanup in the upload cache",
+      "prompt": "There are 48 files in the upload cache. 17 still belong to open cases, 9 must remain temporarily for documented inquiries. How many files can be removed in the standard cleanup?",
+      "expected": 22,
+      "toleranceAbs": 0,
+      "showExpectedFormula": "48 - 17 - 9 = 22 files",
+      "feedback": {
+        "correct": "The amount for standard cleanup was calculated correctly.",
+        "wrong": "Please subtract open cases and documented exceptions from the total."
+      },
+      "progressLinks": [
+        "qus2_bereinigung_steuern"
+      ]
+    },
+    {
+      "id": "f03",
+      "type": "followup_divider",
+      "title": "Consolidate evidence for Friday",
+      "from": "betrieb@secubridge-service.example",
+      "to": "datenkoordination@ausbildungsbetrieb.example",
+      "subject": "Deliver evidence and open exceptions by Friday",
+      "date": "2026-04-02",
+      "body": "Hello everyone,\n\nfor Friday I need a status that not only says data was deleted, but also shows which data types were handled how, which exceptions remain open and how we can recognize the new state later. Please consolidate deletion log, exceptions list and follow-up review in one readable closure.\n\nKind regards\nOperations"
+    },
+    {
+      "id": "q06",
+      "type": "multi_select",
+      "title": "What must be available at the end",
+      "prompt": "Which documents or results do we need after cleanup so the status remains traceable later?",
+      "options": [
+        {
+          "text": "A list of data types with decision and short justification",
+          "correct": true,
+          "rationale": "Without categories and decision logic the final status is not readable later."
+        },
+        {
+          "text": "A deletion or cleanup log with date, scope and responsible unit",
+          "correct": true,
+          "rationale": "This shows what was actually implemented technically."
+        },
+        {
+          "text": "Open exceptions with reason, responsible person and follow-up review",
+          "correct": true,
+          "rationale": "This is where exceptions may otherwise remain uncontrolled."
+        },
+        {
+          "text": "A sample or system proof that mailbox, folders or cache are in the new state",
+          "correct": true,
+          "rationale": "Closure needs a visible technical finding in addition to the list."
+        },
+        {
+          "text": "A short chat message saying the area was cleaned up",
+          "correct": false,
+          "rationale": "This signals speed but does not replace a reliable closure."
+        },
+        {
+          "text": "Copy all original files again into private storage just in case",
+          "correct": false,
+          "rationale": "This would undermine the cleanup and create new shadow stocks."
+        }
+      ],
+      "feedback": {
+        "correct": "The essential closure documents for the cleanup status were correctly identified.",
+        "wrong": "Focus on decision logic, technical log, open exceptions and a visible target state."
+      },
+      "progressLinks": [
+        "qus2_loeschentscheidungen_und_nachweise",
+        "qus2_bereinigung_steuern"
+      ]
+    },
+    {
+      "id": "q07",
+      "type": "ordering",
+      "title": "From legacy data to a clean cleanup status",
+      "prompt": "Put the steps in a sequence that turns legacy data into a reliable cleanup status.",
+      "items": [
+        "Capture data sources and categories completely.",
+        "Mark open cases, evidence needs and exceptions.",
+        "Define standard handling per data type.",
+        "Perform cleanup technically and log it.",
+        "Communicate result, exceptions and follow-up review."
+      ],
+      "correctOrder": [
+        "Capture data sources and categories completely.",
+        "Mark open cases, evidence needs and exceptions.",
+        "Define standard handling per data type.",
+        "Perform cleanup technically and log it.",
+        "Communicate result, exceptions and follow-up review."
+      ],
+      "feedback": {
+        "correct": "The order leads cleanly from reviewing legacy stocks to a reliable cleanup status.",
+        "wrong": "First sources, exceptions and standard logic, then technical cleanup and finally closure with follow-up review."
+      },
+      "progressLinks": [
+        "qus2_bereinigung_steuern",
+        "qus2_loeschentscheidungen_und_nachweise"
+      ]
+    }
+  ]
+}

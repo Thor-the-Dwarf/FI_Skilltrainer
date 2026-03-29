@@ -1,0 +1,1704 @@
+{
+  "scenario": {
+    "company": "Nordfokus Digital GmbH",
+    "scale": "Digital- und Infrastrukturunternehmen mit Ausbildungs-, Personal- und Organisationsthemen",
+    "context": "Prüfungsvorbereitung WISO im Stationsformat mit Ausbildungsrecht, Konjunktur, Mitbestimmung, GmbH, Sozialversicherung, Globalisierung und Umwelt.",
+    "mission": "Sie bearbeiten eine zusammenhängende Fachsituation zu Ausbilder-Eignung, Verschwiegenheit, Probezeit, JAV, Jugendarbeitsschutz, Streik, Kündigungsfristen, GmbH, AGG, Arbeitsteilung, Krankenversicherung, Globalisierung und Umweltzeichen.",
+    "source": {
+      "kind": "Pseudonymisierte Prüfungsvorlage",
+      "reference": "AP2 Wirtschafts- und Sozialkunde, Winter 2025/26",
+      "note": "Die fachliche Reihenfolge bleibt erhalten; Namen, Orte und Unternehmensbezug wurden in das Kursformat überführt."
+    },
+    "station": {
+      "id": "PV3WISO-ST-09",
+      "department": "Prüfungsvorbereitung Wirtschafts- und Sozialkunde",
+      "profile": "Ausbildung, Konjunktur, GmbH und Globalisierung",
+      "constraints": [
+        "Die 30 Themenaufgaben bleiben in thematischen Folgeaufträgen erkennbar",
+        "Gesetzesbezüge, Organigramm und Rechenschritte werden in vorhandene Aufgabenformate überführt",
+        "Rechen-, Zuordnungs- und Auswahlaufgaben sollen möglichst direkt auto-auswertbar bleiben"
+      ]
+    },
+    "customerRequest": {
+      "from": "qualitaet@ordnungsbetrieb.example",
+      "to": "projektteam@ausbildungsbetrieb.example",
+      "subject": "Bitte ein neues WISO-Trainingspaket zu Ausbildung, Konjunktur und Globalisierung aufsetzen",
+      "date": "2026-03-20",
+      "body": "Guten Tag,\n\nwir möchten ein weiteres WISO-Training im Stationsformat vorbereiten. Diesmal sollen vor allem Ausbilder-Eignung, Verschwiegenheit, Ausbildungsvertrag, Konjunktur, Unternehmensziele, JAV, Betriebsrat, Jugendarbeitsschutz, Fortbildung, Tarifkonflikte, Kündigungsfristen, qualifiziertes Arbeitszeugnis, GmbH, AGG, betriebliche Arbeitsteilung, Krankenversicherung, Globalisierung, Soziale Marktwirtschaft, Fusionen, Emissionen und der Blaue Engel vorkommen.\n\nBitte behalten Sie die Reihenfolge der Quelle erkennbar bei, formulieren Sie alles sauber pseudonymisiert und nutzen Sie vorhandene Aufgabenformate, damit die Antworten möglichst direkt auswertbar bleiben.\n\nViele Grüsse\nQualität"
+    }
+  },
+  "questions": [
+    {
+      "id": "q01",
+      "type": "table_fill",
+      "title": "Voraussetzungen für Ausbilder einordnen",
+      "prompt": "Ordnen Sie zu, welche Aussagen die gesetzlich geforderte Eignung von Ausbildern passend beschreiben.",
+      "columns": [
+        "Aussage",
+        "Trifft zu?"
+      ],
+      "rows": [
+        [
+          "Ein Ausbilder muss persönlich und fachlich geeignet sein.",
+          {
+            "key": "trainer_a",
+            "label": "Persönlich und fachlich geeignet",
+            "expected": "Ja",
+            "inputType": "select",
+            "placeholder": "Auswahl treffen",
+            "options": [
+              "Ja",
+              "Nein"
+            ]
+          }
+        ],
+        [
+          "Eine Mitgliedschaft im Arbeitgeberverband ist gesetzliche Voraussetzung.",
+          {
+            "key": "trainer_b",
+            "label": "Mitgliedschaft im Arbeitgeberverband",
+            "expected": "Nein",
+            "inputType": "select",
+            "placeholder": "Auswahl treffen",
+            "options": [
+              "Ja",
+              "Nein"
+            ]
+          }
+        ],
+        [
+          "Ein ganz bestimmter einzelner kaufmännischer Abschluss ist immer zwingend vorgeschrieben.",
+          {
+            "key": "trainer_c",
+            "label": "Einzelner Abschluss immer zwingend",
+            "expected": "Nein",
+            "inputType": "select",
+            "placeholder": "Auswahl treffen",
+            "options": [
+              "Ja",
+              "Nein"
+            ]
+          }
+        ],
+        [
+          "Eine Mitgliedschaft in einer Gewerkschaft ist Voraussetzung für Ausbilder.",
+          {
+            "key": "trainer_d",
+            "label": "Mitgliedschaft in einer Gewerkschaft",
+            "expected": "Nein",
+            "inputType": "select",
+            "placeholder": "Auswahl treffen",
+            "options": [
+              "Ja",
+              "Nein"
+            ]
+          }
+        ],
+        [
+          "Eine Mitgliedschaft im zuständigen Prüfungsausschuss der IHK ist dafür nicht zwingend.",
+          {
+            "key": "trainer_e",
+            "label": "Prüfungsausschuss nicht zwingend",
+            "expected": "Ja",
+            "inputType": "select",
+            "placeholder": "Auswahl treffen",
+            "options": [
+              "Ja",
+              "Nein"
+            ]
+          }
+        ]
+      ],
+      "feedback": {
+        "correct": "Die Voraussetzungen für Ausbilder wurden korrekt eingeordnet.",
+        "wrong": "Achten Sie auf die im BBiG genannte Kombination aus persönlicher und fachlicher Eignung und trennen Sie diese von Verbands- oder Ausschussmitgliedschaften."
+      },
+      "progressLinks": [
+        "pv3wiso_arbeitsrecht_ausbildung"
+      ]
+    },
+    {
+      "id": "q02",
+      "type": "table_fill",
+      "title": "Aussagen zur Verschwiegenheitspflicht einordnen",
+      "prompt": "Ordnen Sie zu, welche Aussagen die Verschwiegenheitspflicht im Berufsausbildungsverhältnis korrekt beschreiben.",
+      "columns": [
+        "Aussage",
+        "Trifft zu?"
+      ],
+      "rows": [
+        [
+          "Auszubildende müssen über Betriebs- und Geschäftsgeheimnisse des Unternehmens Stillschweigen wahren.",
+          {
+            "key": "confidentiality_a",
+            "label": "Betriebs- und Geschäftsgeheimnisse",
+            "expected": "Ja",
+            "inputType": "select",
+            "placeholder": "Auswahl treffen",
+            "options": [
+              "Ja",
+              "Nein"
+            ]
+          }
+        ],
+        [
+          "Auszubildende müssen über sämtliche Vorkommnisse im Betrieb Stillschweigen wahren.",
+          {
+            "key": "confidentiality_b",
+            "label": "Sämtliche Vorkommnisse im Betrieb",
+            "expected": "Nein",
+            "inputType": "select",
+            "placeholder": "Auswahl treffen",
+            "options": [
+              "Ja",
+              "Nein"
+            ]
+          }
+        ],
+        [
+          "Die Verschwiegenheitspflicht muss in jedem Ausbildungsjahr schriftlich neu bestätigt werden.",
+          {
+            "key": "confidentiality_c",
+            "label": "Jährliche schriftliche Bestätigung",
+            "expected": "Nein",
+            "inputType": "select",
+            "placeholder": "Auswahl treffen",
+            "options": [
+              "Ja",
+              "Nein"
+            ]
+          }
+        ],
+        [
+          "Auszubildende dürfen ausserhalb des Betriebs nie über ihre Tätigkeit sprechen.",
+          {
+            "key": "confidentiality_d",
+            "label": "Nie über Tätigkeit sprechen",
+            "expected": "Nein",
+            "inputType": "select",
+            "placeholder": "Auswahl treffen",
+            "options": [
+              "Ja",
+              "Nein"
+            ]
+          }
+        ],
+        [
+          "Auch gegenüber nahestehenden Personen können Geheimhaltungspflichten bestehen.",
+          {
+            "key": "confidentiality_e",
+            "label": "Geheimhaltung auch gegenüber Nahestehenden",
+            "expected": "Ja",
+            "inputType": "select",
+            "placeholder": "Auswahl treffen",
+            "options": [
+              "Ja",
+              "Nein"
+            ]
+          }
+        ]
+      ],
+      "feedback": {
+        "correct": "Die Aussagen zur Verschwiegenheitspflicht wurden korrekt eingeordnet.",
+        "wrong": "Prüfen Sie noch einmal, worauf sich die Pflicht konkret bezieht: auf Betriebs- und Geschäftsgeheimnisse, nicht auf jede beliebige Unterhaltung über die eigene Tätigkeit."
+      },
+      "progressLinks": [
+        "pv3wiso_arbeitsrecht_ausbildung"
+      ]
+    },
+    {
+      "id": "q03",
+      "type": "multi_select",
+      "title": "BBiG-konforme Aussagen zum Ausbildungsvertrag auswählen",
+      "prompt": "Welche zwei Aussagen zum Berufsausbildungsverhältnis entsprechen dem Berufsbildungsgesetz?",
+      "options": [
+        {
+          "text": "Wärhend der Probezeit kann das Berufsausbildungsverhältnis nur mit einer Kündigungsfrist von vier Wochen gekündigt werden.",
+          "correct": false,
+          "rationale": "In der Probezeit kann ohne Einhaltung einer Kündigungsfrist gekündigt werden."
+        },
+        {
+          "text": "Eine Kündigung durch die Auszubildende nach der Probezeit ist möglich, wenn sie eine Ausbildung in einem anderen Ausbildungsberuf beginnen will.",
+          "correct": true,
+          "rationale": "Genau dieser Fall ist nach dem BBiG vorgesehen."
+        },
+        {
+          "text": "Es dürfen Vereinbarungen über die Zahlung einer Entschädigung für die Ausbildung an den Ausbildungsbetrieb getroffen werden.",
+          "correct": false,
+          "rationale": "Solche Entschädigungsvereinbarungen sind gerade nicht zulässig."
+        },
+        {
+          "text": "Das Ausbildungsverhältnis endet stets erst mit Ablauf der Ausbildungszeit, auch wenn die Abschlussprüfung früher bestanden wurde.",
+          "correct": false,
+          "rationale": "Bei vorzeitig bestandener Abschlussprüfung endet das Verhältnis bereits mit Bekanntgabe des Ergebnisses."
+        },
+        {
+          "text": "Der Ausbildungsbetrieb muss den Auszubildenden bei Beendigung des Berufsausbildungsverhältnisses auf Wunsch ein Zeugnis ausstellen.",
+          "correct": true,
+          "rationale": "Genau dieser Zeugnisanspruch besteht."
+        },
+        {
+          "text": "Der Ausbildungsbetrieb muss der Auszubildenden am Tag nach dem Bestehen der Abschlussprüfung einen unbefristeten Arbeitsvertrag anbieten.",
+          "correct": false,
+          "rationale": "Eine automatische Pflicht zum Angebot eines unbefristeten Vertrags gibt es nicht."
+        }
+      ],
+      "feedback": {
+        "correct": "Die BBiG-konformen Aussagen wurden korrekt ausgewählt.",
+        "wrong": "Achten Sie auf die Sonderregeln zu Kündigung, Zeugnis und Beendigung bei vorzeitig bestandener Abschlussprüfung."
+      },
+      "progressLinks": [
+        "pv3wiso_arbeitsrecht_ausbildung"
+      ]
+    },
+    {
+      "id": "q04",
+      "type": "single_choice",
+      "title": "Rechtsfolge einer Weiterbeschäftigung nach der Abschlussprüfung bestimmen",
+      "prompt": "Welche Rechtsfolge hat es, wenn Auszubildende nach bestandener Abschlussprüfung ohne ausdrückliche Vereinbarung weiterbeschäftigt werden?",
+      "options": [
+        {
+          "text": "Es wird ein unbefristetes Arbeitsverhältnis begründet.",
+          "rationale": "Genau diese Rechtsfolge tritt ein."
+        },
+        {
+          "text": "Die Beschäftigung kann jederzeit von beiden Seiten ohne Kündigung beendet werden.",
+          "rationale": "Eine formlose Beendigung ist dann nicht möglich."
+        },
+        {
+          "text": "Die Beschäftigung endet automatisch nach zwölf Monaten.",
+          "rationale": "Eine solche automatische Befristung besteht nicht."
+        },
+        {
+          "text": "Die Beschäftigung endet zum Ablauf des nächsten Quartals.",
+          "rationale": "Auch diese Rechtsfolge ist unzutreffend."
+        },
+        {
+          "text": "Es beginnt automatisch ein neues Arbeitsverhältnis mit sechs Monaten Probezeit.",
+          "rationale": "Eine automatische Probezeit entsteht dadurch nicht."
+        }
+      ],
+      "correctIndex": 0,
+      "feedback": {
+        "correct": "Die Rechtsfolge der Weiterbeschäftigung wurde korrekt erkannt.",
+        "wrong": "Denken Sie an die automatische Begründung eines Arbeitsverhältnisses nach bestandener Abschlussprüfung."
+      },
+      "progressLinks": [
+        "pv3wiso_arbeitsrecht_ausbildung"
+      ]
+    },
+    {
+      "id": "f02",
+      "type": "followup_divider",
+      "title": "Konjunktur und Mitbestimmung",
+      "from": "personalservice@ordnungsbetrieb.example",
+      "to": "projektteam@ausbildungsbetrieb.example",
+      "subject": "Bitte den nächsten Block zu Konjunktur, JAV und Betriebsrat vorbereiten",
+      "date": "2026-03-20",
+      "body": "Hallo,\n\nim zweiten Themenblock brauchen wir Aufgaben zu Konjunktur, Zielkonflikten, Probezeit, JAV, Betriebsrat, Jugendarbeitsschutz und beruflicher Fortbildung. Bitte halten Sie konjunkturelle Massnahmen, Mitbestimmungsrechte und Bildungsformen klar auseinander.\n\nViele Grüsse\nPersonalservice"
+    },
+    {
+      "id": "q05",
+      "type": "single_choice",
+      "title": "Konjunkturbelebende Massnahme auswählen",
+      "prompt": "Welche Massnahme belebt die Konjunktur?",
+      "options": [
+        {
+          "text": "Erhöhung der staatlichen Investitionen",
+          "rationale": "Zusätzliche staatliche Investitionen wirken nachfragebelebend."
+        },
+        {
+          "text": "Erhöhung der Steuern",
+          "rationale": "Höhere Steuern bremsen eher die Nachfrage."
+        },
+        {
+          "text": "Erhöhung der Leitzinsen",
+          "rationale": "Steigende Zinsen wirken meist eher drosselnd."
+        },
+        {
+          "text": "Kürzung des Kindergeldes",
+          "rationale": "Das stärkt die Nachfrage nicht."
+        },
+        {
+          "text": "Kürzung des Arbeitslosengeldes",
+          "rationale": "Auch das wirkt nicht konjunkturbelebend."
+        }
+      ],
+      "correctIndex": 0,
+      "feedback": {
+        "correct": "Die konjunkturbelebende Massnahme wurde korrekt erkannt.",
+        "wrong": "Überlegen Sie, welche Massnahme die gesamtwirtschaftliche Nachfrage direkt steigern kann."
+      },
+      "progressLinks": [
+        "pv3wiso_wirtschaftlichkeit_unternehmensanalyse"
+      ]
+    },
+    {
+      "id": "q06",
+      "type": "single_choice",
+      "title": "Zielkonflikt zwischen Unternehmenszielen erkennen",
+      "prompt": "Bei welchen Unternehmenszielen besteht ein Zielkonflikt?",
+      "options": [
+        {
+          "text": "Chancengleichheit von Frauen und Männern sichern und gleichzeitig die Betriebskantine renovieren",
+          "rationale": "Diese Ziele stehen nicht in einem direkten Konflikt."
+        },
+        {
+          "text": "Mitarbeitende durch Gewinnbeteiligung motivieren und das Betriebsklima verbessern",
+          "rationale": "Diese Ziele können sich eher gegenseitig unterstützen."
+        },
+        {
+          "text": "Personalkosten einsparen und gleichzeitig Arbeitsplätze sichern",
+          "rationale": "Genau hier kollidieren die beiden Zielsetzungen miteinander."
+        },
+        {
+          "text": "Durch regelmässige Events das Betriebsklima stärken und die Möglichkeiten zum mobilen Arbeiten erweitern",
+          "rationale": "Auch diese Ziele schliessen sich nicht aus."
+        },
+        {
+          "text": "Die Firmenfahrzeuge auf E-Mobilität umstellen und zugleich den Papierverbrauch senken",
+          "rationale": "Beides kann parallel verfolgt werden."
+        }
+      ],
+      "correctIndex": 2,
+      "feedback": {
+        "correct": "Der Zielkonflikt wurde korrekt erkannt.",
+        "wrong": "Prüfen Sie, welche Zielpaare sich gegenseitig behindern statt unterstützen."
+      },
+      "progressLinks": [
+        "pv3wiso_wirtschaftlichkeit_unternehmensanalyse"
+      ]
+    },
+    {
+      "id": "q07",
+      "type": "single_choice",
+      "title": "Zulässige Dauer der Probezeit im Ausbildungsvertrag bestimmen",
+      "prompt": "Welche Aussage zur Probezeit in einem Ausbildungsvertrag ist richtig?",
+      "options": [
+        {
+          "text": "Innerhalb der Probezeit sind Kündigungen des Ausbildungsvertrags unzulässig.",
+          "rationale": "Gerade in der Probezeit sind Kündigungen zulässig."
+        },
+        {
+          "text": "Die Probezeit muss mindestens einen Monat und höchstens vier Monate dauern.",
+          "rationale": "Genau diese Spanne gibt das BBiG vor."
+        },
+        {
+          "text": "Währen der Probezeit sind Auszubildende von der Berufsschulpflicht befreit.",
+          "rationale": "Eine solche Befreiung gibt es nicht."
+        },
+        {
+          "text": "Die Probezeit kann sechs Monate betragen.",
+          "rationale": "Sechs Monate liegen über der gesetzlichen Hoechstdauer."
+        },
+        {
+          "text": "Eine Probezeit in Ausbildungsverträgen muss nicht vereinbart werden.",
+          "rationale": "Im Ausbildungsverhältnis ist die Probezeit verpflichtend."
+        }
+      ],
+      "correctIndex": 1,
+      "feedback": {
+        "correct": "Die Dauer der Probezeit wurde korrekt bestimmt.",
+        "wrong": "Denken Sie an die gesetzliche Mindest- und Hoechstdauer der Probezeit im BBiG."
+      },
+      "progressLinks": [
+        "pv3wiso_arbeitsrecht_ausbildung"
+      ]
+    },
+    {
+      "id": "q08",
+      "type": "single_choice",
+      "title": "Gesetzliche Grundlage der JAV bestimmen",
+      "prompt": "Welches Gesetz enthält die Regelungen zur Jugend- und Auszubildendenvertretung?",
+      "options": [
+        {
+          "text": "Bürgerliches Gesetzbuch",
+          "rationale": "Die JAV ist dort nicht geregelt."
+        },
+        {
+          "text": "Arbeitsschutzgesetz",
+          "rationale": "Das Arbeitsschutzgesetz regelt andere Themen."
+        },
+        {
+          "text": "Berufsbildungsgesetz",
+          "rationale": "Die JAV wird dort nicht als Gremium geregelt."
+        },
+        {
+          "text": "Jugendarbeitsschutzgesetz",
+          "rationale": "Das JArbSchG enthält keine JAV-Regelungen."
+        },
+        {
+          "text": "Betriebsverfassungsgesetz",
+          "rationale": "Genau dort ist die JAV geregelt."
+        }
+      ],
+      "correctIndex": 4,
+      "feedback": {
+        "correct": "Die gesetzliche Grundlage der JAV wurde korrekt bestimmt.",
+        "wrong": "Trennen Sie Jugendarbeitsschutz, Berufsausbildung und betriebliche Mitbestimmung sauber voneinander."
+      },
+      "progressLinks": [
+        "pv3wiso_mitbestimmung_tarif_sozialversicherung"
+      ]
+    },
+    {
+      "id": "q09",
+      "type": "single_choice",
+      "title": "Aufgabe der JAV im Betrieb erkennen",
+      "prompt": "Welche Aussage über die Jugend- und Auszubildendenvertretung trifft zu?",
+      "options": [
+        {
+          "text": "JAV-Mitglieder dürfen nur zweimal im Jahr an Sitzungen des Betriebsrats teilnehmen.",
+          "rationale": "Eine solche starre Begrenzung gibt es nicht."
+        },
+        {
+          "text": "JAV-Mitglieder dürfen beim Betriebsrat Massnahmen zugunsten der Jugendlichen und Auszubildenden beantragen.",
+          "rationale": "Genau diese Antragsmöglichkeit gehört zu ihren Aufgaben."
+        },
+        {
+          "text": "Die JAV vertritt gegenüber der Geschäftsführung die Interessen aller Jugendlichen im Umfeld des Unternehmens.",
+          "rationale": "Sie bezieht sich auf Jugendliche und Auszubildende im Betrieb."
+        },
+        {
+          "text": "Vor jeder Entscheidung des Betriebsrats muss die JAV zwingend angehört werden.",
+          "rationale": "Eine solche pauschale Pflicht besteht nicht."
+        },
+        {
+          "text": "Die JAV hat bei allen betrieblichen Belangen ein allgemeines Mitspracherecht.",
+          "rationale": "Ihre Rechte sind auf den gesetzlichen Aufgabenbereich begrenzt."
+        }
+      ],
+      "correctIndex": 1,
+      "feedback": {
+        "correct": "Die Aufgabe der JAV wurde korrekt erkannt.",
+        "wrong": "Achten Sie auf die konkrete Rolle der JAV gegenüber dem Betriebsrat."
+      },
+      "progressLinks": [
+        "pv3wiso_mitbestimmung_tarif_sozialversicherung"
+      ]
+    },
+    {
+      "id": "q10",
+      "type": "table_fill",
+      "title": "Voraussetzungen für die Wählbarkeit im Betriebsrat einordnen",
+      "prompt": "Ordnen Sie zu, welche Aussagen die Wählbarkeit für den Betriebsrat korrekt beschreiben.",
+      "columns": [
+        "Aussage",
+        "Trifft zu?"
+      ],
+      "rows": [
+        [
+          "Für die Wählbarkeit muss eine Person volljährig sein und seit mindestens sechs Monaten im Betrieb beschäftigt sein.",
+          {
+            "key": "election_a",
+            "label": "Volljährig und sechs Monate im Betrieb",
+            "expected": "Ja",
+            "inputType": "select",
+            "placeholder": "Auswahl treffen",
+            "options": [
+              "Ja",
+              "Nein"
+            ]
+          }
+        ],
+        [
+          "Eine Vollendung des 25. Lebensjahres ist Voraussetzung für die Wählbarkeit.",
+          {
+            "key": "election_b",
+            "label": "25. Lebensjahr erforderlich",
+            "expected": "Nein",
+            "inputType": "select",
+            "placeholder": "Auswahl treffen",
+            "options": [
+              "Ja",
+              "Nein"
+            ]
+          }
+        ],
+        [
+          "Es reicht aus, wenn die Person lediglich das 16. Lebensjahr vollendet hat.",
+          {
+            "key": "election_c",
+            "label": "16 Jahre reichen aus",
+            "expected": "Nein",
+            "inputType": "select",
+            "placeholder": "Auswahl treffen",
+            "options": [
+              "Ja",
+              "Nein"
+            ]
+          }
+        ],
+        [
+          "Eine abgeschlossene Berufsausbildung ist für die Wählbarkeit zwingend erforderlich.",
+          {
+            "key": "election_d",
+            "label": "Abgeschlossene Berufsausbildung erforderlich",
+            "expected": "Nein",
+            "inputType": "select",
+            "placeholder": "Auswahl treffen",
+            "options": [
+              "Ja",
+              "Nein"
+            ]
+          }
+        ],
+        [
+          "Das 17. Lebensjahr und höchstens sechs Monate Betriebszugehörigkeit genügen für die Wählbarkeit.",
+          {
+            "key": "election_e",
+            "label": "17 Jahre und höchstens sechs Monate",
+            "expected": "Nein",
+            "inputType": "select",
+            "placeholder": "Auswahl treffen",
+            "options": [
+              "Ja",
+              "Nein"
+            ]
+          }
+        ]
+      ],
+      "feedback": {
+        "correct": "Die Voraussetzungen für die Wählbarkeit wurden korrekt eingeordnet.",
+        "wrong": "Prüfen Sie Mindestalter und Mindestdauer der Betriebszugehörigkeit noch einmal und trennen Sie Wählbarkeit von irrelevanten Merkmalen wie einem bestimmten Berufsabschluss."
+      },
+      "progressLinks": [
+        "pv3wiso_mitbestimmung_tarif_sozialversicherung"
+      ]
+    },
+    {
+      "id": "q11",
+      "type": "table_fill",
+      "title": "Regelungen des Jugendarbeitsschutzgesetzes einordnen",
+      "prompt": "Ordnen Sie zu, welche Aussagen Regelungen des Jugendarbeitsschutzgesetzes für noch nicht volljährige Auszubildende korrekt beschreiben.",
+      "columns": [
+        "Aussage",
+        "Trifft zu?"
+      ],
+      "rows": [
+        [
+          "Für Jugendliche ist eine wöchentliche Arbeitszeit von 40 Stunden zulässig.",
+          {
+            "key": "youth_a",
+            "label": "40 Stunden pro Woche",
+            "expected": "Ja",
+            "inputType": "select",
+            "placeholder": "Auswahl treffen",
+            "options": [
+              "Ja",
+              "Nein"
+            ]
+          }
+        ],
+        [
+          "Jugendliche dürfen bis zu fünf Stunden ununterbrochen ohne Ruhepause beschäftigt werden.",
+          {
+            "key": "youth_b",
+            "label": "Fünf Stunden ohne Ruhepause",
+            "expected": "Nein",
+            "inputType": "select",
+            "placeholder": "Auswahl treffen",
+            "options": [
+              "Ja",
+              "Nein"
+            ]
+          }
+        ],
+        [
+          "Zwischen Arbeitsende und Arbeitsbeginn am nächsten Tag genügen mindestens zehn Stunden Ruhezeit.",
+          {
+            "key": "youth_c",
+            "label": "Zehn Stunden Ruhezeit",
+            "expected": "Nein",
+            "inputType": "select",
+            "placeholder": "Auswahl treffen",
+            "options": [
+              "Ja",
+              "Nein"
+            ]
+          }
+        ],
+        [
+          "Jugendliche dürfen grundsätzlich nie vor acht Uhr morgens beschäftigt werden.",
+          {
+            "key": "youth_d",
+            "label": "Nie vor acht Uhr",
+            "expected": "Nein",
+            "inputType": "select",
+            "placeholder": "Auswahl treffen",
+            "options": [
+              "Ja",
+              "Nein"
+            ]
+          }
+        ],
+        [
+          "Jugendliche müssen immer genau zwei Arbeitstage vor der Abschlussprüfung freigestellt werden.",
+          {
+            "key": "youth_e",
+            "label": "Immer zwei Tage vor Abschlussprüfung frei",
+            "expected": "Nein",
+            "inputType": "select",
+            "placeholder": "Auswahl treffen",
+            "options": [
+              "Ja",
+              "Nein"
+            ]
+          }
+        ]
+      ],
+      "feedback": {
+        "correct": "Die Regelungen des Jugendarbeitsschutzgesetzes wurden korrekt eingeordnet.",
+        "wrong": "Achten Sie auf die gesetzliche Wochenarbeitszeit und trennen Sie diese von zu pauschalen Aussagen zu Ruhepausen, Ruhezeiten und Freistellungen."
+      },
+      "progressLinks": [
+        "pv3wiso_jugendarbeitsschutz_urlaub"
+      ]
+    },
+    {
+      "id": "q12",
+      "type": "single_choice",
+      "title": "Berufliche Fortbildung erkennen",
+      "prompt": "Bei welchem Beispiel handelt es sich um eine berufliche Fortbildung?",
+      "options": [
+        {
+          "text": "Ein Schüler besucht nach dem Realschulabschluss die Berufsfachschule für Kaufmännische Assistenten.",
+          "rationale": "Das ist noch keine berufliche Fortbildung nach einer abgeschlossenen Ausbildung."
+        },
+        {
+          "text": "Ein Auszubildender nimmt in einer überbetrieblichen Ausbildungsstätte an einem Lehrgang zur IT-Sicherheit teil.",
+          "rationale": "Das gehört noch zur Erstausbildung."
+        },
+        {
+          "text": "Eine Mitarbeiterin besucht an der Volkshochschule einen Segelkurs.",
+          "rationale": "Das ist keine berufliche Fortbildung."
+        },
+        {
+          "text": "Ein Auszubildender will nach Abschluss der Ausbildung studieren.",
+          "rationale": "Das ist ein weiterer Bildungsweg, aber keine typische berufliche Fortbildung im engeren Sinn."
+        },
+        {
+          "text": "Eine ehemalige Auszubildende nimmt nach ihrer Ausbildung an einem Fernlehrgang `Business English` teil.",
+          "rationale": "Genau das ist eine berufliche Fortbildung."
+        }
+      ],
+      "correctIndex": 4,
+      "feedback": {
+        "correct": "Die berufliche Fortbildung wurde korrekt erkannt.",
+        "wrong": "Achten Sie darauf, ob die Massnahme auf einer bereits abgeschlossenen Berufsausbildung aufbaut."
+      },
+      "progressLinks": [
+        "pv3wiso_arbeitsrecht_ausbildung"
+      ]
+    },
+    {
+      "id": "f03",
+      "type": "followup_divider",
+      "title": "Rechtsquellen, Streik und Arbeitsverhältnis",
+      "from": "rechtsservice@ordnungsbetrieb.example",
+      "to": "projektteam@ausbildungsbetrieb.example",
+      "subject": "Bitte den dritten Block zu Rechtsquellen, Tarifkonflikt und Arbeitsrecht vorbereiten",
+      "date": "2026-03-20",
+      "body": "Hallo,\n\nim dritten Themenblock sollen Rechtsquellen, unbefristeter Streik, Kündigungsfristen, qualifiziertes Arbeitszeugnis und Kündigungsschutz vorkommen. Bitte halten Sie Rechtsgrundlagen, Fristen und Schutzrechte klar auseinander.\n\nViele Grüsse\nRechtsservice"
+    },
+    {
+      "id": "q13",
+      "type": "table_fill",
+      "title": "Sachverhalte den passenden Rechtsquellen zuordnen",
+      "prompt": "Ordnen Sie den Sachverhalten die passende Rechtsquelle zu.",
+      "columns": [
+        "Sachverhalt",
+        "Rechtsquelle"
+      ],
+      "rows": [
+        [
+          "Geschäftsführung und Betriebsrat arbeiten unter Beachtung geltender Tarifverträge und gesetzlicher Regelungen konstruktiv zusammen.",
+          {
+            "key": "law_a",
+            "label": "Zusammenarbeit von Geschäftsführung und Betriebsrat",
+            "expected": "Betriebsverfassungsgesetz",
+            "inputType": "select",
+            "placeholder": "Rechtsquelle wählen",
+            "options": [
+              "Berufsbildungsgesetz",
+              "Handelsgesetzbuch",
+              "Betriebsverfassungsgesetz",
+              "Tarifvertragsgesetz",
+              "Bundesurlaubsgesetz",
+              "Jugendarbeitsschutzgesetz"
+            ]
+          }
+        ],
+        [
+          "Jugendliche müssen je nach Alter mindestens 25 Werktage Urlaub erhalten.",
+          {
+            "key": "law_b",
+            "label": "Mindesturlaub für Jugendliche",
+            "expected": "Jugendarbeitsschutzgesetz",
+            "inputType": "select",
+            "placeholder": "Rechtsquelle wählen",
+            "options": [
+              "Berufsbildungsgesetz",
+              "Handelsgesetzbuch",
+              "Betriebsverfassungsgesetz",
+              "Tarifvertragsgesetz",
+              "Bundesurlaubsgesetz",
+              "Jugendarbeitsschutzgesetz"
+            ]
+          }
+        ]
+      ],
+      "feedback": {
+        "correct": "Die Sachverhalte wurden den passenden Rechtsquellen korrekt zugeordnet.",
+        "wrong": "Prüfen Sie, ob es um betriebliche Mitbestimmung oder um Schutzvorschriften für Jugendliche geht."
+      },
+      "progressLinks": [
+        "pv3wiso_mitbestimmung_tarif_sozialversicherung",
+        "pv3wiso_jugendarbeitsschutz_urlaub"
+      ]
+    },
+    {
+      "id": "q14",
+      "type": "single_choice",
+      "title": "Rechtsfolge eines unbefristeten Streiks erkennen",
+      "prompt": "Nach abgelehnten Tarifverhandlungen wird von Gewerkschaftsseite ein unbefristeter Streik erwogen. Welche Aussage dazu trifft zu?",
+      "options": [
+        {
+          "text": "Ein unbefristeter Streik ist möglich, wenn der Bundesvorstand des Deutschen Gewerkschaftsbunds dazu aufruft, auch wenn die erforderliche Stimmenzahl bei der Urabstimmung nicht erreicht wurde.",
+          "rationale": "Die erforderlichen Voraussetzungen eines Arbeitskampfs werden dadurch nicht ersetzt."
+        },
+        {
+          "text": "Ein unbefristeter Streik muss durch das Bundesministerium für Arbeit und Soziales genehmigt werden.",
+          "rationale": "Eine solche ministerielle Genehmigung ist nicht vorgesehen."
+        },
+        {
+          "text": "Ein unbefristeter Streik ist nur vor dem Auslaufen eines Tarifvertrags möglich.",
+          "rationale": "Gerade die Friedenspflicht während eines laufenden Tarifvertrags spricht dagegen."
+        },
+        {
+          "text": "Tarifverhandlungen werden immer von unbefristeten Streiks begleitet.",
+          "rationale": "Das ist fachlich zu pauschal."
+        },
+        {
+          "text": "Auf einen unbefristeten Streik können die Arbeitgeber mit einer Aussperrung reagieren.",
+          "rationale": "Genau diese Reaktionsmöglichkeit besteht."
+        }
+      ],
+      "correctIndex": 4,
+      "feedback": {
+        "correct": "Die Rechtsfolge des unbefristeten Streiks wurde korrekt erkannt.",
+        "wrong": "Prüfen Sie, welche Reaktionsmöglichkeit die Arbeitgeberseite in einem Arbeitskampf hat."
+      },
+      "progressLinks": [
+        "pv3wiso_mitbestimmung_tarif_sozialversicherung"
+      ]
+    },
+    {
+      "id": "q15",
+      "type": "table_fill",
+      "title": "Beendigungstermin bei Arbeitnehmerkündigung eintragen",
+      "prompt": "Ein Mitarbeiter ist seit dem 01.01.2012 im Unternehmen beschäftigt und kündigt rechtswirksam am 11.12.2025. Es gilt die gesetzliche Kündigungsfrist für Arbeitnehmer von vier Wochen zum Fünfzehnten oder zum Ende eines Kalendermonats. Tragen Sie den Endtermin im Format `TT.MM.JJJJ` ein.",
+      "columns": [
+        "Eintrag",
+        "Datum"
+      ],
+      "rows": [
+        [
+          "Ende des Arbeitsverhältnisses",
+          {
+            "key": "termination_date",
+            "label": "Beendigungstermin",
+            "expected": "15.01.2026",
+            "inputType": "text",
+            "placeholder": "TT.MM.JJJJ"
+          }
+        ]
+      ],
+      "feedback": {
+        "correct": "Der Beendigungstermin wurde korrekt eingetragen.",
+        "wrong": "Zählen Sie vier Wochen vom 11.12.2025 aus und wählen Sie dann den nächsten zulässigen Termin zum 15. oder Monatsende."
+      },
+      "progressLinks": [
+        "pv3wiso_arbeitsrecht_ausbildung"
+      ]
+    },
+    {
+      "id": "q16",
+      "type": "table_fill",
+      "title": "Aussagen zum qualifizierten Arbeitszeugnis einordnen",
+      "prompt": "Ordnen Sie zu, welche Aussagen ein qualifiziertes Arbeitszeugnis korrekt beschreiben.",
+      "columns": [
+        "Aussage",
+        "Trifft zu?"
+      ],
+      "rows": [
+        [
+          "Ein qualifiziertes Arbeitszeugnis muss auf Verlangen des Arbeitnehmers ausgestellt werden.",
+          {
+            "key": "reference_a",
+            "label": "Auf Verlangen des Arbeitnehmers",
+            "expected": "Ja",
+            "inputType": "select",
+            "placeholder": "Auswahl treffen",
+            "options": [
+              "Ja",
+              "Nein"
+            ]
+          }
+        ],
+        [
+          "Es enthält nur Angaben über Art und Dauer der Beschäftigung.",
+          {
+            "key": "reference_b",
+            "label": "Nur Art und Dauer",
+            "expected": "Nein",
+            "inputType": "select",
+            "placeholder": "Auswahl treffen",
+            "options": [
+              "Ja",
+              "Nein"
+            ]
+          }
+        ],
+        [
+          "Aussagen über das private Auftreten dürfen auf Wunsch aufgenommen werden.",
+          {
+            "key": "reference_c",
+            "label": "Privates Auftreten aufnehmen",
+            "expected": "Nein",
+            "inputType": "select",
+            "placeholder": "Auswahl treffen",
+            "options": [
+              "Ja",
+              "Nein"
+            ]
+          }
+        ],
+        [
+          "Das Zeugnis wird allein nach freiem Ermessen des Arbeitgebers ausgestellt.",
+          {
+            "key": "reference_d",
+            "label": "Allein freies Ermessen des Arbeitgebers",
+            "expected": "Nein",
+            "inputType": "select",
+            "placeholder": "Auswahl treffen",
+            "options": [
+              "Ja",
+              "Nein"
+            ]
+          }
+        ],
+        [
+          "Ein qualifiziertes Zeugnis wird nur bei sehr guten Leistungen ausgestellt.",
+          {
+            "key": "reference_e",
+            "label": "Nur bei sehr guten Leistungen",
+            "expected": "Nein",
+            "inputType": "select",
+            "placeholder": "Auswahl treffen",
+            "options": [
+              "Ja",
+              "Nein"
+            ]
+          }
+        ]
+      ],
+      "feedback": {
+        "correct": "Die Aussagen zum qualifizierten Arbeitszeugnis wurden korrekt eingeordnet.",
+        "wrong": "Trennen Sie bitte einfaches und qualifiziertes Zeugnis sowie den Auslöser für den Anspruch noch einmal sauber."
+      },
+      "progressLinks": [
+        "pv3wiso_arbeitsrecht_ausbildung"
+      ]
+    },
+    {
+      "id": "q17",
+      "type": "single_choice",
+      "title": "Ordentliche Kündigung trotz Schutzrechten am ehesten möglich",
+      "prompt": "Wegen Kostendruck soll Personal abgebaut werden. Das Kündigungsschutzgesetz ist zu beachten. Bei welchem Arbeitsverhältnis könnte eine ordentliche Kündigung am ehesten in Betracht kommen?",
+      "options": [
+        {
+          "text": "Nico Schulz, 19 Jahre, Auszubildender zum Kaufmann für IT-System-Management, im zweiten Ausbildungsjahr",
+          "rationale": "Auszubildende nach der Probezeit sind besonders geschützt."
+        },
+        {
+          "text": "Kevin Behrens, 32 Jahre, Fachinformatiker Systemintegration, seit fünf Jahren im Unternehmen, ledig und ohne Kinder",
+          "rationale": "Hier besteht im Vergleich zu den anderen Fällen kein besonderer Sonderkündigungsschutz."
+        },
+        {
+          "text": "David Zorn, 35 Jahre, schwerbehindert, zwei Kinder, Netzwerkadministrator, seit zehn Jahren im Unternehmen",
+          "rationale": "Schwerbehinderung und weitere soziale Gesichtspunkte sprechen gegen eine einfache ordentliche Kündigung."
+        },
+        {
+          "text": "Lina Nova, 28 Jahre, Fachinformatikerin Anwendungsentwicklung, im fünften Monat schwanger, seit einem Jahr im Unternehmen",
+          "rationale": "Schwangere stehen unter besonderem Kündigungsschutz."
+        },
+        {
+          "text": "Till Svenson, 38 Jahre, IT-System-Elektroniker, seit fünf Jahren im Unternehmen und seit einem Jahr Mitglied des Betriebsrats",
+          "rationale": "Betriebsratsmitglieder geniessen besonderen Kündigungsschutz."
+        }
+      ],
+      "correctIndex": 1,
+      "feedback": {
+        "correct": "Das am ehesten kündigbare Arbeitsverhältnis wurde korrekt erkannt.",
+        "wrong": "Vergleichen Sie die besonderen Schutzrechte der genannten Personengruppen."
+      },
+      "progressLinks": [
+        "pv3wiso_arbeitsrecht_ausbildung"
+      ]
+    },
+    {
+      "id": "ctx18",
+      "type": "context_card",
+      "title": "Auslagerung in eine neue GmbH vorbereiten",
+      "contentBlocks": [
+        {
+          "type": "text",
+          "text": "Zur Reduzierung finanzieller Risiken will die Nordfokus Digital GmbH den Bereich `Allgemeine Dienstleistungen` in ein selbständiges Tochterunternehmen in der Rechtsform der GmbH auslagern. Jonas Rehm beteiligt sich mit `85.000,00 EUR`, Mira Feld mit `35.000,00 EUR`. Im ersten Geschäftsjahr erwirtschaftet die neue Gesellschaft einen Gewinn von `60.000,00 EUR`. Für die Gewinnverteilung wurde keine Sonderregel vereinbart."
+        }
+      ]
+    },
+    {
+      "id": "q18",
+      "type": "table_fill",
+      "title": "Regelungen zur GmbH-Gruendung einordnen",
+      "prompt": "Ordnen Sie zu, welche Aussagen auf die Gründung einer GmbH zutreffen.",
+      "columns": [
+        "Aussage",
+        "Trifft zu?"
+      ],
+      "rows": [
+        [
+          "Die GmbH muss im Handelsregister eingetragen werden.",
+          {
+            "key": "foundation_a",
+            "label": "Handelsregistereintrag erforderlich",
+            "expected": "Ja",
+            "inputType": "select",
+            "placeholder": "Auswahl treffen",
+            "options": [
+              "Ja",
+              "Nein"
+            ]
+          }
+        ],
+        [
+          "Zur Gründung müssen sich mindestens drei Personen mit denselben geschäftlichen Interessen zusammenschliessen.",
+          {
+            "key": "foundation_b",
+            "label": "Mindestens drei Gründer erforderlich",
+            "expected": "Nein",
+            "inputType": "select",
+            "placeholder": "Auswahl treffen",
+            "options": [
+              "Ja",
+              "Nein"
+            ]
+          }
+        ],
+        [
+          "Eine GmbH kann nur durch das Einbringen von Sacheinlagen gegründet werden.",
+          {
+            "key": "foundation_c",
+            "label": "Nur Sacheinlagen möglich",
+            "expected": "Nein",
+            "inputType": "select",
+            "placeholder": "Auswahl treffen",
+            "options": [
+              "Ja",
+              "Nein"
+            ]
+          }
+        ],
+        [
+          "Nicht alle Gesellschafter müssen persönlich in der Geschäftsführung mitarbeiten.",
+          {
+            "key": "foundation_d",
+            "label": "Nicht alle Gesellschafter müssen Geschäftsführer sein",
+            "expected": "Ja",
+            "inputType": "select",
+            "placeholder": "Auswahl treffen",
+            "options": [
+              "Ja",
+              "Nein"
+            ]
+          }
+        ],
+        [
+          "Ein Stammkapital von 50.000,00 EUR muss bei der Gründung in jedem Fall vollständig eingezahlt werden.",
+          {
+            "key": "foundation_e",
+            "label": "50.000 EUR immer vollständig einzahlen",
+            "expected": "Nein",
+            "inputType": "select",
+            "placeholder": "Auswahl treffen",
+            "options": [
+              "Ja",
+              "Nein"
+            ]
+          }
+        ]
+      ],
+      "feedback": {
+        "correct": "Die Regelungen zur GmbH-Gruendung wurden korrekt eingeordnet.",
+        "wrong": "Achten Sie auf Handelsregistereintrag, Stammkapital und die Rolle der Gesellschafter in der Geschäftsführung."
+      },
+      "progressLinks": [
+        "pv3wiso_wirtschaftssektoren_unternehmensformen"
+      ]
+    },
+    {
+      "id": "q19",
+      "type": "table_fill",
+      "title": "Sachverhalte zur gegründeten GmbH einordnen",
+      "prompt": "Ordnen Sie zu, welche Sachverhalte im Zusammenhang mit der gegründeten GmbH zutreffen.",
+      "columns": [
+        "Aussage",
+        "Trifft zu?"
+      ],
+      "rows": [
+        [
+          "Eine Gesellschafterin wie Mira Feld kann die Geschäftsführung der GmbH übernehmen.",
+          {
+            "key": "gmbh_a",
+            "label": "Gesellschafterin kann Geschäftsführung übernehmen",
+            "expected": "Ja",
+            "inputType": "select",
+            "placeholder": "Auswahl treffen",
+            "options": [
+              "Ja",
+              "Nein"
+            ]
+          }
+        ],
+        [
+          "Nur Mira Feld könnte die Eintragung der GmbH beim Arbeitsgericht beantragen.",
+          {
+            "key": "gmbh_b",
+            "label": "Nur Mira Feld beim Arbeitsgericht",
+            "expected": "Nein",
+            "inputType": "select",
+            "placeholder": "Auswahl treffen",
+            "options": [
+              "Ja",
+              "Nein"
+            ]
+          }
+        ],
+        [
+          "Das neue Unternehmen könnte unter exakt derselben Firma wie die Muttergesellschaft auftreten.",
+          {
+            "key": "gmbh_c",
+            "label": "Exakt dieselbe Firma möglich",
+            "expected": "Nein",
+            "inputType": "select",
+            "placeholder": "Auswahl treffen",
+            "options": [
+              "Ja",
+              "Nein"
+            ]
+          }
+        ],
+        [
+          "Die Einlagen von insgesamt 120.000,00 EUR betragen mehr als das Zehnfache des gesetzlichen Mindeststammkapitals.",
+          {
+            "key": "gmbh_d",
+            "label": "Mehr als das Zehnfache des Mindeststammkapitals",
+            "expected": "Nein",
+            "inputType": "select",
+            "placeholder": "Auswahl treffen",
+            "options": [
+              "Ja",
+              "Nein"
+            ]
+          }
+        ],
+        [
+          "Zur Rechtswirksamkeit genügt ein mündlich geschlossener Gesellschaftsvertrag.",
+          {
+            "key": "gmbh_e",
+            "label": "Mündlicher Gesellschaftsvertrag reicht",
+            "expected": "Nein",
+            "inputType": "select",
+            "placeholder": "Auswahl treffen",
+            "options": [
+              "Ja",
+              "Nein"
+            ]
+          }
+        ]
+      ],
+      "feedback": {
+        "correct": "Die Sachverhalte zur gegründeten GmbH wurden korrekt eingeordnet.",
+        "wrong": "Trennen Sie Handelsregister, Firmenrecht, Geschäftsführung, Kapitalhöhe und Formvorschriften noch einmal sauber voneinander."
+      },
+      "progressLinks": [
+        "pv3wiso_wirtschaftssektoren_unternehmensformen"
+      ]
+    },
+    {
+      "id": "q20",
+      "type": "number",
+      "title": "Gewinnanteil einer Gesellschafterin berechnen",
+      "prompt": "Welcher Gewinnanteil in EUR entfällt bei fehlender Sonderregelung auf Mira Feld?",
+      "expected": 17500,
+      "toleranceAbs": 0.01,
+      "showExpectedFormula": "Gesamteinlage: 85.000,00 + 35.000,00 = 120.000,00 EUR; Anteil Mira Feld: 35.000,00 / 120.000,00 = 29,17 %; Gewinnanteil: 60.000,00 x 35.000,00 / 120.000,00 = 17.500,00 EUR.",
+      "feedback": {
+        "correct": "Der Gewinnanteil wurde korrekt berechnet.",
+        "wrong": "Bestimmen Sie zuerst den Kapitalanteil von Mira Feld an der gesamten Einlage und wenden Sie ihn dann auf den Gewinn an."
+      },
+      "progressLinks": [
+        "pv3wiso_wirtschaftlichkeit_unternehmensanalyse"
+      ]
+    },
+    {
+      "id": "f04",
+      "type": "followup_divider",
+      "title": "AGG, Arbeitsteilung und Sozialversicherung",
+      "from": "betriebsorganisation@ordnungsbetrieb.example",
+      "to": "projektteam@ausbildungsbetrieb.example",
+      "subject": "Bitte den vierten Block zu AGG, Organisation und Krankenversicherung vorbereiten",
+      "date": "2026-03-20",
+      "body": "Hallo,\n\nim vierten Themenblock sollen AGG-Verstösse, betriebliche Arbeitsteilung, Organigramm, Stabsstelle und Krankenversicherung vorkommen. Bitte halten Sie Diskriminierungsschutz, Organisationsformen und Sozialversicherungslogik sauber auseinander.\n\nViele Grüsse\nBetriebsorganisation"
+    },
+    {
+      "id": "q21",
+      "type": "multi_select",
+      "title": "AGG-Verstösse im Betrieb erkennen",
+      "prompt": "In welchen zwei Fällen wird gegen das Allgemeine Gleichbehandlungsgesetz verstossen?",
+      "options": [
+        {
+          "text": "In einer Stellenanzeige wird nach `jungen Mitarbeitenden (m/w/d)` gesucht.",
+          "correct": true,
+          "rationale": "Die Formulierung benachteiligt wegen des Alters."
+        },
+        {
+          "text": "Zwei Mitarbeitende werden abgemahnt, weil sie trotz Verbots im Lager wiederholt geraucht haben.",
+          "correct": false,
+          "rationale": "Eine betriebliche Regelverletzung ist für sich genommen kein AGG-Fall."
+        },
+        {
+          "text": "Alle volljährigen Mitarbeitenden machen an einem 4-Stunden-Arbeitstag keine Pause.",
+          "correct": false,
+          "rationale": "Das ist kein AGG-Thema."
+        },
+        {
+          "text": "Ein Vorschlag einer Mitarbeiterin wird abgelehnt, weil sie eine dunkle Hautfarbe hat.",
+          "correct": true,
+          "rationale": "Eine Benachteiligung wegen ethnischer Herkunft oder Hautfarbe kann gegen das AGG verstossen."
+        },
+        {
+          "text": "Ein schwerbehinderter Mitarbeiter erhält zusätzliche Urlaubstage.",
+          "correct": false,
+          "rationale": "Zusatzurlaub für schwerbehinderte Menschen ist gesetzlich vorgesehen."
+        },
+        {
+          "text": "Ein Bewerber für die Personalabteilung wird abgelehnt, weil ihm PC-Kenntnisse fehlen.",
+          "correct": false,
+          "rationale": "Fehlende berufsrelevante Qualifikationen dürfen berücksichtigt werden."
+        }
+      ],
+      "feedback": {
+        "correct": "Die AGG-Verstösse wurden korrekt ausgewählt.",
+        "wrong": "Achten Sie auf Benachteiligungen wegen geschützter Merkmale und trennen Sie diese von sachlichen Eignungskriterien."
+      },
+      "progressLinks": [
+        "pv3wiso_arbeitsschutz_umwelt_diversity"
+      ]
+    },
+    {
+      "id": "q22",
+      "type": "single_choice",
+      "title": "Betriebliche Arbeitsteilung von anderen Formen unterscheiden",
+      "prompt": "In welchem Fall handelt es sich um betriebliche Arbeitsteilung?",
+      "options": [
+        {
+          "text": "Drei Informatiker werden eingestellt: einer für App-Programmierung, einer für die Wartung von Smartphone-Software und einer für die Schulung von Neukunden.",
+          "rationale": "Genau hier werden unterschiedliche Aufgaben innerhalb eines Betriebs aufgeteilt."
+        },
+        {
+          "text": "Bildschirme werden von einem chinesischen Anbieter bezogen.",
+          "rationale": "Das beschreibt zwischenbetriebliche oder internationale Arbeitsteilung."
+        },
+        {
+          "text": "Das Unternehmen bietet Software, aber keine Smartphones an.",
+          "rationale": "Das ist keine betriebliche Arbeitsteilung im engeren Sinn."
+        },
+        {
+          "text": "Selfiesticks werden für Kunden in München mit dem Firmenlogo versehen.",
+          "rationale": "Das beschreibt keine betriebliche Arbeitsteilung innerhalb des Unternehmens."
+        },
+        {
+          "text": "Es wird eine Frauenquote eingeführt.",
+          "rationale": "Das ist eine personalpolitische Massnahme und keine Arbeitsteilung."
+        }
+      ],
+      "correctIndex": 0,
+      "feedback": {
+        "correct": "Die betriebliche Arbeitsteilung wurde korrekt erkannt.",
+        "wrong": "Achten Sie darauf, ob Aufgaben innerhalb eines Betriebs auf verschiedene Personen oder Stellen verteilt werden."
+      },
+      "progressLinks": [
+        "pv3wiso_wirtschaftssektoren_unternehmensformen"
+      ]
+    },
+    {
+      "id": "ctx23",
+      "type": "context_card",
+      "title": "Organisationsstruktur des Betriebs auswerten",
+      "contentBlocks": [
+        {
+          "type": "text",
+          "text": "Die Geschäftsleitung wird direkt von einer `Rechtsabteilung` beraten. Unter der Leitung liegen die Bereiche `Fertigung`, `Vertrieb` und `Beschaffung`. Unter `Fertigung` sind `Teilefertigung` und `Montage` angesiedelt, unter `Vertrieb` die Bereiche `Verkauf` und `Faktura`, unter `Beschaffung` die Einheiten `Disposition` und `Einkauf`."
+        }
+      ]
+    },
+    {
+      "id": "q23",
+      "type": "single_choice",
+      "title": "Leitungssystem des Organigramms erkennen",
+      "prompt": "Nach welchem Leitungssystem ist das Unternehmen organisiert?",
+      "options": [
+        {
+          "text": "Einliniensystem",
+          "rationale": "Die zusätzliche Rechtsabteilung als beratende Stabsstelle spricht dagegen."
+        },
+        {
+          "text": "Stab-Liniensystem",
+          "rationale": "Genau das passt zu einer Linienorganisation mit zusätzlicher beratender Stabsstelle."
+        },
+        {
+          "text": "Mehrliniensystem",
+          "rationale": "Mehrfachweisungen werden hier nicht beschrieben."
+        },
+        {
+          "text": "Matrixorganisation",
+          "rationale": "Es fehlen die für eine Matrix typischen gleichrangigen Achsen."
+        },
+        {
+          "text": "Spartenorganisation",
+          "rationale": "Die Struktur ist funktional und nicht nach Geschäftssparten gegliedert."
+        }
+      ],
+      "correctIndex": 1,
+      "feedback": {
+        "correct": "Das Leitungssystem wurde korrekt erkannt.",
+        "wrong": "Achten Sie auf die Kombination aus Linienorganisation und beratender Rechtsabteilung."
+      },
+      "progressLinks": [
+        "pv3wiso_wirtschaftssektoren_unternehmensformen"
+      ]
+    },
+    {
+      "id": "q24",
+      "type": "table_fill",
+      "title": "Aussagen zur Organisationsstruktur einordnen",
+      "prompt": "Ordnen Sie zu, welche Aussagen die dargestellte Organisationsstruktur korrekt beschreiben.",
+      "columns": [
+        "Aussage",
+        "Trifft zu?"
+      ],
+      "rows": [
+        [
+          "Fertigung und Vertrieb gehören zur Linienorganisation.",
+          {
+            "key": "structure_a",
+            "label": "Fertigung und Vertrieb in der Linienorganisation",
+            "expected": "Ja",
+            "inputType": "select",
+            "placeholder": "Auswahl treffen",
+            "options": [
+              "Ja",
+              "Nein"
+            ]
+          }
+        ],
+        [
+          "Die Rechtsabteilung ist als Stabsstelle organisiert.",
+          {
+            "key": "structure_b",
+            "label": "Rechtsabteilung als Stabsstelle",
+            "expected": "Ja",
+            "inputType": "select",
+            "placeholder": "Auswahl treffen",
+            "options": [
+              "Ja",
+              "Nein"
+            ]
+          }
+        ],
+        [
+          "Der Einkauf untersteht dem Vertriebsbereich.",
+          {
+            "key": "structure_c",
+            "label": "Einkauf unter Vertrieb",
+            "expected": "Nein",
+            "inputType": "select",
+            "placeholder": "Auswahl treffen",
+            "options": [
+              "Ja",
+              "Nein"
+            ]
+          }
+        ],
+        [
+          "Die Leitung der Fertigung gehört zur Linienorganisation und ist an Weisungen der Geschäftsführung gebunden.",
+          {
+            "key": "structure_d",
+            "label": "Fertigungsleitung in der Linienorganisation",
+            "expected": "Ja",
+            "inputType": "select",
+            "placeholder": "Auswahl treffen",
+            "options": [
+              "Ja",
+              "Nein"
+            ]
+          }
+        ],
+        [
+          "Die Rechtsabteilung berät die Geschäftsleitung, hat jedoch keine Weisungsbefugnis.",
+          {
+            "key": "structure_e",
+            "label": "Rechtsabteilung beratend ohne Weisungsbefugnis",
+            "expected": "Ja",
+            "inputType": "select",
+            "placeholder": "Auswahl treffen",
+            "options": [
+              "Ja",
+              "Nein"
+            ]
+          }
+        ]
+      ],
+      "feedback": {
+        "correct": "Die Aussagen zur Organisationsstruktur wurden korrekt eingeordnet.",
+        "wrong": "Achten Sie besonders auf den Unterschied zwischen Linienorganisation und Stabsstelle sowie auf die Zuordnung des Einkaufs."
+      },
+      "progressLinks": [
+        "pv3wiso_wirtschaftssektoren_unternehmensformen"
+      ]
+    },
+    {
+      "id": "q25",
+      "type": "number",
+      "title": "Arbeitnehmerbeitrag zur Krankenversicherung berechnen",
+      "prompt": "Das monatliche Bruttogehalt beträgt 3.500,00 EUR. Der allgemeine Beitragssatz zur gesetzlichen Krankenkasse liegt bei 14,6 %, der Zusatzbeitrag bei 1,8 %. Wie hoch ist der Arbeitnehmerbeitrag zur Krankenversicherung in EUR?",
+      "expected": 287.0,
+      "toleranceAbs": 0.01,
+      "showExpectedFormula": "Arbeitnehmeranteil: 14,6 % / 2 + 1,8 % / 2 = 8,2 %; 3.500,00 EUR x 8,2 % = 287,00 EUR.",
+      "feedback": {
+        "correct": "Der Arbeitnehmerbeitrag zur Krankenversicherung wurde korrekt berechnet.",
+        "wrong": "Denken Sie daran, dass der allgemeine Beitragssatz und der Zusatzbeitrag je zur Hälfte von Arbeitnehmer und Arbeitgeber getragen werden."
+      },
+      "progressLinks": [
+        "pv3wiso_mitbestimmung_tarif_sozialversicherung"
+      ]
+    },
+    {
+      "id": "f05",
+      "type": "followup_divider",
+      "title": "Globalisierung und Umwelt",
+      "from": "nachhaltigkeit@ordnungsbetrieb.example",
+      "to": "projektteam@ausbildungsbetrieb.example",
+      "subject": "Bitte den Abschlussblock zu Globalisierung, Marktordnung und Umwelt vorbereiten",
+      "date": "2026-03-20",
+      "body": "Hallo,\n\nzum Abschluss brauchen wir Aufgaben zu Globalisierung, Sozialer Marktwirtschaft, Fusionen, Emissionen und dem Umweltzeichen Blauer Engel. Bitte halten Sie wirtschaftspolitische Leitbilder, Unternehmenszusammenschlüsse und Umweltaspekte eindeutig auseinander.\n\nViele Grüsse\nNachhaltigkeit"
+    },
+    {
+      "id": "q26",
+      "type": "single_choice",
+      "title": "Globalisierung fördernde Massnahme bestimmen",
+      "prompt": "Welche Massnahme fördert die Globalisierung?",
+      "options": [
+        {
+          "text": "Erhöhung von Importzöllen zur Absicherung von Gewinnen in der Binnenwirtschaft",
+          "rationale": "Höhere Importzölle wirken eher abschottend."
+        },
+        {
+          "text": "Einschränkung des Technologietransfers zur Absicherung des technologischen Vorsprungs",
+          "rationale": "Auch das begrenzt internationale Verflechtung eher."
+        },
+        {
+          "text": "Subventionierung niedriger Preise zur Bereinigung der Märkte von Mitbewerbern",
+          "rationale": "Das ist keine typische allgemeine Fördermassnahme der Globalisierung."
+        },
+        {
+          "text": "Offenheit für Investitionen ausländischer Unternehmen im Inland sowie für Investitionen deutscher Unternehmen im Ausland",
+          "rationale": "Genau diese Offenheit fördert die Globalisierung."
+        },
+        {
+          "text": "Erhöhung der Produktionstiefe an Industriestandorten weltweit",
+          "rationale": "Eine höhere Produktionstiefe an jedem einzelnen Standort ist kein typisches Globalisierungsmerkmal."
+        }
+      ],
+      "correctIndex": 3,
+      "feedback": {
+        "correct": "Die globalisierungsfördernde Massnahme wurde korrekt erkannt.",
+        "wrong": "Achten Sie auf Offenheit für grenzüberschreitende Investitionen statt auf wirtschaftliche Abschottung."
+      },
+      "progressLinks": [
+        "pv3wiso_wirtschaftssektoren_unternehmensformen"
+      ]
+    },
+    {
+      "id": "q27",
+      "type": "single_choice",
+      "title": "Kernaussage der Sozialen Marktwirtschaft erkennen",
+      "prompt": "Welche Aussage zur Sozialen Marktwirtschaft ist zutreffend?",
+      "options": [
+        {
+          "text": "Der Staat fördert Monopole und Kartelle, um einen Leistungswettbewerb zu verhindern.",
+          "rationale": "Die Soziale Marktwirtschaft will Wettbewerb gerade nicht ausschalten."
+        },
+        {
+          "text": "Der Staat greift regulierend in Märkte ein, indem er für Waren Mindest- und Höchstpreise sowie Angebotsmengen festsetzt.",
+          "rationale": "Diese Aussage beschreibt das Leitbild zu pauschal und unzutreffend."
+        },
+        {
+          "text": "Durch sozialen Ausgleich und solidarische Hilfe soll Chancengleichheit erreicht werden.",
+          "rationale": "Genau diese Verbindung aus Markt und sozialem Ausgleich ist kennzeichnend."
+        },
+        {
+          "text": "Durch die Gesetzgebung werden alle Wettbewerbshemmnisse vermieden, sodass auf den Märkten eine vollständige Konkurrenz erreicht wird.",
+          "rationale": "Eine vollständige Konkurrenz wird dadurch nicht garantiert."
+        },
+        {
+          "text": "Alle von Insolvenz bedrohten Unternehmen werden auf Antrag durch staatliche Subventionen gestützt.",
+          "rationale": "Eine solche pauschale Rettung aller Unternehmen gehört nicht zum Leitbild."
+        }
+      ],
+      "correctIndex": 2,
+      "feedback": {
+        "correct": "Die Kernaussage der Sozialen Marktwirtschaft wurde korrekt erkannt.",
+        "wrong": "Denken Sie an die Verbindung aus marktwirtschaftlichem Wettbewerb und sozialem Ausgleich."
+      },
+      "progressLinks": [
+        "pv3wiso_wirtschaftssektoren_unternehmensformen"
+      ]
+    },
+    {
+      "id": "q28",
+      "type": "multi_select",
+      "title": "Mögliche Auswirkungen einer Fusion auswählen",
+      "prompt": "Welche zwei Auswirkungen kann eine Fusion mit einem regionalen Mitbewerber haben?",
+      "options": [
+        {
+          "text": "Möglichkeiten zu Rationalisierungen und Einsparungen",
+          "correct": true,
+          "rationale": "Genau solche Synergieeffekte können durch eine Fusion entstehen."
+        },
+        {
+          "text": "Breitere Kapitalbasis und bessere Finanzierungsmöglichkeiten",
+          "correct": true,
+          "rationale": "Auch das kann eine Fusion bewirken."
+        },
+        {
+          "text": "Anspruch auf eine Marktbereinigungsprämie der EU",
+          "correct": false,
+          "rationale": "Eine solche automatische Prämie gibt es nicht."
+        },
+        {
+          "text": "Aufsicht durch das Bundeswirtschaftsministerium allein wegen der Fusion",
+          "correct": false,
+          "rationale": "Eine solche pauschale Folge tritt nicht ein."
+        },
+        {
+          "text": "Geringere Umsatzsteuer",
+          "correct": false,
+          "rationale": "Die Umsatzsteuer sinkt nicht allein aufgrund einer Fusion."
+        },
+        {
+          "text": "Verpflichtung zur Änderung der Rechtsform",
+          "correct": false,
+          "rationale": "Eine Fusion erzwingt nicht automatisch eine neue Rechtsform."
+        }
+      ],
+      "feedback": {
+        "correct": "Die möglichen Auswirkungen der Fusion wurden korrekt erkannt.",
+        "wrong": "Suchen Sie nach typischen Synergie- und Finanzierungseffekten, nicht nach pauschal erfundenen Rechtsfolgen."
+      },
+      "progressLinks": [
+        "pv3wiso_wirtschaftssektoren_unternehmensformen"
+      ]
+    },
+    {
+      "id": "q29",
+      "type": "table_fill",
+      "title": "Aussagen zu Emissionen einordnen",
+      "prompt": "Ordnen Sie zu, welche Aussagen zu umweltbelastenden Emissionen zutreffen.",
+      "columns": [
+        "Aussage",
+        "Trifft zu?"
+      ],
+      "rows": [
+        [
+          "Zu umweltbelastenden Emissionen können neben schädlichen Abgasen auch Schallemissionen und Elektrosmog gehören.",
+          {
+            "key": "emission_a",
+            "label": "Schall und Elektrosmog gehören dazu",
+            "expected": "Ja",
+            "inputType": "select",
+            "placeholder": "Auswahl treffen",
+            "options": [
+              "Ja",
+              "Nein"
+            ]
+          }
+        ],
+        [
+          "Emissionen entstehen ausschliesslich durch den Transport von Waren zwischen verschiedenen Lagerorten.",
+          {
+            "key": "emission_b",
+            "label": "Nur Transport zwischen Lagerorten",
+            "expected": "Nein",
+            "inputType": "select",
+            "placeholder": "Auswahl treffen",
+            "options": [
+              "Ja",
+              "Nein"
+            ]
+          }
+        ],
+        [
+          "Höhere Schornsteine können Emissionen vollständig reduzieren oder vermeiden.",
+          {
+            "key": "emission_c",
+            "label": "Höhere Schornsteine vermeiden Emissionen",
+            "expected": "Nein",
+            "inputType": "select",
+            "placeholder": "Auswahl treffen",
+            "options": [
+              "Ja",
+              "Nein"
+            ]
+          }
+        ],
+        [
+          "Für die Luftreinhaltung im Lager ist ausschliesslich die Sicherheitsbeauftragte zuständig.",
+          {
+            "key": "emission_d",
+            "label": "Ausschliesslich die Sicherheitsbeauftragte",
+            "expected": "Nein",
+            "inputType": "select",
+            "placeholder": "Auswahl treffen",
+            "options": [
+              "Ja",
+              "Nein"
+            ]
+          }
+        ],
+        [
+          "Emissionen sollen im Betrieb vermindert oder vermieden werden.",
+          {
+            "key": "emission_e",
+            "label": "Emissionen vermindern oder vermeiden",
+            "expected": "Ja",
+            "inputType": "select",
+            "placeholder": "Auswahl treffen",
+            "options": [
+              "Ja",
+              "Nein"
+            ]
+          }
+        ]
+      ],
+      "feedback": {
+        "correct": "Die Aussagen zu Emissionen wurden korrekt eingeordnet.",
+        "wrong": "Achten Sie darauf, dass auch Lärm und andere Einwirkungen zu umweltbelastenden Emissionen gehören können und dass Emissionen weder nur vom Transport stammen noch durch höhere Schornsteine verschwinden."
+      },
+      "progressLinks": [
+        "pv3wiso_arbeitsschutz_umwelt_diversity"
+      ]
+    },
+    {
+      "id": "q30",
+      "type": "table_fill",
+      "title": "Aussagen zum Umweltzeichen Blauer Engel einordnen",
+      "prompt": "Ordnen Sie zu, welche Aussagen die Bedeutung des Umweltzeichens `Blauer Engel` korrekt beschreiben.",
+      "columns": [
+        "Aussage",
+        "Trifft zu?"
+      ],
+      "rows": [
+        [
+          "Eine so gekennzeichnete Ware wurde aus schadstoffarmen Rohstoffen hergestellt und umweltschonend produziert.",
+          {
+            "key": "blü_angel_a",
+            "label": "Schadstoffarme Rohstoffe und umweltschonende Produktion",
+            "expected": "Ja",
+            "inputType": "select",
+            "placeholder": "Auswahl treffen",
+            "options": [
+              "Ja",
+              "Nein"
+            ]
+          }
+        ],
+        [
+          "Die Ware ist allein deshalb besonders haltbar.",
+          {
+            "key": "blü_angel_b",
+            "label": "Besonders haltbar",
+            "expected": "Nein",
+            "inputType": "select",
+            "placeholder": "Auswahl treffen",
+            "options": [
+              "Ja",
+              "Nein"
+            ]
+          }
+        ],
+        [
+          "Die Ware ist allein deshalb besonders sicher in der Handhabung.",
+          {
+            "key": "blü_angel_c",
+            "label": "Besonders sicher in der Handhabung",
+            "expected": "Nein",
+            "inputType": "select",
+            "placeholder": "Auswahl treffen",
+            "options": [
+              "Ja",
+              "Nein"
+            ]
+          }
+        ],
+        [
+          "Die Kennzeichnung bedeutet automatisch, dass die Ware bereits mehrere Umweltpreise gewonnen hat.",
+          {
+            "key": "blü_angel_d",
+            "label": "Mehrere Umweltpreise gewonnen",
+            "expected": "Nein",
+            "inputType": "select",
+            "placeholder": "Auswahl treffen",
+            "options": [
+              "Ja",
+              "Nein"
+            ]
+          }
+        ],
+        [
+          "Nach Benutzung darf die Ware ausschliesslich über das Duale System entsorgt werden.",
+          {
+            "key": "blü_angel_e",
+            "label": "Ausschliesslich über das Duale System entsorgen",
+            "expected": "Nein",
+            "inputType": "select",
+            "placeholder": "Auswahl treffen",
+            "options": [
+              "Ja",
+              "Nein"
+            ]
+          }
+        ]
+      ],
+      "feedback": {
+        "correct": "Die Aussagen zum Umweltzeichen Blauer Engel wurden korrekt eingeordnet.",
+        "wrong": "Denken Sie an schadstoffarme Rohstoffe und umweltschonende Herstellung und trennen Sie diese Kernaussage von Haltbarkeit, Sicherheitsversprechen oder besonderen Entsorgungswegen."
+      },
+      "progressLinks": [
+        "pv3wiso_arbeitsschutz_umwelt_diversity"
+      ]
+    }
+  ]
+}

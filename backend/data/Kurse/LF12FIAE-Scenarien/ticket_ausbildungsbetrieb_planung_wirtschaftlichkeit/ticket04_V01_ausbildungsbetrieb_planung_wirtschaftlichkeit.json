@@ -1,0 +1,159 @@
+{
+  "scenario": {
+    "company": "Ausbildungsbetrieb IT-Service",
+    "scale": "Mittelstand, 280 Mitarbeitende",
+    "context": "Station 04 des Tageslaufs: Projektplanung und Wirtschaftlichkeitsbeurteilung vertiefen.",
+    "mission": "Sie planen Arbeitspakete, schätzen Aufwand realistisch und treffen wirtschaftlich begründete Entscheidungen.",
+    "station": {
+      "id": "LF12FIAE-ST-04",
+      "department": "Projektplanung",
+      "profile": "Arbeitspakete, Aufwand, Kosten-Nutzen, Risiko",
+      "constraints": [
+        "Planannahmen explizit machen",
+        "Kosten und Nutzen zusammen betrachten",
+        "Risiken in die Planung integrieren"
+      ]
+    },
+    "customerRequest": {
+      "from": "controlling@kundenprojekt.example",
+      "to": "projektteam@ausbildungsbetrieb.example",
+      "subject": "Station 04: Planung und Wirtschaftlichkeit",
+      "date": "2026-03-13",
+      "body": "Bitte erstellen Sie eine belastbare Projektplanung mit Aufwand, Kosten-Nutzen-Betrachtung und Risikopuffer."
+    }
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "type": "single_choice",
+      "title": "Arbeitspakete sinnvoll schneiden",
+      "prompt": "Welche Struktur ist für Arbeitspakete am sinnvollsten?",
+      "options": [
+        {
+          "text": "Pakete so gross wie möglich halten",
+          "rationale": "Erschwert Steuerung und Fortschrittsmessung."
+        },
+        {
+          "text": "Pakete mit klaren Ergebnissen und Verantwortlichkeiten definieren",
+          "rationale": "Verbessert Planbarkeit und Nachverfolgung."
+        },
+        {
+          "text": "Pakete ohne Abnahmeergebnis formulieren",
+          "rationale": "Mindert Verbindlichkeit."
+        }
+      ],
+      "correctIndex": 1,
+      "feedback": {
+        "correct": "Richtig: Klare Ergebnisse und Verantwortliche machen Pakete steuerbar.",
+        "wrong": "Nicht passend: Arbeitspakete brauchen klare Resultate."
+      },
+      "progressLinks": [
+        "lf12fiae_projektplanung_wirtschaftlichkeit"
+      ]
+    },
+    {
+      "id": "q2",
+      "type": "multi_select",
+      "title": "Wirtschaftlichkeit bewerten",
+      "prompt": "Welche Kriterien gehören in eine wirtschaftliche Bewertung? (Mehrfachauswahl)",
+      "options": [
+        {
+          "text": "Einmal- und Betriebskosten getrennt betrachten",
+          "correct": true,
+          "rationale": "Wichtig für Gesamtbild."
+        },
+        {
+          "text": "Nutzeneffekte für Prozess und Servicequalität benennen",
+          "correct": true,
+          "rationale": "Nutzenbezug ist zentral."
+        },
+        {
+          "text": "Risikoaufwand komplett ignorieren",
+          "correct": false,
+          "rationale": "Risiken wirken direkt auf Kosten."
+        },
+        {
+          "text": "Alternativen mit Vor- und Nachteilen vergleichen",
+          "correct": true,
+          "rationale": "Fördert begründete Auswahl."
+        },
+        {
+          "text": "Nur den billigsten Anbieter wählen",
+          "correct": false,
+          "rationale": "Kann unterm Strich teurer werden."
+        }
+      ],
+      "feedback": {
+        "correct": "Richtig: Die Bewertung ist wirtschaftlich tragfähig.",
+        "wrong": "Teilweise falsch: Bitte Kosten, Nutzen und Risiko zusammenführen."
+      },
+      "progressLinks": [
+        "lf12fiae_projektplanung_wirtschaftlichkeit"
+      ]
+    },
+    {
+      "id": "q3",
+      "type": "ordering",
+      "title": "Planungsprozess in Reihenfolge",
+      "prompt": "Ordnen Sie den Ablauf für eine belastbare Planung.",
+      "items": [
+        "Arbeitspakete und Ergebnisse definieren",
+        "Aufwand und Dauer abschätzen",
+        "Kosten und Nutzen gegenüberstellen",
+        "Risiken und Puffer festlegen",
+        "Planannahmen dokumentieren"
+      ],
+      "correctOrder": [
+        "Arbeitspakete und Ergebnisse definieren",
+        "Aufwand und Dauer abschätzen",
+        "Kosten und Nutzen gegenüberstellen",
+        "Risiken und Puffer festlegen",
+        "Planannahmen dokumentieren"
+      ],
+      "feedback": {
+        "correct": "Richtig: Das ergibt eine nachvollziehbare Planungslogik.",
+        "wrong": "Nicht optimal: Bitte erst Paket-/Aufwandssicht, dann Bewertung und Risiko."
+      },
+      "progressLinks": [
+        "lf12fiae_projektplanung_wirtschaftlichkeit"
+      ]
+    },
+    {
+      "id": "q4",
+      "type": "number",
+      "title": "Kalkulationssumme",
+      "prompt": "Analyse 1260 EUR, Umsetzung 3420 EUR, Test 980 EUR, Doku 540 EUR. Wie hoch ist die Gesamtsumme?",
+      "expected": 6200,
+      "toleranceAbs": 1,
+      "showExpectedFormula": "1260 + 3420 + 980 + 540 = 6200 EUR",
+      "feedback": {
+        "correct": "Richtig gerechnet.",
+        "wrong": "Bitte alle Kostenpositionen korrekt addieren."
+      },
+      "progressLinks": [
+        "lf12fiae_projektplanung_wirtschaftlichkeit"
+      ]
+    },
+    {
+      "id": "q5",
+      "type": "short_text",
+      "title": "Wirtschaftlichkeitsnotiz",
+      "prompt": "Schreiben Sie in 4-6 Sätzen eine kurze Wirtschaftlichkeitsnotiz mit Entscheidungsvorschlag.",
+      "minChars": 160,
+      "requiredKeywords": [
+        "kosten",
+        "nutzen",
+        "entscheidung"
+      ],
+      "expectedOutline": "Kosten-Nutzen-Bild, Risikohinweis und klarer Entscheidungsvorschlag.",
+      "feedback": {
+        "correct": "Richtig: Die Notiz ist als Entscheidungsgrundlage brauchbar.",
+        "wrong": "Bitte Kosten, Nutzen und Entscheidung klarer herausarbeiten."
+      },
+      "progressLinks": [
+        "lf12fiae_projektplanung_wirtschaftlichkeit",
+        "lf12fiae_bewertung_reflexion"
+      ]
+    }
+  ]
+}
