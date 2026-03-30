@@ -16,7 +16,9 @@ const EXCLUDED_ARTIFACTS = [
   "backend/server.mjs",
   "backend/output/**",
   "backend/comment-mode/**",
-  "backend/tool/**"
+  "backend/tool/**",
+  "frontend/presenter/**",
+  "frontend/vendor/vendor/babylon/**"
 ];
 
 function sanitizeFolderName(value = "") {
@@ -194,6 +196,8 @@ async function main() {
   }
 
   await copyDirIfExists(FRONTEND_ROOT, path.join(DIST_ROOT, "frontend"));
+  await fs.rm(path.join(DIST_ROOT, "frontend", "presenter"), { recursive: true, force: true });
+  await fs.rm(path.join(DIST_ROOT, "frontend", "vendor", "vendor", "babylon"), { recursive: true, force: true });
   await ensureDir(path.join(DIST_ROOT, "backend", "data"));
   await fs.writeFile(
     path.join(DIST_ROOT, "backend", "data", "access-bundles.json"),

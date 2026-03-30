@@ -1,16 +1,35 @@
-import "./frontend/effects/halo-background.js";
-import "./frontend/i18n/ui-i18n.js";
-import "./frontend/challenge/data.js";
-import "./frontend/challenge/runtime.js";
-import "./frontend/challenge/zuordnen.js";
-import "./frontend/challenge/falscher-treffer.js";
-import "./frontend/challenge/reihenfolge-sprint.js";
-import "./frontend/challenge/fallende-karten.js";
-import "./frontend/challenge/quick-code.js";
-import "./frontend/presenter/data.js";
-import "./frontend/presenter/studio-store.js";
-import "./frontend/presenter/studio-recorder.js";
-import "./frontend/presenter/studio-ui.js";
-import "./frontend/presenter/runtime.js";
-import "./frontend/app/main.js";
-import "./frontend/comment-mode/runtime.js";
+const host = String(globalThis.location?.hostname || "").trim().toLowerCase();
+const isLocalDevelopmentHost = host === "localhost" || host === "127.0.0.1" || host === "::1" || host === "[::1]";
+
+const sharedModules = [
+  "./frontend/effects/halo-background.js",
+  "./frontend/i18n/ui-i18n.js",
+  "./frontend/challenge/data.js",
+  "./frontend/challenge/runtime.js",
+  "./frontend/challenge/zuordnen.js",
+  "./frontend/challenge/falscher-treffer.js",
+  "./frontend/challenge/reihenfolge-sprint.js",
+  "./frontend/challenge/fallende-karten.js",
+  "./frontend/challenge/quick-code.js"
+];
+
+const localPresenterModules = [
+  "./frontend/presenter/data.js",
+  "./frontend/presenter/studio-store.js",
+  "./frontend/presenter/studio-recorder.js",
+  "./frontend/presenter/studio-ui.js",
+  "./frontend/presenter/runtime.js"
+];
+
+for (const modulePath of sharedModules) {
+  await import(modulePath);
+}
+
+if (isLocalDevelopmentHost) {
+  for (const modulePath of localPresenterModules) {
+    await import(modulePath);
+  }
+}
+
+await import("./frontend/app/main.js");
+await import("./frontend/comment-mode/runtime.js");

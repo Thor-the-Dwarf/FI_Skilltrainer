@@ -29,6 +29,7 @@
     const scenarioMenuButton = document.getElementById("btnScenarioMenu");
     const scenarioMenuButtonBadge = document.getElementById("scenarioMenuButtonBadge");
     const scenarioMenuCloseButton = document.getElementById("btnScenarioMenuClose");
+    const presenterAppbarAction = document.getElementById("presenterAppbarAction");
     const presenterButton = document.getElementById("btnPresenter");
     const challengeAppbarAction = document.getElementById("challengeAppbarAction");
     const challengeButton = document.getElementById("btnChallenge");
@@ -2955,7 +2956,14 @@
       return host === "localhost" || host === "127.0.0.1" || host === "::1" || host === "[::1]";
     }
 
-    function updateLocalhostChallengeVisibility() {
+    function isPresenterFeatureAvailable() {
+      return isLocalDevelopmentHost();
+    }
+
+    function updateLocalhostFeatureVisibility() {
+      if (presenterAppbarAction) {
+        presenterAppbarAction.classList.toggle("hidden", !isPresenterFeatureAvailable());
+      }
       if (!challengeAppbarAction) return;
       challengeAppbarAction.classList.toggle("hidden", !isLocalDevelopmentHost());
     }
@@ -3388,6 +3396,10 @@
     }
 
     async function startPresenterScene(sceneId = "") {
+      if (!isPresenterFeatureAvailable()) {
+        renderSelectionHint("Dieser Bereich ist bewusst nur auf localhost sichtbar.");
+        return;
+      }
       const safeSceneId = String(sceneId || "").trim();
       if (!safeSceneId) {
         await showPresenterHub();
@@ -3445,6 +3457,10 @@
     }
 
     async function showPresenterHub() {
+      if (!isPresenterFeatureAvailable()) {
+        renderSelectionHint("Dieser Bereich ist bewusst nur auf localhost sichtbar.");
+        return;
+      }
       if (!hasUnlockedAccess()) {
         renderUnlockScreen("Bitte zuerst gueltigen Key eingeben.");
         return;
@@ -8296,7 +8312,7 @@
       syncPrimaryNavPlacement();
       syncIdeWorkspaceLayout();
       setAppBarSelection("");
-      updateLocalhostChallengeVisibility();
+      updateLocalhostFeatureVisibility();
       updateTrainingMenuButtonState(false);
       updateCourseMenuButtonState(false);
       updateScenarioMenuButtonState(false);
