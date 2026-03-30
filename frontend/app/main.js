@@ -71,6 +71,9 @@
     const TRAINING_DECK_CATALOG_STORAGE_KEY = "sr_training_deck_catalog_v1";
     const TRAINING_DECK_CACHE_STORAGE_KEY = "sr_training_deck_cache_v1";
     const COURSE_UNLOCK_STATE_STORAGE_KEY_PREFIX = "sr_course_unlock_v1";
+    const COURSE_UNLOCK_PROGRESS_VERSION = 2;
+    const COURSE_UNLOCK_MIN_STEP = 150;
+    const COURSE_UNLOCK_MAX_STEP = 200;
     const SQLJS_LOCAL_BASE_PATH = "./frontend/vendor/vendor/sqljs";
     const SQLJS_CDN_BASE_PATH = "https://cdnjs.cloudflare.com/ajax/libs/sql.js/1.13.0";
     const SQLJS_LOCAL_SCRIPT_PATH = `${SQLJS_LOCAL_BASE_PATH}/sql-wasm.min.js`;
@@ -121,13 +124,7 @@
       LF12FIAE_03_26: "LF12FIAE-Scenarien",
       QUS2_03_26: "QuS2-Scenarien"
     });
-    const FALLBACK_ACCESS_KEY_TO_SCENARIO_ITEMS = Object.freeze({
-      QUS2_03_26: Object.freeze({
-        "QuS2-Scenarien": Object.freeze([
-          "01_easy_ausbildungsbetrieb_ticketstau_rollenchaos_fehlende_abnahme.json"
-        ])
-      })
-    });
+    const FALLBACK_ACCESS_KEY_TO_SCENARIO_ITEMS = Object.freeze({});
     const DOOM_SCROLL_PSEUDO_QUESTION_TEMPLATES = Object.freeze([
       Object.freeze({
         promptKey: "training.pseudo.communication.prompt",
@@ -1026,9 +1023,89 @@
       return values;
     }
 
+    function getCourseUnlockQuestionId(question) {
+      return normalizeProgressId(question?.id || "");
+    }
+
+    function getCourseUnlockQuestionIdsFromDeck(deck = null) {
+      return new Set(
+        (Array.isArray(deck?.questions) ? deck.questions : [])
+          .map((question) => getCourseUnlockQuestionId(question))
+          .filter(Boolean)
+      );
+    }
+
+    function hashCourseUnlockSeed(value = "") {
+      let hash = 2166136261;
+      const source = String(value || "");
+      for (let index = 0; index < source.length; index += 1) {
+        hash ^= source.charCodeAt(index);
+        hash = Math.imul(hash, 16777619);
+      }
+      return hash >>> 0;
+    }
+
+    function getCourseUnlockStepRange(poolSizeQuestionCount = 0, unlockableTicketCount = 0) {
+      const totalQuestions = Math.max(0, Math.floor(Number(poolSizeQuestionCount) || 0));
+      const extraTicketCount = Math.max(0, Math.floor(Number(unlockableTicketCount) || 0) - 1);
+      if (totalQuestions <= 0 || extraTicketCount <= 0) {
+        return {
+          minStep: 0,
+          maxStep: 0
+        };
+      }
+      const budgetMaxStep = Math.max(1, Math.floor(totalQuestions / extraTicketCount));
+      const maxStep = Math.max(1, Math.min(COURSE_UNLOCK_MAX_STEP, budgetMaxStep));
+      const minStep = Math.max(1, Math.min(COURSE_UNLOCK_MIN_STEP, maxStep));
+      return { minStep, maxStep };
+    }
+
+    function getDeterministicCourseUnlockStep(folder = "", ticketIndex = 1, range = null) {
+      const effectiveRange = range && typeof range === "object" ? range : { minStep: 0, maxStep: 0 };
+      const minStep = Math.max(0, Math.floor(Number(effectiveRange.minStep) || 0));
+      const maxStep = Math.max(minStep, Math.floor(Number(effectiveRange.maxStep) || 0));
+      if (maxStep <= 0) return 0;
+      if (maxStep === minStep) return minStep;
+      const seed = `${sanitizeFolderName(folder)}::course_unlock_v${COURSE_UNLOCK_PROGRESS_VERSION}::${ticketIndex}`;
+      const spread = maxStep - minStep + 1;
+      return minStep + (hashCourseUnlockSeed(seed) % spread);
+    }
+
+    function getCourseUnlockMilestones(folder = "", unlockableTicketCount = 0, poolSizeQuestionCount = 0) {
+      const count = Math.max(0, Math.floor(Number(unlockableTicketCount) || 0));
+      if (count <= 0) return [];
+      if (count === 1) return [0];
+      const totalQuestions = Math.max(0, Math.floor(Number(poolSizeQuestionCount) || 0));
+      if (totalQuestions <= 0) {
+        return [0, ...Array.from({ length: count - 1 }, () => Number.MAX_SAFE_INTEGER)];
+      }
+      const range = getCourseUnlockStepRange(totalQuestions, count);
+      const milestones = [0];
+      let currentMilestone = 0;
+      for (let ticketIndex = 1; ticketIndex < count; ticketIndex += 1) {
+        currentMilestone += Math.max(1, getDeterministicCourseUnlockStep(folder, ticketIndex, range));
+        milestones.push(currentMilestone);
+      }
+      return milestones;
+    }
+
+    function getLegacyCourseUnlockQuestionIds(source = {}, deck = null) {
+      const validQuestionIds = getCourseUnlockQuestionIdsFromDeck(deck);
+      if (!validQuestionIds.size) return new Set();
+      const migratedIds = new Set();
+      [
+        ...normalizeStoredStringSet(source.solvedQuestionIds, (entry) => normalizeProgressId(entry)),
+        ...normalizeStoredStringSet(source.solvedUnitIds, (entry) => normalizeProgressId(entry))
+      ].forEach((entry) => {
+        if (validQuestionIds.has(entry)) migratedIds.add(entry);
+      });
+      return migratedIds;
+    }
+
     function createEmptyCourseUnlockState() {
       return {
-        solvedUnitIds: new Set(),
+        progressVersion: COURSE_UNLOCK_PROGRESS_VERSION,
+        solvedQuestionIds: new Set(),
         correctSolvedCount: 0,
         unseenUnlockedFiles: new Set(),
         openedTicketFiles: new Set(),
@@ -1038,14 +1115,19 @@
       };
     }
 
-    function normalizeStoredCourseUnlockState(payload) {
+    function normalizeStoredCourseUnlockState(payload, options = {}) {
       const source = payload && typeof payload === "object" ? payload : {};
-      const solvedUnitIds = normalizeStoredStringSet(source.solvedUnitIds, (entry) => normalizeProgressId(entry));
+      const storedVersion = Math.max(0, Math.floor(Number(source.progressVersion) || 0));
+      let solvedQuestionIds = normalizeStoredStringSet(source.solvedQuestionIds, (entry) => normalizeProgressId(entry));
+      if (storedVersion < COURSE_UNLOCK_PROGRESS_VERSION) {
+        solvedQuestionIds = getLegacyCourseUnlockQuestionIds(source, options.deck || null);
+      }
       const unseenUnlockedFiles = normalizeStoredStringSet(source.unseenUnlockedFiles, (entry) => normalizeScenarioResourcePath(entry));
       const openedTicketFiles = normalizeStoredStringSet(source.openedTicketFiles, (entry) => normalizeScenarioResourcePath(entry));
       return {
-        solvedUnitIds,
-        correctSolvedCount: Math.max(solvedUnitIds.size, Math.floor(Number(source.correctSolvedCount) || 0)),
+        progressVersion: COURSE_UNLOCK_PROGRESS_VERSION,
+        solvedQuestionIds,
+        correctSolvedCount: solvedQuestionIds.size,
         unseenUnlockedFiles,
         openedTicketFiles,
         poolSizeUnique: Math.max(0, Math.floor(Number(source.poolSizeUnique) || 0)),
@@ -1054,11 +1136,11 @@
       };
     }
 
-    function loadCourseUnlockState(folder = "") {
+    function loadCourseUnlockState(folder = "", options = {}) {
       const storageKey = getCourseUnlockStorageKey(folder);
       if (!storageKey) return createEmptyCourseUnlockState();
       try {
-        return normalizeStoredCourseUnlockState(JSON.parse(localStorage.getItem(storageKey) || "{}"));
+        return normalizeStoredCourseUnlockState(JSON.parse(localStorage.getItem(storageKey) || "{}"), options);
       } catch {
       }
       return createEmptyCourseUnlockState();
@@ -1075,8 +1157,9 @@
       };
       try {
         localStorage.setItem(storageKey, JSON.stringify({
-          solvedUnitIds: [...nextState.solvedUnitIds].sort(),
-          correctSolvedCount: Math.max(nextState.solvedUnitIds.size, nextState.correctSolvedCount),
+          progressVersion: COURSE_UNLOCK_PROGRESS_VERSION,
+          solvedQuestionIds: [...nextState.solvedQuestionIds].sort(),
+          correctSolvedCount: nextState.solvedQuestionIds.size,
           unseenUnlockedFiles: [...nextState.unseenUnlockedFiles].sort(),
           openedTicketFiles: [...nextState.openedTicketFiles].sort(),
           poolSizeUnique: nextState.poolSizeUnique,
@@ -1130,25 +1213,20 @@
       if (!safeFolder) return null;
       const visibleItems = getVisibleScenarioItemsForFolder(safeFolder, itemsHint);
       const unlockableItems = getUnlockableScenarioItemsForFolder(safeFolder, visibleItems);
-      const state = normalizeStoredCourseUnlockState(options.state || loadCourseUnlockState(safeFolder));
       const deck = options.deck || trainingDeckCacheByFolder[safeFolder] || null;
-      const uniqueUnitIds = new Set(
-        (Array.isArray(deck?.questions) ? deck.questions : [])
-          .map((question) => getTrainingProgressUnitId(question))
-          .filter(Boolean)
-      );
-      const poolSizeUnique = uniqueUnitIds.size;
+      const state = normalizeStoredCourseUnlockState(options.state || loadCourseUnlockState(safeFolder, { deck }), { deck });
+      const questionIds = getCourseUnlockQuestionIdsFromDeck(deck);
+      const poolSizeUnique = questionIds.size;
       const unlockableTicketCount = unlockableItems.length;
-      const threshold = unlockableTicketCount > 0 && poolSizeUnique > 0
-        ? Math.max(1, Math.ceil(poolSizeUnique / unlockableTicketCount))
-        : 0;
-      const correctSolvedCount = Math.max(state.solvedUnitIds.size, Math.floor(Number(state.correctSolvedCount) || 0));
-      const unlockedTicketCount = unlockableTicketCount > 0
-        ? Math.min(
-          unlockableTicketCount,
-          threshold > 0 ? 1 + Math.floor(correctSolvedCount / threshold) : 1
-        )
-        : 0;
+      const milestones = getCourseUnlockMilestones(safeFolder, unlockableTicketCount, poolSizeUnique);
+      const threshold = Number.isFinite(milestones[1]) ? Math.max(0, Math.floor(Number(milestones[1]) || 0)) : 0;
+      const correctSolvedCount = state.solvedQuestionIds.size;
+      const unlockedTicketCount = milestones.reduce((count, milestone) => {
+        if (correctSolvedCount >= Math.max(0, Math.floor(Number(milestone) || 0))) {
+          return count + 1;
+        }
+        return count;
+      }, 0);
       const unlockedTicketFiles = new Set(
         unlockableItems
           .slice(0, unlockedTicketCount)
@@ -1159,7 +1237,7 @@
       unlockableItems.forEach((item, index) => {
         const file = normalizeScenarioResourcePath(item.file || "");
         if (!file) return;
-        milestoneByFile[file] = index <= 0 ? 0 : threshold * index;
+        milestoneByFile[file] = Math.max(0, Math.floor(Number(milestones[index]) || 0));
       });
       const unseenUnlockedFiles = new Set(
         [...state.unseenUnlockedFiles]
@@ -1226,7 +1304,7 @@
           deck
         });
         if (summary) {
-          const state = loadCourseUnlockState(safeFolder);
+          const state = loadCourseUnlockState(safeFolder, { deck });
           saveCourseUnlockState(safeFolder, state, summary);
           setCachedCourseUnlockSummary(summary);
         }
@@ -1347,12 +1425,13 @@
       const safeFolder = sanitizeFolderName(item.folder || "");
       const file = normalizeScenarioResourcePath(item.file || "");
       if (!safeFolder || !file) return null;
-      const state = loadCourseUnlockState(safeFolder);
+      const deck = trainingDeckCacheByFolder[safeFolder] || null;
+      const state = loadCourseUnlockState(safeFolder, { deck });
       state.openedTicketFiles.add(file);
       state.unseenUnlockedFiles.delete(file);
       const summary = computeCourseUnlockSummary(safeFolder, null, {
         state,
-        deck: trainingDeckCacheByFolder[safeFolder] || null
+        deck
       });
       saveCourseUnlockState(safeFolder, state, summary);
       return setCachedCourseUnlockSummary(summary);
@@ -1361,16 +1440,16 @@
     function applyCourseUnlockProgressForQuestion(question, exact = false) {
       if (!exact) return null;
       const safeFolder = sanitizeFolderName(question?.folder || activeTrainingFolder || activeScenarioFolder);
-      const unitId = getTrainingProgressUnitId(question);
-      if (!safeFolder || !unitId) return null;
-      const state = loadCourseUnlockState(safeFolder);
+      const questionId = getCourseUnlockQuestionId(question);
+      if (!safeFolder || !questionId) return null;
       const deck = trainingDeckCacheByFolder[safeFolder] || trainingSession?.deck || null;
+      const state = loadCourseUnlockState(safeFolder, { deck });
       const beforeSummary = computeCourseUnlockSummary(safeFolder, null, { state, deck });
-      if (state.solvedUnitIds.has(unitId)) {
+      if (state.solvedQuestionIds.has(questionId)) {
         return setCachedCourseUnlockSummary(beforeSummary);
       }
-      state.solvedUnitIds.add(unitId);
-      state.correctSolvedCount = state.solvedUnitIds.size;
+      state.solvedQuestionIds.add(questionId);
+      state.correctSolvedCount = state.solvedQuestionIds.size;
       const afterSummary = computeCourseUnlockSummary(safeFolder, null, { state, deck });
       const previouslyUnlocked = beforeSummary?.unlockedTicketFiles || new Set();
       afterSummary?.unlockedTicketFiles?.forEach((file) => {
