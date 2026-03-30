@@ -1394,6 +1394,36 @@
       };
     }
 
+    function getVisibleScenarioItemsForGroup(group, summary = null) {
+      const items = Array.isArray(group?.items) ? group.items : [];
+      if (!items.length) return [];
+      const safeFolder = sanitizeFolderName(group?.folder || "");
+      const effectiveSummary = summary && sanitizeFolderName(summary.folder) === safeFolder
+        ? summary
+        : getCourseUnlockSummary(safeFolder, items);
+      if (effectiveSummary) {
+        return items.filter((item) => {
+          if (!isUnlockableScenarioTicket(item)) return true;
+          const file = normalizeScenarioResourcePath(item.file || "");
+          if (!file) return false;
+          const milestone = Math.max(0, Number(effectiveSummary.milestoneByFile[file]) || 0);
+          return milestone === 0 || effectiveSummary.unlockedTicketFiles.has(file);
+        });
+      }
+      const defaultVisibleFiles = new Set(
+        getUnlockableScenarioItemsForFolder(safeFolder, items)
+          .slice(0, 1)
+          .map((item) => normalizeScenarioResourcePath(item.file || ""))
+          .filter(Boolean)
+      );
+      const activeFile = normalizeScenarioResourcePath(activeScenarioFile || "");
+      return items.filter((item) => {
+        if (!isUnlockableScenarioTicket(item)) return true;
+        const file = normalizeScenarioResourcePath(item.file || "");
+        return Boolean(file && (file === activeFile || defaultVisibleFiles.has(file)));
+      });
+    }
+
     function getScenarioMenuBadgeCount() {
       return getUnlockedFolders().reduce((sum, folder) => {
         const summary = getCourseUnlockSummary(folder);
@@ -1414,6 +1444,7 @@
     function updateScenarioUnlockUi(folder = "") {
       const safeFolder = sanitizeFolderName(folder);
       updateScenarioMenuBadgeUi();
+      renderCourseMenu(availableScenarios);
       if (safeFolder && sanitizeFolderName(activeScenarioFolder) === safeFolder) {
         renderScenarioMenu(availableScenarios);
       }
@@ -8217,7 +8248,8 @@
           option.setAttribute("aria-current", "true");
         }
         const folderShortLabel = getFolderShortcutLabel(group.folder) || group.folder;
-        const ticketCount = Array.isArray(group.items) ? group.items.length : 0;
+        const courseUnlockSummary = getCourseUnlockSummary(group.folder, group.items);
+        const ticketCount = getVisibleScenarioItemsForGroup(group, courseUnlockSummary).length;
         option.innerHTML =
           "<span class='scenario-tree-folder-icon' aria-hidden='true'>" +
           "📚" +
@@ -8296,8 +8328,17 @@
       }
 
       const courseUnlockSummary = getCourseUnlockSummary(activeGroup.folder, activeGroup.items);
+      const visibleItems = getVisibleScenarioItemsForGroup(activeGroup, courseUnlockSummary);
 
-      for (const item of activeGroup.items) {
+      if (!visibleItems.length) {
+        const emptyText = document.createElement("p");
+        emptyText.className = "status-text scenario-tree-empty";
+        emptyText.textContent = t("scenario.menu.awaiting_unlock", "Noch keine eingehenden Tickets. Neue Tickets erscheinen nach korrekt geloesten DoomScroll-Aufgaben.");
+        content.appendChild(emptyText);
+        return;
+      }
+
+      for (const item of visibleItems) {
         const option = document.createElement("button");
         option.type = "button";
         option.className = "scenario-tree-ticket";

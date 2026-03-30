@@ -20,6 +20,7 @@ const localPresenterModules = [
   "./frontend/presenter/studio-ui.js",
   "./frontend/presenter/runtime.js"
 ];
+const appRuntimeVersion = "inbox-visibility-20260330-1422";
 
 for (const modulePath of sharedModules) {
   await import(modulePath);
@@ -31,5 +32,5 @@ if (isLocalDevelopmentHost) {
   }
 }
 
-await import("./frontend/app/main.js");
-await import("./frontend/comment-mode/runtime.js");
+await import(`./frontend/app/main.js?v=${appRuntimeVersion}`);
+await import(`./frontend/comment-mode/runtime.js?v=${appRuntimeVersion}`);
