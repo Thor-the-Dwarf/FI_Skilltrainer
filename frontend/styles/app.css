@@ -44,6 +44,8 @@
   --appbar-height: 62px;
   --left-appbar-width: 78px;
   --left-appbar-gap: 18px;
+  --left-appbar-action-size: clamp(54px, 7.5vh, 66px);
+  --left-appbar-stack-gap: clamp(8px, 1.6vh, 14px);
   --ide-panel-width: clamp(286px, 24vw, 360px);
   --ide-panel-gap: 14px;
   --workspace-right-offset: 0px;
@@ -5326,12 +5328,14 @@ main {
     flex-direction: column;
     justify-content: flex-start;
     align-items: stretch;
-    gap: 0;
+    gap: var(--left-appbar-stack-gap);
+    padding-top: 4px;
   }
 
   .left-appbar .appbar-action {
     width: 100%;
-    flex: 0 0 calc((100% - 72px) / 15);
+    flex: 0 0 var(--left-appbar-action-size);
+    min-height: var(--left-appbar-action-size);
     justify-content: stretch;
     background: transparent;
   }
