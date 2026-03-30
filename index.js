@@ -20,7 +20,7 @@ const localPresenterModules = [
   "./frontend/presenter/studio-ui.js",
   "./frontend/presenter/runtime.js"
 ];
-const appRuntimeVersion = "inbox-visibility-20260330-1422";
+const appRuntimeVersion = "default-ticket-20260330-1429";
 
 for (const modulePath of sharedModules) {
   await import(modulePath);

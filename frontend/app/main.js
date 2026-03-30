@@ -1398,17 +1398,20 @@
       const items = Array.isArray(group?.items) ? group.items : [];
       if (!items.length) return [];
       const safeFolder = sanitizeFolderName(group?.folder || "");
+      const defaultVisibleItem = getUnlockableScenarioItemsForFolder(safeFolder, items)[0] || items[0] || null;
       const effectiveSummary = summary && sanitizeFolderName(summary.folder) === safeFolder
         ? summary
         : getCourseUnlockSummary(safeFolder, items);
       if (effectiveSummary) {
-        return items.filter((item) => {
+        const visibleItems = items.filter((item) => {
           if (!isUnlockableScenarioTicket(item)) return true;
           const file = normalizeScenarioResourcePath(item.file || "");
           if (!file) return false;
           const milestone = Math.max(0, Number(effectiveSummary.milestoneByFile[file]) || 0);
           return milestone === 0 || effectiveSummary.unlockedTicketFiles.has(file);
         });
+        if (visibleItems.length) return visibleItems;
+        return defaultVisibleItem ? [defaultVisibleItem] : [];
       }
       const defaultVisibleFiles = new Set(
         getUnlockableScenarioItemsForFolder(safeFolder, items)
@@ -1417,11 +1420,13 @@
           .filter(Boolean)
       );
       const activeFile = normalizeScenarioResourcePath(activeScenarioFile || "");
-      return items.filter((item) => {
+      const visibleItems = items.filter((item) => {
         if (!isUnlockableScenarioTicket(item)) return true;
         const file = normalizeScenarioResourcePath(item.file || "");
         return Boolean(file && (file === activeFile || defaultVisibleFiles.has(file)));
       });
+      if (visibleItems.length) return visibleItems;
+      return defaultVisibleItem ? [defaultVisibleItem] : [];
     }
 
     function getScenarioMenuBadgeCount() {
