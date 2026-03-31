@@ -1,0 +1,727 @@
+{
+  "scenario": {
+    "company": "Training company IT services",
+    "scale": "SME, 220 employees",
+    "context": "Station 01: UI project kickoff with follow-up assignments from requirements to acceptance preparation.",
+    "mission": "You handle the kickoff task and several follow-up tasks for the same interface with growing responsibility.",
+    "station": {
+      "id": "LF10FIAE-ST-01",
+      "department": "Application development",
+      "profile": "Requirements specification, UI concept, implementation, and testing",
+      "constraints": [
+        "Put user orientation before technical gimmicks",
+        "Secure ergonomics and maintainability together",
+        "Keep documentation for operations and support in mind"
+      ]
+    },
+    "customerRequest": {
+      "from": "produkt.owner@ausbildungsbetrieb.example",
+      "to": "dev.team@ausbildungsbetrieb.example",
+      "subject": "Station 01: UI for a service portal with follow-up tasks",
+      "date": "2026-03-13",
+      "body": "Please start the concept phase for a service-portal interface for ticket intake and status maintenance.\n\nAfter the kickoff task, additional customer impulses on architecture, framework selection, testing, and documentation will follow."
+    }
+  },
+  "questions": [
+    {
+      "id": "q01",
+      "type": "single_choice",
+      "title": "Start gathering requirements",
+      "prompt": "Which first step makes the most sense for a viable UI plan?",
+      "options": [
+        {
+          "text": "Implement the final design immediately",
+          "rationale": "Without a requirements picture, missteps are likely."
+        },
+        {
+          "text": "Capture user roles, tasks, and the process flow in a structured way",
+          "rationale": "Creates the basis for all follow-up decisions."
+        },
+        {
+          "text": "Define only colors and fonts",
+          "rationale": "Visual details do not replace analysis."
+        }
+      ],
+      "correctIndex": 1,
+      "feedback": {
+        "correct": "Correct: A clean requirements basis is the starting point.",
+        "wrong": "Not suitable: Without a requirements picture, the planning stays unstable."
+      },
+      "progressLinks": [
+        "lf10fiae_anforderungsspezifikation"
+      ]
+    },
+    {
+      "id": "q02",
+      "type": "multi_select",
+      "title": "Build the requirements catalog",
+      "prompt": "Which contents belong in a good UI requirements catalog? (Multiple choice)",
+      "options": [
+        {
+          "text": "Record user goals and main tasks for each role",
+          "correct": true,
+          "rationale": "Drives navigation and interaction."
+        },
+        {
+          "text": "Define acceptance criteria for critical functions",
+          "correct": true,
+          "rationale": "Makes testing and acceptance easier."
+        },
+        {
+          "text": "Adopt only the visual preferences of individual people",
+          "correct": false,
+          "rationale": "Subjective and incomplete."
+        },
+        {
+          "text": "Include non-functional requirements",
+          "correct": true,
+          "rationale": "Performance and accessibility influence the architecture."
+        },
+        {
+          "text": "Hide the interfaces to the business logic",
+          "correct": false,
+          "rationale": "UI and business logic have to be aligned."
+        }
+      ],
+      "feedback": {
+        "correct": "Correct: The catalog is professionally and technically robust.",
+        "wrong": "Partly wrong: Please combine functional and non-functional aspects more clearly."
+      },
+      "progressLinks": [
+        "lf10fiae_anforderungsspezifikation"
+      ]
+    },
+    {
+      "id": "q03",
+      "type": "ordering",
+      "title": "Structure the design process",
+      "prompt": "Put the typical flow for an initial UI concept in order.",
+      "items": [
+        "Analyze the as-is process and user problems",
+        "Finalize the requirements catalog",
+        "Sketch wireframes and the interaction flow",
+        "Walk through the prototype with stakeholders",
+        "Document the design decision"
+      ],
+      "correctOrder": [
+        "Analyze the as-is process and user problems",
+        "Finalize the requirements catalog",
+        "Sketch wireframes and the interaction flow",
+        "Walk through the prototype with stakeholders",
+        "Document the design decision"
+      ],
+      "feedback": {
+        "correct": "Correct: The design flow is methodically coherent.",
+        "wrong": "Not ideal: Please do analysis and requirements first, then design and documentation."
+      },
+      "progressLinks": [
+        "lf10fiae_produktdesign_architektur",
+        "lf10fiae_ui_konzeption_ergonomie"
+      ]
+    },
+    {
+      "id": "q04",
+      "type": "single_choice",
+      "title": "Classify the architecture pattern",
+      "prompt": "Which statement about UI architecture makes the most sense?",
+      "options": [
+        {
+          "text": "Put the UI and business logic into one shared class",
+          "rationale": "Makes maintenance and testing harder."
+        },
+        {
+          "text": "Separate the presentation layer and the business logic clearly",
+          "rationale": "Improves testability and maintainability."
+        },
+        {
+          "text": "Define the architecture only after go-live",
+          "rationale": "Leads to later rework."
+        }
+      ],
+      "correctIndex": 1,
+      "feedback": {
+        "correct": "Correct: Separating responsibilities is decisive here.",
+        "wrong": "Not suitable: The architecture has to be clear early on."
+      },
+      "progressLinks": [
+        "lf10fiae_produktdesign_architektur"
+      ]
+    },
+    {
+      "id": "q05",
+      "type": "multi_select",
+      "title": "Apply ergonomic criteria",
+      "prompt": "Which criteria speak for a functional and ergonomic UI? (Multiple choice)",
+      "options": [
+        {
+          "text": "Consistent behavior of recurring elements",
+          "correct": true,
+          "rationale": "Reduces cognitive load."
+        },
+        {
+          "text": "Clear feedback for input and errors",
+          "correct": true,
+          "rationale": "Supports safe operation."
+        },
+        {
+          "text": "Important form elements without labels",
+          "correct": false,
+          "rationale": "Increases user mistakes."
+        },
+        {
+          "text": "Meaningful keyboard operation for frequent actions",
+          "correct": true,
+          "rationale": "Improves efficiency and accessibility."
+        },
+        {
+          "text": "Completely different navigation on each screen",
+          "correct": false,
+          "rationale": "Inconsistency makes orientation harder."
+        }
+      ],
+      "feedback": {
+        "correct": "Correct: These criteria support good usability.",
+        "wrong": "Partly wrong: Please give more weight to consistency and feedback."
+      },
+      "progressLinks": [
+        "lf10fiae_ui_konzeption_ergonomie"
+      ]
+    },
+    {
+      "id": "q06",
+      "type": "short_text",
+      "title": "Justify GUI elements",
+      "prompt": "Describe in 4-6 sentences how you would choose suitable GUI elements for ticket intake from the user and process perspective.",
+      "minChars": 170,
+      "requiredKeywords": [
+        "user",
+        "task",
+        "consistency"
+      ],
+      "expectedOutline": "Choice of elements based on role needs, task frequency, and consistent interaction.",
+      "feedback": {
+        "correct": "Correct: The choice is justified from the user and process perspective.",
+        "wrong": "Please connect the user perspective, task context, and consistency more clearly."
+      },
+      "progressLinks": [
+        "lf10fiae_ui_konzeption_ergonomie"
+      ]
+    },
+    {
+      "id": "q07",
+      "type": "number",
+      "title": "Effort for wireframes",
+      "prompt": "7 wireframes are created at 35 minutes each. What is the total effort in minutes?",
+      "expected": 245,
+      "toleranceAbs": 1,
+      "showExpectedFormula": "7 * 35 = 245 minutes",
+      "feedback": {
+        "correct": "Calculated correctly.",
+        "wrong": "Please multiply the quantity and time per wireframe correctly."
+      },
+      "progressLinks": [
+        "lf10fiae_produktdesign_architektur"
+      ]
+    },
+    {
+      "id": "q08",
+      "type": "multi_select",
+      "title": "Acceptance criteria for the prototype",
+      "prompt": "Which points make sense for prototype acceptance? (Multiple choice)",
+      "options": [
+        {
+          "text": "Critical user paths are fully clickable",
+          "correct": true,
+          "rationale": "Acceptance needs the core flow."
+        },
+        {
+          "text": "Field validation is visible for required fields",
+          "correct": true,
+          "rationale": "Important for input safety."
+        },
+        {
+          "text": "Only the color choice is evaluated",
+          "correct": false,
+          "rationale": "Too little for functional acceptance."
+        },
+        {
+          "text": "Feedback for errors is understandable",
+          "correct": true,
+          "rationale": "Improves usability."
+        },
+        {
+          "text": "Open blockers are not documented",
+          "correct": false,
+          "rationale": "Contradicts clean acceptance."
+        }
+      ],
+      "feedback": {
+        "correct": "Correct: The criteria secure usability and transparency.",
+        "wrong": "Partly wrong: Please include the core flow, validation, and blocker documentation."
+      },
+      "progressLinks": [
+        "lf10fiae_ui_tests_ux"
+      ]
+    },
+    {
+      "id": "q09",
+      "type": "single_choice",
+      "title": "Secure the framework selection",
+      "prompt": "Which approach is the most sustainable for choosing a UI framework?",
+      "options": [
+        {
+          "text": "Choose the framework with the biggest social-media reach",
+          "rationale": "Popularity alone is not enough."
+        },
+        {
+          "text": "Focus only on short-term implementation speed",
+          "rationale": "Maintainability gets pushed aside."
+        },
+        {
+          "text": "Weigh maintainability, team knowledge, LTS, and integration capability",
+          "rationale": "A robust technical decision."
+        }
+      ],
+      "correctIndex": 2,
+      "feedback": {
+        "correct": "Correct: That is exactly how the selection becomes professionally robust.",
+        "wrong": "Not suitable: Choosing a framework needs more than speed arguments."
+      },
+      "progressLinks": [
+        "lf10fiae_implementierung_frameworks"
+      ]
+    },
+    {
+      "id": "sep_f1",
+      "type": "followup_divider",
+      "title": "Follow-up task 1 - Shift the architecture toward a web focus",
+      "from": "architektur@ausbildungsbetrieb.example",
+      "to": "dev.team@ausbildungsbetrieb.example",
+      "subject": "Desktop share is shrinking, browser usage is rising",
+      "date": "2026-03-13",
+      "body": "Please update the UI design for stronger browser usage and check the impact on the framework and component selection."
+    },
+    {
+      "id": "q10",
+      "type": "ordering",
+      "title": "Process the architecture shift",
+      "prompt": "Put the flow for switching to a web focus in order.",
+      "items": [
+        "Clarify the changed requirement",
+        "Evaluate the architectural impact on the UI components",
+        "Realign the framework decision",
+        "Adapt and test the prototype",
+        "Document the change"
+      ],
+      "correctOrder": [
+        "Clarify the changed requirement",
+        "Evaluate the architectural impact on the UI components",
+        "Realign the framework decision",
+        "Adapt and test the prototype",
+        "Document the change"
+      ],
+      "feedback": {
+        "correct": "Correct: The transition is structured in a technically clean way.",
+        "wrong": "Not ideal: Please place analysis and realignment before implementation."
+      },
+      "progressLinks": [
+        "lf10fiae_produktdesign_architektur",
+        "lf10fiae_implementierung_frameworks"
+      ]
+    },
+    {
+      "id": "q11",
+      "type": "multi_select",
+      "title": "Make the web UI robust",
+      "prompt": "Which measures make sense for implementing a web-based UI? (Multiple choice)",
+      "options": [
+        {
+          "text": "Plan a responsive layout for typical resolutions",
+          "correct": true,
+          "rationale": "Secures usability across devices."
+        },
+        {
+          "text": "Align form validation on the client and server side",
+          "correct": true,
+          "rationale": "Prevents inconsistent error scenarios."
+        },
+        {
+          "text": "Keep error messages technically cryptic",
+          "correct": false,
+          "rationale": "Users need clear feedback."
+        },
+        {
+          "text": "Keep interaction patterns consistent across pages",
+          "correct": true,
+          "rationale": "Reduces onboarding effort."
+        },
+        {
+          "text": "Ignore accessibility aspects",
+          "correct": false,
+          "rationale": "Not acceptable in a business environment."
+        }
+      ],
+      "feedback": {
+        "correct": "Correct: This makes the web UI robust and user-friendly.",
+        "wrong": "Partly wrong: Please secure consistency, validation, and accessibility."
+      },
+      "progressLinks": [
+        "lf10fiae_implementierung_python_java_web",
+        "lf10fiae_ui_konzeption_ergonomie"
+      ]
+    },
+    {
+      "id": "q12",
+      "type": "number",
+      "title": "Implementation window",
+      "prompt": "There are 3 days left with 6.5 hours each for the migration. How many hours are available in total?",
+      "expected": 19.5,
+      "toleranceAbs": 0.5,
+      "showExpectedFormula": "3 * 6.5 = 19.5 hours",
+      "feedback": {
+        "correct": "Calculated correctly.",
+        "wrong": "Please multiply the number of days and hours per day correctly."
+      },
+      "progressLinks": [
+        "lf10fiae_implementierung_python_java_web"
+      ]
+    },
+    {
+      "id": "q13",
+      "type": "single_choice",
+      "title": "Assess framework risk",
+      "prompt": "Which risk needs special attention during a fast framework change?",
+      "options": [
+        {
+          "text": "Lock-in and a missing maintenance strategy",
+          "rationale": "A typical long-term risk."
+        },
+        {
+          "text": "Too many colorful icons in the mock-up",
+          "rationale": "Not a core migration risk."
+        },
+        {
+          "text": "Users asking questions",
+          "rationale": "A normal part of the process."
+        }
+      ],
+      "correctIndex": 0,
+      "feedback": {
+        "correct": "Correct: Lock-in and maintainability are decisive here.",
+        "wrong": "Not suitable: The migration needs a clear long-term view."
+      },
+      "progressLinks": [
+        "lf10fiae_implementierung_frameworks"
+      ]
+    },
+    {
+      "id": "q14",
+      "type": "short_text",
+      "title": "Create a change note",
+      "prompt": "Write a short change note (4-6 sentences) covering the architectural impact, the decision, and a remaining point.",
+      "minChars": 150,
+      "requiredKeywords": [
+        "architecture",
+        "decision",
+        "remaining point"
+      ],
+      "expectedOutline": "Impact, a justified decision, and a clear remaining point for follow-up work.",
+      "feedback": {
+        "correct": "Correct: The note is usable for the team and acceptance.",
+        "wrong": "Please present the architectural impact, the decision, and the remaining point more clearly."
+      },
+      "progressLinks": [
+        "lf10fiae_produktdesign_architektur",
+        "lf10fiae_ui_dokumentation"
+      ]
+    },
+    {
+      "id": "sep_f2",
+      "type": "followup_divider",
+      "title": "Follow-up task 2 - UX test round with findings",
+      "from": "ux.team@ausbildungsbetrieb.example",
+      "to": "dev.team@ausbildungsbetrieb.example",
+      "subject": "Users report issues during ticket creation",
+      "date": "2026-03-13",
+      "body": "The UX round shows breaks in navigation and error messages. Please prioritize the findings and plan follow-up tests."
+    },
+    {
+      "id": "q15",
+      "type": "multi_select",
+      "title": "Prioritize UX findings",
+      "prompt": "Which criteria help prioritize UX findings? (Multiple choice)",
+      "options": [
+        {
+          "text": "Frequency and impact on the core process",
+          "correct": true,
+          "rationale": "A core criterion for prioritization."
+        },
+        {
+          "text": "Consequences of the defect for the user's task",
+          "correct": true,
+          "rationale": "Direct process relevance."
+        },
+        {
+          "text": "Only the team's personal taste",
+          "correct": false,
+          "rationale": "Not robust."
+        },
+        {
+          "text": "Combine implementation effort and risk",
+          "correct": true,
+          "rationale": "Helps sequence the work."
+        },
+        {
+          "text": "Close findings without a follow-up test",
+          "correct": false,
+          "rationale": "Effectiveness remains unproven."
+        }
+      ],
+      "feedback": {
+        "correct": "Correct: The prioritization is professionally sound.",
+        "wrong": "Partly wrong: Please consider process impact and risk more strongly."
+      },
+      "progressLinks": [
+        "lf10fiae_ui_tests_ux"
+      ]
+    },
+    {
+      "id": "q16",
+      "type": "ordering",
+      "title": "Follow-up test process",
+      "prompt": "Put the flow from a UX finding to the follow-up test in order.",
+      "items": [
+        "Document the finding with its context",
+        "Set the priority",
+        "Implement the correction",
+        "Run the follow-up test with the same scenario",
+        "Document the result"
+      ],
+      "correctOrder": [
+        "Document the finding with its context",
+        "Set the priority",
+        "Implement the correction",
+        "Run the follow-up test with the same scenario",
+        "Document the result"
+      ],
+      "feedback": {
+        "correct": "Correct: This is a clean improvement cycle.",
+        "wrong": "Not ideal: Please keep documentation and prioritization before implementation."
+      },
+      "progressLinks": [
+        "lf10fiae_ui_tests_ux"
+      ]
+    },
+    {
+      "id": "q17",
+      "type": "number",
+      "title": "Finding rate",
+      "prompt": "Out of 26 UX findings, 18 were fixed in the first round. What is the resolution rate in percent (rounded)?",
+      "expected": 69,
+      "toleranceAbs": 1,
+      "showExpectedFormula": "18/26*100 = 69.23 % ~ 69 %",
+      "feedback": {
+        "correct": "Calculated correctly.",
+        "wrong": "Please calculate the share of fixed findings correctly."
+      },
+      "progressLinks": [
+        "lf10fiae_ui_tests_ux"
+      ]
+    },
+    {
+      "id": "q18",
+      "type": "short_text",
+      "title": "UX status message",
+      "prompt": "Formulate a UX status message (4-6 sentences) with the finding situation, the prioritization, and the next action.",
+      "minChars": 150,
+      "requiredKeywords": [
+        "finding",
+        "prioritization",
+        "next action"
+      ],
+      "expectedOutline": "Clear finding status, prioritization logic, and a concrete follow-up action.",
+      "feedback": {
+        "correct": "Correct: The message is useful for steering and teamwork.",
+        "wrong": "Please structure the finding, prioritization, and follow-up action more clearly."
+      },
+      "progressLinks": [
+        "lf10fiae_ui_tests_ux",
+        "lf10fiae_ui_dokumentation"
+      ]
+    },
+    {
+      "id": "sep_f3",
+      "type": "followup_divider",
+      "title": "Follow-up task 3 - Documentation review",
+      "from": "support.lead@ausbildungsbetrieb.example",
+      "to": "dev.team@ausbildungsbetrieb.example",
+      "subject": "Expand the user documentation for support",
+      "date": "2026-03-13",
+      "body": "Support needs clearer documentation for operating flows and error cases. Please sharpen the documentation and version it."
+    },
+    {
+      "id": "q19",
+      "type": "single_choice",
+      "title": "Improve the documentation structure",
+      "prompt": "Which focus is most important for support documentation?",
+      "options": [
+        {
+          "text": "Structure operating flows, error messages, and solution steps clearly",
+          "rationale": "Directly usable for support cases."
+        },
+        {
+          "text": "Describe design decisions only",
+          "rationale": "Not enough for support on its own."
+        },
+        {
+          "text": "Do not document versions",
+          "rationale": "Makes traceability harder."
+        }
+      ],
+      "correctIndex": 0,
+      "feedback": {
+        "correct": "Correct: Support needs exactly these contents.",
+        "wrong": "Not suitable: Support documentation needs operating flow, error, and version references."
+      },
+      "progressLinks": [
+        "lf10fiae_ui_dokumentation"
+      ]
+    },
+    {
+      "id": "q20",
+      "type": "multi_select",
+      "title": "Versioning in the documentation",
+      "prompt": "Which points belong in clean documentation versioning? (Multiple choice)",
+      "options": [
+        {
+          "text": "Version number with change date",
+          "correct": true,
+          "rationale": "The basis for traceability."
+        },
+        {
+          "text": "Short description of the content change",
+          "correct": true,
+          "rationale": "Makes tracking easier."
+        },
+        {
+          "text": "Changes without reference to the affected area",
+          "correct": false,
+          "rationale": "Too unclear."
+        },
+        {
+          "text": "Reference to the responsible team",
+          "correct": true,
+          "rationale": "Helps with follow-up questions."
+        },
+        {
+          "text": "Delete the history with every change",
+          "correct": false,
+          "rationale": "Contradicts maintainability."
+        }
+      ],
+      "feedback": {
+        "correct": "Correct: The versioning is built to be maintainable.",
+        "wrong": "Partly wrong: Please keep the version and change references clearer."
+      },
+      "progressLinks": [
+        "lf10fiae_ui_dokumentation"
+      ]
+    },
+    {
+      "id": "q21",
+      "type": "short_text",
+      "title": "Note the documentation update",
+      "prompt": "Write a documentation update in 4-6 sentences with the target audience, the change, and an open remaining point.",
+      "minChars": 150,
+      "requiredKeywords": [
+        "target audience",
+        "change",
+        "remaining point"
+      ],
+      "expectedOutline": "Target-audience reference, the concrete change, and a transparent remaining point.",
+      "feedback": {
+        "correct": "Correct: The update is suitable for support and the team.",
+        "wrong": "Please develop the target audience, the change, and the remaining point more clearly."
+      },
+      "progressLinks": [
+        "lf10fiae_ui_dokumentation",
+        "lf10fiae_ui_tests_ux"
+      ]
+    },
+    {
+      "id": "sep_f4",
+      "type": "followup_divider",
+      "title": "Follow-up task 4 - Acceptance window today at 16:00",
+      "from": "produkt.owner@ausbildungsbetrieb.example",
+      "to": "dev.team@ausbildungsbetrieb.example",
+      "subject": "Delivery with testing and documentation evidence",
+      "date": "2026-03-13",
+      "body": "Please prepare the final delivery by 16:00: test status, remaining points, and documentation must be clear."
+    },
+    {
+      "id": "q22",
+      "type": "ordering",
+      "title": "Delivery path until 16:00",
+      "prompt": "Put the flow for a clean UI delivery in order.",
+      "items": [
+        "Prioritize the critical must-have tests",
+        "Document the test results",
+        "Record remaining points with a target date",
+        "Finalize the documentation version",
+        "Approve the delivery report"
+      ],
+      "correctOrder": [
+        "Prioritize the critical must-have tests",
+        "Document the test results",
+        "Record remaining points with a target date",
+        "Finalize the documentation version",
+        "Approve the delivery report"
+      ],
+      "feedback": {
+        "correct": "Correct: The delivery is secured in a traceable way.",
+        "wrong": "Not ideal: Please secure the test and remaining-point logic before approval."
+      },
+      "progressLinks": [
+        "lf10fiae_ui_tests_ux",
+        "lf10fiae_ui_dokumentation"
+      ]
+    },
+    {
+      "id": "q23",
+      "type": "number",
+      "title": "Test coverage before delivery",
+      "prompt": "Out of 31 planned acceptance tests, 27 were completed successfully. What is the success rate in percent (rounded)?",
+      "expected": 87,
+      "toleranceAbs": 1,
+      "showExpectedFormula": "27/31*100 = 87.10 % ~ 87 %",
+      "feedback": {
+        "correct": "Calculated correctly.",
+        "wrong": "Please calculate the share of successful tests correctly."
+      },
+      "progressLinks": [
+        "lf10fiae_ui_tests_ux"
+      ]
+    },
+    {
+      "id": "q24",
+      "type": "short_text",
+      "title": "Closing message for the UI station",
+      "prompt": "Formulate a closing message (5-7 sentences) with the status, an open point, a risk, and the next step.",
+      "minChars": 180,
+      "requiredKeywords": [
+        "status",
+        "open point",
+        "next step"
+      ],
+      "expectedOutline": "Clear status, a transparent remaining point with risk, and a binding follow-up action.",
+      "feedback": {
+        "correct": "Correct: The closing message is immediately usable for operations and project management.",
+        "wrong": "Please develop the status, the open point, and the next step more clearly."
+      },
+      "progressLinks": [
+        "lf10fiae_ui_dokumentation",
+        "lf10fiae_ui_tests_ux"
+      ]
+    }
+  ]
+}

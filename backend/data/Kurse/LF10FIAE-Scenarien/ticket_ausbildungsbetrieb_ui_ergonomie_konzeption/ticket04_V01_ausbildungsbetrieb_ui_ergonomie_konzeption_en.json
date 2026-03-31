@@ -1,0 +1,159 @@
+{
+  "scenario": {
+    "company": "Training company IT services",
+    "scale": "SME, 220 employees",
+    "context": "Station 04 of the day run: design user interfaces ergonomically.",
+    "mission": "You design UI elements according to ergonomics criteria and secure consistent interaction.",
+    "station": {
+      "id": "LF10FIAE-ST-04",
+      "department": "UX design",
+      "profile": "Ergonomics and interaction",
+      "constraints": [
+        "Ensure consistency",
+        "Expand the feedback logic",
+        "Keep the user task at the center"
+      ]
+    },
+    "customerRequest": {
+      "from": "ux.team@ausbildungsbetrieb.example",
+      "to": "dev.team@ausbildungsbetrieb.example",
+      "subject": "Station 04: Ergonomics concept",
+      "date": "2026-03-13",
+      "body": "Please develop an ergonomic concept for the ticket-processing interface."
+    }
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "type": "single_choice",
+      "title": "Consistency rule",
+      "prompt": "Which rule is especially important for ergonomic UIs?",
+      "options": [
+        {
+          "text": "Every screen should be operated in a unique way",
+          "rationale": "Raises the learning effort."
+        },
+        {
+          "text": "Show error messages only as codes",
+          "rationale": "Unfriendly for users."
+        },
+        {
+          "text": "Identical actions should be operated in the same way",
+          "rationale": "Core of interaction consistency."
+        }
+      ],
+      "correctIndex": 2,
+      "feedback": {
+        "correct": "Correct: Consistency is a central ergonomics criterion.",
+        "wrong": "Not suitable: Inconsistency makes the interface harder to use."
+      },
+      "progressLinks": [
+        "lf10fiae_ui_konzeption_ergonomie"
+      ]
+    },
+    {
+      "id": "q2",
+      "type": "multi_select",
+      "title": "Ergonomics in detail",
+      "prompt": "Which points improve usability? (Multiple choice)",
+      "options": [
+        {
+          "text": "Visible feedback after every action",
+          "correct": true,
+          "rationale": "Users keep control."
+        },
+        {
+          "text": "Clear labels for input fields",
+          "correct": true,
+          "rationale": "Prevents misunderstandings."
+        },
+        {
+          "text": "Hidden primary actions",
+          "correct": false,
+          "rationale": "Makes operation harder."
+        },
+        {
+          "text": "Meaningful keyboard shortcuts for frequent actions",
+          "correct": true,
+          "rationale": "Improves efficiency."
+        },
+        {
+          "text": "Inconsistent naming of identical objects",
+          "correct": false,
+          "rationale": "Reduces clarity."
+        }
+      ],
+      "feedback": {
+        "correct": "Correct: The criteria are ergonomically sound.",
+        "wrong": "Partly wrong: Please secure feedback, clarity, and consistency more strongly."
+      },
+      "progressLinks": [
+        "lf10fiae_ui_konzeption_ergonomie"
+      ]
+    },
+    {
+      "id": "q3",
+      "type": "ordering",
+      "title": "Develop the interaction concept",
+      "prompt": "Put the flow for developing an interaction concept in order.",
+      "items": [
+        "Prioritize user tasks",
+        "Assign suitable UI elements",
+        "Define the feedback logic",
+        "Test the concept",
+        "Work in improvements"
+      ],
+      "correctOrder": [
+        "Prioritize user tasks",
+        "Assign suitable UI elements",
+        "Define the feedback logic",
+        "Test the concept",
+        "Work in improvements"
+      ],
+      "feedback": {
+        "correct": "Correct: The interaction concept is built cleanly.",
+        "wrong": "Not ideal: Please move from the user task through testing to improvement."
+      },
+      "progressLinks": [
+        "lf10fiae_ui_konzeption_ergonomie"
+      ]
+    },
+    {
+      "id": "q4",
+      "type": "number",
+      "title": "Compare operating time",
+      "prompt": "Variant A needs 52 seconds and variant B 41 seconds per task. How many seconds does variant B save per task?",
+      "expected": 11,
+      "toleranceAbs": 1,
+      "showExpectedFormula": "52 - 41 = 11 seconds",
+      "feedback": {
+        "correct": "Calculated correctly.",
+        "wrong": "Please calculate the difference in operating time correctly."
+      },
+      "progressLinks": [
+        "lf10fiae_ui_konzeption_ergonomie"
+      ]
+    },
+    {
+      "id": "q5",
+      "type": "short_text",
+      "title": "Justify the ergonomics concept",
+      "prompt": "Formulate in 4-6 sentences how your concept improves consistency and error safety.",
+      "minChars": 150,
+      "requiredKeywords": [
+        "consistency",
+        "error message",
+        "usability"
+      ],
+      "expectedOutline": "Clear link to consistency, feedback, and error safety.",
+      "feedback": {
+        "correct": "Correct: The concept is ergonomically traceable.",
+        "wrong": "Please connect consistency, error messages, and usability more concretely."
+      },
+      "progressLinks": [
+        "lf10fiae_ui_konzeption_ergonomie",
+        "lf10fiae_ui_tests_ux"
+      ]
+    }
+  ]
+}

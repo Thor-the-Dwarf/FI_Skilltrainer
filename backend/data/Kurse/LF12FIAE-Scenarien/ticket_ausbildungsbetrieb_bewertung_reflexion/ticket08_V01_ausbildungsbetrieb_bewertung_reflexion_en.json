@@ -1,0 +1,159 @@
+{
+  "scenario": {
+    "company": "Training company IT services",
+    "scale": "SME, 280 employees",
+    "context": "Station 08 of the day run: evaluate the project result and reflect on project execution.",
+    "mission": "You create an actual-versus-target comparison, analyze causes, and derive concrete improvements for follow-up projects.",
+    "station": {
+      "id": "LF12FIAE-ST-08",
+      "department": "Project close",
+      "profile": "Evaluation, reflection, lessons learned",
+      "constraints": [
+        "Carry out target-versus-actual analysis based on facts",
+        "Evaluate causes instead of symptoms",
+        "Prioritize improvements in a binding way"
+      ]
+    },
+    "customerRequest": {
+      "from": "pm.office@ausbildungsbetrieb.example",
+      "to": "projektteam@ausbildungsbetrieb.example",
+      "subject": "Station 08: Final evaluation and reflection",
+      "date": "2026-03-13",
+      "body": "Please create a final evaluation for the customer project with a target-versus-actual picture, root-cause analysis, and a concrete improvement plan."
+    }
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "type": "multi_select",
+      "title": "Build the target-versus-actual picture",
+      "prompt": "Which elements belong in a robust final evaluation? (Multiple choice)",
+      "options": [
+        {
+          "text": "Compare planned and achieved goals",
+          "correct": true,
+          "rationale": "Core of the target-versus-actual view."
+        },
+        {
+          "text": "Assess deviations together with their cause",
+          "correct": true,
+          "rationale": "Necessary for learning effect."
+        },
+        {
+          "text": "Leave out critical points",
+          "correct": false,
+          "rationale": "Prevents improvement."
+        },
+        {
+          "text": "Name the impact on schedule, cost, and quality",
+          "correct": true,
+          "rationale": "Makes deviations classifiable."
+        },
+        {
+          "text": "Document only personal impressions",
+          "correct": false,
+          "rationale": "Not fact-based enough."
+        }
+      ],
+      "feedback": {
+        "correct": "Correct: This forms a robust final picture.",
+        "wrong": "Partly wrong: Please secure the links to goals, deviations, and impact more clearly."
+      },
+      "progressLinks": [
+        "lf12fiae_bewertung_reflexion"
+      ]
+    },
+    {
+      "id": "q2",
+      "type": "single_choice",
+      "title": "Prioritize cause analysis",
+      "prompt": "Which approach is best suited for the cause analysis?",
+      "options": [
+        {
+          "text": "Describe symptoms only",
+          "rationale": "No sustainable improvement."
+        },
+        {
+          "text": "Connect deviation, assumed main cause, and corrective measure in a structured way",
+          "rationale": "Creates actionable insight."
+        },
+        {
+          "text": "Blame all causes on time pressure across the board",
+          "rationale": "Too undifferentiated."
+        }
+      ],
+      "correctIndex": 1,
+      "feedback": {
+        "correct": "Correct: Cause and measure have to be considered together.",
+        "wrong": "Not suitable: Reflection needs real root-cause work."
+      },
+      "progressLinks": [
+        "lf12fiae_bewertung_reflexion"
+      ]
+    },
+    {
+      "id": "q3",
+      "type": "ordering",
+      "title": "Lessons learned process",
+      "prompt": "Put the flow for robust lessons learned in order.",
+      "items": [
+        "Create the target-versus-actual comparison",
+        "Prioritize deviations",
+        "Analyze causes and impact",
+        "Define improvement measures",
+        "Schedule implementation for follow-up projects"
+      ],
+      "correctOrder": [
+        "Create the target-versus-actual comparison",
+        "Prioritize deviations",
+        "Analyze causes and impact",
+        "Define improvement measures",
+        "Schedule implementation for follow-up projects"
+      ],
+      "feedback": {
+        "correct": "Correct: The learning process is clear and actionable.",
+        "wrong": "Not ideal: Please move from target-versus-actual via causes to implementation."
+      },
+      "progressLinks": [
+        "lf12fiae_bewertung_reflexion"
+      ]
+    },
+    {
+      "id": "q4",
+      "type": "number",
+      "title": "Goal achievement rate",
+      "prompt": "Out of 20 agreed project goals, 17 were fully achieved. What is the goal achievement rate in percent?",
+      "expected": 85,
+      "toleranceAbs": 0.5,
+      "showExpectedFormula": "17/20*100 = 85 %",
+      "feedback": {
+        "correct": "Calculated correctly.",
+        "wrong": "Please calculate the share of achieved goals correctly."
+      },
+      "progressLinks": [
+        "lf12fiae_bewertung_reflexion"
+      ]
+    },
+    {
+      "id": "q5",
+      "type": "short_text",
+      "title": "Project close note",
+      "prompt": "Formulate a close note in 4-6 sentences with goal achievement, the main cause of one deviation, and the next improvement.",
+      "minChars": 170,
+      "requiredKeywords": [
+        "goal achievement",
+        "cause",
+        "improvement"
+      ],
+      "expectedOutline": "Clear final picture with cause and a concrete improvement lever.",
+      "feedback": {
+        "correct": "Correct: The close note is reflective and close to implementation.",
+        "wrong": "Please formulate goal achievement, cause, and improvement more explicitly."
+      },
+      "progressLinks": [
+        "lf12fiae_bewertung_reflexion",
+        "lf12fiae_pm_grundlagen_organisation"
+      ]
+    }
+  ]
+}

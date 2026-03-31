@@ -1,0 +1,159 @@
+{
+  "scenario": {
+    "company": "Training company IT services",
+    "scale": "SME, 280 employees",
+    "context": "Station 05 of the day run: steer project execution and handle changed boundary conditions.",
+    "mission": "You prioritize tasks, control changes, and keep status as well as risks transparent for team and customer.",
+    "station": {
+      "id": "LF12FIAE-ST-05",
+      "department": "Project execution",
+      "profile": "Implementation, change control, status communication",
+      "constraints": [
+        "Keep status transparent",
+        "Control changes in a disciplined way",
+        "Secure deliverables reliably"
+      ]
+    },
+    "customerRequest": {
+      "from": "projektleitung@kundenprojekt.example",
+      "to": "projektteam@ausbildungsbetrieb.example",
+      "subject": "Station 05: Project execution and control",
+      "date": "2026-03-13",
+      "body": "Please steer project execution under change pressure and secure the status report with clear next steps."
+    }
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "type": "multi_select",
+      "title": "Control during implementation",
+      "prompt": "Which points are important for stable project execution? (Multiple choice)",
+      "options": [
+        {
+          "text": "Review status regularly with team and stakeholders",
+          "correct": true,
+          "rationale": "Secures transparency."
+        },
+        {
+          "text": "Name and prioritize risks early",
+          "correct": true,
+          "rationale": "Enables countermeasures."
+        },
+        {
+          "text": "Implement changes immediately without evaluation",
+          "correct": false,
+          "rationale": "Increases loss of control."
+        },
+        {
+          "text": "Assign deliverables to clearly responsible owners",
+          "correct": true,
+          "rationale": "Creates commitment in execution."
+        },
+        {
+          "text": "Do not document deviations",
+          "correct": false,
+          "rationale": "Contradicts controllability."
+        }
+      ],
+      "feedback": {
+        "correct": "Correct: These are central levers for steering implementation.",
+        "wrong": "Partly wrong: Please secure transparency, risk handling, and responsibility more clearly."
+      },
+      "progressLinks": [
+        "lf12fiae_projektdurchfuehrung"
+      ]
+    },
+    {
+      "id": "q2",
+      "type": "single_choice",
+      "title": "Prioritize a change",
+      "prompt": "A new requirement conflicts with a critical milestone. What is the best next step?",
+      "options": [
+        {
+          "text": "Implement the change immediately and silently move the milestone",
+          "rationale": "Lacks transparency."
+        },
+        {
+          "text": "Assess the impact, align the options, and document the decision",
+          "rationale": "Controlled handling of conflicting objectives."
+        },
+        {
+          "text": "Reject the change across the board without reviewing it",
+          "rationale": "Can lead to the wrong professional decision."
+        }
+      ],
+      "correctIndex": 1,
+      "feedback": {
+        "correct": "Correct: This keeps project execution controllable.",
+        "wrong": "Not suitable: Changes need evaluation and a documented decision."
+      },
+      "progressLinks": [
+        "lf12fiae_projektdurchfuehrung"
+      ]
+    },
+    {
+      "id": "q3",
+      "type": "ordering",
+      "title": "Build a status report",
+      "prompt": "Put the flow for a robust status report in order.",
+      "items": [
+        "Capture the current state for each work package",
+        "Name deviations and risks",
+        "Assess impact on the target date",
+        "Define next actions",
+        "Align and send the status report"
+      ],
+      "correctOrder": [
+        "Capture the current state for each work package",
+        "Name deviations and risks",
+        "Assess impact on the target date",
+        "Define next actions",
+        "Align and send the status report"
+      ],
+      "feedback": {
+        "correct": "Correct: The report is clearly structured and actionable.",
+        "wrong": "Not ideal: Please work out the situation first, then impact and action."
+      },
+      "progressLinks": [
+        "lf12fiae_projektdurchfuehrung"
+      ]
+    },
+    {
+      "id": "q4",
+      "type": "number",
+      "title": "Calculate milestone rate",
+      "prompt": "Out of 13 planned milestones, 10 were achieved on time. What is the on-time rate in percent (rounded)?",
+      "expected": 77,
+      "toleranceAbs": 1,
+      "showExpectedFormula": "10/13*100 = 76.92 % ~ 77 %",
+      "feedback": {
+        "correct": "Calculated correctly.",
+        "wrong": "Please calculate the share of on-time milestones correctly."
+      },
+      "progressLinks": [
+        "lf12fiae_projektdurchfuehrung"
+      ]
+    },
+    {
+      "id": "q5",
+      "type": "short_text",
+      "title": "Formulate a status message",
+      "prompt": "Formulate a status message in 4-6 sentences with current state, risk, and next action.",
+      "minChars": 150,
+      "requiredKeywords": [
+        "status",
+        "risk",
+        "next action"
+      ],
+      "expectedOutline": "Clear project status, prioritized risk, and concrete follow-up action.",
+      "feedback": {
+        "correct": "Correct: The message can be used for steering and alignment.",
+        "wrong": "Please formulate the current state, risk, and next action more concretely."
+      },
+      "progressLinks": [
+        "lf12fiae_projektdurchfuehrung",
+        "lf12fiae_praesentation"
+      ]
+    }
+  ]
+}

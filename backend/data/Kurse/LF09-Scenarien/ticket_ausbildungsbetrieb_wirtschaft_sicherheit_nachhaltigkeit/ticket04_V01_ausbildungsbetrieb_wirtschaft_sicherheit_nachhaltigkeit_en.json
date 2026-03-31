@@ -1,0 +1,159 @@
+{
+  "scenario": {
+    "company": "Nordufer Maschinenbau GmbH",
+    "scale": "Medium-sized business, 2 locations, 310 employees",
+    "context": "Station 04: evaluate cost, security, and sustainable requirements.",
+    "mission": "You prepare a decision that balances cost, protection needs, and long-term operations.",
+    "station": {
+      "id": "LF09-ST-04",
+      "department": "Architecture and Procurement",
+      "profile": "Cost efficiency, security, and sustainability",
+      "constraints": [
+        "Do not look only at purchase price",
+        "Include protection needs transparently",
+        "Assess operational consequences over the long term"
+      ]
+    },
+    "customerRequest": {
+      "from": "einkauf@nordufer-maschinenbau.example",
+      "to": "infra.team@ausbildungsbetrieb.example",
+      "subject": "Station 04: Evaluation matrix",
+      "date": "2026-03-13",
+      "body": "Please prepare a brief decision basis that summarizes cost efficiency, security, and sustainability."
+    }
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "type": "short_text",
+      "title": "Explain the trade-off",
+      "prompt": "Describe in 4-6 sentences how you would assess cost, security, and sustainability together for this network project.",
+      "minChars": 170,
+      "requiredKeywords": [
+        "cost",
+        "security",
+        "sustainability"
+      ],
+      "expectedOutline": "Life-cycle-oriented trade-off with protection needs and operational impact.",
+      "feedback": {
+        "correct": "Correct: The trade-off combines economics and protection in a coherent way.",
+        "wrong": "Please bring the life cycle, protection needs, and sustainability together more clearly."
+      },
+      "progressLinks": [
+        "lf09_wirtschaft_sicherheit_nachhaltigkeit"
+      ]
+    },
+    {
+      "id": "q2",
+      "type": "single_choice",
+      "title": "Security-relevant procurement",
+      "prompt": "Which decision is most sensible for an administrative environment with personal data?",
+      "options": [
+        {
+          "text": "Cheapest possible hardware without a central patching and monitoring concept",
+          "rationale": "Saves money in the short term, but increases operational risk."
+        },
+        {
+          "text": "Focus only on maximum performance and clarify protection and operations later",
+          "rationale": "Performance alone does not cover protection needs."
+        },
+        {
+          "text": "Choose components that combine security functions, central management, and traceable operating costs",
+          "rationale": "This sensibly combines protection needs, cost efficiency, and maintainability."
+        }
+      ],
+      "correctIndex": 2,
+      "feedback": {
+        "correct": "Correct: The selection is both secure and operationally viable.",
+        "wrong": "Not suitable: The decision must consider protection needs and operating costs together."
+      },
+      "progressLinks": [
+        "lf09_wirtschaft_sicherheit_nachhaltigkeit"
+      ]
+    },
+    {
+      "id": "q3",
+      "type": "multi_select",
+      "title": "Recognize sustainability criteria",
+      "prompt": "Which points help to realistically consider sustainability in network planning? (Multiple choice)",
+      "options": [
+        {
+          "text": "Assess energy demand over the service life",
+          "correct": true,
+          "rationale": "Affects operating costs and environmental impact."
+        },
+        {
+          "text": "Check the expandability and repairability of components",
+          "correct": true,
+          "rationale": "Extends useful life and reduces replacement needs."
+        },
+        {
+          "text": "Only look at the color of the housing",
+          "correct": false,
+          "rationale": "Has little value for sustainability."
+        },
+        {
+          "text": "Consider consolidation potential through virtualization",
+          "correct": true,
+          "rationale": "Can reduce material and energy use."
+        },
+        {
+          "text": "Remove security functions to save power",
+          "correct": false,
+          "rationale": "That would not be a viable sustainability strategy."
+        }
+      ],
+      "feedback": {
+        "correct": "Correct: Sustainability comes from a life-cycle and operational perspective.",
+        "wrong": "Partially wrong: Please weigh energy, service life, and consolidation more strongly."
+      },
+      "progressLinks": [
+        "lf09_wirtschaft_sicherheit_nachhaltigkeit",
+        "lf09_virtualisierung_portfolio"
+      ]
+    },
+    {
+      "id": "q4",
+      "type": "number",
+      "title": "Annual electricity cost difference",
+      "prompt": "An optimized solution reduces power consumption by 180 W. At 2500 operating hours per year and 0.31 EUR per kWh: What is the annual savings in EUR, rounded?",
+      "expected": 140,
+      "toleranceAbs": 2,
+      "showExpectedFormula": "0.18 * 2500 * 0.31 = 139.5 EUR -> 140 EUR",
+      "feedback": {
+        "correct": "Correctly calculated.",
+        "wrong": "Please combine power, operating hours, and electricity price correctly."
+      },
+      "progressLinks": [
+        "lf09_wirtschaft_sicherheit_nachhaltigkeit"
+      ]
+    },
+    {
+      "id": "q5",
+      "type": "ordering",
+      "title": "Build decision memo",
+      "prompt": "Put the steps for a robust decision memo in order.",
+      "items": [
+        "Name protection needs and operational requirements",
+        "Estimate costs over the service life",
+        "Record sustainability and expandability aspects",
+        "Compare options against each other",
+        "Justify the recommendation transparently"
+      ],
+      "correctOrder": [
+        "Name protection needs and operational requirements",
+        "Estimate costs over the service life",
+        "Record sustainability and expandability aspects",
+        "Compare options against each other",
+        "Justify the recommendation transparently"
+      ],
+      "feedback": {
+        "correct": "Correct: The decision memo leads to the recommendation in a structured way.",
+        "wrong": "Not ideal: Please clarify requirements and costs first, then compare options."
+      },
+      "progressLinks": [
+        "lf09_wirtschaft_sicherheit_nachhaltigkeit"
+      ]
+    }
+  ]
+}

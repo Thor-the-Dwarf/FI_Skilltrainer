@@ -1,0 +1,159 @@
+{
+  "scenario": {
+    "company": "Training company IT services",
+    "scale": "SME, 280 employees",
+    "context": "Station 06 of the day run: test and document the software solution.",
+    "mission": "You derive test cases, document results cleanly, and create acceptance-ready records.",
+    "station": {
+      "id": "LF12FIAE-ST-06",
+      "department": "Quality assurance",
+      "profile": "Test case derivation, test protocol, operations and user documentation",
+      "constraints": [
+        "Ensure traceability from tests back to requirements",
+        "Document results reproducibly",
+        "Assign owners to open items"
+      ]
+    },
+    "customerRequest": {
+      "from": "qa.lead@ausbildungsbetrieb.example",
+      "to": "projektteam@ausbildungsbetrieb.example",
+      "subject": "Station 06: Testing and documentation",
+      "date": "2026-03-13",
+      "body": "Please create an acceptance-ready testing and documentation status for the customer module."
+    }
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "type": "single_choice",
+      "title": "Derive test cases",
+      "prompt": "What should test cases primarily be derived from?",
+      "options": [
+        {
+          "text": "From aligned requirements and acceptance criteria",
+          "rationale": "Direct connection to the target result."
+        },
+        {
+          "text": "Only from spontaneous ideas in the team",
+          "rationale": "Not systematic enough."
+        },
+        {
+          "text": "Exclusively from old test protocols",
+          "rationale": "Can miss new requirements."
+        }
+      ],
+      "correctIndex": 0,
+      "feedback": {
+        "correct": "Correct: Test cases have to be aligned with the target picture.",
+        "wrong": "Not suitable: The test-to-requirement link is mandatory."
+      },
+      "progressLinks": [
+        "lf12fiae_testen_dokumentieren"
+      ]
+    },
+    {
+      "id": "q2",
+      "type": "multi_select",
+      "title": "Acceptance-ready test documentation",
+      "prompt": "Which details belong in a robust test protocol? (Multiple choice)",
+      "options": [
+        {
+          "text": "Test case ID, inputs, and expected result",
+          "correct": true,
+          "rationale": "Core structure for reproducibility."
+        },
+        {
+          "text": "Actual result and finding status",
+          "correct": true,
+          "rationale": "Shows the real outcome."
+        },
+        {
+          "text": "Random notes without a link to the test case",
+          "correct": false,
+          "rationale": "Not traceable."
+        },
+        {
+          "text": "Open items with owner and due date",
+          "correct": true,
+          "rationale": "Secures follow-up tracking."
+        },
+        {
+          "text": "No dates in the test run",
+          "correct": false,
+          "rationale": "History is missing."
+        }
+      ],
+      "feedback": {
+        "correct": "Correct: The protocol is reproducible and actionable.",
+        "wrong": "Partly wrong: Please pay more attention to structure, findings, and follow-up."
+      },
+      "progressLinks": [
+        "lf12fiae_testen_dokumentieren"
+      ]
+    },
+    {
+      "id": "q3",
+      "type": "ordering",
+      "title": "From testing to documentation close",
+      "prompt": "Put the flow from test execution to documentation close in order.",
+      "items": [
+        "Plan test cases against the requirements",
+        "Record the test run and findings",
+        "Prioritize and track defects",
+        "Update user and operations documentation",
+        "Provide the final acceptance package"
+      ],
+      "correctOrder": [
+        "Plan test cases against the requirements",
+        "Record the test run and findings",
+        "Prioritize and track defects",
+        "Update user and operations documentation",
+        "Provide the final acceptance package"
+      ],
+      "feedback": {
+        "correct": "Correct: This forms a clean QA chain.",
+        "wrong": "Not ideal: Please plan and test first, then prioritize and document."
+      },
+      "progressLinks": [
+        "lf12fiae_testen_dokumentieren"
+      ]
+    },
+    {
+      "id": "q4",
+      "type": "number",
+      "title": "Calculate defect rate",
+      "prompt": "Out of 40 test cases, 6 fail. What is the defect rate in percent?",
+      "expected": 15,
+      "toleranceAbs": 0.5,
+      "showExpectedFormula": "6/40*100 = 15 %",
+      "feedback": {
+        "correct": "Calculated correctly.",
+        "wrong": "Please calculate the share of failing test cases correctly."
+      },
+      "progressLinks": [
+        "lf12fiae_testen_dokumentieren"
+      ]
+    },
+    {
+      "id": "q5",
+      "type": "short_text",
+      "title": "Summarize acceptance documents",
+      "prompt": "Formulate in 4-6 sentences which testing and documentation artifacts are available for acceptance.",
+      "minChars": 160,
+      "requiredKeywords": [
+        "test protocol",
+        "open item",
+        "documentation"
+      ],
+      "expectedOutline": "Available test evidence, open items, and documentation scope in a clear structure.",
+      "feedback": {
+        "correct": "Correct: The summary is ready for acceptance.",
+        "wrong": "Please structure the test evidence, open items, and documentation more clearly."
+      },
+      "progressLinks": [
+        "lf12fiae_testen_dokumentieren",
+        "lf12fiae_bewertung_reflexion"
+      ]
+    }
+  ]
+}

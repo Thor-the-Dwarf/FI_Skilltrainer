@@ -1,0 +1,158 @@
+{
+  "scenario": {
+    "company": "Training company IT services",
+    "scale": "SME, 220 employees",
+    "context": "Station 07 of the day run: document user interfaces.",
+    "mission": "You create documentation that is suitable for users and support, including versioning and change history.",
+    "station": {
+      "id": "LF10FIAE-ST-07",
+      "department": "Documentation",
+      "profile": "User documentation, support documentation, versioning",
+      "constraints": [
+        "Address the target audience explicitly",
+        "Describe operating flows clearly",
+        "Keep versioning complete"
+      ]
+    },
+    "customerRequest": {
+      "from": "support.lead@ausbildungsbetrieb.example",
+      "to": "dev.team@ausbildungsbetrieb.example",
+      "subject": "Station 07: UI documentation",
+      "date": "2026-03-13",
+      "body": "Please create robust UI documentation for users and support."
+    }
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "type": "multi_select",
+      "title": "Consider the documentation target group",
+      "prompt": "Which contents do users and support absolutely need? (Multiple choice)",
+      "options": [
+        {
+          "text": "Operating flows for core tasks",
+          "correct": true,
+          "rationale": "Direct practical value."
+        },
+        {
+          "text": "Error scenarios with solution hints",
+          "correct": true,
+          "rationale": "Relevant for support."
+        },
+        {
+          "text": "Only internal abbreviations without explanation",
+          "correct": false,
+          "rationale": "Not appropriate for the audience."
+        },
+        {
+          "text": "Prerequisites and limits of the function",
+          "correct": true,
+          "rationale": "Prevents false assumptions."
+        },
+        {
+          "text": "Leave out the version status",
+          "correct": false,
+          "rationale": "Makes traceability harder."
+        }
+      ],
+      "feedback": {
+        "correct": "Correct: The documentation is aligned with the target audience.",
+        "wrong": "Partly wrong: Please consider operating flows, error references, and versioning more strongly."
+      },
+      "progressLinks": [
+        "lf10fiae_ui_dokumentation"
+      ]
+    },
+    {
+      "id": "q2",
+      "type": "single_choice",
+      "title": "Secure versioning",
+      "prompt": "What is most important for documentation versioning?",
+      "options": [
+        {
+          "text": "Communicate changes verbally only",
+          "rationale": "Not reproducible."
+        },
+        {
+          "text": "Record version, date, and reason for the change clearly",
+          "rationale": "Secures history and traceability."
+        },
+        {
+          "text": "Delete old entries with every update",
+          "rationale": "History gets lost."
+        }
+      ],
+      "correctIndex": 1,
+      "feedback": {
+        "correct": "Correct: That is the necessary basis of versioning.",
+        "wrong": "Not suitable: Versioning needs a clear history."
+      },
+      "progressLinks": [
+        "lf10fiae_ui_dokumentation"
+      ]
+    },
+    {
+      "id": "q3",
+      "type": "ordering",
+      "title": "Documentation process",
+      "prompt": "Put the flow for clean UI documentation in order.",
+      "items": [
+        "Clarify the target audience and documentation scope",
+        "Describe the operating flows",
+        "Add the error and support section",
+        "Enter the versioning information",
+        "Document the approval for use"
+      ],
+      "correctOrder": [
+        "Clarify the target audience and documentation scope",
+        "Describe the operating flows",
+        "Add the error and support section",
+        "Enter the versioning information",
+        "Document the approval for use"
+      ],
+      "feedback": {
+        "correct": "Correct: The documentation process is traceable.",
+        "wrong": "Not ideal: Please keep scope, content, and versioning in sequence."
+      },
+      "progressLinks": [
+        "lf10fiae_ui_dokumentation"
+      ]
+    },
+    {
+      "id": "q4",
+      "type": "number",
+      "title": "Documentation effort",
+      "prompt": "Five chapters take 24 minutes each, plus 18 minutes of review. How many minutes in total?",
+      "expected": 138,
+      "toleranceAbs": 1,
+      "showExpectedFormula": "5*24 + 18 = 138 minutes",
+      "feedback": {
+        "correct": "Calculated correctly.",
+        "wrong": "Please add the chapter times and review correctly."
+      },
+      "progressLinks": [
+        "lf10fiae_ui_dokumentation"
+      ]
+    },
+    {
+      "id": "q5",
+      "type": "short_text",
+      "title": "Documentation release note",
+      "prompt": "Write a documentation release note in 4-6 sentences with the target audience, version status, and an open point.",
+      "minChars": 150,
+      "requiredKeywords": [
+        "target audience",
+        "version status",
+        "open point"
+      ],
+      "expectedOutline": "Release note with target-audience reference, version, and a transparent remaining task.",
+      "feedback": {
+        "correct": "Correct: The note is directly usable for operations and support.",
+        "wrong": "Please formulate the target audience, version status, and open point more clearly."
+      },
+      "progressLinks": [
+        "lf10fiae_ui_dokumentation"
+      ]
+    }
+  ]
+}

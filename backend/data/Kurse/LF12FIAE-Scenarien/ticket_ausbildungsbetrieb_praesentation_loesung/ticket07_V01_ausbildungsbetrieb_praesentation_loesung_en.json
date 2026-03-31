@@ -1,0 +1,159 @@
+{
+  "scenario": {
+    "company": "Training company IT services",
+    "scale": "SME, 280 employees",
+    "context": "Station 07 of the day run: present the software solution.",
+    "mission": "You structure the customer presentation, show the core benefit, and answer follow-up questions with professional confidence.",
+    "station": {
+      "id": "LF12FIAE-ST-07",
+      "department": "Project team",
+      "profile": "Presentation structure, customer benefit, follow-up questions",
+      "constraints": [
+        "Argue in a target-group-oriented way",
+        "Make core benefit and limits transparent",
+        "Answer questions calmly and professionally"
+      ]
+    },
+    "customerRequest": {
+      "from": "auftraggeber@kundenprojekt.example",
+      "to": "projektteam@ausbildungsbetrieb.example",
+      "subject": "Station 07: Customer presentation",
+      "date": "2026-03-13",
+      "body": "Please present the current solution state in a way that fits the audience and prepare a structured question phase."
+    }
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "type": "single_choice",
+      "title": "Set the presentation focus",
+      "prompt": "What should come first at the beginning of a customer presentation?",
+      "options": [
+        {
+          "text": "Technical details without context",
+          "rationale": "Difficult starting point for the business side."
+        },
+        {
+          "text": "Project goal, initial situation, and expected benefit",
+          "rationale": "Creates orientation for all target groups."
+        },
+        {
+          "text": "Only a source code excerpt",
+          "rationale": "Missing link to the problem."
+        }
+      ],
+      "correctIndex": 1,
+      "feedback": {
+        "correct": "Correct: The target picture and benefit create the right opening.",
+        "wrong": "Not suitable: The opening has to communicate context and benefit."
+      },
+      "progressLinks": [
+        "lf12fiae_praesentation"
+      ]
+    },
+    {
+      "id": "q2",
+      "type": "multi_select",
+      "title": "Core benefit and limits",
+      "prompt": "Which contents belong in a robust solution presentation? (Multiple choice)",
+      "options": [
+        {
+          "text": "Core benefit for the business process",
+          "correct": true,
+          "rationale": "The benefit link is central."
+        },
+        {
+          "text": "State limits and open residual items transparently",
+          "correct": true,
+          "rationale": "Creates realistic expectation management."
+        },
+        {
+          "text": "Deliberately ignore critical questions",
+          "correct": false,
+          "rationale": "Undermines trust."
+        },
+        {
+          "text": "Show next steps for operations or further expansion",
+          "correct": true,
+          "rationale": "Secures continuity."
+        },
+        {
+          "text": "Only marketing statements without evidence",
+          "correct": false,
+          "rationale": "Not robust."
+        }
+      ],
+      "feedback": {
+        "correct": "Correct: The presentation is transparent and goal-oriented.",
+        "wrong": "Partly wrong: Please connect benefit, limits, and next steps more clearly."
+      },
+      "progressLinks": [
+        "lf12fiae_praesentation"
+      ]
+    },
+    {
+      "id": "q3",
+      "type": "ordering",
+      "title": "Flow of the customer presentation",
+      "prompt": "Put the flow of a structured presentation in order.",
+      "items": [
+        "Present the target picture and initial situation",
+        "Introduce the solution and demo flow",
+        "Assess core benefit and limits",
+        "Answer stakeholder questions",
+        "Agree on next steps"
+      ],
+      "correctOrder": [
+        "Present the target picture and initial situation",
+        "Introduce the solution and demo flow",
+        "Assess core benefit and limits",
+        "Answer stakeholder questions",
+        "Agree on next steps"
+      ],
+      "feedback": {
+        "correct": "Correct: The flow is clear and audience-appropriate.",
+        "wrong": "Not ideal: Please move from target picture via demo to alignment."
+      },
+      "progressLinks": [
+        "lf12fiae_praesentation"
+      ]
+    },
+    {
+      "id": "q4",
+      "type": "number",
+      "title": "Calculate presentation time",
+      "prompt": "Planned: 12 minutes of context, 15 minutes of demo, 8 minutes of questions. How long is the entire slot?",
+      "expected": 35,
+      "toleranceAbs": 1,
+      "showExpectedFormula": "12 + 15 + 8 = 35 minutes",
+      "feedback": {
+        "correct": "Calculated correctly.",
+        "wrong": "Please add all time slots correctly."
+      },
+      "progressLinks": [
+        "lf12fiae_praesentation"
+      ]
+    },
+    {
+      "id": "q5",
+      "type": "short_text",
+      "title": "Formulate the presentation close",
+      "prompt": "Formulate a closing section in 4-6 sentences with core benefit, open point, and next step.",
+      "minChars": 160,
+      "requiredKeywords": [
+        "core benefit",
+        "open point",
+        "next step"
+      ],
+      "expectedOutline": "Audience-appropriate close with benefit, residual item, and binding follow-up action.",
+      "feedback": {
+        "correct": "Correct: The close is clear and suitable for the customer.",
+        "wrong": "Please work out the core benefit, open point, and next step more concretely."
+      },
+      "progressLinks": [
+        "lf12fiae_praesentation",
+        "lf12fiae_bewertung_reflexion"
+      ]
+    }
+  ]
+}

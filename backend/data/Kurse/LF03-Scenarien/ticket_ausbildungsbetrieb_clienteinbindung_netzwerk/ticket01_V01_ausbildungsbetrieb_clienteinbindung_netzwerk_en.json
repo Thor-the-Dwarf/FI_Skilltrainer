@@ -1,0 +1,731 @@
+{
+  "scenario": {
+    "company": "Training company IT service",
+    "scale": "Regional, 140 employees",
+    "context": "Station 01: initial assignment and follow-up tasks for client integration in the corporate network.",
+    "mission": "You handle the initial assignment and several follow-up tasks around network parameters, testing, procurement, and operational release.",
+    "station": {
+      "id": "LF03-ST-01",
+      "department": "Internal IT service",
+      "profile": "Office client with LAN, DNS, DHCP, central login, and cloud access",
+      "constraints": [
+        "Operational safety over speed",
+        "Document steps traceably",
+        "Secure the security and availability baseline"
+      ]
+    },
+    "customerRequest": {
+      "from": "it.leitung@ausbildungsbetrieb.example",
+      "to": "support.team@ausbildungsbetrieb.example",
+      "subject": "Station 01: integrate client into the network in a structured way",
+      "date": "2026-03-13",
+      "body": "Please integrate a new client for the sales team into the existing network.\n\nAfter that, further assignments follow in the same environment with increasing responsibility around area change, incident handling, procurement, and operational release."
+    }
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "type": "single_choice",
+      "title": "Assign basic network parameters correctly",
+      "prompt": "Which combination is most sensible for a standard client in the corporate LAN?",
+      "options": [
+        {
+          "text": "IP address, subnet mask, default gateway, and DNS server matching the network segment",
+          "rationale": "These parameters form the required communication baseline."
+        },
+        {
+          "text": "Only MAC address and username are enough",
+          "rationale": "Without IP parameters no normal network communication is possible."
+        },
+        {
+          "text": "Only WLAN password, all other values are optional",
+          "rationale": "That does not cover LAN and service communication."
+        }
+      ],
+      "correctIndex": 0,
+      "feedback": {
+        "correct": "Correct: These are the key baseline parameters for the client on the network.",
+        "wrong": "Not suitable: essential network parameters are missing for integration."
+      },
+      "progressLinks": [
+        "lf03_ethernet_tcpip"
+      ]
+    },
+    {
+      "id": "q2",
+      "type": "multi_select",
+      "title": "Pre-check for client integration",
+      "prompt": "Which points should be checked before integration? (Multiple selections)",
+      "options": [
+        {
+          "text": "Target network segment and access requirements are known",
+          "correct": true,
+          "rationale": "Without a clear target segment, configuration is error-prone."
+        },
+        {
+          "text": "Switch port or outlet is technically available",
+          "correct": true,
+          "rationale": "Physical and logical availability is required."
+        },
+        {
+          "text": "User account and permissions are prepared",
+          "correct": true,
+          "rationale": "Login must work immediately."
+        },
+        {
+          "text": "Only the case color of the client was coordinated",
+          "correct": false,
+          "rationale": "That is not a technical integration criterion."
+        },
+        {
+          "text": "Naming scheme and documentation requirement are clarified",
+          "correct": true,
+          "rationale": "This simplifies operations, support, and traceability."
+        }
+      ],
+      "feedback": {
+        "correct": "Correct: You secure the integration technically and organizationally.",
+        "wrong": "Partly wrong: Please prioritize the technically necessary pre-checks."
+      },
+      "progressLinks": [
+        "lf03_client_integration"
+      ]
+    },
+    {
+      "id": "q3",
+      "type": "ordering",
+      "title": "Sequence for a structured integration",
+      "prompt": "Put the steps in a sensible order.",
+      "items": [
+        "Complete a short functional test and documentation",
+        "Clarify requirements and target network segment",
+        "Set or obtain network parameters on the client",
+        "Test reachability and name resolution",
+        "Test user login and shares"
+      ],
+      "correctOrder": [
+        "Clarify requirements and target network segment",
+        "Set or obtain network parameters on the client",
+        "Test reachability and name resolution",
+        "Test user login and shares",
+        "Complete a short functional test and documentation"
+      ],
+      "feedback": {
+        "correct": "Correct: The sequence leads from preparation to proof in a structured way.",
+        "wrong": "Not optimal: establish the basics first, then test and document."
+      },
+      "progressLinks": [
+        "lf03_client_integration"
+      ]
+    },
+    {
+      "id": "q4",
+      "type": "number",
+      "title": "Estimate addressing",
+      "prompt": "A /27 subnet is used for a segment. How many usable host addresses are available?",
+      "expected": 30,
+      "toleranceAbs": 0,
+      "showExpectedFormula": "2^(32-27) - 2 = 30",
+      "feedback": {
+        "correct": "Correct.",
+        "wrong": "Please account for the host portion and reserved addresses (network/broadcast)."
+      },
+      "progressLinks": [
+        "lf03_schichtenmodelle_adressierung"
+      ]
+    },
+    {
+      "id": "q5",
+      "type": "short_text",
+      "title": "Short update to the team lead",
+      "prompt": "Write a short update (4-6 sentences) with integration status, test situation, and open residual risk.",
+      "minChars": 140,
+      "requiredKeywords": [
+        "status",
+        "test",
+        "risk"
+      ],
+      "expectedOutline": "Clear status, key test statements, and a realistic residual risk note.",
+      "feedback": {
+        "correct": "Correct: The update is decision-ready and traceable.",
+        "wrong": "Please structure status, test situation, and residual risk more clearly."
+      },
+      "progressLinks": [
+        "lf03_netzwerk_einfuehrung",
+        "lf03_pruefen_warten"
+      ]
+    },
+    {
+      "id": "sep_f1",
+      "type": "followup_divider",
+      "title": "Follow-up 1 - area change to the training room",
+      "from": "vertrieb.leitung@ausbildungsbetrieb.example",
+      "to": "support.team@ausbildungsbetrieb.example",
+      "subject": "Client needs to move to the training area",
+      "date": "2026-03-13",
+      "body": "The prepared client is now to be used in the training area instead. Please check the network segment change, the outlet side, the user login, and access to the shared cloud workspace folder."
+    },
+    {
+      "id": "q6",
+      "type": "single_choice",
+      "title": "Suitable structure for the area change",
+      "prompt": "Which infrastructure is most practical for a standardized client workstation in the training area?",
+      "options": [
+        {
+          "text": "Star topology via a central switch with a clearly documented outlet",
+          "rationale": "This is easy to maintain and clearly verifiable in standard environments."
+        },
+        {
+          "text": "Direct full mesh between all clients in the room",
+          "rationale": "This is too complex and impractical for standard workstations."
+        },
+        {
+          "text": "Ring topology only for this workstation",
+          "rationale": "This is atypical for normal office clients."
+        }
+      ],
+      "correctIndex": 0,
+      "feedback": {
+        "correct": "Correct: This matches typical LAN practice in companies.",
+        "wrong": "Not suitable: the chosen structure is unusual for standard operations."
+      },
+      "progressLinks": [
+        "lf03_topologien_verkabelung"
+      ]
+    },
+    {
+      "id": "q7",
+      "type": "multi_select",
+      "title": "Checkpoints for the move",
+      "prompt": "Which points must be checked for the change to another network segment? (Multiple selections)",
+      "options": [
+        {
+          "text": "Verify target network segment and the associated DHCP/DNS mapping",
+          "correct": true,
+          "rationale": "Logical integration must fit the new segment."
+        },
+        {
+          "text": "A suitable outlet or access point is available",
+          "correct": true,
+          "rationale": "Without a working connection, the move is incomplete."
+        },
+        {
+          "text": "User account and shares are usable in the new segment",
+          "correct": true,
+          "rationale": "Work capability depends on login and permissions."
+        },
+        {
+          "text": "Only change the desktop background",
+          "correct": false,
+          "rationale": "This is irrelevant for technical integration."
+        },
+        {
+          "text": "Update location documentation and device name",
+          "correct": true,
+          "rationale": "This simplifies support and inventory tracking."
+        }
+      ],
+      "feedback": {
+        "correct": "Correct: You combine technology, access, and documentation.",
+        "wrong": "Partly wrong: Please weigh network segment, access, and connection baseline more strongly."
+      },
+      "progressLinks": [
+        "lf03_client_integration"
+      ]
+    },
+    {
+      "id": "q8",
+      "type": "ordering",
+      "title": "From connection to cloud access",
+      "prompt": "Arrange the steps for the area change sensibly.",
+      "items": [
+        "Check cloud share and workspace folder",
+        "Check network connection or wireless link",
+        "Log in user with prepared account",
+        "Obtain or set network parameters",
+        "Test reachability and name resolution"
+      ],
+      "correctOrder": [
+        "Check network connection or wireless link",
+        "Obtain or set network parameters",
+        "Test reachability and name resolution",
+        "Log in user with prepared account",
+        "Check cloud share and workspace folder"
+      ],
+      "feedback": {
+        "correct": "Correct: The sequence cleanly moves from baseline to usability.",
+        "wrong": "Not optimal: secure connection and parameters first, then test services."
+      },
+      "progressLinks": [
+        "lf03_client_integration"
+      ]
+    },
+    {
+      "id": "q9",
+      "type": "number",
+      "title": "Port requirements for the training area",
+      "prompt": "In the training area, 14 clients, 1 printer, 1 access point, and 2 spare ports are to be connected to a switch. How many ports are minimally required?",
+      "expected": 18,
+      "toleranceAbs": 0,
+      "showExpectedFormula": "14 + 1 + 1 + 2 = 18 ports",
+      "feedback": {
+        "correct": "Correct.",
+        "wrong": "Please add all active connections and the reserve."
+      },
+      "progressLinks": [
+        "lf03_hauptbestandteile_unterscheiden"
+      ]
+    },
+    {
+      "id": "q10",
+      "type": "short_text",
+      "title": "Release recommendation for the area change",
+      "prompt": "Formulate a short release recommendation (4-6 sentences) with network segment, access status, and documentation note.",
+      "minChars": 150,
+      "requiredKeywords": [
+        "network",
+        "access",
+        "documentation"
+      ],
+      "expectedOutline": "Clear statement about the area change, usability, and documented evidence.",
+      "feedback": {
+        "correct": "Correct: The recommendation is technically clear and ready for release.",
+        "wrong": "Please state network segment, access status, and documentation reference more clearly."
+      },
+      "progressLinks": [
+        "lf03_client_integration",
+        "lf03_pruefen_warten"
+      ]
+    },
+    {
+      "id": "sep_f2",
+      "type": "followup_divider",
+      "title": "Follow-up 2 - name resolution unstable",
+      "from": "service.desk@ausbildungsbetrieb.example",
+      "to": "support.team@ausbildungsbetrieb.example",
+      "subject": "DNS problems occur after the move",
+      "date": "2026-03-13",
+      "body": "In the new segment the connection exists in principle, but multiple name queries fail sporadically. Please perform a clean initial diagnosis and provide an interim update with the next step."
+    },
+    {
+      "id": "q11",
+      "type": "single_choice",
+      "title": "First separation of DNS vs routing issue",
+      "prompt": "Which check separates a name resolution issue from a pure routing issue fastest?",
+      "options": [
+        {
+          "text": "Test a target by IP first, then test the same service by name",
+          "rationale": "This separates reachability from name resolution very quickly."
+        },
+        {
+          "text": "Only check the client's wallpaper",
+          "rationale": "That gives no signal for network diagnosis."
+        },
+        {
+          "text": "Replace the entire switch immediately",
+          "rationale": "That would be disproportionate without a diagnosis baseline."
+        }
+      ],
+      "correctIndex": 0,
+      "feedback": {
+        "correct": "Correct: This quickly narrows down the error class.",
+        "wrong": "Not suitable: start with a simple, reliable comparison check."
+      },
+      "progressLinks": [
+        "lf03_ethernet_tcpip",
+        "lf03_pruefen_warten"
+      ]
+    },
+    {
+      "id": "q12",
+      "type": "multi_select",
+      "title": "Possible causes of unstable reachability",
+      "prompt": "Which factors can noticeably degrade data transfer or reachability? (Multiple selections)",
+      "options": [
+        {
+          "text": "Damaged cable or loose link",
+          "correct": true,
+          "rationale": "Physical issues directly affect the connection."
+        },
+        {
+          "text": "Faulty drivers or an unsuitable network card",
+          "correct": true,
+          "rationale": "The client interface can cause unstable behavior."
+        },
+        {
+          "text": "Overloaded access point or wireless interference sources",
+          "correct": true,
+          "rationale": "Wireless paths become noticeably less stable."
+        },
+        {
+          "text": "Cleanly maintained patch documentation",
+          "correct": false,
+          "rationale": "That improves analysis, not the fault itself."
+        },
+        {
+          "text": "Incorrect DNS entries or an unsuitable DNS server",
+          "correct": true,
+          "rationale": "That causes name resolution errors."
+        }
+      ],
+      "feedback": {
+        "correct": "Correct: You consider physical, logical, and service-related causes.",
+        "wrong": "Partly wrong: include media, client interface, and DNS baseline more strongly."
+      },
+      "progressLinks": [
+        "lf03_datenuebertragung_verstehen",
+        "lf03_netzwerkmedien_zugriff"
+      ]
+    },
+    {
+      "id": "q13",
+      "type": "ordering",
+      "title": "Quick test for unstable name resolution",
+      "prompt": "Arrange the steps for a clean quick test.",
+      "items": [
+        "Check the client's IP configuration",
+        "Document the result and escalate if needed",
+        "Test name resolution explicitly",
+        "Check physical connection and link status",
+        "Test gateway and target system by IP"
+      ],
+      "correctOrder": [
+        "Check physical connection and link status",
+        "Check the client's IP configuration",
+        "Test gateway and target system by IP",
+        "Test name resolution explicitly",
+        "Document the result and escalate if needed"
+      ],
+      "feedback": {
+        "correct": "Correct: The diagnosis follows the typical check chain bottom-up.",
+        "wrong": "Not optimal: start with the baseline connection, then move up to services."
+      },
+      "progressLinks": [
+        "lf03_pruefen_warten"
+      ]
+    },
+    {
+      "id": "q14",
+      "type": "number",
+      "title": "Success rate of name queries",
+      "prompt": "Out of 40 DNS queries, 6 fail. What is the success rate in percent?",
+      "expected": 85,
+      "toleranceAbs": 0.5,
+      "showExpectedFormula": "(40 - 6) / 40 * 100 = 85 %",
+      "feedback": {
+        "correct": "Correct.",
+        "wrong": "Please divide successful queries by the total and convert to percent."
+      },
+      "progressLinks": [
+        "lf03_pruefen_warten"
+      ]
+    },
+    {
+      "id": "q15",
+      "type": "short_text",
+      "title": "Interim update to the business unit",
+      "prompt": "Formulate an interim update (4-6 sentences) with suspected cause, ongoing checks, and next step.",
+      "minChars": 150,
+      "requiredKeywords": [
+        "cause",
+        "check",
+        "next step"
+      ],
+      "expectedOutline": "Short incident status, justified check path, and clear follow-up update.",
+      "feedback": {
+        "correct": "Correct: The update is transparent and action-oriented.",
+        "wrong": "Please separate cause, ongoing check, and follow-up action more clearly."
+      },
+      "progressLinks": [
+        "lf03_pruefen_warten"
+      ]
+    },
+    {
+      "id": "sep_f3",
+      "type": "followup_divider",
+      "title": "Follow-up 3 - procurement for additional workstations",
+      "from": "einkauf@ausbildungsbetrieb.example",
+      "to": "support.team@ausbildungsbetrieb.example",
+      "subject": "Please prepare technical approval for 12 additional clients",
+      "date": "2026-03-13",
+      "body": "For the new area, 12 additional workstations are to be procured. Please check the network card, switch capacity, port reserve, and technical standards and provide a short release recommendation."
+    },
+    {
+      "id": "q16",
+      "type": "single_choice",
+      "title": "Suitable network card for standard clients",
+      "prompt": "Which network card is best for a typical office client?",
+      "options": [
+        {
+          "text": "Gigabit Ethernet with appropriate driver and company-standard support",
+          "rationale": "This fits typical client networks and remains maintainable."
+        },
+        {
+          "text": "Any legacy card without driver support",
+          "rationale": "Without support, operational risk rises."
+        },
+        {
+          "text": "Only a special card unrelated to the existing network",
+          "rationale": "This makes standardization and deployment harder."
+        }
+      ],
+      "correctIndex": 0,
+      "feedback": {
+        "correct": "Correct: standard compliance and driver reliability are central here.",
+        "wrong": "Not suitable: consider standard network, driver support, and maintainability together."
+      },
+      "progressLinks": [
+        "lf03_komponenten_standards"
+      ]
+    },
+    {
+      "id": "q17",
+      "type": "multi_select",
+      "title": "Criteria for switch selection",
+      "prompt": "Which criteria are sensible when selecting a switch for 12 new clients? (Multiple selections)",
+      "options": [
+        {
+          "text": "Sufficient port count including reserve",
+          "correct": true,
+          "rationale": "Without reserve, flexibility is lost later."
+        },
+        {
+          "text": "Appropriate uplink capacity to the rest of the network",
+          "correct": true,
+          "rationale": "The switch must integrate cleanly into the overall network."
+        },
+        {
+          "text": "Manageability and standard compatibility",
+          "correct": true,
+          "rationale": "This eases operations and troubleshooting."
+        },
+        {
+          "text": "Only the device case color",
+          "correct": false,
+          "rationale": "That is not a reliable selection criterion."
+        },
+        {
+          "text": "Random discount without technical comparison",
+          "correct": false,
+          "rationale": "Price without fit quickly leads to bad purchases."
+        }
+      ],
+      "feedback": {
+        "correct": "Correct: You weigh capacity, integration, and standardization cleanly.",
+        "wrong": "Partly wrong: prioritize technology, reserve, and maintainability more strongly."
+      },
+      "progressLinks": [
+        "lf03_komponenten_standards"
+      ]
+    },
+    {
+      "id": "q18",
+      "type": "ordering",
+      "title": "Process for technical procurement approval",
+      "prompt": "Arrange the steps sensibly.",
+      "items": [
+        "Document the release recommendation",
+        "Check compatibility and standards",
+        "Align costs, port reserve, and usage scope",
+        "Capture the need and number of endpoints",
+        "Derive requirements for network card and switch"
+      ],
+      "correctOrder": [
+        "Capture the need and number of endpoints",
+        "Derive requirements for network card and switch",
+        "Check compatibility and standards",
+        "Align costs, port reserve, and usage scope",
+        "Document the release recommendation"
+      ],
+      "feedback": {
+        "correct": "Correct: This yields a traceable technical approval.",
+        "wrong": "Not optimal: start with need, then suitability, then evaluate the release."
+      },
+      "progressLinks": [
+        "lf03_komponenten_standards"
+      ]
+    },
+    {
+      "id": "q19",
+      "type": "number",
+      "title": "Free ports after expansion",
+      "prompt": "A 24-port switch already has 7 ports in use. For 12 new clients, 2 printers, and 1 uplink, additional ports are needed. How many ports remain free afterwards?",
+      "expected": 2,
+      "toleranceAbs": 0,
+      "showExpectedFormula": "24 - 7 - 12 - 2 - 1 = 2 ports free",
+      "feedback": {
+        "correct": "Correct.",
+        "wrong": "Please balance used and new ports correctly."
+      },
+      "progressLinks": [
+        "lf03_komponenten_standards"
+      ]
+    },
+    {
+      "id": "q20",
+      "type": "short_text",
+      "title": "Procurement note to IT management",
+      "prompt": "Write a short note (4-6 sentences) with standard recommendation, port reserve, and a residual risk.",
+      "minChars": 140,
+      "requiredKeywords": [
+        "standard",
+        "reserve",
+        "risk"
+      ],
+      "expectedOutline": "Technical recommendation, justified reserve, and a realistic remaining point.",
+      "feedback": {
+        "correct": "Correct: The recommendation is technically sound and briefly justified.",
+        "wrong": "Please state standard, reserve, and risk more clearly."
+      },
+      "progressLinks": [
+        "lf03_komponenten_standards"
+      ]
+    },
+    {
+      "id": "sep_f4",
+      "type": "followup_divider",
+      "title": "Follow-up 4 - security and availability release",
+      "from": "it.leitung@ausbildungsbetrieb.example",
+      "to": "support.team@ausbildungsbetrieb.example",
+      "subject": "Before productive release, secure the security and operations baseline",
+      "date": "2026-03-13",
+      "body": "The clients can only go productive once the security baseline, availability assessment, and sustainable network operations are evaluated traceably. Please deliver a final release with residual risk and next step."
+    },
+    {
+      "id": "q21",
+      "type": "single_choice",
+      "title": "Priority before productive release",
+      "prompt": "Which measure has the highest priority before productive release?",
+      "options": [
+        {
+          "text": "Ensure current updates, endpoint protection, and least-privilege access",
+          "rationale": "This establishes a viable security baseline for operations."
+        },
+        {
+          "text": "Set up one shared local admin account for all clients",
+          "rationale": "This increases risk and conflicts with clean permission management."
+        },
+        {
+          "text": "Open all shares to all users",
+          "rationale": "This violates the principle of least privilege."
+        }
+      ],
+      "correctIndex": 0,
+      "feedback": {
+        "correct": "Correct: security baseline and permissions come before convenience.",
+        "wrong": "Not suitable: before release, protection and permissions must be set properly."
+      },
+      "progressLinks": [
+        "lf03_sicherheit_backup"
+      ]
+    },
+    {
+      "id": "q22",
+      "type": "multi_select",
+      "title": "Availability and sustainable network operations",
+      "prompt": "Which points improve availability or sustainable network operations? (Multiple selections)",
+      "options": [
+        {
+          "text": "Provide spare ports or replacement devices for critical workstations",
+          "correct": true,
+          "rationale": "This shortens response time during outages."
+        },
+        {
+          "text": "Plan regular updates and maintenance windows",
+          "correct": true,
+          "rationale": "Preventive maintenance stabilizes operations."
+        },
+        {
+          "text": "Use UPS or protected power for central network components",
+          "correct": true,
+          "rationale": "This reduces the risk of unplanned outages during power issues."
+        },
+        {
+          "text": "Use energy-saving profiles outside usage times",
+          "correct": true,
+          "rationale": "This combines green IT with predictable operations."
+        },
+        {
+          "text": "Attach passwords in plain text on the monitor",
+          "correct": false,
+          "rationale": "That is a clear security risk."
+        }
+      ],
+      "feedback": {
+        "correct": "Correct: You combine stability, power protection, and green IT cleanly.",
+        "wrong": "Partly wrong: think availability, maintenance, and secure operations more tightly together."
+      },
+      "progressLinks": [
+        "lf03_verfuegbarkeit_berechnen",
+        "lf03_stromversorgung_greenit",
+        "lf03_sicherheit_backup"
+      ]
+    },
+    {
+      "id": "q23",
+      "type": "ordering",
+      "title": "Final steps before operational release",
+      "prompt": "Arrange the steps for a clean final release.",
+      "items": [
+        "Create final documentation and release note",
+        "Record open residual risks",
+        "Check the security baseline",
+        "Test connectivity, login, and cloud access",
+        "Agree on monitoring or a re-check date"
+      ],
+      "correctOrder": [
+        "Check the security baseline",
+        "Test connectivity, login, and cloud access",
+        "Record open residual risks",
+        "Create final documentation and release note",
+        "Agree on monitoring or a re-check date"
+      ],
+      "feedback": {
+        "correct": "Correct: This makes the release traceable and operable.",
+        "wrong": "Not optimal: check protection and function first, then record residual risk and follow-up."
+      },
+      "progressLinks": [
+        "lf03_pruefen_warten",
+        "lf03_sicherheit_backup"
+      ]
+    },
+    {
+      "id": "q24",
+      "type": "number",
+      "title": "Calculate maximum downtime",
+      "prompt": "A central network service should reach 99.8% availability in a 30-day month. How many minutes of downtime are allowed at most?",
+      "expected": 86.4,
+      "toleranceAbs": 0.5,
+      "showExpectedFormula": "30 * 24 * 60 * 0.002 = 86.4 minutes",
+      "feedback": {
+        "correct": "Correct.",
+        "wrong": "Please multiply total minutes in the month by the downtime share."
+      },
+      "progressLinks": [
+        "lf03_verfuegbarkeit_berechnen"
+      ]
+    },
+    {
+      "id": "q25",
+      "type": "short_text",
+      "title": "Final note for operational release",
+      "prompt": "Formulate a final note (4-6 sentences) with release status, residual risk, and next step.",
+      "minChars": 160,
+      "requiredKeywords": [
+        "release",
+        "risk",
+        "next step"
+      ],
+      "expectedOutline": "Clear release status, named residual risk, and a concrete follow-up action.",
+      "feedback": {
+        "correct": "Correct: The note is usable for operations and follow-up.",
+        "wrong": "Please make release, residual risk, and follow-up action clearer."
+      },
+      "progressLinks": [
+        "lf03_sicherheit_backup",
+        "lf03_pruefen_warten",
+        "lf03_stromversorgung_greenit"
+      ]
+    }
+  ]
+}

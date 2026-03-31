@@ -1,0 +1,159 @@
+{
+  "scenario": {
+    "company": "Training company IT services",
+    "scale": "SME, 220 employees",
+    "context": "Station 03 of the day run: design the software product and place it in the architecture.",
+    "mission": "You develop a viable UI concept with an architectural perspective and justified design decisions.",
+    "station": {
+      "id": "LF10FIAE-ST-03",
+      "department": "Solution design",
+      "profile": "Product design and architecture",
+      "constraints": [
+        "Separate UI and business logic cleanly",
+        "Justify design decisions",
+        "Clarify interfaces early"
+      ]
+    },
+    "customerRequest": {
+      "from": "architektur@ausbildungsbetrieb.example",
+      "to": "dev.team@ausbildungsbetrieb.example",
+      "subject": "Station 03: Product design",
+      "date": "2026-03-13",
+      "body": "Please create a UI design in the context of the overall architecture."
+    }
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "type": "multi_select",
+      "title": "Create the architectural connection",
+      "prompt": "Which points are important for placing the UI in the architecture? (Multiple choice)",
+      "options": [
+        {
+          "text": "Describe interfaces between the UI and the business logic",
+          "correct": true,
+          "rationale": "Prevents coupling problems."
+        },
+        {
+          "text": "Sketch the data flow between components",
+          "correct": true,
+          "rationale": "Helps with the design."
+        },
+        {
+          "text": "Look at the architecture only after go-live",
+          "correct": false,
+          "rationale": "Too late for stable decisions."
+        },
+        {
+          "text": "Record responsibilities per layer",
+          "correct": true,
+          "rationale": "Improves maintainability."
+        },
+        {
+          "text": "Leave dependencies intentionally unclear",
+          "correct": false,
+          "rationale": "Makes maintenance harder."
+        }
+      ],
+      "feedback": {
+        "correct": "Correct: The architectural connection is established on a solid basis.",
+        "wrong": "Partly wrong: Please secure interfaces and layer responsibility more clearly."
+      },
+      "progressLinks": [
+        "lf10fiae_produktdesign_architektur"
+      ]
+    },
+    {
+      "id": "q2",
+      "type": "single_choice",
+      "title": "Use a design pattern sensibly",
+      "prompt": "When does using a design pattern make sense?",
+      "options": [
+        {
+          "text": "Only when it appeared in a tutorial",
+          "rationale": "Not context-based."
+        },
+        {
+          "text": "When it simplifies the concrete problem and stays understandable",
+          "rationale": "A practical use of patterns."
+        },
+        {
+          "text": "Always, because patterns look modern",
+          "rationale": "Not a professional criterion."
+        }
+      ],
+      "correctIndex": 1,
+      "feedback": {
+        "correct": "Correct: Patterns have to serve the problem.",
+        "wrong": "Not suitable: Choosing a pattern needs a clear problem reference."
+      },
+      "progressLinks": [
+        "lf10fiae_produktdesign_architektur"
+      ]
+    },
+    {
+      "id": "q3",
+      "type": "ordering",
+      "title": "Secure the design decision",
+      "prompt": "Put the flow for a robust design decision in order.",
+      "items": [
+        "Clarify the user and process goal",
+        "Sketch solution options",
+        "Evaluate the architectural impact",
+        "Review the decision with the team",
+        "Document the decision"
+      ],
+      "correctOrder": [
+        "Clarify the user and process goal",
+        "Sketch solution options",
+        "Evaluate the architectural impact",
+        "Review the decision with the team",
+        "Document the decision"
+      ],
+      "feedback": {
+        "correct": "Correct: The decision path is traceable.",
+        "wrong": "Not ideal: Please go through the goal and architectural impact before documentation and review."
+      },
+      "progressLinks": [
+        "lf10fiae_produktdesign_architektur"
+      ]
+    },
+    {
+      "id": "q4",
+      "type": "number",
+      "title": "Design review time",
+      "prompt": "Four design variants are discussed for 18 minutes each, plus a 22-minute closing round. How many minutes in total?",
+      "expected": 94,
+      "toleranceAbs": 1,
+      "showExpectedFormula": "4*18 + 22 = 94 minutes",
+      "feedback": {
+        "correct": "Calculated correctly.",
+        "wrong": "Please add the variant times and the closing round correctly."
+      },
+      "progressLinks": [
+        "lf10fiae_produktdesign_architektur"
+      ]
+    },
+    {
+      "id": "q5",
+      "type": "short_text",
+      "title": "Justify the architecture decision briefly",
+      "prompt": "Describe in 4-6 sentences why the chosen UI architecture is maintainable.",
+      "minChars": 150,
+      "requiredKeywords": [
+        "layer",
+        "interface",
+        "maintainable"
+      ],
+      "expectedOutline": "Justification of maintainability through layering and clear interfaces.",
+      "feedback": {
+        "correct": "Correct: The justification is technically coherent.",
+        "wrong": "Please develop the layer and interface references more clearly."
+      },
+      "progressLinks": [
+        "lf10fiae_produktdesign_architektur",
+        "lf10fiae_ui_dokumentation"
+      ]
+    }
+  ]
+}

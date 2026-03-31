@@ -1,0 +1,159 @@
+{
+  "scenario": {
+    "company": "Training company IT service",
+    "scale": "Regional, 120 employees",
+    "context": "Station 5 of the day: needs and requirements analysis.",
+    "mission": "You capture customer requirements and derive a suitable workstation recommendation.",
+    "station": {
+      "id": "NS-ST-05",
+      "department": "PreSales",
+      "profile": "Requirements intake for office workstations",
+      "constraints": [
+        "capture questions in a structured way",
+        "separate requirements from wishes",
+        "record a brief profile in writing"
+      ]
+    },
+    "customerRequest": {
+      "from": "vertrieb@ausbildungsbetrieb.example",
+      "to": "rollout.team@systemhaus.example",
+      "subject": "Needs analysis for new workstations",
+      "date": "2026-03-13",
+      "body": "Please conduct a structured needs analysis for a small sales group.\n\nWe need a short requirements profile as the basis for the selection decision."
+    }
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "type": "multi_select",
+      "title": "Good questions in the initial interview",
+      "prompt": "Which questions are professionally relevant for the needs analysis? (Multiple selection)",
+      "options": [
+        {
+          "text": "Which applications are used daily?",
+          "correct": true,
+          "rationale": "Direct impact on performance requirements."
+        },
+        {
+          "text": "How many monitors and which ports are required?",
+          "correct": true,
+          "rationale": "Important for compatibility and equipment."
+        },
+        {
+          "text": "Which answer color should the device have?",
+          "correct": false,
+          "rationale": "Not a professional core point for the use case."
+        },
+        {
+          "text": "Are there constraints on budget or standardization?",
+          "correct": true,
+          "rationale": "Economic and operational requirements are central."
+        },
+        {
+          "text": "Should the user's private apps be installed automatically?",
+          "correct": false,
+          "rationale": "Not standardized and often not allowed."
+        }
+      ],
+      "feedback": {
+        "correct": "Correct: you capture technical and economic core requirements.",
+        "wrong": "Partially unsuitable: please prioritize professional criteria more strongly."
+      },
+      "progressLinks": [
+        "lf02_benutzer_kundenkommunikation"
+      ]
+    },
+    {
+      "id": "q2",
+      "type": "single_choice",
+      "title": "Requirement or wish",
+      "prompt": "Which statement is a real technical requirement?",
+      "options": [
+        {
+          "text": "The PC should look as cool as possible",
+          "rationale": "Vague wish, not a robust criterion."
+        },
+        {
+          "text": "The workstation needs 2 monitors with native full HD output",
+          "rationale": "Measurable, verifiable technical requirement."
+        },
+        {
+          "text": "The device should simply be the best",
+          "rationale": "Not usable without criteria."
+        }
+      ],
+      "correctIndex": 1,
+      "feedback": {
+        "correct": "Correct: the statement is concrete and verifiable.",
+        "wrong": "Not specific enough for a technical selection."
+      },
+      "progressLinks": [
+        "lf02_arbeitsplaetze_planen_auswaehlen"
+      ]
+    },
+    {
+      "id": "q3",
+      "type": "ordering",
+      "title": "From need to recommendation",
+      "prompt": "Arrange the flow sensibly.",
+      "items": [
+        "Create the recommendation with justification",
+        "Collect requirements",
+        "Define minimum criteria",
+        "Compare suitable options",
+        "Validate requirements with the customer"
+      ],
+      "correctOrder": [
+        "Collect requirements",
+        "Validate requirements with the customer",
+        "Define minimum criteria",
+        "Compare suitable options",
+        "Create the recommendation with justification"
+      ],
+      "feedback": {
+        "correct": "Correct: this produces a robust recommendation.",
+        "wrong": "Not optimal: secure validated requirements first, then compare."
+      },
+      "progressLinks": [
+        "lf02_arbeitsplaetze_planen_auswaehlen"
+      ]
+    },
+    {
+      "id": "q4",
+      "type": "number",
+      "title": "Dual-monitor requirement",
+      "prompt": "A group has 18 employees, 70% of them need two monitors. For how many workstations should you plan dual-monitor equipment (round up)?",
+      "expected": 13,
+      "toleranceAbs": 0,
+      "showExpectedFormula": "18 * 0.70 = 12.6 -> round up to 13",
+      "feedback": {
+        "correct": "Correct planning.",
+        "wrong": "Please calculate the percentage and round up to full workstations."
+      },
+      "progressLinks": [
+        "lf02_rechnen_abschaetzen"
+      ]
+    },
+    {
+      "id": "q5",
+      "type": "short_text",
+      "title": "Mini requirements profile",
+      "prompt": "Formulate a short requirements profile (4-6 sentences) with usage, must-have criteria and budget frame.",
+      "minChars": 140,
+      "requiredKeywords": [
+        "usage",
+        "must",
+        "budget"
+      ],
+      "expectedOutline": "Compact: usage profile, technical must-haves, economic frame.",
+      "feedback": {
+        "correct": "Correct: the profile is directly usable as a working basis.",
+        "wrong": "Please state usage, must-have criteria and budget frame more clearly."
+      },
+      "progressLinks": [
+        "lf02_dokumentation",
+        "lf02_benutzer_kundenkommunikation"
+      ]
+    }
+  ]
+}

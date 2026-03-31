@@ -1,0 +1,160 @@
+{
+  "scenario": {
+    "company": "Training company IT service",
+    "scale": "Mid-sized company, 180 employees",
+    "context": "Station 6 of the daily run: assess protection needs for workplace software and clients.",
+    "mission": "You classify protection needs for software, the client, and the data flow of a workstation.",
+    "station": {
+      "id": "LF04-ST-06",
+      "department": "Sales",
+      "profile": "CRM, file storage, office tools, and a standardized workstation client",
+      "constraints": [
+        "Justify protection needs professionally",
+        "Connect data value and outage impact",
+        "Derive minimum protection"
+      ]
+    },
+    "customerRequest": {
+      "from": "vertrieb.leitung@ausbildungsbetrieb.example",
+      "to": "it.service@ausbildungsbetrieb.example",
+      "subject": "Station 06: justify protection needs for the CRM workstation",
+      "date": "2026-03-13",
+      "body": "Please assess the protection needs and minimum protection for CRM, file storage, and the related workstation client in a traceable way."
+    }
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "type": "single_choice",
+      "title": "Strongest driver of protection need",
+      "prompt": "Which factor determines the protection need most strongly?",
+      "options": [
+        {
+          "text": "Sensitivity of the data and impact on the business process",
+          "rationale": "Data value and process impact are the decisive criteria."
+        },
+        {
+          "text": "Only the color of the case",
+          "rationale": "Appearance has no relation to protection needs."
+        },
+        {
+          "text": "Only the purchase price of the client",
+          "rationale": "Costs alone do not define protection need."
+        }
+      ],
+      "correctIndex": 0,
+      "feedback": {
+        "correct": "Correct: data value and operational impact are decisive.",
+        "wrong": "Not suitable: protection need must be tied to data and process impact."
+      },
+      "progressLinks": [
+        "lf04_schutzbedarf_arbeitsplatzsoftware_clients"
+      ]
+    },
+    {
+      "id": "q2",
+      "type": "multi_select",
+      "title": "Assessment aspects for workplace software and clients",
+      "prompt": "Which aspects are relevant for the protection-needs assessment? (Multiple selections)",
+      "options": [
+        {
+          "text": "Processed data category and sensitivity",
+          "correct": true,
+          "rationale": "Data value is a major factor in determining protection need."
+        },
+        {
+          "text": "Patch and update capability of software and client",
+          "correct": true,
+          "rationale": "That influences the attack surface."
+        },
+        {
+          "text": "Impact in case of outage or manipulation",
+          "correct": true,
+          "rationale": "Damage impact is a core part of the assessment."
+        },
+        {
+          "text": "Only the personal preferences of individual users",
+          "correct": false,
+          "rationale": "Protection need is not a matter of taste."
+        },
+        {
+          "text": "Dependencies between software, client, and data flow",
+          "correct": true,
+          "rationale": "These interactions also have to be considered."
+        }
+      ],
+      "feedback": {
+        "correct": "Correct: you weigh data value, operations, and the technical basis cleanly.",
+        "wrong": "Partly wrong: please connect data, outage impact, and system dependencies more strongly."
+      },
+      "progressLinks": [
+        "lf04_schutzbedarf_arbeitsplatzsoftware_clients"
+      ]
+    },
+    {
+      "id": "q3",
+      "type": "ordering",
+      "title": "Methodology for the CRM workstation",
+      "prompt": "Arrange the steps for determining protection need.",
+      "items": [
+        "Classify protection need for software and client",
+        "Document minimum protection and residual items",
+        "Capture software, client, and data flow",
+        "Assess outage, manipulation, and access consequences",
+        "Combine technical and organizational risks"
+      ],
+      "correctOrder": [
+        "Capture software, client, and data flow",
+        "Assess outage, manipulation, and access consequences",
+        "Combine technical and organizational risks",
+        "Classify protection need for software and client",
+        "Document minimum protection and residual items"
+      ],
+      "feedback": {
+        "correct": "Correct: this builds the protection-needs assessment in a professional and traceable way.",
+        "wrong": "Not ideal: first capture and assess, then classify and document."
+      },
+      "progressLinks": [
+        "lf04_schutzbedarf_methodik",
+        "lf04_schutzbedarf_arbeitsplatzsoftware_clients"
+      ]
+    },
+    {
+      "id": "q4",
+      "type": "number",
+      "title": "Build a simple priority score",
+      "prompt": "A model adds data value 4, outage impact 5, and integrity risk 3. What is the total score?",
+      "expected": 12,
+      "toleranceAbs": 0,
+      "showExpectedFormula": "4 + 5 + 3 = 12",
+      "feedback": {
+        "correct": "Calculated correctly.",
+        "wrong": "Please add all three factors."
+      },
+      "progressLinks": [
+        "lf04_schutzbedarf_arbeitsplatzsoftware_clients"
+      ]
+    },
+    {
+      "id": "q5",
+      "type": "short_text",
+      "title": "Briefly justify protection need",
+      "prompt": "In 4-6 sentences, justify the protection need of a CRM workstation with one core measure and one residual point.",
+      "minChars": 160,
+      "requiredKeywords": [
+        "protection need",
+        "crm",
+        "measure"
+      ],
+      "expectedOutline": "State data value and outage impact, derive a core measure, and make the residual point transparent.",
+      "feedback": {
+        "correct": "Correct: the justification is professionally sound and useful in operations.",
+        "wrong": "Please separate protection need, measure, and residual point more clearly."
+      },
+      "progressLinks": [
+        "lf04_schutzbedarf_arbeitsplatzsoftware_clients",
+        "lf04_dokumentation_kommunikation"
+      ]
+    }
+  ]
+}

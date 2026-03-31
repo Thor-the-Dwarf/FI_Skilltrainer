@@ -1,0 +1,158 @@
+{
+  "scenario": {
+    "company": "Training company IT services",
+    "scale": "SME, 280 employees",
+    "context": "Station 02 of the day run: project management standards and project organization.",
+    "mission": "You select suitable PM standards and structure roles as well as communication paths for a customer project.",
+    "station": {
+      "id": "LF12FIAE-ST-02",
+      "department": "Project management",
+      "profile": "PM standards, roles, project organization",
+      "constraints": [
+        "Classify standards according to context",
+        "Assign roles clearly",
+        "Plan communication paths reliably"
+      ]
+    },
+    "customerRequest": {
+      "from": "pm.office@ausbildungsbetrieb.example",
+      "to": "projektteam@ausbildungsbetrieb.example",
+      "subject": "Station 02: PM standard and organization",
+      "date": "2026-03-13",
+      "body": "Please define the PM approach for a new customer project and describe a viable project organization."
+    }
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "type": "single_choice",
+      "title": "Choose a PM standard",
+      "prompt": "What should the selection of a PM standard be aligned with?",
+      "options": [
+        {
+          "text": "Only with personal preference",
+          "rationale": "Too narrow for the project context."
+        },
+        {
+          "text": "With project complexity, team size, and compliance requirements",
+          "rationale": "A context-based selection is sound."
+        },
+        {
+          "text": "Only with the cheapest tool",
+          "rationale": "A tool does not replace a methodological fit."
+        }
+      ],
+      "correctIndex": 1,
+      "feedback": {
+        "correct": "Correct: These are exactly the factors that determine whether the standard fits.",
+        "wrong": "Not suitable: The standard has to match the project context."
+      },
+      "progressLinks": [
+        "lf12fiae_pm_grundlagen_organisation"
+      ]
+    },
+    {
+      "id": "q2",
+      "type": "multi_select",
+      "title": "Make project organization robust",
+      "prompt": "Which elements are important for a clear project organization? (Multiple choice)",
+      "options": [
+        {
+          "text": "Document roles and decision-making authority",
+          "correct": true,
+          "rationale": "Prevents ambiguity."
+        },
+        {
+          "text": "Define a communication rhythm for status and risks",
+          "correct": true,
+          "rationale": "Keeps the project steerable."
+        },
+        {
+          "text": "Leave responsibilities intentionally open",
+          "correct": false,
+          "rationale": "Leads to friction."
+        },
+        {
+          "text": "Define escalation paths with named contacts",
+          "correct": true,
+          "rationale": "Necessary when disruptions occur."
+        },
+        {
+          "text": "Pass on changes only informally",
+          "correct": false,
+          "rationale": "Not reliable."
+        }
+      ],
+      "feedback": {
+        "correct": "Correct: The organization is clear and able to act.",
+        "wrong": "Partly wrong: Please secure responsibilities and escalation more clearly."
+      },
+      "progressLinks": [
+        "lf12fiae_pm_grundlagen_organisation"
+      ]
+    },
+    {
+      "id": "q3",
+      "type": "ordering",
+      "title": "Build the project organization",
+      "prompt": "Put the setup of a project organization in order.",
+      "items": [
+        "Clarify the project goal and framework",
+        "Define roles and responsibilities",
+        "Set communication paths",
+        "Align decision and escalation rules",
+        "Approve the documented organization"
+      ],
+      "correctOrder": [
+        "Clarify the project goal and framework",
+        "Define roles and responsibilities",
+        "Set communication paths",
+        "Align decision and escalation rules",
+        "Approve the documented organization"
+      ],
+      "feedback": {
+        "correct": "Correct: The organizational setup is logical and robust.",
+        "wrong": "Not ideal: Please place goal and role clarification before rules and approval."
+      },
+      "progressLinks": [
+        "lf12fiae_pm_grundlagen_organisation"
+      ]
+    },
+    {
+      "id": "q4",
+      "type": "number",
+      "title": "Weekly meeting effort",
+      "prompt": "Each week, 3 status meetings of 25 minutes each and 1 risk review lasting 40 minutes are planned. How many minutes is that in total?",
+      "expected": 115,
+      "toleranceAbs": 1,
+      "showExpectedFormula": "3*25 + 40 = 115 minutes",
+      "feedback": {
+        "correct": "Calculated correctly.",
+        "wrong": "Please add all meeting times correctly."
+      },
+      "progressLinks": [
+        "lf12fiae_pm_grundlagen_organisation"
+      ]
+    },
+    {
+      "id": "q5",
+      "type": "short_text",
+      "title": "Describe project organization briefly",
+      "prompt": "Describe a suitable project organization for a customer order in 4-6 sentences.",
+      "minChars": 150,
+      "requiredKeywords": [
+        "role",
+        "communication",
+        "escalation"
+      ],
+      "expectedOutline": "Role model, communication logic, and escalation path in a compact structure.",
+      "feedback": {
+        "correct": "Correct: The organization is described in a traceable way.",
+        "wrong": "Please elaborate roles, communication, and escalation more concretely."
+      },
+      "progressLinks": [
+        "lf12fiae_pm_grundlagen_organisation"
+      ]
+    }
+  ]
+}

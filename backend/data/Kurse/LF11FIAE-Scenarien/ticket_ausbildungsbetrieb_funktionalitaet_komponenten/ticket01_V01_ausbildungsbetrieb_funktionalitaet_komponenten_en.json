@@ -1,0 +1,710 @@
+{
+  "description": null,
+  "scenario": {
+    "company": "Training company IT services",
+    "scale": "SME, 240 employees",
+    "context": "Station 01: component project with follow-up assignments on design, algorithms, quality, and delivery.",
+    "mission": "You handle the kickoff task and several follow-up tasks along a component project with increasing responsibility.",
+    "station": {
+      "id": "LF11FIAE-ST-01",
+      "department": "Application development",
+      "profile": "Modularization, data structures, algorithms, testing, and documentation",
+      "constraints": [
+        "Keep the solution maintainable and traceable",
+        "Justify algorithmic decisions",
+        "Treat tests and documentation as mandatory parts"
+      ]
+    },
+    "customerRequest": {
+      "from": "produkt.owner@ausbildungsbetrieb.example",
+      "to": "dev.team@ausbildungsbetrieb.example",
+      "subject": "Station 01: Prioritization module with follow-up tasks",
+      "date": "2026-03-13",
+      "body": "Please start developing a prioritization module for a service portal.\n\nAfter the kickoff, further tasks on algorithms, data integration, testing, and delivery will follow."
+    }
+  },
+  "questions": [
+    {
+      "id": "q01",
+      "type": "single_choice",
+      "title": "Start modularization",
+      "prompt": "Which design decision makes the most sense for the start?",
+      "options": [
+        {
+          "text": "Put everything into one class",
+          "rationale": "Leads to tight coupling."
+        },
+        {
+          "text": "Separate responsibilities by component",
+          "rationale": "Improves maintainability and testability."
+        },
+        {
+          "text": "Create only filenames, no structure",
+          "rationale": "Without structure, rework increases."
+        }
+      ],
+      "correctIndex": 1,
+      "feedback": {
+        "correct": "Correct: Separating responsibilities is central.",
+        "wrong": "Not suitable: Without clear module boundaries the solution becomes unstable."
+      },
+      "progressLinks": [
+        "lf11fiae_modularisierung_uml_clean_code"
+      ]
+    },
+    {
+      "id": "q02",
+      "type": "multi_select",
+      "title": "UML and clean code",
+      "prompt": "Which points support a sound design? (Multiple choice)",
+      "options": [
+        {
+          "text": "Make dependencies visible in the UML diagram",
+          "correct": true,
+          "rationale": "Increases transparency."
+        },
+        {
+          "text": "Use clear method names and short functions",
+          "correct": true,
+          "rationale": "Improves readability."
+        },
+        {
+          "text": "Leave side effects undocumented",
+          "correct": false,
+          "rationale": "Makes troubleshooting harder."
+        },
+        {
+          "text": "Use patterns only when they provide real benefit",
+          "correct": true,
+          "rationale": "Prevents overengineering."
+        },
+        {
+          "text": "Define interfaces only after implementation",
+          "correct": false,
+          "rationale": "Too late for a clean design."
+        }
+      ],
+      "feedback": {
+        "correct": "Correct: Design and code quality are linked cleanly.",
+        "wrong": "Partly wrong: Please give more weight to UML transparency and clean code."
+      },
+      "progressLinks": [
+        "lf11fiae_modularisierung_uml_clean_code"
+      ]
+    },
+    {
+      "id": "q03",
+      "type": "single_choice",
+      "title": "Data structure for priorities",
+      "prompt": "Which structure fits best for prioritized retrieval?",
+      "options": [
+        {
+          "text": "Unsorted list",
+          "rationale": "Retrieval creates unnecessary effort."
+        },
+        {
+          "text": "Priority structure with a defined order",
+          "rationale": "Matches the business goal directly."
+        },
+        {
+          "text": "Arbitrary set without order",
+          "rationale": "Loses the sequence."
+        }
+      ],
+      "correctIndex": 1,
+      "feedback": {
+        "correct": "Correct: Prioritized retrieval needs an appropriate structure.",
+        "wrong": "Not suitable: The structure has to support the access pattern."
+      },
+      "progressLinks": [
+        "lf11fiae_datenstrukturen_planen"
+      ]
+    },
+    {
+      "id": "q04",
+      "type": "multi_select",
+      "title": "Python and Java structures",
+      "prompt": "Which statements make professional sense? (Multiple choice)",
+      "options": [
+        {
+          "text": "Maps are suitable for fast key access",
+          "correct": true,
+          "rationale": "A typical lookup case."
+        },
+        {
+          "text": "Sets make sense for unique values",
+          "correct": true,
+          "rationale": "Prevent duplicates."
+        },
+        {
+          "text": "Lists are always unsuitable",
+          "correct": false,
+          "rationale": "Lists are useful in many cases."
+        },
+        {
+          "text": "Language-specific libraries have to be considered",
+          "correct": true,
+          "rationale": "Python and Java differ in their ecosystems."
+        },
+        {
+          "text": "Justifying the structure choice is optional",
+          "correct": false,
+          "rationale": "Important for teamwork."
+        }
+      ],
+      "feedback": {
+        "correct": "Correct: Selection and justification are practical.",
+        "wrong": "Partly wrong: Please connect benefits, limits, and language context more clearly."
+      },
+      "progressLinks": [
+        "lf11fiae_datenstrukturen_python_java",
+        "lf11fiae_datenstrukturen_planen"
+      ]
+    },
+    {
+      "id": "q05",
+      "type": "ordering",
+      "title": "From design to implementation",
+      "prompt": "Put the flow for a viable implementation in order.",
+      "items": [
+        "Clarify the problem and inputs",
+        "Define edge cases",
+        "Draft pseudocode",
+        "Implement and test",
+        "Estimate runtime impact"
+      ],
+      "correctOrder": [
+        "Clarify the problem and inputs",
+        "Define edge cases",
+        "Draft pseudocode",
+        "Implement and test",
+        "Estimate runtime impact"
+      ],
+      "feedback": {
+        "correct": "Correct: The flow is methodically sound.",
+        "wrong": "Not ideal: Please clarify and design first, then implement and evaluate."
+      },
+      "progressLinks": [
+        "lf11fiae_algorithmen_sortierung"
+      ]
+    },
+    {
+      "id": "q06",
+      "type": "number",
+      "title": "Implementation effort",
+      "prompt": "A module has 7 subtasks of 28 minutes each. How many minutes is the total effort?",
+      "expected": 196,
+      "showExpectedFormula": "7 * 28 = 196 minutes",
+      "feedback": {
+        "correct": "Calculated correctly.",
+        "wrong": "Please multiply quantity and duration correctly."
+      },
+      "progressLinks": [
+        "lf11fiae_algorithmen_sortierung"
+      ]
+    },
+    {
+      "id": "q07",
+      "type": "short_text",
+      "title": "Justify the design decision",
+      "prompt": "Justify the module and data-structure decision in 4-6 sentences.",
+      "minChars": 160,
+      "requiredKeywords": [
+        "module",
+        "data structure",
+        "justification"
+      ],
+      "expectedOutline": "Sound justification of structural decisions with links to maintainability and runtime.",
+      "feedback": {
+        "correct": "Correct: The decision is justified in a traceable way.",
+        "wrong": "Please make the module and data-structure references more concrete."
+      },
+      "progressLinks": [
+        "lf11fiae_modularisierung_uml_clean_code",
+        "lf11fiae_datenstrukturen_planen"
+      ]
+    },
+    {
+      "id": "q08",
+      "type": "multi_select",
+      "title": "Secure algorithm quality",
+      "prompt": "Which points help make algorithms robust? (Multiple choice)",
+      "options": [
+        {
+          "text": "Test edge cases explicitly",
+          "correct": true,
+          "rationale": "Improves stability."
+        },
+        {
+          "text": "Define clear termination conditions for recursion",
+          "correct": true,
+          "rationale": "Prevents endless loops."
+        },
+        {
+          "text": "Choose a sorting method without data context",
+          "correct": false,
+          "rationale": "Can be inefficient."
+        },
+        {
+          "text": "Estimate runtime impact for typical data volumes",
+          "correct": true,
+          "rationale": "Supports scalability."
+        },
+        {
+          "text": "Ignore failure cases",
+          "correct": false,
+          "rationale": "Contradicts robust design."
+        }
+      ],
+      "feedback": {
+        "correct": "Correct: This strengthens stability and performance.",
+        "wrong": "Partly wrong: Please pay more attention to edge cases, termination conditions, and runtime impact."
+      },
+      "progressLinks": [
+        "lf11fiae_algorithmen_sortierung"
+      ]
+    },
+    {
+      "id": "q09",
+      "type": "single_choice",
+      "title": "Choose a sorting method",
+      "prompt": "Which decision makes the most sense for large, unsorted ticket volumes?",
+      "options": [
+        {
+          "text": "Choose a method without considering runtime",
+          "rationale": "Can be unnecessarily expensive."
+        },
+        {
+          "text": "Choose the sorting method based on data volume and stability requirements",
+          "rationale": "A context-based decision."
+        },
+        {
+          "text": "Always use the same method",
+          "rationale": "Ignores the problem context."
+        }
+      ],
+      "correctIndex": 1,
+      "feedback": {
+        "correct": "Correct: Methods must fit the data profile.",
+        "wrong": "Not suitable: Choosing a method needs context."
+      },
+      "progressLinks": [
+        "lf11fiae_algorithmen_sortierung"
+      ]
+    },
+    {
+      "id": "sep_f1",
+      "type": "followup_divider",
+      "title": "Follow-up task 1 - Deepen algorithms and recursion"
+    },
+    {
+      "id": "q10",
+      "type": "ordering",
+      "title": "Structure the recursion flow",
+      "prompt": "Put the steps for recursive processing in order.",
+      "items": [
+        "Define the termination condition",
+        "Define the subproblem",
+        "Formulate the recursive call",
+        "Combine the result",
+        "Validate with test data"
+      ],
+      "correctOrder": [
+        "Define the termination condition",
+        "Define the subproblem",
+        "Formulate the recursive call",
+        "Combine the result",
+        "Validate with test data"
+      ],
+      "feedback": {
+        "correct": "Correct: The recursion is structured cleanly.",
+        "wrong": "Not ideal: Termination condition and subproblem have to be clear first."
+      },
+      "progressLinks": [
+        "lf11fiae_algorithmen_sortierung"
+      ]
+    },
+    {
+      "id": "q11",
+      "type": "number",
+      "title": "Estimate sorting time",
+      "prompt": "A sorting step needs 4 ms per round. With 38 rounds, how many ms in total?",
+      "expected": 152,
+      "showExpectedFormula": "38 * 4 = 152 ms",
+      "feedback": {
+        "correct": "Calculated correctly.",
+        "wrong": "Please multiply the number of rounds and the duration correctly."
+      },
+      "progressLinks": [
+        "lf11fiae_algorithmen_sortierung"
+      ]
+    },
+    {
+      "id": "q12",
+      "type": "multi_select",
+      "title": "Algorithm refactoring",
+      "prompt": "Which measures improve the algorithm? (Multiple choice)",
+      "options": [
+        {
+          "text": "Break complex steps into clearly named helper functions",
+          "correct": true,
+          "rationale": "Improves readability."
+        },
+        {
+          "text": "Avoid duplicate calculations",
+          "correct": true,
+          "rationale": "Reduces runtime."
+        },
+        {
+          "text": "Keep recursion without a base case",
+          "correct": false,
+          "rationale": "Unstable."
+        },
+        {
+          "text": "Choose the data structure to match the access pattern",
+          "correct": true,
+          "rationale": "Improves efficiency."
+        },
+        {
+          "text": "Test only the happy path",
+          "correct": false,
+          "rationale": "Edge cases remain undiscovered."
+        }
+      ],
+      "feedback": {
+        "correct": "Correct: The refactoring is professionally sound.",
+        "wrong": "Partly wrong: Please consider stability and efficiency together."
+      },
+      "progressLinks": [
+        "lf11fiae_algorithmen_sortierung",
+        "lf11fiae_datenstrukturen_planen"
+      ]
+    },
+    {
+      "id": "q13",
+      "type": "single_choice",
+      "title": "Recursion vs iteration",
+      "prompt": "When is a recursive solution especially useful?",
+      "options": [
+        {
+          "text": "When subproblems are clearly self-similar",
+          "rationale": "That is a typical recursion case."
+        },
+        {
+          "text": "When there is no termination condition",
+          "rationale": "Unsuitable and dangerous."
+        },
+        {
+          "text": "When readability does not matter",
+          "rationale": "An unprofessional priority."
+        }
+      ],
+      "correctIndex": 0,
+      "feedback": {
+        "correct": "Correct: A self-similar problem structure is a good signal.",
+        "wrong": "Not suitable: Recursion needs structure and termination logic."
+      },
+      "progressLinks": [
+        "lf11fiae_algorithmen_sortierung"
+      ]
+    },
+    {
+      "id": "q14",
+      "type": "short_text",
+      "title": "Document algorithm decision",
+      "prompt": "Write in 4-6 sentences why the chosen method fits the load situation.",
+      "minChars": 150,
+      "requiredKeywords": [
+        "data volume",
+        "runtime",
+        "decision"
+      ],
+      "expectedOutline": "Context reference through data volume, runtime impact, and justified choice.",
+      "feedback": {
+        "correct": "Correct: The decision is technically traceable.",
+        "wrong": "Please connect data volume, runtime, and decision more clearly."
+      },
+      "progressLinks": [
+        "lf11fiae_algorithmen_sortierung",
+        "lf11fiae_schnittstellen_dokumentation"
+      ]
+    },
+    {
+      "id": "sep_f2",
+      "type": "followup_divider",
+      "title": "Follow-up task 2 - Compression, cryptography, and hashing"
+    },
+    {
+      "id": "q15",
+      "type": "single_choice",
+      "title": "Classify hashing correctly",
+      "prompt": "Which statement about hash functions is correct?",
+      "options": [
+        {
+          "text": "Hashing is used for integrity checks and is not reversible",
+          "rationale": "Describes the core purpose correctly."
+        },
+        {
+          "text": "Hashing replaces every encryption",
+          "rationale": "Wrong: integrity and confidentiality are different."
+        },
+        {
+          "text": "Hashing compresses data automatically",
+          "rationale": "Hashing is not compression."
+        }
+      ],
+      "correctIndex": 0,
+      "feedback": {
+        "correct": "Correct: The integrity aspect is central.",
+        "wrong": "Not suitable: Separate the purposes of hashing, encryption, and compression."
+      },
+      "progressLinks": [
+        "lf11fiae_kompression_krypto_hash"
+      ]
+    },
+    {
+      "id": "q16",
+      "type": "multi_select",
+      "title": "Security-oriented implementation",
+      "prompt": "Which points make sense in implementation? (Multiple choice)",
+      "options": [
+        {
+          "text": "Choose suitable encryption for transport or storage",
+          "correct": true,
+          "rationale": "Context is essential."
+        },
+        {
+          "text": "Store a hash value for integrity checks",
+          "correct": true,
+          "rationale": "Makes tampering visible."
+        },
+        {
+          "text": "Treat compression as the only security measure",
+          "correct": false,
+          "rationale": "Wrong assumption."
+        },
+        {
+          "text": "Handle failure cases for key or token problems",
+          "correct": true,
+          "rationale": "Improves robustness."
+        },
+        {
+          "text": "Build crypto logic without documentation",
+          "correct": false,
+          "rationale": "Not maintainable."
+        }
+      ],
+      "feedback": {
+        "correct": "Correct: Technology and security goal fit together.",
+        "wrong": "Partly wrong: Please secure protection needs and failure cases more strongly."
+      },
+      "progressLinks": [
+        "lf11fiae_kompression_krypto_hash"
+      ]
+    },
+    {
+      "id": "q17",
+      "type": "number",
+      "title": "Compression factor",
+      "prompt": "A file shrinks from 1200 KB to 780 KB. How large is the saving in KB?",
+      "expected": 420,
+      "showExpectedFormula": "1200 - 780 = 420 KB",
+      "feedback": {
+        "correct": "Calculated correctly.",
+        "wrong": "Please subtract the original and target sizes correctly."
+      },
+      "progressLinks": [
+        "lf11fiae_kompression_krypto_hash"
+      ]
+    },
+    {
+      "id": "q18",
+      "type": "ordering",
+      "title": "Security chain in the module",
+      "prompt": "Put the flow for secure data transfer in order.",
+      "items": [
+        "Validate data",
+        "Compress optionally",
+        "Encrypt",
+        "Generate a hash for integrity checks",
+        "Verify on the receiving side"
+      ],
+      "correctOrder": [
+        "Validate data",
+        "Compress optionally",
+        "Encrypt",
+        "Generate a hash for integrity checks",
+        "Verify on the receiving side"
+      ],
+      "feedback": {
+        "correct": "Correct: The flow is consistent and security-oriented.",
+        "wrong": "Not ideal: Please stage validation, protection, and verification cleanly."
+      },
+      "progressLinks": [
+        "lf11fiae_kompression_krypto_hash"
+      ]
+    },
+    {
+      "id": "sep_f3",
+      "type": "followup_divider",
+      "title": "Follow-up task 3 - JSON, web service, and database"
+    },
+    {
+      "id": "q19",
+      "type": "multi_select",
+      "title": "Integration stability",
+      "prompt": "Which measures make the integration more robust? (Multiple choice)",
+      "options": [
+        {
+          "text": "Validate the JSON structure before processing",
+          "correct": true,
+          "rationale": "Prevents follow-up errors."
+        },
+        {
+          "text": "Plan a timeout and retry strategy for the web service",
+          "correct": true,
+          "rationale": "Secures availability."
+        },
+        {
+          "text": "Ignore API errors if a response arrives",
+          "correct": false,
+          "rationale": "Faulty behavior stays hidden."
+        },
+        {
+          "text": "Align DB write operations with the API status",
+          "correct": true,
+          "rationale": "Important for consistency."
+        },
+        {
+          "text": "Take over version changes without testing",
+          "correct": false,
+          "rationale": "Increases integration risk."
+        }
+      ],
+      "feedback": {
+        "correct": "Correct: The integration logic is built robustly.",
+        "wrong": "Partly wrong: Please secure validation, error handling, and consistency more strongly."
+      },
+      "progressLinks": [
+        "lf11fiae_json_webservice_datenbank"
+      ]
+    },
+    {
+      "id": "q20",
+      "type": "single_choice",
+      "title": "Error strategy for web service",
+      "prompt": "Which response makes sense for HTTP errors?",
+      "options": [
+        {
+          "text": "Log the error, handle it in a controlled way, and check a business fallback",
+          "rationale": "Stable and traceable."
+        },
+        {
+          "text": "Ignore the error silently",
+          "rationale": "Leads to silent defects."
+        },
+        {
+          "text": "Terminate the application immediately",
+          "rationale": "Not always appropriate."
+        }
+      ],
+      "correctIndex": 0,
+      "feedback": {
+        "correct": "Correct: This is a robust error strategy.",
+        "wrong": "Not suitable: Errors need controlled handling."
+      },
+      "progressLinks": [
+        "lf11fiae_json_webservice_datenbank"
+      ]
+    },
+    {
+      "id": "q21",
+      "type": "short_text",
+      "title": "Integration note",
+      "prompt": "Formulate in 4-6 sentences how JSON, web service, and DB work together reliably.",
+      "minChars": 160,
+      "requiredKeywords": [
+        "json",
+        "api",
+        "database"
+      ],
+      "expectedOutline": "Data flow with validation, error strategy, and consistency reference.",
+      "feedback": {
+        "correct": "Correct: The integration chain is described in a traceable way.",
+        "wrong": "Please connect JSON, the web service, and the DB more concretely."
+      },
+      "progressLinks": [
+        "lf11fiae_json_webservice_datenbank",
+        "lf11fiae_schnittstellen_dokumentation"
+      ]
+    },
+    {
+      "id": "sep_f4",
+      "type": "followup_divider",
+      "title": "Follow-up task 4 - Testing and documentation delivery"
+    },
+    {
+      "id": "q22",
+      "type": "ordering",
+      "title": "From test plan to unit test",
+      "prompt": "Put the flow for a clean unit-test process in order.",
+      "items": [
+        "Define a test goal for each component",
+        "Derive test cases from requirements",
+        "Run unit tests automatically",
+        "Analyze and fix failures",
+        "Document the results"
+      ],
+      "correctOrder": [
+        "Define a test goal for each component",
+        "Derive test cases from requirements",
+        "Run unit tests automatically",
+        "Analyze and fix failures",
+        "Document the results"
+      ],
+      "feedback": {
+        "correct": "Correct: The test process is structured.",
+        "wrong": "Not ideal: Strategy and test-case derivation have to come before automation."
+      },
+      "progressLinks": [
+        "lf11fiae_testverfahren_unittests"
+      ]
+    },
+    {
+      "id": "q23",
+      "type": "number",
+      "title": "Unit-test rate",
+      "prompt": "Out of 34 unit tests, 29 run successfully. What is the success rate in percent (rounded)?",
+      "expected": 85,
+      "showExpectedFormula": "29/34*100 = 85.29 % ~ 85 %",
+      "feedback": {
+        "correct": "Calculated correctly.",
+        "wrong": "Please calculate the success share correctly as a percentage."
+      },
+      "progressLinks": [
+        "lf11fiae_testverfahren_unittests"
+      ]
+    },
+    {
+      "id": "q24",
+      "type": "short_text",
+      "title": "Formulate interface delivery note",
+      "prompt": "Formulate a delivery note (4-6 sentences) with test status, interface scope, and an open remaining point.",
+      "minChars": 170,
+      "requiredKeywords": [
+        "test status",
+        "interface",
+        "remaining point"
+      ],
+      "expectedOutline": "Clear test status, documented interface scope, and a controlled remaining point.",
+      "feedback": {
+        "correct": "Correct: The delivery note is professionally usable.",
+        "wrong": "Please structure test status, interface content, and the remaining point more clearly."
+      },
+      "progressLinks": [
+        "lf11fiae_schnittstellen_dokumentation",
+        "lf11fiae_testverfahren_unittests"
+      ]
+    }
+  ]
+}

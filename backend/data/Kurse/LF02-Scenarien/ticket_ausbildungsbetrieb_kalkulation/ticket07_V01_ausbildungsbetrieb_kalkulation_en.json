@@ -1,0 +1,158 @@
+{
+  "scenario": {
+    "company": "Training company IT service",
+    "scale": "Regional, 120 employees",
+    "context": "Station 7 of the daily run: costing and profitability.",
+    "mission": "You calculate a small workstation package and check the pricing logic.",
+    "station": {
+      "id": "NS-ST-07",
+      "department": "Procurement/Costing",
+      "profile": "Small procurement with a service component",
+      "constraints": [
+        "Make the calculation steps traceable",
+        "Separate cost categories cleanly",
+        "Briefly classify the result"
+      ]
+    },
+    "customerRequest": {
+      "from": "controlling@ausbildungsbetrieb.example",
+      "to": "rollout.team@systemhaus.example",
+      "subject": "Costing check Station NS-ST-07",
+      "date": "2026-03-13",
+      "body": "Please calculate a small workstation package including a service share and provide a short assessment of price plausibility."
+    }
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "type": "number",
+      "title": "Calculate package price",
+      "prompt": "4 workstations: per station PC 610 EUR, 2 monitors each 165 EUR, keyboard/mouse 30 EUR, setup 0.8 h at 62 EUR/h. What is the total amount (excl. tax)?",
+      "expected": 4078.4,
+      "toleranceAbs": 1,
+      "showExpectedFormula": "4 * (610 + 2*165 + 30 + 0.8*62) = 4,078.40 EUR",
+      "feedback": {
+        "correct": "Correct.",
+        "wrong": "Please combine material and time per station, then multiply."
+      },
+      "progressLinks": [
+        "lf02_rechnen_abschaetzen"
+      ]
+    },
+    {
+      "id": "q2",
+      "type": "single_choice",
+      "title": "Assess economic sense",
+      "prompt": "Which statement best describes an economically sound decision?",
+      "options": [
+        {
+          "text": "Always choose the cheapest offer",
+          "rationale": "This can create follow-up costs and downtime risks."
+        },
+        {
+          "text": "Assess price, suitability, maintainability, and support together",
+          "rationale": "A holistic evaluation reduces wrong decisions."
+        },
+        {
+          "text": "Only look at brand name",
+          "rationale": "Not sufficient without criteria."
+        }
+      ],
+      "correctIndex": 1,
+      "feedback": {
+        "correct": "Correct: economic efficiency is more than purchase price.",
+        "wrong": "Please consider technical suitability and operating costs."
+      },
+      "progressLinks": [
+        "lf02_qualitaet_bewertung"
+      ]
+    },
+    {
+      "id": "q3",
+      "type": "multi_select",
+      "title": "Cost components",
+      "prompt": "Which items typically belong in a workstation calculation? (Multiple selections)",
+      "options": [
+        {
+          "text": "Hardware costs",
+          "correct": true,
+          "rationale": "Foundation of any procurement."
+        },
+        {
+          "text": "Setup and service time",
+          "correct": true,
+          "rationale": "Service share belongs in the overall calculation."
+        },
+        {
+          "text": "Random value with no reference",
+          "correct": false,
+          "rationale": "Not a calculable item."
+        },
+        {
+          "text": "Optional: support/maintenance items",
+          "correct": true,
+          "rationale": "Can be relevant for a realistic overall view."
+        },
+        {
+          "text": "Packaging design only",
+          "correct": false,
+          "rationale": "Not a relevant cost block."
+        }
+      ],
+      "feedback": {
+        "correct": "Correct: You separate relevant cost items cleanly.",
+        "wrong": "Partly off: Please distinguish calculation-relevant items more clearly."
+      },
+      "progressLinks": [
+        "lf02_qualitaet_bewertung"
+      ]
+    },
+    {
+      "id": "q4",
+      "type": "ordering",
+      "title": "Costing workflow",
+      "prompt": "Put the steps in a sensible order.",
+      "items": [
+        "Check the result for plausibility",
+        "Capture quantities and unit prices",
+        "Calculate material and labor cost per station",
+        "Calculate the total for all stations",
+        "Note a short justification for the decision"
+      ],
+      "correctOrder": [
+        "Capture quantities and unit prices",
+        "Calculate material and labor cost per station",
+        "Calculate the total for all stations",
+        "Check the result for plausibility",
+        "Note a short justification for the decision"
+      ],
+      "feedback": {
+        "correct": "Correct: calculation steps and assessment are structured cleanly.",
+        "wrong": "Not optimal: start with data, then calculation and plausibility."
+      },
+      "progressLinks": [
+        "lf02_rechnen_abschaetzen"
+      ]
+    },
+    {
+      "id": "q5",
+      "type": "short_text",
+      "title": "Price assessment",
+      "prompt": "Write a short assessment (4-6 sentences) why the calculated price is plausible or implausible.",
+      "minChars": 130,
+      "requiredKeywords": [
+        "plausible",
+        "costs",
+        "justification"
+      ],
+      "expectedOutline": "Short verdict with cost reference, technical benefit, and justified assessment.",
+      "feedback": {
+        "correct": "Correct: The assessment is understandable.",
+        "wrong": "Please justify the price verdict more with costs and benefits."
+      },
+      "progressLinks": [
+        "lf02_benutzer_kundenkommunikation"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,159 @@
+{
+  "scenario": {
+    "company": "Training company IT service",
+    "scale": "Regional, 120 employees",
+    "context": "Station 2 of the day: check compatibility and ports.",
+    "mission": "You verify that the selected hardware and peripherals work together technically.",
+    "station": {
+      "id": "NS-ST-02",
+      "department": "Sales",
+      "profile": "2 monitors, docking, headset, LAN",
+      "constraints": [
+        "approve only compatible components",
+        "minimize mispurchase rate",
+        "document the approval decision briefly"
+      ]
+    },
+    "customerRequest": {
+      "from": "it.leitung@ausbildungsbetrieb.example",
+      "to": "rollout.team@systemhaus.example",
+      "subject": "Compatibility check for station NS-ST-02",
+      "date": "2026-03-13",
+      "body": "Please check the planned components for station NS-ST-02 for compatibility. Focus: monitor ports, docking, headset and network.\n\nWe need a short, traceable approval decision with justification."
+    }
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "type": "single_choice",
+      "title": "Suitable port for two monitors",
+      "prompt": "Which statement is most sensible for a standard office workstation with 2 monitors?",
+      "options": [
+        {
+          "text": "A single USB 2.0 port is always enough for two monitors",
+          "rationale": "USB 2.0 is not suitable without an appropriate graphics solution."
+        },
+        {
+          "text": "Dock or device needs two suitable video outputs (e.g., HDMI/DisplayPort)",
+          "rationale": "This directly meets the professional requirement."
+        },
+        {
+          "text": "If LAN works, video ports do not matter",
+          "rationale": "Network does not replace monitor ports."
+        }
+      ],
+      "correctIndex": 1,
+      "feedback": {
+        "correct": "Correct: the number and type of video outputs are decisive.",
+        "wrong": "Not fitting: please verify display-output requirements directly."
+      },
+      "progressLinks": [
+        "lf02_kompatibilitaet_pruefen"
+      ]
+    },
+    {
+      "id": "q2",
+      "type": "multi_select",
+      "title": "Compatibility check before approval",
+      "prompt": "Which checkpoints make sense before approval? (Multiple selection)",
+      "options": [
+        {
+          "text": "Compare port types between dock, monitor and device",
+          "correct": true,
+          "rationale": "Direct core of the compatibility check."
+        },
+        {
+          "text": "Verify driver and operating system support",
+          "correct": true,
+          "rationale": "Components must be usable on the software side as well."
+        },
+        {
+          "text": "Only compare the case color of the devices",
+          "correct": false,
+          "rationale": "Appearance is not a technical compatibility proof."
+        },
+        {
+          "text": "Match performance data to the use case",
+          "correct": true,
+          "rationale": "Compatibility only makes sense if the need is met."
+        },
+        {
+          "text": "Preinstall private preferred software without coordination",
+          "correct": false,
+          "rationale": "Not compliant with standards."
+        }
+      ],
+      "feedback": {
+        "correct": "Correct: you check both technical and use-case fit.",
+        "wrong": "Partially incorrect: please weigh professional checkpoints more strongly."
+      },
+      "progressLinks": [
+        "lf02_kompatibilitaet_pruefen"
+      ]
+    },
+    {
+      "id": "q3",
+      "type": "ordering",
+      "title": "Order of the compatibility check",
+      "prompt": "Put the steps in a sensible order.",
+      "items": [
+        "Document approval with a brief justification",
+        "Capture workstation requirements",
+        "Compare port and performance data",
+        "Check driver/OS support",
+        "Run a short functional test with a reference device"
+      ],
+      "correctOrder": [
+        "Capture workstation requirements",
+        "Compare port and performance data",
+        "Check driver/OS support",
+        "Run a short functional test with a reference device",
+        "Document approval with a brief justification"
+      ],
+      "feedback": {
+        "correct": "Correct: this creates a traceable verification chain.",
+        "wrong": "Not optimal: the check should run from need to documented approval."
+      },
+      "progressLinks": [
+        "lf02_kompatibilitaet_pruefen"
+      ]
+    },
+    {
+      "id": "q4",
+      "type": "number",
+      "title": "Small material calculation",
+      "prompt": "2 docks at 89 EUR each, 2 adapters at 24 EUR each, 3 cables at 12 EUR each. What is the total (excluding tax)?",
+      "expected": 262,
+      "toleranceAbs": 1,
+      "showExpectedFormula": "2*89 + 2*24 + 3*12 = 262 EUR",
+      "feedback": {
+        "correct": "Correct calculation.",
+        "wrong": "Please check multiplication per item and the total sum."
+      },
+      "progressLinks": [
+        "lf02_rechnen_abschaetzen"
+      ]
+    },
+    {
+      "id": "q5",
+      "type": "short_text",
+      "title": "Approval note",
+      "prompt": "Write a short approval statement (4-5 sentences) with the check result and justification.",
+      "minChars": 120,
+      "requiredKeywords": [
+        "compatible",
+        "justification",
+        "functional test"
+      ],
+      "expectedOutline": "Clear finding: compatible/not compatible, technical justification, short test reference.",
+      "feedback": {
+        "correct": "Correct: the statement is clear and technically traceable.",
+        "wrong": "Please state result, justification and test reference more clearly."
+      },
+      "progressLinks": [
+        "lf02_dokumentation",
+        "lf02_benutzer_kundenkommunikation"
+      ]
+    }
+  ]
+}

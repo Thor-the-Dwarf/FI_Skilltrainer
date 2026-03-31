@@ -1,0 +1,158 @@
+{
+  "scenario": {
+    "company": "Training company IT service",
+    "scale": "Regional, 140 employees",
+    "context": "Station 4 of the daily run: plan topology and structured cabling.",
+    "mission": "You assess network topologies and derive a traceable cabling decision for a work area.",
+    "station": {
+      "id": "LF03-ST-04",
+      "department": "Infrastructure",
+      "profile": "Star topology, outlet ports, patch panel, and cable routing",
+      "constraints": [
+        "Relate topology and cabling",
+        "Include reserve capacity",
+        "Justify practical maintainability"
+      ]
+    },
+    "customerRequest": {
+      "from": "infra.teamlead@ausbildungsbetrieb.example",
+      "to": "support.team@ausbildungsbetrieb.example",
+      "subject": "Station 04: prepare a cabling concept for a new work area",
+      "date": "2026-03-13",
+      "body": "Please assess the appropriate network topology and a simple cabling concept for a new work area. The approval should be short, but technically traceable."
+    }
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "type": "single_choice",
+      "title": "Typical LAN topology in the office",
+      "prompt": "Which topology is most common and practical for modern office workstations?",
+      "options": [
+        {
+          "text": "Star topology via central switches",
+          "rationale": "It is easy to maintain, common, and scales cleanly."
+        },
+        {
+          "text": "Full mesh between all clients",
+          "rationale": "This is unnecessarily complex for standard workstations."
+        },
+        {
+          "text": "Ring topology for every single workstation",
+          "rationale": "This is uncommon in typical office LANs."
+        }
+      ],
+      "correctIndex": 0,
+      "feedback": {
+        "correct": "Correct: This matches common practice in workstation networks.",
+        "wrong": "Not suitable: a different structure is typical for office LANs."
+      },
+      "progressLinks": [
+        "lf03_topologien_verkabelung"
+      ]
+    },
+    {
+      "id": "q2",
+      "type": "multi_select",
+      "title": "Elements of structured cabling",
+      "prompt": "Which items belong in a proper cabling concept? (Multiple selections)",
+      "options": [
+        {
+          "text": "Patch panel in the technical area",
+          "correct": true,
+          "rationale": "This creates a central and maintainable connection point."
+        },
+        {
+          "text": "Labeled outlet ports at the workstation",
+          "correct": true,
+          "rationale": "This improves assignment and support."
+        },
+        {
+          "text": "Documented cable routing and clear assignment",
+          "correct": true,
+          "rationale": "Without documentation, maintainability drops significantly."
+        },
+        {
+          "text": "Loose, unlabeled cables without a plan",
+          "correct": false,
+          "rationale": "That makes operations and troubleshooting harder."
+        },
+        {
+          "text": "Spare ports for later expansion",
+          "correct": true,
+          "rationale": "Spare capacity increases flexibility and reduces later rework."
+        }
+      ],
+      "feedback": {
+        "correct": "Correct: The concept is maintainable and future proof.",
+        "wrong": "Partly wrong: pay more attention to labeling, centralization, and spare capacity."
+      },
+      "progressLinks": [
+        "lf03_topologien_verkabelung"
+      ]
+    },
+    {
+      "id": "q3",
+      "type": "ordering",
+      "title": "Cabling planning sequence",
+      "prompt": "Arrange the steps for a sensible plan.",
+      "items": [
+        "Complete acceptance test and documentation",
+        "Define cable routes and patch panel mapping",
+        "Capture workstations and port demand",
+        "Plan outlet ports per workstation",
+        "Plan labeling and spare capacity"
+      ],
+      "correctOrder": [
+        "Capture workstations and port demand",
+        "Plan outlet ports per workstation",
+        "Define cable routes and patch panel mapping",
+        "Plan labeling and spare capacity",
+        "Complete acceptance test and documentation"
+      ],
+      "feedback": {
+        "correct": "Correct: The sequence moves cleanly from demand to acceptance.",
+        "wrong": "Not optimal: start with demand, then technical design, and finalize with evidence."
+      },
+      "progressLinks": [
+        "lf03_topologien_verkabelung"
+      ]
+    },
+    {
+      "id": "q4",
+      "type": "number",
+      "title": "Calculate the number of ports",
+      "prompt": "In one area, 8 double outlet ports are planned. How many RJ45 ports are available in total?",
+      "expected": 16,
+      "toleranceAbs": 0,
+      "showExpectedFormula": "8 * 2 = 16 ports",
+      "feedback": {
+        "correct": "Correctly calculated.",
+        "wrong": "Count each double outlet as two ports."
+      },
+      "progressLinks": [
+        "lf03_topologien_verkabelung"
+      ]
+    },
+    {
+      "id": "q5",
+      "type": "short_text",
+      "title": "Justify the cabling concept",
+      "prompt": "Formulate in 4-6 sentences a short cabling concept with star topology, patch panel, and spare capacity.",
+      "minChars": 150,
+      "requiredKeywords": [
+        "star",
+        "patch panel",
+        "reserve"
+      ],
+      "expectedOutline": "Briefly explain topology, central assignment, spare capacity, and maintenance benefit.",
+      "feedback": {
+        "correct": "Correct: The concept is traceable and practical.",
+        "wrong": "Please justify topology, central connection, and spare capacity more clearly."
+      },
+      "progressLinks": [
+        "lf03_topologien_verkabelung"
+      ]
+    }
+  ]
+}

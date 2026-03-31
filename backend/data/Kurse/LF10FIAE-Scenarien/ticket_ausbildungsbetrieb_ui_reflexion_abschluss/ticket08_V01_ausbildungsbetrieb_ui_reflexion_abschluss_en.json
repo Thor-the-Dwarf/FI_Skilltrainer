@@ -1,0 +1,161 @@
+{
+  "scenario": {
+    "company": "Training company IT services",
+    "scale": "SME, 220 employees",
+    "context": "Station 08 of the day run: final evaluation of the UI development.",
+    "mission": "You reflect on goal achievement, open points, and improvements for the next development cycle.",
+    "station": {
+      "id": "LF10FIAE-ST-08",
+      "department": "Project review",
+      "profile": "Final evaluation and improvement planning",
+      "constraints": [
+        "Base the target-versus-actual comparison on facts",
+        "Keep open points transparent",
+        "Make the next steps binding"
+      ]
+    },
+    "customerRequest": {
+      "from": "projektleitung@ausbildungsbetrieb.example",
+      "to": "dev.team@ausbildungsbetrieb.example",
+      "subject": "Station 08: UI close and reflection",
+      "date": "2026-03-13",
+      "body": "Please create a closing reflection with goal achievement, risk, and a concrete follow-up plan."
+    }
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "type": "single_choice",
+      "title": "Start the target-versus-actual review",
+      "prompt": "What is the most sensible start to the closing reflection?",
+      "options": [
+        {
+          "text": "List subjective impressions only",
+          "rationale": "Too little substance."
+        },
+        {
+          "text": "Compare goals and achieved results in a structured way",
+          "rationale": "Creates a factual basis for evaluation."
+        },
+        {
+          "text": "Mention only open bugs",
+          "rationale": "An incomplete picture."
+        }
+      ],
+      "correctIndex": 1,
+      "feedback": {
+        "correct": "Correct: The target-versus-actual view is the sound basis.",
+        "wrong": "Not suitable: Reflection needs goal reference and facts."
+      },
+      "progressLinks": [
+        "lf10fiae_ui_tests_ux"
+      ]
+    },
+    {
+      "id": "q2",
+      "type": "multi_select",
+      "title": "Derive improvements",
+      "prompt": "Which points help create robust improvement measures? (Multiple choice)",
+      "options": [
+        {
+          "text": "Name the cause and effect of a problem",
+          "correct": true,
+          "rationale": "Improves learning impact."
+        },
+        {
+          "text": "Assign an owner and date to the measure",
+          "correct": true,
+          "rationale": "Raises the chance of implementation."
+        },
+        {
+          "text": "Leave out critical points",
+          "correct": false,
+          "rationale": "Prevents improvement."
+        },
+        {
+          "text": "Record positive patterns for reuse",
+          "correct": true,
+          "rationale": "Scales good practice."
+        },
+        {
+          "text": "Prioritize everything equally",
+          "correct": false,
+          "rationale": "Makes steering harder."
+        }
+      ],
+      "feedback": {
+        "correct": "Correct: The measures are set up to be implementable.",
+        "wrong": "Partly wrong: Please secure cause reference and commitment more strongly."
+      },
+      "progressLinks": [
+        "lf10fiae_ui_tests_ux",
+        "lf10fiae_ui_dokumentation"
+      ]
+    },
+    {
+      "id": "q3",
+      "type": "ordering",
+      "title": "LF10 closing process",
+      "prompt": "Put the flow for the UI project close in order.",
+      "items": [
+        "Evaluate goal achievement",
+        "Analyze deviations",
+        "Prioritize improvements",
+        "Schedule the next steps",
+        "Communicate the closing status"
+      ],
+      "correctOrder": [
+        "Evaluate goal achievement",
+        "Analyze deviations",
+        "Prioritize improvements",
+        "Schedule the next steps",
+        "Communicate the closing status"
+      ],
+      "feedback": {
+        "correct": "Correct: This is a professional closing process.",
+        "wrong": "Not ideal: Please keep analysis and prioritization before communication."
+      },
+      "progressLinks": [
+        "lf10fiae_ui_tests_ux",
+        "lf10fiae_ui_dokumentation"
+      ]
+    },
+    {
+      "id": "q4",
+      "type": "number",
+      "title": "Goal-achievement rate",
+      "prompt": "Out of 22 defined UI goals, 18 were achieved. What is the goal-achievement rate in percent (rounded)?",
+      "expected": 82,
+      "toleranceAbs": 1,
+      "showExpectedFormula": "18/22*100 = 81.82 % ~ 82 %",
+      "feedback": {
+        "correct": "Calculated correctly.",
+        "wrong": "Please calculate the share of achieved goals correctly."
+      },
+      "progressLinks": [
+        "lf10fiae_ui_tests_ux"
+      ]
+    },
+    {
+      "id": "q5",
+      "type": "short_text",
+      "title": "Closing note",
+      "prompt": "Formulate a closing note in 4-6 sentences with goal achievement, a remaining point, and the next improvement.",
+      "minChars": 170,
+      "requiredKeywords": [
+        "goal achievement",
+        "remaining point",
+        "improvement"
+      ],
+      "expectedOutline": "Clear goal status, transparent remaining point, and a concrete improvement for the next cycle.",
+      "feedback": {
+        "correct": "Correct: The closing note is action-oriented.",
+        "wrong": "Please develop goal achievement, the remaining point, and the improvement more clearly."
+      },
+      "progressLinks": [
+        "lf10fiae_ui_dokumentation",
+        "lf10fiae_ui_tests_ux"
+      ]
+    }
+  ]
+}

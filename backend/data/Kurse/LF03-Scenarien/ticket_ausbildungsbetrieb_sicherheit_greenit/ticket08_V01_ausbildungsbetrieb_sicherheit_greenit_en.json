@@ -1,0 +1,161 @@
+{
+  "scenario": {
+    "company": "Training company IT service",
+    "scale": "Regional, 140 employees",
+    "context": "Station 8 of the daily run: wrap up security, availability, and green IT.",
+    "mission": "You assess security measures, power supply, and a sustainable wrap-up for network operations.",
+    "station": {
+      "id": "LF03-ST-08",
+      "department": "IT operations",
+      "profile": "Backup, availability, UPS, and green IT in the client network",
+      "constraints": [
+        "Think security and operations together",
+        "Prefer measurable points",
+        "Communicate the wrap-up clearly"
+      ]
+    },
+    "customerRequest": {
+      "from": "it.leitung@ausbildungsbetrieb.example",
+      "to": "support.team@ausbildungsbetrieb.example",
+      "subject": "Station 08: prepare a secure and sustainable operational approval",
+      "date": "2026-03-13",
+      "body": "Please assess the security baseline, power supply, and green IT measures for client network operations. We need a short wrap-up note with availability and sustainability context."
+    }
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "type": "multi_select",
+      "title": "Secure operational approval",
+      "prompt": "Which points belong in a secure operational approval? (Multiple selections)",
+      "options": [
+        {
+          "text": "Current updates and protection measures are active",
+          "correct": true,
+          "rationale": "This creates a solid security baseline."
+        },
+        {
+          "text": "Access rights are traceable and limited to what is necessary",
+          "correct": true,
+          "rationale": "This keeps the authorization concept intact."
+        },
+        {
+          "text": "Relevant data is secured by backup or central synchronization",
+          "correct": true,
+          "rationale": "Operational data must remain recoverable."
+        },
+        {
+          "text": "One shared admin password for everyone is sufficient",
+          "correct": false,
+          "rationale": "That contradicts a secure roles and permissions concept."
+        },
+        {
+          "text": "Open network access without authentication makes operations easier",
+          "correct": false,
+          "rationale": "That would be a clear security risk."
+        }
+      ],
+      "feedback": {
+        "correct": "Correct: You secure protection, rights, and data baseline together.",
+        "wrong": "Partly wrong: think more tightly about protection measures, rights, and data backup."
+      },
+      "progressLinks": [
+        "lf03_sicherheit_backup"
+      ]
+    },
+    {
+      "id": "q2",
+      "type": "ordering",
+      "title": "Wrap-up for secure network operations",
+      "prompt": "Arrange the steps for a clean final approval.",
+      "items": [
+        "Create wrap-up note and monitoring hint",
+        "Check backup or central data protection",
+        "Check protection measures and rights baseline",
+        "Check power supply and outage precautions",
+        "Record residual risks for operations"
+      ],
+      "correctOrder": [
+        "Check protection measures and rights baseline",
+        "Check backup or central data protection",
+        "Check power supply and outage precautions",
+        "Record residual risks for operations",
+        "Create wrap-up note and monitoring hint"
+      ],
+      "feedback": {
+        "correct": "Correct: This keeps approval secure and traceable.",
+        "wrong": "Not optimal: first check protection, backup, and power supply, then record residual risks."
+      },
+      "progressLinks": [
+        "lf03_sicherheit_backup",
+        "lf03_verfuegbarkeit_berechnen"
+      ]
+    },
+    {
+      "id": "q3",
+      "type": "single_choice",
+      "title": "Handling unstable power supply",
+      "prompt": "What is most sensible for a small network cabinet with unstable power supply?",
+      "options": [
+        {
+          "text": "Plan a UPS and document an orderly shutdown",
+          "rationale": "This improves availability and reduces follow-up damage."
+        },
+        {
+          "text": "Ignore power outages as long as they are rare",
+          "rationale": "Rare outages can still cause damage."
+        },
+        {
+          "text": "Only record the cabinet temperature",
+          "rationale": "That does not solve the power supply issue."
+        }
+      ],
+      "correctIndex": 0,
+      "feedback": {
+        "correct": "Correct: Supply reliability and orderly operations belong together.",
+        "wrong": "Not suitable: actively secure and document the power supply."
+      },
+      "progressLinks": [
+        "lf03_stromversorgung_greenit"
+      ]
+    },
+    {
+      "id": "q4",
+      "type": "number",
+      "title": "Estimate energy demand",
+      "prompt": "A network cabinet needs an average of 420 watts. It runs 10 hours per workday over 20 workdays. What is the energy demand in kWh?",
+      "expected": 84,
+      "toleranceAbs": 0.5,
+      "showExpectedFormula": "0.42 kW * 10 h * 20 = 84 kWh",
+      "feedback": {
+        "correct": "Correctly calculated.",
+        "wrong": "Convert watts to kW and multiply by time."
+      },
+      "progressLinks": [
+        "lf03_stromversorgung_greenit"
+      ]
+    },
+    {
+      "id": "q5",
+      "type": "short_text",
+      "title": "Wrap-up note for operations",
+      "prompt": "Formulate in 4-6 sentences a wrap-up note with security status, availability context, and energy note.",
+      "minChars": 160,
+      "requiredKeywords": [
+        "security",
+        "availability",
+        "energy"
+      ],
+      "expectedOutline": "Connect security status, operational stability, and a green IT note in a short wrap-up.",
+      "feedback": {
+        "correct": "Correct: The wrap-up note connects protection, operations, and sustainability well.",
+        "wrong": "Please connect security status, availability context, and energy note more clearly."
+      },
+      "progressLinks": [
+        "lf03_sicherheit_backup",
+        "lf03_verfuegbarkeit_berechnen",
+        "lf03_stromversorgung_greenit"
+      ]
+    }
+  ]
+}

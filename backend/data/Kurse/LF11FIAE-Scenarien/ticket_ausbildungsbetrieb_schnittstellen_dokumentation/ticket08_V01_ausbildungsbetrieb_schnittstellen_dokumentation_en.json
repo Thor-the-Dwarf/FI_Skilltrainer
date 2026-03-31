@@ -1,0 +1,159 @@
+{
+  "scenario": {
+    "company": "Training company IT services",
+    "scale": "SME, 240 employees",
+    "context": "Station 08 of the day run: document components and interfaces.",
+    "mission": "You create maintainable interface documentation and derive concrete improvements from the project history.",
+    "station": {
+      "id": "LF11FIAE-ST-08",
+      "department": "Documentation",
+      "profile": "Interface description, versioning, reflection",
+      "constraints": [
+        "Describe interfaces clearly",
+        "Document error cases",
+        "Derive improvements as binding actions"
+      ]
+    },
+    "customerRequest": {
+      "from": "tech.writer@ausbildungsbetrieb.example",
+      "to": "dev.team@ausbildungsbetrieb.example",
+      "subject": "Station 08: Documentation and project close",
+      "date": "2026-03-13",
+      "body": "Please deliver clear interface documentation including error cases and a short closing reflection."
+    }
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "type": "single_choice",
+      "title": "Documentation basics",
+      "prompt": "Which detail is indispensable for interface documentation?",
+      "options": [
+        {
+          "text": "Inputs, outputs, and error behavior",
+          "rationale": "The core of every interface definition."
+        },
+        {
+          "text": "Only internal nicknames for functions",
+          "rationale": "Not clear enough for other teams."
+        },
+        {
+          "text": "Only UI screenshots",
+          "rationale": "Not complete interface information."
+        }
+      ],
+      "correctIndex": 0,
+      "feedback": {
+        "correct": "Correct: These details are mandatory for usable documentation.",
+        "wrong": "Not suitable: Documentation needs input/output details and error behavior."
+      },
+      "progressLinks": [
+        "lf11fiae_schnittstellen_dokumentation"
+      ]
+    },
+    {
+      "id": "q2",
+      "type": "multi_select",
+      "title": "Maintainable documentation",
+      "prompt": "Which points make documentation maintainable? (Multiple choice)",
+      "options": [
+        {
+          "text": "Maintain version and change history",
+          "correct": true,
+          "rationale": "Secures traceability."
+        },
+        {
+          "text": "Provide examples of valid and invalid requests",
+          "correct": true,
+          "rationale": "Improves practical usability."
+        },
+        {
+          "text": "Do not explain error codes",
+          "correct": false,
+          "rationale": "Makes integration harder."
+        },
+        {
+          "text": "State preconditions clearly",
+          "correct": true,
+          "rationale": "Reduces misunderstandings."
+        },
+        {
+          "text": "Distribute documentation only as a chat message",
+          "correct": false,
+          "rationale": "Not sustainable."
+        }
+      ],
+      "feedback": {
+        "correct": "Correct: This creates robust documentation.",
+        "wrong": "Partly wrong: Please secure versioning, examples, and error references more strongly."
+      },
+      "progressLinks": [
+        "lf11fiae_schnittstellen_dokumentation"
+      ]
+    },
+    {
+      "id": "q3",
+      "type": "ordering",
+      "title": "Documentation process",
+      "prompt": "Put the flow from the interface to the final documentation in order.",
+      "items": [
+        "Define the interface scope",
+        "Describe inputs, outputs, and error cases",
+        "Add examples and edge cases",
+        "Capture version and change status",
+        "Document approval for team use"
+      ],
+      "correctOrder": [
+        "Define the interface scope",
+        "Describe inputs, outputs, and error cases",
+        "Add examples and edge cases",
+        "Capture version and change status",
+        "Document approval for team use"
+      ],
+      "feedback": {
+        "correct": "Correct: The documentation process is structured cleanly.",
+        "wrong": "Not ideal: Please finish scope and content first, then versioning and approval."
+      },
+      "progressLinks": [
+        "lf11fiae_schnittstellen_dokumentation"
+      ]
+    },
+    {
+      "id": "q4",
+      "type": "number",
+      "title": "Documentation effort",
+      "prompt": "Documentation of 18 minutes is planned for each of 6 endpoints. Another 24 minutes are added for review. How many minutes in total?",
+      "expected": 132,
+      "toleranceAbs": 1,
+      "showExpectedFormula": "6*18 + 24 = 132 minutes",
+      "feedback": {
+        "correct": "Calculated correctly.",
+        "wrong": "Please add endpoint effort and review correctly."
+      },
+      "progressLinks": [
+        "lf11fiae_schnittstellen_dokumentation"
+      ]
+    },
+    {
+      "id": "q5",
+      "type": "short_text",
+      "title": "LF11 closing reflection",
+      "prompt": "Formulate a reflection in 4-6 sentences with documentation quality, an open point, and an improvement step.",
+      "minChars": 170,
+      "requiredKeywords": [
+        "documentation quality",
+        "open point",
+        "improvement"
+      ],
+      "expectedOutline": "Reflection on documentation quality, remaining point, and concrete improvement.",
+      "feedback": {
+        "correct": "Correct: The reflection is clear and action-oriented.",
+        "wrong": "Please develop documentation quality, the open point, and the improvement more clearly."
+      },
+      "progressLinks": [
+        "lf11fiae_schnittstellen_dokumentation",
+        "lf11fiae_testverfahren_unittests"
+      ]
+    }
+  ]
+}

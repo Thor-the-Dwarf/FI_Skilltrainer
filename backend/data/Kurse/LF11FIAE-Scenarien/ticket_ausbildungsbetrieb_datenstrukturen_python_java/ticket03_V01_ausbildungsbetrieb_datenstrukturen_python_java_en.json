@@ -1,0 +1,160 @@
+{
+  "scenario": {
+    "company": "Training company IT services",
+    "scale": "SME, 240 employees",
+    "context": "Station 03 of the day run: plan data structures and use them in Python/Java.",
+    "mission": "You choose suitable structures and justify your choice for different usage scenarios.",
+    "station": {
+      "id": "LF11FIAE-ST-03",
+      "department": "Application development",
+      "profile": "Data structures and language context",
+      "constraints": [
+        "Consider access patterns",
+        "Take language context into account",
+        "Justify the choice"
+      ]
+    },
+    "customerRequest": {
+      "from": "dev.lead@ausbildungsbetrieb.example",
+      "to": "dev.team@ausbildungsbetrieb.example",
+      "subject": "Station 03: Data structure decisions",
+      "date": "2026-03-13",
+      "body": "Please make well-founded data structure decisions for Python and Java components."
+    }
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "type": "multi_select",
+      "title": "Choose structure by access pattern",
+      "prompt": "Which mappings make sense? (Multiple choice)",
+      "options": [
+        {
+          "text": "Key-based access -> associative structure",
+          "correct": true,
+          "rationale": "Typical lookup case."
+        },
+        {
+          "text": "Duplicate-free collection -> set",
+          "correct": true,
+          "rationale": "Professionally appropriate."
+        },
+        {
+          "text": "Order does not matter -> list is mandatory",
+          "correct": false,
+          "rationale": "Not mandatory."
+        },
+        {
+          "text": "Prioritized retrieval -> priority structure",
+          "correct": true,
+          "rationale": "Matches the access pattern."
+        },
+        {
+          "text": "Solve every case with the same structure",
+          "correct": false,
+          "rationale": "Ignores the business context."
+        }
+      ],
+      "feedback": {
+        "correct": "Correct: Access pattern and structure are assigned cleanly.",
+        "wrong": "Partly wrong: Please align the structure choice more strictly with the access pattern."
+      },
+      "progressLinks": [
+        "lf11fiae_datenstrukturen_planen"
+      ]
+    },
+    {
+      "id": "q2",
+      "type": "single_choice",
+      "title": "Python/Java trade-off",
+      "prompt": "What is especially important when choosing a language for data structures?",
+      "options": [
+        {
+          "text": "Only pay attention to syntax preference",
+          "rationale": "Too short-sighted."
+        },
+        {
+          "text": "Consider libraries, performance, and team competence together",
+          "rationale": "A practical basis for decisions."
+        },
+        {
+          "text": "Choose the language at random",
+          "rationale": "Not professional."
+        }
+      ],
+      "correctIndex": 1,
+      "feedback": {
+        "correct": "Correct: The decision has to be justified from several angles.",
+        "wrong": "Not suitable: Language choice needs technical and organizational criteria."
+      },
+      "progressLinks": [
+        "lf11fiae_datenstrukturen_python_java"
+      ]
+    },
+    {
+      "id": "q3",
+      "type": "ordering",
+      "title": "Build a data-structure decision",
+      "prompt": "Put the decision process in order.",
+      "items": [
+        "Analyze the access pattern",
+        "Compare possible structures",
+        "Check language-specific options",
+        "Use test data for plausibility",
+        "Document the decision"
+      ],
+      "correctOrder": [
+        "Analyze the access pattern",
+        "Compare possible structures",
+        "Check language-specific options",
+        "Use test data for plausibility",
+        "Document the decision"
+      ],
+      "feedback": {
+        "correct": "Correct: The decision is methodically sound.",
+        "wrong": "Not ideal: Please place analysis and comparison before the final documentation."
+      },
+      "progressLinks": [
+        "lf11fiae_datenstrukturen_planen",
+        "lf11fiae_datenstrukturen_python_java"
+      ]
+    },
+    {
+      "id": "q4",
+      "type": "number",
+      "title": "Estimate lookup time",
+      "prompt": "A structure needs 2 ms per lookup. With 65 lookups, how many ms in total?",
+      "expected": 130,
+      "toleranceAbs": 1,
+      "showExpectedFormula": "65 * 2 = 130 ms",
+      "feedback": {
+        "correct": "Calculated correctly.",
+        "wrong": "Please multiply quantity and duration correctly."
+      },
+      "progressLinks": [
+        "lf11fiae_datenstrukturen_planen"
+      ]
+    },
+    {
+      "id": "q5",
+      "type": "short_text",
+      "title": "Justify structure choice",
+      "prompt": "Formulate in 4-6 sentences a justified choice of data structure for a ticket-status cache.",
+      "minChars": 160,
+      "requiredKeywords": [
+        "access",
+        "structure",
+        "reasoning"
+      ],
+      "expectedOutline": "Justification of the choice through access pattern, language context, and maintainability.",
+      "feedback": {
+        "correct": "Correct: The structure choice is argued in a traceable way.",
+        "wrong": "Please connect access, structure, and reasoning more concretely."
+      },
+      "progressLinks": [
+        "lf11fiae_datenstrukturen_planen",
+        "lf11fiae_schnittstellen_dokumentation"
+      ]
+    }
+  ]
+}

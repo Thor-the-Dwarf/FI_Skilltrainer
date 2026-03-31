@@ -70,6 +70,7 @@
     const SCENARIO_TREE_CACHE_STORAGE_KEY = "sr_scenario_tree_cache_v1";
     const TRAINING_DECK_CATALOG_STORAGE_KEY = "sr_training_deck_catalog_v1";
     const TRAINING_DECK_CACHE_STORAGE_KEY = "sr_training_deck_cache_v1";
+    const TRAINING_PROGRESS_STORAGE_KEY_PREFIX = "sr_training_progress_v1";
     const COURSE_UNLOCK_STATE_STORAGE_KEY_PREFIX = "sr_course_unlock_v1";
     const COURSE_UNLOCK_PROGRESS_VERSION = 2;
     const COURSE_UNLOCK_MIN_STEP = 150;
@@ -1002,6 +1003,89 @@
       const normalizedDecks = normalizeStoredTrainingDeckCache(decks);
       try {
         localStorage.setItem(TRAINING_DECK_CACHE_STORAGE_KEY, JSON.stringify(normalizedDecks));
+      } catch {
+      }
+    }
+
+    function getTrainingProgressStorageKey(deck = null) {
+      const deckSource = deck && typeof deck === "object"
+        ? deck
+        : { folder: deck };
+      const safeFolder = sanitizeFolderName(deckSource?.folder || activeTrainingFolder || "");
+      const deckKey = normalizeProgressId(deckSource?.deckKey || activeTrainingDeckKey || safeFolder || "");
+      if (!safeFolder || !deckKey) return "";
+      return `${TRAINING_PROGRESS_STORAGE_KEY_PREFIX}::${safeFolder}::${deckKey}`;
+    }
+
+    function normalizeTrainingStoredQuestionState(value = "") {
+      const normalized = String(value || "").trim().toLowerCase();
+      if (normalized === "correct" || normalized === "wrong") return normalized;
+      return "";
+    }
+
+    function loadTrainingDeckProgressState(deck = null) {
+      const key = getTrainingProgressStorageKey(deck);
+      const validQuestionIds = new Set(
+        (Array.isArray(deck?.questions) ? deck.questions : [])
+          .map((question) => String(question?.id || "").trim())
+          .filter(Boolean)
+      );
+      if (!key || !validQuestionIds.size) return Object.create(null);
+      try {
+        const raw = JSON.parse(localStorage.getItem(key) || "{}");
+        const stateSource = raw && typeof raw === "object" && raw.questionStateById && typeof raw.questionStateById === "object"
+          ? raw.questionStateById
+          : raw;
+        const next = Object.create(null);
+        for (const [questionIdRaw, stateRaw] of Object.entries(stateSource || {})) {
+          const questionId = String(questionIdRaw || "").trim();
+          const state = normalizeTrainingStoredQuestionState(stateRaw);
+          if (!questionId || !state || !validQuestionIds.has(questionId)) continue;
+          next[questionId] = state;
+        }
+        return next;
+      } catch {
+        return Object.create(null);
+      }
+    }
+
+    function saveTrainingDeckProgressState(session = trainingSession) {
+      const sourceSession = session && typeof session === "object" ? session : null;
+      const deck = sourceSession?.deck || null;
+      const key = getTrainingProgressStorageKey(deck);
+      if (!key) return;
+      const validQuestionIds = new Set(
+        (Array.isArray(sourceSession?.questions) ? sourceSession.questions : Array.isArray(deck?.questions) ? deck.questions : [])
+          .map((question) => String(question?.id || "").trim())
+          .filter(Boolean)
+      );
+      const payloadState = {};
+      for (const [questionIdRaw, stateRaw] of Object.entries(sourceSession?.questionStateById || {})) {
+        const questionId = String(questionIdRaw || "").trim();
+        const state = normalizeTrainingStoredQuestionState(stateRaw);
+        if (!questionId || !state || (validQuestionIds.size && !validQuestionIds.has(questionId))) continue;
+        payloadState[questionId] = state;
+      }
+      try {
+        if (!Object.keys(payloadState).length) {
+          localStorage.removeItem(key);
+          return;
+        }
+        localStorage.setItem(key, JSON.stringify({
+          version: 1,
+          folder: sanitizeFolderName(deck?.folder || activeTrainingFolder || ""),
+          deckKey: String(deck?.deckKey || activeTrainingDeckKey || "").trim(),
+          questionStateById: payloadState
+        }));
+      } catch {
+      }
+    }
+
+    function clearTrainingDeckProgressState(deck = null) {
+      const key = getTrainingProgressStorageKey(deck);
+      if (!key) return;
+      try {
+        localStorage.removeItem(key);
       } catch {
       }
     }
@@ -4764,10 +4848,11 @@
     }
 
     function createTrainingSessionFromDeck(deck) {
+      const storedQuestionStateById = loadTrainingDeckProgressState(deck);
       return {
         deck,
         questions: normalizeTrainingQuestions(deck),
-        questionStateById: Object.create(null),
+        questionStateById: storedQuestionStateById,
         answered: 0,
         exactMatches: 0,
         progressTotalUnits: 0,
@@ -4960,6 +5045,7 @@
       activeTrainingDeckKey = "";
       activeTrainingFolder = "";
       trainingSession = null;
+      setDoomscrollViewportMode(false);
       setTrainingProgressRailVisible(false);
     }
 
@@ -4987,6 +5073,10 @@
       const nextVisible = Boolean(visible);
       trainingProgressRail.classList.toggle("hidden", !nextVisible);
       trainingProgressRail.setAttribute("aria-hidden", String(!nextVisible));
+    }
+
+    function setDoomscrollViewportMode(active) {
+      document.body.classList.toggle("doomscroll-viewport-locked", Boolean(active));
     }
 
     function getActiveScenarioGroup(groups = availableScenarios) {
@@ -5021,6 +5111,7 @@
     }
 
     function resetRuntimeState(options = {}) {
+      setDoomscrollViewportMode(false);
       if (!options.preserveTrainingSession) {
         disposeTrainingFeedState(trainingSession);
       }
@@ -5556,6 +5647,7 @@
     }
 
     function renderSelectionHint(message) {
+      setDoomscrollViewportMode(false);
       const text = message || t("selection.hint.default", "Bitte waehlen Sie oben links ein Szenario aus.");
       workspaceLeft.innerHTML =
         "<section class='panel'>" +
@@ -6607,6 +6699,12 @@
       }
     }
 
+    function closeActivitySelectionDrawers() {
+      toggleTrainingMenu(false).catch(() => {});
+      toggleCourseMenu(false).catch(() => {});
+      toggleScenarioMenu(false).catch(() => {});
+    }
+
     async function toggleTrainingMenu(forceOpen) {
       if (!trainingMenu || !trainingMenuButton || !trainingNavBackdrop) return;
       const currentlyOpen = trainingMenu.classList.contains("is-open");
@@ -7361,6 +7459,7 @@
     }
 
     function renderMarkdownScenarioPage(item, markdown) {
+      setDoomscrollViewportMode(false);
       const panel = document.createElement("section");
       panel.className = "panel markdown-scenario-panel";
       const meta = document.createElement("div");
@@ -7383,6 +7482,7 @@
       const safeFolder = sanitizeFolderName(folder);
       const unlockedFolders = getUnlockedFolders();
       if (!safeFolder || !unlockedFolders.includes(safeFolder)) return;
+      closeActivitySelectionDrawers();
       const folderChanged = safeFolder !== activeScenarioFolder;
       activeScenarioFolder = safeFolder;
       activeHomeSkillsFolder = safeFolder;
@@ -7406,12 +7506,10 @@
         await showHomeContent(safeFolder);
         return;
       }
-      if (!isDesktopActivityLayout()) {
-        toggleCourseMenu(false);
-      }
     }
 
     async function selectScenario(item) {
+      closeActivitySelectionDrawers();
       const unlockMeta = getScenarioUnlockMeta(item);
       if (unlockMeta?.locked) {
         renderSelectionHint(t("scenario.ticket.locked_message", "Dieses Ticket wird nach {required} korrekt geloesten DoomScroll-Aufgaben freigeschaltet. Aktuell: {current}.", {
@@ -7423,11 +7521,6 @@
       markScenarioTicketOpened(item);
       updateScenarioUnlockUi(item?.folder || "");
       setAppBarSelection("");
-      if (!isDesktopActivityLayout()) {
-        toggleTrainingMenu(false);
-        toggleCourseMenu(false);
-        toggleScenarioMenu(false);
-      }
       setSubmitBarVisible(false);
       renderSelectionHint(`Lade ${item.label} ...`);
       try {
@@ -7782,28 +7875,221 @@
       };
     }
 
+    function getTrainingActionIconMarkup(kind = "") {
+      switch (String(kind || "").trim().toLowerCase()) {
+        case "up":
+          return "<svg class='doomscroll-action-icon' viewBox='0 0 24 24' aria-hidden='true'>" +
+            "<path d='M12 18V6M12 6l-5 5M12 6l5 5' fill='none' stroke='currentColor' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.9'/>" +
+            "</svg>";
+        case "down":
+          return "<svg class='doomscroll-action-icon' viewBox='0 0 24 24' aria-hidden='true'>" +
+            "<path d='M12 6v12M12 18l-5-5M12 18l5-5' fill='none' stroke='currentColor' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.9'/>" +
+            "</svg>";
+        case "lock-closed":
+          return "<svg class='doomscroll-action-icon' viewBox='0 0 24 24' aria-hidden='true'>" +
+            "<path d='M8 11V8.5a4 4 0 118 0V11' fill='none' stroke='currentColor' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.9'/>" +
+            "<rect x='6' y='11' width='12' height='9' rx='2.6' fill='none' stroke='currentColor' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.9'/>" +
+            "</svg>";
+        case "lock-open":
+        default:
+          return "<svg class='doomscroll-action-icon' viewBox='0 0 24 24' aria-hidden='true'>" +
+            "<path d='M16 11V8.6a4 4 0 00-7-2.6' fill='none' stroke='currentColor' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.9'/>" +
+            "<rect x='6' y='11' width='12' height='9' rx='2.6' fill='none' stroke='currentColor' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.9'/>" +
+            "</svg>";
+      }
+    }
+
+    function setTrainingActionButtonMeta(button, label, iconMarkup) {
+      if (!button) return;
+      button.innerHTML = iconMarkup;
+      button.setAttribute("aria-label", label);
+      button.setAttribute("data-ui-tooltip", label);
+      button.title = label;
+    }
+
+    function getPreviousTrainingCardState(cardState) {
+      let panel = cardState?.card?.previousElementSibling || null;
+      while (panel) {
+        if (panel.__cardState) return panel.__cardState;
+        panel = panel.previousElementSibling;
+      }
+      return null;
+    }
+
+    function setTrainingActionSlotVisibility(button, visible) {
+      if (!button) return;
+      const nextVisible = Boolean(visible);
+      button.classList.toggle("is-slot-hidden", !nextVisible);
+      button.setAttribute("aria-hidden", nextVisible ? "false" : "true");
+      if (!nextVisible) {
+        button.tabIndex = -1;
+      } else {
+        button.removeAttribute("tabindex");
+      }
+    }
+
+    function isVisibleTrainingShortcutBlocker(element) {
+      return Boolean(element && !element.classList.contains("hidden") && element.getAttribute("aria-hidden") !== "true");
+    }
+
+    function isTrainingKeyboardEditableTarget(target) {
+      if (!(target instanceof Element)) return false;
+      if (target.isContentEditable) return true;
+      return Boolean(target.closest("input, textarea, select, [contenteditable='true'], [contenteditable=''], [data-eval-input='1']"));
+    }
+
+    function canHandleTrainingKeyboardShortcut(ev) {
+      if (!document.body.classList.contains("doomscroll-viewport-locked")) return false;
+      if (!trainingSession?.activeCardState?.card?.isConnected) return false;
+      if (ev.altKey || ev.ctrlKey || ev.metaKey || ev.isComposing || ev.repeat) return false;
+      if (isTrainingKeyboardEditableTarget(ev.target)) return false;
+      if (isVisibleTrainingShortcutBlocker(topRightMenuPanel)) return false;
+      if (languageMenuOpen || trainingMenu?.classList.contains("is-open") || courseMenu?.classList.contains("is-open") || scenarioMenu?.classList.contains("is-open")) return false;
+      if (taskNavDrawer && !taskNavDrawer.classList.contains("hidden")) return false;
+      return true;
+    }
+
+    function getTrainingKeyboardShortcutLetter(ev) {
+      const code = String(ev.code || "").trim();
+      if (/^Key[A-Z]$/.test(code)) {
+        return code.slice(3).toLowerCase();
+      }
+      const key = String(ev.key || "").trim().toLowerCase();
+      return /^[a-z]$/.test(key) ? key : "";
+    }
+
+    function handleTrainingKeyboardShortcut(ev) {
+      if (!canHandleTrainingKeyboardShortcut(ev)) return false;
+      const cardState = trainingSession?.activeCardState || null;
+      if (!cardState) return false;
+      const key = String(ev.key || "").trim().toLowerCase();
+      const letter = getTrainingKeyboardShortcutLetter(ev);
+
+      if (letter) {
+        if (cardState.locked) return false;
+        const optionIndex = letter.charCodeAt(0) - 97;
+        const optionEntry = cardState.optionButtons[optionIndex] || null;
+        const optionButton = optionEntry?.element || null;
+        if (!optionButton || optionButton.disabled) return false;
+        ev.preventDefault();
+        setTrainingActiveCardState(cardState);
+        optionButton.focus({ preventScroll: true });
+        optionButton.click();
+        return true;
+      }
+
+      if (key === "enter" || ev.code === "Enter" || ev.code === "NumpadEnter") {
+        const lockButton = cardState.lockButton || null;
+        if (!lockButton || lockButton.disabled) return false;
+        ev.preventDefault();
+        setTrainingActiveCardState(cardState);
+        lockButton.focus({ preventScroll: true });
+        lockButton.click();
+        return true;
+      }
+
+      if (key === "arrowup") {
+        if (cardState.previousButton?.disabled) return false;
+        ev.preventDefault();
+        cardState.previousButton.focus({ preventScroll: true });
+        cardState.previousButton.click();
+        return true;
+      }
+
+      if (key === "arrowdown") {
+        if (cardState.continueButton?.disabled) return false;
+        ev.preventDefault();
+        cardState.continueButton.focus({ preventScroll: true });
+        cardState.continueButton.click();
+        return true;
+      }
+
+      return false;
+    }
+
     function updateTrainingLockButtonLabel(cardState) {
       if (!cardState?.lockButton) return;
+      let label = t("training.question.lock", "Antworten einloggen");
       if (!cardState.locked) {
-        cardState.lockButton.textContent = t("training.question.lock", "Antworten einloggen");
+        setTrainingActionButtonMeta(cardState.lockButton, label, getTrainingActionIconMarkup("lock-open"));
+        cardState.lockButton.dataset.lockState = "open";
         return;
       }
       const exact = wasTrainingAnswerExact(cardState.question, cardState.selectedIds);
-      cardState.lockButton.textContent = exact
+      label = exact
         ? t("training.question.locked_exact", "Sauber eingeloggt")
         : t("training.question.locked_reviewed", "Ausgewertet");
+      setTrainingActionButtonMeta(cardState.lockButton, label, getTrainingActionIconMarkup("lock-closed"));
+      cardState.lockButton.dataset.lockState = "closed";
     }
 
     function updateTrainingContinueButtonLabel(cardState) {
       if (!cardState?.continueButton) return;
-      if (!cardState.locked) {
-        cardState.continueButton.textContent = t("training.question.continue", "Weiter");
-        return;
+      let label = t("training.question.continue", "Weiter");
+      if (cardState.locked) {
+        const nextPanel = ensureTrainingNextPanel(cardState);
+        label = nextPanel?.id === "doomscrollSummary"
+          ? t("training.question.finish", "Zum Abschluss")
+          : t("training.question.continue_down", "Weiter nach unten");
       }
-      const nextPanel = ensureTrainingNextPanel(cardState);
-      cardState.continueButton.textContent = nextPanel?.id === "doomscrollSummary"
-        ? t("training.question.finish", "Zum Abschluss")
-        : t("training.question.continue_down", "Weiter nach unten");
+      setTrainingActionButtonMeta(cardState.continueButton, label, getTrainingActionIconMarkup("down"));
+    }
+
+    function updateTrainingPreviousButtonLabel(cardState) {
+      if (!cardState?.previousButton) return;
+      setTrainingActionButtonMeta(
+        cardState.previousButton,
+        t("training.question.previous_up", "Zur vorherigen Aufgabe"),
+        getTrainingActionIconMarkup("up")
+      );
+    }
+
+    function syncTrainingActionButtons(cardState) {
+      if (!cardState) return;
+      const previousCardState = getPreviousTrainingCardState(cardState);
+      const nextPanel = cardState.locked ? ensureTrainingNextPanel(cardState) : null;
+
+      updateTrainingPreviousButtonLabel(cardState);
+      updateTrainingLockButtonLabel(cardState);
+      updateTrainingContinueButtonLabel(cardState);
+
+      setTrainingActionSlotVisibility(cardState.previousButton, Boolean(previousCardState));
+      if (cardState.previousButton) {
+        const previousDisabled = !previousCardState;
+        cardState.previousButton.disabled = previousDisabled;
+        cardState.previousButton.setAttribute("aria-disabled", previousDisabled ? "true" : "false");
+      }
+
+      if (cardState.lockButton) {
+        const lockDisabled = cardState.locked || cardState.selectedIds.size === 0;
+        cardState.lockButton.disabled = lockDisabled;
+        cardState.lockButton.setAttribute("aria-disabled", lockDisabled ? "true" : "false");
+      }
+
+      setTrainingActionSlotVisibility(cardState.continueButton, Boolean(cardState.locked && nextPanel));
+      if (cardState.continueButton) {
+        const continueDisabled = !cardState.locked || !nextPanel;
+        cardState.continueButton.disabled = continueDisabled;
+        cardState.continueButton.setAttribute("aria-disabled", continueDisabled ? "true" : "false");
+      }
+    }
+
+    function refreshTrainingFeedActionUi() {
+      const cardStates = Array.isArray(trainingSession?.feedCardStates) ? trainingSession.feedCardStates : [];
+      cardStates.forEach((cardState) => {
+        if (cardState?.card?.isConnected) syncTrainingActionButtons(cardState);
+      });
+    }
+
+    function goToPreviousTrainingStep(cardState) {
+      if (!trainingSession || !cardState) return;
+      const previousCardState = getPreviousTrainingCardState(cardState);
+      if (!previousCardState?.card) return;
+      setTrainingActiveCardState(previousCardState);
+      scrollTrainingPanelIntoView(previousCardState.card, "smooth");
+      window.setTimeout(() => {
+        queueTrainingFeedViewportSync();
+      }, 260);
     }
 
     function refreshTrainingInteractionLanguageUi() {
@@ -7828,8 +8114,7 @@
             optionText.textContent = getTrainingOptionText(option);
           }
         });
-        updateTrainingLockButtonLabel(cardState);
-        updateTrainingContinueButtonLabel(cardState);
+        syncTrainingActionButtons(cardState);
         if (cardState.locked && cardState.reviewSlot && !cardState.reviewSlot.classList.contains("hidden")) {
           renderTrainingReview(cardState);
         }
@@ -7889,14 +8174,13 @@
     }
 
     function syncTrainingReviewSlotPlacement(cardState) {
-      const card = cardState?.card || null;
+      const card = cardState?.questionCard || null;
       const slot = cardState?.reviewSlot || null;
       const mainPanel = cardState?.mainPanel || null;
-      const actions = cardState?.actions || null;
-      if (!card || !slot || !mainPanel || !actions) return;
+      if (!card || !slot || !mainPanel) return;
       if (shouldInlineTrainingReviewBelowAnswers()) {
-        if (slot.parentElement !== mainPanel || slot.nextElementSibling !== actions) {
-          mainPanel.insertBefore(slot, actions);
+        if (slot.parentElement !== mainPanel || slot !== mainPanel.lastElementChild) {
+          mainPanel.appendChild(slot);
         }
         return;
       }
@@ -7907,21 +8191,21 @@
 
     function refreshActiveTrainingReviewLayout() {
       const cardState = trainingSession?.activeCardState || null;
-      if (!cardState?.card?.isConnected) return;
+      if (!cardState?.questionCard?.isConnected) return;
       syncTrainingReviewSlotPlacement(cardState);
       if (!cardState.locked || cardState.reviewSlot?.classList.contains("hidden")) return;
       const assessments = buildTrainingReviewAssessments(cardState);
       if (!assessments.length) return;
-      layoutReviewGraph(cardState.card, cardState.reviewSlot, assessments);
+      layoutReviewGraph(cardState.questionCard, cardState.reviewSlot, assessments);
       window.requestAnimationFrame(() => {
-        if (cardState.card?.isConnected && !cardState.reviewSlot?.classList.contains("hidden")) {
-          layoutReviewGraph(cardState.card, cardState.reviewSlot, assessments);
+        if (cardState.questionCard?.isConnected && !cardState.reviewSlot?.classList.contains("hidden")) {
+          layoutReviewGraph(cardState.questionCard, cardState.reviewSlot, assessments);
         }
       });
     }
 
     function renderTrainingReview(cardState) {
-      const card = cardState?.card || null;
+      const card = cardState?.questionCard || null;
       const slot = cardState?.reviewSlot || null;
       if (!card || !slot) return;
       const assessments = buildTrainingReviewAssessments(cardState);
@@ -7940,27 +8224,31 @@
       return [...correctIds].every((id) => selectedIds.has(id));
     }
 
-    function toggleTrainingOption(cardState, optionId, element, question) {
+    function syncTrainingOptionSelectionState(cardState) {
+      if (!cardState || !Array.isArray(cardState.optionButtons)) return;
+      cardState.optionButtons.forEach(({ element, option }) => {
+        const selected = cardState.selectedIds.has(option.id);
+        element.classList.toggle("is-selected", selected);
+        element.setAttribute("aria-pressed", selected ? "true" : "false");
+      });
+    }
+
+    function toggleTrainingOption(cardState, optionId, question) {
       if (!cardState || cardState.locked) return;
       const maxSelections = Number(question?.maxSelections) || 1;
       const isSingle = maxSelections === 1;
 
       if (isSingle) {
         cardState.selectedIds.clear();
-        cardState.optionButtons.forEach(({ element: optionEl }) => {
-          optionEl.classList.remove("is-selected");
-        });
         cardState.selectedIds.add(optionId);
-        element.classList.add("is-selected");
       } else if (cardState.selectedIds.has(optionId)) {
         cardState.selectedIds.delete(optionId);
-        element.classList.remove("is-selected");
       } else if (cardState.selectedIds.size < maxSelections) {
         cardState.selectedIds.add(optionId);
-        element.classList.add("is-selected");
       }
 
-      cardState.lockButton.disabled = cardState.selectedIds.size === 0;
+      syncTrainingOptionSelectionState(cardState);
+      syncTrainingActionButtons(cardState);
       setTrainingActiveCardState(cardState);
     }
 
@@ -7976,11 +8264,13 @@
           scrollIntoView: false
         });
         cardState.nextPanel = nextPanel || null;
+        refreshTrainingFeedActionUi();
         return cardState.nextPanel;
       }
       if (!trainingSession.summaryAppended) {
         trainingSession.summaryAppended = true;
         cardState.nextPanel = showTrainingSummaryCard({ scrollIntoView: false });
+        refreshTrainingFeedActionUi();
         return cardState.nextPanel;
       }
       cardState.nextPanel = document.getElementById("doomscrollSummary");
@@ -7992,7 +8282,10 @@
       const nextPanel = ensureTrainingNextPanel(cardState);
       if (!nextPanel) return;
       cardState.movedOn = true;
-      cardState.continueButton.disabled = false;
+      syncTrainingActionButtons(cardState);
+      if (nextPanel.__cardState) {
+        setTrainingActiveCardState(nextPanel.__cardState);
+      }
       scrollTrainingPanelIntoView(nextPanel, "smooth");
       window.setTimeout(() => {
         queueTrainingFeedViewportSync();
@@ -8005,6 +8298,7 @@
       const exact = wasTrainingAnswerExact(cardState.question, cardState.selectedIds);
       if (cardState.question?.id) {
         trainingSession.questionStateById[cardState.question.id] = exact ? "correct" : "wrong";
+        saveTrainingDeckProgressState(trainingSession);
       }
       syncTrainingSessionCounts();
       applyCourseUnlockProgressForQuestion(cardState.question, exact);
@@ -8014,21 +8308,21 @@
         element.setAttribute("aria-disabled", "true");
       });
 
-      cardState.lockButton.disabled = true;
-      updateTrainingLockButtonLabel(cardState);
-      cardState.continueButton.classList.remove("hidden");
-      cardState.continueButton.disabled = false;
       renderTrainingReview(cardState);
       updateTrainingProgressUi();
+      syncTrainingActionButtons(cardState);
+      refreshTrainingFeedActionUi();
       setTrainingActiveCardState(cardState);
-      updateTrainingContinueButtonLabel(cardState);
     }
 
     function createTrainingQuestionCard(question, index = 0, options = {}) {
       const shouldActivate = options.activate !== false;
-      const card = document.createElement("article");
+      const panel = document.createElement("article");
+      panel.className = "doomscroll-question-panel";
+      panel.dataset.trainingCard = question.id;
+
+      const card = document.createElement("section");
       card.className = "panel doomscroll-question-card";
-      card.dataset.trainingCard = question.id;
 
       const mainPanel = document.createElement("div");
       mainPanel.className = "question-main doomscroll-question-main";
@@ -8043,15 +8337,17 @@
         isDisposed: false,
         selectedIds: new Set(),
         optionButtons: [],
+        previousButton: null,
         lockButton: null,
         continueButton: null,
-        card,
+        card: panel,
+        questionCard: card,
         reviewSlot,
         mainPanel,
         actions: null,
         nextPanel: null
       };
-      card.__cardState = cardState;
+      panel.__cardState = cardState;
 
       mainPanel.innerHTML =
         "<div class='doomscroll-question-head'>" +
@@ -8062,12 +8358,16 @@
         `<span class='doomscroll-question-mode-pill'>${esc(getTrainingQuestionBadgeLabel(question))}</span>` +
         "</div>";
 
+      const answerRegion = document.createElement("div");
+      answerRegion.className = "doomscroll-answer-region";
+
       const optionList = document.createElement("div");
       optionList.className = "doomscroll-option-list";
       (question.options || []).forEach((option, optionIndex) => {
         const button = document.createElement("button");
         button.type = "button";
         button.className = "doomscroll-option-button";
+        button.setAttribute("aria-pressed", "false");
         button.innerHTML =
           "<div class='doomscroll-option-topline'>" +
           `<span class='doomscroll-option-marker'>${String.fromCharCode(65 + optionIndex)}</span>` +
@@ -8075,19 +8375,26 @@
           "</div>";
         button.addEventListener("click", () => {
           setTrainingActiveCardState(cardState);
-          toggleTrainingOption(cardState, option.id, button, question);
+          toggleTrainingOption(cardState, option.id, question);
         });
         optionList.appendChild(button);
         cardState.optionButtons.push({ element: button, option });
       });
-      mainPanel.appendChild(optionList);
+      answerRegion.appendChild(optionList);
+      mainPanel.appendChild(answerRegion);
 
       const actions = document.createElement("div");
       actions.className = "doomscroll-question-actions";
+      const previousButton = document.createElement("button");
+      previousButton.type = "button";
+      previousButton.className = "doomscroll-action-button doomscroll-nav-button doomscroll-up-button is-slot-hidden";
+      previousButton.disabled = true;
+      previousButton.addEventListener("click", () => {
+        goToPreviousTrainingStep(cardState);
+      });
       const lockButton = document.createElement("button");
       lockButton.type = "button";
-      lockButton.className = "doomscroll-lock-button";
-      lockButton.textContent = t("training.question.lock", "Antworten einloggen");
+      lockButton.className = "doomscroll-action-button doomscroll-lock-button";
       lockButton.disabled = true;
       lockButton.addEventListener("click", () => {
         setTrainingActiveCardState(cardState);
@@ -8095,30 +8402,32 @@
       });
       const continueButton = document.createElement("button");
       continueButton.type = "button";
-      continueButton.className = "doomscroll-secondary-button hidden";
-      continueButton.textContent = t("training.question.continue", "Weiter");
+      continueButton.className = "doomscroll-action-button doomscroll-nav-button doomscroll-down-button is-slot-hidden";
       continueButton.disabled = true;
       continueButton.addEventListener("click", () => {
         setTrainingActiveCardState(cardState);
         goToNextTrainingStep(cardState);
       });
-      actions.append(lockButton, continueButton);
-      mainPanel.appendChild(actions);
+      actions.append(previousButton, lockButton, continueButton);
+      panel.appendChild(actions);
       cardState.actions = actions;
 
       card.append(mainPanel);
-      card.__destroy = () => {
+      panel.prepend(card);
+      panel.__destroy = () => {
         disposeTrainingCardState(cardState);
       };
       syncTrainingReviewSlotPlacement(cardState);
 
+      cardState.previousButton = previousButton;
       cardState.lockButton = lockButton;
       cardState.continueButton = continueButton;
+      syncTrainingActionButtons(cardState);
       if (shouldActivate) {
         trainingSession.currentQuestionIndex = index;
         setTrainingActiveCardState(cardState);
       }
-      return card;
+      return panel;
     }
 
     function createTrainingSummaryCard() {
@@ -8138,7 +8447,7 @@
         "</div>";
       window.setTimeout(() => {
         const restartButton = document.getElementById("btnRestartTrainingDeck");
-        if (restartButton) restartButton.addEventListener("click", () => startTrainingDeck(activeTrainingFolder));
+        if (restartButton) restartButton.addEventListener("click", () => startTrainingDeck(activeTrainingFolder, { resetProgress: true }));
         const chooserButton = document.getElementById("btnOpenTrainingChooser");
         if (chooserButton) chooserButton.addEventListener("click", () => toggleTrainingMenu(true).catch(() => {}));
       }, 0);
@@ -8160,6 +8469,7 @@
     function renderDoomScrollQuiz() {
       const deck = getActiveTrainingDeck();
       if (!deck?.questions?.length) {
+        setDoomscrollViewportMode(false);
         workspaceLeft.innerHTML =
           "<section class='panel'>" +
           `<h2>${esc(t("training.empty.title", "Training"))}</h2>` +
@@ -8172,6 +8482,7 @@
         "<section class='doomscroll-shell'>" +
         "<div class='doomscroll-swipe-stage' id='doomscrollQuestionFeed'></div>" +
         "</section>";
+      setDoomscrollViewportMode(true);
 
       attachTrainingFeedViewportTracking();
       syncTrainingSessionCounts();
@@ -8191,8 +8502,9 @@
       queueTrainingFeedViewportSync();
     }
 
-    async function startTrainingDeck(folder) {
+    async function startTrainingDeck(folder, options = {}) {
       const safeFolder = sanitizeFolderName(folder);
+      closeActivitySelectionDrawers();
       try {
         const previousTrainingSession = trainingSession;
         const deck = await loadTrainingDeck(safeFolder, false);
@@ -8204,13 +8516,11 @@
         disposeTrainingFeedState(previousTrainingSession);
         activeTrainingDeckKey = deck.deckKey;
         activeTrainingFolder = deck.folder;
+        if (options?.resetProgress === true) {
+          clearTrainingDeckProgressState(deck);
+        }
         trainingSession = createTrainingSessionFromDeck(deck);
         setAppBarSelection("training");
-        if (!isDesktopActivityLayout()) {
-          toggleTrainingMenu(false);
-          toggleCourseMenu(false);
-          toggleScenarioMenu(false);
-        }
         setSubmitBarVisible(false);
         resetRuntimeState({ preserveTrainingSession: true });
         renderTrainingMenu(getVisibleTrainingDecks());
@@ -8225,6 +8535,7 @@
         activeTrainingFolder = safeFolder;
         setAppBarSelection("training");
         setSubmitBarVisible(false);
+        setDoomscrollViewportMode(false);
         workspaceLeft.innerHTML =
           "<section class='panel'>" +
           `<h2>${esc(t("training.empty.title", "Training"))}</h2>` +
@@ -8605,7 +8916,8 @@
         toggleScenarioMenu(false).catch(() => {});
       });
 
-      document.addEventListener("keydown", (ev) => {
+      window.addEventListener("keydown", (ev) => {
+        if (handleTrainingKeyboardShortcut(ev)) return;
         if (ev.key === "Escape") {
           toggleTopRightMenu(false);
           toggleLanguageMenu(false);
@@ -8614,7 +8926,7 @@
           toggleScenarioMenu(false).catch(() => {});
           toggleTaskNavDrawer(false);
         }
-      });
+      }, true);
     }
 
     function normalizeVisualList(input) {

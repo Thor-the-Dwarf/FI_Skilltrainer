@@ -1,0 +1,160 @@
+{
+  "scenario": {
+    "company": "Training company IT service",
+    "scale": "Regional, 140 employees",
+    "context": "Station 2 of the daily run: classify network overview and roles cleanly.",
+    "mission": "You classify network segments, component roles, and services of a company network professionally.",
+    "station": {
+      "id": "LF03-ST-02",
+      "department": "Internal IT service",
+      "profile": "Office clients, server services, network segments, and baseline inventory",
+      "constraints": [
+        "Distinguish terms cleanly",
+        "Include the operational context",
+        "Document results briefly"
+      ]
+    },
+    "customerRequest": {
+      "from": "it.leitung@ausbildungsbetrieb.example",
+      "to": "support.team@ausbildungsbetrieb.example",
+      "subject": "Station 02: prepare a network overview for new colleagues",
+      "date": "2026-03-13",
+      "body": "Please prepare a compact network overview for new team members. Focus: roles of clients, servers, and infrastructure, plus a traceable classification of the most important network segments."
+    }
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "type": "single_choice",
+      "title": "Differentiate client and server",
+      "prompt": "Which statement best describes the roles of client and server?",
+      "options": [
+        {
+          "text": "A client uses services, a server provides services centrally",
+          "rationale": "This describes the typical role distribution in a corporate network."
+        },
+        {
+          "text": "Client and server are always the same device",
+          "rationale": "This can happen, but it is not a general role description."
+        },
+        {
+          "text": "A switch replaces the tasks of a server",
+          "rationale": "A switch does not provide typical server services."
+        }
+      ],
+      "correctIndex": 0,
+      "feedback": {
+        "correct": "Correct: This cleanly separates the roles in principle.",
+        "wrong": "Not suitable: please distinguish usage and service provision clearly."
+      },
+      "progressLinks": [
+        "lf03_hauptbestandteile_unterscheiden"
+      ]
+    },
+    {
+      "id": "q2",
+      "type": "multi_select",
+      "title": "Structure network segments sensibly",
+      "prompt": "Which statements help classify network segments in a usable way? (Multiple selections)",
+      "options": [
+        {
+          "text": "Consider workstation network, server area, and internet connectivity separately",
+          "correct": true,
+          "rationale": "This makes it easier to assign tasks and risks."
+        },
+        {
+          "text": "Record mobile and stationary clients separately",
+          "correct": true,
+          "rationale": "Usage type often affects requirements and support."
+        },
+        {
+          "text": "Document data center or server room separately",
+          "correct": true,
+          "rationale": "Central services require a clear classification."
+        },
+        {
+          "text": "Keep all devices without purpose in one catch-all list",
+          "correct": false,
+          "rationale": "Without structure, the insight decreases significantly."
+        },
+        {
+          "text": "Mix endpoints, infrastructure, and services together",
+          "correct": false,
+          "rationale": "This makes roles unclear."
+        }
+      ],
+      "feedback": {
+        "correct": "Correct: You structure the network by tasks and usage.",
+        "wrong": "Partly wrong: please separate areas and roles more clearly."
+      },
+      "progressLinks": [
+        "lf03_netzwerk_einfuehrung",
+        "lf03_hauptbestandteile_unterscheiden"
+      ]
+    },
+    {
+      "id": "q3",
+      "type": "ordering",
+      "title": "Path of a typical client request",
+      "prompt": "Arrange the flow of a simple service request sensibly.",
+      "items": [
+        "The response reaches the client again",
+        "The client starts a request",
+        "The server service processes the request",
+        "The switch transports the request in the LAN",
+        "Gateway or router is involved if needed"
+      ],
+      "correctOrder": [
+        "The client starts a request",
+        "The switch transports the request in the LAN",
+        "Gateway or router is involved if needed",
+        "The server service processes the request",
+        "The response reaches the client again"
+      ],
+      "feedback": {
+        "correct": "Correct: The communication path is structured cleanly in principle.",
+        "wrong": "Not optimal: think from the client, and order transport, routing, and service cleanly."
+      },
+      "progressLinks": [
+        "lf03_netzwerk_einfuehrung"
+      ]
+    },
+    {
+      "id": "q4",
+      "type": "number",
+      "title": "Capture baseline inventory",
+      "prompt": "At one site there are 18 workstation clients, 2 printers, 1 meeting display, and 1 access point. How many endpoints must at least be listed in the baseline inventory?",
+      "expected": 22,
+      "toleranceAbs": 0,
+      "showExpectedFormula": "18 + 2 + 1 + 1 = 22",
+      "feedback": {
+        "correct": "Correct.",
+        "wrong": "Please count all mentioned endpoints together."
+      },
+      "progressLinks": [
+        "lf03_hauptbestandteile_unterscheiden"
+      ]
+    },
+    {
+      "id": "q5",
+      "type": "short_text",
+      "title": "Network overview for new colleagues",
+      "prompt": "Explain in 4-6 sentences the difference between workstation network, server services, and network infrastructure.",
+      "minChars": 140,
+      "requiredKeywords": [
+        "client",
+        "server",
+        "switch"
+      ],
+      "expectedOutline": "Clear classification of roles, brief operational context, and clean technical terms.",
+      "feedback": {
+        "correct": "Correct: The overview is concise, technically sound, and practical.",
+        "wrong": "Please separate roles, areas, and components more clearly."
+      },
+      "progressLinks": [
+        "lf03_netzwerk_einfuehrung",
+        "lf03_hauptbestandteile_unterscheiden"
+      ]
+    }
+  ]
+}

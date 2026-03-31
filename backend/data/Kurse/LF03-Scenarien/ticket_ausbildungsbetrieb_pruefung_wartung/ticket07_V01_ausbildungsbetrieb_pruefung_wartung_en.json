@@ -1,0 +1,161 @@
+{
+  "scenario": {
+    "company": "Training company IT service",
+    "scale": "Regional, 140 employees",
+    "context": "Station 7 of the daily run: test network functionality, maintain, and track configuration changes.",
+    "mission": "You plan quick tests, preventive maintenance, and clean documentation of configuration changes.",
+    "station": {
+      "id": "LF03-ST-07",
+      "department": "Support and operations",
+      "profile": "Connectivity testing, maintenance, configuration change, and monitoring",
+      "constraints": [
+        "Keep changes traceable",
+        "Take preventive maintenance seriously",
+        "Focus tests on the foundation first"
+      ]
+    },
+    "customerRequest": {
+      "from": "betrieb.teamlead@ausbildungsbetrieb.example",
+      "to": "support.team@ausbildungsbetrieb.example",
+      "subject": "Station 07: prepare a maintenance and testing flow for client networks",
+      "date": "2026-03-13",
+      "body": "Please develop a compact testing and maintenance flow for the client network. Important are baseline diagnosis, orderly configuration changes, and a short maintenance note."
+    }
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "type": "single_choice",
+      "title": "First step in a connectivity test",
+      "prompt": "What is the most sensible first step when a connectivity issue is reported?",
+      "options": [
+        {
+          "text": "Check physical connection and link status",
+          "rationale": "This secures the technical foundation first."
+        },
+        {
+          "text": "Replace the entire device immediately without analysis",
+          "rationale": "That is not economical without evidence."
+        },
+        {
+          "text": "Only change the client name",
+          "rationale": "That does not help initial diagnosis."
+        }
+      ],
+      "correctIndex": 0,
+      "feedback": {
+        "correct": "Correct: Diagnosis starts with the base connection.",
+        "wrong": "Not suitable: check the physical foundation first."
+      },
+      "progressLinks": [
+        "lf03_pruefen_warten"
+      ]
+    },
+    {
+      "id": "q2",
+      "type": "multi_select",
+      "title": "Preventive maintenance in the client network",
+      "prompt": "Which measures belong to sensible preventive maintenance? (Multiple selections)",
+      "options": [
+        {
+          "text": "Evaluate and document recurring issues",
+          "correct": true,
+          "rationale": "Pattern recognition is the basis for sustainable improvements."
+        },
+        {
+          "text": "Plan firmware or configuration changes in maintenance windows",
+          "correct": true,
+          "rationale": "This reduces operational risk."
+        },
+        {
+          "text": "Back up configuration states before changes",
+          "correct": true,
+          "rationale": "This enables quick rollback."
+        },
+        {
+          "text": "Ignore warnings as a rule",
+          "correct": false,
+          "rationale": "Warnings can indicate upcoming issues."
+        },
+        {
+          "text": "After changes, check connectivity and name resolution",
+          "correct": true,
+          "rationale": "This directly verifies the effect of the change."
+        }
+      ],
+      "feedback": {
+        "correct": "Correct: You link maintenance, rollback options, and effectiveness checks.",
+        "wrong": "Partly wrong: emphasize prevention, backups, and post-tests more."
+      },
+      "progressLinks": [
+        "lf03_pruefen_warten",
+        "lf03_komponenten_konfigurieren"
+      ]
+    },
+    {
+      "id": "q3",
+      "type": "ordering",
+      "title": "Change to a network configuration",
+      "prompt": "Arrange the steps for a clean configuration change.",
+      "items": [
+        "Check functional tests and monitoring",
+        "Approve the change in the ticket or task",
+        "Back up the previous configuration state",
+        "Implement the change",
+        "Document the result and new state"
+      ],
+      "correctOrder": [
+        "Approve the change in the ticket or task",
+        "Back up the previous configuration state",
+        "Implement the change",
+        "Check functional tests and monitoring",
+        "Document the result and new state"
+      ],
+      "feedback": {
+        "correct": "Correct: This keeps the change controlled and traceable.",
+        "wrong": "Not optimal: think approval, backup, change, test, and documentation in that order."
+      },
+      "progressLinks": [
+        "lf03_komponenten_konfigurieren",
+        "lf03_pruefen_warten"
+      ]
+    },
+    {
+      "id": "q4",
+      "type": "number",
+      "title": "Planned maintenance time",
+      "prompt": "Three maintenance windows per month each last 45 minutes. How many minutes of maintenance time are planned in total?",
+      "expected": 135,
+      "toleranceAbs": 0,
+      "showExpectedFormula": "3 * 45 = 135 minutes",
+      "feedback": {
+        "correct": "Correctly calculated.",
+        "wrong": "Multiply the number of maintenance windows by the duration."
+      },
+      "progressLinks": [
+        "lf03_pruefen_warten"
+      ]
+    },
+    {
+      "id": "q5",
+      "type": "short_text",
+      "title": "Write a maintenance note",
+      "prompt": "Write in 4-6 sentences a maintenance note with performed configuration, test result, and next date.",
+      "minChars": 150,
+      "requiredKeywords": [
+        "maintenance",
+        "configuration",
+        "next date"
+      ],
+      "expectedOutline": "Briefly and traceably record the change, test status, and follow-up date.",
+      "feedback": {
+        "correct": "Correct: The note is useful for operations and follow-up.",
+        "wrong": "Please separate maintenance, configuration change, and follow-up date more clearly."
+      },
+      "progressLinks": [
+        "lf03_pruefen_warten",
+        "lf03_komponenten_konfigurieren"
+      ]
+    }
+  ]
+}

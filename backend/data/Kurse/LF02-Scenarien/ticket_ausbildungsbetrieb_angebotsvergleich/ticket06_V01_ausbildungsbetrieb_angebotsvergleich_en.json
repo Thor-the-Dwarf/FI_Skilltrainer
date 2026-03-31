@@ -1,0 +1,159 @@
+{
+  "scenario": {
+    "company": "Training company IT service",
+    "scale": "Regional, 120 employees",
+    "context": "Station 6 of the day: compare offers and justify the decision.",
+    "mission": "You compare two workstation offers professionally and economically.",
+    "station": {
+      "id": "NS-ST-06",
+      "department": "Procurement/PreSales",
+      "profile": "Offer evaluation for office workstations",
+      "constraints": [
+        "traceable criteria",
+        "do not look at price only",
+        "short decision brief"
+      ]
+    },
+    "customerRequest": {
+      "from": "einkauf@ausbildungsbetrieb.example",
+      "to": "rollout.team@systemhaus.example",
+      "subject": "Offer comparison station NS-ST-06",
+      "date": "2026-03-13",
+      "body": "Please compare two offers for standard workstations.\n\nWe need a short, justified recommendation with a focus on suitability and cost-effectiveness."
+    }
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "type": "single_choice",
+      "title": "Identify the better offer",
+      "prompt": "Offer A: 590 EUR, 8 GB RAM, HDD, 1 video output. Offer B: 660 EUR, 16 GB RAM, SSD, 2 video outputs. Which is more viable for the described office use?",
+      "options": [
+        {
+          "text": "Offer A, because it is cheaper",
+          "rationale": "Price alone is insufficient when suitability is missing."
+        },
+        {
+          "text": "Offer B, because it covers the need better technically",
+          "rationale": "Performance and ports fit the workstation profile."
+        },
+        {
+          "text": "Both are equally good",
+          "rationale": "The technical differences are relevant."
+        }
+      ],
+      "correctIndex": 1,
+      "feedback": {
+        "correct": "Correct: needs-based technology is decisive.",
+        "wrong": "Not optimal: the offer must meet more than price."
+      },
+      "progressLinks": [
+        "lf02_qualitaet_bewertung"
+      ]
+    },
+    {
+      "id": "q2",
+      "type": "multi_select",
+      "title": "Criteria for offer comparison",
+      "prompt": "Which criteria should be included in the decision? (Multiple selection)",
+      "options": [
+        {
+          "text": "Performance suitable for usage",
+          "correct": true,
+          "rationale": "Foundation for practical operation."
+        },
+        {
+          "text": "Port selection and expandability",
+          "correct": true,
+          "rationale": "Important for usability and lifespan."
+        },
+        {
+          "text": "Only the manufacturer’s marketing slogan",
+          "correct": false,
+          "rationale": "Not a robust criterion."
+        },
+        {
+          "text": "Service, warranty and support",
+          "correct": true,
+          "rationale": "Operational safety and follow-up costs influence the decision."
+        },
+        {
+          "text": "Packaging color",
+          "correct": false,
+          "rationale": "Not professionally relevant."
+        }
+      ],
+      "feedback": {
+        "correct": "Correct: you compare holistically and practically.",
+        "wrong": "Partially unsuitable: prioritize technical and operational criteria."
+      },
+      "progressLinks": [
+        "lf02_qualitaet_bewertung"
+      ]
+    },
+    {
+      "id": "q3",
+      "type": "number",
+      "title": "Total cost per offer",
+      "prompt": "For 6 workstations: Offer A costs 590 EUR per station plus 35 EUR setup per station. Offer B costs 660 EUR per station plus 20 EUR setup per station. What is the total sum for offer B?",
+      "expected": 4080,
+      "toleranceAbs": 1,
+      "showExpectedFormula": "6 * (660 + 20) = 4,080 EUR",
+      "feedback": {
+        "correct": "Correct calculation.",
+        "wrong": "Please calculate total per station and multiply by 6."
+      },
+      "progressLinks": [
+        "lf02_rechnen_abschaetzen"
+      ]
+    },
+    {
+      "id": "q4",
+      "type": "ordering",
+      "title": "Procedure for offer comparison",
+      "prompt": "Arrange the steps sensibly.",
+      "items": [
+        "Justify the recommendation in writing",
+        "Record requirements and must-have criteria",
+        "Compare offers against the criteria",
+        "Calculate total costs transparently",
+        "Briefly align the result with the business unit"
+      ],
+      "correctOrder": [
+        "Record requirements and must-have criteria",
+        "Compare offers against the criteria",
+        "Calculate total costs transparently",
+        "Briefly align the result with the business unit",
+        "Justify the recommendation in writing"
+      ],
+      "feedback": {
+        "correct": "Correct: the decision path is traceable.",
+        "wrong": "Not optimal: criteria first, then comparison and justified recommendation."
+      },
+      "progressLinks": [
+        "lf02_qualitaet_bewertung"
+      ]
+    },
+    {
+      "id": "q5",
+      "type": "short_text",
+      "title": "Short recommendation",
+      "prompt": "Formulate a short recommendation (4-6 sentences) with technical and economic justification.",
+      "minChars": 130,
+      "requiredKeywords": [
+        "criterion",
+        "justification",
+        "costs"
+      ],
+      "expectedOutline": "Concise decision brief with criteria reference, cost view and clear recommendation.",
+      "feedback": {
+        "correct": "Correct: the decision is traceable and usable.",
+        "wrong": "Please connect criteria, costs and recommendation more clearly."
+      },
+      "progressLinks": [
+        "lf02_benutzer_kundenkommunikation",
+        "lf02_dokumentation"
+      ]
+    }
+  ]
+}

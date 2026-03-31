@@ -1,0 +1,158 @@
+{
+  "scenario": {
+    "company": "Training company IT services",
+    "scale": "SME, 280 employees",
+    "context": "Station 04 of the day run: project planning and economic efficiency.",
+    "mission": "You plan work packages and milestones, estimate effort, and compare cost with benefit for a customer project.",
+    "station": {
+      "id": "LF12FIAE-ST-04",
+      "department": "Project planning",
+      "profile": "Work packages, milestones, effort, economic efficiency",
+      "constraints": [
+        "Structure planning in a traceable way",
+        "Estimate effort realistically",
+        "Weigh up economic decisions soundly"
+      ]
+    },
+    "customerRequest": {
+      "from": "controlling@kundenprojekt.example",
+      "to": "projektteam@ausbildungsbetrieb.example",
+      "subject": "Station 04: Planning and economic efficiency",
+      "date": "2026-03-13",
+      "body": "Please plan the customer project in a traceable way, estimate the effort for the main work packages, and make the economic impact transparent."
+    }
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "type": "single_choice",
+      "title": "Build a robust plan",
+      "prompt": "What is most important for a robust project plan?",
+      "options": [
+        {
+          "text": "Rely only on gut feeling",
+          "rationale": "Too vague for planning."
+        },
+        {
+          "text": "Define work packages, milestones, effort, and risks in a traceable way",
+          "rationale": "Makes planning reliable."
+        },
+        {
+          "text": "Set only the final deadline",
+          "rationale": "Leaves implementation too open."
+        }
+      ],
+      "correctIndex": 1,
+      "feedback": {
+        "correct": "Correct: This is how a robust plan becomes transparent and usable.",
+        "wrong": "Not suitable: A viable plan needs structure, effort, and risk visibility."
+      },
+      "progressLinks": [
+        "lf12fiae_projektplanung_wirtschaftlichkeit"
+      ]
+    },
+    {
+      "id": "q2",
+      "type": "multi_select",
+      "title": "Assess economic efficiency",
+      "prompt": "Which points belong in a sound economic efficiency assessment? (Multiple choice)",
+      "options": [
+        {
+          "text": "Compare costs and expected benefits",
+          "correct": true,
+          "rationale": "Creates the basis for decisions."
+        },
+        {
+          "text": "Name risks and reserves transparently",
+          "correct": true,
+          "rationale": "Important for realistic assessment."
+        },
+        {
+          "text": "Ignore assumptions intentionally",
+          "correct": false,
+          "rationale": "Makes the decision unstable."
+        },
+        {
+          "text": "Compare alternatives with advantages and disadvantages",
+          "correct": true,
+          "rationale": "Strengthens the decision basis."
+        },
+        {
+          "text": "Choose only by the lowest price",
+          "correct": false,
+          "rationale": "Misses project goals and risk exposure."
+        }
+      ],
+      "feedback": {
+        "correct": "Correct: Economic efficiency is evaluated on a sound basis.",
+        "wrong": "Partly wrong: Please evaluate benefit, risk, and assumptions together."
+      },
+      "progressLinks": [
+        "lf12fiae_projektplanung_wirtschaftlichkeit"
+      ]
+    },
+    {
+      "id": "q3",
+      "type": "ordering",
+      "title": "Structure the planning flow",
+      "prompt": "Put the flow from scope to approved planning in order.",
+      "items": [
+        "Confirm scope and project goal",
+        "Structure work packages and milestones",
+        "Estimate effort and costs",
+        "Include risks and buffers",
+        "Approve and document planning assumptions"
+      ],
+      "correctOrder": [
+        "Confirm scope and project goal",
+        "Structure work packages and milestones",
+        "Estimate effort and costs",
+        "Include risks and buffers",
+        "Approve and document planning assumptions"
+      ],
+      "feedback": {
+        "correct": "Correct: The planning flow is logically structured.",
+        "wrong": "Not ideal: Please move from scope via effort and risk to documented approval."
+      },
+      "progressLinks": [
+        "lf12fiae_projektplanung_wirtschaftlichkeit"
+      ]
+    },
+    {
+      "id": "q4",
+      "type": "number",
+      "title": "Calculate total planning cost",
+      "prompt": "Analysis costs 1260 EUR, implementation 3420 EUR, testing 980 EUR, and documentation 540 EUR. What is the total amount?",
+      "expected": 6200,
+      "toleranceAbs": 1,
+      "showExpectedFormula": "1260 + 3420 + 980 + 540 = 6200 EUR",
+      "feedback": {
+        "correct": "Calculated correctly.",
+        "wrong": "Please add all planning components correctly."
+      },
+      "progressLinks": [
+        "lf12fiae_projektplanung_wirtschaftlichkeit"
+      ]
+    },
+    {
+      "id": "q5",
+      "type": "short_text",
+      "title": "Summarize economic efficiency briefly",
+      "prompt": "Write a short economic efficiency note in 4-6 sentences with cost-benefit picture, risk, and recommendation.",
+      "minChars": 160,
+      "requiredKeywords": [
+        "cost",
+        "benefit",
+        "recommendation"
+      ],
+      "expectedOutline": "Cost-benefit picture, relevant risk note, and a clear recommendation.",
+      "feedback": {
+        "correct": "Correct: The note is economically and professionally understandable.",
+        "wrong": "Please make cost-benefit picture, risk, and recommendation more concrete."
+      },
+      "progressLinks": [
+        "lf12fiae_projektplanung_wirtschaftlichkeit"
+      ]
+    }
+  ]
+}

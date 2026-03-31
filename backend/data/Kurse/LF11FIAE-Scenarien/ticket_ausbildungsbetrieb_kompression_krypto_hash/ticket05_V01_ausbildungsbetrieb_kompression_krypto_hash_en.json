@@ -1,0 +1,159 @@
+{
+  "scenario": {
+    "company": "Training company IT services",
+    "scale": "SME, 240 employees",
+    "context": "Station 05 of the day run: apply compression, encryption, and hashing.",
+    "mission": "You distinguish the methods cleanly and use them appropriately for integrity, confidentiality, and efficiency.",
+    "station": {
+      "id": "LF11FIAE-ST-05",
+      "department": "Security engineering",
+      "profile": "Compression, crypto, hashing",
+      "constraints": [
+        "Separate protection goals clearly",
+        "Choose technology based on context",
+        "Plan for error cases"
+      ]
+    },
+    "customerRequest": {
+      "from": "security@ausbildungsbetrieb.example",
+      "to": "dev.team@ausbildungsbetrieb.example",
+      "subject": "Station 05: Protection and integrity logic",
+      "date": "2026-03-13",
+      "body": "Please design how compression, encryption, and hashing should be used for the module."
+    }
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "type": "multi_select",
+      "title": "Assign protection goals",
+      "prompt": "Which mappings are correct? (Multiple choice)",
+      "options": [
+        {
+          "text": "Hashing -> integrity check",
+          "correct": true,
+          "rationale": "Correct mapping."
+        },
+        {
+          "text": "Encryption -> confidentiality",
+          "correct": true,
+          "rationale": "Correct mapping."
+        },
+        {
+          "text": "Compression -> automatic confidentiality",
+          "correct": false,
+          "rationale": "Wrong protection goal."
+        },
+        {
+          "text": "Compression -> transport/storage efficiency",
+          "correct": true,
+          "rationale": "Correct benefit."
+        },
+        {
+          "text": "Hashing -> recover the original",
+          "correct": false,
+          "rationale": "That is not the purpose."
+        }
+      ],
+      "feedback": {
+        "correct": "Correct: Protection goals and methods are separated correctly.",
+        "wrong": "Partly wrong: Please separate integrity, confidentiality, and efficiency more cleanly."
+      },
+      "progressLinks": [
+        "lf11fiae_kompression_krypto_hash"
+      ]
+    },
+    {
+      "id": "q2",
+      "type": "single_choice",
+      "title": "Choose combination",
+      "prompt": "Which combination makes sense for secure data transfer?",
+      "options": [
+        {
+          "text": "Compress data, encrypt it, and verify integrity with a hash",
+          "rationale": "A technically consistent chain."
+        },
+        {
+          "text": "Only compress",
+          "rationale": "Does not protect confidentiality."
+        },
+        {
+          "text": "Only hash",
+          "rationale": "Integrity without confidentiality."
+        }
+      ],
+      "correctIndex": 0,
+      "feedback": {
+        "correct": "Correct: The combination matches the protection goal.",
+        "wrong": "Not suitable: Keep the full protection chain in mind."
+      },
+      "progressLinks": [
+        "lf11fiae_kompression_krypto_hash"
+      ]
+    },
+    {
+      "id": "q3",
+      "type": "ordering",
+      "title": "Order the secure flow",
+      "prompt": "Put the steps for secure data transfer in order.",
+      "items": [
+        "Validate incoming data",
+        "Compress optionally",
+        "Encrypt",
+        "Generate and store a hash",
+        "Verify on the receiving side"
+      ],
+      "correctOrder": [
+        "Validate incoming data",
+        "Compress optionally",
+        "Encrypt",
+        "Generate and store a hash",
+        "Verify on the receiving side"
+      ],
+      "feedback": {
+        "correct": "Correct: The flow is consistent.",
+        "wrong": "Not ideal: Keep validation, protection, and verification in the correct order."
+      },
+      "progressLinks": [
+        "lf11fiae_kompression_krypto_hash"
+      ]
+    },
+    {
+      "id": "q4",
+      "type": "number",
+      "title": "Data reduction in percent",
+      "prompt": "File size drops from 950 KB to 665 KB. What is the reduction in percent (rounded)?",
+      "expected": 30,
+      "toleranceAbs": 1,
+      "showExpectedFormula": "(950-665)/950*100 = 30 %",
+      "feedback": {
+        "correct": "Calculated correctly.",
+        "wrong": "Please relate the reduction correctly to the original size."
+      },
+      "progressLinks": [
+        "lf11fiae_kompression_krypto_hash"
+      ]
+    },
+    {
+      "id": "q5",
+      "type": "short_text",
+      "title": "Note the crypto decision",
+      "prompt": "Describe in 4-6 sentences how you would combine compression, encryption, and hashing in this case.",
+      "minChars": 160,
+      "requiredKeywords": [
+        "compression",
+        "encryption",
+        "hash"
+      ],
+      "expectedOutline": "Combination logic with a clear purpose for each method.",
+      "feedback": {
+        "correct": "Correct: The security logic is traceable.",
+        "wrong": "Please separate the roles of the three methods more clearly."
+      },
+      "progressLinks": [
+        "lf11fiae_kompression_krypto_hash",
+        "lf11fiae_schnittstellen_dokumentation"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,161 @@
+{
+  "scenario": {
+    "company": "Training company IT service",
+    "scale": "Regional, 140 employees",
+    "context": "Station 6 of the daily run: client integration, cloud services, and user sign-in.",
+    "mission": "You prepare productive use of a new client with central sign-in and a cloud work environment.",
+    "station": {
+      "id": "LF03-ST-06",
+      "department": "Workplace Services",
+      "profile": "Central user sign-in, cloud folder, and standard profile",
+      "constraints": [
+        "Check access and identity cleanly",
+        "Follow operational standards",
+        "Document usability briefly"
+      ]
+    },
+    "customerRequest": {
+      "from": "arbeitsplatz.service@ausbildungsbetrieb.example",
+      "to": "support.team@ausbildungsbetrieb.example",
+      "subject": "Station 06: prepare productive sign-in and cloud usage",
+      "date": "2026-03-13",
+      "body": "Please prepare a new workstation for productive use. Focus on central user sign-in, access to the cloud work folder, and a short operational approval."
+    }
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "type": "single_choice",
+      "title": "Benefit of central user sign-in",
+      "prompt": "Which benefit of central user sign-in is especially important for operations?",
+      "options": [
+        {
+          "text": "Rights and identity can be managed in a standardized way",
+          "rationale": "This eases operations, support, and secure assignment."
+        },
+        {
+          "text": "Each client no longer needs network connectivity",
+          "rationale": "Sign-in still depends on infrastructure."
+        },
+        {
+          "text": "Documentation becomes unnecessary",
+          "rationale": "Central systems still need traceable documentation."
+        }
+      ],
+      "correctIndex": 0,
+      "feedback": {
+        "correct": "Correct: Standardized identities are a real operational lever.",
+        "wrong": "Not suitable: consider the organizational and security benefits."
+      },
+      "progressLinks": [
+        "lf03_client_integration"
+      ]
+    },
+    {
+      "id": "q2",
+      "type": "multi_select",
+      "title": "Prerequisites for cloud and user access",
+      "prompt": "Which points must be checked before productive use? (Multiple selections)",
+      "options": [
+        {
+          "text": "User account and group permissions are prepared",
+          "correct": true,
+          "rationale": "Without permissions, there is no clean access."
+        },
+        {
+          "text": "Network connectivity, time base, and required services are reachable",
+          "correct": true,
+          "rationale": "Cloud and sign-in services depend on core services."
+        },
+        {
+          "text": "Local storage or cache is sufficient for the planned usage",
+          "correct": true,
+          "rationale": "Even cloud usage needs viable local conditions."
+        },
+        {
+          "text": "A private external account without operational approval is enough",
+          "correct": false,
+          "rationale": "Operational identities must not be replaced."
+        },
+        {
+          "text": "Multi-factor or security requirements from operations are implemented",
+          "correct": true,
+          "rationale": "Sign-in must match the security framework."
+        }
+      ],
+      "feedback": {
+        "correct": "Correct: You secure identity, services, and usability together.",
+        "wrong": "Partly wrong: think more tightly about account, service base, and security requirements."
+      },
+      "progressLinks": [
+        "lf03_client_integration",
+        "lf03_komponenten_konfigurieren"
+      ]
+    },
+    {
+      "id": "q3",
+      "type": "ordering",
+      "title": "Sequence to productive use",
+      "prompt": "Arrange the steps for commissioning sensibly.",
+      "items": [
+        "Check cloud folder and central applications",
+        "Bring the client onto the network and check core parameters",
+        "Enroll or register the device according to standard",
+        "Test user sign-in with the prepared account",
+        "Create a short approval note"
+      ],
+      "correctOrder": [
+        "Bring the client onto the network and check core parameters",
+        "Enroll or register the device according to standard",
+        "Test user sign-in with the prepared account",
+        "Check cloud folder and central applications",
+        "Create a short approval note"
+      ],
+      "feedback": {
+        "correct": "Correct: The path goes cleanly from the base to productive access.",
+        "wrong": "Not optimal: first network and enrollment, then sign-in and services."
+      },
+      "progressLinks": [
+        "lf03_client_integration",
+        "lf03_komponenten_konfigurieren"
+      ]
+    },
+    {
+      "id": "q4",
+      "type": "number",
+      "title": "Estimate initial sync size",
+      "prompt": "25 users receive 2.5 GB initial sync each for their cloud work folder. How large is the total data volume?",
+      "expected": 62.5,
+      "toleranceAbs": 0.1,
+      "showExpectedFormula": "25 * 2,5 GB = 62,5 GB",
+      "feedback": {
+        "correct": "Correctly calculated.",
+        "wrong": "Multiply the data volume per person by the number of users."
+      },
+      "progressLinks": [
+        "lf03_client_integration"
+      ]
+    },
+    {
+      "id": "q5",
+      "type": "short_text",
+      "title": "Approval note for productive use",
+      "prompt": "Formulate in 4-6 sentences an approval note with sign-in status, cloud access, and current status.",
+      "minChars": 150,
+      "requiredKeywords": [
+        "sign-in",
+        "cloud",
+        "status"
+      ],
+      "expectedOutline": "Usability, successful access, and a short remaining point or next step.",
+      "feedback": {
+        "correct": "Correct: The approval is clear, concise, and practical.",
+        "wrong": "Please separate sign-in, cloud access, and status more clearly."
+      },
+      "progressLinks": [
+        "lf03_client_integration",
+        "lf03_komponenten_konfigurieren"
+      ]
+    }
+  ]
+}

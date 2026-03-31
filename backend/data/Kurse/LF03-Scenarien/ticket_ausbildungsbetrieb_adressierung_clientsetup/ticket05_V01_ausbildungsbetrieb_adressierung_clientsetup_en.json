@@ -1,0 +1,161 @@
+{
+  "scenario": {
+    "company": "Training company IT service",
+    "scale": "Regional, 140 employees",
+    "context": "Station 5 of the daily run: secure addressing and client setup.",
+    "mission": "You check MAC/IP roles, core services, and a clean client setup in the company network.",
+    "station": {
+      "id": "LF03-ST-05",
+      "department": "Workplace Services",
+      "profile": "DHCP, DNS, gateway, subnet, and standardized client addressing",
+      "constraints": [
+        "Apply addressing logic cleanly",
+        "Assign services correctly",
+        "Keep the configuration path traceable"
+      ]
+    },
+    "customerRequest": {
+      "from": "workplace.teamlead@ausbildungsbetrieb.example",
+      "to": "support.team@ausbildungsbetrieb.example",
+      "subject": "Station 05: check client addressing and setup",
+      "date": "2026-03-13",
+      "body": "Please check the basic configuration for new clients. Focus on MAC and IP, DHCP, DNS, gateway, plus a short explanation of the standard setup."
+    }
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "type": "single_choice",
+      "title": "Differentiate MAC and IP",
+      "prompt": "Which statement is correct?",
+      "options": [
+        {
+          "text": "The MAC address belongs to the interface, the IP address places the device logically in the network",
+          "rationale": "This distinguishes the two address types well in daily work."
+        },
+        {
+          "text": "MAC and IP always have the same task",
+          "rationale": "Both address types serve different purposes."
+        },
+        {
+          "text": "The IP address replaces any network card",
+          "rationale": "Without an interface, the address cannot be used."
+        }
+      ],
+      "correctIndex": 0,
+      "feedback": {
+        "correct": "Correct: MAC and IP are clearly separate addressing concepts.",
+        "wrong": "Not suitable: separate physical interface and logical assignment."
+      },
+      "progressLinks": [
+        "lf03_schichtenmodelle_adressierung"
+      ]
+    },
+    {
+      "id": "q2",
+      "type": "multi_select",
+      "title": "Assign DHCP, DNS, and gateway",
+      "prompt": "Which statements are technically correct? (Multiple selections)",
+      "options": [
+        {
+          "text": "DHCP can automatically provide clients with network parameters",
+          "correct": true,
+          "rationale": "This is a typical standard for workstation systems."
+        },
+        {
+          "text": "DNS translates names into usable address information",
+          "correct": true,
+          "rationale": "Without DNS, many services are impractical for users."
+        },
+        {
+          "text": "The default gateway is used for destinations outside the local network",
+          "correct": true,
+          "rationale": "It bridges into other networks."
+        },
+        {
+          "text": "The MAC address replaces the subnet mask",
+          "correct": false,
+          "rationale": "These are different concepts."
+        },
+        {
+          "text": "Static addresses should only be assigned on request and documented",
+          "correct": true,
+          "rationale": "This reduces conflicts and administrative errors."
+        }
+      ],
+      "feedback": {
+        "correct": "Correct: You assign the core services cleanly.",
+        "wrong": "Partly wrong: separate DHCP, DNS, gateway, and documentation requirements more clearly."
+      },
+      "progressLinks": [
+        "lf03_ethernet_tcpip",
+        "lf03_schichtenmodelle_adressierung"
+      ]
+    },
+    {
+      "id": "q3",
+      "type": "ordering",
+      "title": "Check chain for a new client setup",
+      "prompt": "Arrange the steps for a clean setup.",
+      "items": [
+        "Document the result",
+        "Check link status and interface",
+        "Verify IP configuration incl. DNS and gateway",
+        "Test local reachability and gateway",
+        "Check name resolution and central services"
+      ],
+      "correctOrder": [
+        "Check link status and interface",
+        "Verify IP configuration incl. DNS and gateway",
+        "Test local reachability and gateway",
+        "Check name resolution and central services",
+        "Document the result"
+      ],
+      "feedback": {
+        "correct": "Correct: This checks the setup systematically and traceably.",
+        "wrong": "Not optimal: first connection and parameters, then services and documentation."
+      },
+      "progressLinks": [
+        "lf03_ethernet_tcpip",
+        "lf03_client_integration"
+      ]
+    },
+    {
+      "id": "q4",
+      "type": "number",
+      "title": "Usable host addresses in a /26 network",
+      "prompt": "How many usable host addresses does a /26 subnet provide?",
+      "expected": 62,
+      "toleranceAbs": 0,
+      "showExpectedFormula": "2^(32-26) - 2 = 62",
+      "feedback": {
+        "correct": "Correctly calculated.",
+        "wrong": "Determine host bits and subtract network and broadcast addresses."
+      },
+      "progressLinks": [
+        "lf03_schichtenmodelle_adressierung"
+      ]
+    },
+    {
+      "id": "q5",
+      "type": "short_text",
+      "title": "Explain the standard setup",
+      "prompt": "Explain in 4-6 sentences why standard clients usually use DHCP and what role DNS and gateway play.",
+      "minChars": 150,
+      "requiredKeywords": [
+        "dhcp",
+        "dns",
+        "gateway"
+      ],
+      "expectedOutline": "Explain standardization, reachability, and service usage in short sentences.",
+      "feedback": {
+        "correct": "Correct: The setup is understandable and technically clean.",
+        "wrong": "Please explain DHCP, DNS, and gateway and how they work together more clearly."
+      },
+      "progressLinks": [
+        "lf03_ethernet_tcpip",
+        "lf03_client_integration"
+      ]
+    }
+  ]
+}

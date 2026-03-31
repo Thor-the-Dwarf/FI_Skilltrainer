@@ -1,0 +1,160 @@
+{
+  "scenario": {
+    "company": "Training company IT service",
+    "scale": "Mid-sized company, 180 employees",
+    "context": "Station 2 of the daily run: clarify information security basics and roles.",
+    "mission": "You classify protection goals, roles, and reporting paths for your work area.",
+    "station": {
+      "id": "LF04-ST-02",
+      "department": "Back office",
+      "profile": "Information assets, protection goals, and roles in daily operations",
+      "constraints": [
+        "Use terms precisely",
+        "Do not mix roles",
+        "Document briefly and traceably"
+      ]
+    },
+    "customerRequest": {
+      "from": "sicherheitsteam@ausbildungsbetrieb.example",
+      "to": "it.service@ausbildungsbetrieb.example",
+      "subject": "Station 02: prepare security basics for the work area",
+      "date": "2026-03-13",
+      "body": "Please create a compact overview for new colleagues on protection goals, roles, and reporting paths in daily security work."
+    }
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "type": "single_choice",
+      "title": "Core of information security",
+      "prompt": "Which combination forms the core of information security?",
+      "options": [
+        {
+          "text": "Confidentiality, integrity, availability",
+          "rationale": "These protection goals form the classic security base."
+        },
+        {
+          "text": "Comfort, speed, design",
+          "rationale": "These are not information security goals."
+        },
+        {
+          "text": "Price, discount, delivery time",
+          "rationale": "These are not protection goals."
+        }
+      ],
+      "correctIndex": 0,
+      "feedback": {
+        "correct": "Correct: These goals drive security assessment.",
+        "wrong": "Not suitable: use the classic protection goals."
+      },
+      "progressLinks": [
+        "lf04_infosicherheit_grundlagen"
+      ]
+    },
+    {
+      "id": "q2",
+      "type": "multi_select",
+      "title": "Roles in the security process",
+      "prompt": "Which statements about roles and responsibilities are sensible? (Multiple selections)",
+      "options": [
+        {
+          "text": "The business unit describes business criticality",
+          "correct": true,
+          "rationale": "It knows process impacts best."
+        },
+        {
+          "text": "IT implements technical protection measures",
+          "correct": true,
+          "rationale": "Technical implementation typically sits with IT."
+        },
+        {
+          "text": "Reporting paths for incidents should be known to everyone involved",
+          "correct": true,
+          "rationale": "Only then are incidents escalated in time."
+        },
+        {
+          "text": "Documentation is optional in security cases",
+          "correct": false,
+          "rationale": "Without evidence, controllability drops."
+        },
+        {
+          "text": "Each person decides alone on protection need",
+          "correct": false,
+          "rationale": "Protection need requires alignment with business unit and IT."
+        }
+      ],
+      "feedback": {
+        "correct": "Correct: Roles, reporting paths, and evidence are assigned cleanly.",
+        "wrong": "Partly wrong: classify roles, reporting paths, and documentation more clearly."
+      },
+      "progressLinks": [
+        "lf04_verantwortung_zustaendigkeiten"
+      ]
+    },
+    {
+      "id": "q3",
+      "type": "ordering",
+      "title": "Reporting path for a security suspicion",
+      "prompt": "Arrange the flow sensibly.",
+      "items": [
+        "Document the incident",
+        "Use security contacts or reporting path",
+        "Detect and classify the anomaly",
+        "Avoid uncontrolled immediate actions",
+        "Align feedback and next steps"
+      ],
+      "correctOrder": [
+        "Detect and classify the anomaly",
+        "Avoid uncontrolled immediate actions",
+        "Use security contacts or reporting path",
+        "Document the incident",
+        "Align feedback and next steps"
+      ],
+      "feedback": {
+        "correct": "Correct: This keeps the reporting path controlled and traceable.",
+        "wrong": "Not optimal: sequence detect, secure, report, and document cleanly."
+      },
+      "progressLinks": [
+        "lf04_verantwortung_zustaendigkeiten",
+        "lf04_dokumentation_kommunikation"
+      ]
+    },
+    {
+      "id": "q4",
+      "type": "number",
+      "title": "Share with high confidentiality need",
+      "prompt": "Out of 16 workstations, 6 have a high confidentiality need. What is the share in percent?",
+      "expected": 37.5,
+      "toleranceAbs": 0.5,
+      "showExpectedFormula": "6 / 16 * 100 = 37.5 %",
+      "feedback": {
+        "correct": "Correctly calculated.",
+        "wrong": "Divide the number with high need by the total and convert to percent."
+      },
+      "progressLinks": [
+        "lf04_infosicherheit_grundlagen"
+      ]
+    },
+    {
+      "id": "q5",
+      "type": "short_text",
+      "title": "Explain security fundamentals",
+      "prompt": "Explain in 4-6 sentences why protection goals, roles, and reporting paths belong together in daily work.",
+      "minChars": 150,
+      "requiredKeywords": [
+        "confidentiality",
+        "role",
+        "reporting"
+      ],
+      "expectedOutline": "Explain protection goals, separate roles, and classify reporting as part of the process.",
+      "feedback": {
+        "correct": "Correct: The relationship is clear and practical.",
+        "wrong": "Please link protection goals, roles, and reporting path more clearly."
+      },
+      "progressLinks": [
+        "lf04_infosicherheit_grundlagen",
+        "lf04_verantwortung_zustaendigkeiten"
+      ]
+    }
+  ]
+}

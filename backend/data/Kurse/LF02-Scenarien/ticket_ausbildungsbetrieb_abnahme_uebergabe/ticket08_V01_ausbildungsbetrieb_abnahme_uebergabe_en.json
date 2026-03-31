@@ -1,0 +1,159 @@
+{
+  "scenario": {
+    "company": "Training company IT service",
+    "scale": "Regional, 120 employees",
+    "context": "Station 8 of the daily run: acceptance, handover, and reflection.",
+    "mission": "You assess the technical acceptance and draft a short handover note.",
+    "station": {
+      "id": "NS-ST-08",
+      "department": "Rollout",
+      "profile": "Acceptance step before productive use",
+      "constraints": [
+        "Keep acceptance criteria measurable",
+        "Formulate the handover briefly and clearly",
+        "Name residual risk"
+      ]
+    },
+    "customerRequest": {
+      "from": "it.leitung@ausbildungsbetrieb.example",
+      "to": "rollout.team@systemhaus.example",
+      "subject": "Acceptance and handover for Station NS-ST-08",
+      "date": "2026-03-13",
+      "body": "Please perform the technical acceptance for NS-ST-08 and draft a short handover protocol with status, residual risk, and next step."
+    }
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "type": "multi_select",
+      "title": "Technical acceptance criteria",
+      "prompt": "Which criteria belong to a technical acceptance? (Multiple selections)",
+      "options": [
+        {
+          "text": "Login with test account successful",
+          "correct": true,
+          "rationale": "Basic usability can be verified."
+        },
+        {
+          "text": "Network access and core applications work",
+          "correct": true,
+          "rationale": "Core function for workstation operation."
+        },
+        {
+          "text": "Only a photo of the workstation",
+          "correct": false,
+          "rationale": "Not a technical acceptance proof by itself."
+        },
+        {
+          "text": "A short documented functional test is available",
+          "correct": true,
+          "rationale": "Proof of testing and results."
+        },
+        {
+          "text": "Private user wishes implemented without coordination",
+          "correct": false,
+          "rationale": "Not standard-compliant."
+        }
+      ],
+      "feedback": {
+        "correct": "Correct: acceptance is based on measurable technical criteria.",
+        "wrong": "Partly off: please weight evidence and core functionality more strongly."
+      },
+      "progressLinks": [
+        "lf02_arbeitsplatzbereitstellung"
+      ]
+    },
+    {
+      "id": "q2",
+      "type": "ordering",
+      "title": "Handover process",
+      "prompt": "Arrange the handover process logically.",
+      "items": [
+        "Create a short handover protocol",
+        "Prepare acceptance criteria",
+        "Run tests and note results",
+        "Name open points and residual risks",
+        "Release the workstation"
+      ],
+      "correctOrder": [
+        "Prepare acceptance criteria",
+        "Run tests and note results",
+        "Name open points and residual risks",
+        "Create a short handover protocol",
+        "Release the workstation"
+      ],
+      "feedback": {
+        "correct": "Correct: this makes the release transparent and reliable.",
+        "wrong": "Not optimal: start with criteria and tests, then protocol and release."
+      },
+      "progressLinks": [
+        "lf02_arbeitsplatzbereitstellung"
+      ]
+    },
+    {
+      "id": "q3",
+      "type": "single_choice",
+      "title": "Handling residual risk",
+      "prompt": "A test is just within limits but noticeable. What is the best next step?",
+      "options": [
+        {
+          "text": "Ignore it and release immediately",
+          "rationale": "Risk stays unaddressed."
+        },
+        {
+          "text": "Document residual risk, agree on monitoring, and set the next review date",
+          "rationale": "Responsible handling of a borderline result."
+        },
+        {
+          "text": "Discard the entire delivery",
+          "rationale": "Disproportionate without further assessment."
+        }
+      ],
+      "correctIndex": 1,
+      "feedback": {
+        "correct": "Correct: handle and manage risk transparently.",
+        "wrong": "Not suitable: residual risks must be documented and tracked actively."
+      },
+      "progressLinks": [
+        "lf02_qualitaet_bewertung"
+      ]
+    },
+    {
+      "id": "q4",
+      "type": "number",
+      "title": "Acceptance rate",
+      "prompt": "Of 16 tested devices, 14 pass acceptance immediately. What is the acceptance rate in percent?",
+      "expected": 87.5,
+      "toleranceAbs": 0.5,
+      "showExpectedFormula": "14 / 16 * 100 = 87.5 %",
+      "feedback": {
+        "correct": "Correct.",
+        "wrong": "Please calculate the share and convert to percent."
+      },
+      "progressLinks": [
+        "lf02_rechnen_abschaetzen"
+      ]
+    },
+    {
+      "id": "q5",
+      "type": "short_text",
+      "title": "Handover note",
+      "prompt": "Write a short handover note (4-6 sentences) with status, residual risk, and next step.",
+      "minChars": 130,
+      "requiredKeywords": [
+        "status",
+        "risk",
+        "next step"
+      ],
+      "expectedOutline": "Clear status, named residual risk, concrete follow-up action.",
+      "feedback": {
+        "correct": "Correct: The note is usable for operations and follow-up.",
+        "wrong": "Please state status, risk, and follow-up action more concretely."
+      },
+      "progressLinks": [
+        "lf02_dokumentation",
+        "lf02_benutzer_kundenkommunikation"
+      ]
+    }
+  ]
+}

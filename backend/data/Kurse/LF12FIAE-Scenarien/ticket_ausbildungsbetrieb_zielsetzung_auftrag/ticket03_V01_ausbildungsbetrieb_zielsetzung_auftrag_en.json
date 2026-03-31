@@ -1,0 +1,158 @@
+{
+  "scenario": {
+    "company": "Training company IT services",
+    "scale": "SME, 280 employees",
+    "context": "Station 03 of the day run: capture and secure the objective of a customer order.",
+    "mission": "You refine requirements, close gaps, and derive a clear acceptance picture.",
+    "station": {
+      "id": "LF12FIAE-ST-03",
+      "department": "Requirements",
+      "profile": "Requirements capture, target picture, acceptance criteria",
+      "constraints": [
+        "Keep requirements measurable",
+        "Clarify ambiguities actively",
+        "Secure acceptance criteria in writing"
+      ]
+    },
+    "customerRequest": {
+      "from": "auftraggeber@kundenprojekt.example",
+      "to": "projektteam@ausbildungsbetrieb.example",
+      "subject": "Station 03: Objectives and scope",
+      "date": "2026-03-13",
+      "body": "Please capture the customer order precisely, define the scope boundaries, and formulate sound acceptance criteria."
+    }
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "type": "multi_select",
+      "title": "Capture requirements cleanly",
+      "prompt": "Which points belong in a clean order intake? (Multiple choice)",
+      "options": [
+        {
+          "text": "Name user groups and core processes",
+          "correct": true,
+          "rationale": "Secures the business context."
+        },
+        {
+          "text": "Separate must-have and nice-to-have requirements",
+          "correct": true,
+          "rationale": "Makes prioritization easier."
+        },
+        {
+          "text": "Leave unclear terms unchecked",
+          "correct": false,
+          "rationale": "Leads to misinterpretations."
+        },
+        {
+          "text": "Document the boundary to non-goals",
+          "correct": true,
+          "rationale": "Protects against scope creep."
+        },
+        {
+          "text": "Use assumptions without marking them",
+          "correct": false,
+          "rationale": "Reduces reliability."
+        }
+      ],
+      "feedback": {
+        "correct": "Correct: The intake is structured and practical.",
+        "wrong": "Partly wrong: Please pay more attention to clarity and scope boundaries."
+      },
+      "progressLinks": [
+        "lf12fiae_kundenauftrag_zielsetzung"
+      ]
+    },
+    {
+      "id": "q2",
+      "type": "single_choice",
+      "title": "Define the acceptance picture",
+      "prompt": "Which wording is best suited as an acceptance criterion?",
+      "options": [
+        {
+          "text": "The solution should work well overall",
+          "rationale": "Too imprecise and hard to verify."
+        },
+        {
+          "text": "VIP tickets must become visibly prioritized in under 2 minutes",
+          "rationale": "Measurable and testable."
+        },
+        {
+          "text": "Users should be as satisfied as possible",
+          "rationale": "Not robust without a measurement criterion."
+        }
+      ],
+      "correctIndex": 1,
+      "feedback": {
+        "correct": "Correct: The criterion is concrete and testable.",
+        "wrong": "Not suitable: Acceptance criteria must be formulated measurably."
+      },
+      "progressLinks": [
+        "lf12fiae_kundenauftrag_zielsetzung"
+      ]
+    },
+    {
+      "id": "q3",
+      "type": "ordering",
+      "title": "From need to scope",
+      "prompt": "Put the flow from requirements capture to scope approval in order.",
+      "items": [
+        "Capture needs and goals",
+        "Clarify ambiguities through follow-up questions",
+        "Prioritize must-have and nice-to-have requirements",
+        "Formulate acceptance criteria",
+        "Approve the documented scope"
+      ],
+      "correctOrder": [
+        "Capture needs and goals",
+        "Clarify ambiguities through follow-up questions",
+        "Prioritize must-have and nice-to-have requirements",
+        "Formulate acceptance criteria",
+        "Approve the documented scope"
+      ],
+      "feedback": {
+        "correct": "Correct: The scope process is structured cleanly.",
+        "wrong": "Not ideal: Please clarify and prioritize first, then define acceptance criteria and approval."
+      },
+      "progressLinks": [
+        "lf12fiae_kundenauftrag_zielsetzung"
+      ]
+    },
+    {
+      "id": "q4",
+      "type": "number",
+      "title": "Estimate requirement volume",
+      "prompt": "The backlog contains 14 must-have requirements and 9 nice-to-have requirements. How many requirements are captured in total?",
+      "expected": 23,
+      "toleranceAbs": 1,
+      "showExpectedFormula": "14 + 9 = 23",
+      "feedback": {
+        "correct": "Calculated correctly.",
+        "wrong": "Please add must-have and nice-to-have requirements correctly."
+      },
+      "progressLinks": [
+        "lf12fiae_kundenauftrag_zielsetzung"
+      ]
+    },
+    {
+      "id": "q5",
+      "type": "short_text",
+      "title": "Formulate the objective compactly",
+      "prompt": "Formulate a clear target picture with scope boundary and acceptance criterion in 4-6 sentences.",
+      "minChars": 160,
+      "requiredKeywords": [
+        "goal",
+        "boundary",
+        "acceptance criterion"
+      ],
+      "expectedOutline": "Clear goal, explicit non-goals, and at least one measurable criterion.",
+      "feedback": {
+        "correct": "Correct: The target picture is formulated soundly.",
+        "wrong": "Please work out the goal, boundary, and acceptance criterion more clearly."
+      },
+      "progressLinks": [
+        "lf12fiae_kundenauftrag_zielsetzung"
+      ]
+    }
+  ]
+}

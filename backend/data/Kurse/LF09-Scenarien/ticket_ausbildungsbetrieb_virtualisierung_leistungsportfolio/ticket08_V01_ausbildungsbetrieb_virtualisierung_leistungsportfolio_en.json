@@ -1,0 +1,161 @@
+{
+  "scenario": {
+    "company": "Nordufer Maschinenbau GmbH",
+    "scale": "Medium-sized business, 2 locations, 310 employees",
+    "context": "Station 08: explain virtualization concepts and managed services in the service portfolio.",
+    "mission": "You prepare a customer-friendly classification of virtualization, levels of support, and expansion options.",
+    "station": {
+      "id": "LF09-ST-08",
+      "department": "Solutions Consulting",
+      "profile": "Virtualization and service portfolio",
+      "constraints": [
+        "Translate technology into plain language",
+        "Mention economic benefits",
+        "Make the limits of responsibility transparent"
+      ]
+    },
+    "customerRequest": {
+      "from": "vertrieb@nordufer-maschinenbau.example",
+      "to": "infra.team@ausbildungsbetrieb.example",
+      "subject": "Station 08: Virtualization and service portfolio",
+      "date": "2026-03-13",
+      "body": "Please prepare a short classification of virtualization, managed services, and expansion options for the final meeting."
+    }
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "type": "single_choice",
+      "title": "Goal of the info session",
+      "prompt": "What should be the most important goal of a short presentation of the virtualization concept?",
+      "options": [
+        {
+          "text": "Name as many technical terms as possible so the solution seems modern",
+          "rationale": "That does not help the customer view much."
+        },
+        {
+          "text": "Make the technical and economic benefits for the concrete expansion understandable",
+          "rationale": "That is exactly what a customer-oriented presentation is for."
+        },
+        {
+          "text": "Only talk about hardware prices",
+          "rationale": "That is far too narrow for the concept."
+        }
+      ],
+      "correctIndex": 1,
+      "feedback": {
+        "correct": "Correct: The presentation must explain the concrete benefit.",
+        "wrong": "Not suitable: The goal is not impression, but understandable classification."
+      },
+      "progressLinks": [
+        "lf09_virtualisierung_portfolio"
+      ]
+    },
+    {
+      "id": "q2",
+      "type": "short_text",
+      "title": "Explain managed services",
+      "prompt": "Describe in 4-6 sentences how you would explain managed-service levels and the benefit of virtualization to the customer.",
+      "minChars": 170,
+      "requiredKeywords": [
+        "managed",
+        "virtualization",
+        "benefit"
+      ],
+      "expectedOutline": "Customer-friendly classification of levels of participation, flexibility, and relief.",
+      "feedback": {
+        "correct": "Correct: The service levels and their benefit are explained clearly.",
+        "wrong": "Please connect managed services, virtualization, and customer benefit more concretely."
+      },
+      "progressLinks": [
+        "lf09_virtualisierung_portfolio"
+      ]
+    },
+    {
+      "id": "q3",
+      "type": "multi_select",
+      "title": "Classify expansion options",
+      "prompt": "Which statements fit a realistic classification of virtualization, containers, and virtual applications? (Multiple choice)",
+      "options": [
+        {
+          "text": "Virtualization can support consolidation and more flexible resource planning",
+          "correct": true,
+          "rationale": "This is a central operational benefit."
+        },
+        {
+          "text": "Containers and virtual applications must fit the operating model and know-how",
+          "correct": true,
+          "rationale": "Technology use needs context."
+        },
+        {
+          "text": "Every environment should be fully virtualized automatically, no matter how small it is",
+          "correct": false,
+          "rationale": "Not every environment benefits to the same degree."
+        },
+        {
+          "text": "Service levels should make transparent what the customer and service provider each take over",
+          "correct": true,
+          "rationale": "That creates realistic expectations."
+        },
+        {
+          "text": "A portfolio does not need to mention boundaries and prerequisites",
+          "correct": false,
+          "rationale": "That is especially important for consulting."
+        }
+      ],
+      "feedback": {
+        "correct": "Correct: The classification stays technically sound and customer-oriented.",
+        "wrong": "Partially wrong: Please highlight benefits, limits, and service levels more clearly."
+      },
+      "progressLinks": [
+        "lf09_virtualisierung_portfolio",
+        "lf09_rollout_uebergabe"
+      ]
+    },
+    {
+      "id": "q4",
+      "type": "number",
+      "title": "Power consumption after consolidation",
+      "prompt": "Four physical servers at 320 W each are replaced by two virtualization hosts at 510 W each. What is the power consumption after consolidation in watts?",
+      "expected": 1020,
+      "toleranceAbs": 1,
+      "showExpectedFormula": "2 * 510 = 1020 W",
+      "feedback": {
+        "correct": "Correctly calculated.",
+        "wrong": "Please multiply the number of hosts and their power consumption correctly."
+      },
+      "progressLinks": [
+        "lf09_virtualisierung_portfolio",
+        "lf09_wirtschaft_sicherheit_nachhaltigkeit"
+      ]
+    },
+    {
+      "id": "q5",
+      "type": "ordering",
+      "title": "Prepare portfolio presentation",
+      "prompt": "Put the steps for a short, robust closing presentation in order.",
+      "items": [
+        "Clarify the target audience and decision context",
+        "Present the benefit and prerequisites of virtualization",
+        "Separate managed-service levels and roles",
+        "Classify expansion options such as containers or virtual applications",
+        "Name the recommendation and next steps"
+      ],
+      "correctOrder": [
+        "Clarify the target audience and decision context",
+        "Present the benefit and prerequisites of virtualization",
+        "Separate managed-service levels and roles",
+        "Classify expansion options such as containers or virtual applications",
+        "Name the recommendation and next steps"
+      ],
+      "feedback": {
+        "correct": "Correct: The presentation moves clearly from context to recommendation.",
+        "wrong": "Not ideal: Please first order the context, then benefit, roles, and outlook."
+      },
+      "progressLinks": [
+        "lf09_virtualisierung_portfolio",
+        "lf09_rollout_uebergabe"
+      ]
+    }
+  ]
+}

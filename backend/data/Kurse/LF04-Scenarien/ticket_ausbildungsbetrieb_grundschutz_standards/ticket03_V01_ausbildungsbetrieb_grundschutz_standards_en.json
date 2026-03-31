@@ -1,0 +1,160 @@
+{
+  "scenario": {
+    "company": "Training company IT service",
+    "scale": "Mid-sized company, 180 employees",
+    "context": "Station 3 of the daily run: distinguish laws, standards, and baseline protection.",
+    "mission": "You classify the legal framework, security policy, and BSI baseline protection for a work area in a practical way.",
+    "station": {
+      "id": "LF04-ST-03",
+      "department": "IT and compliance",
+      "profile": "Security policy, rules, and structured implementation frameworks",
+      "constraints": [
+        "Separate mandatory requirements cleanly",
+        "Keep a practical focus",
+        "Enable concise management communication"
+      ]
+    },
+    "customerRequest": {
+      "from": "compliance@ausbildungsbetrieb.example",
+      "to": "it.service@ausbildungsbetrieb.example",
+      "subject": "Station 03: explain the security framework in operations",
+      "date": "2026-03-13",
+      "body": "Please prepare a compact classification of laws, standards, security policy, and BSI baseline protection for the work area."
+    }
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "type": "single_choice",
+      "title": "Mandatory requirements and implementation framework",
+      "prompt": "Which statement is technically most accurate?",
+      "options": [
+        {
+          "text": "Laws are mandatory, standards and baseline protection help with structured implementation",
+          "rationale": "This cleanly separates legal framework and implementation support."
+        },
+        {
+          "text": "Laws and standards are always the same",
+          "rationale": "They serve different functions."
+        },
+        {
+          "text": "Only internal notes are relevant for security",
+          "rationale": "External requirements must not be ignored."
+        }
+      ],
+      "correctIndex": 0,
+      "feedback": {
+        "correct": "Correct: This helps classify the framework in daily work.",
+        "wrong": "Not suitable: separate legal framework and standards more clearly."
+      },
+      "progressLinks": [
+        "lf04_gesetze_standards_grundschutz"
+      ]
+    },
+    {
+      "id": "q2",
+      "type": "multi_select",
+      "title": "Elements of a security framework",
+      "prompt": "Which points belong in a traceable security framework? (Multiple selections)",
+      "options": [
+        {
+          "text": "A security policy with clear principles",
+          "correct": true,
+          "rationale": "It provides orientation for further steps."
+        },
+        {
+          "text": "Rules or standards for concrete implementation",
+          "correct": true,
+          "rationale": "They make the framework usable."
+        },
+        {
+          "text": "Documented derivation of measures and responsibilities",
+          "correct": true,
+          "rationale": "Without derivation, the framework remains abstract."
+        },
+        {
+          "text": "Only spontaneous individual decisions without guidelines",
+          "correct": false,
+          "rationale": "That does not lead to a solid security framework."
+        },
+        {
+          "text": "Complete separation of business unit and IT",
+          "correct": false,
+          "rationale": "Security needs coordinated collaboration."
+        }
+      ],
+      "feedback": {
+        "correct": "Correct: Policy, rules, and responsibilities fit together sensibly.",
+        "wrong": "Partly wrong: connect policy, implementation rules, and responsibilities more clearly."
+      },
+      "progressLinks": [
+        "lf04_gesetze_standards_grundschutz",
+        "lf04_sicherheitsprozess_leitlinie"
+      ]
+    },
+    {
+      "id": "q3",
+      "type": "ordering",
+      "title": "From policy to implementation",
+      "prompt": "Arrange the steps sensibly.",
+      "items": [
+        "Name concrete measures and responsible parties",
+        "Capture security policy and framework requirements",
+        "Assess protection objects and protection need",
+        "Document results in line with the process",
+        "Derive priorities for implementation"
+      ],
+      "correctOrder": [
+        "Capture security policy and framework requirements",
+        "Assess protection objects and protection need",
+        "Derive priorities for implementation",
+        "Name concrete measures and responsible parties",
+        "Document results in line with the process"
+      ],
+      "feedback": {
+        "correct": "Correct: The security process moves cleanly from requirements to concrete steps.",
+        "wrong": "Not optimal: go from framework to assessment to prioritization and documentation."
+      },
+      "progressLinks": [
+        "lf04_sicherheitsprozess_leitlinie"
+      ]
+    },
+    {
+      "id": "q4",
+      "type": "number",
+      "title": "Implementation rate from a checklist",
+      "prompt": "Out of 24 required security controls, 18 are already implemented. What is the implementation rate in percent?",
+      "expected": 75,
+      "toleranceAbs": 0.5,
+      "showExpectedFormula": "18 / 24 * 100 = 75 %",
+      "feedback": {
+        "correct": "Correctly calculated.",
+        "wrong": "Divide implemented controls by the total and convert to percent."
+      },
+      "progressLinks": [
+        "lf04_gesetze_standards_grundschutz"
+      ]
+    },
+    {
+      "id": "q5",
+      "type": "short_text",
+      "title": "Briefly explain the security framework",
+      "prompt": "Explain in 4-6 sentences how policy, baseline protection, and standards work together in operations.",
+      "minChars": 150,
+      "requiredKeywords": [
+        "policy",
+        "baseline",
+        "standard"
+      ],
+      "expectedOutline": "Role of the policy, benefit of structured standards, and a brief operational link.",
+      "feedback": {
+        "correct": "Correct: The framework is understandable and operationally tangible.",
+        "wrong": "Please separate and connect policy, baseline protection, and standards more clearly."
+      },
+      "progressLinks": [
+        "lf04_gesetze_standards_grundschutz",
+        "lf04_sicherheitsprozess_leitlinie"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,160 @@
+{
+  "scenario": {
+    "company": "Training company IT services",
+    "scale": "SME, 220 employees",
+    "context": "Station 05 of the day run: choose frameworks and implement the UI.",
+    "mission": "You make a robust technology decision and plan a maintainable implementation in Python, Java, and the web.",
+    "station": {
+      "id": "LF10FIAE-ST-05",
+      "department": "Implementation",
+      "profile": "Framework selection and implementation path",
+      "constraints": [
+        "Justify the technology decision",
+        "Secure maintainability",
+        "Check integration capability"
+      ]
+    },
+    "customerRequest": {
+      "from": "tech.lead@ausbildungsbetrieb.example",
+      "to": "dev.team@ausbildungsbetrieb.example",
+      "subject": "Station 05: Implementation strategy",
+      "date": "2026-03-13",
+      "body": "Please choose the suitable UI framework and derive the implementation plan from it."
+    }
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "type": "multi_select",
+      "title": "Framework decision",
+      "prompt": "Which criteria belong in a robust framework decision? (Multiple choice)",
+      "options": [
+        {
+          "text": "Maintainability and team competence",
+          "correct": true,
+          "rationale": "Long-term operations are decisive."
+        },
+        {
+          "text": "LTS and security situation",
+          "correct": true,
+          "rationale": "Important for stability."
+        },
+        {
+          "text": "Popularity in trends only",
+          "correct": false,
+          "rationale": "Not a sufficient criterion."
+        },
+        {
+          "text": "Ability to integrate with the existing architecture",
+          "correct": true,
+          "rationale": "Reduces integration risks."
+        },
+        {
+          "text": "Ignore the documentation situation",
+          "correct": false,
+          "rationale": "Makes knowledge transfer harder."
+        }
+      ],
+      "feedback": {
+        "correct": "Correct: The selection is professionally well founded.",
+        "wrong": "Partly wrong: Please give more weight to maintainability, security, and integration."
+      },
+      "progressLinks": [
+        "lf10fiae_implementierung_frameworks"
+      ]
+    },
+    {
+      "id": "q2",
+      "type": "single_choice",
+      "title": "Prioritize the implementation path",
+      "prompt": "What makes the most sense for the start of the implementation?",
+      "options": [
+        {
+          "text": "Postpone documentation until the end",
+          "rationale": "Raises knowledge loss."
+        },
+        {
+          "text": "Implement and validate the core user flow first",
+          "rationale": "Secures early feedback on the critical path."
+        },
+        {
+          "text": "Build only edge functions first",
+          "rationale": "Core risks remain open."
+        }
+      ],
+      "correctIndex": 1,
+      "feedback": {
+        "correct": "Correct: The core flow first reduces project risk.",
+        "wrong": "Not suitable: Critical user paths should be prioritized."
+      },
+      "progressLinks": [
+        "lf10fiae_implementierung_python_java_web"
+      ]
+    },
+    {
+      "id": "q3",
+      "type": "ordering",
+      "title": "Implementation roadmap",
+      "prompt": "Put the flow for a stable UI implementation in order.",
+      "items": [
+        "Finalize the technology decision",
+        "Implement the core components",
+        "Integrate validation and error messages",
+        "Run the integration test",
+        "Update the documentation"
+      ],
+      "correctOrder": [
+        "Finalize the technology decision",
+        "Implement the core components",
+        "Integrate validation and error messages",
+        "Run the integration test",
+        "Update the documentation"
+      ],
+      "feedback": {
+        "correct": "Correct: The roadmap is practical and stable.",
+        "wrong": "Not ideal: Please place the technology and core-component phases before testing and documentation."
+      },
+      "progressLinks": [
+        "lf10fiae_implementierung_frameworks",
+        "lf10fiae_implementierung_python_java_web"
+      ]
+    },
+    {
+      "id": "q4",
+      "type": "number",
+      "title": "Implementation budget",
+      "prompt": "26 hours are planned for UI components at 74 EUR each. What is the budget?",
+      "expected": 1924,
+      "toleranceAbs": 1,
+      "showExpectedFormula": "26 * 74 = 1924 EUR",
+      "feedback": {
+        "correct": "Calculated correctly.",
+        "wrong": "Please multiply the hours and rate correctly."
+      },
+      "progressLinks": [
+        "lf10fiae_implementierung_python_java_web"
+      ]
+    },
+    {
+      "id": "q5",
+      "type": "short_text",
+      "title": "Justify the technology decision",
+      "prompt": "Justify the framework and implementation choice in 4-6 sentences.",
+      "minChars": 160,
+      "requiredKeywords": [
+        "maintainability",
+        "integration",
+        "decision"
+      ],
+      "expectedOutline": "Technology justification through maintainability, integration fit, and team capability.",
+      "feedback": {
+        "correct": "Correct: The decision is secured in a traceable way.",
+        "wrong": "Please connect maintainability, integration, and the decision more clearly."
+      },
+      "progressLinks": [
+        "lf10fiae_implementierung_frameworks",
+        "lf10fiae_ui_dokumentation"
+      ]
+    }
+  ]
+}

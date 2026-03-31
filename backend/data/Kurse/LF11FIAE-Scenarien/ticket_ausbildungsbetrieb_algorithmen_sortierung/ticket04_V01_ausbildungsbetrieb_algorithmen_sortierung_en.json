@@ -1,0 +1,160 @@
+{
+  "description": null,
+  "scenario": {
+    "company": "Training company IT services",
+    "scale": "SME, 240 employees",
+    "context": "Station 04 of the day run: deepen algorithms, recursion, and sorting.",
+    "mission": "You design robust algorithms, validate recursion, and choose suitable sorting methods.",
+    "station": {
+      "id": "LF11FIAE-ST-04",
+      "department": "Algorithmics",
+      "profile": "Design, recursion, sorting",
+      "constraints": [
+        "Secure edge cases",
+        "Consider runtime impact",
+        "Choose the method according to context"
+      ]
+    },
+    "customerRequest": {
+      "from": "tech.arch@ausbildungsbetrieb.example",
+      "to": "dev.team@ausbildungsbetrieb.example",
+      "subject": "Station 04: Safeguard algorithmics",
+      "date": "2026-03-13",
+      "body": "Please validate the algorithm design for load cases and document the choice of method."
+    }
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "type": "single_choice",
+      "title": "Algorithm starting point",
+      "prompt": "What comes first in a stable algorithm design?",
+      "options": [
+        {
+          "text": "Start writing code immediately",
+          "rationale": "High rework costs are likely."
+        },
+        {
+          "text": "Clarify problem, inputs, and edge cases",
+          "rationale": "Creates a sound basis for the design."
+        },
+        {
+          "text": "Only estimate runtime figures",
+          "rationale": "Incomplete without clarifying the problem."
+        }
+      ],
+      "correctIndex": 1,
+      "feedback": {
+        "correct": "Correct: First clarify the problem and edge cases.",
+        "wrong": "Not suitable: Without problem clarity the design becomes messy."
+      },
+      "progressLinks": [
+        "lf11fiae_algorithmen_sortierung"
+      ]
+    },
+    {
+      "id": "q2",
+      "type": "multi_select",
+      "title": "Make recursion robust",
+      "prompt": "Which points are especially important in recursion? (Multiple choice)",
+      "options": [
+        {
+          "text": "Define termination conditions explicitly",
+          "correct": true,
+          "rationale": "Prevents endless recursion."
+        },
+        {
+          "text": "Reduce subproblems clearly",
+          "correct": true,
+          "rationale": "Secures progress."
+        },
+        {
+          "text": "Ignore return values",
+          "correct": false,
+          "rationale": "Leads to errors."
+        },
+        {
+          "text": "Plan test cases for boundary values",
+          "correct": true,
+          "rationale": "Improves robustness."
+        },
+        {
+          "text": "Run recursion without monitoring",
+          "correct": false,
+          "rationale": "Makes defects harder to prove."
+        }
+      ],
+      "feedback": {
+        "correct": "Correct: This makes recursion robust.",
+        "wrong": "Partly wrong: Please pay more attention to termination, reduction, and boundary tests."
+      },
+      "progressLinks": [
+        "lf11fiae_algorithmen_sortierung"
+      ]
+    },
+    {
+      "id": "q3",
+      "type": "ordering",
+      "title": "Justify a sorting method",
+      "prompt": "Put the steps for deciding on a sorting method in order.",
+      "items": [
+        "Analyze the data profile",
+        "Compare method options",
+        "Estimate runtime impact",
+        "Implement and test",
+        "Document the decision"
+      ],
+      "correctOrder": [
+        "Analyze the data profile",
+        "Compare method options",
+        "Estimate runtime impact",
+        "Implement and test",
+        "Document the decision"
+      ],
+      "feedback": {
+        "correct": "Correct: The choice of method is justified cleanly.",
+        "wrong": "Not ideal: Please evaluate the data profile before implementation."
+      },
+      "progressLinks": [
+        "lf11fiae_algorithmen_sortierung"
+      ]
+    },
+    {
+      "id": "q4",
+      "type": "number",
+      "title": "Add processing times",
+      "prompt": "Three algorithm runs take 18 ms, 21 ms, and 24 ms. What is the total time?",
+      "expected": 63,
+      "toleranceAbs": 1,
+      "showExpectedFormula": "18 + 21 + 24 = 63 ms",
+      "feedback": {
+        "correct": "Calculated correctly.",
+        "wrong": "Please add all runs correctly."
+      },
+      "progressLinks": [
+        "lf11fiae_algorithmen_sortierung"
+      ]
+    },
+    {
+      "id": "q5",
+      "type": "short_text",
+      "title": "Explain method choice",
+      "prompt": "Explain the choice of sorting method for a real load profile in 4-6 sentences.",
+      "minChars": 160,
+      "requiredKeywords": [
+        "data profile",
+        "runtime",
+        "method"
+      ],
+      "expectedOutline": "Clear link to the data profile and runtime impact.",
+      "feedback": {
+        "correct": "Correct: The choice is professionally traceable.",
+        "wrong": "Please connect data profile, runtime, and method more clearly."
+      },
+      "progressLinks": [
+        "lf11fiae_algorithmen_sortierung",
+        "lf11fiae_schnittstellen_dokumentation"
+      ]
+    }
+  ]
+}

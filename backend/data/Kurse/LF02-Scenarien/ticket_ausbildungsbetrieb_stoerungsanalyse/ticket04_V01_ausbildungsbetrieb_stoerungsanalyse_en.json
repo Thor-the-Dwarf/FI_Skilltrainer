@@ -1,0 +1,159 @@
+{
+  "scenario": {
+    "company": "Training company IT service",
+    "scale": "Regional, 120 employees",
+    "context": "Station 4 of the day: narrow down typical incidents systematically.",
+    "mission": "You analyze standard problems and document a sensible first diagnosis.",
+    "station": {
+      "id": "NS-ST-04",
+      "department": "Support",
+      "profile": "Office workstation with network and peripherals",
+      "constraints": [
+        "no hectic quick fixes",
+        "measurable initial checks",
+        "clean ticket note"
+      ]
+    },
+    "customerRequest": {
+      "from": "support.leitung@ausbildungsbetrieb.example",
+      "to": "rollout.team@systemhaus.example",
+      "subject": "Initial diagnosis for station NS-ST-04",
+      "date": "2026-03-13",
+      "body": "Please handle the typical incident cases for NS-ST-04 and document a structured initial diagnosis.\n\nWe need clear, traceable steps instead of trial and error."
+    }
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "type": "single_choice",
+      "title": "First step for slow startup",
+      "prompt": "A PC boots very slowly. What is the best first step?",
+      "options": [
+        {
+          "text": "Immediately start a full reinstall",
+          "rationale": "Too invasive without prior analysis."
+        },
+        {
+          "text": "Check autostarts, load, free storage and event logs",
+          "rationale": "Structured initial diagnosis with high explanatory value."
+        },
+        {
+          "text": "Close the ticket right away",
+          "rationale": "Does not address the problem."
+        }
+      ],
+      "correctIndex": 1,
+      "feedback": {
+        "correct": "Correct: data first, then a decision.",
+        "wrong": "Not suitable: please narrow down systematically first."
+      },
+      "progressLinks": [
+        "lf02_fehleranalyse_support"
+      ]
+    },
+    {
+      "id": "q2",
+      "type": "multi_select",
+      "title": "Typical causes of a black screen",
+      "prompt": "Which causes should be checked first? (Multiple selection)",
+      "options": [
+        {
+          "text": "Monitor power supply",
+          "correct": true,
+          "rationale": "Basic check with a high likelihood of success."
+        },
+        {
+          "text": "Correct input channel on the monitor",
+          "correct": true,
+          "rationale": "A common cause with multiple inputs."
+        },
+        {
+          "text": "Cable connection at device and monitor",
+          "correct": true,
+          "rationale": "Loose or faulty connections are classic."
+        },
+        {
+          "text": "Replace the CPU immediately",
+          "correct": false,
+          "rationale": "Too early and usually not root-related."
+        },
+        {
+          "text": "Only adjust desk height",
+          "correct": false,
+          "rationale": "Not a technical diagnosis point."
+        }
+      ],
+      "feedback": {
+        "correct": "Correct: you start with the obvious technical checks.",
+        "wrong": "Partially incorrect: please prioritize the basic checks."
+      },
+      "progressLinks": [
+        "lf02_fehleranalyse_support"
+      ]
+    },
+    {
+      "id": "q3",
+      "type": "ordering",
+      "title": "Initial diagnosis flow",
+      "prompt": "Arrange the diagnosis steps in a sensible order.",
+      "items": [
+        "Document immediate action",
+        "Describe the symptom clearly",
+        "Prioritize likely causes",
+        "Perform targeted basic checks",
+        "Record the result and next step in the ticket"
+      ],
+      "correctOrder": [
+        "Describe the symptom clearly",
+        "Prioritize likely causes",
+        "Perform targeted basic checks",
+        "Document immediate action",
+        "Record the result and next step in the ticket"
+      ],
+      "feedback": {
+        "correct": "Correct: this is a robust initial diagnosis chain.",
+        "wrong": "Not optimal: diagnosis should be traceable and documented."
+      },
+      "progressLinks": [
+        "lf02_fehleranalyse_support"
+      ]
+    },
+    {
+      "id": "q4",
+      "type": "number",
+      "title": "Free storage",
+      "prompt": "SSD size 512 GB. Used are 120 GB, 85 GB, 60 GB and 40 GB. How much storage is free?",
+      "expected": 207,
+      "toleranceAbs": 1,
+      "showExpectedFormula": "512 - (120 + 85 + 60 + 40) = 207 GB",
+      "feedback": {
+        "correct": "Correct calculation.",
+        "wrong": "Please sum used values first and subtract from total capacity."
+      },
+      "progressLinks": [
+        "lf02_wartung_optimierung"
+      ]
+    },
+    {
+      "id": "q5",
+      "type": "short_text",
+      "title": "Incident note",
+      "prompt": "Write a short ticket note (4-5 sentences) with symptom, check step and next step.",
+      "minChars": 120,
+      "requiredKeywords": [
+        "symptom",
+        "check",
+        "next step"
+      ],
+      "expectedOutline": "Short, structured, traceable for handover to colleagues.",
+      "feedback": {
+        "correct": "Correct: good technical pre-analysis.",
+        "wrong": "Please separate symptom, check and next action more clearly."
+      },
+      "progressLinks": [
+        "lf02_dokumentation",
+        "lf02_fehleranalyse_support"
+      ]
+    }
+  ]
+}

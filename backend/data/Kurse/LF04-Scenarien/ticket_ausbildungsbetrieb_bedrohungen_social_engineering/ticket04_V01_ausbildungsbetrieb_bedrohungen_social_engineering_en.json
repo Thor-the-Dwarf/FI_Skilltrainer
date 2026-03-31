@@ -1,0 +1,161 @@
+{
+  "scenario": {
+    "company": "Training company IT service",
+    "scale": "Mid-sized company, 180 employees",
+    "context": "Station 4 of the daily run: assess threats and social engineering.",
+    "mission": "You identify current threats and define safe handling of social engineering situations.",
+    "station": {
+      "id": "LF04-ST-04",
+      "department": "Sales",
+      "profile": "Phishing, identity abuse, and suspicious contacts",
+      "constraints": [
+        "Name warning signals clearly",
+        "Prefer a safe response",
+        "Keep communication audience-appropriate"
+      ]
+    },
+    "customerRequest": {
+      "from": "sicherheitsteam@ausbildungsbetrieb.example",
+      "to": "it.service@ausbildungsbetrieb.example",
+      "subject": "Station 04: secure threat landscape and social engineering",
+      "date": "2026-03-13",
+      "body": "Please assess typical threats for the sales area and formulate a short action recommendation for handling social engineering attempts."
+    }
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "type": "single_choice",
+      "title": "Typical warning signal for phishing",
+      "prompt": "Which characteristic is a particularly strong warning sign for phishing?",
+      "options": [
+        {
+          "text": "Time pressure plus a request to reveal credentials immediately",
+          "rationale": "This exact mix is often used for manipulation."
+        },
+        {
+          "text": "A properly verified call-back via known contact channels",
+          "rationale": "That is a protective measure."
+        },
+        {
+          "text": "A normal internal meeting notice without a data request",
+          "rationale": "This alone is not a strong warning sign."
+        }
+      ],
+      "correctIndex": 0,
+      "feedback": {
+        "correct": "Correct: Time pressure and data requests are strong warning signs.",
+        "wrong": "Not suitable: pay more attention to manipulation patterns."
+      },
+      "progressLinks": [
+        "lf04_social_engineering"
+      ]
+    },
+    {
+      "id": "q2",
+      "type": "multi_select",
+      "title": "Relevant threats in daily work",
+      "prompt": "Which threats are relevant for a typical sales workstation? (Multiple selections)",
+      "options": [
+        {
+          "text": "Phishing for mail or CRM accounts",
+          "correct": true,
+          "rationale": "Accounts are a central attack target."
+        },
+        {
+          "text": "Misconfigured permissions with overly broad access rights",
+          "correct": true,
+          "rationale": "This endangers confidentiality and integrity."
+        },
+        {
+          "text": "Manipulated attachments or links",
+          "correct": true,
+          "rationale": "This can prepare malware or identity theft."
+        },
+        {
+          "text": "A new ergonomic mouse",
+          "correct": false,
+          "rationale": "That is not an IT threat."
+        },
+        {
+          "text": "Unclear identity in external requests",
+          "correct": true,
+          "rationale": "This is a typical entry point for social engineering."
+        }
+      ],
+      "feedback": {
+        "correct": "Correct: You connect the threat landscape with the workstation context.",
+        "wrong": "Partly wrong: consider accounts, permissions, and suspicious contacts more strongly."
+      },
+      "progressLinks": [
+        "lf04_bedrohungen_schadensszenarien",
+        "lf04_social_engineering"
+      ]
+    },
+    {
+      "id": "q3",
+      "type": "ordering",
+      "title": "Handling a suspicious request",
+      "prompt": "Arrange the steps for safe handling.",
+      "items": [
+        "Submit the security incident via the reporting path",
+        "Critically review the request and do not release sensitive data",
+        "Verify identity via known contact channels",
+        "Document the incident and align feedback",
+        "Implement further measures according to policy"
+      ],
+      "correctOrder": [
+        "Critically review the request and do not release sensitive data",
+        "Verify identity via known contact channels",
+        "Submit the security incident via the reporting path",
+        "Implement further measures according to policy",
+        "Document the incident and align feedback"
+      ],
+      "feedback": {
+        "correct": "Correct: The flow protects data and stays process-compliant.",
+        "wrong": "Not optimal: sequence verification, reporting, and documentation clearly."
+      },
+      "progressLinks": [
+        "lf04_social_engineering",
+        "lf04_dokumentation_kommunikation"
+      ]
+    },
+    {
+      "id": "q4",
+      "type": "number",
+      "title": "Risk score of a threat",
+      "prompt": "With likelihood 3 and impact 4: risk score = likelihood * impact. What is the score?",
+      "expected": 12,
+      "toleranceAbs": 0,
+      "showExpectedFormula": "3 * 4 = 12",
+      "feedback": {
+        "correct": "Correctly calculated.",
+        "wrong": "Multiply likelihood and impact."
+      },
+      "progressLinks": [
+        "lf04_bedrohungen_schadensszenarien"
+      ]
+    },
+    {
+      "id": "q5",
+      "type": "short_text",
+      "title": "Team note on social engineering",
+      "prompt": "Formulate in 4-6 sentences a team note with warning signal, verification rule, and reporting path.",
+      "minChars": 150,
+      "requiredKeywords": [
+        "warning",
+        "verify",
+        "reporting"
+      ],
+      "expectedOutline": "Name the warning signal, state the safe behavior rule, and clarify the reporting path.",
+      "feedback": {
+        "correct": "Correct: The note is clear, preventive, and usable.",
+        "wrong": "Please state warning signal, verification, and reporting path more clearly."
+      },
+      "progressLinks": [
+        "lf04_social_engineering",
+        "lf04_dokumentation_kommunikation"
+      ]
+    }
+  ]
+}

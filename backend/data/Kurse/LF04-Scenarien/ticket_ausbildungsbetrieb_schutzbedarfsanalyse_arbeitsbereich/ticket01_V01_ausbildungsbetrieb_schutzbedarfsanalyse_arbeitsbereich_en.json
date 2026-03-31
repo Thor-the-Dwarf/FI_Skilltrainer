@@ -1,0 +1,732 @@
+{
+  "scenario": {
+    "company": "Training company IT service",
+    "scale": "Mid-sized company, 180 employees",
+    "context": "Station 01: kickoff task and follow-ups for a protection-needs assessment in sales.",
+    "mission": "You handle the kickoff task and multiple follow-ups around protection goals, threats, social engineering, storage media, and security measures.",
+    "station": {
+      "id": "LF04-ST-01",
+      "department": "Sales and back office",
+      "profile": "CRM, office suite, file storage, and occasional data exchange with external parties",
+      "constraints": [
+        "Justify assessments briefly and traceably",
+        "Keep measures realistic for operations",
+        "Meet security and documentation requirements"
+      ]
+    },
+    "customerRequest": {
+      "from": "sicherheitsteam@ausbildungsbetrieb.example",
+      "to": "it.service@ausbildungsbetrieb.example",
+      "subject": "Station 01: assess protection needs in the work area",
+      "date": "2026-03-13",
+      "body": "Please conduct a protection-needs assessment for a standard workstation in the sales area.\n\nAfter that, additional tasks for the same environment follow with increasing responsibility regarding threats, social engineering, workstation software, and mobile data exchange."
+    }
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "type": "single_choice",
+      "title": "Classify protection goals correctly",
+      "prompt": "Which combination of goals forms the core of information security?",
+      "options": [
+        {
+          "text": "Confidentiality, integrity, availability",
+          "rationale": "These three protection goals are the recognized base."
+        },
+        {
+          "text": "Performance, comfort, design",
+          "rationale": "These are not fundamental information security goals."
+        },
+        {
+          "text": "Price, delivery time, brand loyalty",
+          "rationale": "These are procurement criteria, not protection goals."
+        }
+      ],
+      "correctIndex": 0,
+      "feedback": {
+        "correct": "Correct: These three goals drive the protection-needs assessment.",
+        "wrong": "Not suitable: use the classic protection goals."
+      },
+      "progressLinks": [
+        "lf04_infosicherheit_grundlagen"
+      ]
+    },
+    {
+      "id": "q2",
+      "type": "multi_select",
+      "title": "Roles and responsibilities in day-to-day security",
+      "prompt": "Which statements about roles and responsibilities are technically sound? (Multiple selections)",
+      "options": [
+        {
+          "text": "The business unit provides process requirements and the view of potential damage",
+          "correct": true,
+          "rationale": "The business unit knows the business impact best."
+        },
+        {
+          "text": "IT implements technical protection measures and documents its steps",
+          "correct": true,
+          "rationale": "Technical implementation and evidence typically sit with IT."
+        },
+        {
+          "text": "Security activities should be documented as little as possible to save time",
+          "correct": false,
+          "rationale": "Without documentation, traceability and control are missing."
+        },
+        {
+          "text": "Reporting paths for security incidents must be known",
+          "correct": true,
+          "rationale": "Fast escalation reduces follow-on damage."
+        },
+        {
+          "text": "Each person decides alone on protection needs without alignment",
+          "correct": false,
+          "rationale": "Protection needs require team and process alignment."
+        }
+      ],
+      "feedback": {
+        "correct": "Correct: You separate roles and responsibility in a practical way.",
+        "wrong": "Partly wrong: classify roles, reporting paths, and documentation more clearly."
+      },
+      "progressLinks": [
+        "lf04_verantwortung_zustaendigkeiten"
+      ]
+    },
+    {
+      "id": "q3",
+      "type": "ordering",
+      "title": "Process of a solid protection-needs assessment",
+      "prompt": "Arrange the steps for a clean protection-needs determination.",
+      "items": [
+        "Derive measures and document residual risk",
+        "Identify protection objects and processes",
+        "Assess threats and damage scenarios",
+        "Classify protection needs with justification",
+        "Align results with business unit and IT"
+      ],
+      "correctOrder": [
+        "Identify protection objects and processes",
+        "Assess threats and damage scenarios",
+        "Classify protection needs with justification",
+        "Derive measures and document residual risk",
+        "Align results with business unit and IT"
+      ],
+      "feedback": {
+        "correct": "Correct: The process is methodical and operationally sound.",
+        "wrong": "Not optimal: move from identification to assessment to aligned decision."
+      },
+      "progressLinks": [
+        "lf04_schutzbedarf_methodik"
+      ]
+    },
+    {
+      "id": "q4",
+      "type": "number",
+      "title": "Downtime from target availability",
+      "prompt": "An internal service has a target availability of 99.7% in a 30-day month. How many minutes of downtime are included at most?",
+      "expected": 130,
+      "toleranceAbs": 1,
+      "showExpectedFormula": "30 * 24 * 60 * (1 - 0.997) = 129.6 ~ 130 minutes",
+      "feedback": {
+        "correct": "Correctly calculated.",
+        "wrong": "Multiply the full time period by the downtime fraction."
+      },
+      "progressLinks": [
+        "lf04_verfuegbarkeit_schaden_berechnen"
+      ]
+    },
+    {
+      "id": "q5",
+      "type": "short_text",
+      "title": "Brief initial classification note",
+      "prompt": "Write a short note (4-6 sentences) with protection need, justification, and an initial residual risk.",
+      "minChars": 150,
+      "requiredKeywords": [
+        "protection",
+        "justification",
+        "risk"
+      ],
+      "expectedOutline": "Classification, key justification, and a realistic residual point.",
+      "feedback": {
+        "correct": "Correct: The note is clear, concise, and decision-ready.",
+        "wrong": "Please separate protection need, justification, and residual risk more clearly."
+      },
+      "progressLinks": [
+        "lf04_dokumentation_kommunikation",
+        "lf04_schutzbedarf_methodik"
+      ]
+    },
+    {
+      "id": "sep_f1",
+      "type": "followup_divider",
+      "title": "Follow-up 1 - sharpen threat landscape and framework requirements",
+      "from": "sicherheitsteam@ausbildungsbetrieb.example",
+      "to": "it.service@ausbildungsbetrieb.example",
+      "subject": "Please update current threats and security framework",
+      "date": "2026-03-13",
+      "body": "Management wants a compact update on laws, standards, and the most important current threats for the sales workstation. Please prioritize the risks traceably."
+    },
+    {
+      "id": "q6",
+      "type": "single_choice",
+      "title": "Distinguish laws, standards, and baseline protection",
+      "prompt": "Which statement best describes the difference?",
+      "options": [
+        {
+          "text": "Laws are mandatory, standards and baseline protection provide structured implementation frameworks",
+          "rationale": "This cleanly classifies the security framework in practice."
+        },
+        {
+          "text": "Everything is identical and interchangeable",
+          "rationale": "Laws, standards, and baseline protection have different roles."
+        },
+        {
+          "text": "Only internal team rules are relevant for security",
+          "rationale": "External requirements must not be ignored."
+        }
+      ],
+      "correctIndex": 0,
+      "feedback": {
+        "correct": "Correct: Mandatory rules and implementation frameworks are clearly separated.",
+        "wrong": "Not suitable: distinguish legal framework and security standards more clearly."
+      },
+      "progressLinks": [
+        "lf04_gesetze_standards_grundschutz"
+      ]
+    },
+    {
+      "id": "q7",
+      "type": "multi_select",
+      "title": "Relevant threats for the sales workstation",
+      "prompt": "Which scenarios are technically relevant for the described workstation? (Multiple selections)",
+      "options": [
+        {
+          "text": "Phishing for CRM or mail credentials",
+          "correct": true,
+          "rationale": "Accounts and communication paths are typical attack targets."
+        },
+        {
+          "text": "Unauthorized access to quote and customer data",
+          "correct": true,
+          "rationale": "Confidentiality breaches can cause direct business damage."
+        },
+        {
+          "text": "Ransomware via email attachment or file storage",
+          "correct": true,
+          "rationale": "This threatens availability and integrity at the same time."
+        },
+        {
+          "text": "A new ergonomic office chair",
+          "correct": false,
+          "rationale": "This is not an IT security risk in this context."
+        },
+        {
+          "text": "Misconfigured permissions in shared file storage",
+          "correct": true,
+          "rationale": "Wrong permissions quickly lead to unwanted access."
+        }
+      ],
+      "feedback": {
+        "correct": "Correct: You connect the threat landscape with real business impact.",
+        "wrong": "Partly wrong: consider attacks on data, accounts, and permissions more strongly."
+      },
+      "progressLinks": [
+        "lf04_bedrohungen_schadensszenarien"
+      ]
+    },
+    {
+      "id": "q8",
+      "type": "ordering",
+      "title": "From security framework to risk priority",
+      "prompt": "Arrange the steps sensibly.",
+      "items": [
+        "Align measures and feedback with responsible parties",
+        "Review policy, rules, and framework requirements",
+        "Assess threats and potential damage",
+        "Name protection objects and affected processes",
+        "Classify protection need and priority with justification"
+      ],
+      "correctOrder": [
+        "Review policy, rules, and framework requirements",
+        "Name protection objects and affected processes",
+        "Assess threats and potential damage",
+        "Classify protection need and priority with justification",
+        "Align measures and feedback with responsible parties"
+      ],
+      "feedback": {
+        "correct": "Correct: The path moves cleanly from framework to prioritized decision.",
+        "wrong": "Not optimal: first clarify framework and protection objects, then prioritize and align."
+      },
+      "progressLinks": [
+        "lf04_sicherheitsprozess_leitlinie"
+      ]
+    },
+    {
+      "id": "q9",
+      "type": "number",
+      "title": "Calculate risk score",
+      "prompt": "In a simple matrix: risk score = likelihood (1-5) * impact (1-5). With 4 and 5: what is the score?",
+      "expected": 20,
+      "toleranceAbs": 0,
+      "showExpectedFormula": "4 * 5 = 20",
+      "feedback": {
+        "correct": "Correctly calculated.",
+        "wrong": "Multiply likelihood and impact."
+      },
+      "progressLinks": [
+        "lf04_bedrohungen_schadensszenarien"
+      ]
+    },
+    {
+      "id": "q10",
+      "type": "short_text",
+      "title": "Brief recommendation to management",
+      "prompt": "Formulate a short recommendation (4-6 sentences) with two prioritized threats and a suitable measure.",
+      "minChars": 150,
+      "requiredKeywords": [
+        "threat",
+        "measure",
+        "priority"
+      ],
+      "expectedOutline": "Two prioritized risks, a plausible measure, and a brief justification.",
+      "feedback": {
+        "correct": "Correct: The recommendation is focused and management-ready.",
+        "wrong": "Please link threats, priority, and measure more clearly."
+      },
+      "progressLinks": [
+        "lf04_gesetze_standards_grundschutz",
+        "lf04_dokumentation_kommunikation"
+      ]
+    },
+    {
+      "id": "sep_f2",
+      "type": "followup_divider",
+      "title": "Follow-up 2 - suspicious contact at the hotline",
+      "from": "service.desk@ausbildungsbetrieb.example",
+      "to": "it.service@ausbildungsbetrieb.example",
+      "subject": "Possible social engineering attempt reported",
+      "date": "2026-03-13",
+      "body": "Someone called pretending to be an external audit body and demanded immediate release of sensitive sales data. Please assess the incident and provide a suitable response for the team."
+    },
+    {
+      "id": "q11",
+      "type": "single_choice",
+      "title": "First reaction to a suspicious contact",
+      "prompt": "What is most sensible in this situation?",
+      "options": [
+        {
+          "text": "Do not release sensitive data, verify identity via known channels, and report the incident",
+          "rationale": "This keeps verification and reporting under control."
+        },
+        {
+          "text": "Under time pressure, share all requested information immediately",
+          "rationale": "This is exactly what social engineering attacks exploit."
+        },
+        {
+          "text": "Ignore the call and document nothing",
+          "rationale": "Without reporting, others remain unprotected."
+        }
+      ],
+      "correctIndex": 0,
+      "feedback": {
+        "correct": "Correct: Verification and reporting come before speed.",
+        "wrong": "Not suitable: do not release data without verification and report the incident cleanly."
+      },
+      "progressLinks": [
+        "lf04_social_engineering"
+      ]
+    },
+    {
+      "id": "q12",
+      "type": "multi_select",
+      "title": "Warning signs for social engineering",
+      "prompt": "Which indicators point to a social engineering risk? (Multiple selections)",
+      "options": [
+        {
+          "text": "Pressure to release sensitive data immediately",
+          "correct": true,
+          "rationale": "Time pressure is a classic manipulation pattern."
+        },
+        {
+          "text": "Unusual communication channels without verification",
+          "correct": true,
+          "rationale": "Missing verification raises the abuse risk."
+        },
+        {
+          "text": "Sender identity does not match the claimed task",
+          "correct": true,
+          "rationale": "Identity mismatches are strong warning signs."
+        },
+        {
+          "text": "Multi-step verification via known contact channels",
+          "correct": false,
+          "rationale": "That is a protective measure, not an attack signal."
+        },
+        {
+          "text": "A documented approval with a four-eyes principle exists",
+          "correct": false,
+          "rationale": "That reduces rather than increases risk."
+        }
+      ],
+      "feedback": {
+        "correct": "Correct: You identify typical manipulation signals.",
+        "wrong": "Partly wrong: distinguish warning signals from security controls more clearly."
+      },
+      "progressLinks": [
+        "lf04_social_engineering"
+      ]
+    },
+    {
+      "id": "q13",
+      "type": "ordering",
+      "title": "Handling a suspicious contact",
+      "prompt": "Arrange the steps for safe handling.",
+      "items": [
+        "Document the incident and inform the team if needed",
+        "Do not release sensitive data and end the conversation cleanly",
+        "Verify identity via known contact channels",
+        "Report the security incident via the known path",
+        "Align next steps according to policy"
+      ],
+      "correctOrder": [
+        "Do not release sensitive data and end the conversation cleanly",
+        "Verify identity via known contact channels",
+        "Report the security incident via the known path",
+        "Align next steps according to policy",
+        "Document the incident and inform the team if needed"
+      ],
+      "feedback": {
+        "correct": "Correct: The flow minimizes risk and stays process-compliant.",
+        "wrong": "Not optimal: sequence protection, verification, reporting, and documentation more cleanly."
+      },
+      "progressLinks": [
+        "lf04_social_engineering",
+        "lf04_verantwortung_zustaendigkeiten"
+      ]
+    },
+    {
+      "id": "q14",
+      "type": "number",
+      "title": "Reporting rate from a phishing exercise",
+      "prompt": "Out of 20 employees, 6 correctly reported a suspicious email via the reporting path. What is the reporting rate in percent?",
+      "expected": 30,
+      "toleranceAbs": 0.5,
+      "showExpectedFormula": "6 / 20 * 100 = 30 %",
+      "feedback": {
+        "correct": "Correctly calculated.",
+        "wrong": "Divide the number of correct reports by the total and convert to percent."
+      },
+      "progressLinks": [
+        "lf04_social_engineering"
+      ]
+    },
+    {
+      "id": "q15",
+      "type": "short_text",
+      "title": "Warning message to the team",
+      "prompt": "Write a short warning message (4-6 sentences) with a verification note, reporting path, and clear behavior rule.",
+      "minChars": 150,
+      "requiredKeywords": [
+        "verify",
+        "report",
+        "no data"
+      ],
+      "expectedOutline": "Name the warning signal, require verification, and clearly state the reporting path.",
+      "feedback": {
+        "correct": "Correct: The message is clear, preventive, and practical.",
+        "wrong": "Please state verification, reporting path, and behavior rule more clearly."
+      },
+      "progressLinks": [
+        "lf04_social_engineering",
+        "lf04_dokumentation_kommunikation"
+      ]
+    },
+    {
+      "id": "sep_f3",
+      "type": "followup_divider",
+      "title": "Follow-up 3 - refine protection need for CRM workstation",
+      "from": "vertrieb.leitung@ausbildungsbetrieb.example",
+      "to": "it.service@ausbildungsbetrieb.example",
+      "subject": "Please assess protection needs for workstation software and client in more detail",
+      "date": "2026-03-13",
+      "body": "Management wants a clearer justification of protection needs specifically for CRM, file storage, and the associated client. Please outline which factors drive the protection need and which minimum measures follow."
+    },
+    {
+      "id": "q16",
+      "type": "single_choice",
+      "title": "Most important driver of protection need",
+      "prompt": "Which factor most strongly determines the protection need of workstation software?",
+      "options": [
+        {
+          "text": "Sensitivity of processed data and the impact on operations",
+          "rationale": "Data value and business impact largely determine classification."
+        },
+        {
+          "text": "Only the color of the software interface",
+          "rationale": "Appearance has no relation to protection need."
+        },
+        {
+          "text": "Only the purchase price of the client",
+          "rationale": "Cost alone does not define protection need."
+        }
+      ],
+      "correctIndex": 0,
+      "feedback": {
+        "correct": "Correct: Data value and impact are decisive here.",
+        "wrong": "Not suitable: tie protection need to data and business impact."
+      },
+      "progressLinks": [
+        "lf04_schutzbedarf_arbeitsplatzsoftware_clients"
+      ]
+    },
+    {
+      "id": "q17",
+      "type": "multi_select",
+      "title": "Aspects for workstation software and client",
+      "prompt": "Which aspects are especially relevant for the protection-needs assessment? (Multiple selections)",
+      "options": [
+        {
+          "text": "Processed data category and sensitivity",
+          "correct": true,
+          "rationale": "Data value significantly determines protection need."
+        },
+        {
+          "text": "Patch and update capability of software and client",
+          "correct": true,
+          "rationale": "This affects attack surface and operational risk."
+        },
+        {
+          "text": "Impact of outage or manipulation",
+          "correct": true,
+          "rationale": "Damage impact is a core element of assessment."
+        },
+        {
+          "text": "Only subjective preferences of individual users",
+          "correct": false,
+          "rationale": "Protection need is not a matter of taste."
+        },
+        {
+          "text": "Only the purchase price of the client",
+          "correct": false,
+          "rationale": "Price alone does not define protection need."
+        }
+      ],
+      "feedback": {
+        "correct": "Correct: The assessment is based on risk and impact.",
+        "wrong": "Partly wrong: tie data value, operational risk, and damage impact more closely."
+      },
+      "progressLinks": [
+        "lf04_schutzbedarf_arbeitsplatzsoftware_clients"
+      ]
+    },
+    {
+      "id": "q18",
+      "type": "ordering",
+      "title": "Assessment for the CRM workstation",
+      "prompt": "Arrange the steps for a clean protection-needs determination.",
+      "items": [
+        "Document minimum protection and residual risk",
+        "Record software, client, and data flow",
+        "Assess outage, manipulation, and access impacts",
+        "Check patch and operational risks of the client",
+        "Classify protection need for software and client"
+      ],
+      "correctOrder": [
+        "Record software, client, and data flow",
+        "Assess outage, manipulation, and access impacts",
+        "Check patch and operational risks of the client",
+        "Classify protection need for software and client",
+        "Document minimum protection and residual risk"
+      ],
+      "feedback": {
+        "correct": "Correct: This builds classification in a technical and traceable way.",
+        "wrong": "Not optimal: first record and assess, then classify and document."
+      },
+      "progressLinks": [
+        "lf04_schutzbedarf_methodik",
+        "lf04_schutzbedarf_arbeitsplatzsoftware_clients"
+      ]
+    },
+    {
+      "id": "q19",
+      "type": "number",
+      "title": "Additive priority value",
+      "prompt": "A simple model adds data value (1-5) and outage impact (1-5). With 5 and 4: what is the total?",
+      "expected": 9,
+      "toleranceAbs": 0,
+      "showExpectedFormula": "5 + 4 = 9",
+      "feedback": {
+        "correct": "Correctly calculated.",
+        "wrong": "Add both factors."
+      },
+      "progressLinks": [
+        "lf04_schutzbedarf_arbeitsplatzsoftware_clients"
+      ]
+    },
+    {
+      "id": "q20",
+      "type": "short_text",
+      "title": "Protection-need justification for the CRM workstation",
+      "prompt": "Formulate a short justification (4-6 sentences) with protection need, a core measure, and a residual point.",
+      "minChars": 160,
+      "requiredKeywords": [
+        "crm",
+        "protection",
+        "measure"
+      ],
+      "expectedOutline": "Justify protection need, name the core measure, and make the residual point transparent.",
+      "feedback": {
+        "correct": "Correct: The justification is solid and practical.",
+        "wrong": "Please make protection need, core measure, and residual point clearer."
+      },
+      "progressLinks": [
+        "lf04_schutzbedarf_arbeitsplatzsoftware_clients",
+        "lf04_tom_massnahmen"
+      ]
+    },
+    {
+      "id": "sep_f4",
+      "type": "followup_divider",
+      "title": "Follow-up 4 - data exchange via mobile storage media",
+      "from": "einkauf@ausbildungsbetrieb.example",
+      "to": "it.service@ausbildungsbetrieb.example",
+      "subject": "Please prepare rules for mobile data exchange and a wrap-up note",
+      "date": "2026-03-13",
+      "body": "For an external appointment, USB-based data exchange has been requested again. Please assess safe alternatives, the approval process for mobile media, and provide a wrap-up note with residual risk."
+    },
+    {
+      "id": "q21",
+      "type": "single_choice",
+      "title": "Best option for sensitive data transfer",
+      "prompt": "Which option is generally most sensible for sensitive data?",
+      "options": [
+        {
+          "text": "An approved encrypted transfer path or a managed storage media process",
+          "rationale": "This preserves protection and traceability."
+        },
+        {
+          "text": "A private unknown USB stick without approval",
+          "rationale": "That is neither secure nor process-compliant."
+        },
+        {
+          "text": "An open messenger without operational approval",
+          "rationale": "Without approval and protection, this is unsuitable for sensitive data."
+        }
+      ],
+      "correctIndex": 0,
+      "feedback": {
+        "correct": "Correct: Approved, protected paths are the best choice here.",
+        "wrong": "Not suitable: sensitive data requires protection and approval."
+      },
+      "progressLinks": [
+        "lf04_mobile_datentraeger"
+      ]
+    },
+    {
+      "id": "q22",
+      "type": "multi_select",
+      "title": "Rules for mobile storage media",
+      "prompt": "Which rules are sensible for mobile data exchange? (Multiple selections)",
+      "options": [
+        {
+          "text": "Follow the approval process before use",
+          "correct": true,
+          "rationale": "Use must be agreed and traceable."
+        },
+        {
+          "text": "Use appropriate encryption and access controls",
+          "correct": true,
+          "rationale": "This reduces misuse in case of loss or misdelivery."
+        },
+        {
+          "text": "Document transport and return",
+          "correct": true,
+          "rationale": "Without evidence, control over the media is missing."
+        },
+        {
+          "text": "Test unknown found media directly on a production client",
+          "correct": false,
+          "rationale": "This contradicts any safe handling."
+        },
+        {
+          "text": "Prefer secure alternatives such as approved transfer services",
+          "correct": true,
+          "rationale": "Alternatives are often safer and better documented."
+        }
+      ],
+      "feedback": {
+        "correct": "Correct: You connect approval, protection, and traceability.",
+        "wrong": "Partly wrong: prioritize approval, encryption, and secure alternatives more strongly."
+      },
+      "progressLinks": [
+        "lf04_mobile_datentraeger",
+        "lf04_tom_massnahmen"
+      ]
+    },
+    {
+      "id": "q23",
+      "type": "ordering",
+      "title": "Safe flow for planned data exchange",
+      "prompt": "Arrange the steps for a safe storage media process.",
+      "items": [
+        "Document transport, handover, and return",
+        "Clarify data classification and necessity",
+        "Select an approved transfer path or storage medium",
+        "Apply encryption and access controls",
+        "Verify deletion or return after completion"
+      ],
+      "correctOrder": [
+        "Clarify data classification and necessity",
+        "Select an approved transfer path or storage medium",
+        "Apply encryption and access controls",
+        "Document transport, handover, and return",
+        "Verify deletion or return after completion"
+      ],
+      "feedback": {
+        "correct": "Correct: The flow connects protection, evidence, and final control.",
+        "wrong": "Not optimal: first clarify necessity, then protection, documentation, and closing control."
+      },
+      "progressLinks": [
+        "lf04_mobile_datentraeger",
+        "lf04_sicherheitsprozess_leitlinie"
+      ]
+    },
+    {
+      "id": "q24",
+      "type": "number",
+      "title": "Documentation rate for the storage media process",
+      "prompt": "In one month there were 12 mobile storage media operations, 3 without documented approval. What is the documented rate in percent?",
+      "expected": 75,
+      "toleranceAbs": 0.5,
+      "showExpectedFormula": "(12 - 3) / 12 * 100 = 75 %",
+      "feedback": {
+        "correct": "Correctly calculated.",
+        "wrong": "Divide the documented operations by the total and convert to percent."
+      },
+      "progressLinks": [
+        "lf04_mobile_datentraeger",
+        "lf04_dokumentation_kommunikation"
+      ]
+    },
+    {
+      "id": "q25",
+      "type": "short_text",
+      "title": "Wrap-up note for the protection-needs assessment",
+      "prompt": "Write a wrap-up note (5-7 sentences) with protection need, two core measures, and a remaining residual risk.",
+      "minChars": 180,
+      "requiredKeywords": [
+        "protection",
+        "measure",
+        "residual risk"
+      ],
+      "expectedOutline": "Justified classification, prioritized measures, transparent residual risk, and next step.",
+      "feedback": {
+        "correct": "Correct: The note is useful for team and leadership.",
+        "wrong": "Please structure protection need, measures, and residual risk more clearly."
+      },
+      "progressLinks": [
+        "lf04_dokumentation_kommunikation",
+        "lf04_schutzbedarf_methodik"
+      ]
+    }
+  ]
+}

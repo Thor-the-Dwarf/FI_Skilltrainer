@@ -1,0 +1,161 @@
+{
+  "scenario": {
+    "company": "Nordufer Maschinenbau GmbH",
+    "scale": "Medium-sized business, 2 locations, 310 employees",
+    "context": "Station 06: set up infrastructure, provision components, and plan the rollout in a controlled way.",
+    "mission": "You turn the technical concept into a repeatable installation and rollout process.",
+    "station": {
+      "id": "LF09-ST-06",
+      "department": "Rollout",
+      "profile": "Installation, configuration, and provisioning",
+      "constraints": [
+        "Define the sequence and fallback options clearly",
+        "Keep configurations traceable",
+        "Consider dependencies between infrastructure and services"
+      ]
+    },
+    "customerRequest": {
+      "from": "rollout.leitung@nordufer-maschinenbau.example",
+      "to": "infra.team@ausbildungsbetrieb.example",
+      "subject": "Station 06: Installation and rollout",
+      "date": "2026-03-13",
+      "body": "Please prepare the installation and rollout sequence for the new area."
+    }
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "type": "single_choice",
+      "title": "Secure rollout start",
+      "prompt": "What is the most important thing before the actual rollout?",
+      "options": [
+        {
+          "text": "Check the configuration state, time window, and fallback plan",
+          "rationale": "That keeps the rollout controllable and lower-risk."
+        },
+        {
+          "text": "Immediately switch all components into production at once",
+          "rationale": "Without safeguards, the project risk rises sharply."
+        },
+        {
+          "text": "Postpone the documentation until later on purpose",
+          "rationale": "That makes traceability and handover harder."
+        }
+      ],
+      "correctIndex": 0,
+      "feedback": {
+        "correct": "Correct: A controlled start is crucial for the rollout.",
+        "wrong": "Not suitable: Before the rollout, safeguards and the fallback path must be in place."
+      },
+      "progressLinks": [
+        "lf09_installation_konfiguration",
+        "lf09_rollout_uebergabe"
+      ]
+    },
+    {
+      "id": "q2",
+      "type": "ordering",
+      "title": "Structure provisioning",
+      "prompt": "Put the sequence for a clean provisioning into order.",
+      "items": [
+        "Provide the core infrastructure and cabling paths",
+        "Install and base-configure network components",
+        "Set up server services and central roles",
+        "Carry out functional tests and partial acceptances",
+        "Hand the state over to operations and support"
+      ],
+      "correctOrder": [
+        "Provide the core infrastructure and cabling paths",
+        "Install and base-configure network components",
+        "Set up server services and central roles",
+        "Carry out functional tests and partial acceptances",
+        "Hand the state over to operations and support"
+      ],
+      "feedback": {
+        "correct": "Correct: Provisioning follows a logical technical sequence.",
+        "wrong": "Not ideal: Please structure infrastructure, components, services, and handover clearly."
+      },
+      "progressLinks": [
+        "lf09_installation_konfiguration"
+      ]
+    },
+    {
+      "id": "q3",
+      "type": "multi_select",
+      "title": "Secure configuration quality",
+      "prompt": "Which points help with a stable configuration practice? (Multiple choice)",
+      "options": [
+        {
+          "text": "Document VLAN, port, and policy rules cleanly",
+          "correct": true,
+          "rationale": "Increases traceability and reduces errors."
+        },
+        {
+          "text": "Define responsibilities and approvals for each change",
+          "correct": true,
+          "rationale": "Helps with controlled implementation."
+        },
+        {
+          "text": "Try configurations spontaneously in production",
+          "correct": false,
+          "rationale": "Significantly increases the risk of incidents."
+        },
+        {
+          "text": "Store configuration states in a versionable way",
+          "correct": true,
+          "rationale": "Makes tracking and rollback easier."
+        },
+        {
+          "text": "Mention changes only verbally in the team",
+          "correct": false,
+          "rationale": "That is not enough for controlled operations."
+        }
+      ],
+      "feedback": {
+        "correct": "Correct: Good configuration practice needs traceability and control.",
+        "wrong": "Partially wrong: Please pay more attention to versioning, approvals, and documentation."
+      },
+      "progressLinks": [
+        "lf09_installation_konfiguration",
+        "lf09_rollout_uebergabe"
+      ]
+    },
+    {
+      "id": "q4",
+      "type": "short_text",
+      "title": "Formulate a rollout note",
+      "prompt": "Describe in 4-6 sentences how you would document a rollout section so operations and support can take over safely afterward.",
+      "minChars": 170,
+      "requiredKeywords": [
+        "configuration",
+        "approval",
+        "handover"
+      ],
+      "expectedOutline": "Documentation approach for traceable configuration, approval, and open items.",
+      "feedback": {
+        "correct": "Correct: The rollout documentation is described in a handover-ready way.",
+        "wrong": "Please highlight the configuration state, approval, and open items more clearly."
+      },
+      "progressLinks": [
+        "lf09_rollout_uebergabe",
+        "lf09_pruefung_dokumentation"
+      ]
+    },
+    {
+      "id": "q5",
+      "type": "number",
+      "title": "Calculate PoE load",
+      "prompt": "Four access points require 18 W of PoE power each. What is the total PoE load in watts?",
+      "expected": 72,
+      "toleranceAbs": 1,
+      "showExpectedFormula": "4 * 18 = 72 W",
+      "feedback": {
+        "correct": "Correctly calculated.",
+        "wrong": "Please multiply the number of access points and the power per device correctly."
+      },
+      "progressLinks": [
+        "lf09_installation_konfiguration"
+      ]
+    }
+  ]
+}

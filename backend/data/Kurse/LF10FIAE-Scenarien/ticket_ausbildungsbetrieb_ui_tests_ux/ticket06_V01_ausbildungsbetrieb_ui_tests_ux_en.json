@@ -1,0 +1,159 @@
+{
+  "scenario": {
+    "company": "Training company IT services",
+    "scale": "SME, 220 employees",
+    "context": "Station 06 of the day run: test user interfaces and evaluate UX.",
+    "mission": "You choose test methods, formulate UX test cases, and secure improvements through follow-up tests.",
+    "station": {
+      "id": "LF10FIAE-ST-06",
+      "department": "UX quality",
+      "profile": "Testing methods and UX evaluation",
+      "constraints": [
+        "Keep test cases tied to requirements",
+        "Prioritize findings",
+        "Document follow-up tests effectively"
+      ]
+    },
+    "customerRequest": {
+      "from": "qa.ux@ausbildungsbetrieb.example",
+      "to": "dev.team@ausbildungsbetrieb.example",
+      "subject": "Station 06: UX test and follow-up test",
+      "date": "2026-03-13",
+      "body": "Please run structured UX tests and document the findings together with the follow-up test."
+    }
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "type": "single_choice",
+      "title": "Define the test goal",
+      "prompt": "What should a UX testing process start with?",
+      "options": [
+        {
+          "text": "With random click paths",
+          "rationale": "Too little reproducibility."
+        },
+        {
+          "text": "With a final report before the test run",
+          "rationale": "Illogical."
+        },
+        {
+          "text": "With clear test goals and core scenarios",
+          "rationale": "Secures focus and relevance."
+        }
+      ],
+      "correctIndex": 2,
+      "feedback": {
+        "correct": "Correct: Clear goals are the starting point.",
+        "wrong": "Not suitable: Without test goals, the evaluation stays vague."
+      },
+      "progressLinks": [
+        "lf10fiae_ui_tests_ux"
+      ]
+    },
+    {
+      "id": "q2",
+      "type": "multi_select",
+      "title": "Finding documentation in the UX test",
+      "prompt": "Which details does a UX finding need? (Multiple choice)",
+      "options": [
+        {
+          "text": "The scenario and step where the defect occurs",
+          "correct": true,
+          "rationale": "Enables reproduction."
+        },
+        {
+          "text": "The impact on the user's task",
+          "correct": true,
+          "rationale": "Important for prioritization."
+        },
+        {
+          "text": "Only a subjective feeling without context",
+          "correct": false,
+          "rationale": "Not robust."
+        },
+        {
+          "text": "Priority and next action",
+          "correct": true,
+          "rationale": "Helps steer remediation."
+        },
+        {
+          "text": "No follow-up test marker",
+          "correct": false,
+          "rationale": "Leaves effectiveness open."
+        }
+      ],
+      "feedback": {
+        "correct": "Correct: The finding documentation is set up in a controllable way.",
+        "wrong": "Partly wrong: Please secure context, impact, and prioritization more strongly."
+      },
+      "progressLinks": [
+        "lf10fiae_ui_tests_ux"
+      ]
+    },
+    {
+      "id": "q3",
+      "type": "ordering",
+      "title": "UX improvement cycle",
+      "prompt": "Put the flow from test to effectiveness check in order.",
+      "items": [
+        "Execute the test case",
+        "Capture and prioritize the finding",
+        "Implement the correction",
+        "Run the follow-up test",
+        "Document the result status"
+      ],
+      "correctOrder": [
+        "Execute the test case",
+        "Capture and prioritize the finding",
+        "Implement the correction",
+        "Run the follow-up test",
+        "Document the result status"
+      ],
+      "feedback": {
+        "correct": "Correct: The cycle is built cleanly.",
+        "wrong": "Not ideal: Please place finding capture and prioritization before correction and follow-up testing."
+      },
+      "progressLinks": [
+        "lf10fiae_ui_tests_ux"
+      ]
+    },
+    {
+      "id": "q4",
+      "type": "number",
+      "title": "Follow-up test rate",
+      "prompt": "Out of 19 prioritized UX findings, 15 were confirmed as fixed in the follow-up test. What is the rate in percent (rounded)?",
+      "expected": 79,
+      "toleranceAbs": 1,
+      "showExpectedFormula": "15/19*100 = 78.95 % ~ 79 %",
+      "feedback": {
+        "correct": "Calculated correctly.",
+        "wrong": "Please calculate the confirmed share correctly."
+      },
+      "progressLinks": [
+        "lf10fiae_ui_tests_ux"
+      ]
+    },
+    {
+      "id": "q5",
+      "type": "short_text",
+      "title": "Summarize the UX evaluation",
+      "prompt": "Formulate a UX evaluation in 4-6 sentences with a strength, the main problem, and the next step.",
+      "minChars": 160,
+      "requiredKeywords": [
+        "strength",
+        "main problem",
+        "next step"
+      ],
+      "expectedOutline": "Balanced evaluation with a clear follow-up action.",
+      "feedback": {
+        "correct": "Correct: The evaluation is directly usable for the team.",
+        "wrong": "Please structure the strength, the main problem, and the next step more clearly."
+      },
+      "progressLinks": [
+        "lf10fiae_ui_tests_ux",
+        "lf10fiae_ui_dokumentation"
+      ]
+    }
+  ]
+}

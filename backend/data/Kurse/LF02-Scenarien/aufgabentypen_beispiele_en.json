@@ -1,0 +1,560 @@
+{
+  "title": "LF02 Task Type Demo",
+  "version": "1.0",
+  "meta": {
+    "description": "One example per task type at adult/practice level",
+    "note": "The HTML file renders these tasks dynamically via the type field."
+  },
+  "tasks": [
+    {
+      "id": "t01",
+      "type": "cloze_free",
+      "idea": "Free cloze input",
+      "prompt": "Fill in the technical terms.",
+      "text": "The {{b1}} is volatile memory, while {{b2}} stores data permanently.",
+      "blanks": [
+        {
+          "id": "b1",
+          "answer": "RAM"
+        },
+        {
+          "id": "b2",
+          "answer": "SSD"
+        }
+      ]
+    },
+    {
+      "id": "t02",
+      "type": "cloze_select",
+      "idea": "Cloze select",
+      "prompt": "Choose the appropriate term for each blank.",
+      "text": "A {{b1}} connects end devices via cable, while {{b2}} works wirelessly.",
+      "blanks": [
+        {
+          "id": "b1",
+          "options": [
+            "LAN",
+            "HDMI",
+            "USB"
+          ],
+          "answer": "LAN"
+        },
+        {
+          "id": "b2",
+          "options": [
+            "WLAN",
+            "DisplayPort",
+            "SATA"
+          ],
+          "answer": "WLAN"
+        }
+      ]
+    },
+    {
+      "id": "t03",
+      "type": "cloze_dragdrop",
+      "idea": "Cloze drag-and-drop",
+      "prompt": "Drag the tokens into the correct fields.",
+      "tokens": [
+        "CPU",
+        "RAM",
+        "SSD",
+        "Power supply"
+      ],
+      "zones": [
+        {
+          "id": "z1",
+          "label": "computes",
+          "answer": "CPU"
+        },
+        {
+          "id": "z2",
+          "label": "short-term memory",
+          "answer": "RAM"
+        },
+        {
+          "id": "z3",
+          "label": "long-term memory",
+          "answer": "SSD"
+        }
+      ]
+    },
+    {
+      "id": "t04",
+      "type": "text_correction",
+      "idea": "Correct a faulty text",
+      "prompt": "Correct the technically incorrect text.",
+      "wrongText": "The power supply stores programs, RAM stores data permanently, LAN is a video interface.",
+      "requiredKeywords": [
+        "power supply",
+        "power",
+        "RAM",
+        "volatile",
+        "LAN",
+        "network",
+        "HDMI"
+      ]
+    },
+    {
+      "id": "t05",
+      "type": "matching",
+      "idea": "Matching",
+      "prompt": "Match term and definition.",
+      "left": [
+        "CPU",
+        "Motherboard",
+        "SSD",
+        "Operating system"
+      ],
+      "right": [
+        "Manages resources and processes",
+        "Permanent storage without mechanics",
+        "Connects central components",
+        "Performs calculations"
+      ],
+      "pairs": {
+        "CPU": "Performs calculations",
+        "Motherboard": "Connects central components",
+        "SSD": "Permanent storage without mechanics",
+        "Operating system": "Manages resources and processes"
+      }
+    },
+    {
+      "id": "t06",
+      "type": "ordering",
+      "idea": "Ordering",
+      "prompt": "Sort the procurement process.",
+      "items": [
+        "Offer comparison",
+        "Requirements assessment",
+        "Acceptance",
+        "Order",
+        "Requirements specification"
+      ],
+      "correctOrder": [
+        "Requirements assessment",
+        "Requirements specification",
+        "Offer comparison",
+        "Order",
+        "Acceptance"
+      ]
+    },
+    {
+      "id": "t07",
+      "type": "weighted_matrix",
+      "idea": "Matrix task",
+      "prompt": "Evaluate three offers using a weighted matrix.",
+      "criteria": [
+        {
+          "name": "Price",
+          "weight": 0.25
+        },
+        {
+          "name": "Performance",
+          "weight": 0.2
+        },
+        {
+          "name": "Maintainability",
+          "weight": 0.2
+        },
+        {
+          "name": "Security",
+          "weight": 0.2
+        },
+        {
+          "name": "Delivery time",
+          "weight": 0.15
+        }
+      ],
+      "offers": [
+        "A",
+        "B",
+        "C"
+      ],
+      "recommended": "B"
+    },
+    {
+      "id": "t08",
+      "type": "multi_select_partial",
+      "idea": "Multi-select with partial points",
+      "prompt": "Select all sensible measures for stable rollouts.",
+      "options": [
+        {
+          "text": "Pilot before mass rollout",
+          "points": 2,
+          "correct": true
+        },
+        {
+          "text": "Unverified drivers directly on all systems",
+          "points": -2,
+          "correct": false
+        },
+        {
+          "text": "Define rollback plan",
+          "points": 2,
+          "correct": true
+        },
+        {
+          "text": "Acceptance without evidence",
+          "points": -2,
+          "correct": false
+        },
+        {
+          "text": "Agree on stability KPIs",
+          "points": 2,
+          "correct": true
+        }
+      ],
+      "maxPoints": 6
+    },
+    {
+      "id": "t09",
+      "type": "justification",
+      "idea": "Justification task",
+      "prompt": "Recommend A, B, or C for 40 workstations and justify.",
+      "requiredAspects": [
+        "technical",
+        "economic",
+        "organizational",
+        "risk",
+        "kpi"
+      ]
+    },
+    {
+      "id": "t10",
+      "type": "case_triage",
+      "idea": "Case triage",
+      "prompt": "The PC boots slowly, Teams stutters, SSD almost full. What do you check first?",
+      "choices": [
+        {
+          "id": "a",
+          "label": "Change wallpaper and reboot",
+          "score": 0,
+          "outcome": "No root-cause action."
+        },
+        {
+          "id": "b",
+          "label": "Measure utilization, storage status, I/O, and autostarts",
+          "score": 3,
+          "outcome": "Good first diagnostic step with data basis."
+        },
+        {
+          "id": "c",
+          "label": "Immediate reinstallation without analysis",
+          "score": 1,
+          "outcome": "Can help but is risky without diagnosis."
+        }
+      ],
+      "bestChoice": "b"
+    },
+    {
+      "id": "t11",
+      "type": "root_cause_tree",
+      "idea": "Root cause task",
+      "prompt": "Symptom: sporadic crashes under load after hardware upgrade.",
+      "causes": [
+        {
+          "id": "c1",
+          "label": "Power supply without headroom",
+          "primary": true
+        },
+        {
+          "id": "c2",
+          "label": "Wrong desktop background",
+          "primary": false
+        },
+        {
+          "id": "c3",
+          "label": "Driver conflict",
+          "primary": true
+        },
+        {
+          "id": "c4",
+          "label": "Defective LAN cable",
+          "primary": false
+        }
+      ]
+    },
+    {
+      "id": "t12",
+      "type": "log_analysis",
+      "idea": "Log/screenshot interpretation",
+      "prompt": "Interpret the log excerpt and determine the most likely root cause.",
+      "logLines": [
+        "2026-03-12 09:15:21 WARN Disk C: free space 2.1%",
+        "2026-03-12 09:15:22 INFO Update service retry queue length=87",
+        "2026-03-12 09:15:25 WARN Paging spike detected",
+        "2026-03-12 09:15:28 ERROR Write operation delayed > 900ms"
+      ],
+      "options": [
+        "GPU too weak",
+        "Severe storage shortage and I/O issue",
+        "Wrong monitor input"
+      ],
+      "answer": "Severe storage shortage and I/O issue"
+    },
+    {
+      "id": "t13",
+      "type": "calculation_chain",
+      "idea": "Calculation chain",
+      "prompt": "Calculate TCO and intermediate values.",
+      "steps": [
+        {
+          "id": "s1",
+          "label": "CAPEX + 1 year OPEX",
+          "answer": 109000
+        },
+        {
+          "id": "s2",
+          "label": "TCO over 5 years",
+          "answer": 191500
+        },
+        {
+          "id": "s3",
+          "label": "Average per year",
+          "answer": 38300
+        }
+      ],
+      "tolerance": 0.02
+    },
+    {
+      "id": "t14",
+      "type": "sensitivity_analysis",
+      "idea": "Sensitivity task",
+      "prompt": "Calculate the impact of +10% OPEX and -20% productivity effect.",
+      "baseline": {
+        "opexYear": 18500,
+        "productivityYear": 27000,
+        "years": 5
+      },
+      "expected": {
+        "opexPlus10": 20350,
+        "prodMinus20": 21600
+      }
+    },
+    {
+      "id": "t15",
+      "type": "offer_comparison",
+      "idea": "Offer comparison",
+      "prompt": "Compare offers over 36 months including operating costs.",
+      "years": 3,
+      "offers": [
+        {
+          "id": "A",
+          "capex": 17400,
+          "opexYear": 1500
+        },
+        {
+          "id": "B",
+          "capex": 18300,
+          "opexYear": 900
+        },
+        {
+          "id": "C",
+          "capex": 17900,
+          "opexYear": 1200
+        }
+      ],
+      "bestByTco": "B"
+    },
+    {
+      "id": "t16",
+      "type": "contract_redflags",
+      "idea": "Contract/terms check",
+      "prompt": "Mark red flags.",
+      "clauses": [
+        {
+          "id": "k1",
+          "text": "Response time on best effort without deadline",
+          "redFlag": true
+        },
+        {
+          "id": "k2",
+          "text": "SLA: initial response <= 4h on business days",
+          "redFlag": false
+        },
+        {
+          "id": "k3",
+          "text": "Liability for data loss excluded in a lump sum",
+          "redFlag": true
+        },
+        {
+          "id": "k4",
+          "text": "Acceptance with documented criteria",
+          "redFlag": false
+        }
+      ]
+    },
+    {
+      "id": "t17",
+      "type": "communication_output",
+      "idea": "Communication task",
+      "prompt": "Write a short decision email to management.",
+      "requiredSections": [
+        "decision",
+        "justification",
+        "residual risk",
+        "next step"
+      ]
+    },
+    {
+      "id": "t18",
+      "type": "peer_review",
+      "idea": "Peer review task",
+      "prompt": "Evaluate the sample answer against the rubric.",
+      "sampleAnswer": "We take offer A because it is the cheapest. Details are in the appendix.",
+      "rubric": [
+        "Technical viability",
+        "Economic justification",
+        "Risk assessment",
+        "Communication quality"
+      ],
+      "scaleMax": 5
+    },
+    {
+      "id": "t19",
+      "type": "branching_scenario",
+      "idea": "Branching scenario",
+      "prompt": "You lead the rollout. A pilot device fails after an update.",
+      "nodes": {
+        "start": {
+          "text": "How do you proceed?",
+          "choices": [
+            {
+              "label": "Update all devices immediately to save time",
+              "next": "bad"
+            },
+            {
+              "label": "Stop rollout, analyze root cause, check rollback",
+              "next": "good"
+            }
+          ]
+        },
+        "good": {
+          "text": "Good decision: prevented widespread outage, cause can be clarified."
+        },
+        "bad": {
+          "text": "Risky: wide outage possible, high operational impact."
+        }
+      }
+    },
+    {
+      "id": "t20",
+      "type": "adaptive_path",
+      "idea": "Adaptive difficulty",
+      "prompt": "Choose your level and answer the matching follow-up question.",
+      "levels": {
+        "basis": "Name 3 criteria for hardware selection.",
+        "fortgeschritten": "Weight 5 criteria and justify the weighting.",
+        "expert": "Derive a decision model with residual risk and KPI set."
+      }
+    },
+    {
+      "id": "t21",
+      "type": "confidence_rating",
+      "idea": "Confidence scoring",
+      "prompt": "Which component stores data permanently?",
+      "options": [
+        "RAM",
+        "SSD",
+        "CPU"
+      ],
+      "answer": "SSD"
+    },
+    {
+      "id": "t22",
+      "type": "timed_decision",
+      "idea": "Time pressure mode",
+      "prompt": "Within 45 seconds: What is the best first step in incident triage?",
+      "timerSec": 45,
+      "options": [
+        "Secure metrics and prioritize hypotheses",
+        "Randomly swap a component",
+        "Ignore the issue and wait"
+      ],
+      "answer": "Secure metrics and prioritize hypotheses"
+    },
+    {
+      "id": "t23",
+      "type": "collaborative_roleplay",
+      "idea": "Collaborative task",
+      "prompt": "Make a procurement decision together from three role perspectives.",
+      "roles": [
+        "IT operations: stability and supportability",
+        "Procurement: budget and contract risk",
+        "Business unit: performance and usability"
+      ],
+      "jointGoal": "Joint decision with 3 criteria and 1 residual risk plan"
+    },
+    {
+      "id": "t24",
+      "type": "random_parameter_item",
+      "idea": "Item bank with random parameters",
+      "prompt": "Calculate the TCO (3 years) from random CAPEX/OPEX values.",
+      "params": {
+        "capex": {
+          "min": 15000,
+          "max": 28000,
+          "step": 500
+        },
+        "opexYear": {
+          "min": 800,
+          "max": 2400,
+          "step": 100
+        },
+        "years": 3
+      },
+      "formula": "tco = capex + opexYear * years"
+    },
+    {
+      "id": "t25",
+      "type": "step_scored_calculation",
+      "idea": "Step-scored calculation",
+      "prompt": "Calculate the offer price in three steps.",
+      "steps": [
+        {
+          "id": "p1",
+          "label": "Cost price",
+          "points": 2,
+          "answer": 60
+        },
+        {
+          "id": "p2",
+          "label": "Margin (15%)",
+          "points": 2,
+          "answer": 9
+        },
+        {
+          "id": "p3",
+          "label": "Offer price",
+          "points": 2,
+          "answer": 69
+        }
+      ],
+      "tolerance": 0.02
+    },
+    {
+      "id": "t26",
+      "type": "instant_feedback_quiz",
+      "idea": "Instant feedback on criteria level",
+      "prompt": "Which statement is most technically sound?",
+      "options": [
+        {
+          "label": "We always choose the lowest purchase price.",
+          "correct": false,
+          "feedback": "Economic efficiency is incomplete without operating costs and risks."
+        },
+        {
+          "label": "We decide based on TCO, risk, and operational requirements.",
+          "correct": true,
+          "feedback": "Correct: the decision considers technical and economic viability."
+        },
+        {
+          "label": "Security updates can come later if needed.",
+          "correct": false,
+          "feedback": "Security/compliance criteria would be violated."
+        }
+      ]
+    }
+  ]
+}

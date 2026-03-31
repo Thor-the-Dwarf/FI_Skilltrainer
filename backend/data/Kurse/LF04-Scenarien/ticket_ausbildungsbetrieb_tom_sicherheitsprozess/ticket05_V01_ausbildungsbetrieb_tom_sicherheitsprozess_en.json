@@ -1,0 +1,161 @@
+{
+  "scenario": {
+    "company": "Training company IT service",
+    "scale": "Mid-sized company, 180 employees",
+    "context": "Station 5 of the daily run: apply technical and organizational measures and the security process.",
+    "mission": "You derive suitable measures and place them into a traceable security process.",
+    "station": {
+      "id": "LF04-ST-05",
+      "department": "IT security",
+      "profile": "Role-based access, approvals, security process, and follow-up",
+      "constraints": [
+        "Prioritize effective measures",
+        "Separate process steps cleanly",
+        "Keep residual items transparent"
+      ]
+    },
+    "customerRequest": {
+      "from": "sicherheitsteam@ausbildungsbetrieb.example",
+      "to": "it.service@ausbildungsbetrieb.example",
+      "subject": "Station 05: derive TOMs and security process for the work area",
+      "date": "2026-03-13",
+      "body": "Please derive suitable technical and organizational measures for a sensitive work area and place them into a clear security process."
+    }
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "type": "single_choice",
+      "title": "Most effective immediate measure",
+      "prompt": "Which measure often provides the greatest immediate benefit for sensitive workstation data?",
+      "options": [
+        {
+          "text": "Assign access by role and review it regularly",
+          "rationale": "This limits unnecessary access and reduces misuse risk."
+        },
+        {
+          "text": "Loosen approval rules to speed up processes",
+          "rationale": "This lowers the security level."
+        },
+        {
+          "text": "Only change the background image",
+          "rationale": "That is ineffective as a standalone measure."
+        }
+      ],
+      "correctIndex": 0,
+      "feedback": {
+        "correct": "Correct: Role-based access is a central TOM building block.",
+        "wrong": "Not suitable: the measure must be effective and operationally viable."
+      },
+      "progressLinks": [
+        "lf04_tom_massnahmen"
+      ]
+    },
+    {
+      "id": "q2",
+      "type": "multi_select",
+      "title": "Identify technical and organizational measures",
+      "prompt": "Which points are sensible TOMs for the work area? (Multiple selections)",
+      "options": [
+        {
+          "text": "Role-based approvals and regular permission reviews",
+          "correct": true,
+          "rationale": "This reduces unnecessary access."
+        },
+        {
+          "text": "Documented reporting and approval paths",
+          "correct": true,
+          "rationale": "Organizational safeguards are part of it."
+        },
+        {
+          "text": "Current protection measures and governed updates",
+          "correct": true,
+          "rationale": "Technical baseline protection must remain stable."
+        },
+        {
+          "text": "Uncontrolled approvals on request",
+          "correct": false,
+          "rationale": "That undermines any orderly process."
+        },
+        {
+          "text": "Clear responsibilities for implementation and control",
+          "correct": true,
+          "rationale": "Only then does effectiveness remain traceable."
+        }
+      ],
+      "feedback": {
+        "correct": "Correct: You connect technology, organization, and follow-up sensibly.",
+        "wrong": "Partly wrong: connect access, process, and responsibility more strongly."
+      },
+      "progressLinks": [
+        "lf04_tom_massnahmen",
+        "lf04_sicherheitsprozess_leitlinie"
+      ]
+    },
+    {
+      "id": "q3",
+      "type": "ordering",
+      "title": "Security process with measure planning",
+      "prompt": "Arrange the steps sensibly.",
+      "items": [
+        "Implement measures and record responsible parties",
+        "Assess protection need and risks",
+        "Capture framework requirements and security policy",
+        "Check effectiveness and document residual items",
+        "Derive priorities for measures"
+      ],
+      "correctOrder": [
+        "Capture framework requirements and security policy",
+        "Assess protection need and risks",
+        "Derive priorities for measures",
+        "Implement measures and record responsible parties",
+        "Check effectiveness and document residual items"
+      ],
+      "feedback": {
+        "correct": "Correct: The process moves cleanly from requirements to effectiveness checks.",
+        "wrong": "Not optimal: sequence framework, assessment, prioritization, implementation, and follow-up clearly."
+      },
+      "progressLinks": [
+        "lf04_sicherheitsprozess_leitlinie",
+        "lf04_tom_massnahmen"
+      ]
+    },
+    {
+      "id": "q4",
+      "type": "number",
+      "title": "Calculate implementation status",
+      "prompt": "Out of 5 prioritized measures, 4 are already implemented. What is the implementation status in percent?",
+      "expected": 80,
+      "toleranceAbs": 0.5,
+      "showExpectedFormula": "4 / 5 * 100 = 80 %",
+      "feedback": {
+        "correct": "Correctly calculated.",
+        "wrong": "Divide implemented measures by the total and convert to percent."
+      },
+      "progressLinks": [
+        "lf04_tom_massnahmen"
+      ]
+    },
+    {
+      "id": "q5",
+      "type": "short_text",
+      "title": "Formulate a measure proposal",
+      "prompt": "Write in 4-6 sentences a measure proposal with priority, responsibility, and a residual point.",
+      "minChars": 160,
+      "requiredKeywords": [
+        "priority",
+        "responsible",
+        "residual"
+      ],
+      "expectedOutline": "Two strong measures, clear responsibility, and a transparent residual point.",
+      "feedback": {
+        "correct": "Correct: The proposal is effective and traceable.",
+        "wrong": "Please make priority, responsibility, and residual point clearer."
+      },
+      "progressLinks": [
+        "lf04_tom_massnahmen",
+        "lf04_dokumentation_kommunikation"
+      ]
+    }
+  ]
+}

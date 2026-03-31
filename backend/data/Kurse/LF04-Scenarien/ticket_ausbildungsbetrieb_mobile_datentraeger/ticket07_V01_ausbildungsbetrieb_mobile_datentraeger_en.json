@@ -1,0 +1,161 @@
+{
+  "scenario": {
+    "company": "Training company IT service",
+    "scale": "Mid-sized company, 180 employees",
+    "context": "Station 7 of the daily run: protection needs for data exchange and mobile storage media.",
+    "mission": "You assess secure alternatives, approval rules, and documentation duties for mobile data exchange.",
+    "station": {
+      "id": "LF04-ST-07",
+      "department": "Sales and IT service",
+      "profile": "External data handover, approval processes, and encrypted transport",
+      "constraints": [
+        "Place approval before convenience",
+        "Consider transport and return",
+        "Prefer secure alternatives"
+      ]
+    },
+    "customerRequest": {
+      "from": "vertrieb.leitung@ausbildungsbetrieb.example",
+      "to": "it.service@ausbildungsbetrieb.example",
+      "subject": "Station 07: secure data exchange with mobile storage media",
+      "date": "2026-03-13",
+      "body": "Please define a secure procedure for mobile data exchange. We need approval rules, secure alternatives, and a short documentation guideline."
+    }
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "type": "single_choice",
+      "title": "Best standard option for sensitive data",
+      "prompt": "Which option is usually the most sensible for sensitive data?",
+      "options": [
+        {
+          "text": "An approved encrypted transfer path or a managed storage-media process",
+          "rationale": "This preserves protection and traceability."
+        },
+        {
+          "text": "A private unknown USB stick without approval",
+          "rationale": "That is neither secure nor process-compliant."
+        },
+        {
+          "text": "An open messenger without approval",
+          "rationale": "That is not suitable for sensitive data."
+        }
+      ],
+      "correctIndex": 0,
+      "feedback": {
+        "correct": "Correct: approved and protected paths are the best choice here.",
+        "wrong": "Not suitable: sensitive data needs protection and approval."
+      },
+      "progressLinks": [
+        "lf04_mobile_datentraeger"
+      ]
+    },
+    {
+      "id": "q2",
+      "type": "multi_select",
+      "title": "Rules for mobile data exchange",
+      "prompt": "Which rules make professional sense? (Multiple selections)",
+      "options": [
+        {
+          "text": "Follow the approval process before use",
+          "correct": true,
+          "rationale": "Use has to be clarified in advance."
+        },
+        {
+          "text": "Use suitable encryption and access protection",
+          "correct": true,
+          "rationale": "That lowers the risk in case of loss or misdelivery."
+        },
+        {
+          "text": "Document transport, handover, and return",
+          "correct": true,
+          "rationale": "Without evidence, control is missing."
+        },
+        {
+          "text": "Test found unknown media immediately",
+          "correct": false,
+          "rationale": "That violates security rules."
+        },
+        {
+          "text": "Prefer secure alternatives such as approved exchange services",
+          "correct": true,
+          "rationale": "Alternatives are often safer and easier to document."
+        }
+      ],
+      "feedback": {
+        "correct": "Correct: you connect approval, protection, and traceability.",
+        "wrong": "Partly wrong: please prioritize approval, encryption, and secure alternatives more strongly."
+      },
+      "progressLinks": [
+        "lf04_mobile_datentraeger",
+        "lf04_tom_massnahmen"
+      ]
+    },
+    {
+      "id": "q3",
+      "type": "ordering",
+      "title": "Secure process for media approval",
+      "prompt": "Arrange the steps sensibly.",
+      "items": [
+        "Document transport, handover, and return",
+        "Clarify data classification and necessity",
+        "Choose an approved storage medium or secure exchange path",
+        "Set encryption and access protection",
+        "Check deletion or return after completion"
+      ],
+      "correctOrder": [
+        "Clarify data classification and necessity",
+        "Choose an approved storage medium or secure exchange path",
+        "Set encryption and access protection",
+        "Document transport, handover, and return",
+        "Check deletion or return after completion"
+      ],
+      "feedback": {
+        "correct": "Correct: the sequence connects protection, proof, and completion control.",
+        "wrong": "Not ideal: first clarify necessity, then protection, documentation, and completion control."
+      },
+      "progressLinks": [
+        "lf04_mobile_datentraeger"
+      ]
+    },
+    {
+      "id": "q4",
+      "type": "number",
+      "title": "Documentation rate in the media process",
+      "prompt": "Out of 12 media transactions, 9 were fully documented. What is the documentation rate in percent?",
+      "expected": 75,
+      "toleranceAbs": 0.5,
+      "showExpectedFormula": "9 / 12 * 100 = 75 %",
+      "feedback": {
+        "correct": "Calculated correctly.",
+        "wrong": "Please divide the fully documented transactions by the total and convert the result to percent."
+      },
+      "progressLinks": [
+        "lf04_mobile_datentraeger",
+        "lf04_dokumentation_kommunikation"
+      ]
+    },
+    {
+      "id": "q5",
+      "type": "short_text",
+      "title": "Approval note for data exchange",
+      "prompt": "In 4-6 sentences, write an approval note with the exchange path, protection measure, and documentation duty.",
+      "minChars": 160,
+      "requiredKeywords": [
+        "approval",
+        "encryption",
+        "documentation"
+      ],
+      "expectedOutline": "Name the approved path, the protection measure, and the clear documentation duty.",
+      "feedback": {
+        "correct": "Correct: the note is secure, concise, and practical for daily work.",
+        "wrong": "Please formulate the exchange path, the protection measure, and the documentation duty more clearly."
+      },
+      "progressLinks": [
+        "lf04_mobile_datentraeger",
+        "lf04_dokumentation_kommunikation"
+      ]
+    }
+  ]
+}

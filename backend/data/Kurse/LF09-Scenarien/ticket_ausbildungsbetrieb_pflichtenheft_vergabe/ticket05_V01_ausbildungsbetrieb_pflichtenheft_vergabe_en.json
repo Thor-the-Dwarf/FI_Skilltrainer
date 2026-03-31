@@ -1,0 +1,159 @@
+{
+  "scenario": {
+    "company": "Nordufer Maschinenbau GmbH",
+    "scale": "Medium-sized business, 2 locations, 310 employees",
+    "context": "Station 05: prepare the specifications document, procurement planning, and acceptance-ready requirements.",
+    "mission": "You turn the need into clear requirements and create a comparable basis for procurement.",
+    "station": {
+      "id": "LF09-ST-05",
+      "department": "Project Coordination",
+      "profile": "Specifications and procurement",
+      "constraints": [
+        "Formulate requirements in measurable terms",
+        "Create comparability for vendors",
+        "Keep acceptance in mind from the start"
+      ]
+    },
+    "customerRequest": {
+      "from": "projektoffice@nordufer-maschinenbau.example",
+      "to": "infra.team@ausbildungsbetrieb.example",
+      "subject": "Station 05: Specifications and procurement",
+      "date": "2026-03-13",
+      "body": "Please prepare the specifications document and a short procurement basis for network provisioning."
+    }
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "type": "ordering",
+      "title": "From need to procurement",
+      "prompt": "Put the steps up to a comparable tender in order.",
+      "items": [
+        "Confirm the need and goals from the requirements specification",
+        "Refine functional and non-functional requirements",
+        "Define acceptance criteria and must-have points",
+        "Structure procurement-relevant criteria",
+        "Provide the documents for vendor release"
+      ],
+      "correctOrder": [
+        "Confirm the need and goals from the requirements specification",
+        "Refine functional and non-functional requirements",
+        "Define acceptance criteria and must-have points",
+        "Structure procurement-relevant criteria",
+        "Provide the documents for vendor release"
+      ],
+      "feedback": {
+        "correct": "Correct: Need, specifications, and procurement are linked sensibly.",
+        "wrong": "Not ideal: Please build from need to requirements, acceptance, and then procurement."
+      },
+      "progressLinks": [
+        "lf09_pflichtenheft_vergabe"
+      ]
+    },
+    {
+      "id": "q2",
+      "type": "multi_select",
+      "title": "Separate requirements",
+      "prompt": "Which statements fit a clean separation of functional and non-functional requirements? (Multiple choice)",
+      "options": [
+        {
+          "text": "Functional requirements describe services such as address assignment or site coupling",
+          "correct": true,
+          "rationale": "This describes concrete system functions."
+        },
+        {
+          "text": "Non-functional requirements describe qualities such as availability or response time",
+          "correct": true,
+          "rationale": "That is typical for quality characteristics."
+        },
+        {
+          "text": "Non-functional requirements do not need to be measurable",
+          "correct": false,
+          "rationale": "They especially need clear measurability."
+        },
+        {
+          "text": "Acceptance criteria should be directly derivable from requirements",
+          "correct": true,
+          "rationale": "That keeps implementation testable."
+        },
+        {
+          "text": "Requirements can intentionally remain vague so vendors can be creative",
+          "correct": false,
+          "rationale": "That makes comparison and acceptance harder."
+        }
+      ],
+      "feedback": {
+        "correct": "Correct: The separation is technically clean and acceptance-ready.",
+        "wrong": "Partially wrong: Please pay clearer attention to measurability and derivability."
+      },
+      "progressLinks": [
+        "lf09_pflichtenheft_vergabe"
+      ]
+    },
+    {
+      "id": "q3",
+      "type": "single_choice",
+      "title": "Recognize procurement criterion",
+      "prompt": "Which criterion is most useful for a fair vendor evaluation?",
+      "options": [
+        {
+          "text": "The vendor should simply seem as likable as possible",
+          "rationale": "That is subjective and hardly testable."
+        },
+        {
+          "text": "Define measurable criteria for performance, operations, security, and service",
+          "rationale": "This makes offers comparable and justifiable."
+        },
+        {
+          "text": "Automatically prefer the first offer received",
+          "rationale": "That would not be technically sound."
+        }
+      ],
+      "correctIndex": 1,
+      "feedback": {
+        "correct": "Correct: Comparability needs measurable criteria.",
+        "wrong": "Not suitable: Procurement decisions must be traceable and sound."
+      },
+      "progressLinks": [
+        "lf09_pflichtenheft_vergabe"
+      ]
+    },
+    {
+      "id": "q4",
+      "type": "short_text",
+      "title": "Derive specifications from the requirements document",
+      "prompt": "Describe in 4-6 sentences how you would develop a technical specifications document with acceptance reference from the requirements document.",
+      "minChars": 170,
+      "requiredKeywords": [
+        "requirements",
+        "specification",
+        "acceptance"
+      ],
+      "expectedOutline": "Derivation of a technical implementation document from need and acceptance criteria.",
+      "feedback": {
+        "correct": "Correct: The path from requirements document to specifications document is coherent.",
+        "wrong": "Please link need, technical concretization, and acceptance more closely."
+      },
+      "progressLinks": [
+        "lf09_istanalyse_lastenheft",
+        "lf09_pflichtenheft_vergabe"
+      ]
+    },
+    {
+      "id": "q5",
+      "type": "number",
+      "title": "Calculate the scoring scheme",
+      "prompt": "A scoring scheme includes 5 functional mandatory criteria with weight 3, 4 non-functional mandatory criteria with weight 2, and 6 optional criteria with weight 1. How many weighted points does the scheme have in total?",
+      "expected": 29,
+      "toleranceAbs": 1,
+      "showExpectedFormula": "(5 * 3) + (4 * 2) + (6 * 1) = 29",
+      "feedback": {
+        "correct": "Correctly calculated.",
+        "wrong": "Please combine the number of criteria and the weighting correctly."
+      },
+      "progressLinks": [
+        "lf09_pflichtenheft_vergabe"
+      ]
+    }
+  ]
+}

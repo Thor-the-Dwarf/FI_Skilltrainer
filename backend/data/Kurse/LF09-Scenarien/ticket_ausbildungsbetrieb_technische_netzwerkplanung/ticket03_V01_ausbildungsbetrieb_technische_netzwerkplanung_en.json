@@ -1,0 +1,159 @@
+{
+  "scenario": {
+    "company": "Nordufer Maschinenbau GmbH",
+    "scale": "Medium-sized business, 2 locations, 310 employees",
+    "context": "Station 03: concretize technical requirements for protocols, components, servers, and WAN connectivity.",
+    "mission": "You derive robust technical decisions for the network and services from the need.",
+    "station": {
+      "id": "LF09-ST-03",
+      "department": "Solution Design",
+      "profile": "Protocols, components, servers, and site interconnection",
+      "constraints": [
+        "Always align technical decisions with the need",
+        "Consider components and services together",
+        "Think about site interconnection and operations early"
+      ]
+    },
+    "customerRequest": {
+      "from": "architektur@nordufer-maschinenbau.example",
+      "to": "infra.team@ausbildungsbetrieb.example",
+      "subject": "Station 03: Technical network planning",
+      "date": "2026-03-13",
+      "body": "Please specify protocols, components, server roles, and WAN connectivity for the approved target state."
+    }
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "type": "multi_select",
+      "title": "Trim the technical target state",
+      "prompt": "Which elements belong in a robust technical network concept? (Multiple choice)",
+      "options": [
+        {
+          "text": "Clean segmentation and defined service zones",
+          "correct": true,
+          "rationale": "Supports security and maintainability."
+        },
+        {
+          "text": "Appropriate component roles for access, core, and protection",
+          "correct": true,
+          "rationale": "Structures the network by function."
+        },
+        {
+          "text": "Deliberately vague protocol and server roles",
+          "correct": false,
+          "rationale": "Leads to integration problems later on."
+        },
+        {
+          "text": "Consider site interconnection and central services",
+          "correct": true,
+          "rationale": "Is central for a multi-site company."
+        },
+        {
+          "text": "Create the technical documentation only after acceptance",
+          "correct": false,
+          "rationale": "Unnecessarily complicates planning and implementation."
+        }
+      ],
+      "feedback": {
+        "correct": "Correct: The concept combines network structure, roles, and services well.",
+        "wrong": "Partially wrong: Please combine segmentation, component roles, and services more cleanly."
+      },
+      "progressLinks": [
+        "lf09_technische_anforderungen"
+      ]
+    },
+    {
+      "id": "q2",
+      "type": "single_choice",
+      "title": "Choose WAN principle",
+      "prompt": "Which WAN decision best fits two locations with central services and predictable loads?",
+      "options": [
+        {
+          "text": "A secured site interconnection with defined bandwidth and centrally manageable security",
+          "rationale": "Fits predictable loads and operational requirements."
+        },
+        {
+          "text": "Any internet access per site without a shared security concept",
+          "rationale": "Makes operations, protection, and support harder."
+        },
+        {
+          "text": "Discuss site interconnection only after production starts",
+          "rationale": "That would be too late for central services."
+        }
+      ],
+      "correctIndex": 0,
+      "feedback": {
+        "correct": "Correct: Site interconnection needs predictable performance and proper protection.",
+        "wrong": "Not suitable: A multi-site environment needs a controlled WAN approach."
+      },
+      "progressLinks": [
+        "lf09_technische_anforderungen"
+      ]
+    },
+    {
+      "id": "q3",
+      "type": "number",
+      "title": "Bandwidth in the server network",
+      "prompt": "Two replication jobs together generate 220 Mbit/s, plus three service groups at 90 Mbit/s each. What minimum bandwidth is needed without reserve between the server network and the core?",
+      "expected": 490,
+      "toleranceAbs": 1,
+      "showExpectedFormula": "220 + (3 * 90) = 490 Mbit/s",
+      "feedback": {
+        "correct": "Correctly calculated.",
+        "wrong": "Please add replication and service groups correctly."
+      },
+      "progressLinks": [
+        "lf09_technische_anforderungen"
+      ]
+    },
+    {
+      "id": "q4",
+      "type": "ordering",
+      "title": "Develop technical concept",
+      "prompt": "Put the path from need to technical solution in order.",
+      "items": [
+        "Clarify services, protection needs, and load profile",
+        "Derive protocols and segmentation",
+        "Select components and server roles",
+        "Check WAN and data center context",
+        "Document the technical design"
+      ],
+      "correctOrder": [
+        "Clarify services, protection needs, and load profile",
+        "Derive protocols and segmentation",
+        "Select components and server roles",
+        "Check WAN and data center context",
+        "Document the technical design"
+      ],
+      "feedback": {
+        "correct": "Correct: The design is developed systematically from the need.",
+        "wrong": "Not ideal: Please first clarify the service and load picture, then derive the technical picture."
+      },
+      "progressLinks": [
+        "lf09_technische_anforderungen"
+      ]
+    },
+    {
+      "id": "q5",
+      "type": "short_text",
+      "title": "Justify server role",
+      "prompt": "Explain in 4-6 sentences how you would combine server hardware, server software, and data center requirements for this case.",
+      "minChars": 170,
+      "requiredKeywords": [
+        "server",
+        "hardware",
+        "service"
+      ],
+      "expectedOutline": "Technical justification through service role, hardware base, and environmental requirements.",
+      "feedback": {
+        "correct": "Correct: The server-side planning is technically justified in a coherent way.",
+        "wrong": "Please connect service role, hardware, and environmental requirements more concretely."
+      },
+      "progressLinks": [
+        "lf09_technische_anforderungen",
+        "lf09_pruefung_dokumentation"
+      ]
+    }
+  ]
+}

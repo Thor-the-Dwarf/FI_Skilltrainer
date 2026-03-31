@@ -1,0 +1,158 @@
+{
+  "scenario": {
+    "company": "Training company IT service",
+    "scale": "Regional, 120 employees",
+    "context": "Station 3 of the day: build and connect the workstation.",
+    "mission": "You build a standard station ready for operation and verify basic functionality.",
+    "station": {
+      "id": "NS-ST-03",
+      "department": "Sales",
+      "profile": "Desktop, 2 monitors, keyboard, mouse, LAN, headset",
+      "constraints": [
+        "clean cabling",
+        "functional start-up",
+        "brief documentation of the setup"
+      ]
+    },
+    "customerRequest": {
+      "from": "it.leitung@ausbildungsbetrieb.example",
+      "to": "rollout.team@systemhaus.example",
+      "subject": "Workstation setup for station NS-ST-03",
+      "date": "2026-03-13",
+      "body": "Please build station NS-ST-03 completely and check basic functionality.\n\nImportant: correct cabling, working peripherals, and a short setup log."
+    }
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "type": "multi_select",
+      "title": "Mandatory points during setup",
+      "prompt": "Which points are part of the basic equipment for an office workstation? (Multiple selection)",
+      "options": [
+        {
+          "text": "Connect monitor(s) correctly",
+          "correct": true,
+          "rationale": "Basic prerequisite for the workstation."
+        },
+        {
+          "text": "Connect and test keyboard and mouse",
+          "correct": true,
+          "rationale": "Directly needed input devices."
+        },
+        {
+          "text": "Connect LAN or approved network",
+          "correct": true,
+          "rationale": "Network is required for operations."
+        },
+        {
+          "text": "Install random private games",
+          "correct": false,
+          "rationale": "Not part of the technical baseline."
+        },
+        {
+          "text": "Leave cables loosely behind the desk",
+          "correct": false,
+          "rationale": "Messy and prone to faults."
+        }
+      ],
+      "feedback": {
+        "correct": "Correct: you focus on the technically required setup.",
+        "wrong": "Partially incorrect: separate the mandatory scope more clearly."
+      },
+      "progressLinks": [
+        "lf02_geraete_aufbauen_anschliessen"
+      ]
+    },
+    {
+      "id": "q2",
+      "type": "ordering",
+      "title": "Sequence for workstation setup",
+      "prompt": "Arrange the steps in a sensible order.",
+      "items": [
+        "Run a short functional test",
+        "Check workstation plan and materials",
+        "Position and connect devices",
+        "Route and label cables cleanly",
+        "Document the setup briefly"
+      ],
+      "correctOrder": [
+        "Check workstation plan and materials",
+        "Position and connect devices",
+        "Route and label cables cleanly",
+        "Run a short functional test",
+        "Document the setup briefly"
+      ],
+      "feedback": {
+        "correct": "Correct: the setup is structured and traceable.",
+        "wrong": "Not optimal: plan/connect first, then test and documentation."
+      },
+      "progressLinks": [
+        "lf02_arbeitsplatzbereitstellung"
+      ]
+    },
+    {
+      "id": "q3",
+      "type": "single_choice",
+      "title": "First measure for cable chaos",
+      "prompt": "During testing you notice that cables cannot be assigned. What is the best first step?",
+      "options": [
+        {
+          "text": "Ignore everything as long as the PC runs",
+          "rationale": "Leads to support problems later."
+        },
+        {
+          "text": "Route cables cleanly, assign them and label briefly",
+          "rationale": "Improves maintainability and troubleshooting immediately."
+        },
+        {
+          "text": "Only replace the monitor",
+          "rationale": "Does not solve the actual problem."
+        }
+      ],
+      "correctIndex": 1,
+      "feedback": {
+        "correct": "Correct: structured cabling is part of quality.",
+        "wrong": "Not fitting: the issue is missing assignment."
+      },
+      "progressLinks": [
+        "lf02_geraete_aufbauen_anschliessen"
+      ]
+    },
+    {
+      "id": "q4",
+      "type": "number",
+      "title": "Setup time planning",
+      "prompt": "A setup takes 35 minutes per workstation. For 4 workstations add 20 minutes for the final check. How many minutes should be planned in total?",
+      "expected": 160,
+      "toleranceAbs": 1,
+      "showExpectedFormula": "4*35 + 20 = 160 minutes",
+      "feedback": {
+        "correct": "Correct calculation.",
+        "wrong": "Please add setup time per station and final check."
+      },
+      "progressLinks": [
+        "lf02_rechnen_abschaetzen"
+      ]
+    },
+    {
+      "id": "q5",
+      "type": "short_text",
+      "title": "Setup log",
+      "prompt": "Write a short log (4-5 sentences) with setup status, test and an open item.",
+      "minChars": 120,
+      "requiredKeywords": [
+        "status",
+        "test",
+        "open item"
+      ],
+      "expectedOutline": "Short report with status, test result and, if applicable, a remaining item for follow-up.",
+      "feedback": {
+        "correct": "Correct: the log is practically usable.",
+        "wrong": "Please state status, test reference and open item more clearly."
+      },
+      "progressLinks": [
+        "lf02_dokumentation"
+      ]
+    }
+  ]
+}

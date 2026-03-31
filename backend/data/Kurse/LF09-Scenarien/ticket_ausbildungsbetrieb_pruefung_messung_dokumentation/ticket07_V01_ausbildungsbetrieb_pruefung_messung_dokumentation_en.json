@@ -1,0 +1,160 @@
+{
+  "scenario": {
+    "company": "Nordufer Maschinenbau GmbH",
+    "scale": "Medium-sized business, 2 locations, 310 employees",
+    "context": "Station 07: inspect infrastructure and network components, and document results.",
+    "mission": "You derive a testing and documentation approach for acceptance from target values.",
+    "station": {
+      "id": "LF09-ST-07",
+      "department": "Quality Assurance",
+      "profile": "Testing, measurement, and documentation",
+      "constraints": [
+        "Define target values clearly before measuring",
+        "Do not only find deviations, classify them",
+        "Think about acceptance and operations documentation together"
+      ]
+    },
+    "customerRequest": {
+      "from": "qa@nordufer-maschinenbau.example",
+      "to": "infra.team@ausbildungsbetrieb.example",
+      "subject": "Station 07: Testing and documentation",
+      "date": "2026-03-13",
+      "body": "Please create a solid approach for infrastructure tests, measurements, and documentation."
+    }
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "type": "multi_select",
+      "title": "Define testing scope",
+      "prompt": "Which tests should at least be planned before acceptance? (Multiple choice)",
+      "options": [
+        {
+          "text": "Availability of central services in all relevant segments",
+          "correct": true,
+          "rationale": "Tests the core function of the target state."
+        },
+        {
+          "text": "Test segment boundaries and access rules",
+          "correct": true,
+          "rationale": "Secures protection and correct network separation."
+        },
+        {
+          "text": "Wait for random user observations",
+          "correct": false,
+          "rationale": "That does not replace a structured test."
+        },
+        {
+          "text": "Compare measurements against defined target values",
+          "correct": true,
+          "rationale": "Only this makes acceptance traceable."
+        },
+        {
+          "text": "Collect errors only informally in chat",
+          "correct": false,
+          "rationale": "That is too informal for acceptance and follow-up work."
+        }
+      ],
+      "feedback": {
+        "correct": "Correct: The testing scope is suitable for a solid acceptance process.",
+        "wrong": "Partially wrong: Please secure function, protection, and target-value reference more strongly."
+      },
+      "progressLinks": [
+        "lf09_pruefung_dokumentation"
+      ]
+    },
+    {
+      "id": "q2",
+      "type": "number",
+      "title": "Calculate test pass rate",
+      "prompt": "Of 48 planned test cases, 44 passed successfully. What is the pass rate in percent, rounded?",
+      "expected": 92,
+      "toleranceAbs": 1,
+      "showExpectedFormula": "44 / 48 * 100 = 91.67 % -> 92 %",
+      "feedback": {
+        "correct": "Correctly calculated.",
+        "wrong": "Please relate passed and planned test cases correctly."
+      },
+      "progressLinks": [
+        "lf09_pruefung_dokumentation"
+      ]
+    },
+    {
+      "id": "q3",
+      "type": "single_choice",
+      "title": "Handle deviations properly",
+      "prompt": "What is the most sensible response to a measured deviation above the target range?",
+      "options": [
+        {
+          "text": "Ignore the deviation if the rest looks fine",
+          "rationale": "That would be risky for acceptance."
+        },
+        {
+          "text": "Only note it verbally and move it to the next appointment",
+          "rationale": "That makes follow-up and approval uncertain."
+        },
+        {
+          "text": "Classify the deviation, document it, and trigger a retest",
+          "rationale": "This keeps quality assurance traceable and controllable."
+        }
+      ],
+      "correctIndex": 2,
+      "feedback": {
+        "correct": "Correct: Deviations must be handled systematically.",
+        "wrong": "Not suitable: A deviation needs classification, documentation, and retesting."
+      },
+      "progressLinks": [
+        "lf09_pruefung_dokumentation",
+        "lf09_rollout_uebergabe"
+      ]
+    },
+    {
+      "id": "q4",
+      "type": "ordering",
+      "title": "From testing to acceptance",
+      "prompt": "Put the flow from test to final documentation in order.",
+      "items": [
+        "Carry out tests and measurements",
+        "Compare results with target values",
+        "Classify deviations and remaining items",
+        "Document retests",
+        "Create the acceptance report"
+      ],
+      "correctOrder": [
+        "Carry out tests and measurements",
+        "Compare results with target values",
+        "Classify deviations and remaining items",
+        "Document retests",
+        "Create the acceptance report"
+      ],
+      "feedback": {
+        "correct": "Correct: The sequence leads logically to acceptance.",
+        "wrong": "Not ideal: Please first test, then evaluate, retest, and document."
+      },
+      "progressLinks": [
+        "lf09_pruefung_dokumentation"
+      ]
+    },
+    {
+      "id": "q5",
+      "type": "short_text",
+      "title": "Formulate a measurement report",
+      "prompt": "Describe in 4-6 sentences what a good measurement and acceptance report for this project should look like.",
+      "minChars": 170,
+      "requiredKeywords": [
+        "measurement",
+        "deviation",
+        "remaining point"
+      ],
+      "expectedOutline": "Report with target-value reference, deviation classification, and clear remaining items.",
+      "feedback": {
+        "correct": "Correct: The report is described in a way that supports acceptance and operations.",
+        "wrong": "Please make the target-value reference, deviations, and remaining items more visible."
+      },
+      "progressLinks": [
+        "lf09_pruefung_dokumentation",
+        "lf09_rollout_uebergabe"
+      ]
+    }
+  ]
+}

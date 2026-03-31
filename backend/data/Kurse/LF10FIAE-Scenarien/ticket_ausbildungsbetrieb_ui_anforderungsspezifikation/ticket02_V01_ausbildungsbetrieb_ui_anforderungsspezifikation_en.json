@@ -1,0 +1,158 @@
+{
+  "scenario": {
+    "company": "Training company IT services",
+    "scale": "SME, 220 employees",
+    "context": "Station 02 of the day run: requirements specification for a user interface.",
+    "mission": "You capture processes, structure requirements, and secure a clear picture of acceptance.",
+    "station": {
+      "id": "LF10FIAE-ST-02",
+      "department": "Requirements",
+      "profile": "Requirements analysis and specification",
+      "constraints": [
+        "Make requirements measurable",
+        "Clarify ambiguities actively",
+        "Document acceptance criteria"
+      ]
+    },
+    "customerRequest": {
+      "from": "product.management@ausbildungsbetrieb.example",
+      "to": "dev.team@ausbildungsbetrieb.example",
+      "subject": "Station 02: Specification",
+      "date": "2026-03-13",
+      "body": "Please create a robust UI specification for ticket intake."
+    }
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "type": "single_choice",
+      "title": "Start the as-is analysis",
+      "prompt": "What belongs first in the as-is analysis?",
+      "options": [
+        {
+          "text": "Define colors only",
+          "rationale": "No process reference."
+        },
+        {
+          "text": "Start implementation immediately",
+          "rationale": "Too early without a specification."
+        },
+        {
+          "text": "Capture user tasks and process steps",
+          "rationale": "Foundation for the target picture."
+        }
+      ],
+      "correctIndex": 2,
+      "feedback": {
+        "correct": "Correct: Process and user analysis come first.",
+        "wrong": "Not suitable: Without an as-is picture, the basis for the specification is missing."
+      },
+      "progressLinks": [
+        "lf10fiae_anforderungsspezifikation"
+      ]
+    },
+    {
+      "id": "q2",
+      "type": "multi_select",
+      "title": "Specification quality",
+      "prompt": "Which points improve the specification? (Multiple choice)",
+      "options": [
+        {
+          "text": "Must/should distinction",
+          "correct": true,
+          "rationale": "Important for prioritization."
+        },
+        {
+          "text": "Measurable acceptance criteria",
+          "correct": true,
+          "rationale": "Makes acceptance testable."
+        },
+        {
+          "text": "Unclear terms without definitions",
+          "correct": false,
+          "rationale": "Leads to interpretation errors."
+        },
+        {
+          "text": "Document non-functional requirements",
+          "correct": true,
+          "rationale": "Performance and UX aspects become visible."
+        },
+        {
+          "text": "Ignore scope and non-goals",
+          "correct": false,
+          "rationale": "Raises scope risk."
+        }
+      ],
+      "feedback": {
+        "correct": "Correct: The specification is built on a solid basis.",
+        "wrong": "Partly wrong: Please secure measurability and scope clarity more strongly."
+      },
+      "progressLinks": [
+        "lf10fiae_anforderungsspezifikation"
+      ]
+    },
+    {
+      "id": "q3",
+      "type": "ordering",
+      "title": "From need to specification",
+      "prompt": "Put the flow to the finished specification in order.",
+      "items": [
+        "Capture the as-is process",
+        "Cluster requirements",
+        "Formulate acceptance criteria",
+        "Review the specification",
+        "Release the version"
+      ],
+      "correctOrder": [
+        "Capture the as-is process",
+        "Cluster requirements",
+        "Formulate acceptance criteria",
+        "Review the specification",
+        "Release the version"
+      ],
+      "feedback": {
+        "correct": "Correct: The flow is methodically sound.",
+        "wrong": "Not ideal: Please go through analysis first, then formulation and release."
+      },
+      "progressLinks": [
+        "lf10fiae_anforderungsspezifikation"
+      ]
+    },
+    {
+      "id": "q4",
+      "type": "number",
+      "title": "Requirement volume",
+      "prompt": "There are 11 must-have requirements and 7 should-have requirements. How many requirements is that in total?",
+      "expected": 18,
+      "toleranceAbs": 1,
+      "showExpectedFormula": "11 + 7 = 18",
+      "feedback": {
+        "correct": "Calculated correctly.",
+        "wrong": "Please add the must-have and should-have requirements correctly."
+      },
+      "progressLinks": [
+        "lf10fiae_anforderungsspezifikation"
+      ]
+    },
+    {
+      "id": "q5",
+      "type": "short_text",
+      "title": "Specification note",
+      "prompt": "Formulate a specification note in 4-6 sentences with the goal, a core requirement, and an acceptance criterion.",
+      "minChars": 150,
+      "requiredKeywords": [
+        "goal",
+        "requirement",
+        "acceptance criterion"
+      ],
+      "expectedOutline": "Clear goal, prioritized requirement, and measurable criterion.",
+      "feedback": {
+        "correct": "Correct: The note is professionally robust.",
+        "wrong": "Please formulate the goal, requirement, and criterion more concretely."
+      },
+      "progressLinks": [
+        "lf10fiae_anforderungsspezifikation"
+      ]
+    }
+  ]
+}

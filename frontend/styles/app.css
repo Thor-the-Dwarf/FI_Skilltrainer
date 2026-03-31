@@ -49,6 +49,7 @@
   --ide-panel-width: clamp(286px, 24vw, 360px);
   --ide-panel-gap: 14px;
   --workspace-right-offset: 0px;
+  --training-progress-rail-total-height: 44px;
   --pastel-course: 192 100% 62%;
   --pastel-training: 278 100% 68%;
   --pastel-scenario: 26 100% 62%;
@@ -1330,24 +1331,56 @@ html[data-tooltips="on"] [data-ui-tooltip]:focus-within::after {
   overflow-y: auto;
 }
 
-.doomscroll-question-card {
-  padding: 24px;
-  display: grid;
+.doomscroll-question-panel {
+  height: 100%;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
   gap: 18px;
+  padding: 0;
+  background: transparent;
+  border: 0;
+  box-shadow: none;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+
+.doomscroll-question-panel.is-current {
+  border-color: transparent;
+  box-shadow: none;
+}
+
+.doomscroll-question-panel.is-current .doomscroll-question-card {
+  border-color: hsl(var(--primary) / 0.7);
+  box-shadow:
+    0 18px 42px rgba(2, 6, 23, 0.46),
+    inset 0 0 0 1px hsl(var(--primary) / 0.22),
+    0 0 0 1px hsl(var(--primary) / 0.1);
+}
+
+.doomscroll-question-card {
+  padding: clamp(22px, 2.1vw, 30px);
+  margin-bottom: 0;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 24px;
   background:
     linear-gradient(145deg, hsl(197 92% 56% / 0.1), hsl(251 72% 62% / 0.08)),
     hsl(var(--surface) / 0.3);
 }
 
 .doomscroll-question-card.has-review {
-  grid-template-columns: minmax(0, 1.45fr) minmax(320px, 0.92fr);
-  align-items: start;
+  grid-template-columns: minmax(0, 1.28fr) minmax(320px, 0.88fr);
+  align-items: stretch;
 }
 
 .doomscroll-question-main {
   display: grid;
-  gap: 18px;
+  grid-template-rows: auto minmax(0, 1fr);
+  gap: 20px;
   min-width: 0;
+  min-height: 0;
+  height: 100%;
 }
 
 .doomscroll-question-head {
@@ -1398,86 +1431,138 @@ html[data-tooltips="on"] [data-ui-tooltip]:focus-within::after {
     0 0 18px hsl(195 96% 62% / 0.14);
 }
 
+.doomscroll-answer-region {
+  display: grid;
+  gap: 14px;
+  align-self: start;
+  min-width: 0;
+  padding: 18px;
+  border-radius: 22px;
+  border: 1px solid hsl(var(--glass-border) / 0.54);
+  background:
+    linear-gradient(180deg, hsl(197 92% 58% / 0.08), transparent 34%),
+    hsl(var(--surface-soft) / 0.34);
+  box-shadow:
+    inset 0 1px 0 hsl(0 0% 100% / 0.03),
+    0 14px 30px rgba(2, 6, 23, 0.16);
+}
+
 .doomscroll-option-list {
   display: grid;
-  gap: 12px;
+  gap: 14px;
+  align-content: start;
 }
 
 .doomscroll-option-button {
   width: 100%;
   display: grid;
-  gap: 10px;
+  gap: 12px;
   text-align: left;
-  padding: 16px 16px 14px;
-  border-radius: 18px;
+  align-content: start;
+  min-height: 88px;
+  padding: 18px 20px;
+  border-radius: 20px;
   border: 1px solid hsl(var(--glass-border) / 0.62);
   background:
-    linear-gradient(135deg, hsl(var(--primary) / 0.08), transparent 55%),
-    hsl(var(--surface-soft) / 0.42);
+    linear-gradient(135deg, hsl(var(--primary) / 0.16), transparent 58%),
+    linear-gradient(180deg, hsl(0 0% 100% / 0.03), transparent 56%),
+    hsl(var(--surface-soft) / 0.52);
   color: hsl(var(--txt));
   font-size: 15px;
   line-height: 1.45;
   cursor: pointer;
+  box-shadow:
+    inset 0 1px 0 hsl(0 0% 100% / 0.04),
+    0 10px 22px rgba(2, 6, 23, 0.18);
+  transition:
+    transform 180ms ease,
+    border-color 180ms ease,
+    box-shadow 180ms ease,
+    background 180ms ease;
 }
 
 .doomscroll-option-button:hover:not(.is-locked) {
   border-color: hsl(var(--primary) / 0.5);
   background:
-    linear-gradient(135deg, hsl(var(--primary) / 0.14), transparent 55%),
-    hsl(var(--surface-soft) / 0.56);
+    linear-gradient(135deg, hsl(var(--primary) / 0.22), transparent 58%),
+    linear-gradient(180deg, hsl(0 0% 100% / 0.05), transparent 56%),
+    hsl(var(--surface-soft) / 0.64);
+  box-shadow:
+    inset 0 1px 0 hsl(0 0% 100% / 0.06),
+    0 16px 26px rgba(2, 6, 23, 0.22);
+  transform: translateY(-2px);
+}
+
+.doomscroll-option-button:focus-visible {
+  outline: 2px solid hsl(var(--primary) / 0.9);
+  outline-offset: 2px;
 }
 
 .doomscroll-option-button.is-selected {
   border-color: hsl(var(--primary));
-  box-shadow: 0 0 0 1px hsl(var(--primary) / 0.28);
+  background:
+    linear-gradient(135deg, hsl(var(--primary) / 0.28), transparent 62%),
+    linear-gradient(180deg, hsl(0 0% 100% / 0.08), transparent 56%),
+    hsl(var(--surface-soft) / 0.74);
+  box-shadow:
+    0 0 0 1px hsl(var(--primary) / 0.24),
+    0 18px 30px rgba(2, 6, 23, 0.24);
 }
 
 .doomscroll-option-button.is-locked {
   cursor: default;
+  transform: none;
 }
 
 .doomscroll-option-button.is-correct {
   border-color: hsl(150 70% 52% / 0.72);
   background:
-    linear-gradient(135deg, hsl(150 70% 52% / 0.22), hsl(172 72% 52% / 0.12)),
+    linear-gradient(135deg, hsl(150 70% 52% / 0.28), hsl(172 72% 52% / 0.14)),
+    linear-gradient(180deg, hsl(0 0% 100% / 0.06), transparent 58%),
     hsl(var(--surface-soft) / 0.82);
 }
 
 .doomscroll-option-button.is-wrong {
   border-color: hsl(12 90% 62% / 0.72);
   background:
-    linear-gradient(135deg, hsl(12 90% 62% / 0.22), hsl(24 95% 60% / 0.12)),
+    linear-gradient(135deg, hsl(12 90% 62% / 0.28), hsl(24 95% 60% / 0.14)),
+    linear-gradient(180deg, hsl(0 0% 100% / 0.06), transparent 58%),
     hsl(var(--surface-soft) / 0.82);
 }
 
 .doomscroll-option-button.is-missed {
   border-color: hsl(42 100% 62% / 0.72);
   background:
-    linear-gradient(135deg, hsl(42 100% 62% / 0.22), hsl(54 100% 62% / 0.12)),
+    linear-gradient(135deg, hsl(42 100% 62% / 0.28), hsl(54 100% 62% / 0.14)),
+    linear-gradient(180deg, hsl(0 0% 100% / 0.06), transparent 58%),
     hsl(var(--surface-soft) / 0.82);
 }
 
 .doomscroll-option-button.is-neutral {
-  opacity: 0.88;
+  opacity: 0.82;
 }
 
 .doomscroll-option-topline {
-  display: flex;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
   align-items: start;
-  gap: 12px;
+  gap: 14px;
 }
 
 .doomscroll-option-marker {
-  width: 26px;
-  height: 26px;
-  flex: 0 0 26px;
+  width: 34px;
+  height: 34px;
+  flex: 0 0 34px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  border-radius: 50%;
+  border-radius: 12px;
   border: 1px solid hsl(var(--glass-border) / 0.72);
-  background: hsl(var(--surface) / 0.32);
+  background:
+    linear-gradient(180deg, hsl(0 0% 100% / 0.06), transparent 65%),
+    hsl(var(--surface) / 0.46);
   font-size: 13px;
+  font-weight: 800;
   color: hsl(var(--txt-muted));
 }
 
@@ -1485,17 +1570,88 @@ html[data-tooltips="on"] [data-ui-tooltip]:focus-within::after {
   color: hsl(210 100% 8%);
   background: hsl(var(--primary));
   border-color: transparent;
+  box-shadow: 0 10px 18px hsl(var(--primary) / 0.24);
+}
+
+.doomscroll-option-button.is-correct .doomscroll-option-marker {
+  color: hsl(150 100% 9%);
+  background: hsl(150 76% 62%);
+  border-color: transparent;
+}
+
+.doomscroll-option-button.is-wrong .doomscroll-option-marker {
+  color: hsl(12 100% 10%);
+  background: hsl(15 96% 64%);
+  border-color: transparent;
+}
+
+.doomscroll-option-button.is-missed .doomscroll-option-marker {
+  color: hsl(36 100% 12%);
+  background: hsl(48 100% 66%);
+  border-color: transparent;
 }
 
 .doomscroll-option-text {
   margin: 0;
   font-size: 16px;
+  font-weight: 700;
+  line-height: 1.48;
 }
 
 .doomscroll-question-actions {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 12px;
+  display: grid;
+  width: 100%;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+  margin-top: auto;
+}
+
+.doomscroll-action-button {
+  width: 100%;
+  min-width: 0;
+  height: 82px;
+  padding: 0;
+  border-radius: 20px;
+  border: 1px solid hsl(var(--glass-border) / 0.7);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: hsl(var(--txt));
+  transition:
+    transform 180ms ease,
+    box-shadow 180ms ease,
+    border-color 180ms ease,
+    background 180ms ease,
+    opacity 180ms ease;
+}
+
+.doomscroll-action-button:focus-visible {
+  outline: 2px solid hsl(var(--primary) / 0.9);
+  outline-offset: 2px;
+}
+
+.doomscroll-action-button.is-slot-hidden {
+  opacity: 0;
+  pointer-events: none;
+  border-color: transparent;
+  background: transparent;
+  box-shadow: none;
+}
+
+.doomscroll-action-icon {
+  width: 34px;
+  height: 34px;
+  display: block;
+}
+
+.doomscroll-nav-button {
+  background:
+    linear-gradient(180deg, hsl(0 0% 100% / 0.05), transparent 58%),
+    hsl(var(--surface-soft) / 0.7);
+  box-shadow:
+    inset 0 1px 0 hsl(0 0% 100% / 0.04),
+    0 10px 20px rgba(2, 6, 23, 0.18);
 }
 
 .doomscroll-review-slot {
@@ -1531,10 +1687,8 @@ html[data-tooltips="on"] [data-ui-tooltip]:focus-within::after {
   line-height: 1.5;
 }
 
-.doomscroll-lock-button,
-.doomscroll-secondary-button,
+.doomscroll-action-button,
 .btn-secondary {
-  border: 0;
   cursor: pointer;
   transition:
     transform 180ms ease,
@@ -1544,20 +1698,48 @@ html[data-tooltips="on"] [data-ui-tooltip]:focus-within::after {
 }
 
 .doomscroll-lock-button {
-  padding: 13px 16px;
-  border-radius: 16px;
-  background: linear-gradient(135deg, hsl(210 100% 68%), hsl(191 96% 61%));
+  background:
+    linear-gradient(135deg, hsl(210 100% 68% / 0.94), hsl(191 96% 61% / 0.94)),
+    hsl(var(--surface-soft) / 0.84);
   color: hsl(205 100% 10%);
-  font-weight: 800;
+  border-color: hsl(197 96% 68% / 0.54);
+  box-shadow:
+    0 14px 24px hsl(199 100% 62% / 0.2),
+    inset 0 1px 0 hsl(0 0% 100% / 0.08);
+}
+
+.doomscroll-lock-button[data-lock-state="open"] {
+  background:
+    linear-gradient(180deg, hsl(0 0% 100% / 0.05), transparent 58%),
+    hsl(var(--surface-soft) / 0.78);
+  color: hsl(var(--primary));
+  border-color: hsl(var(--primary) / 0.4);
+  box-shadow:
+    inset 0 1px 0 hsl(0 0% 100% / 0.04),
+    0 10px 20px rgba(2, 6, 23, 0.18);
+}
+
+.doomscroll-lock-button[data-lock-state="closed"] {
+  background:
+    linear-gradient(135deg, hsl(210 100% 68% / 0.94), hsl(191 96% 61% / 0.94)),
+    hsl(var(--surface-soft) / 0.84);
+  color: hsl(205 100% 10%);
+  border-color: hsl(197 96% 68% / 0.54);
 }
 
 .doomscroll-lock-button:disabled {
-  opacity: 0.55;
   cursor: default;
   transform: none;
 }
 
-.doomscroll-secondary-button,
+.doomscroll-lock-button:disabled[data-lock-state="open"] {
+  opacity: 0.5;
+}
+
+.doomscroll-lock-button:disabled[data-lock-state="closed"] {
+  opacity: 1;
+}
+
 .btn-secondary {
   padding: 13px 16px;
   border-radius: 16px;
@@ -1566,8 +1748,7 @@ html[data-tooltips="on"] [data-ui-tooltip]:focus-within::after {
   border: 1px solid hsl(var(--glass-border) / 0.7);
 }
 
-.doomscroll-lock-button:hover:not(:disabled),
-.doomscroll-secondary-button:hover,
+.doomscroll-action-button:hover:not(:disabled),
 .btn-secondary:hover {
   transform: translateY(-2px);
 }
@@ -5264,6 +5445,36 @@ main {
   padding: 0 calc(clamp(10px, 1.4vw, 22px) + var(--workspace-right-offset)) 40px;
 }
 
+body.doomscroll-viewport-locked {
+  height: 100svh;
+  overflow: hidden;
+}
+
+body.doomscroll-viewport-locked main {
+  height: calc(100svh - var(--appbar-height) - var(--training-progress-rail-total-height));
+  margin: 0;
+  padding: 18px calc(clamp(10px, 1.4vw, 22px) + var(--workspace-right-offset)) 20px;
+  overflow: hidden;
+}
+
+body.doomscroll-viewport-locked #workspaceLeft,
+body.doomscroll-viewport-locked .doomscroll-shell,
+body.doomscroll-viewport-locked .doomscroll-swipe-stage {
+  height: 100%;
+  min-height: 0;
+}
+
+body.doomscroll-viewport-locked .doomscroll-swipe-stage {
+  max-height: none;
+}
+
+body.doomscroll-viewport-locked .doomscroll-panel {
+  flex: 0 0 100%;
+  height: 100%;
+  min-height: 100%;
+  max-height: 100%;
+}
+
 @media (min-width: 981px) {
   body {
     --workspace-left-offset: calc(var(--left-appbar-width) + var(--left-appbar-gap));
@@ -5491,6 +5702,10 @@ main {
   main {
     padding: 0 calc(clamp(10px, 1.4vw, 22px) + var(--workspace-right-offset)) 40px var(--workspace-left-offset);
     transition: padding-left 180ms ease, padding-right 220ms ease;
+  }
+
+  body.doomscroll-viewport-locked main {
+    padding: 18px calc(clamp(10px, 1.4vw, 22px) + var(--workspace-right-offset)) 20px var(--workspace-left-offset);
   }
 
   .submit-bar {
@@ -7652,6 +7867,11 @@ textarea.mark-bad {
     grid-template-columns: 1fr;
   }
 
+  .doomscroll-question-main {
+    grid-template-rows: none;
+    height: auto;
+  }
+
   .doomscroll-question-head {
     flex-direction: column;
     align-items: stretch;
@@ -7660,6 +7880,19 @@ textarea.mark-bad {
   .doomscroll-question-mode-pill {
     width: fit-content;
     max-width: 100%;
+  }
+
+  .doomscroll-answer-region {
+    padding: 16px;
+  }
+
+  .doomscroll-option-button {
+    min-height: 76px;
+    padding: 16px 18px;
+  }
+
+  .doomscroll-question-actions {
+    gap: 10px;
   }
 
   .doomscroll-review-slot {

@@ -1,0 +1,160 @@
+{
+  "scenario": {
+    "company": "Training company IT service",
+    "scale": "Mid-sized company, 180 employees",
+    "context": "Station 8 of the daily run: conclude availability, damage, and documentation.",
+    "mission": "You connect quantitative assessment with clear security documentation for management.",
+    "station": {
+      "id": "LF04-ST-08",
+      "department": "IT management and security",
+      "profile": "Downtime, damage impact, residual risk, and closing communication",
+      "constraints": [
+        "Explain metrics clearly",
+        "Name residual items transparently",
+        "Phrase the conclusion briefly and robustly"
+      ]
+    },
+    "customerRequest": {
+      "from": "it.leitung@ausbildungsbetrieb.example",
+      "to": "it.service@ausbildungsbetrieb.example",
+      "subject": "Station 08: complete the security documentation for the department management",
+      "date": "2026-03-13",
+      "body": "Please prepare a short conclusion with availability context, residual risk, and traceable security documentation for the department management."
+    }
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "type": "multi_select",
+      "title": "Good security documentation",
+      "prompt": "Which characteristics does good security documentation have? (Multiple selections)",
+      "options": [
+        {
+          "text": "Protection need, decisions, and rationales are recorded traceably",
+          "correct": true,
+          "rationale": "Without rationale, the statement loses value."
+        },
+        {
+          "text": "Open residual risks and next steps are named",
+          "correct": true,
+          "rationale": "Follow-up requires transparency."
+        },
+        {
+          "text": "Measures are linked to responsibilities",
+          "correct": true,
+          "rationale": "Only then does implementation remain manageable."
+        },
+        {
+          "text": "Important content is intentionally omitted so it looks shorter",
+          "correct": false,
+          "rationale": "That makes the documentation lose its value."
+        },
+        {
+          "text": "Results are phrased understandably for management and the specialist department",
+          "correct": true,
+          "rationale": "Audience-appropriate language improves usability."
+        }
+      ],
+      "feedback": {
+        "correct": "Correct: this is how documentation becomes a management tool.",
+        "wrong": "Partly wrong: please weight traceability, residual items, and responsibility more strongly."
+      },
+      "progressLinks": [
+        "lf04_dokumentation_kommunikation"
+      ]
+    },
+    {
+      "id": "q2",
+      "type": "ordering",
+      "title": "Closing communication for management",
+      "prompt": "Arrange the steps for clean closing communication.",
+      "items": [
+        "Draft the closing note with status and residual risk",
+        "Assess protection need and risks",
+        "Prepare availability or damage values",
+        "Align measures and responsibilities",
+        "Record follow-up and the next date"
+      ],
+      "correctOrder": [
+        "Assess protection need and risks",
+        "Prepare availability or damage values",
+        "Align measures and responsibilities",
+        "Draft the closing note with status and residual risk",
+        "Record follow-up and the next date"
+      ],
+      "feedback": {
+        "correct": "Correct: this creates a robust and manageable conclusion.",
+        "wrong": "Not ideal: please separate assessment, metrics, alignment, and conclusion more clearly."
+      },
+      "progressLinks": [
+        "lf04_dokumentation_kommunikation",
+        "lf04_verfuegbarkeit_schaden_berechnen"
+      ]
+    },
+    {
+      "id": "q3",
+      "type": "single_choice",
+      "title": "Handling residual risk",
+      "prompt": "A protection concept is feasible, but a small residual risk remains. What is the best response?",
+      "options": [
+        {
+          "text": "Document the residual risk transparently, name responsible people, and define a review",
+          "rationale": "That keeps the risk visible and manageable."
+        },
+        {
+          "text": "Hide the residual risk so approval goes faster",
+          "rationale": "That would be professionally and organizationally wrong."
+        },
+        {
+          "text": "Stop all measures even though the risk is small and manageable",
+          "rationale": "Without further justification, that would be disproportionate."
+        }
+      ],
+      "correctIndex": 0,
+      "feedback": {
+        "correct": "Correct: residual risks must remain visible and traceable.",
+        "wrong": "Not suitable: residual risks need transparency and steering."
+      },
+      "progressLinks": [
+        "lf04_dokumentation_kommunikation"
+      ]
+    },
+    {
+      "id": "q4",
+      "type": "number",
+      "title": "Downtime at 99.8% availability",
+      "prompt": "A service is expected to achieve 99.8% availability in a 30-day month. How many minutes of downtime are at most included?",
+      "expected": 86.4,
+      "toleranceAbs": 0.5,
+      "showExpectedFormula": "30 * 24 * 60 * 0.002 = 86.4 minutes",
+      "feedback": {
+        "correct": "Calculated correctly.",
+        "wrong": "Please multiply the total minutes of the month by the downtime share."
+      },
+      "progressLinks": [
+        "lf04_verfuegbarkeit_schaden_berechnen"
+      ]
+    },
+    {
+      "id": "q5",
+      "type": "short_text",
+      "title": "Closing note for management",
+      "prompt": "In 4-6 sentences, write a closing note with protection need, availability reference, and residual risk.",
+      "minChars": 170,
+      "requiredKeywords": [
+        "protection need",
+        "availability",
+        "residual risk"
+      ],
+      "expectedOutline": "State the protection need, classify the metric, and connect the residual risk with the next step.",
+      "feedback": {
+        "correct": "Correct: the note is clear, concise, and suitable for management.",
+        "wrong": "Please connect protection need, the metric, and residual risk more clearly."
+      },
+      "progressLinks": [
+        "lf04_dokumentation_kommunikation",
+        "lf04_verfuegbarkeit_schaden_berechnen"
+      ]
+    }
+  ]
+}

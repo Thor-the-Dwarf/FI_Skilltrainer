@@ -1,0 +1,159 @@
+{
+  "scenario": {
+    "company": "Training company IT service",
+    "scale": "Regional, 140 employees",
+    "context": "Station 3 of the daily run: assess data transmission and network media.",
+    "mission": "You assess data flow, media choices, and factors for stable client communication.",
+    "station": {
+      "id": "LF03-ST-03",
+      "department": "Network team",
+      "profile": "Copper, wireless, fiber, and basic data flow in the client network",
+      "constraints": [
+        "Justify in a practical way",
+        "Link medium and use case",
+        "Consider sources of error"
+      ]
+    },
+    "customerRequest": {
+      "from": "netzwerk.teamlead@ausbildungsbetrieb.example",
+      "to": "support.team@ausbildungsbetrieb.example",
+      "subject": "Station 03: secure data transmission and media selection",
+      "date": "2026-03-13",
+      "body": "Please assess the basic data transmission and the appropriate media selection for several workplace areas. We need a short, traceable recommendation for daily operations."
+    }
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "type": "single_choice",
+      "title": "Foundation of stable data transmission",
+      "prompt": "Which statement best describes the basis of reliable data transmission in the LAN?",
+      "options": [
+        {
+          "text": "A clean physical connection and matching standards are the foundation",
+          "rationale": "Without a stable base, higher-level services cannot work reliably."
+        },
+        {
+          "text": "Only the device name decides the transmission quality",
+          "rationale": "The name alone has no impact on physical or logical transmission."
+        },
+        {
+          "text": "As long as a cable is plugged in, every transmission is automatically error free",
+          "rationale": "Even with a cable, standards, defects, or misconfigurations can interfere."
+        }
+      ],
+      "correctIndex": 0,
+      "feedback": {
+        "correct": "Correct: Transmission starts with a stable technical foundation.",
+        "wrong": "Not suitable: weigh physical connection and standard compliance more strongly."
+      },
+      "progressLinks": [
+        "lf03_datenuebertragung_verstehen"
+      ]
+    },
+    {
+      "id": "q2",
+      "type": "multi_select",
+      "title": "Classify media professionally",
+      "prompt": "Which statements about network media are correct? (Multiple selections)",
+      "options": [
+        {
+          "text": "Copper is often practical for typical office distances",
+          "correct": true,
+          "rationale": "This fits many standard workstations."
+        },
+        {
+          "text": "Fiber is suitable for longer distances and low susceptibility to interference",
+          "correct": true,
+          "rationale": "It offers advantages in reach and electromagnetic robustness."
+        },
+        {
+          "text": "Wi-Fi is flexible, but more prone to interference than a clean cable run",
+          "correct": true,
+          "rationale": "That is a typical practical difference."
+        },
+        {
+          "text": "All media are equally stable under all conditions",
+          "correct": false,
+          "rationale": "Environment and technology strongly influence stability."
+        },
+        {
+          "text": "Media selection should follow use case and environment",
+          "correct": true,
+          "rationale": "Only then does the technical decision fit."
+        }
+      ],
+      "feedback": {
+        "correct": "Correct: You assess media by use case and interference risk.",
+        "wrong": "Partly wrong: classify flexibility, range, and interference risk more precisely."
+      },
+      "progressLinks": [
+        "lf03_netzwerkmedien_zugriff"
+      ]
+    },
+    {
+      "id": "q3",
+      "type": "ordering",
+      "title": "Data path from client to service",
+      "prompt": "Arrange the flow of a typical data transmission.",
+      "items": [
+        "Switch or network forwards the data",
+        "Client application shows the result",
+        "Server or service processes the request",
+        "Client application starts the request",
+        "Network interface hands data to the medium"
+      ],
+      "correctOrder": [
+        "Client application starts the request",
+        "Network interface hands data to the medium",
+        "Switch or network forwards the data",
+        "Server or service processes the request",
+        "Client application shows the result"
+      ],
+      "feedback": {
+        "correct": "Correct: This describes the data flow in a traceable way.",
+        "wrong": "Not optimal: think from the application via the interface to the service."
+      },
+      "progressLinks": [
+        "lf03_datenuebertragung_verstehen"
+      ]
+    },
+    {
+      "id": "q4",
+      "type": "number",
+      "title": "Estimate transmission time",
+      "prompt": "An 800 MB log archive is ideally transferred over 100 Mbit/s. About how many seconds does that take theoretically?",
+      "expected": 64,
+      "toleranceAbs": 2,
+      "showExpectedFormula": "800 MB * 8 = 6400 Mbit, 6400 / 100 = 64 s",
+      "feedback": {
+        "correct": "Correctly calculated.",
+        "wrong": "Please convert to Mbit first and then divide by the data rate."
+      },
+      "progressLinks": [
+        "lf03_datenuebertragung_verstehen"
+      ]
+    },
+    {
+      "id": "q5",
+      "type": "short_text",
+      "title": "Media recommendation for two locations",
+      "prompt": "Recommend in 4-6 sentences a medium for two offices on the same floor and for a more distant technical room.",
+      "minChars": 150,
+      "requiredKeywords": [
+        "copper",
+        "fiber",
+        "justification"
+      ],
+      "expectedOutline": "Location, media selection, and a short technical justification for both cases.",
+      "feedback": {
+        "correct": "Correct: The recommendation is practical and technically sound.",
+        "wrong": "Please link location, medium, and justification more clearly."
+      },
+      "progressLinks": [
+        "lf03_netzwerkmedien_zugriff",
+        "lf03_datenuebertragung_verstehen"
+      ]
+    }
+  ]
+}

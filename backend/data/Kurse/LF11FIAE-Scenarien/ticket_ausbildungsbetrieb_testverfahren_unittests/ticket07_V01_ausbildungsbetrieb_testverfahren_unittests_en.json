@@ -1,0 +1,160 @@
+{
+  "description": null,
+  "scenario": {
+    "company": "Training company IT services",
+    "scale": "SME, 240 employees",
+    "context": "Station 07 of the day run: test functionality and expand unit tests.",
+    "mission": "You choose testing methods, formulate test cases, and secure core functions with unit tests.",
+    "station": {
+      "id": "LF11FIAE-ST-07",
+      "department": "Quality assurance",
+      "profile": "Testing methods, test cases, unit tests",
+      "constraints": [
+        "Align tests with requirements",
+        "Keep findings reproducible",
+        "Use automation sensibly"
+      ]
+    },
+    "customerRequest": {
+      "from": "qa.lead@ausbildungsbetrieb.example",
+      "to": "dev.team@ausbildungsbetrieb.example",
+      "subject": "Station 07: Expand testing",
+      "date": "2026-03-13",
+      "body": "Please extend the test set for core functions and provide usable test evidence."
+    }
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "type": "multi_select",
+      "title": "Choose testing methods appropriately",
+      "prompt": "Which statements make sense for the test strategy? (Multiple choice)",
+      "options": [
+        {
+          "text": "Prioritize risky core functions",
+          "correct": true,
+          "rationale": "Increases test impact."
+        },
+        {
+          "text": "Document the test goal for each component",
+          "correct": true,
+          "rationale": "Makes the purpose of the check transparent."
+        },
+        {
+          "text": "Only manual one-off tests without evidence",
+          "correct": false,
+          "rationale": "Too little reproducibility."
+        },
+        {
+          "text": "Plan positive and negative test cases",
+          "correct": true,
+          "rationale": "Improves defect safety."
+        },
+        {
+          "text": "Do not analyze failures",
+          "correct": false,
+          "rationale": "Loses a learning opportunity."
+        }
+      ],
+      "feedback": {
+        "correct": "Correct: Strategy and risk focus fit together.",
+        "wrong": "Partly wrong: Please secure the test goal and reproducibility more strongly."
+      },
+      "progressLinks": [
+        "lf11fiae_testverfahren_unittests"
+      ]
+    },
+    {
+      "id": "q2",
+      "type": "single_choice",
+      "title": "Unit-test focus",
+      "prompt": "What should unit tests mainly target?",
+      "options": [
+        {
+          "text": "Clearly scoped functions with explicit expectations",
+          "rationale": "That keeps tests stable and meaningful."
+        },
+        {
+          "text": "Complete end-to-end scenarios",
+          "rationale": "That is not the main focus of unit tests."
+        },
+        {
+          "text": "Only visual aspects",
+          "rationale": "Not a core goal of unit tests."
+        }
+      ],
+      "correctIndex": 0,
+      "feedback": {
+        "correct": "Correct: Unit tests should check clearly scoped logic.",
+        "wrong": "Not suitable: Unit tests need a clear function focus."
+      },
+      "progressLinks": [
+        "lf11fiae_testverfahren_unittests"
+      ]
+    },
+    {
+      "id": "q3",
+      "type": "ordering",
+      "title": "Test chain to finding",
+      "prompt": "Put the flow from test case to finding in order.",
+      "items": [
+        "Derive the test case from the requirement",
+        "Define input data and the expected result",
+        "Run the test in an automated way",
+        "Document the finding",
+        "Analyze the root cause"
+      ],
+      "correctOrder": [
+        "Derive the test case from the requirement",
+        "Define input data and the expected result",
+        "Run the test in an automated way",
+        "Document the finding",
+        "Analyze the root cause"
+      ],
+      "feedback": {
+        "correct": "Correct: The test chain is traceable.",
+        "wrong": "Not ideal: Please secure derivation and expectation before execution."
+      },
+      "progressLinks": [
+        "lf11fiae_testverfahren_unittests"
+      ]
+    },
+    {
+      "id": "q4",
+      "type": "number",
+      "title": "Failure rate in the test run",
+      "prompt": "Out of 52 test cases, 7 fail. What is the failure rate in percent (rounded)?",
+      "expected": 13,
+      "toleranceAbs": 1,
+      "showExpectedFormula": "7/52*100 = 13.46 % ~ 13 %",
+      "feedback": {
+        "correct": "Calculated correctly.",
+        "wrong": "Please calculate the share of failing tests correctly."
+      },
+      "progressLinks": [
+        "lf11fiae_testverfahren_unittests"
+      ]
+    },
+    {
+      "id": "q5",
+      "type": "short_text",
+      "title": "Formulate test evidence",
+      "prompt": "Formulate test evidence in 4-6 sentences with goal, finding, and next action.",
+      "minChars": 160,
+      "requiredKeywords": [
+        "goal",
+        "finding",
+        "next action"
+      ],
+      "expectedOutline": "Clear test purpose, result reference, and follow-up action.",
+      "feedback": {
+        "correct": "Correct: The evidence is suitable for the team and acceptance.",
+        "wrong": "Please structure goal, finding, and next action more clearly."
+      },
+      "progressLinks": [
+        "lf11fiae_testverfahren_unittests",
+        "lf11fiae_schnittstellen_dokumentation"
+      ]
+    }
+  ]
+}

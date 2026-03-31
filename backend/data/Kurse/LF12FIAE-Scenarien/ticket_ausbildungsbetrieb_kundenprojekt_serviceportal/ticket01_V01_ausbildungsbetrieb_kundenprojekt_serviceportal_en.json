@@ -1,0 +1,711 @@
+{
+  "scenario": {
+    "company": "Training company IT services",
+    "scale": "SME, 280 employees",
+    "context": "Station 01: customer project kickoff with several follow-up orders through acceptance preparation.",
+    "mission": "You work through the kickoff order and several follow-up orders along the project path with increasing responsibility.",
+    "station": {
+      "id": "LF12FIAE-ST-01",
+      "department": "Customer-specific application development",
+      "profile": "Project kickoff, objective, planning, implementation, testing, and handover",
+      "constraints": [
+        "Make customer requirements measurable",
+        "Justify decisions economically",
+        "Keep risks and residual items transparent"
+      ]
+    },
+    "customerRequest": {
+      "from": "auftraggeber@kundenprojekt.example",
+      "to": "projektteam@ausbildungsbetrieb.example",
+      "subject": "Station 01: Kickoff order for service portal customer module",
+      "date": "2026-03-13",
+      "body": "Please start a customer project for a prioritization module in the service portal.\n\nAfter the kickoff order, additional project requests will follow covering objective changes, economic efficiency, project execution, and acceptance preparation."
+    }
+  },
+  "questions": [
+    {
+      "id": "q01",
+      "type": "single_choice",
+      "title": "Structure the project kickoff",
+      "prompt": "Which first step makes the most sense when starting a customer project?",
+      "options": [
+        {
+          "text": "Start implementing immediately without clarifying roles and objectives",
+          "rationale": "Leads to friction and rework."
+        },
+        {
+          "text": "Define project roles, communication paths, and the target picture together",
+          "rationale": "Creates the necessary kickoff clarity."
+        },
+        {
+          "text": "Mention only the final deadline and skip the rest",
+          "rationale": "Without structure, project risk increases."
+        }
+      ],
+      "correctIndex": 1,
+      "feedback": {
+        "correct": "Correct: Clarity on roles and objectives is the clean project kickoff.",
+        "wrong": "Not suitable: Without kickoff clarity, the project becomes unstable."
+      },
+      "progressLinks": [
+        "lf12fiae_pm_grundlagen_organisation"
+      ]
+    },
+    {
+      "id": "q02",
+      "type": "multi_select",
+      "title": "Objectives of the customer order",
+      "prompt": "Which contents belong in a robust objective definition? (Multiple choice)",
+      "options": [
+        {
+          "text": "Measurable target criteria and clear scope boundaries",
+          "correct": true,
+          "rationale": "Secures verifiable project success."
+        },
+        {
+          "text": "Align acceptance criteria with the customer",
+          "correct": true,
+          "rationale": "Prevents misunderstandings later."
+        },
+        {
+          "text": "Take over open requirements without checking them",
+          "correct": false,
+          "rationale": "Increases the risk of rework."
+        },
+        {
+          "text": "Turn unclear points into active follow-up questions",
+          "correct": true,
+          "rationale": "Strengthens commitment."
+        },
+        {
+          "text": "Implement objective changes without documentation",
+          "correct": false,
+          "rationale": "Contradicts clean project control."
+        }
+      ],
+      "feedback": {
+        "correct": "Correct: The objective definition is professionally sound.",
+        "wrong": "Partly wrong: Please secure measurability and acceptance reference more strongly."
+      },
+      "progressLinks": [
+        "lf12fiae_kundenauftrag_zielsetzung"
+      ]
+    },
+    {
+      "id": "q03",
+      "type": "ordering",
+      "title": "Turn planning into implementation",
+      "prompt": "Put the steps from the target picture to robust project planning in order.",
+      "items": [
+        "Confirm the project goal and delivery scope",
+        "Structure work packages and milestones",
+        "Estimate effort and cost",
+        "Plan in risks and buffers",
+        "Document planning assumptions"
+      ],
+      "correctOrder": [
+        "Confirm the project goal and delivery scope",
+        "Structure work packages and milestones",
+        "Estimate effort and cost",
+        "Plan in risks and buffers",
+        "Document planning assumptions"
+      ],
+      "feedback": {
+        "correct": "Correct: This is a cleanly structured project plan.",
+        "wrong": "Not ideal: Please plan from the goal via effort and risk toward documentation."
+      },
+      "progressLinks": [
+        "lf12fiae_projektplanung_wirtschaftlichkeit"
+      ]
+    },
+    {
+      "id": "q04",
+      "type": "number",
+      "title": "Calculate the kickoff package",
+      "prompt": "A kickoff package includes 16 hours of analysis at 68 EUR per hour. What is the cost?",
+      "expected": 1088,
+      "toleranceAbs": 1,
+      "showExpectedFormula": "16 * 68 = 1088 EUR",
+      "feedback": {
+        "correct": "Calculated correctly.",
+        "wrong": "Please multiply hours and rate correctly."
+      },
+      "progressLinks": [
+        "lf12fiae_projektplanung_wirtschaftlichkeit"
+      ]
+    },
+    {
+      "id": "q05",
+      "type": "short_text",
+      "title": "Kickoff briefing for the customer",
+      "prompt": "Write a kickoff briefing (4-6 sentences) with target picture, rough plan, and one residual risk.",
+      "minChars": 150,
+      "requiredKeywords": [
+        "target picture",
+        "plan",
+        "risk"
+      ],
+      "expectedOutline": "Clear target picture, viable planning approach, and a named residual risk.",
+      "feedback": {
+        "correct": "Correct: The briefing is clear and ready for decision.",
+        "wrong": "Please separate the target picture, plan, and risk more clearly."
+      },
+      "progressLinks": [
+        "lf12fiae_kundenauftrag_zielsetzung",
+        "lf12fiae_projektplanung_wirtschaftlichkeit"
+      ]
+    },
+    {
+      "id": "q06",
+      "type": "multi_select",
+      "title": "Process an objective change professionally",
+      "prompt": "Which steps make sense when the objective changes? (Multiple choice)",
+      "options": [
+        {
+          "text": "Document the change and its impact on scope",
+          "correct": true,
+          "rationale": "Secures transparency."
+        },
+        {
+          "text": "Sharpen the acceptance criteria together",
+          "correct": true,
+          "rationale": "Avoids acceptance risks."
+        },
+        {
+          "text": "Push the change into production directly without consultation",
+          "correct": false,
+          "rationale": "Too risky without safeguards."
+        },
+        {
+          "text": "Realign responsibilities within the project team",
+          "correct": true,
+          "rationale": "Necessary when the scope expands."
+        },
+        {
+          "text": "Keep the old planning running unchanged",
+          "correct": false,
+          "rationale": "Contradicts the changed objective."
+        }
+      ],
+      "feedback": {
+        "correct": "Correct: The change is processed in a controlled way.",
+        "wrong": "Partly wrong: Please secure the links to scope, acceptance, and team more strongly."
+      },
+      "progressLinks": [
+        "lf12fiae_kundenauftrag_zielsetzung",
+        "lf12fiae_pm_grundlagen_organisation"
+      ]
+    },
+    {
+      "id": "q07",
+      "type": "single_choice",
+      "title": "Adjust project organization",
+      "prompt": "Which reaction fits best when a new VIP feature is added?",
+      "options": [
+        {
+          "text": "Ignore the new feature so the plan is not put at risk",
+          "rationale": "Contradicts the order."
+        },
+        {
+          "text": "Extend roles and responsibilities clearly for monitoring and business alignment",
+          "rationale": "Brings the changed objective into the organization."
+        },
+        {
+          "text": "Inform only the UI team and change nothing else",
+          "rationale": "Too narrow for the scope."
+        }
+      ],
+      "correctIndex": 1,
+      "feedback": {
+        "correct": "Correct: Organization and responsibility have to grow with the change.",
+        "wrong": "Not suitable: The changed objective needs an adapted organizational logic."
+      },
+      "progressLinks": [
+        "lf12fiae_pm_grundlagen_organisation"
+      ]
+    },
+    {
+      "id": "q08",
+      "type": "number",
+      "title": "Calculate the scope surcharge",
+      "prompt": "The objective change requires 9 extra hours at 72 EUR per hour. What is the additional effort?",
+      "expected": 648,
+      "toleranceAbs": 1,
+      "showExpectedFormula": "9 * 72 = 648 EUR",
+      "feedback": {
+        "correct": "Calculated correctly.",
+        "wrong": "Please multiply extra hours and rate correctly."
+      },
+      "progressLinks": [
+        "lf12fiae_projektplanung_wirtschaftlichkeit"
+      ]
+    },
+    {
+      "id": "q09",
+      "type": "ordering",
+      "title": "Change process",
+      "prompt": "Put the flow for a changed customer requirement in order.",
+      "items": [
+        "Capture the change",
+        "Analyze the impact on time, cost, and risk",
+        "Align with the customer",
+        "Update the plan and responsibilities",
+        "Approve the documented change"
+      ],
+      "correctOrder": [
+        "Capture the change",
+        "Analyze the impact on time, cost, and risk",
+        "Align with the customer",
+        "Update the plan and responsibilities",
+        "Approve the documented change"
+      ],
+      "feedback": {
+        "correct": "Correct: This is a clean change flow.",
+        "wrong": "Not ideal: Please place analysis and alignment before approval."
+      },
+      "progressLinks": [
+        "lf12fiae_projektdurchfuehrung"
+      ]
+    },
+    {
+      "id": "sep_f1",
+      "type": "followup_divider",
+      "title": "Follow-up order 1 - Budget cap and economic efficiency",
+      "from": "controlling@kundenprojekt.example",
+      "to": "projektteam@ausbildungsbetrieb.example",
+      "subject": "Cost limit per sprint and prioritization",
+      "date": "2026-03-13",
+      "body": "A cost limit applies to the next sprint. Please prioritize work packages, assess their benefit, and present the budget impact transparently."
+    },
+    {
+      "id": "q10",
+      "type": "single_choice",
+      "title": "Economic efficiency under a budget cap",
+      "prompt": "What is the best professional response to the budget cap?",
+      "options": [
+        {
+          "text": "Cut scope without review",
+          "rationale": "Can endanger core goals."
+        },
+        {
+          "text": "Prioritize work packages, review their benefit, and make the cost impact transparent",
+          "rationale": "Economically sound and goal-oriented."
+        },
+        {
+          "text": "Ignore the budget requirement",
+          "rationale": "Not compliant with the process."
+        }
+      ],
+      "correctIndex": 1,
+      "feedback": {
+        "correct": "Correct: Prioritization and transparency are central here.",
+        "wrong": "Not suitable: Budget steering needs clear prioritization and visibility of impact."
+      },
+      "progressLinks": [
+        "lf12fiae_projektplanung_wirtschaftlichkeit"
+      ]
+    },
+    {
+      "id": "q11",
+      "type": "multi_select",
+      "title": "Weigh cost and benefit cleanly",
+      "prompt": "Which points belong in a robust economic efficiency assessment? (Multiple choice)",
+      "options": [
+        {
+          "text": "Name the core benefit of each work package",
+          "correct": true,
+          "rationale": "Makes prioritization justifiable."
+        },
+        {
+          "text": "Distinguish one-time costs from follow-up costs",
+          "correct": true,
+          "rationale": "Prevents wrong decisions."
+        },
+        {
+          "text": "Hide risks to approve faster",
+          "correct": false,
+          "rationale": "Increases project risk."
+        },
+        {
+          "text": "Compare alternatives with advantages and disadvantages",
+          "correct": true,
+          "rationale": "Supports well-founded decisions."
+        },
+        {
+          "text": "Choose only the lowest price without linking it to the objective",
+          "correct": false,
+          "rationale": "Can endanger achievement of the goal."
+        }
+      ],
+      "feedback": {
+        "correct": "Correct: This makes the economic assessment professionally sound.",
+        "wrong": "Partly wrong: Please assess benefit, cost structure, and risks together."
+      },
+      "progressLinks": [
+        "lf12fiae_projektplanung_wirtschaftlichkeit"
+      ]
+    },
+    {
+      "id": "q12",
+      "type": "number",
+      "title": "Add up sprint costs",
+      "prompt": "Three work packages cost 2150 EUR, 1980 EUR, and 2410 EUR. What is the total cost?",
+      "expected": 6540,
+      "toleranceAbs": 1,
+      "showExpectedFormula": "2150 + 1980 + 2410 = 6540 EUR",
+      "feedback": {
+        "correct": "Calculated correctly.",
+        "wrong": "Please add all work packages correctly."
+      },
+      "progressLinks": [
+        "lf12fiae_projektplanung_wirtschaftlichkeit"
+      ]
+    },
+    {
+      "id": "q13",
+      "type": "short_text",
+      "title": "Justify the budget adjustment",
+      "prompt": "Write a short note (4-6 sentences) explaining how the plan is adjusted under the budget cap.",
+      "minChars": 150,
+      "requiredKeywords": [
+        "prioritization",
+        "benefit",
+        "budget"
+      ],
+      "expectedOutline": "Prioritization, benefit reference, and budget consequence in one clear decision.",
+      "feedback": {
+        "correct": "Correct: The note is economically and professionally traceable.",
+        "wrong": "Please describe prioritization, benefit, and budget impact more concretely."
+      },
+      "progressLinks": [
+        "lf12fiae_projektplanung_wirtschaftlichkeit",
+        "lf12fiae_kundenauftrag_zielsetzung"
+      ]
+    },
+    {
+      "id": "q14",
+      "type": "ordering",
+      "title": "Plan adjustment under a cost limit",
+      "prompt": "Put the flow for a plan adjustment under a cost limit in order.",
+      "items": [
+        "Record the budget cap and must-have objectives",
+        "Prioritize work packages by benefit",
+        "Calculate the impact on cost and risk",
+        "Align the adjusted plan",
+        "Document the approved plan"
+      ],
+      "correctOrder": [
+        "Record the budget cap and must-have objectives",
+        "Prioritize work packages by benefit",
+        "Calculate the impact on cost and risk",
+        "Align the adjusted plan",
+        "Document the approved plan"
+      ],
+      "feedback": {
+        "correct": "Correct: The flow is economically and logically clean.",
+        "wrong": "Not ideal: Please go through must-have objectives first, then prioritization and alignment."
+      },
+      "progressLinks": [
+        "lf12fiae_projektdurchfuehrung"
+      ]
+    },
+    {
+      "id": "sep_f2",
+      "type": "followup_divider",
+      "title": "Follow-up order 2 - API risk during execution",
+      "from": "dev.lead@ausbildungsbetrieb.example",
+      "to": "projektteam@ausbildungsbetrieb.example",
+      "subject": "Unstable API endangers core function",
+      "date": "2026-03-13",
+      "body": "An external API behaves unstably. Please control the risk and delivery capability in a disciplined way and document the additional effort."
+    },
+    {
+      "id": "q15",
+      "type": "multi_select",
+      "title": "Risk control during execution",
+      "prompt": "Which measures help with an API blocker? (Multiple choice)",
+      "options": [
+        {
+          "text": "Document the blocker with priority and impact",
+          "correct": true,
+          "rationale": "Makes urgency transparent."
+        },
+        {
+          "text": "Plan a fallback strategy for critical functions",
+          "correct": true,
+          "rationale": "Secures delivery capability."
+        },
+        {
+          "text": "Ignore the problem until shortly before delivery",
+          "correct": false,
+          "rationale": "Raises outage risk."
+        },
+        {
+          "text": "Reflect status and decision points regularly in the team",
+          "correct": true,
+          "rationale": "Supports coordinated steering."
+        },
+        {
+          "text": "Implement changes without documentation",
+          "correct": false,
+          "rationale": "Contradicts controlled execution."
+        }
+      ],
+      "feedback": {
+        "correct": "Correct: The risk is treated actively and in a steerable way.",
+        "wrong": "Partly wrong: Please secure blocker transparency and fallback strategy more strongly."
+      },
+      "progressLinks": [
+        "lf12fiae_projektdurchfuehrung"
+      ]
+    },
+    {
+      "id": "q16",
+      "type": "single_choice",
+      "title": "Secure the deliverable despite disruption",
+      "prompt": "With an unstable API, which decision is the most robust?",
+      "options": [
+        {
+          "text": "Stop delivery without informing the customer",
+          "rationale": "Missing transparency."
+        },
+        {
+          "text": "Deliver a partial function with clear residual-item documentation and schedule the follow-up",
+          "rationale": "A sustainable interim delivery with risk disclosure."
+        },
+        {
+          "text": "Talk up the result and hide the problem",
+          "rationale": "Endangers trust and acceptance."
+        }
+      ],
+      "correctIndex": 1,
+      "feedback": {
+        "correct": "Correct: This keeps the project steerable and transparent.",
+        "wrong": "Not suitable: Execution needs a clear residual-item and communication logic."
+      },
+      "progressLinks": [
+        "lf12fiae_projektdurchfuehrung"
+      ]
+    },
+    {
+      "id": "q17",
+      "type": "number",
+      "title": "Calculate buffer time",
+      "prompt": "42 hours were planned, but 47 hours will actually be needed. How large is the additional effort?",
+      "expected": 5,
+      "toleranceAbs": 1,
+      "showExpectedFormula": "47 - 42 = 5 hours",
+      "feedback": {
+        "correct": "Calculated correctly.",
+        "wrong": "Please calculate the difference between actual and planned effort correctly."
+      },
+      "progressLinks": [
+        "lf12fiae_projektdurchfuehrung"
+      ]
+    },
+    {
+      "id": "q18",
+      "type": "ordering",
+      "title": "Status communication for blockers",
+      "prompt": "Put the flow for robust blocker communication in order.",
+      "items": [
+        "Capture blocker and impact",
+        "Show solution options with effort",
+        "Name the recommendation with risk",
+        "Align the decision",
+        "Document status and next step"
+      ],
+      "correctOrder": [
+        "Capture blocker and impact",
+        "Show solution options with effort",
+        "Name the recommendation with risk",
+        "Align the decision",
+        "Document status and next step"
+      ],
+      "feedback": {
+        "correct": "Correct: This is a clear communication chain.",
+        "wrong": "Not ideal: Please present the situation first, then options and the decision."
+      },
+      "progressLinks": [
+        "lf12fiae_projektdurchfuehrung",
+        "lf12fiae_praesentation"
+      ]
+    },
+    {
+      "id": "sep_f3",
+      "type": "followup_divider",
+      "title": "Follow-up order 3 - Status communication before acceptance",
+      "from": "projektleitung@kundenprojekt.example",
+      "to": "projektteam@ausbildungsbetrieb.example",
+      "subject": "Align blocker status and acceptance step",
+      "date": "2026-03-13",
+      "body": "Please provide a robust status communication with a clear decision proposal and prioritized next steps."
+    },
+    {
+      "id": "q19",
+      "type": "short_text",
+      "title": "Blocker status update",
+      "prompt": "Write a short status update (4-6 sentences) with problem, impact, and next action.",
+      "minChars": 150,
+      "requiredKeywords": [
+        "problem",
+        "impact",
+        "next action"
+      ],
+      "expectedOutline": "Clear blocker status with impact and an actionable next step.",
+      "feedback": {
+        "correct": "Correct: The update is usable for team and customer.",
+        "wrong": "Please structure the problem, impact, and next action more explicitly."
+      },
+      "progressLinks": [
+        "lf12fiae_projektdurchfuehrung",
+        "lf12fiae_testen_dokumentieren"
+      ]
+    },
+    {
+      "id": "q20",
+      "type": "single_choice",
+      "title": "Prioritize test evidence",
+      "prompt": "What is most important for acceptance preparation?",
+      "options": [
+        {
+          "text": "Show only the demo and skip the test protocols",
+          "rationale": "Not ready for acceptance."
+        },
+        {
+          "text": "Derive test cases from acceptance criteria and document the results",
+          "rationale": "Creates robust evidence."
+        },
+        {
+          "text": "List only code changes",
+          "rationale": "Missing proof of functionality."
+        }
+      ],
+      "correctIndex": 1,
+      "feedback": {
+        "correct": "Correct: This is exactly the evidence needed for acceptance.",
+        "wrong": "Not suitable: Without test reference, approval remains uncertain."
+      },
+      "progressLinks": [
+        "lf12fiae_testen_dokumentieren"
+      ]
+    },
+    {
+      "id": "q21",
+      "type": "multi_select",
+      "title": "Complete the acceptance documents",
+      "prompt": "Which documents should be ready for acceptance? (Multiple choice)",
+      "options": [
+        {
+          "text": "Test protocol with open items",
+          "correct": true,
+          "rationale": "Shows maturity level and remaining work."
+        },
+        {
+          "text": "Short documentation for use and operations",
+          "correct": true,
+          "rationale": "Supports the handover."
+        },
+        {
+          "text": "Uncommented raw notes without structure",
+          "correct": false,
+          "rationale": "Not usable for acceptance."
+        },
+        {
+          "text": "Presentation guide with core benefit and limits",
+          "correct": true,
+          "rationale": "Helps present the solution appropriately for the audience."
+        },
+        {
+          "text": "Open items without due date and owner",
+          "correct": false,
+          "rationale": "Lacks controllability."
+        }
+      ],
+      "feedback": {
+        "correct": "Correct: This forms a complete acceptance basis.",
+        "wrong": "Partly wrong: Please secure the test, documentation, and residual-item logic consistently."
+      },
+      "progressLinks": [
+        "lf12fiae_testen_dokumentieren",
+        "lf12fiae_praesentation"
+      ]
+    },
+    {
+      "id": "sep_f4",
+      "type": "followup_divider",
+      "title": "Follow-up order 4 - Test evidence and close",
+      "from": "auftraggeber@kundenprojekt.example",
+      "to": "projektteam@ausbildungsbetrieb.example",
+      "subject": "Acceptance window tomorrow 09:00",
+      "date": "2026-03-13",
+      "body": "Please finalize the test evidence, residual-item documentation, and closing note for tomorrow's acceptance."
+    },
+    {
+      "id": "q22",
+      "type": "ordering",
+      "title": "Acceptance path through reflection",
+      "prompt": "Put the flow from testing to the first project reflection in order.",
+      "items": [
+        "Check acceptance criteria against test cases",
+        "Document test results and residual items",
+        "Present the solution with its core benefit",
+        "Answer customer questions",
+        "Capture lessons learned briefly"
+      ],
+      "correctOrder": [
+        "Check acceptance criteria against test cases",
+        "Document test results and residual items",
+        "Present the solution with its core benefit",
+        "Answer customer questions",
+        "Capture lessons learned briefly"
+      ],
+      "feedback": {
+        "correct": "Correct: This is a consistent close-out chain.",
+        "wrong": "Not ideal: Please check and document first, then present and reflect."
+      },
+      "progressLinks": [
+        "lf12fiae_testen_dokumentieren",
+        "lf12fiae_praesentation",
+        "lf12fiae_bewertung_reflexion"
+      ]
+    },
+    {
+      "id": "q23",
+      "type": "number",
+      "title": "Assess test coverage",
+      "prompt": "Out of 28 planned acceptance tests, 25 were completed successfully. What is the success rate in percent (rounded)?",
+      "expected": 89,
+      "toleranceAbs": 1,
+      "showExpectedFormula": "25/28*100 = 89.29 % ~ 89 %",
+      "feedback": {
+        "correct": "Calculated correctly.",
+        "wrong": "Please calculate the share of successful tests correctly."
+      },
+      "progressLinks": [
+        "lf12fiae_testen_dokumentieren"
+      ]
+    },
+    {
+      "id": "q24",
+      "type": "short_text",
+      "title": "Acceptance and reflection note",
+      "prompt": "Write a closing note (5-7 sentences) with goal achievement, open item, risk, and next step.",
+      "minChars": 180,
+      "requiredKeywords": [
+        "goal achievement",
+        "open item",
+        "next step"
+      ],
+      "expectedOutline": "Clear goal status, open items with risk, and a binding next step.",
+      "feedback": {
+        "correct": "Correct: The note is immediately usable for acceptance and follow-up work.",
+        "wrong": "Please work out goal achievement, open items, and the next step more clearly."
+      },
+      "progressLinks": [
+        "lf12fiae_bewertung_reflexion",
+        "lf12fiae_testen_dokumentieren"
+      ]
+    }
+  ]
+}

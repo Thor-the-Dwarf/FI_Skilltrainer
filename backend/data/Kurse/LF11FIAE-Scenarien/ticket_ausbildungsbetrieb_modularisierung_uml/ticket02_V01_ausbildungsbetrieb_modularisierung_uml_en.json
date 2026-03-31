@@ -1,0 +1,158 @@
+{
+  "scenario": {
+    "company": "Training company IT services",
+    "scale": "SME, 240 employees",
+    "context": "Station 02 of the day run: plan modular components.",
+    "mission": "You deepen modularization, UML, and clean-code principles for a new component package.",
+    "station": {
+      "id": "LF11FIAE-ST-02",
+      "department": "Application development",
+      "profile": "Modularization and UML",
+      "constraints": [
+        "Define clear module boundaries",
+        "Keep UML traceable",
+        "Apply clean code consistently"
+      ]
+    },
+    "customerRequest": {
+      "from": "architektur@ausbildungsbetrieb.example",
+      "to": "dev.team@ausbildungsbetrieb.example",
+      "subject": "Station 02: Refine module design",
+      "date": "2026-03-13",
+      "body": "Please refine the component design, including UML and well-justified structural decisions."
+    }
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "type": "single_choice",
+      "title": "Define module boundary",
+      "prompt": "What should a module boundary be primarily based on?",
+      "options": [
+        {
+          "text": "On clear functional responsibility",
+          "rationale": "Supports maintainability and teamwork."
+        },
+        {
+          "text": "Only on file size",
+          "rationale": "Leaves the business logic unclear."
+        },
+        {
+          "text": "On personal preferences",
+          "rationale": "Not robust."
+        }
+      ],
+      "correctIndex": 0,
+      "feedback": {
+        "correct": "Correct: Functional responsibility is the core.",
+        "wrong": "Not suitable: Module boundaries need a functional basis."
+      },
+      "progressLinks": [
+        "lf11fiae_modularisierung_uml_clean_code"
+      ]
+    },
+    {
+      "id": "q2",
+      "type": "multi_select",
+      "title": "UML quality",
+      "prompt": "Which points improve a UML component diagram? (Multiple choice)",
+      "options": [
+        {
+          "text": "Name interfaces with direction and purpose",
+          "correct": true,
+          "rationale": "Improves clarity."
+        },
+        {
+          "text": "Leave dependencies implicit only",
+          "correct": false,
+          "rationale": "Reduces transparency."
+        },
+        {
+          "text": "Note component responsibility briefly",
+          "correct": true,
+          "rationale": "Helps maintenance."
+        },
+        {
+          "text": "Mark external dependencies",
+          "correct": true,
+          "rationale": "Important for risk analysis."
+        },
+        {
+          "text": "Use special notation without a legend",
+          "correct": false,
+          "rationale": "Can be misleading."
+        }
+      ],
+      "feedback": {
+        "correct": "Correct: This makes the diagram more robust.",
+        "wrong": "Partly wrong: Please secure interface and dependency transparency more clearly."
+      },
+      "progressLinks": [
+        "lf11fiae_modularisierung_uml_clean_code"
+      ]
+    },
+    {
+      "id": "q3",
+      "type": "ordering",
+      "title": "Design steps",
+      "prompt": "Put the steps for a clean module design in order.",
+      "items": [
+        "Define the functional responsibility of each module",
+        "Sketch the interfaces",
+        "Check dependencies",
+        "Define code conventions",
+        "Review the design with the team"
+      ],
+      "correctOrder": [
+        "Define the functional responsibility of each module",
+        "Sketch the interfaces",
+        "Check dependencies",
+        "Define code conventions",
+        "Review the design with the team"
+      ],
+      "feedback": {
+        "correct": "Correct: The module design is built in a methodical way.",
+        "wrong": "Not ideal: First define responsibilities and interfaces, then dependencies and review."
+      },
+      "progressLinks": [
+        "lf11fiae_modularisierung_uml_clean_code"
+      ]
+    },
+    {
+      "id": "q4",
+      "type": "number",
+      "title": "Review effort",
+      "prompt": "Three modules are reviewed for 22 minutes each. Another 18 minutes are added for the closing round. What is the total effort?",
+      "expected": 84,
+      "toleranceAbs": 1,
+      "showExpectedFormula": "3*22 + 18 = 84 minutes",
+      "feedback": {
+        "correct": "Calculated correctly.",
+        "wrong": "Please add the review times correctly."
+      },
+      "progressLinks": [
+        "lf11fiae_modularisierung_uml_clean_code"
+      ]
+    },
+    {
+      "id": "q5",
+      "type": "short_text",
+      "title": "Justify module design",
+      "prompt": "Explain in 4-6 sentences why the module split is maintainable.",
+      "minChars": 150,
+      "requiredKeywords": [
+        "responsibility",
+        "interface",
+        "maintenance"
+      ],
+      "expectedOutline": "Maintainability explained through responsibility boundaries and interface clarity.",
+      "feedback": {
+        "correct": "Correct: The reasoning is traceable.",
+        "wrong": "Please develop responsibility, interface, and maintainability more clearly."
+      },
+      "progressLinks": [
+        "lf11fiae_modularisierung_uml_clean_code"
+      ]
+    }
+  ]
+}

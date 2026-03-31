@@ -1,0 +1,160 @@
+{
+  "description": null,
+  "scenario": {
+    "company": "Training company IT services",
+    "scale": "SME, 240 employees",
+    "context": "Station 06 of the day run: implement JSON files, web services, and database functionality.",
+    "mission": "You stabilize data exchange between components and secure error handling as well as consistency.",
+    "station": {
+      "id": "LF11FIAE-ST-06",
+      "department": "Integration",
+      "profile": "JSON, API, database",
+      "constraints": [
+        "Enforce validation and error handling",
+        "Ensure data consistency",
+        "Keep interfaces clear"
+      ]
+    },
+    "customerRequest": {
+      "from": "integration@ausbildungsbetrieb.example",
+      "to": "dev.team@ausbildungsbetrieb.example",
+      "subject": "Station 06: Integration logic",
+      "date": "2026-03-13",
+      "body": "Please implement JSON import/export, web-service calls, and database integration in a robust way."
+    }
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "type": "single_choice",
+      "title": "Secure JSON import",
+      "prompt": "What is most important before processing incoming JSON data?",
+      "options": [
+        {
+          "text": "Validate structure and required fields",
+          "rationale": "Prevents follow-up errors."
+        },
+        {
+          "text": "Write directly to the DB",
+          "rationale": "High risk of errors."
+        },
+        {
+          "text": "Only check length",
+          "rationale": "Too little for valid data."
+        }
+      ],
+      "correctIndex": 0,
+      "feedback": {
+        "correct": "Correct: Validation is the required first step.",
+        "wrong": "Not suitable: Without structured validation, processing remains unstable."
+      },
+      "progressLinks": [
+        "lf11fiae_json_webservice_datenbank"
+      ]
+    },
+    {
+      "id": "q2",
+      "type": "multi_select",
+      "title": "Use web service robustly",
+      "prompt": "Which points improve API usage? (Multiple choice)",
+      "options": [
+        {
+          "text": "Define timeouts and a retry strategy",
+          "correct": true,
+          "rationale": "Important during load peaks."
+        },
+        {
+          "text": "Evaluate error codes and handle them logically",
+          "correct": true,
+          "rationale": "Secures controlled behavior."
+        },
+        {
+          "text": "Only look at 200 responses",
+          "correct": false,
+          "rationale": "Leaves out failure visibility."
+        },
+        {
+          "text": "Test version changes in a controlled way",
+          "correct": true,
+          "rationale": "Prevents integration breaks."
+        },
+        {
+          "text": "Ignore the response schema",
+          "correct": false,
+          "rationale": "Leads to parsing problems."
+        }
+      ],
+      "feedback": {
+        "correct": "Correct: This makes API usage reliable.",
+        "wrong": "Partly wrong: Please secure failure and version management more strongly."
+      },
+      "progressLinks": [
+        "lf11fiae_json_webservice_datenbank"
+      ]
+    },
+    {
+      "id": "q3",
+      "type": "ordering",
+      "title": "Order integration flow",
+      "prompt": "Put the flow for a consistent data integration in order.",
+      "items": [
+        "Validate JSON",
+        "Call the web service",
+        "Plausibility-check the response",
+        "Execute the DB transaction",
+        "Log the result"
+      ],
+      "correctOrder": [
+        "Validate JSON",
+        "Call the web service",
+        "Plausibility-check the response",
+        "Execute the DB transaction",
+        "Log the result"
+      ],
+      "feedback": {
+        "correct": "Correct: The flow is linked cleanly.",
+        "wrong": "Not ideal: Validation and plausibility checks have to happen before the DB step."
+      },
+      "progressLinks": [
+        "lf11fiae_json_webservice_datenbank"
+      ]
+    },
+    {
+      "id": "q4",
+      "type": "number",
+      "title": "Import volume",
+      "prompt": "Each run imports 85 records. With 6 runs, how many records in total?",
+      "expected": 510,
+      "toleranceAbs": 1,
+      "showExpectedFormula": "85 * 6 = 510",
+      "feedback": {
+        "correct": "Calculated correctly.",
+        "wrong": "Please multiply the amount per run by the number of runs."
+      },
+      "progressLinks": [
+        "lf11fiae_json_webservice_datenbank"
+      ]
+    },
+    {
+      "id": "q5",
+      "type": "short_text",
+      "title": "Document integration logic",
+      "prompt": "Describe in 4-6 sentences the secure flow from JSON through the API to the database.",
+      "minChars": 160,
+      "requiredKeywords": [
+        "validation",
+        "api",
+        "database"
+      ],
+      "expectedOutline": "Step chain with error handling and consistency reference.",
+      "feedback": {
+        "correct": "Correct: The integration logic is documented in a practical way.",
+        "wrong": "Please describe validation, the API step, and DB consistency more concretely."
+      },
+      "progressLinks": [
+        "lf11fiae_json_webservice_datenbank",
+        "lf11fiae_schnittstellen_dokumentation"
+      ]
+    }
+  ]
+}
