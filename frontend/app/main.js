@@ -4016,11 +4016,30 @@
       return clone;
     }
 
-    function normalizeTrainingQuestions(deck) {
+    function normalizeTrainingQuestions(deck, storedStateById = null) {
       const questions = Array.isArray(deck?.questions) ? deck.questions : [];
-      const fresh = questions.filter((question) => question?.isNew);
-      const established = questions.filter((question) => !question?.isNew);
-      const ordered = [...shuffleArray(fresh), ...shuffleArray(established)];
+      const stateMap = storedStateById && typeof storedStateById === "object" ? storedStateById : Object.create(null);
+      const open = [];
+      const wrong = [];
+      const correct = [];
+      for (const question of questions) {
+        const state = String(stateMap[question?.id] || "open");
+        if (state === "correct") {
+          correct.push(question);
+        } else if (state === "wrong") {
+          wrong.push(question);
+        } else {
+          open.push(question);
+        }
+      }
+      const freshOpen = open.filter((question) => question?.isNew);
+      const establishedOpen = open.filter((question) => !question?.isNew);
+      const ordered = [
+        ...shuffleArray(freshOpen),
+        ...shuffleArray(establishedOpen),
+        ...shuffleArray(wrong),
+        ...shuffleArray(correct)
+      ];
       return ordered.map((question, sessionIndex) => ({
         ...question,
         sessionIndex,
@@ -4851,7 +4870,7 @@
       const storedQuestionStateById = loadTrainingDeckProgressState(deck);
       return {
         deck,
-        questions: normalizeTrainingQuestions(deck),
+        questions: normalizeTrainingQuestions(deck, storedQuestionStateById),
         questionStateById: storedQuestionStateById,
         answered: 0,
         exactMatches: 0,
