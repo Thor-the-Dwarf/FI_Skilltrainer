@@ -75,6 +75,9 @@
     const COURSE_UNLOCK_PROGRESS_VERSION = 2;
     const COURSE_UNLOCK_MIN_STEP = 150;
     const COURSE_UNLOCK_MAX_STEP = 200;
+    const COURSE_DEFAULT_FREE_TICKET_COUNT = Object.freeze({
+      "QuS2-Scenarien": 3
+    });
     const SQLJS_LOCAL_BASE_PATH = "./frontend/vendor/vendor/sqljs";
     const SQLJS_CDN_BASE_PATH = "https://cdnjs.cloudflare.com/ajax/libs/sql.js/1.13.0";
     const SQLJS_LOCAL_SCRIPT_PATH = `${SQLJS_LOCAL_BASE_PATH}/sql-wasm.min.js`;
@@ -1159,14 +1162,17 @@
       const count = Math.max(0, Math.floor(Number(unlockableTicketCount) || 0));
       if (count <= 0) return [];
       if (count === 1) return [0];
+      const safeFolder = sanitizeFolderName(folder);
+      const defaultFreeCount = Math.min(count, Math.max(1, Math.floor(Number(COURSE_DEFAULT_FREE_TICKET_COUNT[safeFolder]) || 1)));
       const totalQuestions = Math.max(0, Math.floor(Number(poolSizeQuestionCount) || 0));
       if (totalQuestions <= 0) {
-        return [0, ...Array.from({ length: count - 1 }, () => Number.MAX_SAFE_INTEGER)];
+        return [...Array.from({ length: defaultFreeCount }, () => 0), ...Array.from({ length: count - defaultFreeCount }, () => Number.MAX_SAFE_INTEGER)];
       }
-      const range = getCourseUnlockStepRange(totalQuestions, count);
-      const milestones = [0];
+      const unlockableAfterFree = count - defaultFreeCount;
+      const range = unlockableAfterFree > 0 ? getCourseUnlockStepRange(totalQuestions, count - defaultFreeCount + 1) : { minStep: 0, maxStep: 0 };
+      const milestones = Array.from({ length: defaultFreeCount }, () => 0);
       let currentMilestone = 0;
-      for (let ticketIndex = 1; ticketIndex < count; ticketIndex += 1) {
+      for (let ticketIndex = 1; ticketIndex <= unlockableAfterFree; ticketIndex += 1) {
         currentMilestone += Math.max(1, getDeterministicCourseUnlockStep(folder, ticketIndex, range));
         milestones.push(currentMilestone);
       }
