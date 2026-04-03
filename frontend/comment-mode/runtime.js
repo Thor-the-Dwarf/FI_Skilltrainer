@@ -1,15 +1,13 @@
+import { submitFeedback } from "./firebase-submission.js";
+
 const DEFAULT_HEALTH = Object.freeze({
   maxAttachments: 5,
   maxMessageLength: 2000,
   maxTotalUploadBytes: 25 * 1024 * 1024,
-  storageMode: "local-archive",
-  storageLabel: "Lokales Archiv",
-  driveConfigured: false
+  storageMode: "firebase",
+  storageLabel: "Firebase",
+  driveConfigured: true
 });
-
-function isHostedOnGithubPages() {
-  return /\.github\.io$/i.test(String(window.location.hostname || "").trim());
-}
 
 function formatTemplate(template = "", params = null) {
   const source = String(template || "");
@@ -48,17 +46,6 @@ function getCommentBridge() {
     : null;
 }
 
-function sanitizeFileList(files) {
-  return Array.isArray(files) ? files.filter((file) => file instanceof File) : [];
-}
-
-function formatBytes(value) {
-  const size = Math.max(0, Number(value) || 0);
-  if (size < 1024) return `${size} B`;
-  if (size < 1024 * 1024) return `${(size / 1024).toFixed(1)} KB`;
-  return `${(size / (1024 * 1024)).toFixed(1)} MB`;
-}
-
 function inferGenericContext() {
   return {
     surface: "generic",
@@ -74,30 +61,51 @@ function inferGenericContext() {
 function summarizeContext(context = {}) {
   const safe = context && typeof context === "object" ? context : {};
   const surface = String(safe.surface || "generic").trim() || "generic";
-  const viewLabel = String(safe.viewLabel || safe.pageTitle || "Kommentar").trim() || "Kommentar";
   const chips = [];
-  if (safe.ticketId) chips.push(`Ticket ${safe.ticketId}`);
-  if (safe.questionId) chips.push(`Frage ${safe.questionId}`);
-  if (safe.entityId && !chips.includes(`Ticket ${safe.entityId}`) && !chips.includes(`Frage ${safe.entityId}`)) {
-    chips.push(`ID ${safe.entityId}`);
+
+  const areaLabel = literal({
+    training: "DoomScrollQuiz",
+    training_question: "DoomScrollQuiz",
+    scenario: "Ticket / Aufgabe",
+    presenter: "Babylon Presenter",
+    challenge: "Challenge",
+    home: "Startseite",
+    generic: "FI Skilltrainer"
+  }[surface] || "FI Skilltrainer");
+
+  let title = "";
+
+  if (surface === "training_question") {
+    title = safe.questionId ? `Aufgabe ${safe.questionId}` : (safe.deckKey || safe.folder || "Frage");
+    if (safe.folder) chips.push(safe.folder);
+    if (safe.ticketId) chips.push(`Ticket ${safe.ticketId}`);
+    if (safe.conceptId) chips.push(`Konzept ${safe.conceptId}`);
+  } else if (surface === "training") {
+    title = safe.deckKey || safe.folder || "Training";
+    if (safe.folder) chips.push(safe.folder);
+  } else if (surface === "scenario") {
+    title = safe.ticketId ? `Ticket ${safe.ticketId}` : (safe.sourceFile || "Aufgabe");
+    if (safe.folder) chips.push(safe.folder);
+    if (safe.questionId) chips.push(`Frage ${safe.questionId}`);
+  } else if (surface === "presenter") {
+    title = String(safe.viewLabel || safe.presentationId || "Praesentation").trim();
+  } else if (surface === "challenge") {
+    title = String(safe.viewLabel || safe.challengeId || "Challenge").trim();
+    if (safe.folder) chips.push(safe.folder);
+  } else if (surface === "home") {
+    const subViewLabel = {
+      unlock: "Schluessel hinzufuegen",
+      "skill-tree": "SkillTree",
+      training: "Trainingsmenue",
+      course: "Kursmenue",
+      scenario: "Szenariomenue"
+    }[safe.subView || ""] || "SkillTree";
+    title = safe.folder ? `${subViewLabel} · ${safe.folder}` : subViewLabel;
+  } else {
+    title = String(safe.viewLabel || safe.pageTitle || "Kommentar").trim() || "Kommentar";
   }
-  if (safe.folder) chips.push(String(safe.folder));
-  if (safe.deckKey) chips.push(`Deck ${safe.deckKey}`);
-  return {
-    title: viewLabel,
-    subtitle: literal(
-      {
-        training: "DoomScrollQuiz",
-        training_question: "DoomScrollQuiz",
-        scenario: "Ticket / Aufgabe",
-        presenter: "Babylon Presenter",
-        challenge: "Challenge",
-        home: "Startseite",
-        generic: "Allgemeiner Kontext"
-      }[surface] || "Allgemeiner Kontext"
-    ),
-    chips
-  };
+
+  return { areaLabel, title, chips };
 }
 
 function createCommentModeRuntime() {
@@ -114,21 +122,14 @@ function createCommentModeRuntime() {
     "</div>" +
     "</div>" +
     "<section class='comment-mode-context-card'>" +
-    "<h3 class='comment-mode-context-title'></h3>" +
     "<p class='comment-mode-context-subtitle'></p>" +
+    "<h3 class='comment-mode-context-title'></h3>" +
+    "<div class='comment-mode-context-chips'></div>" +
     "</section>" +
     "<label class='comment-mode-field'>" +
     `<textarea class='comment-mode-textarea' rows='6' maxlength='${DEFAULT_HEALTH.maxMessageLength}' placeholder='${t("comment_mode.message.placeholder", "Was ist unklar, falsch oder stoert dich gerade?")}'>` +
     "</textarea>" +
     "</label>" +
-    "<div class='comment-mode-tools'>" +
-    `<button type='button' class='comment-mode-attach-button' aria-label='${t("comment_mode.attach.aria", "Dateien hinzufuegen")}'>` +
-    "<span class='comment-mode-attach-icon' aria-hidden='true'>+</span>" +
-    `<span class='comment-mode-attach-label'>${t("comment_mode.attach.label", "Dateien anhaengen")}</span>` +
-    "</button>" +
-    "<input class='comment-mode-file-input' type='file' multiple />" +
-    "</div>" +
-    "<ul class='comment-mode-file-list hidden'></ul>" +
     "<p class='comment-mode-status hidden'></p>" +
     "<div class='comment-mode-footer'>" +
     "<div class='comment-mode-footer-reactions'>" +
@@ -164,49 +165,29 @@ function createCommentModeRuntime() {
   const likeFab = root.querySelector(".comment-mode-fab-like");
   const dislikeFab = root.querySelector(".comment-mode-fab-dislike");
   const submitButton = root.querySelector(".comment-mode-submit");
-  const attachButton = root.querySelector(".comment-mode-attach-button");
-  const fileInput = root.querySelector(".comment-mode-file-input");
   const textarea = root.querySelector(".comment-mode-textarea");
   const status = root.querySelector(".comment-mode-status");
-  const fileList = root.querySelector(".comment-mode-file-list");
   const contextTitle = root.querySelector(".comment-mode-context-title");
   const contextSubtitle = root.querySelector(".comment-mode-context-subtitle");
+  const contextChips = root.querySelector(".comment-mode-context-chips");
   const title = root.querySelector(".comment-mode-title");
 
   const state = {
     open: false,
     submitting: false,
     reaction: 0,
-    files: [],
-    dragActive: false,
     context: inferGenericContext(),
-    health: { ...DEFAULT_HEALTH },
-    healthLoaded: false,
-    healthPromise: null
+    health: { ...DEFAULT_HEALTH }
   };
 
   function updateStaticText() {
     title.textContent = t("comment_mode.title", "Kommentar");
     textarea.placeholder = t("comment_mode.message.placeholder", "Was ist unklar, falsch oder stoert dich gerade?");
-    const attachLabel = attachButton.querySelector(".comment-mode-attach-label");
-    if (attachLabel) {
-      attachLabel.textContent = t("comment_mode.attach.label", "Dateien anhaengen");
-    }
     submitButton.textContent = t("comment_mode.submit", "Senden");
-    if (likeFab) {
-      likeFab.setAttribute("aria-label", t("comment_mode.fab.like", "Like"));
-    }
-    if (dislikeFab) {
-      dislikeFab.setAttribute("aria-label", t("comment_mode.fab.dislike", "Dislike"));
-    }
-    if (fabMain) {
-      fabMain.setAttribute("aria-label", t("comment_mode.fab.main", "Feedback"));
-    }
+    if (likeFab) likeFab.setAttribute("aria-label", t("comment_mode.fab.like", "Like"));
+    if (dislikeFab) dislikeFab.setAttribute("aria-label", t("comment_mode.fab.dislike", "Dislike"));
+    if (fabMain) fabMain.setAttribute("aria-label", t("comment_mode.fab.main", "Feedback"));
     syncUi();
-  }
-
-  function getCombinedAttachmentBytes(files = state.files) {
-    return sanitizeFileList(files).reduce((sum, file) => sum + Math.max(0, Number(file.size) || 0), 0);
   }
 
   function setStatus(message = "", type = "info") {
@@ -216,48 +197,25 @@ function createCommentModeRuntime() {
     status.dataset.state = text ? type : "";
   }
 
-  function removeFileAt(index) {
-    state.files = state.files.filter((_, fileIndex) => fileIndex !== index);
-    syncUi();
-  }
-
-  function syncFileList() {
-    const files = sanitizeFileList(state.files);
-    fileList.innerHTML = "";
-    fileList.classList.toggle("hidden", files.length === 0);
-    files.forEach((file, index) => {
-      const item = document.createElement("li");
-      item.className = "comment-mode-file-item";
-      const meta = document.createElement("div");
-      meta.className = "comment-mode-file-meta";
-      const name = document.createElement("strong");
-      name.textContent = file.name;
-      const detail = document.createElement("span");
-      detail.textContent = `${file.type || "Datei"} · ${formatBytes(file.size)}`;
-      meta.append(name, detail);
-      const remove = document.createElement("button");
-      remove.type = "button";
-      remove.className = "comment-mode-file-remove";
-      remove.textContent = t("comment_mode.remove_file", "Entfernen");
-      remove.addEventListener("click", () => {
-        removeFileAt(index);
-      });
-      item.append(meta, remove);
-      fileList.appendChild(item);
-    });
-  }
-
   function syncContextCard() {
     const summary = summarizeContext(state.context);
+    contextSubtitle.textContent = summary.areaLabel;
     contextTitle.textContent = summary.title;
-    contextSubtitle.textContent = summary.subtitle;
+    if (contextChips) {
+      contextChips.innerHTML = "";
+      summary.chips.forEach((chip) => {
+        const span = document.createElement("span");
+        span.className = "comment-mode-context-chip";
+        span.textContent = String(chip || "");
+        contextChips.appendChild(span);
+      });
+      contextChips.classList.toggle("hidden", summary.chips.length === 0);
+    }
   }
 
   function syncUi() {
     const text = String(textarea.value || "");
-    submitButton.disabled = state.submitting || !text.trim();
-    attachButton.disabled = state.submitting || state.files.length >= Number(state.health.maxAttachments || DEFAULT_HEALTH.maxAttachments);
-    attachButton.classList.toggle("is-dragging", state.dragActive);
+    submitButton.disabled = state.submitting || (!text.trim() && state.reaction === 0);
     textarea.disabled = state.submitting;
     if (likeFab) {
       likeFab.disabled = state.submitting;
@@ -269,16 +227,9 @@ function createCommentModeRuntime() {
       dislikeFab.classList.toggle("is-active", state.reaction === -1);
       dislikeFab.setAttribute("aria-pressed", state.reaction === -1 ? "true" : "false");
     }
-    const surface = String(state.context?.surface || "");
-    const isGateSurface = surface === "training" || surface === "training_question" || surface === "scenario";
-    const isEvaluated = Boolean(state.context?.isEvaluated);
-    const fabVisible = !isGateSurface || isEvaluated;
-    if (!fabVisible && state.open) {
-      state.open = false;
-    }
     if (fabStack) {
-      fabStack.classList.toggle("hidden", !fabVisible);
-      fabStack.setAttribute("aria-hidden", fabVisible ? "false" : "true");
+      fabStack.classList.remove("hidden");
+      fabStack.setAttribute("aria-hidden", "false");
     }
     root.classList.toggle("is-open", state.open);
     panel.classList.toggle("is-open", state.open);
@@ -286,43 +237,6 @@ function createCommentModeRuntime() {
     backdrop.classList.add("hidden");
     document.body.classList.toggle("comment-mode-drawer-open", state.open);
     syncContextCard();
-    syncFileList();
-  }
-
-  async function loadHealth(force = false) {
-    if (!force && state.healthLoaded) return state.health;
-    if (!force && state.healthPromise) return state.healthPromise;
-    state.healthPromise = fetch("/api/comment-mode/health", { cache: "no-store" })
-      .then(async (response) => {
-        if (!response.ok) {
-          throw new Error(`Health-Check fehlgeschlagen (${response.status})`);
-        }
-        return response.json();
-      })
-      .then((payload) => {
-        state.healthLoaded = true;
-        state.health = {
-          ...DEFAULT_HEALTH,
-          ...(payload && typeof payload === "object" ? payload : {})
-        };
-        textarea.maxLength = Number(state.health.maxMessageLength || DEFAULT_HEALTH.maxMessageLength);
-        if (!state.health.driveConfigured && state.health.storageMode !== "google-drive") {
-          setStatus(t("comment_mode.status.local_archive", "Server archiviert aktuell lokal. Google Drive ist noch nicht konfiguriert."), "warning");
-        }
-        syncUi();
-        return state.health;
-      })
-      .catch((error) => {
-        state.healthLoaded = false;
-        state.health = { ...DEFAULT_HEALTH };
-        setStatus(error instanceof Error ? error.message : t("comment_mode.status.server_unreachable", "Comment-Mode-Server ist gerade nicht erreichbar."), "error");
-        syncUi();
-        return state.health;
-      })
-      .finally(() => {
-        state.healthPromise = null;
-      });
-    return state.healthPromise;
   }
 
   function refreshContext() {
@@ -339,7 +253,6 @@ function createCommentModeRuntime() {
     }
     state.open = true;
     refreshContext();
-    loadHealth().catch(() => {});
     syncUi();
     window.setTimeout(() => {
       textarea.focus();
@@ -349,38 +262,6 @@ function createCommentModeRuntime() {
   function closePanel() {
     if (state.submitting) return;
     state.open = false;
-    syncUi();
-  }
-
-  function appendFiles(nextFiles) {
-    const existing = sanitizeFileList(state.files);
-    const additions = sanitizeFileList(nextFiles);
-    if (!additions.length) return;
-    const uniqueByKey = new Map(existing.map((file) => [`${file.name}::${file.size}::${file.lastModified}`, file]));
-    additions.forEach((file) => {
-      uniqueByKey.set(`${file.name}::${file.size}::${file.lastModified}`, file);
-    });
-    const merged = [...uniqueByKey.values()];
-    const maxAttachments = Number(state.health.maxAttachments || DEFAULT_HEALTH.maxAttachments);
-    const trimmed = merged.slice(0, maxAttachments);
-    const maxBytes = Number(state.health.maxTotalUploadBytes || DEFAULT_HEALTH.maxTotalUploadBytes);
-    while (getCombinedAttachmentBytes(trimmed) > maxBytes && trimmed.length) {
-      trimmed.pop();
-    }
-    state.files = trimmed;
-    if (merged.length > trimmed.length) {
-      setStatus(
-        t("comment_mode.status.file_limit", "Es werden nur die ersten {count} Dateien innerhalb des Upload-Limits uebernommen.", {
-          count: trimmed.length
-        }),
-        "warning"
-      );
-    }
-    syncUi();
-  }
-
-  function setDragActive(value) {
-    state.dragActive = value;
     syncUi();
   }
 
@@ -408,31 +289,20 @@ function createCommentModeRuntime() {
 
   async function submitComment() {
     const payload = buildPayload();
-    if (!payload.message) {
-      setStatus(t("comment_mode.status.message_required", "Bitte zuerst einen Kommentar eingeben."), "error");
+    if (!payload.message && payload.reaction === 0) {
+      setStatus(t("comment_mode.status.message_required", "Bitte zuerst einen Kommentar eingeben oder Like/Dislike waehlen."), "error");
       return;
     }
-    await loadHealth();
     state.submitting = true;
     setStatus(t("comment_mode.status.submitting", "Kommentar wird gesendet ..."), "info");
     syncUi();
     try {
       refreshContext();
-      const formData = new FormData();
-      formData.append("payload", JSON.stringify(buildPayload()));
-      sanitizeFileList(state.files).forEach((file) => {
-        formData.append("attachments[]", file, file.name);
-      });
-      const response = await fetch("/api/comment-mode/submissions", {
-        method: "POST",
-        body: formData
-      });
-      const result = await response.json().catch(() => ({}));
-      if (!response.ok || !result?.ok) {
-        throw new Error(result?.error || `Kommentar konnte nicht gespeichert werden (${response.status})`);
+      const result = await submitFeedback(buildPayload());
+      if (!result.ok) {
+        throw new Error(result.error || t("comment_mode.status.failure", "Kommentar konnte nicht gesendet werden."));
       }
       textarea.value = "";
-      state.files = [];
       state.reaction = 0;
       setStatus(
         t("comment_mode.status.success", "Kommentar gespeichert. Referenz: {id}", {
@@ -481,37 +351,6 @@ function createCommentModeRuntime() {
     });
   }
   backdrop.addEventListener("click", closePanel);
-  attachButton.addEventListener("click", () => {
-    if (!state.submitting) fileInput.click();
-  });
-  attachButton.addEventListener("dragenter", (event) => {
-    event.preventDefault();
-    if (state.submitting) return;
-    setDragActive(true);
-  });
-  attachButton.addEventListener("dragover", (event) => {
-    event.preventDefault();
-    if (state.submitting) return;
-    setDragActive(true);
-  });
-  attachButton.addEventListener("dragleave", (event) => {
-    event.preventDefault();
-    if (state.submitting) return;
-    setDragActive(false);
-  });
-  attachButton.addEventListener("drop", (event) => {
-    event.preventDefault();
-    if (state.submitting) return;
-    setDragActive(false);
-    const dropped = [...(event.dataTransfer?.files || [])];
-    if (dropped.length) {
-      appendFiles(dropped);
-    }
-  });
-  fileInput.addEventListener("change", () => {
-    appendFiles([...fileInput.files]);
-    fileInput.value = "";
-  });
   textarea.addEventListener("input", () => {
     syncUi();
   });
@@ -530,9 +369,7 @@ function createCommentModeRuntime() {
   if (bridge && typeof bridge.onContextChanged === "function") {
     bridge.onContextChanged((nextContext) => {
       state.context = nextContext || inferGenericContext();
-      if (state.open) {
-        syncUi();
-      }
+      if (state.open) syncUi();
     });
   }
 
@@ -566,7 +403,6 @@ function createCommentModeRuntime() {
   syncBottomOffset();
   updateStaticText();
   syncUi();
-  loadHealth().catch(() => {});
   window.__closeCommentModeDrawer = () => {
     if (!state.open) return;
     state.open = false;
@@ -574,30 +410,14 @@ function createCommentModeRuntime() {
   };
   return {
     refreshContext,
-    loadHealth
+    async loadHealth() {
+      return { ...state.health };
+    }
   };
 }
 
 function initializeCommentModeRuntime() {
   if (window.__EasyPVCommentModeRuntime) return window.__EasyPVCommentModeRuntime;
-  if (isHostedOnGithubPages()) {
-    const root = document.getElementById("commentModeRoot");
-    if (root) {
-      root.innerHTML = "";
-      root.hidden = true;
-      root.setAttribute("aria-hidden", "true");
-    }
-    window.__closeCommentModeDrawer = () => {};
-    window.__EasyPVCommentModeRuntime = {
-      disabled: true,
-      reason: "github-pages",
-      refreshContext() {},
-      async loadHealth() {
-        return { ...DEFAULT_HEALTH };
-      }
-    };
-    return window.__EasyPVCommentModeRuntime;
-  }
   const runtime = createCommentModeRuntime();
   window.__EasyPVCommentModeRuntime = runtime;
   return runtime;

@@ -534,6 +534,12 @@ html[data-tooltips="on"] [data-ui-tooltip]:focus-within::after {
   min-width: 0;
 }
 
+.appbar-left-cluster {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
 .appbar-icon-right {
   justify-self: end;
 }
@@ -542,6 +548,24 @@ html[data-tooltips="on"] [data-ui-tooltip]:focus-within::after {
   display: flex;
   align-items: center;
   gap: 8px;
+}
+
+.appbar-brandmark {
+  position: relative;
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+}
+
+.appbar-brandmark .icon-button {
+  width: 48px;
+  height: 48px;
+  border-radius: 16px;
+}
+
+.appbar-brandmark .icon-svg {
+  width: 28px;
+  height: 28px;
 }
 
 .left-appbar {
@@ -5520,6 +5544,22 @@ body.doomscroll-viewport-locked .doomscroll-panel {
     min-height: calc(var(--appbar-height) - 20px);
   }
 
+  .appbar-left-cluster {
+    height: 100%;
+    align-items: flex-start;
+  }
+
+  .appbar-brandmark {
+    flex: 0 0 var(--left-appbar-width);
+    justify-content: center;
+  }
+
+  .appbar-brandmark .icon-button {
+    width: calc(var(--left-appbar-width) - 20px);
+    height: calc(var(--appbar-height) - 20px);
+    border-radius: 18px;
+  }
+
   .left-appbar {
     display: flex;
     justify-content: flex-start;
@@ -7808,6 +7848,16 @@ textarea.mark-bad {
     grid-template-columns: 144px minmax(0, 1fr) 140px;
     gap: 8px;
     padding: 9px 12px;
+  }
+
+  .appbar-left-cluster {
+    gap: 10px;
+  }
+
+  .appbar-brandmark .icon-button {
+    width: 44px;
+    height: 44px;
+    border-radius: 14px;
   }
 
   .appbar-title {

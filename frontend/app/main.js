@@ -5076,21 +5076,29 @@
 
     function updateTrainingMenuButtonState(isOpen = false) {
       if (!trainingMenuButton) return;
-      if (isOpen) {
-        const closeLabel = t("nav.training.close", "Training schliessen");
-        trainingMenuButton.setAttribute("aria-label", closeLabel);
-        trainingMenuButton.dataset.appbarTooltip = t("appbar.tooltip.training", "Training");
-        trainingMenuButton.removeAttribute("title");
-        return;
-      }
       const activeDeck = getActiveTrainingDeck();
-      const activeLabel = getFolderShortcutLabel(activeDeck?.folder || activeTrainingFolder) || String(activeDeck?.folder || activeTrainingFolder || "").trim();
+      const activeFolder = sanitizeFolderName(
+        activeScenarioFolder || activeHomeSkillsFolder || activeDeck?.folder || activeTrainingFolder || ""
+      );
+      const activeLabel = getFolderShortcutLabel(activeFolder) || String(activeFolder || "").trim();
       const baseLabel = activeLabel
-        ? t("nav.training.open_current", "Training öffnen (aktuell: {label})", { label: activeLabel })
-        : t("nav.training.open", "Training öffnen");
+        ? t("nav.training.open_current", "Training für {label} starten", { label: activeLabel })
+        : t("nav.training.open", "Training starten");
       trainingMenuButton.setAttribute("aria-label", baseLabel);
       trainingMenuButton.dataset.appbarTooltip = t("appbar.tooltip.training", "Training");
       trainingMenuButton.removeAttribute("title");
+    }
+
+    function getPreferredTrainingStartFolder() {
+      const candidates = [
+        activeScenarioFolder,
+        activeHomeSkillsFolder,
+        activeTrainingFolder
+      ]
+        .map((folder) => sanitizeFolderName(folder))
+        .filter(Boolean);
+      if (candidates.length) return candidates[0];
+      return sanitizeFolderName(getUnlockedFolders()[0] || "");
     }
 
     function setTrainingProgressRailVisible(visible) {
@@ -8833,7 +8841,19 @@
           renderUnlockScreen("Bitte zuerst gültigen Key eingeben.");
           return;
         }
-        await toggleTrainingMenu();
+        const targetFolder = getPreferredTrainingStartFolder();
+        if (!targetFolder) {
+          workspaceLeft.innerHTML =
+            "<section class='panel'>" +
+            `<h2>${esc(t("training.empty.title", "Training"))}</h2>` +
+            `<p class='status-text'>${esc(t("training.menu.empty", "Noch kein Training für diesen Zugriff verfügbar."))}</p>` +
+            "</section>";
+          return;
+        }
+        toggleTrainingMenu(false);
+        toggleCourseMenu(false);
+        toggleScenarioMenu(false);
+        await startTrainingDeck(targetFolder);
       });
 
       courseMenuButton.addEventListener("click", async (ev) => {
