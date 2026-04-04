@@ -16,11 +16,20 @@ const FIREBASE_CONFIG = Object.freeze({
   appId: "1:1075408225012:web:227d2c8ce90c1105c894a1"
 });
 
-const FEEDBACK_COLLECTION = "feedback";
-
 function getFirebaseApp() {
   const existing = getApps();
   return existing.length > 0 ? existing[0] : initializeApp(FIREBASE_CONFIG);
+}
+
+function getFeedbackCollectionNames() {
+  const config = window.__FI_SKILLTRAINER_FIREBASE__ && typeof window.__FI_SKILLTRAINER_FIREBASE__ === "object"
+    ? window.__FI_SKILLTRAINER_FIREBASE__
+    : {};
+  const firestore = config.firestore && typeof config.firestore === "object"
+    ? config.firestore
+    : {};
+  const collection = String(firestore.feedbackCollection || "").trim();
+  return [collection, "feedback", "doomscroll_feedback"].filter((value, index, list) => value && list.indexOf(value) === index);
 }
 
 function shortKurs(folder) {
@@ -105,6 +114,7 @@ export async function submitFeedback(payload = {}) {
   try {
     const app = getFirebaseApp();
     const db = getFirestore(app);
+    const collectionNames = getFeedbackCollectionNames();
 
     const context = payload.contextRef && typeof payload.contextRef === "object"
       ? payload.contextRef
@@ -125,8 +135,17 @@ export async function submitFeedback(payload = {}) {
       });
     }
 
-    await setDoc(doc(db, FEEDBACK_COLLECTION, docId), update, { merge: true });
-    return { ok: true, submissionId: docId };
+    let lastError = null;
+    for (const collectionName of collectionNames) {
+      try {
+        await setDoc(doc(db, collectionName, docId), update, { merge: true });
+        return { ok: true, submissionId: docId };
+      } catch (error) {
+        lastError = error;
+      }
+    }
+
+    throw lastError || new Error("Firebase-Fehler beim Speichern.");
   } catch (error) {
     return {
       ok: false,

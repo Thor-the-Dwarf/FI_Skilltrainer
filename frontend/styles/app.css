@@ -200,12 +200,14 @@ body {
   grid-template-columns: minmax(42px, 1fr) minmax(0, auto) minmax(42px, 1fr);
   align-items: center;
   gap: 10px;
-  padding: 10px calc(16px + var(--workspace-right-offset)) 10px 16px;
+  min-height: var(--appbar-height);
+  padding: 10px 16px;
   border-bottom: 0;
   background: var(--appbar-surface);
   box-shadow: var(--appbar-shadow);
   backdrop-filter: none;
   -webkit-backdrop-filter: none;
+  box-sizing: border-box;
   overflow: visible;
 }
 
@@ -5540,13 +5542,13 @@ body.doomscroll-viewport-locked .doomscroll-panel {
   }
 
   .appbar-left-slot {
-    align-self: stretch;
-    min-height: calc(var(--appbar-height) - 20px);
+    align-self: center;
+    min-height: 0;
   }
 
   .appbar-left-cluster {
-    height: 100%;
-    align-items: flex-start;
+    height: auto;
+    align-items: center;
   }
 
   .appbar-brandmark {
@@ -8201,8 +8203,10 @@ body.halo-canvas-active::after {
   width: var(--comment-mode-drawer-width);
   height: auto;
   max-height: calc(100vh - var(--appbar-height) - 32px);
-  overflow: auto;
+  overflow: hidden;
   display: grid;
+  grid-template-rows: auto auto minmax(0, 1fr) auto auto;
+  align-content: stretch;
   gap: 12px;
   padding: 16px;
   border-radius: 26px;
@@ -8231,6 +8235,10 @@ body.halo-canvas-active::after {
   align-items: flex-start;
   justify-content: space-between;
   gap: 14px;
+}
+
+.comment-mode-panel-title-wrap {
+  min-width: 0;
 }
 
 .comment-mode-close {
@@ -8289,6 +8297,7 @@ body.halo-canvas-active::after {
 .comment-mode-context-card {
   display: grid;
   gap: 6px;
+  align-self: start;
   padding: 12px;
   border-radius: 20px;
   border: 1px solid hsl(var(--glass-border) / 0.64);
@@ -8308,8 +8317,9 @@ body.halo-canvas-active::after {
 }
 
 .comment-mode-textarea {
-  min-height: 152px;
+  min-height: 100%;
   width: 100%;
+  height: 100%;
   padding: 15px 16px;
   border-radius: 18px;
   border: 1px solid hsl(var(--glass-border) / 0.72);
@@ -8318,6 +8328,13 @@ body.halo-canvas-active::after {
   font: inherit;
   line-height: 1.55;
   resize: vertical;
+}
+
+.comment-mode-field {
+  min-height: 0;
+  height: 100%;
+  display: flex;
+  align-items: stretch;
 }
 
 .comment-mode-textarea:focus {
@@ -8455,11 +8472,12 @@ body.halo-canvas-active::after {
 }
 
 .comment-mode-footer {
-  margin-top: auto;
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 12px;
+  align-self: end;
+  padding-bottom: 64px;
 }
 
 .comment-mode-actions {
@@ -8549,9 +8567,33 @@ body.halo-canvas-active::after {
 }
 
 .comment-mode-drawer-open #app,
-.comment-mode-drawer-open .appbar,
 .comment-mode-drawer-open .training-progress-rail {
   transition: padding-right 220ms ease;
+}
+
+body[data-desktop-left-appbar="true"] {
+  --workspace-left-offset: calc(var(--left-appbar-width) + var(--left-appbar-gap));
+}
+
+body[data-desktop-left-appbar="true"][data-ide-panel-open="true"] {
+  --workspace-left-offset:
+    calc(var(--left-appbar-width) + var(--left-appbar-gap) + var(--ide-panel-width) + var(--ide-panel-gap));
+}
+
+body[data-desktop-left-appbar="true"] .training-progress-rail {
+  padding-left: var(--workspace-left-offset);
+}
+
+body[data-desktop-left-appbar="true"] main {
+  padding-left: var(--workspace-left-offset);
+}
+
+body[data-desktop-left-appbar="true"].doomscroll-viewport-locked main {
+  padding-left: var(--workspace-left-offset);
+}
+
+body[data-desktop-left-appbar="true"] .submit-bar {
+  left: calc(var(--workspace-left-offset) - 10px);
 }
 
 @media (max-width: 720px) {

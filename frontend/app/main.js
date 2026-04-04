@@ -2803,6 +2803,9 @@
     function toggleTopRightMenu(forceOpen) {
       if (!topRightMenuButton || !topRightMenuPanel) return;
       const nextOpen = typeof forceOpen === "boolean" ? forceOpen : !topRightMenuOpen;
+      if (nextOpen && typeof window.__closeCommentModeDrawer === "function") {
+        window.__closeCommentModeDrawer();
+      }
       topRightMenuOpen = nextOpen;
       topRightMenuPanel.classList.toggle("hidden", !nextOpen);
       topRightMenuPanel.setAttribute("aria-hidden", String(!nextOpen));
@@ -3031,11 +3034,17 @@
     }
 
     function buildCommentModeContextSnapshot() {
-      if (trainingSession?.questions?.length) {
+      const trainingModeActive =
+        activePrimaryView === "training" ||
+        document.body.classList.contains("doomscroll-viewport-locked");
+      if (trainingModeActive && trainingSession?.questions?.length) {
         return buildCommentModeTrainingContext();
       }
       if (scenarioData) {
         return buildCommentModeScenarioContext();
+      }
+      if (trainingSession?.questions?.length) {
+        return buildCommentModeTrainingContext();
       }
       if (activePresenterView || activePresenterSceneId || activePrimaryView === "presenter") {
         return buildCommentModePresenterContext();
@@ -3947,6 +3956,7 @@
       if (primaryNavControls.parentElement !== target) {
         target.appendChild(primaryNavControls);
       }
+      document.body.dataset.desktopLeftAppbar = desktopMode ? "true" : "false";
       leftAppBar.classList.toggle("hidden", !desktopMode);
       leftAppBar.setAttribute("aria-hidden", desktopMode ? "false" : "true");
       syncIdeWorkspaceLayout();
@@ -6623,8 +6633,8 @@
       for (const button of buttons) {
         button.addEventListener("click", () => {
           const nextFolder = sanitizeFolderName(button.dataset.homeFolder || "");
-          if (!nextFolder || nextFolder === activeHomeSkillsFolder) return;
-          showHomeContent(nextFolder);
+          if (!nextFolder) return;
+          selectScenarioFolder(nextFolder).catch(() => {});
         });
       }
     }
