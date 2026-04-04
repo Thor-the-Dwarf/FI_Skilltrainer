@@ -58,15 +58,54 @@ function inferGenericContext() {
   };
 }
 
+function basename(value = "") {
+  const safe = String(value || "").trim();
+  if (!safe) return "";
+  const parts = safe.split(/[\\/]/);
+  return parts[parts.length - 1] || safe;
+}
+
+function stripExtension(value = "") {
+  return String(value || "").replace(/\.[a-z0-9]+$/i, "");
+}
+
+function humanizeIdentifier(value = "") {
+  return String(value || "")
+    .replace(/[_-]+/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
+function shortenText(value = "", maxLength = 96) {
+  const safe = String(value || "").replace(/\s+/g, " ").trim();
+  if (!safe) return "";
+  return safe.length > maxLength ? `${safe.slice(0, maxLength - 1).trim()}…` : safe;
+}
+
+function extractCourseCode(value = "") {
+  const safe = String(value || "").trim();
+  if (!safe) return "";
+  const match = safe.match(/^([A-Za-z]{2,4}\d{1,2})/);
+  return match ? match[1].toUpperCase() : safe;
+}
+
+function extractTrainingTaskId(context = {}) {
+  const safe = context && typeof context === "object" ? context : {};
+  const sourceStem = humanizeIdentifier(stripExtension(basename(safe.sourceFile || "")));
+  const questionId = humanizeIdentifier(String(safe.questionId || "").trim());
+  const conceptId = humanizeIdentifier(String(safe.conceptId || "").trim());
+  return sourceStem || questionId || conceptId || "*";
+}
+
 function summarizeContext(context = {}) {
   const safe = context && typeof context === "object" ? context : {};
   const surface = String(safe.surface || "generic").trim() || "generic";
   const chips = [];
 
   const areaLabel = literal({
-    training: "DoomScrollQuiz",
-    training_question: "DoomScrollQuiz",
-    scenario: "Ticket / Aufgabe",
+    training: "Training",
+    training_question: "Training",
+    scenario: "Ticket",
     presenter: "Babylon Presenter",
     challenge: "Challenge",
     home: "Startseite",
@@ -76,17 +115,15 @@ function summarizeContext(context = {}) {
   let title = "";
 
   if (surface === "training_question") {
-    title = safe.questionId ? `Aufgabe ${safe.questionId}` : (safe.deckKey || safe.folder || "Frage");
-    if (safe.folder) chips.push(safe.folder);
-    if (safe.ticketId) chips.push(`Ticket ${safe.ticketId}`);
-    if (safe.conceptId) chips.push(`Konzept ${safe.conceptId}`);
+    const courseCode = extractCourseCode(safe.folder || "");
+    const taskId = extractTrainingTaskId(safe);
+    title = [courseCode || "Training", `AufgabenID: ${taskId}`].join(" ");
   } else if (surface === "training") {
-    title = safe.deckKey || safe.folder || "Training";
-    if (safe.folder) chips.push(safe.folder);
+    const courseCode = extractCourseCode(safe.folder || "");
+    title = courseCode || "Training";
   } else if (surface === "scenario") {
-    title = safe.ticketId ? `Ticket ${safe.ticketId}` : (safe.sourceFile || "Aufgabe");
-    if (safe.folder) chips.push(safe.folder);
-    if (safe.questionId) chips.push(`Frage ${safe.questionId}`);
+    const ticketId = String(safe.ticketId || safe.stationId || safe.entityId || "").trim() || "*";
+    title = `TicketID: ${ticketId}`;
   } else if (surface === "presenter") {
     title = String(safe.viewLabel || safe.presentationId || "Praesentation").trim();
   } else if (surface === "challenge") {
@@ -100,12 +137,31 @@ function summarizeContext(context = {}) {
       course: "Kursmenue",
       scenario: "Szenariomenue"
     }[safe.subView || ""] || "SkillTree";
-    title = safe.folder ? `${subViewLabel} · ${safe.folder}` : subViewLabel;
+    const courseCode = extractCourseCode(safe.folder || "");
+    title = courseCode || subViewLabel;
+    if (subViewLabel) {
+      chips.push(subViewLabel);
+    }
+    return { areaLabel: subViewLabel, title, chips: [] };
   } else {
     title = String(safe.viewLabel || safe.pageTitle || "Kommentar").trim() || "Kommentar";
   }
 
   return { areaLabel, title, chips };
+}
+
+function buildContextSignature(context = {}) {
+  const safe = context && typeof context === "object" ? context : {};
+  return [
+    String(safe.surface || "").trim(),
+    String(safe.entityType || "").trim(),
+    String(safe.entityId || "").trim(),
+    String(safe.folder || "").trim(),
+    String(safe.ticketId || "").trim(),
+    String(safe.questionId || "").trim(),
+    String(safe.deckKey || "").trim(),
+    String(safe.subView || "").trim()
+  ].join("::");
 }
 
 function createCommentModeRuntime() {
@@ -132,20 +188,20 @@ function createCommentModeRuntime() {
     "</label>" +
     "<p class='comment-mode-status hidden'></p>" +
     "<div class='comment-mode-footer'>" +
+    "<div class='comment-mode-actions'>" +
+    `<button type='button' class='comment-mode-submit'>${t("comment_mode.submit", "Senden")}</button>` +
+    "</div>" +
     "<div class='comment-mode-footer-reactions'>" +
-    `<button type='button' class='comment-mode-fab comment-mode-fab-like' aria-label='${t("comment_mode.fab.like", "Like")}'>` +
-    "<svg class='comment-mode-fab-icon' viewBox='0 0 24 24' aria-hidden='true' focusable='false'>" +
-    "<path d='M4 12h4v8H4zM9 12l3-6h4l-1 6h5l-2 8H9z' fill='currentColor'/>" +
-    "</svg>" +
-    "</button>" +
     `<button type='button' class='comment-mode-fab comment-mode-fab-dislike' aria-label='${t("comment_mode.fab.dislike", "Dislike")}'>` +
     "<svg class='comment-mode-fab-icon' viewBox='0 0 24 24' aria-hidden='true' focusable='false'>" +
     "<path d='M4 4h4v8H4zM9 12l3 6h4l-1-6h5l-2-8H9z' fill='currentColor'/>" +
     "</svg>" +
     "</button>" +
-    "</div>" +
-    "<div class='comment-mode-actions'>" +
-    `<button type='button' class='comment-mode-submit'>${t("comment_mode.submit", "Senden")}</button>` +
+    `<button type='button' class='comment-mode-fab comment-mode-fab-like' aria-label='${t("comment_mode.fab.like", "Like")}'>` +
+    "<svg class='comment-mode-fab-icon' viewBox='0 0 24 24' aria-hidden='true' focusable='false'>" +
+    "<path d='M4 12h4v8H4zM9 12l3-6h4l-1 6h5l-2 8H9z' fill='currentColor'/>" +
+    "</svg>" +
+    "</button>" +
     "</div>" +
     "</div>" +
     "</section>" +
@@ -177,6 +233,7 @@ function createCommentModeRuntime() {
     submitting: false,
     reaction: 0,
     context: inferGenericContext(),
+    contextSignature: "",
     health: { ...DEFAULT_HEALTH }
   };
 
@@ -195,6 +252,14 @@ function createCommentModeRuntime() {
     status.textContent = text;
     status.classList.toggle("hidden", !text);
     status.dataset.state = text ? type : "";
+  }
+
+  function resetTransientUi(options = {}) {
+    const keepReaction = options.keepReaction === true;
+    if (!keepReaction) {
+      state.reaction = 0;
+    }
+    setStatus("", "info");
   }
 
   function syncContextCard() {
@@ -241,10 +306,22 @@ function createCommentModeRuntime() {
 
   function refreshContext() {
     const bridge = getCommentBridge();
-    state.context = bridge && typeof bridge.getContext === "function"
+    const nextContext = bridge && typeof bridge.getContext === "function"
       ? bridge.getContext() || inferGenericContext()
       : inferGenericContext();
+    const nextSignature = buildContextSignature(nextContext);
+    const contextChanged = nextSignature !== state.contextSignature;
+    state.context = nextContext;
+    state.contextSignature = nextSignature;
+    if (contextChanged) {
+      resetTransientUi();
+    }
     syncUi();
+    if (state.open) {
+      window.requestAnimationFrame(() => {
+        syncBottomOffset();
+      });
+    }
   }
 
   function openPanel() {
@@ -252,6 +329,7 @@ function createCommentModeRuntime() {
       window.__closeLeftDrawers();
     }
     state.open = true;
+    resetTransientUi();
     refreshContext();
     syncUi();
     window.setTimeout(() => {
@@ -262,6 +340,7 @@ function createCommentModeRuntime() {
   function closePanel() {
     if (state.submitting) return;
     state.open = false;
+    resetTransientUi();
     syncUi();
   }
 
@@ -357,6 +436,14 @@ function createCommentModeRuntime() {
   submitButton.addEventListener("click", () => {
     submitComment().catch(() => {});
   });
+  document.addEventListener("click", (event) => {
+    if (!state.open || state.submitting) return;
+    const target = event.target;
+    if (!(target instanceof Node)) return;
+    if (panel.contains(target)) return;
+    if (fabStack && fabStack.contains(target)) return;
+    closePanel();
+  });
   document.addEventListener("keydown", (event) => {
     if (event.key === "Escape" && state.open) {
       event.preventDefault();
@@ -368,8 +455,20 @@ function createCommentModeRuntime() {
   const bridge = getCommentBridge();
   if (bridge && typeof bridge.onContextChanged === "function") {
     bridge.onContextChanged((nextContext) => {
-      state.context = nextContext || inferGenericContext();
-      if (state.open) syncUi();
+      const resolvedContext = nextContext || inferGenericContext();
+      const nextSignature = buildContextSignature(resolvedContext);
+      const contextChanged = nextSignature !== state.contextSignature;
+      state.context = resolvedContext;
+      state.contextSignature = nextSignature;
+      if (contextChanged) {
+        resetTransientUi();
+      }
+      if (state.open) {
+        syncUi();
+        window.requestAnimationFrame(() => {
+          syncBottomOffset();
+        });
+      }
     });
   }
 
