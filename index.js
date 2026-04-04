@@ -20,7 +20,7 @@ const localPresenterModules = [
   "./frontend/presenter/studio-ui.js",
   "./frontend/presenter/runtime.js"
 ];
-const appRuntimeVersion = "default-ticket-20260330-1429";
+const appRuntimeVersion = "feedback-cachebust-20260404-2307";
 
 for (const modulePath of sharedModules) {
   await import(modulePath);
