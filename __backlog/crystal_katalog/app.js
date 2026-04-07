@@ -3485,7 +3485,6 @@ function createDetailCard(item) {
   const titleTagName = item.level === "h1" ? "h2" : item.level === "h2" ? "h3" : "h4";
   const title = document.createElement(titleTagName);
   const subtitle = document.createElement("p");
-  const connectorPath = document.createElementNS("http://www.w3.org/2000/svg", "path");
 
   card.className = `detail-card detail-card-${item.level}`;
   card.style.setProperty("--detail-accent", item.detail.accentHex);
@@ -3495,16 +3494,51 @@ function createDetailCard(item) {
   subtitle.textContent = item.detail.subtitle;
   card.append(title, subtitle);
 
-  connectorPath.classList.add("detail-connector");
-  connectorPath.style.setProperty("--detail-accent", item.detail.accentHex);
-  detailLines?.appendChild(connectorPath);
-
-  item.detailCardElement = card;
-  item.connectorPathElement = connectorPath;
   setRuneDisplayMode(item, true);
   setRuneHalosEnabled(item, true);
 
   return card;
+}
+
+function getHierarchyConnectorColor(item) {
+  // Ziel: Die Rune-Hierarchie farblich ohne Ablenkung lesbar machen.
+  // Warum: Die Verbindungslogik soll die Ebenen H1->H2 und H2->H3 markieren, nicht mit den individuellen Runenfarben um Aufmerksamkeit konkurrieren.
+  if (item.level === "h2") {
+    return "hsl(0 0% 100% / 0.96)";
+  }
+
+  return "hsl(0 0% 72% / 0.9)";
+}
+
+function mountHierarchyRuneConnectors(items) {
+  // Ziel: Die Detailhierarchie als direkte Rune-zu-Rune-Beziehung visualisieren.
+  // Warum: Die neue Leselogik verbindet nicht mehr Runen mit Cards, sondern H1 mit H2 und H2 mit H3 als echte Kristallhierarchie.
+  if (!detailLines) {
+    return;
+  }
+
+  const itemsById = new Map(items.map((item) => [item.entryId, item]));
+
+  items.forEach((item) => {
+    if (!item.parentId) {
+      item.hierarchyConnectorElement = null;
+      return;
+    }
+
+    const parent = itemsById.get(item.parentId);
+
+    if (!parent) {
+      item.hierarchyConnectorElement = null;
+      return;
+    }
+
+    const connectorLine = document.createElementNS("http://www.w3.org/2000/svg", "line");
+    connectorLine.classList.add("detail-connector");
+    connectorLine.style.setProperty("--detail-accent", getHierarchyConnectorColor(item));
+    connectorLine.setAttribute("visibility", "hidden");
+    detailLines.appendChild(connectorLine);
+    item.hierarchyConnectorElement = connectorLine;
+  });
 }
 
 function mountExplodedDetails(items) {
@@ -3551,6 +3585,8 @@ function mountExplodedDetails(items) {
     branch.appendChild(children);
     detailCards.appendChild(branch);
   });
+
+  mountHierarchyRuneConnectors(items);
 }
 
 function clearExplodedDetails() {
@@ -3674,39 +3710,39 @@ function projectWorldPointToStage(worldPoint) {
 }
 
 function syncExplodedDetailLayout() {
+  // Ziel: Die sichtbaren Detailverbindungen framegenau zwischen den jeweiligen Hierarchie-Runen halten.
+  // Warum: Die neue Detailansicht koppelt Linien an echte H1/H2/H3-Anker im Kristall statt an Card-Kanten, deshalb muss das Layout nur Rune-zu-Rune synchronisiert werden.
   if (!detailCards || !detailLines || !state.extraction.items.length) {
     return;
   }
 
-  const canvasRect = renderCanvas.getBoundingClientRect();
+  const itemsById = new Map(state.extraction.items.map((item) => [item.entryId, item]));
 
   state.extraction.items.forEach((item) => {
-    if (!item.detailCardElement || !item.connectorPathElement || !item.runeAnchorMesh) {
+    if (!item.hierarchyConnectorElement || !item.parentId || !item.runeAnchorMesh) {
       return;
     }
 
-    const sourcePoint = projectWorldPointToStage(item.runeAnchorMesh.getAbsolutePosition());
-    const cardRect = item.detailCardElement.getBoundingClientRect();
-    const targetPoint = {
-      x: (cardRect.left - canvasRect.left) + 2,
-      y: (cardRect.top - canvasRect.top) + (cardRect.height / 2)
-    };
+    const parentItem = itemsById.get(item.parentId);
 
-    if (!sourcePoint) {
-      item.connectorPathElement.setAttribute("d", "");
+    if (!parentItem?.runeAnchorMesh) {
+      item.hierarchyConnectorElement.setAttribute("visibility", "hidden");
       return;
     }
 
-    const bend = Math.max(60, (targetPoint.x - sourcePoint.x) * 0.32);
-    item.connectorPathElement.setAttribute(
-      "d",
-      [
-        `M ${sourcePoint.x} ${sourcePoint.y}`,
-        `C ${sourcePoint.x + bend} ${sourcePoint.y},`,
-        `${targetPoint.x - bend} ${targetPoint.y},`,
-        `${targetPoint.x} ${targetPoint.y}`
-      ].join(" ")
-    );
+    const sourcePoint = projectWorldPointToStage(parentItem.runeAnchorMesh.getAbsolutePosition());
+    const targetPoint = projectWorldPointToStage(item.runeAnchorMesh.getAbsolutePosition());
+
+    if (!sourcePoint || !targetPoint) {
+      item.hierarchyConnectorElement.setAttribute("visibility", "hidden");
+      return;
+    }
+
+    item.hierarchyConnectorElement.setAttribute("visibility", "visible");
+    item.hierarchyConnectorElement.setAttribute("x1", String(sourcePoint.x));
+    item.hierarchyConnectorElement.setAttribute("y1", String(sourcePoint.y));
+    item.hierarchyConnectorElement.setAttribute("x2", String(targetPoint.x));
+    item.hierarchyConnectorElement.setAttribute("y2", String(targetPoint.y));
   });
 }
 
