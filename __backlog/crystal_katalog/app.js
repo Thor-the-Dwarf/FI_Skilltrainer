@@ -1422,7 +1422,9 @@ function createTetrahedronInteriorCrystals(scene, root, faces, selectionId, mate
   // Ziel: Die Form-4-Hierarchie als klar lesbare H1/H2/H3-Raumlogik aufbauen.
   // Warum: Die groesste Rune muss im Kristallzentrum dominant lesbar sein, die H2-Runen explizit auf den Aussenflaechen sitzen und die H3-Runen als kleine Einschluss-Zentren der RunenFragmente erkennbar bleiben.
   const centroid = computeUniqueVerticesCenter(faces);
-  const crystalHeightAxis = computePreferredTetrahedronHeightAxis(faces);
+  const crystalHeightLine = computePreferredTetrahedronHeightLine(faces);
+  const crystalHeightAxis = crystalHeightLine.axis;
+  const crystalRunePosition = crystalHeightLine.midpoint;
   const crystalRuneRotation = quaternionFromUnitVectors(BABYLON.Axis.Y, crystalHeightAxis);
   const crystalRuneColor = getBodyColorForSelection(selectionId, "tetrahedron_crystal_rune_primary");
   const crystalRuneMeshes = createRuneMeshes(
@@ -1447,9 +1449,9 @@ function createTetrahedronInteriorCrystals(scene, root, faces, selectionId, mate
   );
 
   // Ziel: Die H1-Rune geometrisch wirklich im Kristallzentrum halten.
-  // Warum: Sobald der Anchor vom Kristall geloest und pro Frame zur Kamera gezogen wird, ist die Hauptrune zwar vielleicht sichtbarer, aber nicht mehr im Zentrum des Koerpers.
+  // Warum: Fuer das gewuenschte Lesen der Form zaehlt hier nicht der Volumenschwerpunkt, sondern die sichtbare Mitte der gewaehlteten Hoehenlinie zwischen Spitze und Gegenflaeche.
   crystalRuneMeshes.anchor.parent = root;
-  crystalRuneMeshes.anchor.position.copyFrom(centroid);
+  crystalRuneMeshes.anchor.position.copyFrom(crystalRunePosition);
   crystalRuneMeshes.anchor.rotationQuaternion = crystalRuneRotation.clone();
   crystalRuneMeshes.anchor.scaling.setAll(1);
   materials.push(...crystalRuneMeshes.materials);
@@ -1464,8 +1466,8 @@ function createTetrahedronInteriorCrystals(scene, root, faces, selectionId, mate
     runeAnchorMesh: crystalRuneMeshes.anchor,
     runeGlyphMesh: crystalRuneMeshes.glyphMesh,
     runeHaloMesh: crystalRuneMeshes.haloMesh,
-    rootRunePosition: centroid.clone(),
-    detailRunePosition: centroid.clone(),
+    rootRunePosition: crystalRunePosition.clone(),
+    detailRunePosition: crystalRunePosition.clone(),
     rootRuneRotation: crystalRuneRotation.clone(),
     rootRuneScale: H1_ROOT_RUNE_SCALE,
     detailRuneScale: H1_DETAIL_RUNE_SCALE,
@@ -2826,9 +2828,9 @@ function computeUniqueVerticesCenter(faces) {
   return computeFaceCenter(Array.from(uniqueVertices.values()));
 }
 
-function computePreferredTetrahedronHeightAxis(faces) {
-  // Ziel: Eine stabile Hauptachse fuer die H1-Rune aus der Tetraedergeometrie ableiten.
-  // Warum: Beim regulaeren Tetraeder sind mehrere Hoehen formal gleichwertig; ueber die praesentierte Startrotation waehlen wir die Achse, die im aktuellen Kristallbild am klarsten als oben-unten gelesen wird.
+function computePreferredTetrahedronHeightLine(faces) {
+  // Ziel: Die fuer den Nutzer lesbarste Hoehenlinie des Tetraeders inklusive ihrer sichtbaren Mitte bestimmen.
+  // Warum: Beim regulaeren Tetraeder ist der Volumenschwerpunkt nicht die Mitte einer Hoehenlinie; fuer die Hauptrune brauchen wir explizit die halbe Strecke zwischen Spitze und Gegenflaeche.
   const uniqueVertices = new Map();
   const presentationQuaternion = BABYLON.Quaternion.FromEulerAngles(
     INITIAL_CRYSTAL_ROTATION.x,
@@ -2853,17 +2855,27 @@ function computePreferredTetrahedronHeightAxis(faces) {
 
   const candidates = vertices.map((vertex, index) => {
     const oppositeFace = vertices.filter((_, otherIndex) => otherIndex !== index);
-    const oppositeCenter = computeFaceCenter(oppositeFace);
-    const axisLocal = vertex.subtract(oppositeCenter).normalize();
+    const baseCenter = computeFaceCenter(oppositeFace);
+    const axisVector = vertex.subtract(baseCenter);
+    const axisLocal = axisVector.normalize();
     const axisWorld = BABYLON.Vector3.TransformNormal(axisLocal, presentationMatrix);
+    const midpoint = BABYLON.Vector3.Lerp(baseCenter, vertex, 0.5);
 
     return {
-      axisLocal,
+      apex: vertex.clone(),
+      baseCenter,
+      axis: axisLocal,
+      midpoint,
       score: axisWorld.y
     };
   });
 
-  return candidates.sort((left, right) => right.score - left.score)[0]?.axisLocal || BABYLON.Axis.Y.clone();
+  return candidates.sort((left, right) => right.score - left.score)[0] || {
+    apex: BABYLON.Axis.Y.clone(),
+    baseCenter: BABYLON.Vector3.Zero(),
+    axis: BABYLON.Axis.Y.clone(),
+    midpoint: BABYLON.Vector3.Zero()
+  };
 }
 
 function computeFaceNormal(vertices) {
