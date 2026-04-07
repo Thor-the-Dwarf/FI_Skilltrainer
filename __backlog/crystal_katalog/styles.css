@@ -368,7 +368,7 @@ body.is-exploded .detail-experience {
   top: 0;
   right: var(--detail-advance-width);
   bottom: 0;
-  width: clamp(420px, 46vw, 720px);
+  width: calc(60% - var(--detail-advance-width));
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
@@ -439,7 +439,7 @@ body.is-exploded .detail-experience {
 
 .detail-children {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 10px;
   padding: 10px 10px 8px 12px;
   margin-left: 6px;
@@ -540,11 +540,12 @@ body.is-exploded .detail-experience {
   }
 
   .detail-cards {
-    width: min(52vw, 480px);
+    width: calc(58% - var(--detail-advance-width));
     padding-right: 18px;
   }
+
   .detail-children {
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
   .runtime-debug {
@@ -573,7 +574,7 @@ body.is-exploded .detail-experience {
   }
 
   .detail-cards {
-    width: min(64vw, 320px);
+    width: calc(64% - var(--detail-advance-width));
     padding: 64px 12px 20px 8px;
     gap: 12px;
   }
@@ -597,6 +598,7 @@ body.is-exploded .detail-experience {
   }
 
   .detail-children {
+    grid-template-columns: 1fr;
     padding: 10px 10px 10px 12px;
     margin-left: 0;
   }
