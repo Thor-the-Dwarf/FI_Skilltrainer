@@ -13,10 +13,6 @@
       <aside class="panel panel-list" aria-label="Crystal Vault Liste">
         <div class="list-controls" aria-label="Schnellzugriff">
           <label class="list-control">
-            <span class="list-control-label">Grundformen</span>
-            <select id="prototypeSelect" class="list-control-select" aria-label="Grundform auswaehlen"></select>
-          </label>
-          <label class="list-control">
             <span class="list-control-label">Kristalle</span>
             <select id="catalogSelect" class="list-control-select" aria-label="Kristall auswaehlen"></select>
           </label>
@@ -27,6 +23,18 @@
       <section class="panel panel-stage" aria-label="Babylon.js Szene">
         <div class="stage-frame">
           <canvas id="renderCanvas" aria-label="Babylon.js Vorschau"></canvas>
+          <div id="detailExperience" class="detail-experience" aria-hidden="true">
+            <svg id="detailLines" class="detail-lines" aria-hidden="true"></svg>
+            <div id="detailCards" class="detail-cards" aria-label="Details"></div>
+          </div>
+          <aside id="runtimeDebug" class="runtime-debug" aria-live="polite" hidden>
+            <div class="runtime-debug-header">
+              <strong class="runtime-debug-title">Testlab</strong>
+              <span id="runtimeDebugMode" class="runtime-debug-mode">idle</span>
+            </div>
+            <div id="runtimeDebugSummary" class="runtime-debug-summary"></div>
+            <pre id="runtimeDebugLog" class="runtime-debug-log"></pre>
+          </aside>
           <div class="stage-overlay">
             <span id="selectionPill" class="overlay-pill">Aktiv: 1</span>
             <span id="enginePill" class="overlay-pill overlay-pill-muted">Babylon.js lokal</span>
