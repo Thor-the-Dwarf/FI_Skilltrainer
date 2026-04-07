@@ -30,6 +30,8 @@ const NEUTRAL_CRYSTAL_COLOR_HEX = "#d8dde8";
 const DEFAULT_CRYSTAL_ALPHA = 0.82;
 const FRAGMENT_CRYSTAL_ALPHA = 0.75;
 const RUNE_FRAGMENT_ALPHA = 0.1;
+const RUNE_GLYPH_ALPHA = 0.5;
+const RUNE_HALO_ALPHA = 0.36;
 const H3_ROOT_RUNE_SCALE = 0.24;
 const H3_DETAIL_RUNE_SCALE = 0.475;
 const H2_ROOT_RUNE_SCALE = 1.02;
@@ -1420,6 +1422,8 @@ function createTetrahedronInteriorCrystals(scene, root, faces, selectionId, mate
   // Ziel: Die Form-4-Hierarchie als klar lesbare H1/H2/H3-Raumlogik aufbauen.
   // Warum: Die groesste Rune muss im Kristallzentrum dominant lesbar sein, die H2-Runen explizit auf den Aussenflaechen sitzen und die H3-Runen als kleine Einschluss-Zentren der RunenFragmente erkennbar bleiben.
   const centroid = computeUniqueVerticesCenter(faces);
+  const crystalHeightAxis = computePreferredTetrahedronHeightAxis(faces);
+  const crystalRuneRotation = quaternionFromUnitVectors(BABYLON.Axis.Y, crystalHeightAxis);
   const crystalRuneColor = getBodyColorForSelection(selectionId, "tetrahedron_crystal_rune_primary");
   const crystalRuneMeshes = createRuneMeshes(
     scene,
@@ -1436,7 +1440,7 @@ function createTetrahedronInteriorCrystals(scene, root, faces, selectionId, mate
       renderingGroupId: 3,
       glyphPlaneOffset: 0.04,
       haloPlaneOffset: -0.024,
-      alphaMode: BABYLON.Engine.ALPHA_ADD,
+      alphaMode: BABYLON.Engine.ALPHA_COMBINE,
       textureSize: 512,
       outlineWidth: 24
     }
@@ -1446,7 +1450,7 @@ function createTetrahedronInteriorCrystals(scene, root, faces, selectionId, mate
   // Warum: Sobald der Anchor vom Kristall geloest und pro Frame zur Kamera gezogen wird, ist die Hauptrune zwar vielleicht sichtbarer, aber nicht mehr im Zentrum des Koerpers.
   crystalRuneMeshes.anchor.parent = root;
   crystalRuneMeshes.anchor.position.copyFrom(centroid);
-  crystalRuneMeshes.anchor.rotationQuaternion = BABYLON.Quaternion.Identity();
+  crystalRuneMeshes.anchor.rotationQuaternion = crystalRuneRotation.clone();
   crystalRuneMeshes.anchor.scaling.setAll(1);
   materials.push(...crystalRuneMeshes.materials);
   root.metadata.crystalRuneEntry = {
@@ -1462,7 +1466,7 @@ function createTetrahedronInteriorCrystals(scene, root, faces, selectionId, mate
     runeHaloMesh: crystalRuneMeshes.haloMesh,
     rootRunePosition: centroid.clone(),
     detailRunePosition: centroid.clone(),
-    rootRuneRotation: BABYLON.Quaternion.Identity(),
+    rootRuneRotation: crystalRuneRotation.clone(),
     rootRuneScale: H1_ROOT_RUNE_SCALE,
     detailRuneScale: H1_DETAIL_RUNE_SCALE,
     rootBillboardMode: BABYLON.AbstractMesh.BILLBOARDMODE_NONE,
@@ -1497,7 +1501,7 @@ function createTetrahedronInteriorCrystals(scene, root, faces, selectionId, mate
         renderingGroupId: 3,
         glyphPlaneOffset: 0.028,
         haloPlaneOffset: -0.018,
-        alphaMode: BABYLON.Engine.ALPHA_ADD,
+        alphaMode: BABYLON.Engine.ALPHA_COMBINE,
         textureSize: 512,
         outlineWidth: 22
       }
@@ -1803,8 +1807,12 @@ function createRuneMeshes(scene, name, runeSymbol, accentHex, options = {}) {
   const glyphMaterial = new BABYLON.StandardMaterial(`${name}_glyph_material`, scene);
   glyphMaterial.diffuseTexture = runeTexture;
   glyphMaterial.opacityTexture = runeTexture;
-  glyphMaterial.emissiveColor = accentColor.scale(emissiveIntensity);
-  glyphMaterial.disableLighting = true;
+  glyphMaterial.diffuseColor = BABYLON.Color3.White();
+  glyphMaterial.emissiveColor = accentColor.scale(emissiveIntensity * 0.34);
+  glyphMaterial.specularColor = new BABYLON.Color3(0.92, 0.94, 1.0);
+  glyphMaterial.specularPower = 96;
+  glyphMaterial.alpha = RUNE_GLYPH_ALPHA;
+  glyphMaterial.disableLighting = false;
   glyphMaterial.backFaceCulling = false;
   glyphMaterial.useAlphaFromDiffuseTexture = true;
   glyphMaterial.transparencyMode = BABYLON.Material.MATERIAL_ALPHABLEND;
@@ -1819,8 +1827,12 @@ function createRuneMeshes(scene, name, runeSymbol, accentHex, options = {}) {
   if (haloMaterial && haloTexture) {
     haloMaterial.diffuseTexture = haloTexture;
     haloMaterial.opacityTexture = haloTexture;
-    haloMaterial.emissiveColor = accentColor.scale(Math.max(1.55, emissiveIntensity * 1.1));
-    haloMaterial.disableLighting = true;
+    haloMaterial.diffuseColor = BABYLON.Color3.White();
+    haloMaterial.emissiveColor = accentColor.scale(Math.max(0.7, emissiveIntensity * 0.24));
+    haloMaterial.specularColor = new BABYLON.Color3(0.88, 0.9, 0.96);
+    haloMaterial.specularPower = 72;
+    haloMaterial.alpha = RUNE_HALO_ALPHA;
+    haloMaterial.disableLighting = false;
     haloMaterial.backFaceCulling = false;
     haloMaterial.useAlphaFromDiffuseTexture = true;
     haloMaterial.transparencyMode = BABYLON.Material.MATERIAL_ALPHABLEND;
@@ -2812,6 +2824,46 @@ function computeUniqueVerticesCenter(faces) {
   });
 
   return computeFaceCenter(Array.from(uniqueVertices.values()));
+}
+
+function computePreferredTetrahedronHeightAxis(faces) {
+  // Ziel: Eine stabile Hauptachse fuer die H1-Rune aus der Tetraedergeometrie ableiten.
+  // Warum: Beim regulaeren Tetraeder sind mehrere Hoehen formal gleichwertig; ueber die praesentierte Startrotation waehlen wir die Achse, die im aktuellen Kristallbild am klarsten als oben-unten gelesen wird.
+  const uniqueVertices = new Map();
+  const presentationQuaternion = BABYLON.Quaternion.FromEulerAngles(
+    INITIAL_CRYSTAL_ROTATION.x,
+    INITIAL_CRYSTAL_ROTATION.y,
+    INITIAL_CRYSTAL_ROTATION.z
+  );
+  const presentationMatrix = BABYLON.Matrix.Identity();
+  const vertices = [];
+
+  presentationQuaternion.toRotationMatrix(presentationMatrix);
+
+  faces.forEach((face) => {
+    face.vertices.forEach((vertex) => {
+      const key = getVertexKey(vertex);
+
+      if (!uniqueVertices.has(key)) {
+        uniqueVertices.set(key, vertex.clone());
+        vertices.push(vertex.clone());
+      }
+    });
+  });
+
+  const candidates = vertices.map((vertex, index) => {
+    const oppositeFace = vertices.filter((_, otherIndex) => otherIndex !== index);
+    const oppositeCenter = computeFaceCenter(oppositeFace);
+    const axisLocal = vertex.subtract(oppositeCenter).normalize();
+    const axisWorld = BABYLON.Vector3.TransformNormal(axisLocal, presentationMatrix);
+
+    return {
+      axisLocal,
+      score: axisWorld.y
+    };
+  });
+
+  return candidates.sort((left, right) => right.score - left.score)[0]?.axisLocal || BABYLON.Axis.Y.clone();
 }
 
 function computeFaceNormal(vertices) {
