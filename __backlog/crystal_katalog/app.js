@@ -32,6 +32,7 @@ const FRAGMENT_CRYSTAL_ALPHA = 0.75;
 const RUNE_FRAGMENT_ALPHA = 0.1;
 const RUNE_GLYPH_ALPHA = 0.5;
 const RUNE_HALO_ALPHA = 0.36;
+const runeGlyphLayoutCache = new Map();
 const H3_ROOT_RUNE_SCALE = 0.24;
 const H3_DETAIL_RUNE_SCALE = 0.475;
 const H2_ROOT_RUNE_SCALE = 1.02;
@@ -1425,10 +1426,12 @@ function createTetrahedronInteriorCrystals(scene, root, faces, selectionId, mate
   const crystalHeightLine = computePreferredTetrahedronHeightLine(faces);
   const crystalRuneGlyphSize = 0.92;
   const crystalRuneGlyphPlaneOffset = 0.04;
+  const crystalRuneGlyphLayout = measureRuneGlyphLayout(CRYSTAL_RUNE_SYMBOL, 512, 24);
   const crystalRunePlacement = computeBalancedRuneAnchorPosition(
     faces,
     crystalHeightLine,
-    crystalRuneGlyphSize * H1_ROOT_RUNE_SCALE,
+    crystalRuneGlyphSize * H1_ROOT_RUNE_SCALE * crystalRuneGlyphLayout.widthRatio,
+    crystalRuneGlyphSize * H1_ROOT_RUNE_SCALE * crystalRuneGlyphLayout.heightRatio,
     crystalRuneGlyphPlaneOffset
   );
   const crystalHeightAxis = crystalRunePlacement.axis;
@@ -1751,6 +1754,43 @@ function createExtractedTetrahedronCrystal(scene, parent, entry, centroidLocal, 
   };
 }
 
+function measureRuneGlyphLayout(runeSymbol, textureSize, outlineWidth) {
+  // Ziel: Die sichtbare Rune als Bounding-Rechteck fuer Zeichnung und Clearance-Berechnung vermessen.
+  // Warum: Die H1-Platzierung soll sich am wirklichen Glyphenkoerper orientieren statt an einer kuenstlich quadratischen Rune-Plane.
+  const cacheKey = `${runeSymbol}__${textureSize}__${outlineWidth}`;
+  const cachedLayout = runeGlyphLayoutCache.get(cacheKey);
+
+  if (cachedLayout) {
+    return cachedLayout;
+  }
+
+  const canvas = document.createElement("canvas");
+  canvas.width = textureSize;
+  canvas.height = textureSize;
+  const context = canvas.getContext("2d");
+  const fontSize = Math.round(textureSize * 0.46);
+
+  context.font = `700 ${fontSize}px 'Noto Sans Symbols 2', 'Segoe UI Symbol', 'Arial Unicode MS', 'Times New Roman'`;
+  context.textAlign = "center";
+  context.textBaseline = "alphabetic";
+
+  const glyphMetrics = context.measureText(runeSymbol);
+  const left = Number.isFinite(glyphMetrics.actualBoundingBoxLeft) ? glyphMetrics.actualBoundingBoxLeft : fontSize * 0.28;
+  const right = Number.isFinite(glyphMetrics.actualBoundingBoxRight) ? glyphMetrics.actualBoundingBoxRight : fontSize * 0.28;
+  const ascent = Number.isFinite(glyphMetrics.actualBoundingBoxAscent) ? glyphMetrics.actualBoundingBoxAscent : fontSize * 0.38;
+  const descent = Number.isFinite(glyphMetrics.actualBoundingBoxDescent) ? glyphMetrics.actualBoundingBoxDescent : fontSize * 0.18;
+  const padding = Math.max(outlineWidth * 0.85, textureSize * 0.065);
+  const layout = {
+    offsetX: (left - right) / 2,
+    offsetY: (ascent - descent) / 2,
+    widthRatio: Math.min(0.96, ((left + right) + (padding * 2)) / textureSize),
+    heightRatio: Math.min(0.96, ((ascent + descent) + (padding * 2)) / textureSize)
+  };
+
+  runeGlyphLayoutCache.set(cacheKey, layout);
+  return layout;
+}
+
 function createRuneMeshes(scene, name, runeSymbol, accentHex, options = {}) {
   const {
     showHalo = true,
@@ -1781,8 +1821,7 @@ function createRuneMeshes(scene, name, runeSymbol, accentHex, options = {}) {
   const shadowBlur = Math.round(textureSize * (alwaysVisible ? 0.17 : 0.1));
   const haloRadius = Math.round(textureSize * 0.34);
   const haloLineWidth = Math.max(4, Math.round(textureSize * 0.02));
-  let glyphOffsetX = 0;
-  let glyphOffsetY = 0;
+  const glyphLayout = measureRuneGlyphLayout(runeSymbol, textureSize, outlineWidth);
 
   runeContext.clearRect(0, 0, textureSize, textureSize);
   runeContext.save();
@@ -1796,22 +1835,8 @@ function createRuneMeshes(scene, name, runeSymbol, accentHex, options = {}) {
   runeContext.font = `700 ${fontSize}px 'Noto Sans Symbols 2', 'Segoe UI Symbol', 'Arial Unicode MS', 'Times New Roman'`;
   runeContext.textAlign = "center";
   runeContext.textBaseline = "alphabetic";
-  const glyphMetrics = runeContext.measureText(runeSymbol);
-
-  if (
-    Number.isFinite(glyphMetrics.actualBoundingBoxLeft)
-    && Number.isFinite(glyphMetrics.actualBoundingBoxRight)
-    && Number.isFinite(glyphMetrics.actualBoundingBoxAscent)
-    && Number.isFinite(glyphMetrics.actualBoundingBoxDescent)
-  ) {
-    // Ziel: Die Rune innerhalb ihres eigenen Bounding-Rechtecks wirklich mittig zeichnen.
-    // Warum: Sobald die Glyphenzeichnung selbst vertikal oder horizontal driftet, kann auch eine geometrisch korrekt platzierte H1 visuell wieder zu hoch oder zu tief wirken.
-    glyphOffsetX = (glyphMetrics.actualBoundingBoxLeft - glyphMetrics.actualBoundingBoxRight) / 2;
-    glyphOffsetY = (glyphMetrics.actualBoundingBoxAscent - glyphMetrics.actualBoundingBoxDescent) / 2;
-  }
-
-  runeContext.strokeText(runeSymbol, glyphOffsetX, glyphOffsetY);
-  runeContext.fillText(runeSymbol, glyphOffsetX, glyphOffsetY);
+  runeContext.strokeText(runeSymbol, glyphLayout.offsetX, glyphLayout.offsetY);
+  runeContext.fillText(runeSymbol, glyphLayout.offsetX, glyphLayout.offsetY);
   runeContext.restore();
   runeTexture.update();
 
@@ -2902,15 +2927,15 @@ function computePreferredTetrahedronHeightLine(faces) {
   };
 }
 
-function computeBalancedRuneAnchorPosition(faces, heightLine, runeExtent, glyphPlaneOffset) {
-  // Ziel: Die H1-Rune entlang der gewaelten Hoehenachse so verschieben, dass ihr Rechteck moeglichst gleichmaessige Eck-Clearance zu den Aussenflaechen hat.
-  // Warum: Der Nutzer will keine zusaetzliche Roll-Optimierung, sondern eine feste Ausrichtung an der Hoehenachse und nur die Position entlang dieser Achse nach der Rechteck-Regel bestimmen.
+function computeBalancedRuneAnchorPosition(faces, heightLine, runeWidth, runeHeight, glyphPlaneOffset) {
+  // Ziel: Die H1-Rune entlang der gewaelten Hoehenachse so platzieren, dass ihr Rechteck moeglichst gleich weit von den naechsten Aussenflaechen entfernt bleibt.
+  // Warum: Die Nutzerregel bezieht sich explizit auf die Rune als Rechteck. Deshalb muessen wir echte Glyphenbreite/-hoehe und den Rollwinkel des Rechtecks gemeinsam mit der Achsenposition optimieren.
   const axis = heightLine.axis.clone().normalize();
   const baseRotation = quaternionFromUnitVectors(BABYLON.Axis.Y, axis);
-  const rotationMatrix = BABYLON.Matrix.Identity();
-  const halfExtent = runeExtent * 0.5;
   const lineStart = heightLine.baseCenter;
   const lineEnd = heightLine.apex;
+  const halfWidth = runeWidth * 0.5;
+  const halfHeight = runeHeight * 0.5;
   let bestCandidate = {
     axis,
     position: heightLine.midpoint.clone(),
@@ -2920,54 +2945,60 @@ function computeBalancedRuneAnchorPosition(faces, heightLine, runeExtent, glyphP
     minClearance: Number.NEGATIVE_INFINITY
   };
 
-  baseRotation.toRotationMatrix(rotationMatrix);
+  for (let rollStep = 0; rollStep < 96; rollStep += 1) {
+    const rollAngle = (rollStep / 96) * TAU;
+    const rotation = BABYLON.Quaternion.RotationAxis(axis, rollAngle).multiply(baseRotation);
+    const rotationMatrix = BABYLON.Matrix.Identity();
 
-  const right = BABYLON.Vector3.TransformNormal(BABYLON.Axis.X, rotationMatrix).normalize();
-  const forward = BABYLON.Vector3.TransformNormal(BABYLON.Axis.Z, rotationMatrix).normalize();
+    rotation.toRotationMatrix(rotationMatrix);
 
-  for (let step = 0; step <= 160; step += 1) {
-    const t = step / 160;
-    const anchor = BABYLON.Vector3.Lerp(lineStart, lineEnd, t);
-    const planeCenter = anchor.add(forward.scale(glyphPlaneOffset));
-    const corners = [
-      planeCenter.add(right.scale(-halfExtent)).add(axis.scale(-halfExtent)),
-      planeCenter.add(right.scale(halfExtent)).add(axis.scale(-halfExtent)),
-      planeCenter.add(right.scale(-halfExtent)).add(axis.scale(halfExtent)),
-      planeCenter.add(right.scale(halfExtent)).add(axis.scale(halfExtent))
-    ];
-    const clearances = corners.map((corner) => computeNearestTetrahedronFaceClearance(corner, faces));
-    const minClearance = Math.min(...clearances);
-    const maxClearance = Math.max(...clearances);
-    const lowerAverageClearance = (clearances[0] + clearances[1]) * 0.5;
-    const upperAverageClearance = (clearances[2] + clearances[3]) * 0.5;
-    const verticalImbalance = Math.abs(upperAverageClearance - lowerAverageClearance);
-    const spread = maxClearance - minClearance;
-    const isValidInteriorFit = minClearance >= 0;
+    const right = BABYLON.Vector3.TransformNormal(BABYLON.Axis.X, rotationMatrix).normalize();
+    const forward = BABYLON.Vector3.TransformNormal(BABYLON.Axis.Z, rotationMatrix).normalize();
 
-    if (
-      isValidInteriorFit
-      && (
-        verticalImbalance < bestCandidate.verticalImbalance - 0.000001
-        || (
-          Math.abs(verticalImbalance - bestCandidate.verticalImbalance) <= 0.000001
-          && (
-            spread < bestCandidate.spread - 0.000001
-            || (
-              Math.abs(spread - bestCandidate.spread) <= 0.000001
-              && minClearance > bestCandidate.minClearance
+    for (let step = 0; step <= 160; step += 1) {
+      const t = step / 160;
+      const anchor = BABYLON.Vector3.Lerp(lineStart, lineEnd, t);
+      const planeCenter = anchor.add(forward.scale(glyphPlaneOffset));
+      const corners = [
+        planeCenter.add(right.scale(-halfWidth)).add(axis.scale(-halfHeight)),
+        planeCenter.add(right.scale(halfWidth)).add(axis.scale(-halfHeight)),
+        planeCenter.add(right.scale(-halfWidth)).add(axis.scale(halfHeight)),
+        planeCenter.add(right.scale(halfWidth)).add(axis.scale(halfHeight))
+      ];
+      const clearances = corners.map((corner) => computeNearestTetrahedronFaceClearance(corner, faces));
+      const minClearance = Math.min(...clearances);
+      const maxClearance = Math.max(...clearances);
+      const lowerAverageClearance = (clearances[0] + clearances[1]) * 0.5;
+      const upperAverageClearance = (clearances[2] + clearances[3]) * 0.5;
+      const verticalImbalance = Math.abs(upperAverageClearance - lowerAverageClearance);
+      const spread = maxClearance - minClearance;
+      const isValidInteriorFit = minClearance >= 0;
+
+      if (
+        isValidInteriorFit
+        && (
+          verticalImbalance < bestCandidate.verticalImbalance - 0.000001
+          || (
+            Math.abs(verticalImbalance - bestCandidate.verticalImbalance) <= 0.000001
+            && (
+              spread < bestCandidate.spread - 0.000001
+              || (
+                Math.abs(spread - bestCandidate.spread) <= 0.000001
+                && minClearance > bestCandidate.minClearance
+              )
             )
           )
         )
-      )
-    ) {
-      bestCandidate = {
-        axis: axis.clone(),
-        position: anchor,
-        rotation: baseRotation.clone(),
-        verticalImbalance,
-        spread,
-        minClearance
-      };
+      ) {
+        bestCandidate = {
+          axis: axis.clone(),
+          position: anchor,
+          rotation: rotation.clone(),
+          verticalImbalance,
+          spread,
+          minClearance
+        };
+      }
     }
   }
 
