@@ -1423,9 +1423,17 @@ function createTetrahedronInteriorCrystals(scene, root, faces, selectionId, mate
   // Warum: Die groesste Rune muss im Kristallzentrum dominant lesbar sein, die H2-Runen explizit auf den Aussenflaechen sitzen und die H3-Runen als kleine Einschluss-Zentren der RunenFragmente erkennbar bleiben.
   const centroid = computeUniqueVerticesCenter(faces);
   const crystalHeightLine = computePreferredTetrahedronHeightLine(faces);
-  const crystalHeightAxis = crystalHeightLine.axis;
-  const crystalRunePosition = crystalHeightLine.midpoint;
-  const crystalRuneRotation = quaternionFromUnitVectors(BABYLON.Axis.Y, crystalHeightAxis);
+  const crystalRuneGlyphSize = 0.92;
+  const crystalRuneGlyphPlaneOffset = 0.04;
+  const crystalRunePlacement = computeBalancedRuneAnchorPosition(
+    faces,
+    crystalHeightLine,
+    crystalRuneGlyphSize * H1_ROOT_RUNE_SCALE,
+    crystalRuneGlyphPlaneOffset
+  );
+  const crystalHeightAxis = crystalRunePlacement.axis;
+  const crystalRuneRotation = crystalRunePlacement.rotation;
+  const crystalRunePosition = crystalRunePlacement.position;
   const crystalRuneColor = getBodyColorForSelection(selectionId, "tetrahedron_crystal_rune_primary");
   const crystalRuneMeshes = createRuneMeshes(
     scene,
@@ -1434,13 +1442,13 @@ function createTetrahedronInteriorCrystals(scene, root, faces, selectionId, mate
     crystalRuneColor,
     {
       showHalo: true,
-      glyphSize: 0.92,
+      glyphSize: crystalRuneGlyphSize,
       haloScale: 1.76,
       billboardMode: BABYLON.AbstractMesh.BILLBOARDMODE_NONE,
       emissiveIntensity: 3.4,
       alwaysVisible: true,
       renderingGroupId: 3,
-      glyphPlaneOffset: 0.04,
+      glyphPlaneOffset: crystalRuneGlyphPlaneOffset,
       haloPlaneOffset: -0.024,
       alphaMode: BABYLON.Engine.ALPHA_COMBINE,
       textureSize: 512,
@@ -1449,7 +1457,7 @@ function createTetrahedronInteriorCrystals(scene, root, faces, selectionId, mate
   );
 
   // Ziel: Die H1-Rune geometrisch wirklich im Kristallzentrum halten.
-  // Warum: Fuer das gewuenschte Lesen der Form zaehlt hier nicht der Volumenschwerpunkt, sondern die sichtbare Mitte der gewaehlteten Hoehenlinie zwischen Spitze und Gegenflaeche.
+  // Warum: Fuer das gewuenschte Lesen der Form zaehlt hier weder der Volumenschwerpunkt noch die pure Linienmitte, sondern die Position, an der das Rune-Rechteck entlang der Hoehenlinie gleichmaessig Luft zu den Tetraederflaechen hat.
   crystalRuneMeshes.anchor.parent = root;
   crystalRuneMeshes.anchor.position.copyFrom(crystalRunePosition);
   crystalRuneMeshes.anchor.rotationQuaternion = crystalRuneRotation.clone();
@@ -2876,6 +2884,83 @@ function computePreferredTetrahedronHeightLine(faces) {
     axis: BABYLON.Axis.Y.clone(),
     midpoint: BABYLON.Vector3.Zero()
   };
+}
+
+function computeBalancedRuneAnchorPosition(faces, heightLine, runeExtent, glyphPlaneOffset) {
+  // Ziel: Position und Rollwinkel der H1-Rune gemeinsam so bestimmen, dass die Rune als Rechteck entlang der Hoehenachse moeglichst gleichmaessige Abstaende zu den Aussenflaechen hat.
+  // Warum: Die reine Linienmitte reicht nicht; erst die gemeinsame Suche ueber Achsenlage und Rechteck-Rollwinkel trifft die Nutzerregel mit gleichmaessiger Eck-Clearance.
+  const axis = heightLine.axis.clone().normalize();
+  const baseRotation = quaternionFromUnitVectors(BABYLON.Axis.Y, axis);
+  const halfExtent = runeExtent * 0.5;
+  const lineStart = heightLine.baseCenter;
+  const lineEnd = heightLine.apex;
+  let bestCandidate = {
+    axis,
+    position: heightLine.midpoint.clone(),
+    rotation: baseRotation.clone(),
+    spread: Number.POSITIVE_INFINITY,
+    minClearance: Number.NEGATIVE_INFINITY
+  };
+
+  for (let rollStep = 0; rollStep < 72; rollStep += 1) {
+    const rollAngle = (rollStep / 72) * Math.PI;
+    const rotation = BABYLON.Quaternion.RotationAxis(axis, rollAngle).multiply(baseRotation);
+    const rotationMatrix = BABYLON.Matrix.Identity();
+
+    rotation.toRotationMatrix(rotationMatrix);
+
+    const right = BABYLON.Vector3.TransformNormal(BABYLON.Axis.X, rotationMatrix).normalize();
+    const forward = BABYLON.Vector3.TransformNormal(BABYLON.Axis.Z, rotationMatrix).normalize();
+
+    for (let step = 8; step <= 112; step += 1) {
+      const t = step / 120;
+      const anchor = BABYLON.Vector3.Lerp(lineStart, lineEnd, t);
+      const planeCenter = anchor.add(forward.scale(glyphPlaneOffset));
+      const corners = [
+        planeCenter.add(right.scale(-halfExtent)).add(axis.scale(-halfExtent)),
+        planeCenter.add(right.scale(halfExtent)).add(axis.scale(-halfExtent)),
+        planeCenter.add(right.scale(-halfExtent)).add(axis.scale(halfExtent)),
+        planeCenter.add(right.scale(halfExtent)).add(axis.scale(halfExtent))
+      ];
+      const clearances = corners.map((corner) => computeNearestTetrahedronFaceClearance(corner, faces));
+      const minClearance = Math.min(...clearances);
+      const maxClearance = Math.max(...clearances);
+      const spread = maxClearance - minClearance;
+
+      if (
+        spread < bestCandidate.spread - 0.000001
+        || (
+          Math.abs(spread - bestCandidate.spread) <= 0.000001
+          && minClearance > bestCandidate.minClearance
+        )
+      ) {
+        bestCandidate = {
+          axis: axis.clone(),
+          position: anchor,
+          rotation,
+          spread,
+          minClearance
+        };
+      }
+    }
+  }
+
+  return {
+    axis: bestCandidate.axis,
+    position: bestCandidate.position,
+    rotation: bestCandidate.rotation
+  };
+}
+
+function computeNearestTetrahedronFaceClearance(point, faces) {
+  return faces.reduce((minimumDistance, face) => {
+    const faceCenter = computeFaceCenter(face.vertices);
+    const outwardNormal = computeOutwardNormal(face.vertices, faceCenter);
+    const signedDistance = BABYLON.Vector3.Dot(outwardNormal, point.subtract(faceCenter));
+    const interiorClearance = -signedDistance;
+
+    return Math.min(minimumDistance, interiorClearance);
+  }, Number.POSITIVE_INFINITY);
 }
 
 function computeFaceNormal(vertices) {
