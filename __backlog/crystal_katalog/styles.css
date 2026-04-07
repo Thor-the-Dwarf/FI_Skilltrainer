@@ -11,6 +11,7 @@
   --accent: 193 85% 60%;
   --accent-soft: 193 70% 52%;
   --accent-warm: 33 92% 60%;
+  --detail-advance-width: 58px;
   --shadow: 0 24px 70px rgba(3, 8, 20, 0.55);
   color-scheme: dark;
 }
@@ -365,7 +366,7 @@ body.is-exploded .detail-experience {
 .detail-cards {
   position: absolute;
   top: 0;
-  right: 0;
+  right: var(--detail-advance-width);
   bottom: 0;
   width: clamp(420px, 46vw, 720px);
   display: flex;
@@ -378,6 +379,47 @@ body.is-exploded .detail-experience {
   scrollbar-width: thin;
   scrollbar-color: hsl(var(--line-strong) / 0.9) transparent;
   z-index: 2;
+}
+
+.detail-advance-button {
+  /* Ziel: Einen klaren Weiter-Button als eigene Vollhoehen-Leiste an der Detailansicht bereitstellen. */
+  /* Warum: Der naechste Schritt soll aus dem DetailView erreichbar werden, ohne die Card-Flaeche oder die 3D-Szene mit zusaetzlichem UI zu ueberladen. */
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: var(--detail-advance-width);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  pointer-events: auto;
+  cursor: pointer;
+  background:
+    linear-gradient(180deg, hsl(var(--surface-strong) / 0.28), hsl(var(--surface) / 0.86));
+  box-shadow:
+    inset 1px 0 0 hsl(0 0% 100% / 0.08),
+    inset 12px 0 24px hsl(0 0% 100% / 0.03);
+  z-index: 4;
+}
+
+.detail-advance-button:hover,
+.detail-advance-button:focus-visible {
+  background:
+    linear-gradient(180deg, hsl(var(--surface-strong) / 0.42), hsl(var(--surface) / 0.96));
+  outline: none;
+}
+
+.detail-advance-glyph {
+  width: 0;
+  height: 0;
+  border-top: 18px solid transparent;
+  border-bottom: 18px solid transparent;
+  border-left: 22px solid hsl(var(--text) / 0.94);
+  filter: drop-shadow(0 0 14px hsl(0 0% 100% / 0.14));
+  transform: translateX(2px);
 }
 
 .detail-branch {
@@ -479,6 +521,10 @@ body.is-exploded .detail-experience {
 }
 
 @media (max-width: 920px) {
+  :root {
+    --detail-advance-width: 52px;
+  }
+
   .vault-shell {
     padding: 12px;
   }
@@ -497,7 +543,6 @@ body.is-exploded .detail-experience {
     width: min(52vw, 480px);
     padding-right: 18px;
   }
-
   .detail-children {
     grid-template-columns: 1fr;
   }
@@ -510,6 +555,10 @@ body.is-exploded .detail-experience {
 }
 
 @media (max-width: 560px) {
+  :root {
+    --detail-advance-width: 46px;
+  }
+
   .panel {
     padding: 16px;
     border-radius: 22px;
@@ -527,6 +576,11 @@ body.is-exploded .detail-experience {
     width: min(64vw, 320px);
     padding: 64px 12px 20px 8px;
     gap: 12px;
+  }
+  .detail-advance-glyph {
+    border-top-width: 15px;
+    border-bottom-width: 15px;
+    border-left-width: 18px;
   }
 
   .detail-card {
