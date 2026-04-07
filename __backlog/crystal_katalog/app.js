@@ -84,7 +84,9 @@ const state = {
     hiddenLights: [],
     stage: "idle",
     stageStartTime: 0,
-    items: []
+    items: [],
+    hoveredCardEntryId: null,
+    hoveredRuneEntryId: null
   },
   snap: {
     active: false,
@@ -179,7 +181,8 @@ function parseStartupConfig() {
   return {
     selectionId: itemsById.has(selectionCandidate) ? selectionCandidate : 1,
     openDetails: ["1", "true", "yes"].includes((params.get("detail") || "").toLowerCase()),
-    testlab: params.has("testlab") || params.has("debug")
+    testlab: params.has("testlab") || params.has("debug"),
+    hoverEntryId: params.get("hover") || null
   };
 }
 
@@ -450,6 +453,17 @@ function installGlobalDiagnosticHooks() {
     },
     openDetails() {
       showTetrahedronDetails();
+      refreshRuntimeDiagnostics();
+      return this.getReport();
+    },
+    hoverDetail(entryId) {
+      setHoveredDetailCardEntry(entryId || null);
+      refreshRuntimeDiagnostics();
+      return this.getReport();
+    },
+    clearHover() {
+      setHoveredDetailCardEntry(null);
+      setHoveredRuneEntry(null);
       refreshRuntimeDiagnostics();
       return this.getReport();
     },
@@ -3480,6 +3494,42 @@ function setRuneDisplayMode(item, isDetailView) {
   }
 }
 
+function getActiveDetailHoverEntryId() {
+  // Ziel: Einen einzigen sichtbaren Hover-Zustand fuer Detail-zu-Rune-Verbindungen ableiten.
+  // Warum: Karte und Rune koennen unabhaengig gehovert werden; fuer die Connector-Sichtbarkeit brauchen wir daraus eine einfache, priorisierte Leselogik.
+  return state.extraction.hoveredCardEntryId || state.extraction.hoveredRuneEntryId || null;
+}
+
+function syncDetailConnectorVisibility() {
+  // Ziel: Connectoren standardmaessig unsichtbar halten und nur fuer den aktiv gehoverteten Eintrag zeigen.
+  // Warum: Die Linien sollen den Blick nicht dauerhaft ueberladen, sondern nur als gezielte Orientierungsbruecke zwischen Detail und Rune dienen.
+  const activeEntryId = getActiveDetailHoverEntryId();
+
+  state.extraction.items.forEach((item) => {
+    if (!item.detailConnectorElement) {
+      return;
+    }
+
+    if (!activeEntryId || item.entryId !== activeEntryId) {
+      item.detailConnectorElement.setAttribute("visibility", "hidden");
+    }
+  });
+}
+
+function setHoveredDetailCardEntry(entryId) {
+  // Ziel: Card-Hover explizit in den Connector-Zustand ueberfuehren.
+  // Warum: Die Detailkarten liegen in einer eigenen DOM-Ebene und muessen dieselbe Hover-Quelle bedienen wie die 3D-Runen im Canvas.
+  state.extraction.hoveredCardEntryId = entryId;
+  syncDetailConnectorVisibility();
+}
+
+function setHoveredRuneEntry(entryId) {
+  // Ziel: Rune-Hover aus der Szene in dieselbe Connector-Logik wie Card-Hover einspeisen.
+  // Warum: Die Linie soll auftauchen, egal ob der Nutzer am Text oder direkt an der Rune andockt.
+  state.extraction.hoveredRuneEntryId = entryId;
+  syncDetailConnectorVisibility();
+}
+
 function createDetailCard(item) {
   const card = document.createElement("article");
   const titleTagName = item.level === "h1" ? "h2" : item.level === "h2" ? "h3" : "h4";
@@ -3493,51 +3543,48 @@ function createDetailCard(item) {
   subtitle.className = "detail-card-subtitle";
   subtitle.textContent = item.detail.subtitle;
   card.append(title, subtitle);
+  card.addEventListener("pointerenter", () => {
+    setHoveredDetailCardEntry(item.entryId);
+  });
+  card.addEventListener("pointerleave", () => {
+    if (state.extraction.hoveredCardEntryId === item.entryId) {
+      setHoveredDetailCardEntry(null);
+    }
+  });
 
+  item.detailCardElement = card;
   setRuneDisplayMode(item, true);
   setRuneHalosEnabled(item, true);
 
   return card;
 }
 
-function getHierarchyConnectorColor(item) {
-  // Ziel: Die Rune-Hierarchie farblich ohne Ablenkung lesbar machen.
-  // Warum: Die Verbindungslogik soll die Ebenen H1->H2 und H2->H3 markieren, nicht mit den individuellen Runenfarben um Aufmerksamkeit konkurrieren.
-  if (item.level === "h2") {
-    return "hsl(0 0% 100% / 0.96)";
-  }
-
-  return "hsl(0 0% 72% / 0.9)";
-}
-
-function mountHierarchyRuneConnectors(items) {
-  // Ziel: Die Detailhierarchie als direkte Rune-zu-Rune-Beziehung visualisieren.
-  // Warum: Die neue Leselogik verbindet nicht mehr Runen mit Cards, sondern H1 mit H2 und H2 mit H3 als echte Kristallhierarchie.
+function mountDetailHoverConnectors(items) {
+  // Ziel: Fuer jeden Detaileintrag eine eigene Verbindung zu seiner Rune vorbereiten.
+  // Warum: Die alte permanente Linienwand wird durch bedarfsorientierte Hover-Connectoren ersetzt, damit die Zuordnung nur bei Interesse sichtbar wird.
   if (!detailLines) {
     return;
   }
 
-  const itemsById = new Map(items.map((item) => [item.entryId, item]));
-
   items.forEach((item) => {
-    if (!item.parentId) {
-      item.hierarchyConnectorElement = null;
-      return;
-    }
-
-    const parent = itemsById.get(item.parentId);
-
-    if (!parent) {
-      item.hierarchyConnectorElement = null;
+    if (!item.runeAnchorMesh) {
+      item.detailConnectorElement = null;
       return;
     }
 
     const connectorLine = document.createElementNS("http://www.w3.org/2000/svg", "line");
     connectorLine.classList.add("detail-connector");
-    connectorLine.style.setProperty("--detail-accent", getHierarchyConnectorColor(item));
+    connectorLine.style.setProperty("--detail-accent", item.detail.accentHex);
     connectorLine.setAttribute("visibility", "hidden");
     detailLines.appendChild(connectorLine);
-    item.hierarchyConnectorElement = connectorLine;
+    item.detailConnectorElement = connectorLine;
+
+    [item.runeGlyphMesh, item.runeHaloMesh].filter(Boolean).forEach((mesh) => {
+      mesh.metadata = {
+        ...(mesh.metadata || {}),
+        detailHoverEntryId: item.entryId
+      };
+    });
   });
 }
 
@@ -3586,14 +3633,25 @@ function mountExplodedDetails(items) {
     detailCards.appendChild(branch);
   });
 
-  mountHierarchyRuneConnectors(items);
+  mountDetailHoverConnectors(items);
+  syncDetailConnectorVisibility();
 }
 
 function clearExplodedDetails() {
   state.extraction.items.forEach((item) => {
     setRuneHalosEnabled(item, false);
     setRuneDisplayMode(item, false);
+    [item.runeGlyphMesh, item.runeHaloMesh].filter(Boolean).forEach((mesh) => {
+      if (!mesh.metadata) {
+        return;
+      }
+
+      delete mesh.metadata.detailHoverEntryId;
+    });
   });
+
+  state.extraction.hoveredCardEntryId = null;
+  state.extraction.hoveredRuneEntryId = null;
 
   if (detailCards) {
     detailCards.innerHTML = "";
@@ -3633,6 +3691,11 @@ function showTetrahedronDetails() {
   mountExplodedDetails(detailItems);
   state.extraction.items = detailItems;
   state.extraction.stage = "expanded";
+
+  if (STARTUP_CONFIG.hoverEntryId) {
+    setHoveredDetailCardEntry(STARTUP_CONFIG.hoverEntryId);
+  }
+
   refreshRuntimeDiagnostics();
 }
 
@@ -3709,41 +3772,87 @@ function projectWorldPointToStage(worldPoint) {
   };
 }
 
+function pickDetailItemFromRuneHover(scene, canvas, event) {
+  // Ziel: Einen gehoverten Detaileintrag ueber die sichtbare Rune im Canvas finden.
+  // Warum: Ein screen-space Hover-Test an den projizierten Rune-Ankern ist stabiler als Pickbarkeit umzuschalten und bewahrt den bestehenden Face-Klickpfad.
+  if (!scene || !state.camera) {
+    return null;
+  }
+
+  const rect = canvas.getBoundingClientRect();
+  const pointerX = event.clientX - rect.left;
+  const pointerY = event.clientY - rect.top;
+  const cameraRight = state.camera.getDirection(BABYLON.Axis.X).normalize();
+  let bestMatch = null;
+  let bestDistance = Number.POSITIVE_INFINITY;
+
+  state.extraction.items.forEach((item) => {
+    if (!item.runeAnchorMesh || !item.runeGlyphMesh) {
+      return;
+    }
+
+    const centerWorld = item.runeAnchorMesh.getAbsolutePosition();
+    const centerPoint = projectWorldPointToStage(centerWorld);
+
+    if (!centerPoint) {
+      return;
+    }
+
+    const radiusWorld = item.runeGlyphMesh.getBoundingInfo()?.boundingSphere?.radiusWorld || 0.18;
+    const edgePoint = projectWorldPointToStage(centerWorld.add(cameraRight.scale(radiusWorld)));
+    const radiusPx = edgePoint
+      ? Math.hypot(edgePoint.x - centerPoint.x, edgePoint.y - centerPoint.y)
+      : 18;
+    const hoverRadius = Math.max(12, radiusPx * 1.15);
+    const pointerDistance = Math.hypot(pointerX - centerPoint.x, pointerY - centerPoint.y);
+
+    if (pointerDistance <= hoverRadius && pointerDistance < bestDistance) {
+      bestDistance = pointerDistance;
+      bestMatch = item;
+    }
+  });
+
+  return bestMatch;
+}
+
 function syncExplodedDetailLayout() {
-  // Ziel: Die sichtbaren Detailverbindungen framegenau zwischen den jeweiligen Hierarchie-Runen halten.
-  // Warum: Die neue Detailansicht koppelt Linien an echte H1/H2/H3-Anker im Kristall statt an Card-Kanten, deshalb muss das Layout nur Rune-zu-Rune synchronisiert werden.
+  // Ziel: Die Hover-Connectoren framegenau zwischen Rune und zugehoeriger Detailkarte halten.
+  // Warum: Die Karten leben im DOM und die Runen im Babylon-Canvas; nur eine laufende Projektion haelt beide Ebenen deckungsgleich verbunden.
   if (!detailCards || !detailLines || !state.extraction.items.length) {
     return;
   }
 
-  const itemsById = new Map(state.extraction.items.map((item) => [item.entryId, item]));
+  const activeEntryId = getActiveDetailHoverEntryId();
 
   state.extraction.items.forEach((item) => {
-    if (!item.hierarchyConnectorElement || !item.parentId || !item.runeAnchorMesh) {
+    if (!item.detailConnectorElement || !item.detailCardElement || !item.runeAnchorMesh) {
       return;
     }
 
-    const parentItem = itemsById.get(item.parentId);
+    const sourcePoint = projectWorldPointToStage(item.runeAnchorMesh.getAbsolutePosition());
+    const cardRect = item.detailCardElement.getBoundingClientRect();
+    const canvasRect = renderCanvas.getBoundingClientRect();
+    const targetPoint = {
+      x: (cardRect.left - canvasRect.left) + 2,
+      y: (cardRect.top - canvasRect.top) + (cardRect.height / 2)
+    };
 
-    if (!parentItem?.runeAnchorMesh) {
-      item.hierarchyConnectorElement.setAttribute("visibility", "hidden");
+    if (!sourcePoint) {
+      item.detailConnectorElement.setAttribute("visibility", "hidden");
       return;
     }
 
-    const sourcePoint = projectWorldPointToStage(parentItem.runeAnchorMesh.getAbsolutePosition());
-    const targetPoint = projectWorldPointToStage(item.runeAnchorMesh.getAbsolutePosition());
-
-    if (!sourcePoint || !targetPoint) {
-      item.hierarchyConnectorElement.setAttribute("visibility", "hidden");
-      return;
-    }
-
-    item.hierarchyConnectorElement.setAttribute("visibility", "visible");
-    item.hierarchyConnectorElement.setAttribute("x1", String(sourcePoint.x));
-    item.hierarchyConnectorElement.setAttribute("y1", String(sourcePoint.y));
-    item.hierarchyConnectorElement.setAttribute("x2", String(targetPoint.x));
-    item.hierarchyConnectorElement.setAttribute("y2", String(targetPoint.y));
+    item.detailConnectorElement.setAttribute(
+      "visibility",
+      activeEntryId && item.entryId === activeEntryId ? "visible" : "hidden"
+    );
+    item.detailConnectorElement.setAttribute("x1", String(sourcePoint.x));
+    item.detailConnectorElement.setAttribute("y1", String(sourcePoint.y));
+    item.detailConnectorElement.setAttribute("x2", String(targetPoint.x));
+    item.detailConnectorElement.setAttribute("y2", String(targetPoint.y));
   });
+
+  syncDetailConnectorVisibility();
 }
 
 function updateExtractionAnimation() {
@@ -3780,6 +3889,15 @@ function enableBoxDragging(camera, canvas) {
   });
 
   canvas.addEventListener("pointermove", (event) => {
+    if (isTetrahedronExpanded()) {
+      if (dragState.active) {
+        setHoveredRuneEntry(null);
+      } else {
+        const hoveredDetailItem = pickDetailItemFromRuneHover(state.scene, canvas, event);
+        setHoveredRuneEntry(hoveredDetailItem?.entryId || null);
+      }
+    }
+
     if (event.pointerId !== dragState.pointerId || !dragState.active || !state.crystalRoot) {
       return;
     }
@@ -3858,6 +3976,9 @@ function enableBoxDragging(camera, canvas) {
 
   canvas.addEventListener("pointerup", endDrag);
   canvas.addEventListener("pointercancel", cancelDrag);
+  canvas.addEventListener("pointerleave", () => {
+    setHoveredRuneEntry(null);
+  });
 }
 
 function enableViewerMovement(camera) {
