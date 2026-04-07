@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Crystal Vault Dashboard Prototype</title>
+  <link rel="icon" href="data:,">
+  <link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+  <main class="vault-shell">
+    <section class="vault-grid">
+      <aside class="panel panel-list" aria-label="Crystal Vault Liste">
+        <div class="list-controls" aria-label="Schnellzugriff">
+          <label class="list-control">
+            <span class="list-control-label">Grundformen</span>
+            <select id="prototypeSelect" class="list-control-select" aria-label="Grundform auswaehlen"></select>
+          </label>
+          <label class="list-control">
+            <span class="list-control-label">Kristalle</span>
+            <select id="catalogSelect" class="list-control-select" aria-label="Kristall auswaehlen"></select>
+          </label>
+        </div>
+        <div id="listView" class="list-view" role="list" aria-label="Crystal Vault Elemente"></div>
+      </aside>
+
+      <section class="panel panel-stage" aria-label="Babylon.js Szene">
+        <div class="stage-frame">
+          <canvas id="renderCanvas" aria-label="Babylon.js Vorschau"></canvas>
+          <div class="stage-overlay">
+            <span id="selectionPill" class="overlay-pill">Aktiv: 1</span>
+            <span id="enginePill" class="overlay-pill overlay-pill-muted">Babylon.js lokal</span>
+          </div>
+        </div>
+      </section>
+    </section>
+  </main>
+
+  <script src="../../frontend/vendor/vendor/babylon/babylon.js"></script>
+  <script type="module" src="./app.js"></script>
+</body>
+</html>
