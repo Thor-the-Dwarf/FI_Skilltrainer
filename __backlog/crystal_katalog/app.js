@@ -32,11 +32,10 @@ const FRAGMENT_CRYSTAL_ALPHA = 0.75;
 const RUNE_FRAGMENT_ALPHA = 0.1;
 const H3_ROOT_RUNE_SCALE = 0.24;
 const H3_DETAIL_RUNE_SCALE = 0.475;
-const H2_ROOT_RUNE_SCALE = H3_ROOT_RUNE_SCALE * 3;
-const H2_DETAIL_RUNE_SCALE = H3_DETAIL_RUNE_SCALE * 2;
-const H1_ROOT_RUNE_SCALE = 1.82;
-const H1_DETAIL_RUNE_SCALE = 1.225;
-const ALWAYS_VISIBLE_RUNE_GROUP = 6;
+const H2_ROOT_RUNE_SCALE = 1.02;
+const H2_DETAIL_RUNE_SCALE = 0.88;
+const H1_ROOT_RUNE_SCALE = 2.2;
+const H1_DETAIL_RUNE_SCALE = 1.22;
 const INITIAL_CRYSTAL_ROTATION = Object.freeze({
   x: -0.34,
   y: 0.62,
@@ -198,7 +197,8 @@ function createDiagnosticsState(startupConfig) {
       visibleH1: 0,
       visibleH2: 0,
       visibleH3: 0
-    }
+    },
+    samples: []
   };
 }
 
@@ -280,6 +280,19 @@ function updateRuntimeDebugPanel() {
     .map((entry) => `[${entry.level.toUpperCase()}] ${entry.message}${entry.details ? `\n${entry.details}` : ""}`)
     .join("\n\n");
 
+  if (!runtimeDebugLog.textContent && diagnostics.enabled && diagnostics.samples.length) {
+    runtimeDebugLog.textContent = diagnostics.samples
+      .map((entry) => {
+        return [
+          `${entry.level} ${entry.title}`,
+          `enabled=${entry.enabled} root=${entry.rootScale} detail=${entry.detailScale}`,
+          `mesh=${formatDiagnosticValue(entry.meshScale)}`,
+          `pos=${formatDiagnosticValue(entry.position)}`
+        ].join("\n");
+      })
+      .join("\n\n");
+  }
+
   if (enginePill) {
     enginePill.textContent = errorCount > 0
       ? `Babylon.js lokal · ${errorCount} Fehler`
@@ -316,6 +329,9 @@ function createRuneReport(entry) {
       : false,
     rootScale: entry?.rootRuneScale || 0,
     detailScale: entry?.detailRuneScale || 0,
+    meshScale: entry?.runeGlyphMesh?.scaling
+      ? toSerializableVector3(entry.runeGlyphMesh.scaling)
+      : null,
     position: toSerializableVector3(worldPosition)
   };
 }
@@ -337,6 +353,11 @@ function refreshRuntimeDiagnostics() {
     visibleH2: fragmentEntries.filter((entry) => entry?.runeGlyphMesh?.isEnabled?.()).length,
     visibleH3: runeEntries.filter((entry) => entry?.runeGlyphMesh?.isEnabled?.()).length
   };
+  diagnostics.samples = [
+    ...crystalEntry.map(createRuneReport),
+    ...fragmentEntries.slice(0, 4).map(createRuneReport),
+    ...runeEntries.slice(0, 4).map(createRuneReport)
+  ];
 
   setDiagnosticCondition(
     "missing-h1",
@@ -350,6 +371,41 @@ function refreshRuntimeDiagnostics() {
   );
 
   updateRuntimeDebugPanel();
+}
+
+function syncDetachedRuneAnchors() {
+  // Ziel: Legacy-Helfer nur fuer wirklich geloeste Rune-Anker ausfuehren.
+  // Warum: H1/H2 sollen wieder an ihrer echten Kristallgeometrie haengen; kameraseitiges Nachziehen war der Hauptgrund dafuer, dass Zentrums- und Flaechenrunen nicht dort erschienen, wo sie semantisch hingehoeren.
+  const root = state.crystalRoot;
+  const metadata = root?.metadata;
+  const cameraPosition = state.camera?.globalPosition;
+
+  if (!root || !metadata || !cameraPosition) {
+    return;
+  }
+
+  const entries = [
+    metadata.crystalRuneEntry,
+    ...(metadata.fragmentEntries || [])
+  ].filter((entry) => entry?.followCrystalTransform);
+
+  if (!entries.length) {
+    return;
+  }
+
+  const worldMatrix = root.computeWorldMatrix(true);
+
+  entries.forEach((entry) => {
+    const worldPoint = BABYLON.Vector3.TransformCoordinates(entry.rootRunePosition, worldMatrix);
+    const towardCamera = cameraPosition.subtract(worldPoint);
+    const visibilityLift = entry.level === "h1" ? 0.3 : 0.12;
+
+    if (towardCamera.lengthSquared() > 0.000001) {
+      worldPoint.addInPlace(towardCamera.normalize().scale(visibilityLift));
+    }
+
+    entry.runeAnchor.position.copyFrom(worldPoint);
+  });
 }
 
 function installGlobalDiagnosticHooks() {
@@ -519,6 +575,7 @@ function setupBabylonScene() {
     updateSnapAnimation();
     updateExtractionAnimation();
     updateViewerMovement(scene);
+    syncDetachedRuneAnchors();
     try {
       scene.render();
     } catch (error) {
@@ -592,6 +649,9 @@ function disposeCurrentCrystal() {
   state.faceEntries = [];
 
   if (state.crystalRoot) {
+    state.crystalRoot.metadata?.detachedRuneAnchors?.forEach((anchor) => {
+      anchor?.dispose?.();
+    });
     state.crystalRoot.dispose(false);
     state.crystalRoot = null;
   }
@@ -1314,7 +1374,8 @@ function createTransparentCrystal(scene, shapeName, faces, selectionId) {
     fragmentEntries: [],
     runeFragmentEntries: [],
     fragmentFaceKeys: new Set(),
-    subcrystalFaceKeys: new Set()
+    subcrystalFaceKeys: new Set(),
+    detachedRuneAnchors: []
   };
   const materials = [];
   const faceEntries = [];
@@ -1356,6 +1417,8 @@ function createTransparentCrystal(scene, shapeName, faces, selectionId) {
 }
 
 function createTetrahedronInteriorCrystals(scene, root, faces, selectionId, materials) {
+  // Ziel: Die Form-4-Hierarchie als klar lesbare H1/H2/H3-Raumlogik aufbauen.
+  // Warum: Die groesste Rune muss im Kristallzentrum dominant lesbar sein, die H2-Runen explizit auf den Aussenflaechen sitzen und die H3-Runen als kleine Einschluss-Zentren der RunenFragmente erkennbar bleiben.
   const centroid = computeUniqueVerticesCenter(faces);
   const crystalRuneColor = getBodyColorForSelection(selectionId, "tetrahedron_crystal_rune_primary");
   const crystalRuneMeshes = createRuneMeshes(
@@ -1365,27 +1428,26 @@ function createTetrahedronInteriorCrystals(scene, root, faces, selectionId, mate
     crystalRuneColor,
     {
       showHalo: true,
-      glyphSize: 0.62,
-      haloScale: 1.62,
+      glyphSize: 0.92,
+      haloScale: 1.76,
       billboardMode: BABYLON.AbstractMesh.BILLBOARDMODE_NONE,
-      emissiveIntensity: 2.8,
+      emissiveIntensity: 3.4,
       alwaysVisible: true,
-      renderingGroupId: 5,
-      glyphPlaneOffset: 0.03,
-      haloPlaneOffset: -0.018
+      renderingGroupId: 3,
+      glyphPlaneOffset: 0.04,
+      haloPlaneOffset: -0.024,
+      alphaMode: BABYLON.Engine.ALPHA_ADD,
+      textureSize: 512,
+      outlineWidth: 24
     }
   );
 
+  // Ziel: Die H1-Rune geometrisch wirklich im Kristallzentrum halten.
+  // Warum: Sobald der Anchor vom Kristall geloest und pro Frame zur Kamera gezogen wird, ist die Hauptrune zwar vielleicht sichtbarer, aber nicht mehr im Zentrum des Koerpers.
   crystalRuneMeshes.anchor.parent = root;
   crystalRuneMeshes.anchor.position.copyFrom(centroid);
   crystalRuneMeshes.anchor.rotationQuaternion = BABYLON.Quaternion.Identity();
-  crystalRuneMeshes.anchor.scaling.setAll(H1_ROOT_RUNE_SCALE);
-  crystalRuneMeshes.glyphMesh.renderingGroupId = ALWAYS_VISIBLE_RUNE_GROUP;
-
-  if (crystalRuneMeshes.haloMesh) {
-    crystalRuneMeshes.haloMesh.renderingGroupId = ALWAYS_VISIBLE_RUNE_GROUP;
-  }
-
+  crystalRuneMeshes.anchor.scaling.setAll(1);
   materials.push(...crystalRuneMeshes.materials);
   root.metadata.crystalRuneEntry = {
     entryId: `tetrahedron_crystal_${selectionId}`,
@@ -1403,7 +1465,7 @@ function createTetrahedronInteriorCrystals(scene, root, faces, selectionId, mate
     rootRuneRotation: BABYLON.Quaternion.Identity(),
     rootRuneScale: H1_ROOT_RUNE_SCALE,
     detailRuneScale: H1_DETAIL_RUNE_SCALE,
-    rootBillboardMode: BABYLON.AbstractMesh.BILLBOARDMODE_ALL,
+    rootBillboardMode: BABYLON.AbstractMesh.BILLBOARDMODE_NONE,
     detailBillboardMode: BABYLON.AbstractMesh.BILLBOARDMODE_ALL,
     detail: createCrystalDetailData({
       selectionId,
@@ -1419,13 +1481,7 @@ function createTetrahedronInteriorCrystals(scene, root, faces, selectionId, mate
     const fragmentFaces = buildTetrahedronFragmentFaces(face.vertices, centroid);
     const fragmentRunePosition = computeFragmentFaceRunePosition(face.vertices, centroid);
     const fragmentRuneRotation = quaternionFromUnitVectors(BABYLON.Axis.Z, computeOutwardNormal(face.vertices));
-    const fragmentRuneSize = Math.max(
-      0.3,
-      runeLayout
-        .filter((item) => item.hasRune)
-        .reduce((sum, item) => sum + item.runeSize, 0)
-        / Math.max(1, runeLayout.filter((item) => item.hasRune).length)
-    );
+    const fragmentRuneSize = 0.78;
     const fragmentRuneMeshes = createRuneMeshes(
       scene,
       `tetrahedron_fragment_rune_${faceIndex + 1}`,
@@ -1434,26 +1490,25 @@ function createTetrahedronInteriorCrystals(scene, root, faces, selectionId, mate
       {
         showHalo: true,
         glyphSize: fragmentRuneSize,
-        haloScale: 1.6,
+        haloScale: 1.7,
         billboardMode: BABYLON.AbstractMesh.BILLBOARDMODE_NONE,
-        emissiveIntensity: 2.2,
-        alwaysVisible: true,
-        renderingGroupId: 5,
-        glyphPlaneOffset: 0.032,
-        haloPlaneOffset: -0.02
+        emissiveIntensity: 2.8,
+        alwaysVisible: false,
+        renderingGroupId: 3,
+        glyphPlaneOffset: 0.028,
+        haloPlaneOffset: -0.018,
+        alphaMode: BABYLON.Engine.ALPHA_ADD,
+        textureSize: 512,
+        outlineWidth: 22
       }
     );
 
+    // Ziel: Die H2-Runen stabil direkt an ihren Fragmentflaechen verankern.
+    // Warum: Fragmentrunen gehoeren auf die nach aussen zeigende Flaeche; ein geloester World-Sync macht daraus nur scheinbar sichtbare Marker statt echte Flaechenrunen.
     fragmentRuneMeshes.anchor.parent = root;
     fragmentRuneMeshes.anchor.position.copyFrom(fragmentRunePosition);
     fragmentRuneMeshes.anchor.rotationQuaternion = fragmentRuneRotation.clone();
-    fragmentRuneMeshes.anchor.scaling.setAll(H2_ROOT_RUNE_SCALE);
-    fragmentRuneMeshes.glyphMesh.renderingGroupId = ALWAYS_VISIBLE_RUNE_GROUP;
-
-    if (fragmentRuneMeshes.haloMesh) {
-      fragmentRuneMeshes.haloMesh.renderingGroupId = ALWAYS_VISIBLE_RUNE_GROUP;
-    }
-
+    fragmentRuneMeshes.anchor.scaling.setAll(1);
     materials.push(...fragmentRuneMeshes.materials);
     createTetrahedronFragmentBoundaries(
       scene,
@@ -1482,7 +1537,7 @@ function createTetrahedronInteriorCrystals(scene, root, faces, selectionId, mate
       rootRuneRotation: fragmentRuneRotation.clone(),
       rootRuneScale: H2_ROOT_RUNE_SCALE,
       detailRuneScale: H2_DETAIL_RUNE_SCALE,
-      rootBillboardMode: BABYLON.AbstractMesh.BILLBOARDMODE_ALL,
+      rootBillboardMode: BABYLON.AbstractMesh.BILLBOARDMODE_NONE,
       detailBillboardMode: BABYLON.AbstractMesh.BILLBOARDMODE_ALL,
       detail: createFragmentDetailData({
         selectionId,
@@ -1532,7 +1587,7 @@ function createTetrahedronInteriorCrystals(scene, root, faces, selectionId, mate
       runeMeshes.anchor.parent = root;
       runeMeshes.anchor.position.copyFrom(runeLayoutItem.rootRunePosition);
       runeMeshes.anchor.rotationQuaternion = runeLayoutItem.rootRuneRotation.clone();
-      runeMeshes.anchor.scaling.setAll(H3_ROOT_RUNE_SCALE);
+      runeMeshes.anchor.scaling.setAll(1);
       runeMeshes.glyphMesh.renderingGroupId = 3;
 
       if (runeMeshes.haloMesh) {
@@ -1692,40 +1747,54 @@ function createRuneMeshes(scene, name, runeSymbol, accentHex, options = {}) {
     alwaysVisible = false,
     renderingGroupId = 3,
     glyphPlaneOffset = 0.006,
-    haloPlaneOffset = -0.006
+    haloPlaneOffset = -0.006,
+    alphaMode = BABYLON.Engine.ALPHA_COMBINE,
+    textureSize = 256,
+    outlineWidth = 14
   } = options;
+  // Ziel: Runen als wiederverwendbaren Renderbaustein fuer Root- und Detail-View bereitstellen.
+  // Warum: Die Runen muessen je nach Ebene zwischen unauffaelligem Einschluss, dominanter Zentralrune und klar lesbarer Detailansicht umschalten koennen, ohne pro Ebene komplett getrennte Mesh-Pfade zu pflegen.
   const anchor = new BABYLON.TransformNode(`${name}_anchor`, scene);
-  const runeTexture = new BABYLON.DynamicTexture(`${name}_glyph_texture`, { width: 256, height: 256 }, scene, true);
+  const runeTexture = new BABYLON.DynamicTexture(`${name}_glyph_texture`, { width: textureSize, height: textureSize }, scene, true);
   const haloTexture = showHalo
-    ? new BABYLON.DynamicTexture(`${name}_halo_texture`, { width: 256, height: 256 }, scene, true)
+    ? new BABYLON.DynamicTexture(`${name}_halo_texture`, { width: textureSize, height: textureSize }, scene, true)
     : null;
   const accentColor = BABYLON.Color3.FromHexString(accentHex);
   const runeContext = runeTexture.getContext();
   const haloContext = haloTexture?.getContext() || null;
+  const halfTexture = textureSize / 2;
+  const fontSize = Math.round(textureSize * 0.46);
+  const shadowBlur = Math.round(textureSize * (alwaysVisible ? 0.17 : 0.1));
+  const haloRadius = Math.round(textureSize * 0.34);
+  const haloLineWidth = Math.max(4, Math.round(textureSize * 0.02));
 
-  runeContext.clearRect(0, 0, 256, 256);
+  runeContext.clearRect(0, 0, textureSize, textureSize);
   runeContext.save();
-  runeContext.translate(128, 128);
+  runeContext.translate(halfTexture, halfTexture);
   runeContext.fillStyle = accentHex;
   runeContext.shadowColor = `${accentHex}ee`;
-  runeContext.shadowBlur = 26;
-  runeContext.font = "700 118px 'Times New Roman'";
+  runeContext.shadowBlur = shadowBlur;
+  runeContext.strokeStyle = "rgba(0, 0, 0, 0.88)";
+  runeContext.lineWidth = outlineWidth;
+  runeContext.lineJoin = "round";
+  runeContext.font = `700 ${fontSize}px 'Noto Sans Symbols 2', 'Segoe UI Symbol', 'Arial Unicode MS', 'Times New Roman'`;
   runeContext.textAlign = "center";
   runeContext.textBaseline = "middle";
+  runeContext.strokeText(runeSymbol, 0, Math.round(textureSize * 0.03));
   runeContext.fillText(runeSymbol, 0, 8);
   runeContext.restore();
   runeTexture.update();
 
   if (haloContext && haloTexture) {
-    haloContext.clearRect(0, 0, 256, 256);
+    haloContext.clearRect(0, 0, textureSize, textureSize);
     haloContext.save();
-    haloContext.translate(128, 128);
+    haloContext.translate(halfTexture, halfTexture);
     haloContext.beginPath();
-    haloContext.arc(0, 0, 86, 0, TAU);
-    haloContext.lineWidth = 5;
+    haloContext.arc(0, 0, haloRadius, 0, TAU);
+    haloContext.lineWidth = haloLineWidth;
     haloContext.strokeStyle = `${accentHex}dd`;
     haloContext.shadowColor = accentHex;
-    haloContext.shadowBlur = 24;
+    haloContext.shadowBlur = shadowBlur;
     haloContext.stroke();
     haloContext.restore();
     haloTexture.update();
@@ -1739,7 +1808,7 @@ function createRuneMeshes(scene, name, runeSymbol, accentHex, options = {}) {
   glyphMaterial.backFaceCulling = false;
   glyphMaterial.useAlphaFromDiffuseTexture = true;
   glyphMaterial.transparencyMode = BABYLON.Material.MATERIAL_ALPHABLEND;
-  glyphMaterial.alphaMode = BABYLON.Engine.ALPHA_COMBINE;
+  glyphMaterial.alphaMode = alphaMode;
   glyphMaterial.disableDepthWrite = alwaysVisible;
   glyphMaterial.zOffset = alwaysVisible ? -6 : 0;
 
@@ -1755,7 +1824,7 @@ function createRuneMeshes(scene, name, runeSymbol, accentHex, options = {}) {
     haloMaterial.backFaceCulling = false;
     haloMaterial.useAlphaFromDiffuseTexture = true;
     haloMaterial.transparencyMode = BABYLON.Material.MATERIAL_ALPHABLEND;
-    haloMaterial.alphaMode = BABYLON.Engine.ALPHA_COMBINE;
+    haloMaterial.alphaMode = alphaMode;
     haloMaterial.disableDepthWrite = alwaysVisible;
     haloMaterial.zOffset = alwaysVisible ? -7 : 0;
   }
@@ -2930,18 +2999,12 @@ function buildTetrahedronFragmentFaces(vertices, centroid) {
   ];
 }
 
-function computeFragmentFaceRunePosition(vertices, centroid, insetRatio = 0.08) {
+function computeFragmentFaceRunePosition(vertices, centroid, surfaceLift = 0.032) {
+  // Ziel: H2-Runen direkt auf der nach aussen zeigenden Fragmentflaeche verankern.
+  // Warum: Die Fragmentrunen sollen als zweite Hierarchieebene klar auf den Aussenflaechen liegen; ein kleiner Lift macht sie sichtbar, ohne dass sie wie abgeloeste Marker weit vor dem Fragment schweben.
   const faceCenter = computeFaceCenter(vertices);
-  const inwardVector = centroid.subtract(faceCenter);
   const outwardNormal = computeOutwardNormal(vertices, faceCenter);
-
-  if (inwardVector.lengthSquared() < 0.000001) {
-    return faceCenter;
-  }
-
-  return faceCenter
-    .add(inwardVector.scale(insetRatio * 0.18))
-    .add(outwardNormal.scale(0.05));
+  return faceCenter.add(outwardNormal.scale(surfaceLift));
 }
 
 function createTetrahedronFragmentBoundaries(scene, parent, name, faces, accentHex, materials) {
@@ -3184,6 +3247,9 @@ function setRuneDisplayMode(item, isDetailView) {
   if (!item?.runeAnchor || !item?.runeGlyphMesh) {
     return;
   }
+  // Ziel: Die Hierarchie H1/H2/H3 nicht nur datenlogisch, sondern auch optisch eindeutig machen.
+  // Warum: Die Rune-Groessen muessen sichtbar zwischen Kristall, Fragment und RunenFragment unterscheiden; direkte Mesh-Skalierung ist hier robuster als nur ueber den Parent-Transform zu gehen.
+  const nextScale = isDetailView ? (item.detailRuneScale || 1) : (item.rootRuneScale || 1);
 
   item.runeAnchor.position.copyFrom(
     isDetailView
@@ -3195,13 +3261,15 @@ function setRuneDisplayMode(item, isDetailView) {
     item.runeAnchor.rotationQuaternion = item.rootRuneRotation.clone();
   }
 
-  item.runeAnchor.scaling.setAll(isDetailView ? (item.detailRuneScale || 1) : (item.rootRuneScale || 1));
+  item.runeAnchor.scaling.setAll(1);
+  item.runeGlyphMesh.scaling.setAll(nextScale);
   const nextBillboardMode = isDetailView
     ? (item.detailBillboardMode ?? BABYLON.AbstractMesh.BILLBOARDMODE_ALL)
     : (item.rootBillboardMode ?? BABYLON.AbstractMesh.BILLBOARDMODE_NONE);
   item.runeGlyphMesh.billboardMode = nextBillboardMode;
 
   if (item.runeHaloMesh) {
+    item.runeHaloMesh.scaling.setAll(nextScale);
     item.runeHaloMesh.billboardMode = nextBillboardMode;
   }
 }
