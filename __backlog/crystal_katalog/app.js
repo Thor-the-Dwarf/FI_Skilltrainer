@@ -3933,7 +3933,6 @@ function computePreferredPolyhedronHeightLine(faces) {
 function buildFractalLayoutItem(clusterCells, runeIndex) {
   const boundaryFaces = buildClusterBoundaryFaces(clusterCells);
   const faceEntries = buildPolyhedronFaceEntries(boundaryFaces);
-  const fractalCenter = computePolyhedronCenterFromFaces(boundaryFaces);
   const runeSymbol = SUBCRYSTAL_RUNE_SYMBOLS[runeIndex % SUBCRYSTAL_RUNE_SYMBOLS.length];
   const runeGlyphLayout = measureRuneGlyphLayout(runeSymbol, 256, 14);
   const maxRuneSize = clusterCells.reduce((maximum, cell) => {
@@ -3953,15 +3952,15 @@ function buildFractalLayoutItem(clusterCells, runeIndex) {
     cellIndex: clusterCells[0]?.cellIndex ?? runeIndex,
     hasRune: true,
     runeIndex,
-    // Ziel: H3-Rune im echten Zentrum ihres Fraktalkoerpers halten.
-    // Warum: Fuer H3 gilt die Parent-Logik 1:1 zum Fraktal; die Rune soll deshalb im Koerperzentrum sitzen und nicht entlang derselben Clearance-Suche wie H1 verschoben werden.
-    position: fractalCenter.clone(),
-    runePosition: fractalCenter.clone(),
-    rootRunePosition: fractalCenter.clone(),
-    detailRunePosition: fractalCenter.clone(),
+    // Ziel: H3-Rune ueber dieselbe Hoehenausgleichs-Logik wie H1 innerhalb ihres Fraktalkoerpers positionieren.
+    // Warum: Auch fuer H3 sollen Gesamthoehe und moeglichst gleichmaessiger Abstand zu den Flaechen des Parent-Fraktals zaehlen, statt nur die reine Volumenmitte zu treffen.
+    position: balancedPlacement.position.clone(),
+    runePosition: balancedPlacement.position.clone(),
+    rootRunePosition: balancedPlacement.position.clone(),
+    detailRunePosition: balancedPlacement.position.clone(),
     rootRuneRotation: balancedPlacement.rotation.clone(),
     runeSize,
-    distributionPoint: fractalCenter.clone(),
+    distributionPoint: computePolyhedronCenterFromFaces(boundaryFaces),
     subcrystalFaces: boundaryFaces,
     childCellIndices: clusterCells.map((cell) => cell.cellIndex)
   };
