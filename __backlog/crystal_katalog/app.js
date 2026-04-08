@@ -1677,6 +1677,7 @@ function createTetrahedronInteriorCrystals(scene, root, faces, selectionId, mate
   // Warum: Die groesste Rune muss im Kristallzentrum dominant lesbar sein, die H2-Runen explizit auf den Aussenflaechen sitzen und die H3-Runen als kleine Einschluss-Zentren der RunenFragmente erkennbar bleiben.
   const centroid = computeUniqueVerticesCenter(faces);
   const crystalHeightLine = computePreferredTetrahedronHeightLine(faces);
+  const crystalFaceEntries = buildPolyhedronFaceEntries(faces.map((face) => face.vertices));
   const crystalRuneGlyphSize = 0.92;
   const crystalRuneGlyphPlaneOffset = 0.04;
   const crystalRuneGlyphLayout = measureRuneGlyphLayout(CRYSTAL_RUNE_SYMBOL, 512, 24);
@@ -1689,7 +1690,7 @@ function createTetrahedronInteriorCrystals(scene, root, faces, selectionId, mate
   );
   const crystalHeightAxis = crystalRunePlacement.axis;
   const crystalRuneRotation = crystalRunePlacement.rotation;
-  const crystalRunePosition = crystalRunePlacement.position;
+  const crystalRunePosition = computeMaximumInscribedSphere(crystalFaceEntries).center;
   const crystalRuneColor = getBodyColorForSelection(selectionId, "tetrahedron_crystal_rune_primary");
   const crystalRuneMeshes = createRuneMeshes(
     scene,
@@ -3232,6 +3233,155 @@ function computePreferredTetrahedronHeightLine(faces) {
   return computeLongestBodyHeightLine(faces);
 }
 
+function solveLinearSystem(matrixRows, rhsValues) {
+  const size = rhsValues.length;
+  const augmented = matrixRows.map((row, index) => [...row, rhsValues[index]]);
+
+  for (let pivotIndex = 0; pivotIndex < size; pivotIndex += 1) {
+    let bestRow = pivotIndex;
+    let bestValue = Math.abs(augmented[pivotIndex][pivotIndex]);
+
+    for (let rowIndex = pivotIndex + 1; rowIndex < size; rowIndex += 1) {
+      const nextValue = Math.abs(augmented[rowIndex][pivotIndex]);
+
+      if (nextValue > bestValue) {
+        bestValue = nextValue;
+        bestRow = rowIndex;
+      }
+    }
+
+    if (bestValue <= 0.0000001) {
+      return null;
+    }
+
+    if (bestRow !== pivotIndex) {
+      [augmented[pivotIndex], augmented[bestRow]] = [augmented[bestRow], augmented[pivotIndex]];
+    }
+
+    for (let rowIndex = pivotIndex + 1; rowIndex < size; rowIndex += 1) {
+      const factor = augmented[rowIndex][pivotIndex] / augmented[pivotIndex][pivotIndex];
+
+      if (Math.abs(factor) <= 0.0000001) {
+        continue;
+      }
+
+      for (let columnIndex = pivotIndex; columnIndex <= size; columnIndex += 1) {
+        augmented[rowIndex][columnIndex] -= augmented[pivotIndex][columnIndex] * factor;
+      }
+    }
+  }
+
+  const solution = new Array(size).fill(0);
+
+  for (let rowIndex = size - 1; rowIndex >= 0; rowIndex -= 1) {
+    let value = augmented[rowIndex][size];
+
+    for (let columnIndex = rowIndex + 1; columnIndex < size; columnIndex += 1) {
+      value -= augmented[rowIndex][columnIndex] * solution[columnIndex];
+    }
+
+    if (Math.abs(augmented[rowIndex][rowIndex]) <= 0.0000001) {
+      return null;
+    }
+
+    solution[rowIndex] = value / augmented[rowIndex][rowIndex];
+  }
+
+  return solution;
+}
+
+function forEachCombination(length, pickCount, visitor) {
+  const combination = [];
+
+  function walk(startIndex) {
+    if (combination.length === pickCount) {
+      visitor(combination.slice());
+      return;
+    }
+
+    for (let index = startIndex; index <= length - (pickCount - combination.length); index += 1) {
+      combination.push(index);
+      walk(index + 1);
+      combination.pop();
+    }
+  }
+
+  walk(0);
+}
+
+function computeMaximumInscribedSphere(faceEntries) {
+  // Ziel: Das Zentrum der groesstmoeglichen Innenkugel eines Parent-Koerpers bestimmen.
+  // Warum: Fuer H1 und H3 ist ab jetzt nicht mehr ein Schwerpunkt oder Achsenmittelpunkt massgeblich, sondern der Punkt, der innerhalb des Parent-Koerpers den groessten gleichmaessigen Abstand zu seinen Begrenzungsflaechen erlaubt.
+  const constraints = faceEntries.map((faceEntry) => {
+    const normal = faceEntry.outwardNormal.clone().normalize();
+    return {
+      normal,
+      offset: BABYLON.Vector3.Dot(normal, faceEntry.faceCenter)
+    };
+  });
+  let bestCandidate = null;
+
+  if (constraints.length >= 4) {
+    forEachCombination(constraints.length, 4, (indices) => {
+      const matrix = indices.map((constraintIndex) => {
+        const constraint = constraints[constraintIndex];
+        return [constraint.normal.x, constraint.normal.y, constraint.normal.z, 1];
+      });
+      const rhs = indices.map((constraintIndex) => constraints[constraintIndex].offset);
+      const solution = solveLinearSystem(matrix, rhs);
+
+      if (!solution || solution.some((value) => !Number.isFinite(value))) {
+        return;
+      }
+
+      const [x, y, z, radius] = solution;
+
+      if (radius < -0.00001) {
+        return;
+      }
+
+      const center = new BABYLON.Vector3(x, y, z);
+      let minClearance = Number.POSITIVE_INFINITY;
+
+      for (const constraint of constraints) {
+        const clearance = constraint.offset - BABYLON.Vector3.Dot(constraint.normal, center);
+
+        if (clearance < -0.00001) {
+          return;
+        }
+
+        minClearance = Math.min(minClearance, clearance);
+      }
+
+      if (!bestCandidate || minClearance > bestCandidate.radius + 0.000001) {
+        bestCandidate = {
+          center,
+          radius: minClearance
+        };
+      }
+    });
+  }
+
+  if (bestCandidate) {
+    return bestCandidate;
+  }
+
+  const fallbackCenter = computePolyhedronCenterFromFaces(faceEntries.map((faceEntry) => faceEntry.vertices));
+  const fallbackRadius = faceEntries.reduce((minimum, faceEntry) => {
+    return Math.min(
+      minimum,
+      faceEntry.faceCenter && faceEntry.outwardNormal
+        ? BABYLON.Vector3.Dot(faceEntry.outwardNormal, faceEntry.faceCenter.subtract(fallbackCenter))
+        : computeNearestTetrahedronFaceClearance(fallbackCenter, faceEntries)
+    );
+  }, Number.POSITIVE_INFINITY);
+
+  return {
+    center: fallbackCenter,
+    radius: Math.max(0, fallbackRadius)
+  };
+}
+
 function computeBalancedRuneAnchorPosition(faces, heightLine, runeWidth, runeHeight, glyphPlaneOffset) {
   // Ziel: Die H1-Rune entlang der gewaelten Hoehenachse so platzieren, dass ihr Rechteck moeglichst gleich weit von den naechsten Aussenflaechen entfernt bleibt.
   // Warum: Die Nutzerregel bezieht sich explizit auf die Rune als Rechteck. Deshalb muessen wir echte Glyphenbreite/-hoehe und den Rollwinkel des Rechtecks gemeinsam mit der Achsenposition optimieren.
@@ -3938,6 +4088,7 @@ function buildFractalLayoutItem(
     ? parentSegmentFaces.map((faceVertices) => faceVertices.map((vertex) => vertex.clone()))
     : buildClusterBoundaryFaces(clusterCells);
   const faceEntries = buildPolyhedronFaceEntries(boundaryFaces);
+  const inscribedSphere = computeMaximumInscribedSphere(faceEntries);
   const runeSymbol = SUBCRYSTAL_RUNE_SYMBOLS[runeIndex % SUBCRYSTAL_RUNE_SYMBOLS.length];
   const runeGlyphLayout = measureRuneGlyphLayout(runeSymbol, 256, 14);
   const maxRuneSize = clusterCells.reduce((maximum, cell) => {
@@ -3968,10 +4119,10 @@ function buildFractalLayoutItem(
     runeIndex,
     // Ziel: H3-Runen mit derselben Parent-Logik wie H1 im echten Koerper ihres Fraktals platzieren.
     // Warum: Sobald ein Segment nur ein einziges Fraktal traegt, ist dieses Fraktal identisch mit dem Segment. Dann darf die H3 nicht auf einer aus Zellgrenzen rekonstruierten Ersatzgeometrie landen, sondern muss sich am wirklichen Parent-Koerper orientieren.
-    position: balancedPlacement.position.clone(),
-    runePosition: balancedPlacement.position.clone(),
-    rootRunePosition: balancedPlacement.position.clone(),
-    detailRunePosition: balancedPlacement.position.clone(),
+    position: inscribedSphere.center.clone(),
+    runePosition: inscribedSphere.center.clone(),
+    rootRunePosition: inscribedSphere.center.clone(),
+    detailRunePosition: inscribedSphere.center.clone(),
     rootRuneRotation: balancedPlacement.rotation.clone(),
     runeSize,
     distributionPoint: computePolyhedronCenterFromFaces(boundaryFaces),
