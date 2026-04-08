@@ -964,6 +964,41 @@ function syncPresenterSymbolOnlyMeshes(isContentMode) {
   });
 }
 
+function syncPresenterSymbolHalos(isContentMode) {
+  // Ziel: Im Presenter die vorhandenen HaloSpheres gezielt nur um die sichtbaren Symbole einschalten.
+  // Warum: Der Nutzer will den abstrakten Symbolnetz-Look im Presenter um die bekannten HaloRinge erweitern, ohne Root- oder DetailView wieder mit Kreisen zu ueberladen.
+  const shouldShowHalos = Boolean(
+    isContentMode
+    && state.extraction.stage === "expanded"
+    && state.extraction.viewMode === "content"
+  );
+
+  state.extraction.items.forEach((item) => {
+    setRuneHalosEnabled(item, shouldShowHalos);
+
+    if (!item.runeHaloMesh) {
+      return;
+    }
+
+    const glyphScale = item.runeGlyphMesh?.scaling?.x || 1;
+    const haloMaterial = item.runeHaloMesh.material || null;
+
+    item.runeHaloMesh.scaling.setAll(shouldShowHalos ? glyphScale * 1.8 : glyphScale);
+
+    if (haloMaterial) {
+      haloMaterial.metadata = haloMaterial.metadata || {};
+
+      if (typeof haloMaterial.metadata.presenterBaseAlpha !== "number") {
+        haloMaterial.metadata.presenterBaseAlpha = haloMaterial.alpha;
+      }
+
+      haloMaterial.alpha = shouldShowHalos
+        ? Math.max(haloMaterial.metadata.presenterBaseAlpha, 0.54)
+        : haloMaterial.metadata.presenterBaseAlpha;
+    }
+  });
+}
+
 function commitExtractionViewMode(viewMode) {
   // Ziel: Zwischen klassischem Detail-Overlay und Inhalts-/Content-Ansicht als echte Zustandsmaschine wechseln.
   // Warum: Beide Ansichten teilen sich dieselben Symbol- und Hierarchiedaten, brauchen aber unterschiedliche Panels, Pointer-Logik und Kamerarahmen.
@@ -997,6 +1032,7 @@ function commitExtractionViewMode(viewMode) {
   }
 
   syncPresenterSymbolOnlyMeshes(nextMode === "content");
+  syncPresenterSymbolHalos(nextMode === "content");
   updateDetailAdvanceButtonState();
   syncLiveDetailPaneWidth();
   syncExperienceCamera();
