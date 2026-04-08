@@ -876,34 +876,35 @@ function createRuneDrawerNode(item) {
 }
 
 function mountRuneDrawer(items) {
-  // Ziel: Den Form-4-Drawer als einziges Rune-/Netz-Rendering aufbauen.
-  // Warum: Root, Detail und Presenter sollen denselben billigen 2D-Pfad teilen, aber immer direkt auf dem aktuell sichtbaren Kristall statt in einem zweiten Mini-Host.
+  // Ziel: Den Form-4-Drawer als einziges Rune-/Netz-Rendering mit einer klaren H1/H2/H3-Hierarchie aufbauen.
+  // Warum: Ein volles oder halbvolles Rune-Netz sieht spannend aus, treibt aber die Linienzahl und damit den Overlay-Aufwand hoch; die Baumstruktur H1 -> H2 -> H3 bleibt lesbar und ist deutlich billiger.
   clearRuneDrawer();
 
   if (!runeDrawer || !runeDrawerNodes || !runeDrawerLines || !items.length) {
     return;
   }
 
+  const h1Entry = items.find((item) => item.level === "h1") || null;
   const h2Entries = items.filter((item) => item.level === "h2");
-  const seenPairs = new Set();
+  const h3EntriesByParentId = new Map();
 
   items.forEach((item) => {
     runeDrawerNodes.appendChild(createRuneDrawerNode(item));
   });
 
-  h2Entries.forEach((sourceEntry) => {
-    items.forEach((targetEntry) => {
-      if (sourceEntry.entryId === targetEntry.entryId) {
-        return;
-      }
+  items
+    .filter((item) => item.level === "h3" && item.parentId)
+    .forEach((item) => {
+      const collection = h3EntriesByParentId.get(item.parentId) || [];
+      collection.push(item);
+      h3EntriesByParentId.set(item.parentId, collection);
+    });
 
-      const pairKey = [sourceEntry.entryId, targetEntry.entryId].sort().join("::");
+  const appendConnector = (sourceEntry, targetEntry) => {
+    if (!sourceEntry || !targetEntry) {
+      return;
+    }
 
-      if (seenPairs.has(pairKey)) {
-        return;
-      }
-
-      seenPairs.add(pairKey);
       const connectorLine = document.createElementNS("http://www.w3.org/2000/svg", "line");
 
       connectorLine.classList.add("rune-drawer-line");
@@ -914,6 +915,13 @@ function mountRuneDrawer(items) {
         targetEntryId: targetEntry.entryId,
         element: connectorLine
       });
+  };
+
+  h2Entries.forEach((fragmentEntry) => {
+    appendConnector(h1Entry, fragmentEntry);
+
+    (h3EntriesByParentId.get(fragmentEntry.entryId) || []).forEach((runeFragmentEntry) => {
+      appendConnector(fragmentEntry, runeFragmentEntry);
     });
   });
 
