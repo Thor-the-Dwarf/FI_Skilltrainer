@@ -284,6 +284,7 @@ body.is-exploded .stage-frame {
 .rune-drawer-lines {
   overflow: visible;
   pointer-events: none;
+  z-index: 3;
 }
 
 .rune-drawer-nodes {
@@ -319,10 +320,10 @@ body.is-exploded .stage-frame {
   border: 1px solid hsl(0 0% 100% / 0.06);
   border-radius: 18px;
   background:
-    linear-gradient(180deg, hsl(var(--surface-soft) / 0.52), hsl(var(--surface) / 0.4));
+    linear-gradient(180deg, hsl(var(--surface-soft) / 0.22), hsl(var(--surface) / 0.12));
   box-shadow:
     inset 0 0 0 1px hsl(0 0% 100% / 0.02),
-    0 10px 24px rgba(0, 0, 0, 0.16);
+    0 10px 24px rgba(0, 0, 0, 0.08);
 }
 
 .rune-drawer-fragment__runes {
@@ -373,6 +374,8 @@ body.is-exploded .stage-frame {
 .rune-drawer-node__glyph {
   position: relative;
   z-index: 1;
+  font-family: "Noto Sans Symbols 2", "Segoe UI Symbol", "Arial Unicode MS", "Apple Symbols", sans-serif;
+  font-size: calc(var(--rune-size) * 0.7);
   font-weight: 800;
   line-height: 1;
   color: var(--rune-accent);
