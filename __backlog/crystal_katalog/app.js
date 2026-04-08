@@ -4731,24 +4731,15 @@ function mountDetailHoverConnectors(items) {
 }
 
 function mountRuneNetworkConnectors(items) {
-  // Ziel: Nur die eigentliche H1/H2/H3-Hierarchie als dauerhaftes Netz zeigen.
-  // Warum: Die Baumstruktur bleibt lesbar und deutlich leichter als das fruehere H2-Hub-Netz, ohne die Orientierung im DetailView zu verlieren.
+  // Ziel: Das Presenter-/Detail-Netz als dichte H2<->H3-Beziehung aufbauen.
+  // Warum: Die aktuelle Regel fuer das Symbolnetz lautet nicht mehr H1->H2->H3, sondern dass H2-Symbole mit H3-Symbolen und H3-Symbole mit H2-Symbolen verbunden sind.
   if (!detailLines) {
     return;
   }
 
-  const h1Entry = items.find((item) => item.level === "h1" && item.runeAnchorMesh) || null;
   const h2Entries = items.filter((item) => item.level === "h2" && item.runeAnchorMesh);
-  const h3EntriesByParentId = new Map();
+  const h3Entries = items.filter((item) => item.level === "h3" && item.runeAnchorMesh);
   state.extraction.networkConnectors = [];
-
-  items
-    .filter((item) => item.level === "h3" && item.runeAnchorMesh && item.parentId)
-    .forEach((item) => {
-      const collection = h3EntriesByParentId.get(item.parentId) || [];
-      collection.push(item);
-      h3EntriesByParentId.set(item.parentId, collection);
-    });
 
   const appendConnector = (sourceEntry, targetEntry) => {
     if (!sourceEntry || !targetEntry) {
@@ -4767,10 +4758,8 @@ function mountRuneNetworkConnectors(items) {
   };
 
   h2Entries.forEach((fragmentEntry) => {
-    appendConnector(h1Entry, fragmentEntry);
-
-    (h3EntriesByParentId.get(fragmentEntry.entryId) || []).forEach((runeFragmentEntry) => {
-      appendConnector(fragmentEntry, runeFragmentEntry);
+    h3Entries.forEach((fractalEntry) => {
+      appendConnector(fragmentEntry, fractalEntry);
     });
   });
 }
