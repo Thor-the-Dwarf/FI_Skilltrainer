@@ -64,7 +64,7 @@ const runtimeDebugSummary = document.getElementById("runtimeDebugSummary");
 const runtimeDebugLog = document.getElementById("runtimeDebugLog");
 const STARTUP_CONFIG = parseStartupConfig();
 const diagnostics = createDiagnosticsState(STARTUP_CONFIG);
-const EXPLODED_CRYSTAL_OFFSET_X = -0.92;
+const EXPLODED_CRYSTAL_OFFSET_X = -1.15;
 
 const state = {
   selectedId: STARTUP_CONFIG.selectionId,
