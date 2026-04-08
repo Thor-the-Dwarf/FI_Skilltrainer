@@ -246,7 +246,7 @@ body.is-exploded .stage-frame {
 body.is-exploded #renderCanvas {
   /* Ziel: Der 3D-Bereich soll im Detailzustand wirklich nur die linke Split-Flaeche belegen. */
   /* Warum: Der Kristall braucht im Detailzustand genug eigene Buehne, damit er gross und vollstaendig sichtbar bleibt statt an die linke Kante gedrueckt zu werden. */
-  width: calc(100% - var(--detail-pane-width));
+  width: calc(100% - var(--detail-pane-live-width, var(--detail-pane-width)));
 }
 
 body.is-exploded.is-content-mode #renderCanvas {
@@ -370,7 +370,7 @@ body.is-exploded .detail-experience {
   top: 0;
   right: 0;
   bottom: 0;
-  width: var(--detail-pane-width);
+  width: var(--detail-pane-live-width, var(--detail-pane-width));
   background:
     linear-gradient(180deg, hsl(var(--surface-strong) / 0.82), hsl(var(--surface) / 0.94));
   box-shadow:
@@ -402,7 +402,7 @@ body.is-exploded .detail-experience {
   right: var(--detail-advance-width);
   bottom: 0;
   width: fit-content;
-  max-width: calc(var(--detail-pane-width) - var(--detail-advance-width));
+  max-width: calc(var(--detail-pane-live-width, var(--detail-pane-width)) - var(--detail-advance-width));
   display: flex;
   flex-direction: column;
   align-items: flex-start;
@@ -1048,7 +1048,7 @@ body.is-content-mode .detail-connector:not(.detail-connector-hierarchy):not(.det
 
   .detail-cards {
     width: fit-content;
-    max-width: calc(var(--detail-pane-width) - var(--detail-advance-width));
+    max-width: calc(var(--detail-pane-live-width, var(--detail-pane-width)) - var(--detail-advance-width));
     padding-right: 18px;
   }
 

@@ -73,6 +73,8 @@ const DEFAULT_CAMERA_RADIUS = 6.1;
 const DETAIL_CAMERA_RADIUS = 6.35;
 const CONTENT_CAMERA_RADIUS = 6.7;
 const EXPLODED_CRYSTAL_OFFSET_X = 0;
+const DETAIL_PANE_MIN_WIDTH_PX = 280;
+const DETAIL_PANE_PADDING_PX = 34;
 const PRESENTER_ROTATION_SPEED = Object.freeze({
   x: 0.12,
   y: 0.18,
@@ -97,6 +99,7 @@ const state = {
     hiddenMeshes: [],
     hiddenLights: [],
     networkConnectors: [],
+    livePaneWidthPx: null,
     stage: "idle",
     stageStartTime: 0,
     items: [],
@@ -611,6 +614,60 @@ function syncExperienceCamera() {
     : DETAIL_CAMERA_RADIUS;
 }
 
+function clearLiveDetailPaneWidth() {
+  // Ziel: Die dynamische Detailbreite verlassen, sobald kein Tree mehr auf der rechten Seite steht.
+  // Warum: Root- und PresentationsView sollen nicht versehentlich die schmale Tree-Breite des DetailViews mitschleppen.
+  if (state.extraction.livePaneWidthPx === null) {
+    return;
+  }
+
+  document.body.style.removeProperty("--detail-pane-live-width");
+  state.extraction.livePaneWidthPx = null;
+  state.scene?.getEngine?.().resize();
+}
+
+function syncLiveDetailPaneWidth() {
+  // Ziel: Die rechte Detailflaeche an die echte Breite des sichtbaren Trees koppeln.
+  // Warum: Wenn der Tree inhaltsgetrieben schmaler wird, muss die 3D-Buehne links entsprechend mitwachsen, damit der Kristall wieder harmonisch zentriert wirkt.
+  if (
+    !detailCards
+    || !renderCanvas
+    || state.extraction.stage !== "expanded"
+    || state.extraction.viewMode !== "detail"
+  ) {
+    clearLiveDetailPaneWidth();
+    return;
+  }
+
+  if (window.innerWidth <= 920) {
+    clearLiveDetailPaneWidth();
+    return;
+  }
+
+  const stageFrame = renderCanvas.parentElement;
+  const stageRect = stageFrame?.getBoundingClientRect?.();
+  const treeRect = detailCards.getBoundingClientRect();
+
+  if (!stageRect || !treeRect.width) {
+    return;
+  }
+
+  const advanceWidth = detailAdvanceButton?.getBoundingClientRect?.().width || 0;
+  const desiredWidth = Math.ceil(treeRect.width + advanceWidth + DETAIL_PANE_PADDING_PX);
+  const clampedWidth = Math.max(
+    DETAIL_PANE_MIN_WIDTH_PX,
+    Math.min(Math.floor(stageRect.width * 0.58), desiredWidth)
+  );
+
+  if (Math.abs((state.extraction.livePaneWidthPx || 0) - clampedWidth) < 1) {
+    return;
+  }
+
+  document.body.style.setProperty("--detail-pane-live-width", `${clampedWidth}px`);
+  state.extraction.livePaneWidthPx = clampedWidth;
+  state.scene?.getEngine?.().resize();
+}
+
 function updateDetailAdvanceButtonState() {
   // Ziel: Dem Rail-Button klar machen, ob er vorwaerts in den Content-Modus oder zurueck in den Detail-Modus fuehrt.
   // Warum: Dieselbe Rail bleibt der zentrale Hebel zwischen beiden Ebenen; ohne expliziten Zustandswechsel wirkt die Navigation zufaellig.
@@ -652,6 +709,7 @@ function setExtractionViewMode(viewMode) {
   }
 
   updateDetailAdvanceButtonState();
+  syncLiveDetailPaneWidth();
   syncExperienceCamera();
   refreshRuntimeDiagnostics();
 }
@@ -675,6 +733,14 @@ function applyExplodedLayout(isActive) {
     if (contentExperience) {
       contentExperience.setAttribute("aria-hidden", "true");
     }
+  }
+
+  if (!isActive) {
+    clearLiveDetailPaneWidth();
+  } else {
+    requestAnimationFrame(() => {
+      syncLiveDetailPaneWidth();
+    });
   }
 
   syncExperienceCamera();
@@ -769,6 +835,7 @@ function setupBabylonScene() {
 
   window.addEventListener("resize", () => {
     engine.resize();
+    syncLiveDetailPaneWidth();
   });
 }
 
@@ -3875,6 +3942,9 @@ function mountExplodedDetails(items) {
   mountDetailHoverConnectors(items);
   mountRuneNetworkConnectors(items);
   syncDetailConnectorVisibility();
+  requestAnimationFrame(() => {
+    syncLiveDetailPaneWidth();
+  });
 }
 
 function setActiveContentEntry(entryId) {
