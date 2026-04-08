@@ -1745,7 +1745,7 @@ function createTetrahedronInteriorCrystals(scene, root, faces, selectionId, mate
   };
 
   faces.forEach((face, faceIndex) => {
-    const requestedFragmentRuneCount = getRequestedFragmentRuneCount(faceIndex);
+    const requestedFragmentRuneCount = getRequestedFragmentRuneCount(selectionId, faceIndex);
     const runeLayout = getTetrahedronRuneLayout(face.vertices, centroid, requestedFragmentRuneCount);
     const fragmentColor = getBodyColorForSelection(selectionId, `tetrahedron_${face.name}_${faceIndex + 1}`);
     const fragmentRuneColor = getBodyColorForSelection(selectionId, `tetrahedron_fragment_rune_${faceIndex + 1}`);
@@ -3611,9 +3611,21 @@ function normalizeFragmentRuneCount(requestedCount) {
   return Math.max(1, Math.min(MAX_H3_RUNES_PER_FRAGMENT, Math.round(requestedCount)));
 }
 
-function getRequestedFragmentRuneCount(faceIndex) {
+function getDefaultFragmentRuneCount(selectionId, faceIndex) {
+  // Ziel: Auch ohne explizite Konfiguration pro H2-Fragment unterschiedliche H3-Anzahlen erzeugen.
+  // Warum: Der Prototyp soll die 1..10-Faehigkeit direkt sichtbar vorfuehren; viermal der alte 10er-Zustand wuerde sonst wie ein nicht umgesetzter Umbau wirken.
+  const seededValue = seededRange((selectionId * 17.913) + 4.271, faceIndex + 1, 1, 10);
+  return Math.max(1, Math.min(9, Math.round(seededValue)));
+}
+
+function getRequestedFragmentRuneCount(selectionId, faceIndex) {
   const configuredCount = STARTUP_CONFIG.fragmentRuneCounts?.[faceIndex];
-  return normalizeFragmentRuneCount(configuredCount);
+
+  if (Number.isFinite(configuredCount)) {
+    return normalizeFragmentRuneCount(configuredCount);
+  }
+
+  return getDefaultFragmentRuneCount(selectionId, faceIndex);
 }
 
 function selectDistributedRuneCells(candidateCells, requestedCount, faceVertices) {
