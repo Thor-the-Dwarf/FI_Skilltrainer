@@ -55,6 +55,9 @@ const catalogSelect = document.getElementById("catalogSelect");
 const selectionPill = document.getElementById("selectionPill");
 const enginePill = document.getElementById("enginePill");
 const renderCanvas = document.getElementById("renderCanvas");
+const runeDrawer = document.getElementById("runeDrawer");
+const runeDrawerLines = document.getElementById("runeDrawerLines");
+const runeDrawerNodes = document.getElementById("runeDrawerNodes");
 const detailExperience = document.getElementById("detailExperience");
 const detailLines = document.getElementById("detailLines");
 const detailCards = document.getElementById("detailCards");
@@ -130,6 +133,11 @@ const state = {
     left: false,
     right: false,
     speed: 4.6
+  },
+  runeDrawer: {
+    signature: "",
+    mountedEntryIds: [],
+    networkConnectors: []
   }
 };
 
@@ -392,6 +400,24 @@ function toSerializableVector3(vector) {
   };
 }
 
+function isRuneEntryVisible(entry) {
+  // Ziel: Sichtbarkeit fuer Drawer- und Legacy-Rune-Pfade ueber denselben Reportpfad auswerten.
+  // Warum: Das Testlab soll auch nach dem Wechsel auf 2D-Runen weiter belastbar zaehlen, ob H1/H2/H3 vorhanden und aktiv sind.
+  if (!entry) {
+    return false;
+  }
+
+  if (entry.runeDrawerElement) {
+    return !entry.runeDrawerElement.hasAttribute("hidden");
+  }
+
+  if (typeof entry.runeGlyphMesh?.isEnabled === "function") {
+    return entry.runeGlyphMesh.isEnabled();
+  }
+
+  return Boolean(entry.runeAnchorMesh);
+}
+
 function createRuneReport(entry) {
   const worldPosition = entry?.runeAnchor?.getAbsolutePosition
     ? entry.runeAnchor.getAbsolutePosition()
@@ -401,9 +427,7 @@ function createRuneReport(entry) {
     entryId: entry?.entryId || null,
     level: entry?.level || "unknown",
     title: entry?.detail?.title || "",
-    enabled: typeof entry?.runeGlyphMesh?.isEnabled === "function"
-      ? entry.runeGlyphMesh.isEnabled()
-      : false,
+    enabled: isRuneEntryVisible(entry),
     rootScale: entry?.rootRuneScale || 0,
     detailScale: entry?.detailRuneScale || 0,
     meshScale: entry?.runeGlyphMesh?.scaling
@@ -427,9 +451,9 @@ function refreshRuntimeDiagnostics() {
     h1: crystalEntry.length,
     h2: fragmentEntries.length,
     h3: runeEntries.length,
-    visibleH1: crystalEntry.filter((entry) => entry?.runeGlyphMesh?.isEnabled?.()).length,
-    visibleH2: fragmentEntries.filter((entry) => entry?.runeGlyphMesh?.isEnabled?.()).length,
-    visibleH3: runeEntries.filter((entry) => entry?.runeGlyphMesh?.isEnabled?.()).length
+    visibleH1: crystalEntry.filter(isRuneEntryVisible).length,
+    visibleH2: fragmentEntries.filter(isRuneEntryVisible).length,
+    visibleH3: runeEntries.filter(isRuneEntryVisible).length
   };
   diagnostics.samples = [
     ...crystalEntry.map(createRuneReport),
@@ -656,6 +680,185 @@ function setExtractionViewMode(viewMode) {
   refreshRuntimeDiagnostics();
 }
 
+function getActiveRuneDrawerItems() {
+  // Ziel: Fuer Form 4 in jedem Modus genau die Rune-Hierarchie liefern, die der Drawer gerade anzeigen soll.
+  // Warum: Root-, Detail- und Presenter-View teilen dieselbe H1/H2/H3-Struktur; ein zentraler Resolver verhindert, dass jeder Modus seine eigene Rune-Liste zusammenraten muss.
+  if (state.selectedId !== 4 || !state.crystalRoot?.metadata?.runeEntries?.length) {
+    return [];
+  }
+
+  if (isTetrahedronExpanded() && state.extraction.items.length) {
+    return state.extraction.items;
+  }
+
+  return getTetrahedronDetailItems(state.crystalRoot.metadata);
+}
+
+function getRuneDrawerSignature(items) {
+  return items.map((item) => item.entryId).join("|");
+}
+
+function getRuneDrawerNodeSize(item) {
+  const isExpandedView = state.extraction.stage === "expanded";
+
+  if (item.level === "h1") {
+    return isExpandedView ? 76 : 90;
+  }
+
+  if (item.level === "h2") {
+    return isExpandedView ? 44 : 54;
+  }
+
+  return isExpandedView ? 22 : 28;
+}
+
+function clearRuneDrawer() {
+  // Ziel: Alle aktuell gerenderten Drawer-Runen und Netzlinien vollstaendig entfernen.
+  // Warum: Beim Wechsel zwischen Selections und Modi darf der Drawer keine alten Knoten mitschleppen, sonst bleiben Geister-Runen oder stale Verbindungen sichtbar.
+  state.runeDrawer.signature = "";
+  state.runeDrawer.mountedEntryIds = [];
+  state.runeDrawer.networkConnectors = [];
+
+  if (runeDrawerNodes) {
+    runeDrawerNodes.innerHTML = "";
+  }
+
+  if (runeDrawerLines) {
+    runeDrawerLines.innerHTML = "";
+  }
+
+  if (runeDrawer) {
+    runeDrawer.classList.remove("is-active");
+    runeDrawer.setAttribute("aria-hidden", "true");
+    runeDrawer.style.left = "0px";
+    runeDrawer.style.top = "0px";
+    runeDrawer.style.width = "0px";
+    runeDrawer.style.height = "0px";
+  }
+}
+
+function createRuneDrawerNode(item) {
+  // Ziel: Jede Rune als leichte 2D-Schaltflaeche im Drawer darstellen.
+  // Warum: Wenn Form 4 keine 3D-Rune-Meshes mehr rendert, braucht die Interaktion einen eigenen, billigen UI-Knoten fuer Hover, Fokus und spaetere Navigation.
+  const button = document.createElement("button");
+  const glyph = document.createElement("span");
+
+  button.type = "button";
+  button.className = `rune-drawer-node rune-drawer-node--${item.level}`;
+  button.dataset.entryId = item.entryId;
+  button.style.setProperty("--rune-accent", item.accentHex);
+  button.setAttribute("aria-label", item.detail.title);
+  glyph.className = "rune-drawer-node__glyph";
+  glyph.textContent = item.runeSymbol;
+  button.appendChild(glyph);
+
+  button.addEventListener("mouseenter", () => {
+    if (state.extraction.stage === "expanded" && state.extraction.viewMode !== "content") {
+      setHoveredRuneEntry(item.entryId);
+    }
+  });
+  button.addEventListener("mouseleave", () => {
+    if (state.extraction.hoveredRuneEntryId === item.entryId) {
+      setHoveredRuneEntry(null);
+    }
+  });
+  button.addEventListener("focus", () => {
+    if (state.extraction.stage === "expanded" && state.extraction.viewMode !== "content") {
+      setHoveredRuneEntry(item.entryId);
+    }
+  });
+  button.addEventListener("blur", () => {
+    if (state.extraction.hoveredRuneEntryId === item.entryId) {
+      setHoveredRuneEntry(null);
+    }
+  });
+  button.addEventListener("click", () => {
+    if (state.selectedId !== 4) {
+      return;
+    }
+
+    if (!isTetrahedronExpanded()) {
+      showTetrahedronDetails();
+      return;
+    }
+
+    if (state.extraction.viewMode === "content") {
+      setActiveContentEntry(item.entryId);
+      return;
+    }
+
+    setHoveredRuneEntry(item.entryId);
+  });
+
+  item.runeDrawerElement = button;
+  item.runeDrawerGlyphElement = glyph;
+  return button;
+}
+
+function mountRuneDrawer(items) {
+  // Ziel: Den Form-4-Drawer als einziges Rune-/Netz-Rendering aufbauen.
+  // Warum: Root, Detail und Presenter sollen denselben billigen 2D-Pfad teilen, statt parallel Rune-Meshes, Halos und SVG-Netze im 3D-Layer weiterzutragen.
+  clearRuneDrawer();
+
+  if (!runeDrawer || !runeDrawerNodes || !runeDrawerLines || !items.length) {
+    return;
+  }
+
+  const h2Entries = items.filter((item) => item.level === "h2");
+  const seenPairs = new Set();
+
+  items.forEach((item) => {
+    runeDrawerNodes.appendChild(createRuneDrawerNode(item));
+  });
+
+  h2Entries.forEach((sourceEntry) => {
+    items.forEach((targetEntry) => {
+      if (sourceEntry.entryId === targetEntry.entryId) {
+        return;
+      }
+
+      const pairKey = [sourceEntry.entryId, targetEntry.entryId].sort().join("::");
+
+      if (seenPairs.has(pairKey)) {
+        return;
+      }
+
+      seenPairs.add(pairKey);
+      const connectorLine = document.createElementNS("http://www.w3.org/2000/svg", "line");
+
+      connectorLine.classList.add("rune-drawer-line");
+      connectorLine.setAttribute("visibility", "visible");
+      runeDrawerLines.appendChild(connectorLine);
+      state.runeDrawer.networkConnectors.push({
+        sourceEntryId: sourceEntry.entryId,
+        targetEntryId: targetEntry.entryId,
+        element: connectorLine
+      });
+    });
+  });
+
+  state.runeDrawer.signature = getRuneDrawerSignature(items);
+  state.runeDrawer.mountedEntryIds = items.map((item) => item.entryId);
+  runeDrawer.classList.add("is-active");
+  runeDrawer.setAttribute("aria-hidden", "false");
+}
+
+function ensureRuneDrawerMounted() {
+  const items = getActiveRuneDrawerItems();
+  const signature = getRuneDrawerSignature(items);
+
+  if (!items.length) {
+    clearRuneDrawer();
+    return [];
+  }
+
+  if (state.runeDrawer.signature !== signature) {
+    mountRuneDrawer(items);
+  }
+
+  return items;
+}
+
 function applyExplodedLayout(isActive) {
   // Ziel: Im Detailzustand eine Buehne schaffen, auf der der Kristall links gross, zentriert und unbeschnitten lesbar bleibt.
   // Warum: Das relevante Qualitaetskriterium ist hier nicht ein starres Prozentverhaeltnis, sondern dass der Kristall klar praesentiert wird und die Details trotzdem rechts genug Platz haben.
@@ -764,6 +967,7 @@ function setupBabylonScene() {
       pushDiagnostic("error", "scene.render() fehlgeschlagen", error, "render-loop-crash");
       return;
     }
+    syncRuneDrawerLayout();
     syncExplodedDetailLayout();
   });
 
@@ -1617,34 +1821,17 @@ function createTetrahedronInteriorCrystals(scene, root, faces, selectionId, mate
   const crystalRuneRotation = crystalRunePlacement.rotation;
   const crystalRunePosition = crystalRunePlacement.position;
   const crystalRuneColor = getBodyColorForSelection(selectionId, "tetrahedron_crystal_rune_primary");
-  const crystalRuneMeshes = createRuneMeshes(
+  const crystalRuneMeshes = createRuneAnchorNode(
     scene,
     `tetrahedron_crystal_rune_${selectionId}`,
-    CRYSTAL_RUNE_SYMBOL,
-    crystalRuneColor,
-    {
-      showHalo: true,
-      glyphSize: crystalRuneGlyphSize,
-      haloScale: 1.76,
-      billboardMode: BABYLON.AbstractMesh.BILLBOARDMODE_NONE,
-      emissiveIntensity: 3.4,
-      alwaysVisible: true,
-      renderingGroupId: 3,
-      glyphPlaneOffset: crystalRuneGlyphPlaneOffset,
-      haloPlaneOffset: -0.024,
-      alphaMode: BABYLON.Engine.ALPHA_COMBINE,
-      textureSize: 512,
-      outlineWidth: 24
-    }
+    root,
+    crystalRunePosition,
+    crystalRuneRotation
   );
 
   // Ziel: Die H1-Rune geometrisch wirklich im Kristallzentrum halten.
   // Warum: Fuer das gewuenschte Lesen der Form zaehlt hier weder der Volumenschwerpunkt noch die pure Linienmitte, sondern die Position, an der das Rune-Rechteck entlang der Hoehenlinie gleichmaessig Luft zu den Tetraederflaechen hat.
-  crystalRuneMeshes.anchor.parent = root;
-  crystalRuneMeshes.anchor.position.copyFrom(crystalRunePosition);
-  crystalRuneMeshes.anchor.rotationQuaternion = crystalRuneRotation.clone();
   crystalRuneMeshes.anchor.scaling.setAll(1);
-  materials.push(...crystalRuneMeshes.materials);
   root.metadata.crystalRuneEntry = {
     entryId: `tetrahedron_crystal_${selectionId}`,
     level: "h1",
@@ -1677,35 +1864,17 @@ function createTetrahedronInteriorCrystals(scene, root, faces, selectionId, mate
     const fragmentFaces = buildTetrahedronFragmentFaces(face.vertices, centroid);
     const fragmentRunePosition = computeFragmentFaceRunePosition(face.vertices, centroid);
     const fragmentRuneRotation = quaternionFromUnitVectors(BABYLON.Axis.Z, computeOutwardNormal(face.vertices));
-    const fragmentRuneSize = 0.78;
-    const fragmentRuneMeshes = createRuneMeshes(
+    const fragmentRuneMeshes = createRuneAnchorNode(
       scene,
       `tetrahedron_fragment_rune_${faceIndex + 1}`,
-      TETRA_RUNE_SYMBOLS[faceIndex % TETRA_RUNE_SYMBOLS.length],
-      fragmentRuneColor,
-      {
-        showHalo: true,
-        glyphSize: fragmentRuneSize,
-        haloScale: 1.7,
-        billboardMode: BABYLON.AbstractMesh.BILLBOARDMODE_NONE,
-        emissiveIntensity: 2.8,
-        alwaysVisible: false,
-        renderingGroupId: 3,
-        glyphPlaneOffset: 0.028,
-        haloPlaneOffset: -0.018,
-        alphaMode: BABYLON.Engine.ALPHA_COMBINE,
-        textureSize: 512,
-        outlineWidth: 22
-      }
+      root,
+      fragmentRunePosition,
+      fragmentRuneRotation
     );
 
     // Ziel: Die H2-Runen stabil direkt an ihren Fragmentflaechen verankern.
     // Warum: Fragmentrunen gehoeren auf die nach aussen zeigende Flaeche; ein geloester World-Sync macht daraus nur scheinbar sichtbare Marker statt echte Flaechenrunen.
-    fragmentRuneMeshes.anchor.parent = root;
-    fragmentRuneMeshes.anchor.position.copyFrom(fragmentRunePosition);
-    fragmentRuneMeshes.anchor.rotationQuaternion = fragmentRuneRotation.clone();
     fragmentRuneMeshes.anchor.scaling.setAll(1);
-    materials.push(...fragmentRuneMeshes.materials);
     createTetrahedronFragmentBoundaries(
       scene,
       root,
@@ -1766,32 +1935,15 @@ function createTetrahedronInteriorCrystals(scene, root, faces, selectionId, mate
       }
 
       const runeSymbol = SUBCRYSTAL_RUNE_SYMBOLS[runeLayoutItem.runeIndex % SUBCRYSTAL_RUNE_SYMBOLS.length];
-      const runeMeshes = createRuneMeshes(
+      const runeMeshes = createRuneAnchorNode(
         scene,
         `tetrahedron_base_rune_${faceIndex + 1}_${runeLayoutItem.runeIndex + 1}`,
-        runeSymbol,
-        runeColor,
-        {
-          showHalo: true,
-          glyphSize: runeLayoutItem.runeSize,
-          haloScale: 1.52,
-          billboardMode: BABYLON.AbstractMesh.BILLBOARDMODE_NONE,
-          emissiveIntensity: 1.45
-        }
+        root,
+        runeLayoutItem.rootRunePosition,
+        runeLayoutItem.rootRuneRotation
       );
 
-      runeMeshes.anchor.parent = root;
-      runeMeshes.anchor.position.copyFrom(runeLayoutItem.rootRunePosition);
-      runeMeshes.anchor.rotationQuaternion = runeLayoutItem.rootRuneRotation.clone();
       runeMeshes.anchor.scaling.setAll(1);
-      runeMeshes.glyphMesh.renderingGroupId = 3;
-
-      if (runeMeshes.haloMesh) {
-        runeMeshes.haloMesh.renderingGroupId = 3;
-      }
-
-      root.metadata?.runeLights?.push(...runeMeshes.lights);
-      materials.push(...runeMeshes.materials);
       const runeEntry = {
         entryId: `${fragmentEntry.entryId}_rune_${runeLayoutItem.runeIndex + 1}`,
         level: "h3",
@@ -1832,10 +1984,6 @@ function createTetrahedronInteriorCrystals(scene, root, faces, selectionId, mate
     ...root.metadata.fragmentEntries,
     ...root.metadata.runeFragmentEntries
   ];
-  root.metadata.runeEntries.forEach((item) => {
-    setRuneHalosEnabled(item, false);
-    setRuneDisplayMode(item, false);
-  });
 }
 
 function createExtractedTetrahedronCrystal(scene, parent, entry, centroidLocal, allFaceEntries) {
@@ -2131,6 +2279,26 @@ function createRuneMeshes(scene, name, runeSymbol, accentHex, options = {}) {
     glyphMesh,
     haloMesh,
     materials: [glyphMaterial, haloMaterial].filter(Boolean),
+    lights: []
+  };
+}
+
+function createRuneAnchorNode(scene, name, parent, position, rotationQuaternion) {
+  // Ziel: Fuer Drawer-Runen einen leichten, rein geometrischen Weltanker bereitstellen.
+  // Warum: Form 4 soll keine teuren 3D-Glyph- und Halo-Meshes mehr rendern; fuer Projektion, Layout und Synchronisation reicht ein TransformNode als Positionsquelle.
+  const anchor = new BABYLON.TransformNode(`${name}_anchor`, scene);
+
+  anchor.parent = parent || null;
+  anchor.position.copyFrom(position || BABYLON.Vector3.Zero());
+  anchor.rotationQuaternion = rotationQuaternion
+    ? rotationQuaternion.clone()
+    : BABYLON.Quaternion.Identity();
+
+  return {
+    anchor,
+    glyphMesh: null,
+    haloMesh: null,
+    materials: [],
     lights: []
   };
 }
@@ -3849,7 +4017,6 @@ function mountExplodedDetails(items) {
   });
 
   mountDetailHoverConnectors(items);
-  mountRuneNetworkConnectors(items);
   syncDetailConnectorVisibility();
 }
 
@@ -4220,6 +4387,79 @@ function pickDetailItemFromRuneHover(scene, canvas, event) {
   return bestMatch;
 }
 
+function syncRuneDrawerLayout() {
+  // Ziel: Den 2D-Drawer framegenau ueber dem aktuell sichtbaren Kristallfenster halten.
+  // Warum: Auch ohne 3D-Rune-Meshes muessen H1/H2/H3 und ihr Netz in Root-, Detail- und Presenter-View synchron zur Kristallrotation und zur wechselnden Canvas-Flaeche bleiben.
+  const items = ensureRuneDrawerMounted();
+
+  if (!items.length || !runeDrawer || !runeDrawerNodes || !runeDrawerLines) {
+    return;
+  }
+
+  const projectionContext = createStageProjectionContext();
+  const stageRect = renderCanvas.parentElement?.getBoundingClientRect?.() || null;
+
+  if (!projectionContext || !stageRect) {
+    clearRuneDrawer();
+    return;
+  }
+
+  const drawerLeft = projectionContext.canvasRect.left - stageRect.left;
+  const drawerTop = projectionContext.canvasRect.top - stageRect.top;
+  const runePointByEntryId = new Map();
+  const activeDrawerEntryId = state.extraction.viewMode === "content"
+    ? state.extraction.activeContentEntryId
+    : getActiveDetailHoverEntryId();
+
+  runeDrawer.style.left = `${drawerLeft}px`;
+  runeDrawer.style.top = `${drawerTop}px`;
+  runeDrawer.style.width = `${projectionContext.canvasRect.width}px`;
+  runeDrawer.style.height = `${projectionContext.canvasRect.height}px`;
+  runeDrawer.classList.add("is-active");
+  runeDrawer.setAttribute("aria-hidden", "false");
+
+  items.forEach((item) => {
+    const projectedPoint = item.runeAnchorMesh
+      ? projectWorldPointToStageWithContext(item.runeAnchorMesh.getAbsolutePosition(), projectionContext)
+      : null;
+    const visualSize = getRuneDrawerNodeSize(item);
+    const isActive = activeDrawerEntryId === item.entryId;
+
+    if (!item.runeDrawerElement || !projectedPoint) {
+      item.runeDrawerElement?.setAttribute("hidden", "");
+      return;
+    }
+
+    runePointByEntryId.set(item.entryId, projectedPoint);
+    item.runeDrawerElement.removeAttribute("hidden");
+    item.runeDrawerElement.style.left = `${projectedPoint.x}px`;
+    item.runeDrawerElement.style.top = `${projectedPoint.y}px`;
+    item.runeDrawerElement.style.setProperty("--rune-size", `${visualSize}px`);
+    item.runeDrawerGlyphElement.style.fontSize = `${Math.round(visualSize * 0.7)}px`;
+    item.runeDrawerElement.classList.toggle("is-active", Boolean(isActive));
+  });
+
+  const entriesById = new Map(items.map((item) => [item.entryId, item]));
+
+  state.runeDrawer.networkConnectors.forEach((connector) => {
+    const sourceEntry = entriesById.get(connector.sourceEntryId);
+    const targetEntry = entriesById.get(connector.targetEntryId);
+    const sourcePoint = sourceEntry ? runePointByEntryId.get(sourceEntry.entryId) : null;
+    const targetPoint = targetEntry ? runePointByEntryId.get(targetEntry.entryId) : null;
+
+    if (!connector.element || !sourcePoint || !targetPoint) {
+      connector.element?.setAttribute("visibility", "hidden");
+      return;
+    }
+
+    connector.element.setAttribute("visibility", "visible");
+    connector.element.setAttribute("x1", String(sourcePoint.x));
+    connector.element.setAttribute("y1", String(sourcePoint.y));
+    connector.element.setAttribute("x2", String(targetPoint.x));
+    connector.element.setAttribute("y2", String(targetPoint.y));
+  });
+}
+
 function syncExplodedDetailLayout() {
   // Ziel: Die Hover-Connectoren framegenau zwischen Rune und zugehoeriger Detailkarte halten.
   // Warum: Die Karten leben im DOM und die Runen im Babylon-Canvas; nur eine laufende Projektion haelt beide Ebenen deckungsgleich verbunden.
@@ -4283,31 +4523,6 @@ function syncExplodedDetailLayout() {
     item.detailConnectorElement.setAttribute("y1", String(sourcePoint.y));
     item.detailConnectorElement.setAttribute("x2", String(targetPoint.x));
     item.detailConnectorElement.setAttribute("y2", String(targetPoint.y));
-  });
-
-  const entriesById = new Map(state.extraction.items.map((item) => [item.entryId, item]));
-
-  state.extraction.networkConnectors.forEach((connector) => {
-    const sourceEntry = entriesById.get(connector.sourceEntryId);
-    const targetEntry = entriesById.get(connector.targetEntryId);
-
-    if (!connector.element || !sourceEntry?.runeAnchorMesh || !targetEntry?.runeAnchorMesh) {
-      return;
-    }
-
-    const sourcePoint = runePointByEntryId.get(sourceEntry.entryId) || null;
-    const targetPoint = runePointByEntryId.get(targetEntry.entryId) || null;
-
-    if (!sourcePoint || !targetPoint) {
-      connector.element.setAttribute("visibility", "hidden");
-      return;
-    }
-
-    connector.element.setAttribute("visibility", "visible");
-    connector.element.setAttribute("x1", String(sourcePoint.x));
-    connector.element.setAttribute("y1", String(sourcePoint.y));
-    connector.element.setAttribute("x2", String(targetPoint.x));
-    connector.element.setAttribute("y2", String(targetPoint.y));
   });
 
   syncDetailConnectorVisibility();
@@ -4388,7 +4603,7 @@ function enableBoxDragging(camera, canvas) {
         setHoveredRuneEntry(null);
       } else if (state.extraction.viewMode === "content") {
         setHoveredRuneEntry(null);
-      } else {
+      } else if (state.selectedId !== 4) {
         const hoveredDetailItem = pickDetailItemFromRuneHover(state.scene, canvas, event);
         setHoveredRuneEntry(hoveredDetailItem?.entryId || null);
       }

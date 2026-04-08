@@ -243,6 +243,191 @@ body.is-exploded .stage-frame {
   touch-action: none;
 }
 
+.rune-drawer {
+  position: absolute;
+  top: 18px;
+  right: 18px;
+  width: var(--rune-drawer-width);
+  height: var(--rune-drawer-height);
+  padding: 14px;
+  border: 1px solid hsl(0 0% 100% / 0.08);
+  border-radius: 28px;
+  background:
+    linear-gradient(180deg, hsl(var(--surface-strong) / 0.86), hsl(var(--surface) / 0.94));
+  box-shadow:
+    0 24px 52px rgba(0, 0, 0, 0.28),
+    inset 0 0 0 1px hsl(0 0% 100% / 0.03);
+  backdrop-filter: blur(20px);
+  z-index: 4;
+  opacity: 0;
+  pointer-events: none;
+  transition:
+    opacity 180ms ease,
+    transform 180ms ease;
+  transform: translateX(18px) scale(0.985);
+}
+
+.rune-drawer.is-active {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateX(0) scale(1);
+}
+
+.rune-drawer-lines,
+.rune-drawer-nodes {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.rune-drawer-lines {
+  overflow: visible;
+  pointer-events: none;
+}
+
+.rune-drawer-nodes {
+  z-index: 1;
+  pointer-events: auto;
+}
+
+.rune-drawer-shell {
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr);
+  gap: 12px;
+  width: 100%;
+  height: 100%;
+}
+
+.rune-drawer-shell__h1 {
+  display: flex;
+  justify-content: center;
+}
+
+.rune-drawer-fragments {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+  align-content: start;
+}
+
+.rune-drawer-fragment {
+  display: grid;
+  gap: 8px;
+  min-width: 0;
+  padding: 10px 9px 9px;
+  border: 1px solid hsl(0 0% 100% / 0.06);
+  border-radius: 18px;
+  background:
+    linear-gradient(180deg, hsl(var(--surface-soft) / 0.52), hsl(var(--surface) / 0.4));
+  box-shadow:
+    inset 0 0 0 1px hsl(0 0% 100% / 0.02),
+    0 10px 24px rgba(0, 0, 0, 0.16);
+}
+
+.rune-drawer-fragment__runes {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 6px 4px;
+  justify-items: center;
+}
+
+.rune-drawer-node {
+  --rune-accent: #ffffff;
+  --rune-size: 34px;
+  position: relative;
+  width: var(--rune-size);
+  height: var(--rune-size);
+  display: grid;
+  place-items: center;
+  padding: 0;
+  border: none;
+  background: transparent;
+  color: var(--rune-accent);
+  cursor: pointer;
+  pointer-events: auto;
+}
+
+.rune-drawer-node::before {
+  content: "";
+  position: absolute;
+  inset: calc(var(--rune-size) * -0.18);
+  border: 2px solid color-mix(in srgb, var(--rune-accent) 50%, transparent);
+  border-radius: 999px;
+  opacity: 0.26;
+  box-shadow:
+    0 0 18px color-mix(in srgb, var(--rune-accent) 28%, transparent),
+    inset 0 0 0 1px color-mix(in srgb, #ffffff 12%, transparent);
+}
+
+.rune-drawer-node:hover::before,
+.rune-drawer-node:focus-visible::before,
+.rune-drawer-node.is-active::before {
+  opacity: 0.52;
+}
+
+.rune-drawer-node:focus-visible {
+  outline: none;
+}
+
+.rune-drawer-node__glyph {
+  position: relative;
+  z-index: 1;
+  font-weight: 800;
+  line-height: 1;
+  color: var(--rune-accent);
+  text-shadow:
+    0 0 10px color-mix(in srgb, var(--rune-accent) 54%, transparent),
+    0 0 24px color-mix(in srgb, var(--rune-accent) 24%, transparent),
+    1px 1px 0 rgba(0, 0, 0, 0.82),
+    -1px -1px 0 rgba(0, 0, 0, 0.82),
+    1px -1px 0 rgba(0, 0, 0, 0.82),
+    -1px 1px 0 rgba(0, 0, 0, 0.82);
+}
+
+.rune-drawer-node--h1 {
+  --rune-size: 82px;
+}
+
+.rune-drawer-node--h2 {
+  --rune-size: 44px;
+}
+
+.rune-drawer-node--h3 {
+  --rune-size: 20px;
+}
+
+body.is-exploded .rune-drawer-node--h1 {
+  --rune-size: 70px;
+}
+
+body.is-exploded .rune-drawer-node--h2 {
+  --rune-size: 40px;
+}
+
+body.is-exploded .rune-drawer-node--h3 {
+  --rune-size: 18px;
+}
+
+body.is-content-mode .rune-drawer {
+  z-index: 3;
+}
+
+.rune-drawer-line {
+  fill: none;
+  stroke: hsl(0 0% 100% / 0.78);
+  stroke-width: 1.2;
+  vector-effect: non-scaling-stroke;
+  opacity: 0.4;
+  filter:
+    drop-shadow(0 0 8px hsl(0 0% 100% / 0.18))
+    drop-shadow(0 0 18px hsl(0 0% 100% / 0.07));
+}
+
+body.is-exploded .detail-cards {
+  padding-top: calc(var(--rune-drawer-height) + 34px);
+}
+
 body.is-exploded #renderCanvas {
   /* Ziel: Der 3D-Bereich soll im Detailzustand wirklich nur die linke Split-Flaeche belegen. */
   /* Warum: Der Kristall braucht im Detailzustand genug eigene Buehne, damit er gross und vollstaendig sichtbar bleibt statt an die linke Kante gedrueckt zu werden. */
@@ -981,6 +1166,8 @@ body.is-content-mode .detail-connector:not(.detail-connector-hierarchy):not(.det
     --detail-pane-width: 50%;
     --content-sidebar-width: clamp(260px, 34vw, 320px);
     --content-crystal-height: clamp(200px, 28vh, 250px);
+    --rune-drawer-width: clamp(240px, 28vw, 300px);
+    --rune-drawer-height: clamp(250px, 34vh, 320px);
   }
 
   .vault-shell {
@@ -1030,6 +1217,8 @@ body.is-content-mode .detail-connector:not(.detail-connector-hierarchy):not(.det
     --detail-pane-width: 100%;
     --content-sidebar-width: 100%;
     --content-crystal-height: 220px;
+    --rune-drawer-width: min(230px, calc(100vw - 24px));
+    --rune-drawer-height: 236px;
   }
 
   .panel {
@@ -1047,8 +1236,29 @@ body.is-content-mode .detail-connector:not(.detail-connector-hierarchy):not(.det
 
   .detail-cards {
     width: calc(var(--detail-pane-width) - var(--detail-advance-width));
-    padding: 64px 12px 20px 8px;
+    padding: calc(var(--rune-drawer-height) + 74px) 12px 20px 8px;
     gap: 12px;
+  }
+
+  .rune-drawer {
+    top: 10px;
+    right: 10px;
+    padding: 10px;
+    border-radius: 22px;
+  }
+
+  .rune-drawer-fragments {
+    gap: 8px;
+  }
+
+  .rune-drawer-fragment {
+    padding: 8px 7px 8px;
+    border-radius: 16px;
+  }
+
+  .rune-drawer-fragment__runes {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 4px;
   }
 
   .content-experience {
