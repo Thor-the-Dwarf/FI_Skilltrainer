@@ -4114,6 +4114,18 @@ function clearExtractedCrystal() {
 }
 
 function projectWorldPointToStage(worldPoint) {
+  const projectionContext = createStageProjectionContext();
+
+  if (!projectionContext) {
+    return null;
+  }
+
+  return projectWorldPointToStageWithContext(worldPoint, projectionContext);
+}
+
+function createStageProjectionContext() {
+  // Ziel: Alle teuren Canvas-/Viewport-Daten pro Frame nur einmal lesen.
+  // Warum: Bei vielen Runen und Verbindungslinien wurde dieselbe DOM- und Babylon-Projektionsarbeit hunderte Male pro Frame wiederholt und hat den Presenter spuerbar gebremst.
   if (!state.scene || !state.camera) {
     return null;
   }
@@ -4125,15 +4137,30 @@ function projectWorldPointToStage(worldPoint) {
     return null;
   }
 
-  const viewport = state.camera.viewport.toGlobal(
-    engine.getRenderWidth(),
-    engine.getRenderHeight()
-  );
+  const renderWidth = engine.getRenderWidth();
+  const renderHeight = engine.getRenderHeight();
+
+  return {
+    canvasRect,
+    renderWidth,
+    renderHeight,
+    viewport: state.camera.viewport.toGlobal(renderWidth, renderHeight),
+    transformMatrix: state.scene.getTransformMatrix()
+  };
+}
+
+function projectWorldPointToStageWithContext(worldPoint, projectionContext) {
+  // Ziel: Weltpunkte mit einem bereits vorbereiteten Projektionskontext auf die Stage abbilden.
+  // Warum: So lassen sich viele Rune-Punkte in einem Rutsch billiger umrechnen, statt pro Punkt erneut Canvas, Viewport und Matrizen zu berechnen.
+  if (!projectionContext) {
+    return null;
+  }
+
   const projected = BABYLON.Vector3.Project(
     worldPoint,
     BABYLON.Matrix.Identity(),
-    state.scene.getTransformMatrix(),
-    viewport
+    projectionContext.transformMatrix,
+    projectionContext.viewport
   );
 
   if (projected.z < 0 || projected.z > 1) {
@@ -4141,8 +4168,8 @@ function projectWorldPointToStage(worldPoint) {
   }
 
   return {
-    x: (projected.x / engine.getRenderWidth()) * canvasRect.width,
-    y: (projected.y / engine.getRenderHeight()) * canvasRect.height
+    x: (projected.x / projectionContext.renderWidth) * projectionContext.canvasRect.width,
+    y: (projected.y / projectionContext.renderHeight) * projectionContext.canvasRect.height
   };
 }
 
@@ -4157,6 +4184,7 @@ function pickDetailItemFromRuneHover(scene, canvas, event) {
   const pointerX = event.clientX - rect.left;
   const pointerY = event.clientY - rect.top;
   const cameraRight = state.camera.getDirection(BABYLON.Axis.X).normalize();
+  const projectionContext = createStageProjectionContext();
   let bestMatch = null;
   let bestDistance = Number.POSITIVE_INFINITY;
 
@@ -4166,14 +4194,17 @@ function pickDetailItemFromRuneHover(scene, canvas, event) {
     }
 
     const centerWorld = item.runeAnchorMesh.getAbsolutePosition();
-    const centerPoint = projectWorldPointToStage(centerWorld);
+    const centerPoint = projectWorldPointToStageWithContext(centerWorld, projectionContext);
 
     if (!centerPoint) {
       return;
     }
 
     const radiusWorld = item.runeGlyphMesh.getBoundingInfo()?.boundingSphere?.radiusWorld || 0.18;
-    const edgePoint = projectWorldPointToStage(centerWorld.add(cameraRight.scale(radiusWorld)));
+    const edgePoint = projectWorldPointToStageWithContext(
+      centerWorld.add(cameraRight.scale(radiusWorld)),
+      projectionContext
+    );
     const radiusPx = edgePoint
       ? Math.hypot(edgePoint.x - centerPoint.x, edgePoint.y - centerPoint.y)
       : 18;
@@ -4196,16 +4227,44 @@ function syncExplodedDetailLayout() {
     return;
   }
 
+  const projectionContext = createStageProjectionContext();
+
+  if (!projectionContext) {
+    return;
+  }
+
   const activeEntryId = getActiveDetailHoverEntryId();
+  const isContentMode = state.extraction.viewMode === "content";
+  const runePointByEntryId = new Map();
+
+  state.extraction.items.forEach((item) => {
+    if (!item.runeAnchorMesh) {
+      return;
+    }
+
+    const projectedPoint = projectWorldPointToStageWithContext(
+      item.runeAnchorMesh.getAbsolutePosition(),
+      projectionContext
+    );
+
+    if (projectedPoint) {
+      runePointByEntryId.set(item.entryId, projectedPoint);
+    }
+  });
 
   state.extraction.items.forEach((item) => {
     if (!item.detailConnectorElement || !item.detailCardElement || !item.runeAnchorMesh) {
       return;
     }
 
-    const sourcePoint = projectWorldPointToStage(item.runeAnchorMesh.getAbsolutePosition());
+    if (isContentMode) {
+      item.detailConnectorElement.setAttribute("visibility", "hidden");
+      return;
+    }
+
+    const sourcePoint = runePointByEntryId.get(item.entryId) || null;
     const cardRect = item.detailCardElement.getBoundingClientRect();
-    const canvasRect = renderCanvas.getBoundingClientRect();
+    const canvasRect = projectionContext.canvasRect;
     const targetPoint = {
       x: (cardRect.left - canvasRect.left) + 2,
       y: (cardRect.top - canvasRect.top) + (cardRect.height / 2)
@@ -4236,8 +4295,8 @@ function syncExplodedDetailLayout() {
       return;
     }
 
-    const sourcePoint = projectWorldPointToStage(sourceEntry.runeAnchorMesh.getAbsolutePosition());
-    const targetPoint = projectWorldPointToStage(targetEntry.runeAnchorMesh.getAbsolutePosition());
+    const sourcePoint = runePointByEntryId.get(sourceEntry.entryId) || null;
+    const targetPoint = runePointByEntryId.get(targetEntry.entryId) || null;
 
     if (!sourcePoint || !targetPoint) {
       connector.element.setAttribute("visibility", "hidden");
@@ -4326,6 +4385,8 @@ function enableBoxDragging(camera, canvas) {
   canvas.addEventListener("pointermove", (event) => {
     if (isTetrahedronExpanded()) {
       if (dragState.active) {
+        setHoveredRuneEntry(null);
+      } else if (state.extraction.viewMode === "content") {
         setHoveredRuneEntry(null);
       } else {
         const hoveredDetailItem = pickDetailItemFromRuneHover(state.scene, canvas, event);
