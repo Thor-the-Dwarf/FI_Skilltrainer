@@ -921,6 +921,49 @@ function updateDetailAdvanceButtonState() {
   );
 }
 
+function syncPresenterSymbolOnlyMeshes(isContentMode) {
+  // Ziel: Im Presenter nur Symbole und ihr Netz zeigen, nicht die Kristallkoerper.
+  // Warum: Die kleine Presenterflaeche soll als abstraktes Symbolnetz lesbar werden; die eigentliche Kristallgeometrie macht diese Ansicht nur unruhiger.
+  if (!state.crystalRoot) {
+    return;
+  }
+
+  if (!isContentMode) {
+    state.extraction.hiddenMeshes.forEach((entry) => {
+      if (!entry?.mesh || entry.mesh.isDisposed?.()) {
+        return;
+      }
+
+      entry.mesh.isVisible = entry.wasVisible;
+    });
+    state.extraction.hiddenMeshes = [];
+    return;
+  }
+
+  if (state.extraction.hiddenMeshes.length) {
+    return;
+  }
+
+  const allowedMeshes = new Set();
+  state.extraction.items.forEach((item) => {
+    [item.runeGlyphMesh, item.runeHaloMesh].filter(Boolean).forEach((mesh) => {
+      allowedMeshes.add(mesh);
+    });
+  });
+
+  state.crystalRoot.getChildMeshes(false).forEach((mesh) => {
+    if (allowedMeshes.has(mesh)) {
+      return;
+    }
+
+    state.extraction.hiddenMeshes.push({
+      mesh,
+      wasVisible: mesh.isVisible
+    });
+    mesh.isVisible = false;
+  });
+}
+
 function commitExtractionViewMode(viewMode) {
   // Ziel: Zwischen klassischem Detail-Overlay und Inhalts-/Content-Ansicht als echte Zustandsmaschine wechseln.
   // Warum: Beide Ansichten teilen sich dieselben Symbol- und Hierarchiedaten, brauchen aber unterschiedliche Panels, Pointer-Logik und Kamerarahmen.
@@ -953,6 +996,7 @@ function commitExtractionViewMode(viewMode) {
     state.extraction.presenterTargetBeforeContent = null;
   }
 
+  syncPresenterSymbolOnlyMeshes(nextMode === "content");
   updateDetailAdvanceButtonState();
   syncLiveDetailPaneWidth();
   syncExperienceCamera();
@@ -4993,6 +5037,7 @@ function collapseTetrahedronIntoGroundView() {
 }
 
 function clearExtractedCrystal() {
+  syncPresenterSymbolOnlyMeshes(false);
   clearExplodedDetails();
   state.extraction.root = null;
   state.extraction.materials = [];
@@ -5404,22 +5449,6 @@ function drawPresenterReferenceLineFan(context, metrics, accentHex) {
   context.restore();
 }
 
-function drawPresenterReferenceCore(context, metrics) {
-  const {
-    centerX,
-    centerY,
-    holeRadius
-  } = metrics;
-  const coreRadius = holeRadius * 0.74;
-
-  context.save();
-  context.beginPath();
-  context.arc(centerX, centerY, coreRadius, 0, TAU);
-  context.fillStyle = "rgba(16, 14, 26, 0.995)";
-  context.fill();
-  context.restore();
-}
-
 function drawLavaBallCore(context, metrics, burstStrength) {
   const {
     centerX,
@@ -5720,7 +5749,6 @@ function drawContentLavaBall(now, metrics, burstStrength, idlePulse) {
 
   drawPresenterReferenceAura(context, metrics, accentHex);
   drawPresenterReferenceLineFan(context, metrics, accentHex);
-  drawPresenterReferenceCore(context, metrics);
 }
 
 function updateExtractionAnimation() {
