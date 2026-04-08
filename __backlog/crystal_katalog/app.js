@@ -1679,7 +1679,7 @@ function createTetrahedronInteriorCrystals(scene, root, faces, selectionId, mate
   const crystalHeightLine = computePreferredTetrahedronHeightLine(faces);
   const crystalFaceEntries = buildPolyhedronFaceEntries(faces.map((face) => face.vertices));
   const crystalRuneGlyphSize = 0.92;
-  const crystalRuneGlyphPlaneOffset = 0.04;
+  const crystalRuneGlyphPlaneOffset = 0;
   const crystalRuneGlyphLayout = measureRuneGlyphLayout(CRYSTAL_RUNE_SYMBOL, 512, 24);
   const crystalRunePlacement = computeBalancedRuneAnchorPosition(
     faces,
@@ -1847,7 +1847,9 @@ function createTetrahedronInteriorCrystals(scene, root, faces, selectionId, mate
           glyphSize: fractalLayoutItem.runeSize,
           haloScale: 1.52,
           billboardMode: BABYLON.AbstractMesh.BILLBOARDMODE_NONE,
-          emissiveIntensity: 1.45
+          emissiveIntensity: 1.45,
+          glyphPlaneOffset: 0,
+          haloPlaneOffset: -0.006
         }
       );
 
@@ -4110,7 +4112,7 @@ function buildFractalLayoutItem(
     heightLine,
     runeSize * H3_ROOT_RUNE_SCALE * runeGlyphLayout.widthRatio,
     runeSize * H3_ROOT_RUNE_SCALE * runeGlyphLayout.heightRatio,
-    0.006
+    0
   );
 
   return {
