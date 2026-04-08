@@ -397,18 +397,24 @@ body.is-exploded .detail-experience {
   border: 0;
   pointer-events: auto;
   cursor: pointer;
-  background:
-    linear-gradient(180deg, hsl(var(--surface-strong) / 0.28), hsl(var(--surface) / 0.86));
-  box-shadow:
-    inset 1px 0 0 hsl(0 0% 100% / 0.08),
-    inset 12px 0 24px hsl(0 0% 100% / 0.03);
+  background: transparent;
+  box-shadow: none;
+  opacity: 0;
+  transition:
+    opacity 180ms ease,
+    background 180ms ease,
+    box-shadow 180ms ease;
   z-index: 4;
 }
 
 .detail-advance-button:hover,
 .detail-advance-button:focus-visible {
+  opacity: 1;
   background:
     linear-gradient(180deg, hsl(var(--surface-strong) / 0.42), hsl(var(--surface) / 0.96));
+  box-shadow:
+    inset 1px 0 0 hsl(0 0% 100% / 0.08),
+    inset 12px 0 24px hsl(0 0% 100% / 0.03);
   outline: none;
 }
 
@@ -418,8 +424,15 @@ body.is-exploded .detail-experience {
   border-top: 18px solid transparent;
   border-bottom: 18px solid transparent;
   border-left: 22px solid hsl(var(--text) / 0.94);
+  opacity: 0;
   filter: drop-shadow(0 0 14px hsl(0 0% 100% / 0.14));
   transform: translateX(2px);
+  transition: opacity 180ms ease;
+}
+
+.detail-advance-button:hover .detail-advance-glyph,
+.detail-advance-button:focus-visible .detail-advance-glyph {
+  opacity: 1;
 }
 
 .detail-branch {
