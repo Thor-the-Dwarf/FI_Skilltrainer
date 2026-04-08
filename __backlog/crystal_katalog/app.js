@@ -99,7 +99,6 @@ const state = {
     lights: [],
     hiddenMeshes: [],
     hiddenLights: [],
-    networkConnectors: [],
     stage: "idle",
     stageStartTime: 0,
     items: [],
@@ -677,6 +676,11 @@ function setExtractionViewMode(viewMode) {
 
   updateDetailAdvanceButtonState();
   syncExperienceCamera();
+  ensureRuneDrawerMounted();
+  requestAnimationFrame(() => {
+    syncRuneDrawerNetwork();
+    syncRuneDrawerActiveState();
+  });
   refreshRuntimeDiagnostics();
 }
 
@@ -699,17 +703,19 @@ function getRuneDrawerSignature(items) {
 }
 
 function getRuneDrawerNodeSize(item) {
-  const isExpandedView = state.extraction.stage === "expanded";
+  // Ziel: H1, H2 und H3 im Drawer groessenlogisch lesbar staffeln.
+  // Warum: Wenn die Runen ueber dem echten Kristall liegen, muss die Hierarchie trotzdem auf einen Blick klar bleiben und darf nicht von einem Panel-Layout abhaengen.
+  const isExpanded = state.extraction.stage === "expanded";
 
   if (item.level === "h1") {
-    return isExpandedView ? 76 : 90;
+    return isExpanded ? 74 : 88;
   }
 
   if (item.level === "h2") {
-    return isExpandedView ? 44 : 54;
+    return isExpanded ? 42 : 50;
   }
 
-  return isExpandedView ? 22 : 28;
+  return isExpanded ? 20 : 24;
 }
 
 function clearRuneDrawer() {
@@ -718,6 +724,16 @@ function clearRuneDrawer() {
   state.runeDrawer.signature = "";
   state.runeDrawer.mountedEntryIds = [];
   state.runeDrawer.networkConnectors = [];
+
+  const knownEntries = [
+    ...(state.crystalRoot?.metadata?.runeEntries || []),
+    ...state.extraction.items
+  ];
+
+  knownEntries.forEach((item) => {
+    item.runeDrawerElement = null;
+    item.runeDrawerGlyphElement = null;
+  });
 
   if (runeDrawerNodes) {
     runeDrawerNodes.innerHTML = "";
@@ -735,6 +751,86 @@ function clearRuneDrawer() {
     runeDrawer.style.width = "0px";
     runeDrawer.style.height = "0px";
   }
+}
+
+function syncRuneDrawerActiveState(items = getActiveRuneDrawerItems()) {
+  // Ziel: Hover- und Fokuszustaende des Drawers mit Detail- und Content-Zustand koppeln.
+  // Warum: Auch ohne 3D-Runen muessen Kartenhover, Inhaltsfokus und Rune-Drawer dieselbe aktive Stelle markieren, sonst laufen Text und Navigation auseinander.
+  const activeEntryId = state.extraction.viewMode === "content"
+    ? state.extraction.activeContentEntryId
+    : getActiveDetailHoverEntryId();
+
+  items.forEach((item) => {
+    item.runeDrawerElement?.classList.toggle("is-active", activeEntryId === item.entryId);
+  });
+}
+
+function syncRuneDrawerNetwork(items = getActiveRuneDrawerItems()) {
+  // Ziel: Die Rune-zu-Rune-Verbindungen im Drawer nur noch aus DOM-Knoten ableiten.
+  // Warum: Wenn Runen und Netz komplett aus der 3D-Szene raus sind, soll auch die Liniengeometrie nicht mehr von Babylon-Projektionen abhaengen.
+  if (!runeDrawer || !runeDrawerLines || !items.length) {
+    return;
+  }
+
+  const drawerRect = runeDrawer.getBoundingClientRect();
+
+  state.runeDrawer.networkConnectors.forEach((connector) => {
+    const sourceEntry = items.find((item) => item.entryId === connector.sourceEntryId) || null;
+    const targetEntry = items.find((item) => item.entryId === connector.targetEntryId) || null;
+    const sourceRect = sourceEntry?.runeDrawerElement?.getBoundingClientRect?.() || null;
+    const targetRect = targetEntry?.runeDrawerElement?.getBoundingClientRect?.() || null;
+
+    if (!connector.element || !sourceRect || !targetRect) {
+      connector.element?.setAttribute("visibility", "hidden");
+      return;
+    }
+
+    const sourcePoint = {
+      x: (sourceRect.left - drawerRect.left) + (sourceRect.width / 2),
+      y: (sourceRect.top - drawerRect.top) + (sourceRect.height / 2)
+    };
+    const targetPoint = {
+      x: (targetRect.left - drawerRect.left) + (targetRect.width / 2),
+      y: (targetRect.top - drawerRect.top) + (targetRect.height / 2)
+    };
+
+    connector.element.setAttribute("visibility", "visible");
+    connector.element.setAttribute("x1", String(sourcePoint.x));
+    connector.element.setAttribute("y1", String(sourcePoint.y));
+    connector.element.setAttribute("x2", String(targetPoint.x));
+    connector.element.setAttribute("y2", String(targetPoint.y));
+  });
+}
+
+function activateRuneDrawerEntry(item) {
+  // Ziel: Drawer-Knoten in jedem Modus als gueltigen Einstiegspfad nutzbar machen.
+  // Warum: Wenn die Runen nur noch im Drawer leben, darf keine Ebene mehr auf alte 3D-Picks angewiesen sein, um Details oder Content zu erreichen.
+  if (state.selectedId !== 4) {
+    return;
+  }
+
+  if (!isTetrahedronExpanded()) {
+    showTetrahedronDetails();
+    requestAnimationFrame(() => {
+      setHoveredDetailCardEntry(item.entryId);
+      setHoveredRuneEntry(item.entryId);
+      state.extraction.items
+        .find((entry) => entry.entryId === item.entryId)
+        ?.detailCardElement
+        ?.scrollIntoView({ block: "nearest" });
+    });
+    return;
+  }
+
+  if (state.extraction.viewMode === "content") {
+    setActiveContentEntry(item.entryId);
+    syncRuneDrawerActiveState(state.extraction.items);
+    return;
+  }
+
+  setHoveredDetailCardEntry(item.entryId);
+  setHoveredRuneEntry(item.entryId);
+  item.detailCardElement?.scrollIntoView({ block: "nearest" });
 }
 
 function createRuneDrawerNode(item) {
@@ -772,23 +868,7 @@ function createRuneDrawerNode(item) {
       setHoveredRuneEntry(null);
     }
   });
-  button.addEventListener("click", () => {
-    if (state.selectedId !== 4) {
-      return;
-    }
-
-    if (!isTetrahedronExpanded()) {
-      showTetrahedronDetails();
-      return;
-    }
-
-    if (state.extraction.viewMode === "content") {
-      setActiveContentEntry(item.entryId);
-      return;
-    }
-
-    setHoveredRuneEntry(item.entryId);
-  });
+  button.addEventListener("click", () => activateRuneDrawerEntry(item));
 
   item.runeDrawerElement = button;
   item.runeDrawerGlyphElement = glyph;
@@ -797,7 +877,7 @@ function createRuneDrawerNode(item) {
 
 function mountRuneDrawer(items) {
   // Ziel: Den Form-4-Drawer als einziges Rune-/Netz-Rendering aufbauen.
-  // Warum: Root, Detail und Presenter sollen denselben billigen 2D-Pfad teilen, statt parallel Rune-Meshes, Halos und SVG-Netze im 3D-Layer weiterzutragen.
+  // Warum: Root, Detail und Presenter sollen denselben billigen 2D-Pfad teilen, aber immer direkt auf dem aktuell sichtbaren Kristall statt in einem zweiten Mini-Host.
   clearRuneDrawer();
 
   if (!runeDrawer || !runeDrawerNodes || !runeDrawerLines || !items.length) {
@@ -841,6 +921,7 @@ function mountRuneDrawer(items) {
   state.runeDrawer.mountedEntryIds = items.map((item) => item.entryId);
   runeDrawer.classList.add("is-active");
   runeDrawer.setAttribute("aria-hidden", "false");
+  syncRuneDrawerActiveState(items);
 }
 
 function ensureRuneDrawerMounted() {
@@ -855,6 +936,8 @@ function ensureRuneDrawerMounted() {
   if (state.runeDrawer.signature !== signature) {
     mountRuneDrawer(items);
   }
+
+  syncRuneDrawerActiveState(items);
 
   return items;
 }
@@ -885,6 +968,8 @@ function applyExplodedLayout(isActive) {
 
   requestAnimationFrame(() => {
     state.scene?.getEngine().resize();
+    syncRuneDrawerNetwork();
+    syncRuneDrawerActiveState();
   });
 }
 
@@ -973,6 +1058,8 @@ function setupBabylonScene() {
 
   window.addEventListener("resize", () => {
     engine.resize();
+    syncRuneDrawerLayout();
+    syncExplodedDetailLayout();
   });
 }
 
@@ -1012,6 +1099,11 @@ function rebuildCrystal(shapeConfig, selectionId) {
   state.crystalRoot = crystal.root;
   state.materials = crystal.materials;
   state.faceEntries = crystal.faceEntries;
+  ensureRuneDrawerMounted();
+  requestAnimationFrame(() => {
+    syncRuneDrawerNetwork();
+    syncRuneDrawerActiveState();
+  });
   refreshRuntimeDiagnostics();
 }
 
@@ -3866,6 +3958,7 @@ function setHoveredDetailCardEntry(entryId) {
   // Warum: Die Detailkarten liegen in einer eigenen DOM-Ebene und muessen dieselbe Hover-Quelle bedienen wie die 3D-Runen im Canvas.
   state.extraction.hoveredCardEntryId = entryId;
   syncDetailConnectorVisibility();
+  syncRuneDrawerActiveState(state.extraction.items.length ? state.extraction.items : getActiveRuneDrawerItems());
 }
 
 function setHoveredRuneEntry(entryId) {
@@ -3873,6 +3966,7 @@ function setHoveredRuneEntry(entryId) {
   // Warum: Die Linie soll auftauchen, egal ob der Nutzer am Text oder direkt an der Rune andockt.
   state.extraction.hoveredRuneEntryId = entryId;
   syncDetailConnectorVisibility();
+  syncRuneDrawerActiveState(state.extraction.items.length ? state.extraction.items : getActiveRuneDrawerItems());
 }
 
 function createDetailCard(item) {
@@ -3912,62 +4006,12 @@ function mountDetailHoverConnectors(items) {
   }
 
   items.forEach((item) => {
-    if (!item.runeAnchorMesh) {
-      item.detailConnectorElement = null;
-      return;
-    }
-
     const connectorLine = document.createElementNS("http://www.w3.org/2000/svg", "line");
     connectorLine.classList.add("detail-connector");
     connectorLine.style.setProperty("--detail-accent", item.detail.accentHex);
     connectorLine.setAttribute("visibility", "hidden");
     detailLines.appendChild(connectorLine);
     item.detailConnectorElement = connectorLine;
-
-    [item.runeGlyphMesh, item.runeHaloMesh].filter(Boolean).forEach((mesh) => {
-      mesh.metadata = {
-        ...(mesh.metadata || {}),
-        detailHoverEntryId: item.entryId
-      };
-    });
-  });
-}
-
-function mountRuneNetworkConnectors(items) {
-  // Ziel: Nur die H2-Fragmentrunen als Hub mit allen sichtbaren Runen verbinden.
-  // Warum: Das volle Rune-zu-Rune-Netz war visuell und technisch zu dicht; die H2-Hubs behalten den Netzwerkcharakter, reduzieren aber die Linienmenge drastisch.
-  if (!detailLines) {
-    return;
-  }
-
-  const runeEntries = items.filter((item) => item.runeAnchorMesh);
-  const h2Entries = runeEntries.filter((item) => item.level === "h2");
-  const seenPairs = new Set();
-  state.extraction.networkConnectors = [];
-
-  h2Entries.forEach((sourceEntry) => {
-    runeEntries.forEach((targetEntry) => {
-      if (sourceEntry.entryId === targetEntry.entryId) {
-        return;
-      }
-
-      const pairKey = [sourceEntry.entryId, targetEntry.entryId].sort().join("::");
-
-      if (seenPairs.has(pairKey)) {
-        return;
-      }
-
-      seenPairs.add(pairKey);
-      const connectorLine = document.createElementNS("http://www.w3.org/2000/svg", "line");
-      connectorLine.classList.add("detail-connector", "detail-connector-network");
-      connectorLine.setAttribute("visibility", "visible");
-      detailLines.appendChild(connectorLine);
-      state.extraction.networkConnectors.push({
-        sourceEntryId: sourceEntry.entryId,
-        targetEntryId: targetEntry.entryId,
-        element: connectorLine
-      });
-    });
   });
 }
 
@@ -4016,6 +4060,7 @@ function mountExplodedDetails(items) {
     detailCards.appendChild(branch);
   });
 
+  mountRuneDrawer(items);
   mountDetailHoverConnectors(items);
   syncDetailConnectorVisibility();
 }
@@ -4029,6 +4074,7 @@ function setActiveContentEntry(entryId) {
 
   state.extraction.activeContentEntryId = entryId;
   mountContentExperience(state.extraction.items);
+  syncRuneDrawerActiveState(state.extraction.items);
 }
 
 function createContentTocButton(item, className) {
@@ -4175,7 +4221,6 @@ function clearExplodedDetails() {
 
   state.extraction.hoveredCardEntryId = null;
   state.extraction.hoveredRuneEntryId = null;
-  state.extraction.networkConnectors = [];
   updateDetailAdvanceButtonState();
 
   if (detailCards) {
@@ -4194,6 +4239,7 @@ function clearExplodedDetails() {
     detailLines.innerHTML = "";
   }
 
+  syncRuneDrawerActiveState(getActiveRuneDrawerItems());
   refreshRuntimeDiagnostics();
 }
 
@@ -4277,6 +4323,11 @@ function clearExtractedCrystal() {
   state.extraction.viewMode = "detail";
   state.extraction.activeContentEntryId = null;
   applyExplodedLayout(false);
+  ensureRuneDrawerMounted();
+  requestAnimationFrame(() => {
+    syncRuneDrawerNetwork();
+    syncRuneDrawerActiveState();
+  });
   refreshRuntimeDiagnostics();
 }
 
@@ -4388,8 +4439,8 @@ function pickDetailItemFromRuneHover(scene, canvas, event) {
 }
 
 function syncRuneDrawerLayout() {
-  // Ziel: Den 2D-Drawer framegenau ueber dem aktuell sichtbaren Kristallfenster halten.
-  // Warum: Auch ohne 3D-Rune-Meshes muessen H1/H2/H3 und ihr Netz in Root-, Detail- und Presenter-View synchron zur Kristallrotation und zur wechselnden Canvas-Flaeche bleiben.
+  // Ziel: Den Rune-Drawer direkt ueber dem jeweils sichtbaren Kristall ausrichten.
+  // Warum: DetailView und PresentationsView duerfen keinen zweiten Mini-Kristall-Host erzeugen; dieselben Runen muessen auf den echten Kristall projiziert werden.
   const items = ensureRuneDrawerMounted();
 
   if (!items.length || !runeDrawer || !runeDrawerNodes || !runeDrawerLines) {
@@ -4406,10 +4457,6 @@ function syncRuneDrawerLayout() {
 
   const drawerLeft = projectionContext.canvasRect.left - stageRect.left;
   const drawerTop = projectionContext.canvasRect.top - stageRect.top;
-  const runePointByEntryId = new Map();
-  const activeDrawerEntryId = state.extraction.viewMode === "content"
-    ? state.extraction.activeContentEntryId
-    : getActiveDetailHoverEntryId();
 
   runeDrawer.style.left = `${drawerLeft}px`;
   runeDrawer.style.top = `${drawerTop}px`;
@@ -4423,77 +4470,37 @@ function syncRuneDrawerLayout() {
       ? projectWorldPointToStageWithContext(item.runeAnchorMesh.getAbsolutePosition(), projectionContext)
       : null;
     const visualSize = getRuneDrawerNodeSize(item);
-    const isActive = activeDrawerEntryId === item.entryId;
 
     if (!item.runeDrawerElement || !projectedPoint) {
       item.runeDrawerElement?.setAttribute("hidden", "");
       return;
     }
 
-    runePointByEntryId.set(item.entryId, projectedPoint);
     item.runeDrawerElement.removeAttribute("hidden");
     item.runeDrawerElement.style.left = `${projectedPoint.x}px`;
     item.runeDrawerElement.style.top = `${projectedPoint.y}px`;
     item.runeDrawerElement.style.setProperty("--rune-size", `${visualSize}px`);
     item.runeDrawerGlyphElement.style.fontSize = `${Math.round(visualSize * 0.7)}px`;
-    item.runeDrawerElement.classList.toggle("is-active", Boolean(isActive));
   });
 
-  const entriesById = new Map(items.map((item) => [item.entryId, item]));
-
-  state.runeDrawer.networkConnectors.forEach((connector) => {
-    const sourceEntry = entriesById.get(connector.sourceEntryId);
-    const targetEntry = entriesById.get(connector.targetEntryId);
-    const sourcePoint = sourceEntry ? runePointByEntryId.get(sourceEntry.entryId) : null;
-    const targetPoint = targetEntry ? runePointByEntryId.get(targetEntry.entryId) : null;
-
-    if (!connector.element || !sourcePoint || !targetPoint) {
-      connector.element?.setAttribute("visibility", "hidden");
-      return;
-    }
-
-    connector.element.setAttribute("visibility", "visible");
-    connector.element.setAttribute("x1", String(sourcePoint.x));
-    connector.element.setAttribute("y1", String(sourcePoint.y));
-    connector.element.setAttribute("x2", String(targetPoint.x));
-    connector.element.setAttribute("y2", String(targetPoint.y));
-  });
+  syncRuneDrawerActiveState(items);
+  syncRuneDrawerNetwork(items);
 }
 
 function syncExplodedDetailLayout() {
-  // Ziel: Die Hover-Connectoren framegenau zwischen Rune und zugehoeriger Detailkarte halten.
-  // Warum: Die Karten leben im DOM und die Runen im Babylon-Canvas; nur eine laufende Projektion haelt beide Ebenen deckungsgleich verbunden.
+  // Ziel: Hover-Connectoren zwischen Detailkarte und Drawer-Rune deckungsgleich halten.
+  // Warum: Sobald die Runen nicht mehr im 3D-Canvas leben, muss auch diese Zuordnung komplett ueber billige DOM-Geometrie laufen statt ueber Babylon-Projektion.
   if (!detailCards || !detailLines || !state.extraction.items.length) {
     return;
   }
 
-  const projectionContext = createStageProjectionContext();
-
-  if (!projectionContext) {
-    return;
-  }
-
+  ensureRuneDrawerMounted();
   const activeEntryId = getActiveDetailHoverEntryId();
   const isContentMode = state.extraction.viewMode === "content";
-  const runePointByEntryId = new Map();
+  const lineRect = detailLines.getBoundingClientRect();
 
   state.extraction.items.forEach((item) => {
-    if (!item.runeAnchorMesh) {
-      return;
-    }
-
-    const projectedPoint = projectWorldPointToStageWithContext(
-      item.runeAnchorMesh.getAbsolutePosition(),
-      projectionContext
-    );
-
-    if (projectedPoint) {
-      runePointByEntryId.set(item.entryId, projectedPoint);
-    }
-  });
-
-  state.extraction.items.forEach((item) => {
-    if (!item.detailConnectorElement || !item.detailCardElement || !item.runeAnchorMesh) {
+    if (!item.detailConnectorElement || !item.detailCardElement || !item.runeDrawerElement) {
       return;
     }
 
@@ -4502,18 +4509,16 @@ function syncExplodedDetailLayout() {
       return;
     }
 
-    const sourcePoint = runePointByEntryId.get(item.entryId) || null;
+    const sourceRect = item.runeDrawerElement.getBoundingClientRect();
     const cardRect = item.detailCardElement.getBoundingClientRect();
-    const canvasRect = projectionContext.canvasRect;
     const targetPoint = {
-      x: (cardRect.left - canvasRect.left) + 2,
-      y: (cardRect.top - canvasRect.top) + (cardRect.height / 2)
+      x: (cardRect.left - lineRect.left) + 2,
+      y: (cardRect.top - lineRect.top) + (cardRect.height / 2)
     };
-
-    if (!sourcePoint) {
-      item.detailConnectorElement.setAttribute("visibility", "hidden");
-      return;
-    }
+    const sourcePoint = {
+      x: (sourceRect.left - lineRect.left) + (sourceRect.width / 2),
+      y: (sourceRect.top - lineRect.top) + (sourceRect.height / 2)
+    };
 
     item.detailConnectorElement.setAttribute(
       "visibility",

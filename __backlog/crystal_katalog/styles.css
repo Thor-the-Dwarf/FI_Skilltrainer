@@ -245,32 +245,24 @@ body.is-exploded .stage-frame {
 
 .rune-drawer {
   position: absolute;
-  top: 18px;
-  right: 18px;
-  width: var(--rune-drawer-width);
-  height: var(--rune-drawer-height);
-  padding: 14px;
-  border: 1px solid hsl(0 0% 100% / 0.08);
-  border-radius: 28px;
-  background:
-    linear-gradient(180deg, hsl(var(--surface-strong) / 0.86), hsl(var(--surface) / 0.94));
-  box-shadow:
-    0 24px 52px rgba(0, 0, 0, 0.28),
-    inset 0 0 0 1px hsl(0 0% 100% / 0.03);
-  backdrop-filter: blur(20px);
+  left: 0;
+  top: 0;
+  width: 0;
+  height: 0;
+  padding: 0;
+  border: none;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+  backdrop-filter: none;
   z-index: 4;
   opacity: 0;
   pointer-events: none;
-  transition:
-    opacity 180ms ease,
-    transform 180ms ease;
-  transform: translateX(18px) scale(0.985);
+  transition: opacity 180ms ease;
 }
 
 .rune-drawer.is-active {
   opacity: 1;
-  pointer-events: auto;
-  transform: translateX(0) scale(1);
 }
 
 .rune-drawer-lines,
@@ -289,54 +281,15 @@ body.is-exploded .stage-frame {
 
 .rune-drawer-nodes {
   z-index: 1;
-  pointer-events: auto;
-}
-
-.rune-drawer-shell {
-  display: grid;
-  grid-template-rows: auto minmax(0, 1fr);
-  gap: 12px;
-  width: 100%;
-  height: 100%;
-}
-
-.rune-drawer-shell__h1 {
-  display: flex;
-  justify-content: center;
-}
-
-.rune-drawer-fragments {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 10px;
-  align-content: start;
-}
-
-.rune-drawer-fragment {
-  display: grid;
-  gap: 8px;
-  min-width: 0;
-  padding: 10px 9px 9px;
-  border: 1px solid hsl(0 0% 100% / 0.06);
-  border-radius: 18px;
-  background:
-    linear-gradient(180deg, hsl(var(--surface-soft) / 0.22), hsl(var(--surface) / 0.12));
-  box-shadow:
-    inset 0 0 0 1px hsl(0 0% 100% / 0.02),
-    0 10px 24px rgba(0, 0, 0, 0.08);
-}
-
-.rune-drawer-fragment__runes {
-  display: grid;
-  grid-template-columns: repeat(5, minmax(0, 1fr));
-  gap: 6px 4px;
-  justify-items: center;
+  pointer-events: none;
 }
 
 .rune-drawer-node {
   --rune-accent: #ffffff;
   --rune-size: 34px;
-  position: relative;
+  position: absolute;
+  left: 0;
+  top: 0;
   width: var(--rune-size);
   height: var(--rune-size);
   display: grid;
@@ -346,6 +299,7 @@ body.is-exploded .stage-frame {
   background: transparent;
   color: var(--rune-accent);
   cursor: pointer;
+  transform: translate(-50%, -50%);
   pointer-events: auto;
 }
 
@@ -389,27 +343,27 @@ body.is-exploded .stage-frame {
 }
 
 .rune-drawer-node--h1 {
-  --rune-size: 82px;
+  --rune-size: 88px;
 }
 
 .rune-drawer-node--h2 {
-  --rune-size: 44px;
+  --rune-size: 50px;
 }
 
 .rune-drawer-node--h3 {
-  --rune-size: 20px;
+  --rune-size: 24px;
 }
 
 body.is-exploded .rune-drawer-node--h1 {
-  --rune-size: 70px;
+  --rune-size: 74px;
 }
 
 body.is-exploded .rune-drawer-node--h2 {
-  --rune-size: 40px;
+  --rune-size: 42px;
 }
 
 body.is-exploded .rune-drawer-node--h3 {
-  --rune-size: 18px;
+  --rune-size: 20px;
 }
 
 body.is-content-mode .rune-drawer {
@@ -425,10 +379,6 @@ body.is-content-mode .rune-drawer {
   filter:
     drop-shadow(0 0 8px hsl(0 0% 100% / 0.18))
     drop-shadow(0 0 18px hsl(0 0% 100% / 0.07));
-}
-
-body.is-exploded .detail-cards {
-  padding-top: calc(var(--rune-drawer-height) + 34px);
 }
 
 body.is-exploded #renderCanvas {
@@ -1169,8 +1119,6 @@ body.is-content-mode .detail-connector:not(.detail-connector-hierarchy):not(.det
     --detail-pane-width: 50%;
     --content-sidebar-width: clamp(260px, 34vw, 320px);
     --content-crystal-height: clamp(200px, 28vh, 250px);
-    --rune-drawer-width: clamp(240px, 28vw, 300px);
-    --rune-drawer-height: clamp(250px, 34vh, 320px);
   }
 
   .vault-shell {
@@ -1220,8 +1168,6 @@ body.is-content-mode .detail-connector:not(.detail-connector-hierarchy):not(.det
     --detail-pane-width: 100%;
     --content-sidebar-width: 100%;
     --content-crystal-height: 220px;
-    --rune-drawer-width: min(230px, calc(100vw - 24px));
-    --rune-drawer-height: 236px;
   }
 
   .panel {
@@ -1239,29 +1185,8 @@ body.is-content-mode .detail-connector:not(.detail-connector-hierarchy):not(.det
 
   .detail-cards {
     width: calc(var(--detail-pane-width) - var(--detail-advance-width));
-    padding: calc(var(--rune-drawer-height) + 74px) 12px 20px 8px;
+    padding: 28px 12px 20px 8px;
     gap: 12px;
-  }
-
-  .rune-drawer {
-    top: 10px;
-    right: 10px;
-    padding: 10px;
-    border-radius: 22px;
-  }
-
-  .rune-drawer-fragments {
-    gap: 8px;
-  }
-
-  .rune-drawer-fragment {
-    padding: 8px 7px 8px;
-    border-radius: 16px;
-  }
-
-  .rune-drawer-fragment__runes {
-    grid-template-columns: repeat(4, minmax(0, 1fr));
-    gap: 4px;
   }
 
   .content-experience {
