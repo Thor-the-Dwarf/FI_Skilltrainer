@@ -3766,28 +3766,41 @@ function mountDetailHoverConnectors(items) {
 }
 
 function mountRuneNetworkConnectors(items) {
-  // Ziel: Zwischen allen sichtbaren Runen ein vollstaendiges Verbindungsnetz aufbauen.
-  // Warum: Fuer diesen Vergleichsstand soll die komplette Rune-zu-Rune-Dichte sichtbar sein, statt nur Eltern-Kind-Beziehungen zu zeigen.
+  // Ziel: Nur die H2-Fragmentrunen als Hub mit allen sichtbaren Runen verbinden.
+  // Warum: Das volle Rune-zu-Rune-Netz war visuell und technisch zu dicht; die H2-Hubs behalten den Netzwerkcharakter, reduzieren aber die Linienmenge drastisch.
   if (!detailLines) {
     return;
   }
 
   const runeEntries = items.filter((item) => item.runeAnchorMesh);
+  const h2Entries = runeEntries.filter((item) => item.level === "h2");
+  const seenPairs = new Set();
   state.extraction.networkConnectors = [];
 
-  for (let sourceIndex = 0; sourceIndex < runeEntries.length; sourceIndex += 1) {
-    for (let targetIndex = sourceIndex + 1; targetIndex < runeEntries.length; targetIndex += 1) {
+  h2Entries.forEach((sourceEntry) => {
+    runeEntries.forEach((targetEntry) => {
+      if (sourceEntry.entryId === targetEntry.entryId) {
+        return;
+      }
+
+      const pairKey = [sourceEntry.entryId, targetEntry.entryId].sort().join("::");
+
+      if (seenPairs.has(pairKey)) {
+        return;
+      }
+
+      seenPairs.add(pairKey);
       const connectorLine = document.createElementNS("http://www.w3.org/2000/svg", "line");
       connectorLine.classList.add("detail-connector", "detail-connector-network");
       connectorLine.setAttribute("visibility", "visible");
       detailLines.appendChild(connectorLine);
       state.extraction.networkConnectors.push({
-        sourceEntryId: runeEntries[sourceIndex].entryId,
-        targetEntryId: runeEntries[targetIndex].entryId,
+        sourceEntryId: sourceEntry.entryId,
+        targetEntryId: targetEntry.entryId,
         element: connectorLine
       });
-    }
-  }
+    });
+  });
 }
 
 function mountExplodedDetails(items) {
