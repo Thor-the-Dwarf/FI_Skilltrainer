@@ -58,6 +58,10 @@ const renderCanvas = document.getElementById("renderCanvas");
 const detailExperience = document.getElementById("detailExperience");
 const detailLines = document.getElementById("detailLines");
 const detailCards = document.getElementById("detailCards");
+const contentExperience = document.getElementById("contentExperience");
+const contentToc = document.getElementById("contentToc");
+const contentStage = document.getElementById("contentStage");
+const detailAdvanceButton = document.getElementById("detailAdvanceButton");
 const runtimeDebug = document.getElementById("runtimeDebug");
 const runtimeDebugMode = document.getElementById("runtimeDebugMode");
 const runtimeDebugSummary = document.getElementById("runtimeDebugSummary");
@@ -66,6 +70,7 @@ const STARTUP_CONFIG = parseStartupConfig();
 const diagnostics = createDiagnosticsState(STARTUP_CONFIG);
 const DEFAULT_CAMERA_RADIUS = 6.1;
 const DETAIL_CAMERA_RADIUS = 6.35;
+const CONTENT_CAMERA_RADIUS = 6.7;
 const EXPLODED_CRYSTAL_OFFSET_X = 0;
 
 const state = {
@@ -88,6 +93,8 @@ const state = {
     stage: "idle",
     stageStartTime: 0,
     items: [],
+    viewMode: "detail",
+    activeContentEntryId: null,
     hoveredCardEntryId: null,
     hoveredRuneEntryId: null
   },
@@ -122,6 +129,7 @@ const state = {
 installGlobalDiagnosticHooks();
 renderList();
 renderQuickSelects();
+bindDetailAdvanceButton();
 updateSelection(STARTUP_CONFIG.selectionId);
 setupBabylonScene();
 
@@ -157,6 +165,29 @@ function renderQuickSelects() {
   });
 }
 
+function bindDetailAdvanceButton() {
+  // Ziel: Den vorhandenen Rail-Button als Eintritt in die naechste Ansichts-Ebene nutzbar machen.
+  // Warum: Der Wechsel vom reinen Detail-Overlay zu Inhaltsverzeichnis plus Content soll ueber genau denselben prominenten Einstieg passieren, statt neue UI-Hebel einzufuehren.
+  if (!detailAdvanceButton) {
+    return;
+  }
+
+  detailAdvanceButton.addEventListener("click", () => {
+    if (!isTetrahedronExpanded()) {
+      return;
+    }
+
+    if (state.extraction.viewMode === "content") {
+      setExtractionViewMode("detail");
+      return;
+    }
+
+    setExtractionViewMode("content");
+  });
+
+  updateDetailAdvanceButtonState();
+}
+
 function populateSelect(select, placeholder, sourceItems) {
   if (!select) {
     return;
@@ -185,6 +216,7 @@ function parseStartupConfig() {
   return {
     selectionId: itemsById.has(selectionCandidate) ? selectionCandidate : 1,
     openDetails: ["1", "true", "yes"].includes((params.get("detail") || "").toLowerCase()),
+    openContent: ["1", "true", "yes"].includes((params.get("content") || "").toLowerCase()),
     testlab: params.has("testlab") || params.has("debug"),
     hoverEntryId: params.get("hover") || null
   };
@@ -200,6 +232,7 @@ function createDiagnosticsState(startupConfig) {
     metrics: {
       selectionId: startupConfig.selectionId,
       detailOpen: false,
+      viewMode: "detail",
       faceEntries: 0,
       h1: 0,
       h2: 0,
@@ -280,7 +313,7 @@ function updateRuntimeDebugPanel() {
   runtimeDebug.dataset.level = errorCount > 0 ? "error" : "info";
   runtimeDebugMode.textContent = errorCount > 0 ? "fehler" : diagnostics.enabled ? "testlab aktiv" : "live";
   runtimeDebugSummary.textContent = [
-    `Selection ${metrics.selectionId} · Faces ${metrics.faceEntries} · Detail ${metrics.detailOpen ? "offen" : "zu"}`,
+    `Selection ${metrics.selectionId} · Faces ${metrics.faceEntries} · Detail ${metrics.detailOpen ? "offen" : "zu"} · Modus ${metrics.viewMode}`,
     `H1 ${metrics.visibleH1}/${metrics.h1} · H2 ${metrics.visibleH2}/${metrics.h2} · H3 ${metrics.visibleH3}/${metrics.h3}`,
     `Errors ${errorCount} · Events ${eventCount}`
   ].join("\n");
@@ -355,6 +388,7 @@ function refreshRuntimeDiagnostics() {
   diagnostics.metrics = {
     selectionId: state.selectedId,
     detailOpen: state.extraction.stage === "expanded",
+    viewMode: state.extraction.viewMode,
     faceEntries: state.faceEntries.length,
     h1: crystalEntry.length,
     h2: fragmentEntries.length,
@@ -446,6 +480,8 @@ function installGlobalDiagnosticHooks() {
       return {
         selectionId: state.selectedId,
         detailOpen: state.extraction.stage === "expanded",
+        viewMode: state.extraction.viewMode,
+        activeContentEntryId: state.extraction.activeContentEntryId,
         metrics: { ...diagnostics.metrics },
         conditions: [...diagnostics.conditionEntries.entries()].map(([key, value]) => ({ key, ...value })),
         errors: diagnostics.errorEntries.map((entry) => ({ ...entry })),
@@ -457,6 +493,17 @@ function installGlobalDiagnosticHooks() {
     },
     openDetails() {
       showTetrahedronDetails();
+      refreshRuntimeDiagnostics();
+      return this.getReport();
+    },
+    openContentMode() {
+      showTetrahedronDetails();
+      setExtractionViewMode("content");
+      refreshRuntimeDiagnostics();
+      return this.getReport();
+    },
+    closeContentMode() {
+      setExtractionViewMode("detail");
       refreshRuntimeDiagnostics();
       return this.getReport();
     },
@@ -513,6 +560,68 @@ function syncQuickSelects(id) {
   }
 }
 
+function syncExperienceCamera() {
+  // Ziel: Die Kamera an den aktiven UI-Zustand koppeln, statt alle Ansichten mit demselben Framing zu erzwingen.
+  // Warum: Detail-Overlay und Inhalts-/Content-Ansicht haben unterschiedliche Buehnenbreiten; ohne kameraseitige Anpassung wird der Kristall entweder zu klein oder abgeschnitten.
+  if (!state.camera) {
+    return;
+  }
+
+  if (state.extraction.stage !== "expanded") {
+    state.camera.radius = DEFAULT_CAMERA_RADIUS;
+    return;
+  }
+
+  state.camera.radius = state.extraction.viewMode === "content"
+    ? CONTENT_CAMERA_RADIUS
+    : DETAIL_CAMERA_RADIUS;
+}
+
+function updateDetailAdvanceButtonState() {
+  // Ziel: Dem Rail-Button klar machen, ob er vorwaerts in den Content-Modus oder zurueck in den Detail-Modus fuehrt.
+  // Warum: Dieselbe Rail bleibt der zentrale Hebel zwischen beiden Ebenen; ohne expliziten Zustandswechsel wirkt die Navigation zufaellig.
+  if (!detailAdvanceButton) {
+    return;
+  }
+
+  const isContentMode = state.extraction.viewMode === "content";
+  detailAdvanceButton.classList.toggle("is-back", isContentMode);
+  detailAdvanceButton.setAttribute(
+    "aria-label",
+    isContentMode ? "Zurueck zu Details" : "Zum Inhaltsverzeichnis und Content"
+  );
+}
+
+function setExtractionViewMode(viewMode) {
+  // Ziel: Zwischen klassischem Detail-Overlay und Inhalts-/Content-Ansicht als echte Zustandsmaschine wechseln.
+  // Warum: Beide Ansichten teilen sich dieselben Runen- und Hierarchiedaten, brauchen aber unterschiedliche Panels, Pointer-Logik und Kamerarahmen.
+  const nextMode = viewMode === "content" ? "content" : "detail";
+
+  state.extraction.viewMode = nextMode;
+  document.body.classList.toggle("is-content-mode", nextMode === "content");
+
+  if (contentExperience) {
+    contentExperience.setAttribute("aria-hidden", String(nextMode !== "content"));
+  }
+
+  if (nextMode === "content") {
+    const firstContentEntry = state.extraction.items.find((item) => item.level === "h3")
+      || state.extraction.items.find((item) => item.level === "h2")
+      || state.extraction.items.find((item) => item.level === "h1")
+      || null;
+
+    if (!state.extraction.activeContentEntryId || !state.extraction.items.some((item) => item.entryId === state.extraction.activeContentEntryId)) {
+      state.extraction.activeContentEntryId = firstContentEntry?.entryId || null;
+    }
+
+    mountContentExperience(state.extraction.items);
+  }
+
+  updateDetailAdvanceButtonState();
+  syncExperienceCamera();
+  refreshRuntimeDiagnostics();
+}
+
 function applyExplodedLayout(isActive) {
   // Ziel: Im Detailzustand eine Buehne schaffen, auf der der Kristall links gross, zentriert und unbeschnitten lesbar bleibt.
   // Warum: Das relevante Qualitaetskriterium ist hier nicht ein starres Prozentverhaeltnis, sondern dass der Kristall klar praesentiert wird und die Details trotzdem rechts genug Platz haben.
@@ -526,9 +635,16 @@ function applyExplodedLayout(isActive) {
     state.crystalRoot.position.x = isActive ? EXPLODED_CRYSTAL_OFFSET_X : 0;
   }
 
-  if (state.camera) {
-    state.camera.radius = isActive ? DETAIL_CAMERA_RADIUS : DEFAULT_CAMERA_RADIUS;
+  if (!isActive) {
+    document.body.classList.remove("is-content-mode");
+
+    if (contentExperience) {
+      contentExperience.setAttribute("aria-hidden", "true");
+    }
   }
+
+  syncExperienceCamera();
+  updateDetailAdvanceButtonState();
 
   requestAnimationFrame(() => {
     state.scene?.getEngine().resize();
@@ -650,9 +766,7 @@ function rebuildCrystal(shapeConfig, selectionId) {
   const crystal = createCrystalByConfig(state.scene, shapeConfig, selectionId);
   crystal.root.rotationQuaternion = getInitialQuaternionForShape(shapeConfig, crystal);
 
-  if (state.camera) {
-    state.camera.radius = state.extraction.stage === "expanded" ? DETAIL_CAMERA_RADIUS : DEFAULT_CAMERA_RADIUS;
-  }
+  syncExperienceCamera();
 
   crystal.root.position.x = state.extraction.stage === "expanded" ? EXPLODED_CRYSTAL_OFFSET_X : 0;
 
@@ -3700,6 +3814,167 @@ function mountExplodedDetails(items) {
   syncDetailConnectorVisibility();
 }
 
+function setActiveContentEntry(entryId) {
+  // Ziel: Einen aktiven Inhaltsknoten setzen und sofort die Content-Ansicht neu aufbauen.
+  // Warum: Das Inhaltsverzeichnis soll schon im Dummy-Zustand wie ein echtes Arbeits-Navi reagieren und nicht nur statisch dekorativ bleiben.
+  if (!entryId) {
+    return;
+  }
+
+  state.extraction.activeContentEntryId = entryId;
+  mountContentExperience(state.extraction.items);
+}
+
+function createContentTocButton(item, className) {
+  // Ziel: Aus bestehenden H2/H3-Detaileintraegen ein klickbares Inhaltsverzeichnis bilden.
+  // Warum: Die neue Ansicht soll dieselben Hierarchiedaten weiterverwenden, statt eine zweite manuell gepflegte Gliederung einzufuehren.
+  const button = document.createElement("button");
+
+  button.type = "button";
+  button.className = className;
+  button.textContent = item.detail.title;
+  button.classList.toggle("is-active", state.extraction.activeContentEntryId === item.entryId);
+  button.addEventListener("click", () => {
+    setActiveContentEntry(item.entryId);
+  });
+
+  return button;
+}
+
+function createDummyContentPayload(activeEntry, crystalEntry, itemsById) {
+  // Ziel: Fuer den Uebergang zur Praesentationsansicht belastbaren Dummy-Content erzeugen.
+  // Warum: Der Kollege hat die echte Inhaltslogik schon begonnen, aber wir brauchen jetzt sofort eine klickbare Content-Flaeche, an der sich Layout und Transition austesten lassen.
+  const levelLabel = activeEntry.level.toUpperCase();
+  const parentEntry = activeEntry.parentId ? itemsById.get(activeEntry.parentId) : null;
+  const pathTitles = [
+    crystalEntry?.detail?.title || "Kristall",
+    parentEntry && parentEntry.level !== "h1" ? parentEntry.detail.title : null,
+    activeEntry.level !== "h1" ? activeEntry.detail.title : null
+  ].filter(Boolean);
+
+  return {
+    eyebrow: `${levelLabel} · ${pathTitles.join(" / ")}`,
+    title: activeEntry.detail.title,
+    lead: activeEntry.detail.subtitle,
+    quote: activeEntry.level === "h3"
+      ? "Dieser Bereich ist der Dummy fuer den spaeteren Fachinhalt des ausgewaehlten RunenFragments."
+      : activeEntry.level === "h2"
+        ? "Dieses Fragment dient als Abschnittsebene und sammelt spaeter die Inhalte seiner Unterrunen."
+        : "Die Hauptrune bleibt die Klammer fuer das spaetere Oberthema und fuehrt in die rechte Content-Flaeche."
+    ,
+    bullets: [
+      `Aktiver Knoten: ${activeEntry.detail.title}`,
+      `Hierarchiestufe: ${levelLabel}`,
+      "Der finale Fachinhalt wird spaeter an dieselbe ToC-Struktur angedockt."
+    ],
+    visualLabel: `${activeEntry.detail.title} Placeholder`
+  };
+}
+
+function mountContentExperience(items) {
+  // Ziel: Die Detaildaten als linkes Inhaltsverzeichnis mit rechter Dummy-Contentflaeche darstellen.
+  // Warum: Der Rail-Button soll schon jetzt in die naechste Interaktionsebene fuehren, bevor der echte Fachcontent aus der Praesentation voll integriert ist.
+  if (!contentToc || !contentStage) {
+    return;
+  }
+
+  contentToc.innerHTML = "";
+  contentStage.innerHTML = "";
+
+  const crystalEntry = items.find((item) => item.level === "h1") || null;
+  const fragmentEntries = items
+    .filter((item) => item.level === "h2")
+    .sort((left, right) => left.faceIndex - right.faceIndex);
+  const runeEntriesByParent = new Map();
+  const itemsById = new Map(items.map((item) => [item.entryId, item]));
+
+  items
+    .filter((item) => item.level === "h3")
+    .forEach((item) => {
+      const collection = runeEntriesByParent.get(item.parentId) || [];
+      collection.push(item);
+      runeEntriesByParent.set(item.parentId, collection);
+    });
+
+  const label = document.createElement("p");
+  const crystalTitle = document.createElement("h2");
+  label.className = "content-toc__label";
+  label.textContent = "Inhaltsverzeichnis";
+  crystalTitle.className = "content-toc__crystal-title";
+  crystalTitle.textContent = crystalEntry?.detail.title || "Kristall";
+  contentToc.append(label, crystalTitle);
+
+  fragmentEntries.forEach((fragmentEntry) => {
+    const group = document.createElement("section");
+    const children = document.createElement("div");
+    const runeEntries = (runeEntriesByParent.get(fragmentEntry.entryId) || [])
+      .slice()
+      .sort((left, right) => left.runeIndex - right.runeIndex);
+
+    group.className = "content-toc__group";
+    children.className = "content-toc__children";
+    group.appendChild(createContentTocButton(fragmentEntry, "content-toc__link content-toc__link--h2"));
+
+    runeEntries.forEach((entry) => {
+      children.appendChild(createContentTocButton(entry, "content-toc__link content-toc__link--h3"));
+    });
+
+    group.appendChild(children);
+    contentToc.appendChild(group);
+  });
+
+  const activeEntry = itemsById.get(state.extraction.activeContentEntryId)
+    || items.find((item) => item.level === "h3")
+    || items.find((item) => item.level === "h2")
+    || crystalEntry
+    || null;
+
+  if (!activeEntry) {
+    return;
+  }
+
+  const content = createDummyContentPayload(activeEntry, crystalEntry, itemsById);
+  const sheet = document.createElement("article");
+  const eyebrow = document.createElement("p");
+  const title = document.createElement("h2");
+  const grid = document.createElement("div");
+  const copy = document.createElement("div");
+  const lead = document.createElement("p");
+  const quote = document.createElement("blockquote");
+  const bulletList = document.createElement("ul");
+  const visual = document.createElement("div");
+  const visualLabel = document.createElement("span");
+
+  sheet.className = "content-sheet";
+  eyebrow.className = "content-sheet__eyebrow";
+  eyebrow.textContent = content.eyebrow;
+  title.className = "content-sheet__title";
+  title.textContent = content.title;
+  grid.className = "content-sheet__grid";
+  copy.className = "content-sheet__copy";
+  lead.className = "content-sheet__lead";
+  lead.textContent = content.lead;
+  quote.className = "content-sheet__quote";
+  quote.textContent = content.quote;
+  bulletList.className = "content-sheet__bullets";
+  visual.className = "content-sheet__visual";
+  visualLabel.className = "content-sheet__visual-label";
+  visualLabel.textContent = content.visualLabel;
+
+  content.bullets.forEach((bullet) => {
+    const item = document.createElement("li");
+    item.className = "content-sheet__bullet";
+    item.textContent = bullet;
+    bulletList.appendChild(item);
+  });
+
+  copy.append(lead, quote, bulletList);
+  visual.appendChild(visualLabel);
+  grid.append(copy, visual);
+  sheet.append(eyebrow, title, grid);
+  contentStage.appendChild(sheet);
+}
+
 function clearExplodedDetails() {
   state.extraction.items.forEach((item) => {
     setRuneHalosEnabled(item, false);
@@ -3715,9 +3990,18 @@ function clearExplodedDetails() {
 
   state.extraction.hoveredCardEntryId = null;
   state.extraction.hoveredRuneEntryId = null;
+  updateDetailAdvanceButtonState();
 
   if (detailCards) {
     detailCards.innerHTML = "";
+  }
+
+  if (contentToc) {
+    contentToc.innerHTML = "";
+  }
+
+  if (contentStage) {
+    contentStage.innerHTML = "";
   }
 
   if (detailLines) {
@@ -3748,6 +4032,8 @@ function showTetrahedronDetails() {
   stopSnapAnimation();
   clearFocusedFace();
   clearExtractedCrystal();
+  state.extraction.viewMode = "detail";
+  state.extraction.activeContentEntryId = null;
   applyExplodedLayout(true);
   const detailItems = getTetrahedronDetailItems(state.crystalRoot.metadata);
 
@@ -3757,6 +4043,10 @@ function showTetrahedronDetails() {
 
   if (STARTUP_CONFIG.hoverEntryId) {
     setHoveredDetailCardEntry(STARTUP_CONFIG.hoverEntryId);
+  }
+
+  if (STARTUP_CONFIG.openContent) {
+    setExtractionViewMode("content");
   }
 
   refreshRuntimeDiagnostics();
@@ -3798,6 +4088,8 @@ function clearExtractedCrystal() {
   state.extraction.stage = "idle";
   state.extraction.stageStartTime = 0;
   state.extraction.items = [];
+  state.extraction.viewMode = "detail";
+  state.extraction.activeContentEntryId = null;
   applyExplodedLayout(false);
   refreshRuntimeDiagnostics();
 }
@@ -4047,6 +4339,10 @@ function enableBoxDragging(camera, canvas) {
     }
 
     if (isTetrahedronExpanded()) {
+      if (state.extraction.viewMode === "content") {
+        return;
+      }
+
       if (!dragState.moved && !pickedMesh) {
         collapseTetrahedronIntoGroundView();
       }
