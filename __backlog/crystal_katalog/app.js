@@ -732,7 +732,7 @@ function syncExperienceCamera() {
 
 function getContentCrystalSafePadding(panelRect) {
   const minDimension = Math.max(1, Math.min(panelRect.width, panelRect.height));
-  return Math.min(56, Math.max(24, minDimension * 0.12));
+  return Math.min(68, Math.max(32, minDimension * 0.16));
 }
 
 function getProjectedCrystalBounds(projectionContext) {
@@ -819,8 +819,8 @@ function syncPresenterCrystalFraming() {
 
   if (fitRatio > 1.001) {
     targetRadius = currentRadius * fitRatio;
-  } else if (fitRatio < 0.84) {
-    targetRadius = currentRadius * Math.max(0.9, fitRatio / 0.84);
+  } else if (fitRatio < 0.76) {
+    targetRadius = currentRadius * Math.max(0.96, fitRatio / 0.76);
   } else {
     targetRadius = currentRadius;
   }
@@ -5255,7 +5255,7 @@ function createContentLavaBallMetrics(now, projectionContext) {
     Math.max(minDimension * 0.24, (crystalExtent * 0.58) + (safePadding * 0.2))
   );
 
-  const holeRadius = baseRadius * 0.66;
+  const holeRadius = baseRadius * 0.82;
   const shellRadius = baseRadius * 1.04;
   const shellThickness = Math.max(baseRadius * 0.28, safePadding * 0.75);
 
@@ -5594,7 +5594,6 @@ function drawContentLavaBall(now, metrics, burstStrength, idlePulse) {
   drawLavaBallSunRays(context, metrics, burstStrength, idlePulse);
   drawLavaBallCloudBands(context, metrics, burstStrength);
   drawLavaBallMembrane(context, metrics, burstStrength, 0);
-  drawLavaBallMembrane(context, metrics, burstStrength * 0.82, 1);
   drawLavaBallCoronalGaps(context, metrics, burstStrength);
   drawLavaBallCore(context, metrics, burstStrength);
   carveLavaBallSightHole(context, metrics, burstStrength);
