@@ -422,10 +422,15 @@ body.is-exploded .detail-cards {
 }
 
 body.is-content-mode .detail-experience::before,
-body.is-content-mode .detail-cards,
-body.is-content-mode .detail-lines {
+body.is-content-mode .detail-cards {
   opacity: 0;
   transform: translateX(34px) scale(0.985);
+  pointer-events: none;
+}
+
+body.is-content-mode .detail-lines {
+  opacity: 1;
+  transform: none;
   pointer-events: none;
 }
 
@@ -940,6 +945,10 @@ body.is-content-mode .detail-advance-button {
 .detail-connector-hierarchy {
   opacity: 0.78;
   filter: none;
+}
+
+body.is-content-mode .detail-connector:not(.detail-connector-hierarchy) {
+  visibility: hidden;
 }
 
 .detail-connector-h1-h2 {
