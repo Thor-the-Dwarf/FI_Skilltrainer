@@ -3452,8 +3452,8 @@ function createRuneFragmentDetailData(entry) {
 
   return {
     accentHex: entry.accentHex,
-    title: `Runenfragment ${fragmentLabel}${entry.runeIndex + 1} ${entry.runeSymbol}`,
-    subtitle: `H3-Unterteilung von Fragment ${fragmentLabel}.`
+    title: `Fraktal ${fragmentLabel}${entry.runeIndex + 1} ${entry.runeSymbol}`,
+    subtitle: `H3-Fraktal in Fragment ${fragmentLabel}.`
   };
 }
 
@@ -4350,7 +4350,7 @@ function createDummyContentPayload(activeEntry, crystalEntry, itemsById) {
     lead: activeEntry.detail.subtitle,
     placeholderTitle: "Content Placeholder",
     placeholderCopy: activeEntry.level === "h3"
-      ? "Hier landet spaeter der eigentliche Fachinhalt dieses RunenFragments."
+      ? "Hier landet spaeter der eigentliche Fachinhalt dieses Fraktals."
       : activeEntry.level === "h2"
         ? "Hier landet spaeter der Abschnittsinhalt dieses Fragments."
         : "Hier landet spaeter der Oberinhalt der Hauptrune."
