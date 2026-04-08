@@ -60,7 +60,7 @@ const detailLines = document.getElementById("detailLines");
 const detailCards = document.getElementById("detailCards");
 const contentExperience = document.getElementById("contentExperience");
 const contentCrystalPanel = document.getElementById("contentCrystalPanel");
-const contentCoronaCanvas = document.getElementById("contentCoronaCanvas");
+const contentLavaBallCanvas = document.getElementById("contentLavaBallCanvas");
 const contentToc = document.getElementById("contentToc");
 const contentStage = document.getElementById("contentStage");
 const detailAdvanceButton = document.getElementById("detailAdvanceButton");
@@ -160,18 +160,18 @@ function prefersReducedMotion() {
   return Boolean(reducedMotionQuery?.matches);
 }
 
-function clearContentCoronaCanvas() {
-  if (!contentCoronaCanvas) {
+function clearContentLavaBallCanvas() {
+  if (!contentLavaBallCanvas) {
     return;
   }
 
-  const context = contentCoronaCanvas.getContext("2d");
+  const context = contentLavaBallCanvas.getContext("2d");
 
   if (!context) {
     return;
   }
 
-  context.clearRect(0, 0, contentCoronaCanvas.width, contentCoronaCanvas.height);
+  context.clearRect(0, 0, contentLavaBallCanvas.width, contentLavaBallCanvas.height);
 }
 
 function resetExtractionTransition(phase = "hidden") {
@@ -184,11 +184,11 @@ function resetExtractionTransition(phase = "hidden") {
   transition.particles = [];
   transition.lastTimestamp = 0;
   transition.lastSpawnTime = 0;
-  contentCrystalPanel?.style.setProperty("--content-corona-opacity", phase === "hidden" ? "0" : "0.98");
-  contentCrystalPanel?.style.setProperty("--content-corona-scale", "1");
+  contentCrystalPanel?.style.setProperty("--content-lavaball-opacity", phase === "hidden" ? "0" : "0.98");
+  contentCrystalPanel?.style.setProperty("--content-lavaball-scale", "1");
 
   if (phase === "hidden") {
-    clearContentCoronaCanvas();
+    clearContentLavaBallCanvas();
   }
 }
 
@@ -296,7 +296,7 @@ function bindContentCrystalPanel() {
 
 function requestContentReturnToDetail() {
   // Ziel: Den Rueckweg aus dem PresenterView als kurze Portal-Transition statt als harten View-Sprung fahren.
-  // Warum: Der kleine Kristall oben links ist semantisch der Rueckbutton; sein Corona-Effekt soll den Wechsel tragen und nicht nach dem Klick einfach abrupt verschwinden.
+  // Warum: Der kleine Kristall oben links ist semantisch der Rueckbutton; sein LavaBall-Effekt soll den Wechsel tragen und nicht nach dem Klick einfach abrupt verschwinden.
   if (state.extraction.viewMode !== "content") {
     setExtractionViewMode("detail", { immediate: true });
     return;
@@ -5174,8 +5174,8 @@ function easeInOutSine(value) {
   return -(Math.cos(Math.PI * value) - 1) * 0.5;
 }
 
-function syncContentCoronaCanvas(panelRect) {
-  if (!contentCoronaCanvas || !panelRect.width || !panelRect.height) {
+function syncContentLavaBallCanvas(panelRect) {
+  if (!contentLavaBallCanvas || !panelRect.width || !panelRect.height) {
     return null;
   }
 
@@ -5185,12 +5185,12 @@ function syncContentCoronaCanvas(panelRect) {
   const pixelWidth = Math.max(1, Math.round(width * dpr));
   const pixelHeight = Math.max(1, Math.round(height * dpr));
 
-  if (contentCoronaCanvas.width !== pixelWidth || contentCoronaCanvas.height !== pixelHeight) {
-    contentCoronaCanvas.width = pixelWidth;
-    contentCoronaCanvas.height = pixelHeight;
+  if (contentLavaBallCanvas.width !== pixelWidth || contentLavaBallCanvas.height !== pixelHeight) {
+    contentLavaBallCanvas.width = pixelWidth;
+    contentLavaBallCanvas.height = pixelHeight;
   }
 
-  const context = contentCoronaCanvas.getContext("2d");
+  const context = contentLavaBallCanvas.getContext("2d");
 
   if (!context) {
     return null;
@@ -5206,15 +5206,15 @@ function syncContentCoronaCanvas(panelRect) {
   };
 }
 
-function createContentCoronaMetrics(now, projectionContext) {
+function createContentLavaBallMetrics(now, projectionContext) {
   // Ziel: Den Presenter-Effekt aus dem echten kleinen Kristall und seinem Container ableiten.
-  // Warum: Corona, Burst und Kameraframing sollen am sichtbaren Mini-Kristall haengen und nicht an starren Magic Numbers.
+  // Warum: LavaBall, Burst und Kameraframing sollen am sichtbaren Mini-Kristall haengen und nicht an starren Magic Numbers.
   if (!contentCrystalPanel) {
     return null;
   }
 
   const panelRect = contentCrystalPanel.getBoundingClientRect();
-  const canvasInfo = syncContentCoronaCanvas(panelRect);
+  const canvasInfo = syncContentLavaBallCanvas(panelRect);
   const bounds = getProjectedCrystalBounds(projectionContext);
 
   if (!canvasInfo || !panelRect.width || !panelRect.height) {
@@ -5233,6 +5233,10 @@ function createContentCoronaMetrics(now, projectionContext) {
     Math.max(minDimension * 0.24, (crystalExtent * 0.58) + (safePadding * 0.2))
   );
 
+  const holeRadius = baseRadius * 0.66;
+  const shellRadius = baseRadius * 1.04;
+  const shellThickness = Math.max(baseRadius * 0.28, safePadding * 0.75);
+
   return {
     ...canvasInfo,
     panelRect,
@@ -5242,6 +5246,9 @@ function createContentCoronaMetrics(now, projectionContext) {
     centerY,
     crystalExtent,
     baseRadius,
+    holeRadius,
+    shellRadius,
+    shellThickness,
     seed: state.extraction.transition.seed,
     now,
     timeSeconds: now / 1000,
@@ -5249,56 +5256,69 @@ function createContentCoronaMetrics(now, projectionContext) {
   };
 }
 
-function sampleCoronaWave(angle, timeSeconds, seed) {
+function sampleLavaBallWave(angle, timeSeconds, seed) {
   const layerA = Math.sin((angle * 2.5) + (timeSeconds * 0.34) + (seed * 0.9));
   const layerB = Math.sin((angle * 5.2) - (timeSeconds * 0.58) + (seed * 1.7));
   const layerC = Math.cos((angle * 8.6) + (timeSeconds * 0.24) - (seed * 0.55));
   return (layerA * 0.55) + (layerB * 0.3) + (layerC * 0.15);
 }
 
-function drawCoronaCore(context, metrics, burstStrength) {
+function drawLavaBallCore(context, metrics, burstStrength) {
   const {
     centerX,
     centerY,
-    baseRadius,
+    holeRadius,
+    shellRadius,
     yCompression
   } = metrics;
-  const hotRadius = baseRadius * (0.96 + (burstStrength * 0.08));
+  const brightInnerRadius = holeRadius * (1.03 + (burstStrength * 0.045));
+  const outerHeatRadius = shellRadius * (1.02 + (burstStrength * 0.025));
 
   context.save();
   context.translate(centerX, centerY);
   context.scale(1, yCompression);
   context.globalCompositeOperation = "lighter";
 
-  for (let pass = 0; pass < 3; pass += 1) {
+  for (let pass = 0; pass < 4; pass += 1) {
+    const radius = pass < 2
+      ? brightInnerRadius + (pass * 4.2)
+      : outerHeatRadius + ((pass - 2) * 6.8);
+
     context.beginPath();
-    context.arc(0, 0, hotRadius + (pass * 3.6), 0, TAU);
-    context.lineWidth = 3.8 + (pass * 2.5);
+    context.arc(0, 0, radius, 0, TAU);
+    context.lineWidth = pass === 0 ? 4.4 : pass === 1 ? 7.6 : 10 + ((pass - 2) * 4);
     context.strokeStyle = pass === 0
       ? "rgba(255, 249, 236, 0.96)"
       : pass === 1
-        ? "rgba(255, 207, 102, 0.5)"
-        : "rgba(255, 96, 16, 0.22)";
-    context.shadowBlur = 26 + (pass * 12);
-    context.shadowColor = pass === 0 ? "rgba(255, 240, 210, 0.95)" : "rgba(255, 138, 38, 0.56)";
+        ? `rgba(255, 214, 122, ${0.48 + (burstStrength * 0.16)})`
+        : `rgba(255, 108, 28, ${0.18 + (burstStrength * 0.06)})`;
+    context.shadowBlur = pass < 2 ? 24 + (pass * 10) : 30 + ((pass - 2) * 8);
+    context.shadowColor = pass < 2
+      ? "rgba(255, 233, 182, 0.72)"
+      : "rgba(255, 109, 22, 0.34)";
     context.stroke();
   }
 
   context.restore();
 }
 
-function drawCoronaMembrane(context, metrics, burstStrength, layerIndex) {
+function drawLavaBallMembrane(context, metrics, burstStrength, layerIndex) {
   const {
     centerX,
     centerY,
-    baseRadius,
     timeSeconds,
     seed,
+    holeRadius,
+    shellRadius,
+    shellThickness,
     yCompression
   } = metrics;
-  const stepCount = 128;
-  const amplitude = (baseRadius * 0.094) + (burstStrength * baseRadius * 0.048);
-  const microAmplitude = (baseRadius * 0.04) + (layerIndex * 2.4);
+  const stepCount = 144;
+  const outerBase = shellRadius + (layerIndex * 4.6);
+  const innerBase = holeRadius * (1.02 + (layerIndex * 0.04));
+  const thickness = (shellThickness * (0.92 - (layerIndex * 0.18))) + (burstStrength * 12);
+  const outerWaveAmp = (shellThickness * 0.26) + (burstStrength * 10) + (layerIndex * 1.5);
+  const innerWaveAmp = (shellThickness * 0.11) + (layerIndex * 1.1);
 
   context.save();
   context.translate(centerX, centerY);
@@ -5307,9 +5327,9 @@ function drawCoronaMembrane(context, metrics, burstStrength, layerIndex) {
 
   for (let step = 0; step <= stepCount; step += 1) {
     const angle = (step / stepCount) * TAU;
-    const wave = sampleCoronaWave(angle, timeSeconds + (layerIndex * 0.22), seed + (layerIndex * 0.73));
-    const rip = Math.max(0, Math.sin((angle * (3.1 + (layerIndex * 0.7))) - (timeSeconds * (0.86 + (layerIndex * 0.18))) + seed));
-    const radius = baseRadius + (wave * amplitude) + (rip * microAmplitude) + (burstStrength * rip * 12);
+    const wave = sampleLavaBallWave(angle, timeSeconds + (layerIndex * 0.18), seed + (layerIndex * 0.73));
+    const rip = Math.max(0, Math.sin((angle * (3.6 + (layerIndex * 0.68))) - (timeSeconds * (0.72 + (layerIndex * 0.14))) + seed));
+    const radius = outerBase + thickness + (wave * outerWaveAmp) + (rip * shellThickness * 0.16);
     const x = Math.cos(angle) * radius;
     const y = Math.sin(angle) * radius;
 
@@ -5320,32 +5340,84 @@ function drawCoronaMembrane(context, metrics, burstStrength, layerIndex) {
     }
   }
 
+  for (let step = stepCount; step >= 0; step -= 1) {
+    const angle = (step / stepCount) * TAU;
+    const wave = sampleLavaBallWave(angle, (timeSeconds * 0.84) - (layerIndex * 0.12), seed + 10 + (layerIndex * 1.17));
+    const rip = Math.max(0, Math.cos((angle * (4.3 + (layerIndex * 0.5))) + (timeSeconds * (0.46 + (layerIndex * 0.1))) + seed));
+    const radius = innerBase + (wave * innerWaveAmp) + (rip * shellThickness * 0.08);
+    const x = Math.cos(angle) * radius;
+    const y = Math.sin(angle) * radius;
+    context.lineTo(x, y);
+  }
+
   context.closePath();
 
-  const fillGradient = context.createRadialGradient(0, 0, baseRadius * 0.45, 0, 0, baseRadius * 1.28);
-  fillGradient.addColorStop(0, `rgba(255, 254, 250, ${0.045 + (burstStrength * 0.018)})`);
-  fillGradient.addColorStop(0.38, `rgba(255, 205, 98, ${0.18 + (layerIndex * 0.05)})`);
-  fillGradient.addColorStop(0.7, `rgba(255, 112, 24, ${0.3 + (burstStrength * 0.08)})`);
-  fillGradient.addColorStop(1, "rgba(255, 74, 18, 0)");
+  const fillGradient = context.createRadialGradient(0, 0, innerBase * 0.92, 0, 0, outerBase + (thickness * 1.3));
+  fillGradient.addColorStop(0, `rgba(255, 252, 243, ${0.03 + (burstStrength * 0.01)})`);
+  fillGradient.addColorStop(0.18, `rgba(255, 237, 192, ${0.06 + (layerIndex * 0.02)})`);
+  fillGradient.addColorStop(0.42, `rgba(255, 191, 84, ${0.22 + (layerIndex * 0.05)})`);
+  fillGradient.addColorStop(0.72, `rgba(255, 112, 28, ${0.38 + (burstStrength * 0.08)})`);
+  fillGradient.addColorStop(1, "rgba(255, 78, 18, 0)");
   context.fillStyle = fillGradient;
-  context.fill();
+  context.fill("evenodd");
 
   context.globalCompositeOperation = "lighter";
-  context.lineWidth = 4.8 - (layerIndex * 0.9);
+  context.lineWidth = 5.2 - (layerIndex * 0.9);
   context.strokeStyle = layerIndex === 0
-    ? `rgba(255, 238, 188, ${0.48 + (burstStrength * 0.14)})`
-    : `rgba(255, 149, 54, ${0.28 + (burstStrength * 0.08)})`;
-  context.shadowBlur = 20 + (burstStrength * 16);
-  context.shadowColor = layerIndex === 0 ? "rgba(255, 206, 116, 0.4)" : "rgba(255, 94, 16, 0.32)";
+    ? `rgba(255, 236, 188, ${0.44 + (burstStrength * 0.12)})`
+    : `rgba(255, 142, 52, ${0.26 + (burstStrength * 0.08)})`;
+  context.shadowBlur = 20 + (burstStrength * 14);
+  context.shadowColor = layerIndex === 0 ? "rgba(255, 207, 116, 0.42)" : "rgba(255, 94, 16, 0.3)";
+  context.stroke();
+
+  context.beginPath();
+  context.arc(0, 0, innerBase + (layerIndex * 1.8), 0, TAU);
+  context.lineWidth = 1.8 + (burstStrength * 0.7);
+  context.strokeStyle = `rgba(255, 248, 224, ${0.16 + (burstStrength * 0.04)})`;
   context.stroke();
   context.restore();
 }
 
-function drawCoronaTentacles(context, metrics, burstStrength) {
+function drawLavaBallCoronalGaps(context, metrics, burstStrength) {
   const {
     centerX,
     centerY,
-    baseRadius,
+    holeRadius,
+    shellThickness,
+    timeSeconds,
+    seed,
+    yCompression
+  } = metrics;
+  const gapCount = prefersReducedMotion() ? 2 : 4;
+
+  context.save();
+  context.translate(centerX, centerY);
+  context.scale(1, yCompression);
+  context.globalCompositeOperation = "destination-out";
+
+  for (let index = 0; index < gapCount; index += 1) {
+    const anchor = (index / gapCount) * TAU;
+    const drift = sampleLavaBallWave(anchor, timeSeconds * 0.22, seed + (index * 2.1)) * 0.12;
+    const angle = anchor + drift;
+    const spread = 0.18 + (pseudoRandom(seed + (index * 4.3)) * 0.12);
+
+    context.beginPath();
+    context.arc(0, 0, holeRadius * (1.18 + (pseudoRandom(seed + index) * 0.08)), angle - spread, angle + spread);
+    context.lineWidth = shellThickness * (0.46 + (burstStrength * 0.08));
+    context.strokeStyle = `rgba(0, 0, 0, ${0.22 + (burstStrength * 0.08)})`;
+    context.shadowBlur = 18;
+    context.shadowColor = "rgba(0, 0, 0, 0.24)";
+    context.stroke();
+  }
+
+  context.restore();
+}
+
+function drawLavaBallTentacles(context, metrics, burstStrength) {
+  const {
+    centerX,
+    centerY,
+    shellRadius,
     timeSeconds,
     seed,
     yCompression
@@ -5359,9 +5431,9 @@ function drawCoronaTentacles(context, metrics, burstStrength) {
 
   for (let index = 0; index < tentacleCount; index += 1) {
     const lane = index / tentacleCount;
-    const angle = (lane * TAU) + (sampleCoronaWave(lane * TAU, timeSeconds * 0.24, seed + index) * 0.12);
-    const launchRadius = baseRadius + (Math.max(0, Math.sin((timeSeconds * 0.92) + (index * 0.52) + seed)) * burstStrength * 12);
-    const length = (baseRadius * (0.26 + pseudoRandom(seed + (index * 2.17)) * 0.18)) + (burstStrength * 20);
+    const angle = (lane * TAU) + (sampleLavaBallWave(lane * TAU, timeSeconds * 0.24, seed + index) * 0.12);
+    const launchRadius = shellRadius + (Math.max(0, Math.sin((timeSeconds * 0.92) + (index * 0.52) + seed)) * burstStrength * 12);
+    const length = (shellRadius * (0.26 + (pseudoRandom(seed + (index * 2.17)) * 0.18))) + (burstStrength * 20);
     const tangent = angle + ((pseudoRandom(seed + (index * 5.1)) - 0.5) * 0.55);
     const startX = Math.cos(angle) * launchRadius;
     const startY = Math.sin(angle) * launchRadius;
@@ -5390,7 +5462,7 @@ function drawCoronaTentacles(context, metrics, burstStrength) {
   context.restore();
 }
 
-function createCoronaParticle(now, metrics, burstStrength, particleIndex) {
+function createLavaBallParticle(now, metrics, burstStrength, particleIndex) {
   const seed = state.extraction.transition.seed + particleIndex + (now * 0.001);
   const typeRoll = pseudoRandom(seed + 8.8);
   const type = typeRoll < 0.56
@@ -5406,10 +5478,10 @@ function createCoronaParticle(now, metrics, burstStrength, particleIndex) {
     ? (pseudoRandom(seed + 2.3) - 0.5) * (0.5 + (burstStrength * 0.52))
     : (pseudoRandom(seed + 2.3) - 0.5) * 0.22;
   const launch = type === "flyer"
-    ? (metrics.baseRadius * (0.16 + (pseudoRandom(seed + 3.1) * 0.16))) + (burstStrength * 18)
+    ? (metrics.shellRadius * (0.16 + (pseudoRandom(seed + 3.1) * 0.16))) + (burstStrength * 18)
     : type === "drifter"
-      ? (metrics.baseRadius * (0.1 + (pseudoRandom(seed + 3.1) * 0.12))) + (burstStrength * 8)
-      : (metrics.baseRadius * (0.04 + (pseudoRandom(seed + 3.1) * 0.06))) + (burstStrength * 3.5);
+      ? (metrics.shellRadius * (0.1 + (pseudoRandom(seed + 3.1) * 0.12))) + (burstStrength * 8)
+      : (metrics.shellRadius * (0.04 + (pseudoRandom(seed + 3.1) * 0.06))) + (burstStrength * 3.5);
   const size = type === "island"
     ? 5.8 + (pseudoRandom(seed + 4.8) * 7.6) + (burstStrength * 2.2)
     : type === "drifter"
@@ -5431,7 +5503,7 @@ function createCoronaParticle(now, metrics, burstStrength, particleIndex) {
   };
 }
 
-function updateCoronaParticles(now, metrics, burstStrength) {
+function updateLavaBallParticles(now, metrics, burstStrength) {
   const transition = state.extraction.transition;
 
   if (prefersReducedMotion()) {
@@ -5449,7 +5521,7 @@ function updateCoronaParticles(now, metrics, burstStrength) {
   ) {
     transition.lastSpawnTime += spawnInterval;
     transition.particles.push(
-      createCoronaParticle(now, metrics, burstStrength, transition.particles.length)
+      createLavaBallParticle(now, metrics, burstStrength, transition.particles.length)
     );
   }
 
@@ -5473,7 +5545,7 @@ function updateCoronaParticles(now, metrics, burstStrength) {
       liftCurve = (easeOutCubic(rise) * 0.72) - (easeInOutSine(Math.min(1, settle)) * 0.26);
     }
 
-    const radius = metrics.baseRadius + (particle.launch * liftCurve);
+    const radius = metrics.shellRadius + (particle.launch * liftCurve);
     const angle = particle.angle + (particle.arc * liftCurve);
     const x = metrics.centerX + (Math.cos(angle) * radius);
     const y = metrics.centerY + (Math.sin(angle) * radius * metrics.yCompression);
@@ -5486,7 +5558,7 @@ function updateCoronaParticles(now, metrics, burstStrength) {
   });
 }
 
-function drawCoronaParticles(context, metrics, burstStrength) {
+function drawLavaBallParticles(context, metrics, burstStrength) {
   const particles = state.extraction.transition.particles;
 
   if (!particles.length) {
@@ -5573,32 +5645,75 @@ function drawCoronaParticles(context, metrics, burstStrength) {
   context.restore();
 }
 
-function drawContentCorona(now, metrics, burstStrength, idlePulse) {
-  // Ziel: Den Presenter-Kristall als eigenes Rueck-Portal mit organischer Corona visualisieren.
-  // Warum: Das kleine Panel soll nicht wie ein abgeschnittener zweiter View wirken, sondern wie ein hypnotischer, hochwertiger Rueckbutton mit eigener Atmosphaere.
+function carveLavaBallSightHole(context, metrics, burstStrength) {
+  // Ziel: Den Kristall trotz Front-Layer klar durch den LavaBall hindurch sichtbar halten.
+  // Warum: Der Effekt soll vor dem Kristall sitzen, ihn aber nicht mit einer voll deckenden Flaeche verdecken; das Sichtloch ist deshalb Teil der Form statt nur reduzierte Gesamtdeckkraft.
+  const {
+    centerX,
+    centerY,
+    holeRadius,
+    yCompression
+  } = metrics;
+
+  context.save();
+  context.translate(centerX, centerY);
+  context.scale(1, yCompression);
+  context.globalCompositeOperation = "destination-out";
+  const cutGradient = context.createRadialGradient(0, 0, holeRadius * 0.22, 0, 0, holeRadius * 1.08);
+  cutGradient.addColorStop(0, "rgba(0, 0, 0, 0.9)");
+  cutGradient.addColorStop(0.58, "rgba(0, 0, 0, 0.74)");
+  cutGradient.addColorStop(0.88, `rgba(0, 0, 0, ${0.28 + (burstStrength * 0.08)})`);
+  cutGradient.addColorStop(1, "rgba(0, 0, 0, 0)");
+  context.fillStyle = cutGradient;
+  context.beginPath();
+  context.ellipse(0, 0, holeRadius * 1.12, holeRadius * 0.98, 0, 0, TAU);
+  context.fill();
+  context.restore();
+
+  context.save();
+  context.translate(centerX, centerY);
+  context.scale(1, yCompression);
+  context.globalCompositeOperation = "lighter";
+  const sheenGradient = context.createRadialGradient(0, 0, holeRadius * 0.3, 0, 0, holeRadius * 1.08);
+  sheenGradient.addColorStop(0, "rgba(255, 255, 255, 0)");
+  sheenGradient.addColorStop(0.72, `rgba(255, 240, 206, ${0.045 + (burstStrength * 0.02)})`);
+  sheenGradient.addColorStop(1, `rgba(255, 176, 74, ${0.12 + (burstStrength * 0.04)})`);
+  context.fillStyle = sheenGradient;
+  context.beginPath();
+  context.ellipse(0, 0, holeRadius * 1.08, holeRadius * 0.94, 0, 0, TAU);
+  context.fill();
+  context.restore();
+}
+
+function drawContentLavaBall(now, metrics, burstStrength, idlePulse) {
+  // Ziel: Den Presenter-Kristall als eigenes Rueck-Portal mit einem warmen LavaBall visualisieren.
+  // Warum: Das kleine Panel soll nicht wie ein abgeschnittener zweiter View wirken, sondern wie ein hypnotischer, hochwertiger Rueckbutton mit solarer, schlickiger Tiefe.
   const { context, width, height } = metrics;
   context.clearRect(0, 0, width, height);
 
   const backdropGradient = context.createRadialGradient(
     metrics.centerX,
     metrics.centerY,
-    metrics.baseRadius * 0.2,
+    metrics.holeRadius * 0.9,
     metrics.centerX,
     metrics.centerY,
-    metrics.baseRadius * 1.8
+    metrics.shellRadius * 1.95
   );
-  backdropGradient.addColorStop(0, `rgba(255, 231, 176, ${0.04 + (burstStrength * 0.06)})`);
-  backdropGradient.addColorStop(0.42, `rgba(255, 115, 30, ${0.08 + (idlePulse * 0.03)})`);
+  backdropGradient.addColorStop(0, "rgba(255, 240, 208, 0)");
+  backdropGradient.addColorStop(0.38, `rgba(255, 198, 98, ${0.04 + (burstStrength * 0.035)})`);
+  backdropGradient.addColorStop(0.7, `rgba(255, 104, 24, ${0.1 + (idlePulse * 0.05)})`);
   backdropGradient.addColorStop(1, "rgba(0, 0, 0, 0)");
   context.fillStyle = backdropGradient;
   context.fillRect(0, 0, width, height);
 
-  drawCoronaMembrane(context, metrics, burstStrength, 0);
-  drawCoronaMembrane(context, metrics, burstStrength * 0.82, 1);
-  drawCoronaTentacles(context, metrics, burstStrength);
-  drawCoronaCore(context, metrics, burstStrength);
-  updateCoronaParticles(now, metrics, burstStrength);
-  drawCoronaParticles(context, metrics, burstStrength);
+  drawLavaBallMembrane(context, metrics, burstStrength, 0);
+  drawLavaBallMembrane(context, metrics, burstStrength * 0.82, 1);
+  drawLavaBallCoronalGaps(context, metrics, burstStrength);
+  drawLavaBallTentacles(context, metrics, burstStrength);
+  drawLavaBallCore(context, metrics, burstStrength);
+  updateLavaBallParticles(now, metrics, burstStrength);
+  drawLavaBallParticles(context, metrics, burstStrength);
+  carveLavaBallSightHole(context, metrics, burstStrength);
 }
 
 function updateExtractionAnimation() {
@@ -5606,7 +5721,7 @@ function updateExtractionAnimation() {
   const isContentVisible = state.extraction.stage === "expanded" && state.extraction.viewMode === "content";
 
   if (!isContentVisible && transition.phase === "hidden") {
-    clearContentCoronaCanvas();
+    clearContentLavaBallCanvas();
     return;
   }
 
@@ -5640,15 +5755,15 @@ function updateExtractionAnimation() {
   }
 
   if (!isContentVisible && transition.phase !== "exit") {
-    clearContentCoronaCanvas();
+    clearContentLavaBallCanvas();
     return;
   }
 
   const projectionContext = createStageProjectionContext();
-  const metrics = createContentCoronaMetrics(now, projectionContext);
+  const metrics = createContentLavaBallMetrics(now, projectionContext);
 
   if (!metrics) {
-    clearContentCoronaCanvas();
+    clearContentLavaBallCanvas();
     return;
   }
 
@@ -5656,12 +5771,12 @@ function updateExtractionAnimation() {
     ? 0.18
     : 0.2 + (Math.sin((now / 1000) * 0.62) * 0.06);
   const reducedBurstStrength = prefersReducedMotion() ? 0.12 : burstStrength;
-  const coronaOpacity = Math.min(1, 0.84 + idlePulse + (reducedBurstStrength * 0.12));
-  const coronaScale = 1 + (reducedBurstStrength * 0.025);
+  const lavaBallOpacity = Math.min(1, 0.86 + idlePulse + (reducedBurstStrength * 0.12));
+  const lavaBallScale = 1 + (reducedBurstStrength * 0.025);
 
-  contentCrystalPanel?.style.setProperty("--content-corona-opacity", `${coronaOpacity}`);
-  contentCrystalPanel?.style.setProperty("--content-corona-scale", `${coronaScale}`);
-  drawContentCorona(now, metrics, reducedBurstStrength, idlePulse);
+  contentCrystalPanel?.style.setProperty("--content-lavaball-opacity", `${lavaBallOpacity}`);
+  contentCrystalPanel?.style.setProperty("--content-lavaball-scale", `${lavaBallScale}`);
+  drawContentLavaBall(now, metrics, reducedBurstStrength, idlePulse);
 }
 
 function updatePresenterRotation(scene) {
