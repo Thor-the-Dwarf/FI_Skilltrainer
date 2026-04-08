@@ -399,10 +399,14 @@ body.is-exploded .detail-experience {
   gap: 14px;
   padding: 28px 22px 24px 14px;
   overflow-y: auto;
-  pointer-events: auto;
+  pointer-events: none;
   scrollbar-width: thin;
   scrollbar-color: hsl(var(--line-strong) / 0.9) transparent;
   z-index: 2;
+}
+
+body.is-exploded .detail-cards {
+  pointer-events: auto;
 }
 
 .detail-advance-button {
@@ -419,7 +423,7 @@ body.is-exploded .detail-experience {
   margin: 0;
   padding: 0;
   border: 0;
-  pointer-events: auto;
+  pointer-events: none;
   cursor: pointer;
   background: transparent;
   box-shadow: none;
@@ -429,6 +433,10 @@ body.is-exploded .detail-experience {
     background 180ms ease,
     box-shadow 180ms ease;
   z-index: 4;
+}
+
+body.is-exploded .detail-advance-button {
+  pointer-events: auto;
 }
 
 .detail-advance-button:hover,

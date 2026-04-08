@@ -3983,6 +3983,16 @@ function enableBoxDragging(camera, canvas) {
       return;
     }
 
+    if (!dragState.moved && state.selectedId === 4) {
+      // Ziel: Den Einstieg in den Form-4-DetailView auch dann robust halten, wenn transparentes Innenleben das Picking unzuverlaessig macht.
+      // Warum: Fuer den Nutzer ist der Linksklick auf den Grundkristall die semantische Aktion; ob Babylon dabei gerade eine Aussenflaeche, eine Rune oder gar nichts liefert, darf den Einstieg nicht blockieren.
+      if (!focusedEntry && !focusedRuneEntry) {
+        stopSnapAnimation();
+        showTetrahedronDetails();
+        return;
+      }
+    }
+
     if (!focusedEntry && focusedRuneEntry && state.selectedId === 4) {
       stopSnapAnimation();
       showTetrahedronDetails();
