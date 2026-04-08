@@ -59,6 +59,7 @@ const detailExperience = document.getElementById("detailExperience");
 const detailLines = document.getElementById("detailLines");
 const detailCards = document.getElementById("detailCards");
 const contentExperience = document.getElementById("contentExperience");
+const contentCrystalPanel = document.getElementById("contentCrystalPanel");
 const contentToc = document.getElementById("contentToc");
 const contentStage = document.getElementById("contentStage");
 const detailAdvanceButton = document.getElementById("detailAdvanceButton");
@@ -130,6 +131,7 @@ installGlobalDiagnosticHooks();
 renderList();
 renderQuickSelects();
 bindDetailAdvanceButton();
+bindContentCrystalPanel();
 updateSelection(STARTUP_CONFIG.selectionId);
 setupBabylonScene();
 
@@ -186,6 +188,32 @@ function bindDetailAdvanceButton() {
   });
 
   updateDetailAdvanceButtonState();
+}
+
+function bindContentCrystalPanel() {
+  // Ziel: Den Kristall im linken oberen Content-Fenster als direkten Rueckweg in den DetailView nutzbar machen.
+  // Warum: Der Nutzer soll dieselbe Geometrie, die ihn in die Content-Ebene begleitet, auch wieder intuitiv zurueck in die Detail-Ebene klicken koennen.
+  if (!contentCrystalPanel) {
+    return;
+  }
+
+  const activateReturn = () => {
+    if (!isTetrahedronExpanded() || state.extraction.viewMode !== "content") {
+      return;
+    }
+
+    setExtractionViewMode("detail");
+  };
+
+  contentCrystalPanel.addEventListener("click", activateReturn);
+  contentCrystalPanel.addEventListener("keydown", (event) => {
+    if (event.key !== "Enter" && event.key !== " ") {
+      return;
+    }
+
+    event.preventDefault();
+    activateReturn();
+  });
 }
 
 function populateSelect(select, placeholder, sourceItems) {
@@ -3842,8 +3870,8 @@ function createContentTocButton(item, className) {
 }
 
 function createDummyContentPayload(activeEntry, crystalEntry, itemsById) {
-  // Ziel: Fuer den Uebergang zur Praesentationsansicht belastbaren Dummy-Content erzeugen.
-  // Warum: Der Kollege hat die echte Inhaltslogik schon begonnen, aber wir brauchen jetzt sofort eine klickbare Content-Flaeche, an der sich Layout und Transition austesten lassen.
+  // Ziel: Fuer die rechte Spalte nur einen schlanken Placeholder erzeugen, der die spaetere Content-Flaeche markiert.
+  // Warum: In diesem Schritt sind Bereichsanordnung und Ruecktransition wichtig; ein ueberladener Dummy wuerde eher vom eigentlichen Layoutziel ablenken.
   const levelLabel = activeEntry.level.toUpperCase();
   const parentEntry = activeEntry.parentId ? itemsById.get(activeEntry.parentId) : null;
   const pathTitles = [
@@ -3856,18 +3884,12 @@ function createDummyContentPayload(activeEntry, crystalEntry, itemsById) {
     eyebrow: `${levelLabel} · ${pathTitles.join(" / ")}`,
     title: activeEntry.detail.title,
     lead: activeEntry.detail.subtitle,
-    quote: activeEntry.level === "h3"
-      ? "Dieser Bereich ist der Dummy fuer den spaeteren Fachinhalt des ausgewaehlten RunenFragments."
+    placeholderTitle: "Content Placeholder",
+    placeholderCopy: activeEntry.level === "h3"
+      ? "Hier landet spaeter der eigentliche Fachinhalt dieses RunenFragments."
       : activeEntry.level === "h2"
-        ? "Dieses Fragment dient als Abschnittsebene und sammelt spaeter die Inhalte seiner Unterrunen."
-        : "Die Hauptrune bleibt die Klammer fuer das spaetere Oberthema und fuehrt in die rechte Content-Flaeche."
-    ,
-    bullets: [
-      `Aktiver Knoten: ${activeEntry.detail.title}`,
-      `Hierarchiestufe: ${levelLabel}`,
-      "Der finale Fachinhalt wird spaeter an dieselbe ToC-Struktur angedockt."
-    ],
-    visualLabel: `${activeEntry.detail.title} Placeholder`
+        ? "Hier landet spaeter der Abschnittsinhalt dieses Fragments."
+        : "Hier landet spaeter der Oberinhalt der Hauptrune."
   };
 }
 
@@ -3937,41 +3959,26 @@ function mountContentExperience(items) {
   const sheet = document.createElement("article");
   const eyebrow = document.createElement("p");
   const title = document.createElement("h2");
-  const grid = document.createElement("div");
-  const copy = document.createElement("div");
   const lead = document.createElement("p");
-  const quote = document.createElement("blockquote");
-  const bulletList = document.createElement("ul");
-  const visual = document.createElement("div");
-  const visualLabel = document.createElement("span");
+  const placeholder = document.createElement("section");
+  const placeholderTitle = document.createElement("h3");
+  const placeholderCopy = document.createElement("p");
 
   sheet.className = "content-sheet";
   eyebrow.className = "content-sheet__eyebrow";
   eyebrow.textContent = content.eyebrow;
   title.className = "content-sheet__title";
   title.textContent = content.title;
-  grid.className = "content-sheet__grid";
-  copy.className = "content-sheet__copy";
   lead.className = "content-sheet__lead";
   lead.textContent = content.lead;
-  quote.className = "content-sheet__quote";
-  quote.textContent = content.quote;
-  bulletList.className = "content-sheet__bullets";
-  visual.className = "content-sheet__visual";
-  visualLabel.className = "content-sheet__visual-label";
-  visualLabel.textContent = content.visualLabel;
+  placeholder.className = "content-sheet__placeholder";
+  placeholderTitle.className = "content-sheet__placeholder-title";
+  placeholderTitle.textContent = content.placeholderTitle;
+  placeholderCopy.className = "content-sheet__placeholder-copy";
+  placeholderCopy.textContent = content.placeholderCopy;
 
-  content.bullets.forEach((bullet) => {
-    const item = document.createElement("li");
-    item.className = "content-sheet__bullet";
-    item.textContent = bullet;
-    bulletList.appendChild(item);
-  });
-
-  copy.append(lead, quote, bulletList);
-  visual.appendChild(visualLabel);
-  grid.append(copy, visual);
-  sheet.append(eyebrow, title, grid);
+  placeholder.append(placeholderTitle, placeholderCopy);
+  sheet.append(eyebrow, title, lead, placeholder);
   contentStage.appendChild(sheet);
 }
 
@@ -4340,6 +4347,12 @@ function enableBoxDragging(camera, canvas) {
 
     if (isTetrahedronExpanded()) {
       if (state.extraction.viewMode === "content") {
+        if (!dragState.moved) {
+          // Ziel: Im Content-Modus per Linksklick auf den Kristallbereich wieder in die Detail-Ebene zurueckkehren.
+          // Warum: Der Rueckweg darf nicht nur am Rail-Button haengen; der Kristall oben links ist selbst die semantische Zurueck-Aktion.
+          setExtractionViewMode("detail");
+        }
+
         return;
       }
 
