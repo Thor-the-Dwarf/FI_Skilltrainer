@@ -1684,8 +1684,8 @@ function createTetrahedronInteriorCrystals(scene, root, faces, selectionId, mate
   const crystalRunePlacement = computeBalancedRuneAnchorPosition(
     faces,
     crystalHeightLine,
-    crystalRuneGlyphSize * H1_ROOT_RUNE_SCALE * crystalRuneGlyphLayout.widthRatio,
-    crystalRuneGlyphSize * H1_ROOT_RUNE_SCALE * crystalRuneGlyphLayout.heightRatio,
+    crystalRuneGlyphSize * H1_ROOT_RUNE_SCALE * crystalRuneGlyphLayout.squareRatio,
+    crystalRuneGlyphSize * H1_ROOT_RUNE_SCALE * crystalRuneGlyphLayout.squareRatio,
     crystalRuneGlyphPlaneOffset
   );
   const crystalHeightAxis = crystalRunePlacement.axis;
@@ -1714,7 +1714,7 @@ function createTetrahedronInteriorCrystals(scene, root, faces, selectionId, mate
   );
 
   // Ziel: Das H1-Symbol geometrisch wirklich im Kristallzentrum halten.
-  // Warum: Fuer das gewuenschte Lesen der Form zaehlt hier weder der Volumenschwerpunkt noch die pure Linienmitte, sondern die Position, an der das Symbol-Rechteck entlang der Hoehenlinie gleichmaessig Luft zu den Tetraederflaechen hat.
+  // Warum: Fuer das gewuenschte Lesen der Form zaehlt hier weder der Volumenschwerpunkt noch die pure Linienmitte, sondern die Position, an der die quadratische Symbolflaeche entlang der Koerperachse gleichmaessig Luft zu den Tetraederflaechen hat.
   crystalRuneMeshes.anchor.parent = root;
   crystalRuneMeshes.anchor.position.copyFrom(crystalRunePosition);
   crystalRuneMeshes.anchor.rotationQuaternion = crystalRuneRotation.clone();
@@ -2007,8 +2007,8 @@ function createExtractedTetrahedronCrystal(scene, parent, entry, centroidLocal, 
 }
 
 function measureRuneGlyphLayout(runeSymbol, textureSize, outlineWidth) {
-  // Ziel: Das sichtbare Symbol als Bounding-Rechteck fuer Zeichnung und Clearance-Berechnung vermessen.
-  // Warum: Die H1-Platzierung soll sich am wirklichen Glyphenkoerper orientieren statt an einer kuenstlich quadratischen Symbol-Plane.
+  // Ziel: Das sichtbare Symbol als quadratischen Grundkasten fuer Zeichnung und Clearance-Berechnung normieren.
+  // Warum: Die Nutzerregel bezieht sich explizit auf eine quadratische Symbolflaeche. Deshalb muessen sichtbare Silhouette und Platzierungsmaße dieselbe Quadrat-Logik verwenden statt ein natuerlich hohes Font-Rechteck zu mischen.
   const cacheKey = `${runeSymbol}__${textureSize}__${outlineWidth}`;
   const cachedLayout = runeGlyphLayoutCache.get(cacheKey);
 
@@ -2032,11 +2032,21 @@ function measureRuneGlyphLayout(runeSymbol, textureSize, outlineWidth) {
   const ascent = Number.isFinite(glyphMetrics.actualBoundingBoxAscent) ? glyphMetrics.actualBoundingBoxAscent : fontSize * 0.38;
   const descent = Number.isFinite(glyphMetrics.actualBoundingBoxDescent) ? glyphMetrics.actualBoundingBoxDescent : fontSize * 0.18;
   const padding = Math.max(outlineWidth * 0.85, textureSize * 0.065);
+  const naturalWidthRatio = Math.min(0.96, ((left + right) + (padding * 2)) / textureSize);
+  const naturalHeightRatio = Math.min(0.96, ((ascent + descent) + (padding * 2)) / textureSize);
+  const squareRatio = Math.min(0.94, Math.max(0.24, Math.min(naturalWidthRatio, naturalHeightRatio)));
+  const safeWidthRatio = Math.max(naturalWidthRatio, 0.0001);
+  const safeHeightRatio = Math.max(naturalHeightRatio, 0.0001);
   const layout = {
     offsetX: (left - right) / 2,
     offsetY: (ascent - descent) / 2,
-    widthRatio: Math.min(0.96, ((left + right) + (padding * 2)) / textureSize),
-    heightRatio: Math.min(0.96, ((ascent + descent) + (padding * 2)) / textureSize)
+    naturalWidthRatio,
+    naturalHeightRatio,
+    squareRatio,
+    widthRatio: squareRatio,
+    heightRatio: squareRatio,
+    drawScaleX: squareRatio / safeWidthRatio,
+    drawScaleY: squareRatio / safeHeightRatio
   };
 
   runeGlyphLayoutCache.set(cacheKey, layout);
@@ -2078,6 +2088,7 @@ function createRuneMeshes(scene, name, runeSymbol, accentHex, options = {}) {
   runeContext.clearRect(0, 0, textureSize, textureSize);
   runeContext.save();
   runeContext.translate(halfTexture, halfTexture);
+  runeContext.scale(glyphLayout.drawScaleX, glyphLayout.drawScaleY);
   runeContext.fillStyle = accentHex;
   runeContext.shadowColor = `${accentHex}ee`;
   runeContext.shadowBlur = shadowBlur;
@@ -3385,8 +3396,8 @@ function computeMaximumInscribedSphere(faceEntries) {
 }
 
 function computeBalancedRuneAnchorPosition(faces, heightLine, runeWidth, runeHeight, glyphPlaneOffset) {
-  // Ziel: Das H1-Symbol entlang der gewaelten Hoehenachse so platzieren, dass sein Rechteck moeglichst gleich weit von den naechsten Aussenflaechen entfernt bleibt.
-  // Warum: Die Nutzerregel bezieht sich explizit auf das Symbol als Rechteck. Deshalb muessen wir echte Glyphenbreite/-hoehe und den Rollwinkel des Rechtecks gemeinsam mit der Achsenposition optimieren.
+  // Ziel: Das H1/H3-Symbol entlang der gewaelten Koerperachse so platzieren, dass seine quadratische Grundflaeche moeglichst gleich weit von den naechsten Aussenflaechen entfernt bleibt.
+  // Warum: Die Nutzerregel bezieht sich explizit auf das Symbol als Quadrat. Deshalb muessen Quadratgroesse und Rollwinkel gemeinsam mit der Achsenposition optimiert werden statt nur das natuerliche Font-Rechteck zu betrachten.
   const axis = heightLine.axis.clone().normalize();
   const baseRotation = quaternionFromUnitVectors(BABYLON.Axis.Y, axis);
   const lineStart = heightLine.baseCenter;
@@ -4110,8 +4121,8 @@ function buildFractalLayoutItem(
   const balancedPlacement = computeBalancedRuneAnchorPosition(
     faceEntries,
     heightLine,
-    runeSize * H3_ROOT_RUNE_SCALE * runeGlyphLayout.widthRatio,
-    runeSize * H3_ROOT_RUNE_SCALE * runeGlyphLayout.heightRatio,
+    runeSize * H3_ROOT_RUNE_SCALE * runeGlyphLayout.squareRatio,
+    runeSize * H3_ROOT_RUNE_SCALE * runeGlyphLayout.squareRatio,
     0
   );
 
