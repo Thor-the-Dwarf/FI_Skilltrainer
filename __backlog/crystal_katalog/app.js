@@ -449,12 +449,12 @@ function refreshRuntimeDiagnostics() {
 
   setDiagnosticCondition(
     "missing-h1",
-    "Form 4 hat keine H1-Zentralrune im Metadata-Pfad.",
+    "Form 4 hat kein H1-Zentralsymbol im Metadata-Pfad.",
     state.selectedId === 4 && !crystalEntry.length
   );
   setDiagnosticCondition(
     "missing-h2",
-    "Form 4 hat keine H2-Fragmentrunen im Metadata-Pfad.",
+    "Form 4 hat keine H2-Fragmentsymbole im Metadata-Pfad.",
     state.selectedId === 4 && !fragmentEntries.length
   );
 
@@ -462,8 +462,8 @@ function refreshRuntimeDiagnostics() {
 }
 
 function syncDetachedRuneAnchors() {
-  // Ziel: Legacy-Helfer nur fuer wirklich geloeste Rune-Anker ausfuehren.
-  // Warum: H1/H2 sollen wieder an ihrer echten Kristallgeometrie haengen; kameraseitiges Nachziehen war der Hauptgrund dafuer, dass Zentrums- und Flaechenrunen nicht dort erschienen, wo sie semantisch hingehoeren.
+  // Ziel: Legacy-Helfer nur fuer wirklich geloeste Symbol-Anker ausfuehren.
+  // Warum: H1/H2 sollen wieder an ihrer echten Kristallgeometrie haengen; kameraseitiges Nachziehen war der Hauptgrund dafuer, dass Zentrums- und Flaechensymbole nicht dort erschienen, wo sie semantisch hingehoeren.
   const root = state.crystalRoot;
   const metadata = root?.metadata;
   const cameraPosition = state.camera?.globalPosition;
@@ -692,7 +692,7 @@ function updateDetailAdvanceButtonState() {
 
 function setExtractionViewMode(viewMode) {
   // Ziel: Zwischen klassischem Detail-Overlay und Inhalts-/Content-Ansicht als echte Zustandsmaschine wechseln.
-  // Warum: Beide Ansichten teilen sich dieselben Runen- und Hierarchiedaten, brauchen aber unterschiedliche Panels, Pointer-Logik und Kamerarahmen.
+  // Warum: Beide Ansichten teilen sich dieselben Symbol- und Hierarchiedaten, brauchen aber unterschiedliche Panels, Pointer-Logik und Kamerarahmen.
   const nextMode = viewMode === "content" ? "content" : "detail";
 
   state.extraction.viewMode = nextMode;
@@ -1674,7 +1674,7 @@ function createTransparentCrystal(scene, shapeName, faces, selectionId) {
 
 function createTetrahedronInteriorCrystals(scene, root, faces, selectionId, materials) {
   // Ziel: Die Form-4-Hierarchie als klar lesbare H1/H2/H3-Raumlogik aufbauen.
-  // Warum: Die groesste Rune muss im Kristallzentrum dominant lesbar sein, die H2-Runen explizit auf den Aussenflaechen sitzen und die H3-Runen als kleine Einschluss-Zentren der RunenFragmente erkennbar bleiben.
+  // Warum: Das groesste Symbol muss im Kristallzentrum dominant lesbar sein, die H2-Symbole explizit auf den Aussenflaechen sitzen und die H3-Symbole als kleine Einschluss-Zentren der Fraktale erkennbar bleiben.
   const centroid = computeUniqueVerticesCenter(faces);
   const crystalHeightLine = computePreferredTetrahedronHeightLine(faces);
   const crystalFaceEntries = buildPolyhedronFaceEntries(faces.map((face) => face.vertices));
@@ -1713,8 +1713,8 @@ function createTetrahedronInteriorCrystals(scene, root, faces, selectionId, mate
     }
   );
 
-  // Ziel: Die H1-Rune geometrisch wirklich im Kristallzentrum halten.
-  // Warum: Fuer das gewuenschte Lesen der Form zaehlt hier weder der Volumenschwerpunkt noch die pure Linienmitte, sondern die Position, an der das Rune-Rechteck entlang der Hoehenlinie gleichmaessig Luft zu den Tetraederflaechen hat.
+  // Ziel: Das H1-Symbol geometrisch wirklich im Kristallzentrum halten.
+  // Warum: Fuer das gewuenschte Lesen der Form zaehlt hier weder der Volumenschwerpunkt noch die pure Linienmitte, sondern die Position, an der das Symbol-Rechteck entlang der Hoehenlinie gleichmaessig Luft zu den Tetraederflaechen hat.
   crystalRuneMeshes.anchor.parent = root;
   crystalRuneMeshes.anchor.position.copyFrom(crystalRunePosition);
   crystalRuneMeshes.anchor.rotationQuaternion = crystalRuneRotation.clone();
@@ -1775,8 +1775,8 @@ function createTetrahedronInteriorCrystals(scene, root, faces, selectionId, mate
       }
     );
 
-    // Ziel: Die H2-Runen stabil direkt an ihren Fragmentflaechen verankern.
-    // Warum: Fragmentrunen gehoeren auf die nach aussen zeigende Flaeche; ein geloester World-Sync macht daraus nur scheinbar sichtbare Marker statt echte Flaechenrunen.
+    // Ziel: Die H2-Symbole stabil direkt an ihren Fragmentflaechen verankern.
+    // Warum: Fragmentsymbole gehoeren auf die nach aussen zeigende Flaeche; ein geloester World-Sync macht daraus nur scheinbar sichtbare Marker statt echte Flaechensymbole.
     fragmentRuneMeshes.anchor.parent = root;
     fragmentRuneMeshes.anchor.position.copyFrom(fragmentRunePosition);
     fragmentRuneMeshes.anchor.rotationQuaternion = fragmentRuneRotation.clone();
@@ -2005,8 +2005,8 @@ function createExtractedTetrahedronCrystal(scene, parent, entry, centroidLocal, 
 }
 
 function measureRuneGlyphLayout(runeSymbol, textureSize, outlineWidth) {
-  // Ziel: Die sichtbare Rune als Bounding-Rechteck fuer Zeichnung und Clearance-Berechnung vermessen.
-  // Warum: Die H1-Platzierung soll sich am wirklichen Glyphenkoerper orientieren statt an einer kuenstlich quadratischen Rune-Plane.
+  // Ziel: Das sichtbare Symbol als Bounding-Rechteck fuer Zeichnung und Clearance-Berechnung vermessen.
+  // Warum: Die H1-Platzierung soll sich am wirklichen Glyphenkoerper orientieren statt an einer kuenstlich quadratischen Symbol-Plane.
   const cacheKey = `${runeSymbol}__${textureSize}__${outlineWidth}`;
   const cachedLayout = runeGlyphLayoutCache.get(cacheKey);
 
@@ -2056,8 +2056,8 @@ function createRuneMeshes(scene, name, runeSymbol, accentHex, options = {}) {
     textureSize = 256,
     outlineWidth = 14
   } = options;
-  // Ziel: Runen als wiederverwendbaren Renderbaustein fuer Root- und Detail-View bereitstellen.
-  // Warum: Die Runen muessen je nach Ebene zwischen unauffaelligem Einschluss, dominanter Zentralrune und klar lesbarer Detailansicht umschalten koennen, ohne pro Ebene komplett getrennte Mesh-Pfade zu pflegen.
+  // Ziel: Symbole als wiederverwendbaren Renderbaustein fuer Root- und Detail-View bereitstellen.
+  // Warum: Die Symbole muessen je nach Ebene zwischen unauffaelligem Einschluss, dominantem Zentralsymbol und klar lesbarer Detailansicht umschalten koennen, ohne pro Ebene komplett getrennte Mesh-Pfade zu pflegen.
   const anchor = new BABYLON.TransformNode(`${name}_anchor`, scene);
   const runeTexture = new BABYLON.DynamicTexture(`${name}_glyph_texture`, { width: textureSize, height: textureSize }, scene, true);
   const haloTexture = showHalo
@@ -3383,8 +3383,8 @@ function computeMaximumInscribedSphere(faceEntries) {
 }
 
 function computeBalancedRuneAnchorPosition(faces, heightLine, runeWidth, runeHeight, glyphPlaneOffset) {
-  // Ziel: Die H1-Rune entlang der gewaelten Hoehenachse so platzieren, dass ihr Rechteck moeglichst gleich weit von den naechsten Aussenflaechen entfernt bleibt.
-  // Warum: Die Nutzerregel bezieht sich explizit auf die Rune als Rechteck. Deshalb muessen wir echte Glyphenbreite/-hoehe und den Rollwinkel des Rechtecks gemeinsam mit der Achsenposition optimieren.
+  // Ziel: Das H1-Symbol entlang der gewaelten Hoehenachse so platzieren, dass sein Rechteck moeglichst gleich weit von den naechsten Aussenflaechen entfernt bleibt.
+  // Warum: Die Nutzerregel bezieht sich explizit auf das Symbol als Rechteck. Deshalb muessen wir echte Glyphenbreite/-hoehe und den Rollwinkel des Rechtecks gemeinsam mit der Achsenposition optimieren.
   const axis = heightLine.axis.clone().normalize();
   const baseRotation = quaternionFromUnitVectors(BABYLON.Axis.Y, axis);
   const lineStart = heightLine.baseCenter;
@@ -3606,8 +3606,8 @@ function getFaceEntryFromPointerEvent(scene, canvas, event) {
 }
 
 function getRuneEntryFromPointerEvent(scene, canvas, event) {
-  // Ziel: Root- und Detail-Runen direkt als klickbaren Einstiegspfad auffindbar machen.
-  // Warum: Im Root-View liegen die Runen visuell oft vor den Außenflächen; wenn nur Face-Meshes klickbar sind, fühlt sich der Einstieg in den DetailView kaputt an.
+  // Ziel: Root- und Detail-Symbole direkt als klickbaren Einstiegspfad auffindbar machen.
+  // Warum: Im Root-View liegen die Symbole visuell oft vor den Außenflächen; wenn nur Face-Meshes klickbar sind, fühlt sich der Einstieg in den DetailView kaputt an.
   const pickedMesh = pickMeshFromPointerEvent(scene, canvas, event);
 
   if (!pickedMesh || !state.crystalRoot?.metadata?.runeEntries) {
@@ -3628,7 +3628,7 @@ function createTetrahedronDetailData(entry) {
   return {
     runeSymbol: entry.runeSymbol,
     accentHex: entry.accentHex,
-    title: `Rune ${itemLabel} ${entry.runeSymbol}`,
+    title: `Symbol ${itemLabel} ${entry.runeSymbol}`,
     subtitle: `Detail des Subkristalls ${itemLabel}.`
   };
 }
@@ -3637,7 +3637,7 @@ function createCrystalDetailData(entry) {
   return {
     accentHex: entry.accentHex,
     title: `Kristall ${entry.selectionId} ${entry.runeSymbol}`,
-    subtitle: "H1-Zentralrune des Gesamtkristalls."
+    subtitle: "H1-Zentralsymbol des Gesamtkristalls."
   };
 }
 
@@ -3675,8 +3675,8 @@ function buildTetrahedronFragmentFaces(vertices, centroid) {
 }
 
 function computeFragmentFaceRunePosition(vertices, centroid, planeLift = 0.004, glyphPlaneOffset = 0.028) {
-  // Ziel: H2-Runen mit ihrer sichtbaren Glyphflaeche direkt an die Aussenflaeche des Segments setzen.
-  // Warum: Der Ankerpunkt allein reicht hier nicht; weil die Rune selbst lokal vor dem Anchor liegt, muss der Anchor leicht nach innen versetzt werden, sonst wirkt die H2 im RootView wie ein schwebender Aufkleber.
+  // Ziel: H2-Symbole mit ihrer sichtbaren Glyphflaeche direkt an die Aussenflaeche des Segments setzen.
+  // Warum: Der Ankerpunkt allein reicht hier nicht; weil das Symbol selbst lokal vor dem Anchor liegt, muss der Anchor leicht nach innen versetzt werden, sonst wirkt die H2 im RootView wie ein schwebender Aufkleber.
   const faceCenter = computeFaceCenter(vertices);
   const outwardNormal = computeOutwardNormal(vertices, faceCenter);
   const anchorOffset = planeLift - glyphPlaneOffset;
@@ -3868,7 +3868,7 @@ function getRequestedFragmentRuneCount(selectionId, faceIndex) {
 
 function buildTetrahedronSegmentCells(vertices, centroid) {
   // Ziel: Das H2-Segment in eine feine, vollstaendig schliessende Zellstruktur zerlegen.
-  // Warum: Die spaeteren H3-Fraktale sollen aus echten Volumenzellen zusammengesetzt werden, statt als Rune-Zellen plus getrennte Filler behandelt zu werden.
+  // Warum: Die spaeteren H3-Fraktale sollen aus echten Volumenzellen zusammengesetzt werden, statt als Symbol-Zellen plus getrennte Filler behandelt zu werden.
   const [leftVertex, rightVertex, tipVertex] = vertices;
   const subdivision = 4;
   const cells = [];
@@ -4117,7 +4117,7 @@ function buildFractalLayoutItem(
     cellIndex: clusterCells[0]?.cellIndex ?? runeIndex,
     hasRune: true,
     runeIndex,
-    // Ziel: H3-Runen mit derselben Parent-Logik wie H1 im echten Koerper ihres Fraktals platzieren.
+    // Ziel: H3-Symbole mit derselben Parent-Logik wie H1 im echten Koerper ihres Fraktals platzieren.
     // Warum: Sobald ein Segment nur ein einziges Fraktal traegt, ist dieses Fraktal identisch mit dem Segment. Dann darf die H3 nicht auf einer aus Zellgrenzen rekonstruierten Ersatzgeometrie landen, sondern muss sich am wirklichen Parent-Koerper orientieren.
     position: inscribedSphere.center.clone(),
     runePosition: inscribedSphere.center.clone(),
@@ -4132,7 +4132,7 @@ function buildFractalLayoutItem(
 }
 
 function selectDistributedRuneCells(candidateCells, requestedCount, faceVertices) {
-  // Ziel: Fuer 1..10 H3-Knoten eine raeumlich verteilte Auswahl aus den moeglichen Rune-Zellen treffen.
+  // Ziel: Fuer 1..10 H3-Knoten eine raeumlich verteilte Auswahl aus den moeglichen Symbol-Zellen treffen.
   // Warum: Kleinere H3-Zahlen sollen nicht stumpf in den ersten Rasterfeldern landen, sondern weiter die Ecken und Spitzen des Parent-Fragments lesbar besetzen.
   if (!candidateCells.length) {
     return new Set();
@@ -4254,7 +4254,7 @@ function setRuneDisplayMode(item, isDetailView) {
     return;
   }
   // Ziel: Die Hierarchie H1/H2/H3 nicht nur datenlogisch, sondern auch optisch eindeutig machen.
-  // Warum: Die Rune-Groessen muessen sichtbar zwischen Kristall, Fragment und RunenFragment unterscheiden; direkte Mesh-Skalierung ist hier robuster als nur ueber den Parent-Transform zu gehen.
+  // Warum: Die Symbolgroessen muessen sichtbar zwischen Kristall, Fragment und Fraktal unterscheiden; direkte Mesh-Skalierung ist hier robuster als nur ueber den Parent-Transform zu gehen.
   const nextScale = isDetailView ? (item.detailRuneScale || 1) : (item.rootRuneScale || 1);
 
   item.runeAnchor.position.copyFrom(
@@ -4281,14 +4281,14 @@ function setRuneDisplayMode(item, isDetailView) {
 }
 
 function getActiveDetailHoverEntryId() {
-  // Ziel: Einen einzigen sichtbaren Hover-Zustand fuer Detail-zu-Rune-Verbindungen ableiten.
-  // Warum: Karte und Rune koennen unabhaengig gehovert werden; fuer die Connector-Sichtbarkeit brauchen wir daraus eine einfache, priorisierte Leselogik.
+  // Ziel: Einen einzigen sichtbaren Hover-Zustand fuer Detail-zu-Symbol-Verbindungen ableiten.
+  // Warum: Karte und Symbol koennen unabhaengig gehovert werden; fuer die Connector-Sichtbarkeit brauchen wir daraus eine einfache, priorisierte Leselogik.
   return state.extraction.hoveredCardEntryId || state.extraction.hoveredRuneEntryId || null;
 }
 
 function syncDetailConnectorVisibility() {
   // Ziel: Connectoren standardmaessig unsichtbar halten und nur fuer den aktiv gehoverteten Eintrag zeigen.
-  // Warum: Die Linien sollen den Blick nicht dauerhaft ueberladen, sondern nur als gezielte Orientierungsbruecke zwischen Detail und Rune dienen.
+  // Warum: Die Linien sollen den Blick nicht dauerhaft ueberladen, sondern nur als gezielte Orientierungsbruecke zwischen Detail und Symbol dienen.
   const activeEntryId = getActiveDetailHoverEntryId();
 
   state.extraction.items.forEach((item) => {
@@ -4304,21 +4304,21 @@ function syncDetailConnectorVisibility() {
 
 function setHoveredDetailCardEntry(entryId) {
   // Ziel: Card-Hover explizit in den Connector-Zustand ueberfuehren.
-  // Warum: Die Detailkarten liegen in einer eigenen DOM-Ebene und muessen dieselbe Hover-Quelle bedienen wie die 3D-Runen im Canvas.
+  // Warum: Die Detailkarten liegen in einer eigenen DOM-Ebene und muessen dieselbe Hover-Quelle bedienen wie die 3D-Symbole im Canvas.
   state.extraction.hoveredCardEntryId = entryId;
   syncDetailConnectorVisibility();
 }
 
 function setHoveredRuneEntry(entryId) {
-  // Ziel: Rune-Hover aus der Szene in dieselbe Connector-Logik wie Card-Hover einspeisen.
-  // Warum: Die Linie soll auftauchen, egal ob der Nutzer am Text oder direkt an der Rune andockt.
+  // Ziel: Symbol-Hover aus der Szene in dieselbe Connector-Logik wie Card-Hover einspeisen.
+  // Warum: Die Linie soll auftauchen, egal ob der Nutzer am Text oder direkt am Symbol andockt.
   state.extraction.hoveredRuneEntryId = entryId;
   syncDetailConnectorVisibility();
 }
 
 function getDetailCardTitleText(item) {
-  // Ziel: Den reinen Knotentitel ohne angehaengtes Runenzeichen fuer die Baumansicht liefern.
-  // Warum: Die Rune wird in der neuen Tree-Struktur als eigenes, links stehendes Element gerendert und soll nicht noch einmal im Text auftauchen.
+  // Ziel: Den reinen Knotentitel ohne angehaengtes Symbolzeichen fuer die Baumansicht liefern.
+  // Warum: Das Symbol wird in der neuen Tree-Struktur als eigenes, links stehendes Element gerendert und soll nicht noch einmal im Text auftauchen.
   if (!item?.detail?.title) {
     return "";
   }
@@ -4363,7 +4363,7 @@ function createDetailCard(item) {
 }
 
 function mountDetailHoverConnectors(items) {
-  // Ziel: Fuer jeden Detaileintrag eine eigene Verbindung zu seiner Rune vorbereiten.
+  // Ziel: Fuer jeden Detaileintrag eine eigene Verbindung zu seinem Symbol vorbereiten.
   // Warum: Die alte permanente Linienwand wird durch bedarfsorientierte Hover-Connectoren ersetzt, damit die Zuordnung nur bei Interesse sichtbar wird.
   if (!detailLines) {
     return;
@@ -4761,7 +4761,7 @@ function projectWorldPointToStage(worldPoint) {
 
 function createStageProjectionContext() {
   // Ziel: Alle teuren Canvas-/Viewport-Daten pro Frame nur einmal lesen.
-  // Warum: Bei vielen Runen und Verbindungslinien wurde dieselbe DOM- und Babylon-Projektionsarbeit hunderte Male pro Frame wiederholt und hat den Presenter spuerbar gebremst.
+  // Warum: Bei vielen Symbolen und Verbindungslinien wurde dieselbe DOM- und Babylon-Projektionsarbeit hunderte Male pro Frame wiederholt und hat den Presenter spuerbar gebremst.
   if (!state.scene || !state.camera) {
     return null;
   }
@@ -4787,7 +4787,7 @@ function createStageProjectionContext() {
 
 function projectWorldPointToStageWithContext(worldPoint, projectionContext) {
   // Ziel: Weltpunkte mit einem bereits vorbereiteten Projektionskontext auf die Stage abbilden.
-  // Warum: So lassen sich viele Rune-Punkte in einem Rutsch billiger umrechnen, statt pro Punkt erneut Canvas, Viewport und Matrizen zu berechnen.
+  // Warum: So lassen sich viele Symbol-Punkte in einem Rutsch billiger umrechnen, statt pro Punkt erneut Canvas, Viewport und Matrizen zu berechnen.
   if (!projectionContext) {
     return null;
   }
@@ -4810,8 +4810,8 @@ function projectWorldPointToStageWithContext(worldPoint, projectionContext) {
 }
 
 function pickDetailItemFromRuneHover(scene, canvas, event) {
-  // Ziel: Einen gehoverten Detaileintrag ueber die sichtbare Rune im Canvas finden.
-  // Warum: Ein screen-space Hover-Test an den projizierten Rune-Ankern ist stabiler als Pickbarkeit umzuschalten und bewahrt den bestehenden Face-Klickpfad.
+  // Ziel: Einen gehoverten Detaileintrag ueber das sichtbare Symbol im Canvas finden.
+  // Warum: Ein screen-space Hover-Test an den projizierten Symbol-Ankern ist stabiler als Pickbarkeit umzuschalten und bewahrt den bestehenden Face-Klickpfad.
   if (!scene || !state.camera) {
     return null;
   }
@@ -4857,8 +4857,8 @@ function pickDetailItemFromRuneHover(scene, canvas, event) {
 }
 
 function syncExplodedDetailLayout() {
-  // Ziel: Die Hover-Connectoren framegenau zwischen Rune und zugehoeriger Detailkarte halten.
-  // Warum: Die Karten leben im DOM und die Runen im Babylon-Canvas; nur eine laufende Projektion haelt beide Ebenen deckungsgleich verbunden.
+  // Ziel: Die Hover-Connectoren framegenau zwischen Symbol und zugehoeriger Detailkarte halten.
+  // Warum: Die Karten leben im DOM und die Symbole im Babylon-Canvas; nur eine laufende Projektion haelt beide Ebenen deckungsgleich verbunden.
   if (!detailCards || !detailLines || !state.extraction.items.length) {
     return;
   }
@@ -5066,7 +5066,7 @@ function enableBoxDragging(camera, canvas) {
     const pickedMesh = !dragState.moved
       ? (dragState.pressedFaceEntry?.mesh || pickMeshFromPointerEvent(state.scene, canvas, event))
       : null;
-    const focusedRuneEntry = !dragState.moved
+    const focusedSymbolEntry = !dragState.moved
       ? (dragState.pressedRuneEntry || getRuneEntryFromPointerEvent(state.scene, canvas, event))
       : null;
     const focusedEntry = pickedMesh
@@ -5104,15 +5104,15 @@ function enableBoxDragging(camera, canvas) {
 
     if (!dragState.moved && state.selectedId === 4) {
       // Ziel: Den Einstieg in den Form-4-DetailView auch dann robust halten, wenn transparentes Innenleben das Picking unzuverlaessig macht.
-      // Warum: Fuer den Nutzer ist der Linksklick auf den Grundkristall die semantische Aktion; ob Babylon dabei gerade eine Aussenflaeche, eine Rune oder gar nichts liefert, darf den Einstieg nicht blockieren.
-      if (!focusedEntry && !focusedRuneEntry) {
+      // Warum: Fuer den Nutzer ist der Linksklick auf den Grundkristall die semantische Aktion; ob Babylon dabei gerade eine Aussenflaeche, ein Symbol oder gar nichts liefert, darf den Einstieg nicht blockieren.
+      if (!focusedEntry && !focusedSymbolEntry) {
         stopSnapAnimation();
         showTetrahedronDetails();
         return;
       }
     }
 
-    if (!focusedEntry && focusedRuneEntry && state.selectedId === 4) {
+    if (!focusedEntry && focusedSymbolEntry && state.selectedId === 4) {
       stopSnapAnimation();
       showTetrahedronDetails();
       return;
