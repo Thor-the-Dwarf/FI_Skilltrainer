@@ -3707,19 +3707,36 @@ function setHoveredRuneEntry(entryId) {
   syncDetailConnectorVisibility();
 }
 
+function getDetailCardTitleText(item) {
+  // Ziel: Den reinen Knotentitel ohne angehaengtes Runenzeichen fuer die Baumansicht liefern.
+  // Warum: Die Rune wird in der neuen Tree-Struktur als eigenes, links stehendes Element gerendert und soll nicht noch einmal im Text auftauchen.
+  if (!item?.detail?.title) {
+    return "";
+  }
+
+  const runeSuffix = item.runeSymbol ? ` ${item.runeSymbol}` : "";
+  return runeSuffix && item.detail.title.endsWith(runeSuffix)
+    ? item.detail.title.slice(0, -runeSuffix.length)
+    : item.detail.title;
+}
+
 function createDetailCard(item) {
   const card = document.createElement("article");
+  const row = document.createElement("div");
+  const rune = document.createElement("span");
   const titleTagName = item.level === "h1" ? "h2" : item.level === "h2" ? "h3" : "h4";
   const title = document.createElement(titleTagName);
-  const subtitle = document.createElement("p");
 
   card.className = `detail-card detail-card-${item.level}`;
   card.style.setProperty("--detail-accent", item.detail.accentHex);
+  row.className = "detail-card-row";
+  rune.className = `detail-card-rune detail-card-rune-${item.level}`;
+  rune.textContent = item.runeSymbol || "";
+  rune.setAttribute("aria-hidden", "true");
   title.className = "detail-card-title";
-  title.textContent = item.detail.title;
-  subtitle.className = "detail-card-subtitle";
-  subtitle.textContent = item.detail.subtitle;
-  card.append(title, subtitle);
+  title.textContent = getDetailCardTitleText(item);
+  row.append(rune, title);
+  card.append(row);
   card.addEventListener("pointerenter", () => {
     setHoveredDetailCardEntry(item.entryId);
   });
