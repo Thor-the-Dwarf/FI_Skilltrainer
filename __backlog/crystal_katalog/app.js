@@ -3931,8 +3931,10 @@ function computePreferredPolyhedronHeightLine(faces) {
   };
 }
 
-function buildFractalLayoutItem(clusterCells, runeIndex, totalFractalCount) {
-  const boundaryFaces = buildClusterBoundaryFaces(clusterCells);
+function buildFractalLayoutItem(clusterCells, runeIndex, totalFractalCount, parentSegmentFaces = null) {
+  const boundaryFaces = totalFractalCount === 1 && Array.isArray(parentSegmentFaces) && parentSegmentFaces.length
+    ? parentSegmentFaces.map((faceVertices) => faceVertices.map((vertex) => vertex.clone()))
+    : buildClusterBoundaryFaces(clusterCells);
   const faceEntries = buildPolyhedronFaceEntries(boundaryFaces);
   const runeSymbol = SUBCRYSTAL_RUNE_SYMBOLS[runeIndex % SUBCRYSTAL_RUNE_SYMBOLS.length];
   const runeGlyphLayout = measureRuneGlyphLayout(runeSymbol, 256, 14);
@@ -3940,7 +3942,7 @@ function buildFractalLayoutItem(clusterCells, runeIndex, totalFractalCount) {
     return Math.max(maximum, cell.runeSize || 0);
   }, 0);
   const baseRuneSize = maxRuneSize * Math.max(1, Math.sqrt(clusterCells.length) * 0.78);
-  const runeSizeCap = totalFractalCount === 1 ? 0.34 : 0.62;
+  const runeSizeCap = totalFractalCount === 1 ? 0.28 : 0.62;
   const runeSize = Math.max(0.16, Math.min(runeSizeCap, baseRuneSize));
   const heightLine = computePreferredPolyhedronHeightLine(faceEntries);
   const balancedPlacement = computeBalancedRuneAnchorPosition(
@@ -3955,8 +3957,8 @@ function buildFractalLayoutItem(clusterCells, runeIndex, totalFractalCount) {
     cellIndex: clusterCells[0]?.cellIndex ?? runeIndex,
     hasRune: true,
     runeIndex,
-    // Ziel: H3-Runen wie H1 an der lokalen Hoehenachse ihres Fraktals ausbalancieren.
-    // Warum: Gerade bei spitzen Fraktalen wirkt ein bloesser Volumenmittelpunkt schnell zufaellig; die Clearance-Logik sorgt dafuer, dass die Rune visuell im Traegerkorper sitzt, statt nur mathematisch irgendwo mittendrin.
+    // Ziel: H3-Runen mit derselben Parent-Logik wie H1 im echten Koerper ihres Fraktals platzieren.
+    // Warum: Sobald ein Segment nur ein einziges Fraktal traegt, ist dieses Fraktal identisch mit dem Segment. Dann darf die H3 nicht auf einer aus Zellgrenzen rekonstruierten Ersatzgeometrie landen, sondern muss sich am wirklichen Parent-Koerper orientieren.
     position: balancedPlacement.position.clone(),
     runePosition: balancedPlacement.position.clone(),
     rootRunePosition: balancedPlacement.position.clone(),
@@ -4055,10 +4057,11 @@ function getTetrahedronRuneLayout(vertices, centroid, requestedRuneCount = DEFAU
   const selectedCandidateIndices = selectDistributedRuneCells(upwardCandidates, requestedRuneCount, vertices);
   const seedCells = upwardCandidates.filter((_, candidateIndex) => selectedCandidateIndices.has(candidateIndex));
   const clusterAssignments = assignCellsToFractalSeeds(cells, seedCells);
+  const parentSegmentFaces = buildTetrahedronFragmentFaces(vertices, centroid);
 
   return seedCells.map((seedCell, runeIndex) => {
     const clusterCells = clusterAssignments.get(seedCell.cellIndex) || [seedCell];
-    return buildFractalLayoutItem(clusterCells, runeIndex, seedCells.length);
+    return buildFractalLayoutItem(clusterCells, runeIndex, seedCells.length, parentSegmentFaces);
   });
 }
 
