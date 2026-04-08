@@ -3470,12 +3470,13 @@ function buildTetrahedronFragmentFaces(vertices, centroid) {
   ];
 }
 
-function computeFragmentFaceRunePosition(vertices, centroid, surfaceLift = 0.032) {
-  // Ziel: H2-Runen direkt auf der nach aussen zeigenden Fragmentflaeche verankern.
-  // Warum: Die Fragmentrunen sollen als zweite Hierarchieebene klar auf den Aussenflaechen liegen; ein kleiner Lift macht sie sichtbar, ohne dass sie wie abgeloeste Marker weit vor dem Fragment schweben.
+function computeFragmentFaceRunePosition(vertices, centroid, planeLift = 0.004, glyphPlaneOffset = 0.028) {
+  // Ziel: H2-Runen mit ihrer sichtbaren Glyphflaeche direkt an die Aussenflaeche des Segments setzen.
+  // Warum: Der Ankerpunkt allein reicht hier nicht; weil die Rune selbst lokal vor dem Anchor liegt, muss der Anchor leicht nach innen versetzt werden, sonst wirkt die H2 im RootView wie ein schwebender Aufkleber.
   const faceCenter = computeFaceCenter(vertices);
   const outwardNormal = computeOutwardNormal(vertices, faceCenter);
-  return faceCenter.add(outwardNormal.scale(surfaceLift));
+  const anchorOffset = planeLift - glyphPlaneOffset;
+  return faceCenter.add(outwardNormal.scale(anchorOffset));
 }
 
 function createTetrahedronFragmentBoundaries(scene, parent, name, faces, accentHex, materials) {
@@ -3933,14 +3934,13 @@ function computePreferredPolyhedronHeightLine(faces) {
 function buildFractalLayoutItem(clusterCells, runeIndex, totalFractalCount) {
   const boundaryFaces = buildClusterBoundaryFaces(clusterCells);
   const faceEntries = buildPolyhedronFaceEntries(boundaryFaces);
-  const fractalCenter = computePolyhedronCenterFromFaces(boundaryFaces);
   const runeSymbol = SUBCRYSTAL_RUNE_SYMBOLS[runeIndex % SUBCRYSTAL_RUNE_SYMBOLS.length];
   const runeGlyphLayout = measureRuneGlyphLayout(runeSymbol, 256, 14);
   const maxRuneSize = clusterCells.reduce((maximum, cell) => {
     return Math.max(maximum, cell.runeSize || 0);
   }, 0);
   const baseRuneSize = maxRuneSize * Math.max(1, Math.sqrt(clusterCells.length) * 0.78);
-  const runeSizeCap = totalFractalCount === 1 ? 0.42 : 0.62;
+  const runeSizeCap = totalFractalCount === 1 ? 0.34 : 0.62;
   const runeSize = Math.max(0.16, Math.min(runeSizeCap, baseRuneSize));
   const heightLine = computePreferredPolyhedronHeightLine(faceEntries);
   const balancedPlacement = computeBalancedRuneAnchorPosition(
@@ -3950,20 +3950,17 @@ function buildFractalLayoutItem(clusterCells, runeIndex, totalFractalCount) {
     runeSize * H3_ROOT_RUNE_SCALE * runeGlyphLayout.heightRatio,
     0.006
   );
-  const runeAnchorPosition = totalFractalCount === 1
-    ? fractalCenter.clone()
-    : balancedPlacement.position.clone();
 
   return {
     cellIndex: clusterCells[0]?.cellIndex ?? runeIndex,
     hasRune: true,
     runeIndex,
-    // Ziel: H3-Rune je nach Fraktalzahl lesbar platzieren, ohne ihre Ebenenhierarchie zu verlieren.
-    // Warum: Ein einzelnes Fraktal pro Fragment ist geometrisch identisch mit seinem Parent-Segment; dort waere die volle Clearance-Suche zu aggressiv und wuerde die H3 zugleich zu gross und scheinbar dezentriert machen.
-    position: runeAnchorPosition.clone(),
-    runePosition: runeAnchorPosition.clone(),
-    rootRunePosition: runeAnchorPosition.clone(),
-    detailRunePosition: runeAnchorPosition.clone(),
+    // Ziel: H3-Runen wie H1 an der lokalen Hoehenachse ihres Fraktals ausbalancieren.
+    // Warum: Gerade bei spitzen Fraktalen wirkt ein bloesser Volumenmittelpunkt schnell zufaellig; die Clearance-Logik sorgt dafuer, dass die Rune visuell im Traegerkorper sitzt, statt nur mathematisch irgendwo mittendrin.
+    position: balancedPlacement.position.clone(),
+    runePosition: balancedPlacement.position.clone(),
+    rootRunePosition: balancedPlacement.position.clone(),
+    detailRunePosition: balancedPlacement.position.clone(),
     rootRuneRotation: balancedPlacement.rotation.clone(),
     runeSize,
     distributionPoint: computePolyhedronCenterFromFaces(boundaryFaces),
