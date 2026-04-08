@@ -121,10 +121,7 @@ const state = {
       durationMs: 0,
       direction: "idle",
       seed: Math.random() * 1000,
-      pendingViewMode: null,
-      particles: [],
-      lastTimestamp: 0,
-      lastSpawnTime: 0
+      pendingViewMode: null
     }
   },
   snap: {
@@ -180,9 +177,6 @@ function resetExtractionTransition(phase = "hidden") {
   transition.durationMs = 0;
   transition.direction = "idle";
   transition.pendingViewMode = null;
-  transition.particles = [];
-  transition.lastTimestamp = 0;
-  transition.lastSpawnTime = 0;
   contentCrystalPanel?.style.setProperty("--content-lavaball-opacity", phase === "hidden" ? "0" : "0.98");
   contentCrystalPanel?.style.setProperty("--content-lavaball-scale", "1");
 
@@ -199,9 +193,6 @@ function startExtractionTransition(phase, durationMs, direction, pendingViewMode
   transition.direction = direction;
   transition.seed = (transition.seed + 0.61803398875) % 1000;
   transition.pendingViewMode = pendingViewMode;
-  transition.particles = [];
-  transition.lastTimestamp = 0;
-  transition.lastSpawnTime = transition.startTime;
 }
 
 installGlobalDiagnosticHooks();
@@ -5444,7 +5435,9 @@ function drawLavaBallCoronalGaps(context, metrics, burstStrength) {
   context.restore();
 }
 
-function drawLavaBallTentacles(context, metrics, burstStrength) {
+function drawLavaBallSunRays(context, metrics, burstStrength, idlePulse) {
+  // Ziel: Den Ring wie eine Sonne hinter Wolken mit weit auslaufenden Strahlen lesen lassen.
+  // Warum: Der Nutzer will keinen Auswurf mit Brocken mehr, sondern lange ruhige Lichtfaecher, die das Panel weich und solar nach aussen aufziehen.
   const {
     centerX,
     centerY,
@@ -5453,225 +5446,86 @@ function drawLavaBallTentacles(context, metrics, burstStrength) {
     seed,
     yCompression
   } = metrics;
-  const tentacleCount = prefersReducedMotion() ? 3 : 5 + Math.round(burstStrength * 4);
+  const rayCount = prefersReducedMotion() ? 10 : 16;
 
   context.save();
   context.translate(centerX, centerY);
   context.scale(1, yCompression);
   context.globalCompositeOperation = "lighter";
 
-  for (let index = 0; index < tentacleCount; index += 1) {
-    const lane = index / tentacleCount;
-    const angle = (lane * TAU) + (sampleLavaBallWave(lane * TAU, timeSeconds * 0.24, seed + index) * 0.12);
-    const launchRadius = shellRadius + (Math.max(0, Math.sin((timeSeconds * 0.92) + (index * 0.52) + seed)) * burstStrength * 12);
-    const length = (shellRadius * (0.26 + (pseudoRandom(seed + (index * 2.17)) * 0.18))) + (burstStrength * 20);
-    const tangent = angle + ((pseudoRandom(seed + (index * 5.1)) - 0.5) * 0.55);
-    const startX = Math.cos(angle) * launchRadius;
-    const startY = Math.sin(angle) * launchRadius;
-    const tipX = Math.cos(angle) * (launchRadius + length);
-    const tipY = Math.sin(angle) * (launchRadius + length);
-    const controlX = (startX * 0.32) + (tipX * 0.68) + (Math.cos(tangent) * length * 0.34);
-    const controlY = (startY * 0.32) + (tipY * 0.68) + (Math.sin(tangent) * length * 0.34);
+  for (let index = 0; index < rayCount; index += 1) {
+    const lane = index / rayCount;
+    const angle = (lane * TAU) + (sampleLavaBallWave(lane * TAU, timeSeconds * 0.11, seed + (index * 0.73)) * 0.08);
+    const angularWidth = 0.07 + (pseudoRandom(seed + (index * 3.1)) * 0.08);
+    const reach = shellRadius * (1.4 + (pseudoRandom(seed + (index * 4.2)) * 0.95) + (burstStrength * 0.25));
+    const innerRadius = shellRadius * (0.96 + (pseudoRandom(seed + index) * 0.06));
+    const outerRadius = shellRadius + reach;
+    const brightness = 0.08 + (pseudoRandom(seed + (index * 5.7)) * 0.12) + (idlePulse * 0.18) + (burstStrength * 0.1);
+    const leftAngle = angle - angularWidth;
+    const rightAngle = angle + angularWidth;
+
+    const gradient = context.createLinearGradient(
+      Math.cos(angle) * innerRadius,
+      Math.sin(angle) * innerRadius,
+      Math.cos(angle) * outerRadius,
+      Math.sin(angle) * outerRadius
+    );
+    gradient.addColorStop(0, `rgba(255, 244, 214, ${0.3 + (brightness * 0.4)})`);
+    gradient.addColorStop(0.25, `rgba(255, 190, 88, ${0.14 + brightness})`);
+    gradient.addColorStop(0.72, `rgba(255, 124, 26, ${0.08 + (brightness * 0.55)})`);
+    gradient.addColorStop(1, "rgba(255, 124, 26, 0)");
 
     context.beginPath();
-    context.moveTo(startX, startY);
-    context.quadraticCurveTo(controlX, controlY, tipX, tipY);
-    context.lineWidth = 2.8 + (burstStrength * 1.3);
-    context.strokeStyle = `rgba(255, 171, 72, ${0.22 + (burstStrength * 0.12)})`;
-    context.shadowBlur = 18;
-    context.shadowColor = "rgba(255, 116, 28, 0.3)";
-    context.stroke();
-
-    context.beginPath();
-    context.moveTo(startX, startY);
-    context.quadraticCurveTo(controlX, controlY, tipX, tipY);
-    context.lineWidth = 1.4 + (burstStrength * 0.5);
-    context.strokeStyle = `rgba(255, 241, 196, ${0.16 + (burstStrength * 0.06)})`;
-    context.stroke();
+    context.moveTo(Math.cos(leftAngle) * innerRadius, Math.sin(leftAngle) * innerRadius);
+    context.lineTo(Math.cos(leftAngle) * outerRadius, Math.sin(leftAngle) * outerRadius);
+    context.lineTo(Math.cos(rightAngle) * outerRadius, Math.sin(rightAngle) * outerRadius);
+    context.lineTo(Math.cos(rightAngle) * innerRadius, Math.sin(rightAngle) * innerRadius);
+    context.closePath();
+    context.fillStyle = gradient;
+    context.shadowBlur = 16 + (brightness * 18);
+    context.shadowColor = "rgba(255, 184, 74, 0.24)";
+    context.fill();
   }
 
   context.restore();
 }
 
-function createLavaBallParticle(now, metrics, burstStrength, particleIndex) {
-  const seed = state.extraction.transition.seed + particleIndex + (now * 0.001);
-  const typeRoll = pseudoRandom(seed + 8.8);
-  const type = typeRoll < 0.56
-    ? "island"
-    : typeRoll < 0.87
-      ? "drifter"
-      : "flyer";
-  const lifeMs = type === "flyer"
-    ? 1180 + (pseudoRandom(seed + 0.4) * 640) + (burstStrength * 220)
-    : 1480 + (pseudoRandom(seed + 0.4) * 920) + (burstStrength * 320);
-  const angle = pseudoRandom(seed + 1.2) * TAU;
-  const arc = type === "flyer"
-    ? (pseudoRandom(seed + 2.3) - 0.5) * (0.5 + (burstStrength * 0.52))
-    : (pseudoRandom(seed + 2.3) - 0.5) * 0.22;
-  const launch = type === "flyer"
-    ? (metrics.shellRadius * (0.16 + (pseudoRandom(seed + 3.1) * 0.16))) + (burstStrength * 18)
-    : type === "drifter"
-      ? (metrics.shellRadius * (0.1 + (pseudoRandom(seed + 3.1) * 0.12))) + (burstStrength * 8)
-      : (metrics.shellRadius * (0.04 + (pseudoRandom(seed + 3.1) * 0.06))) + (burstStrength * 3.5);
-  const size = type === "island"
-    ? 5.8 + (pseudoRandom(seed + 4.8) * 7.6) + (burstStrength * 2.2)
-    : type === "drifter"
-      ? 3.8 + (pseudoRandom(seed + 4.8) * 4.8) + (burstStrength * 1.3)
-      : 2.3 + (pseudoRandom(seed + 4.8) * 2.7) + (burstStrength * 1.1);
-
-  return {
-    type,
-    bornAt: now,
-    lifeMs,
-    angle,
-    arc,
-    launch,
-    size,
-    emberStart: type === "flyer"
-      ? 0.58 + (pseudoRandom(seed + 7.9) * 0.12)
-      : 0.72 + (pseudoRandom(seed + 7.9) * 0.1),
-    history: []
-  };
-}
-
-function updateLavaBallParticles(now, metrics, burstStrength) {
-  const transition = state.extraction.transition;
-
-  if (prefersReducedMotion()) {
-    transition.particles = [];
-    return;
-  }
-
-  const targetCount = Math.round(4 + (burstStrength * 9));
-  const spawnInterval = Math.max(120, 420 - (burstStrength * 180));
-
-  while (
-    transition.lastSpawnTime > 0
-    && now - transition.lastSpawnTime >= spawnInterval
-    && transition.particles.length < targetCount
-  ) {
-    transition.lastSpawnTime += spawnInterval;
-    transition.particles.push(
-      createLavaBallParticle(now, metrics, burstStrength, transition.particles.length)
-    );
-  }
-
-  transition.particles = transition.particles.filter((particle) => {
-    const progress = (now - particle.bornAt) / particle.lifeMs;
-
-    if (progress >= 1) {
-      return false;
-    }
-
-    let liftCurve = 0;
-
-    if (particle.type === "flyer") {
-      const arcProgress = Math.sin(progress * Math.PI);
-      liftCurve = arcProgress * (1 - (progress * 0.18));
-    } else if (particle.type === "drifter") {
-      liftCurve = Math.sin(progress * Math.PI * 0.72) * (0.84 - (progress * 0.12));
-    } else {
-      const rise = Math.min(1, progress / 0.3);
-      const settle = progress > 0.62 ? (progress - 0.62) / 0.38 : 0;
-      liftCurve = (easeOutCubic(rise) * 0.72) - (easeInOutSine(Math.min(1, settle)) * 0.26);
-    }
-
-    const radius = metrics.shellRadius + (particle.launch * liftCurve);
-    const angle = particle.angle + (particle.arc * liftCurve);
-    const x = metrics.centerX + (Math.cos(angle) * radius);
-    const y = metrics.centerY + (Math.sin(angle) * radius * metrics.yCompression);
-    particle.progress = progress;
-    particle.x = x;
-    particle.y = y;
-    particle.history.unshift({ x, y, progress });
-    particle.history.length = particle.type === "island" ? 18 : 14;
-    return true;
-  });
-}
-
-function drawLavaBallParticles(context, metrics, burstStrength) {
-  const particles = state.extraction.transition.particles;
-
-  if (!particles.length) {
-    return;
-  }
+function drawLavaBallCloudBands(context, metrics, burstStrength) {
+  // Ziel: Die Lichtstrahlen mit weichen wolkigen Schleiern brechen.
+  // Warum: Erst diese Abschattungen machen den Look eher zu Sonnenaufgang hinter Wolken als zu einem reinen Sci-Fi-Ring.
+  const {
+    centerX,
+    centerY,
+    shellRadius,
+    seed,
+    timeSeconds,
+    yCompression
+  } = metrics;
+  const bandCount = prefersReducedMotion() ? 2 : 3;
 
   context.save();
-  context.globalCompositeOperation = "lighter";
+  context.translate(centerX, centerY);
+  context.scale(1, yCompression);
 
-  particles.forEach((particle) => {
-    if (!particle.history.length) {
-      return;
-    }
+  for (let index = 0; index < bandCount; index += 1) {
+    const drift = sampleLavaBallWave(index * 1.7, timeSeconds * 0.08, seed + (index * 9.1));
+    const offsetY = (shellRadius * (-0.34 + (index * 0.28))) + (drift * shellRadius * 0.08);
+    const width = shellRadius * (1.72 + (index * 0.18));
+    const height = shellRadius * (0.22 + (index * 0.04));
+    const tilt = -0.18 + (index * 0.14) + (drift * 0.04);
 
+    context.save();
+    context.rotate(tilt);
+    const gradient = context.createRadialGradient(0, offsetY, width * 0.08, 0, offsetY, width);
+    gradient.addColorStop(0, `rgba(10, 11, 15, ${0.16 + (burstStrength * 0.04)})`);
+    gradient.addColorStop(0.45, `rgba(18, 20, 24, ${0.12 + (index * 0.03)})`);
+    gradient.addColorStop(1, "rgba(0, 0, 0, 0)");
+    context.fillStyle = gradient;
     context.beginPath();
-    particle.history.forEach((point, index) => {
-      if (index === 0) {
-        context.moveTo(point.x, point.y);
-      } else {
-        context.lineTo(point.x, point.y);
-      }
-    });
-    context.lineWidth = particle.size * (
-      particle.type === "island"
-        ? (1.55 - (particle.progress * 0.32))
-        : 1.18 - (particle.progress * 0.42)
-    );
-    context.strokeStyle = particle.type === "island"
-      ? `rgba(255, 126, 38, ${0.3 + (burstStrength * 0.12)})`
-      : particle.progress >= particle.emberStart
-        ? `rgba(255, 243, 205, ${0.36 + (burstStrength * 0.16)})`
-        : `rgba(255, 140, 44, ${0.28 + (burstStrength * 0.16)})`;
-    context.shadowBlur = 16 + (particle.size * 2.8);
-    context.shadowColor = particle.type === "island"
-      ? "rgba(255, 102, 16, 0.38)"
-      : particle.progress >= particle.emberStart
-        ? "rgba(255, 239, 192, 0.4)"
-        : "rgba(255, 110, 16, 0.34)";
-    context.stroke();
-
-    context.beginPath();
-    particle.history.forEach((point, index) => {
-      if (index === 0) {
-        context.moveTo(point.x, point.y);
-      } else {
-        context.lineTo(point.x, point.y);
-      }
-    });
-    context.lineWidth = particle.size * (
-      particle.type === "island"
-        ? (0.8 - (particle.progress * 0.18))
-        : 0.5
-    );
-    context.strokeStyle = particle.progress >= particle.emberStart
-      ? `rgba(255, 243, 205, ${0.36 + (burstStrength * 0.16)})`
-      : `rgba(255, 140, 44, ${0.28 + (burstStrength * 0.16)})`;
-    context.stroke();
-
-    if (particle.type === "island") {
-      context.beginPath();
-      context.ellipse(
-        particle.x,
-        particle.y,
-        particle.size * 0.92,
-        particle.size * 0.64,
-        particle.angle,
-        0,
-        TAU
-      );
-      context.fillStyle = "rgba(255, 118, 34, 0.36)";
-      context.fill();
-    }
-
-    context.beginPath();
-    context.arc(particle.x, particle.y, particle.size * (particle.progress >= particle.emberStart ? 0.55 : 0.75), 0, TAU);
-    context.fillStyle = particle.type === "island"
-      ? "rgba(255, 212, 132, 0.82)"
-      : particle.progress >= particle.emberStart
-        ? "rgba(255, 247, 220, 0.92)"
-        : "rgba(255, 189, 98, 0.8)";
+    context.ellipse(0, offsetY, width, height, 0, 0, TAU);
     context.fill();
-  });
+    context.restore();
+  }
 
   context.restore();
 }
@@ -5737,13 +5591,12 @@ function drawContentLavaBall(now, metrics, burstStrength, idlePulse) {
   context.fillStyle = backdropGradient;
   context.fillRect(0, 0, width, height);
 
+  drawLavaBallSunRays(context, metrics, burstStrength, idlePulse);
+  drawLavaBallCloudBands(context, metrics, burstStrength);
   drawLavaBallMembrane(context, metrics, burstStrength, 0);
   drawLavaBallMembrane(context, metrics, burstStrength * 0.82, 1);
   drawLavaBallCoronalGaps(context, metrics, burstStrength);
-  drawLavaBallTentacles(context, metrics, burstStrength);
   drawLavaBallCore(context, metrics, burstStrength);
-  updateLavaBallParticles(now, metrics, burstStrength);
-  drawLavaBallParticles(context, metrics, burstStrength);
   carveLavaBallSightHole(context, metrics, burstStrength);
 }
 
