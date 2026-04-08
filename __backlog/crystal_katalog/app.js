@@ -60,6 +60,7 @@ const detailLines = document.getElementById("detailLines");
 const detailCards = document.getElementById("detailCards");
 const contentExperience = document.getElementById("contentExperience");
 const contentCrystalPanel = document.getElementById("contentCrystalPanel");
+const contentCoronaCanvas = document.getElementById("contentCoronaCanvas");
 const contentToc = document.getElementById("contentToc");
 const contentStage = document.getElementById("contentStage");
 const detailAdvanceButton = document.getElementById("detailAdvanceButton");
@@ -72,6 +73,9 @@ const diagnostics = createDiagnosticsState(STARTUP_CONFIG);
 const DEFAULT_CAMERA_RADIUS = 6.1;
 const DETAIL_CAMERA_RADIUS = 6.35;
 const CONTENT_CAMERA_RADIUS = 6.7;
+const CONTENT_ENTER_TRANSITION_MS = 900;
+const CONTENT_EXIT_TRANSITION_MS = 650;
+const CONTENT_REDUCED_MOTION_TRANSITION_MS = 220;
 const EXPLODED_CRYSTAL_OFFSET_X = 0;
 const DETAIL_PANE_MIN_WIDTH_PX = 280;
 const DETAIL_PANE_PADDING_PX = 34;
@@ -82,6 +86,9 @@ const PRESENTER_ROTATION_SPEED = Object.freeze({
   y: 0.18,
   z: 0.08
 });
+const reducedMotionQuery = typeof window.matchMedia === "function"
+  ? window.matchMedia("(prefers-reduced-motion: reduce)")
+  : null;
 
 const state = {
   selectedId: STARTUP_CONFIG.selectionId,
@@ -108,7 +115,18 @@ const state = {
     viewMode: "detail",
     activeContentEntryId: null,
     hoveredCardEntryId: null,
-    hoveredRuneEntryId: null
+    hoveredRuneEntryId: null,
+    transition: {
+      phase: "hidden",
+      startTime: 0,
+      durationMs: 0,
+      direction: "idle",
+      seed: Math.random() * 1000,
+      pendingViewMode: null,
+      particles: [],
+      lastTimestamp: 0,
+      lastSpawnTime: 0
+    }
   },
   snap: {
     active: false,
@@ -137,6 +155,55 @@ const state = {
     speed: 4.6
   }
 };
+
+function prefersReducedMotion() {
+  return Boolean(reducedMotionQuery?.matches);
+}
+
+function clearContentCoronaCanvas() {
+  if (!contentCoronaCanvas) {
+    return;
+  }
+
+  const context = contentCoronaCanvas.getContext("2d");
+
+  if (!context) {
+    return;
+  }
+
+  context.clearRect(0, 0, contentCoronaCanvas.width, contentCoronaCanvas.height);
+}
+
+function resetExtractionTransition(phase = "hidden") {
+  const transition = state.extraction.transition;
+  transition.phase = phase;
+  transition.startTime = 0;
+  transition.durationMs = 0;
+  transition.direction = "idle";
+  transition.pendingViewMode = null;
+  transition.particles = [];
+  transition.lastTimestamp = 0;
+  transition.lastSpawnTime = 0;
+  contentCrystalPanel?.style.setProperty("--content-corona-opacity", phase === "hidden" ? "0" : "0.98");
+  contentCrystalPanel?.style.setProperty("--content-corona-scale", "1");
+
+  if (phase === "hidden") {
+    clearContentCoronaCanvas();
+  }
+}
+
+function startExtractionTransition(phase, durationMs, direction, pendingViewMode = null) {
+  const transition = state.extraction.transition;
+  transition.phase = phase;
+  transition.startTime = performance.now();
+  transition.durationMs = durationMs;
+  transition.direction = direction;
+  transition.seed = (transition.seed + 0.61803398875) % 1000;
+  transition.pendingViewMode = pendingViewMode;
+  transition.particles = [];
+  transition.lastTimestamp = 0;
+  transition.lastSpawnTime = transition.startTime;
+}
 
 installGlobalDiagnosticHooks();
 renderList();
@@ -213,7 +280,7 @@ function bindContentCrystalPanel() {
       return;
     }
 
-    setExtractionViewMode("detail");
+    requestContentReturnToDetail();
   };
 
   contentCrystalPanel.addEventListener("click", activateReturn);
@@ -225,6 +292,26 @@ function bindContentCrystalPanel() {
     event.preventDefault();
     activateReturn();
   });
+}
+
+function requestContentReturnToDetail() {
+  // Ziel: Den Rueckweg aus dem PresenterView als kurze Portal-Transition statt als harten View-Sprung fahren.
+  // Warum: Der kleine Kristall oben links ist semantisch der Rueckbutton; sein Corona-Effekt soll den Wechsel tragen und nicht nach dem Klick einfach abrupt verschwinden.
+  if (state.extraction.viewMode !== "content") {
+    setExtractionViewMode("detail", { immediate: true });
+    return;
+  }
+
+  if (prefersReducedMotion()) {
+    startExtractionTransition("exit", CONTENT_REDUCED_MOTION_TRANSITION_MS, "backward", "detail");
+    return;
+  }
+
+  if (state.extraction.transition.phase === "exit") {
+    return;
+  }
+
+  startExtractionTransition("exit", CONTENT_EXIT_TRANSITION_MS, "backward", "detail");
 }
 
 function populateSelect(select, placeholder, sourceItems) {
@@ -621,6 +708,106 @@ function syncExperienceCamera() {
     : DETAIL_CAMERA_RADIUS;
 }
 
+function getContentCrystalSafePadding(panelRect) {
+  const minDimension = Math.max(1, Math.min(panelRect.width, panelRect.height));
+  return Math.min(56, Math.max(24, minDimension * 0.12));
+}
+
+function getProjectedCrystalBounds(projectionContext) {
+  // Ziel: Den sichtbaren Aussenkoerper des Kristalls als 2D-Bounds im aktuellen Canvas bestimmen.
+  // Warum: Der PresenterView soll nicht mit einer festen Kamerazahl arbeiten, sondern den real projizierten Kristall gegen den Container einpassen.
+  if (!projectionContext || !state.crystalRoot || !state.faceEntries.length) {
+    return null;
+  }
+
+  state.crystalRoot.computeWorldMatrix(true);
+  const worldMatrix = state.crystalRoot.getWorldMatrix();
+  const uniqueVertices = new Map();
+  let minX = Number.POSITIVE_INFINITY;
+  let minY = Number.POSITIVE_INFINITY;
+  let maxX = Number.NEGATIVE_INFINITY;
+  let maxY = Number.NEGATIVE_INFINITY;
+
+  state.faceEntries.forEach((entry) => {
+    entry.vertices.forEach((vertex) => {
+      const key = getVertexKey(vertex);
+
+      if (!uniqueVertices.has(key)) {
+        uniqueVertices.set(key, vertex.clone());
+      }
+    });
+  });
+
+  uniqueVertices.forEach((vertex) => {
+    const worldVertex = BABYLON.Vector3.TransformCoordinates(vertex, worldMatrix);
+    const point = projectWorldPointToStageWithContext(worldVertex, projectionContext);
+
+    if (!point) {
+      return;
+    }
+
+    minX = Math.min(minX, point.x);
+    minY = Math.min(minY, point.y);
+    maxX = Math.max(maxX, point.x);
+    maxY = Math.max(maxY, point.y);
+  });
+
+  if (!Number.isFinite(minX) || !Number.isFinite(minY) || !Number.isFinite(maxX) || !Number.isFinite(maxY)) {
+    return null;
+  }
+
+  return {
+    minX,
+    minY,
+    maxX,
+    maxY,
+    width: maxX - minX,
+    height: maxY - minY,
+    centerX: (minX + maxX) * 0.5,
+    centerY: (minY + maxY) * 0.5
+  };
+}
+
+function syncPresenterCrystalFraming() {
+  // Ziel: Den kleinen Presenter-Kristall innerhalb seines Panels vollstaendig und mit harmonischem Padding sichtbar halten.
+  // Warum: Der PresenterView ist hier eher ein schicker Rueck-Button als eine zweite Hauptszene; abgeschnittene Spitzen zerstoeren genau diesen Eindruck.
+  if (
+    state.extraction.stage !== "expanded"
+    || state.extraction.viewMode !== "content"
+    || !state.camera
+    || !contentCrystalPanel
+  ) {
+    return;
+  }
+
+  const projectionContext = createStageProjectionContext();
+  const panelRect = contentCrystalPanel.getBoundingClientRect();
+  const bounds = getProjectedCrystalBounds(projectionContext);
+
+  if (!projectionContext || !bounds || !panelRect.width || !panelRect.height) {
+    return;
+  }
+
+  const safePadding = getContentCrystalSafePadding(panelRect);
+  const availableWidth = Math.max(32, panelRect.width - (safePadding * 2));
+  const availableHeight = Math.max(32, panelRect.height - (safePadding * 2));
+  const fitRatio = Math.max(bounds.width / availableWidth, bounds.height / availableHeight);
+  const currentRadius = state.camera.radius || CONTENT_CAMERA_RADIUS;
+  let targetRadius = CONTENT_CAMERA_RADIUS;
+
+  if (fitRatio > 1.001) {
+    targetRadius = currentRadius * fitRatio;
+  } else if (fitRatio < 0.84) {
+    targetRadius = currentRadius * Math.max(0.9, fitRatio / 0.84);
+  } else {
+    targetRadius = currentRadius;
+  }
+
+  targetRadius = Math.max(state.camera.lowerRadiusLimit || 0, Math.min(state.camera.upperRadiusLimit || targetRadius, targetRadius));
+  state.camera.radius = BABYLON.Scalar.Lerp(currentRadius, targetRadius, 0.12);
+  contentCrystalPanel.style.setProperty("--content-crystal-safe-padding", `${safePadding}px`);
+}
+
 function clearLiveDetailPaneWidth() {
   // Ziel: Die dynamische Detailbreite verlassen, sobald kein Tree mehr auf der rechten Seite steht.
   // Warum: Root- und PresentationsView sollen nicht versehentlich die schmale Tree-Breite des DetailViews mitschleppen.
@@ -690,7 +877,7 @@ function updateDetailAdvanceButtonState() {
   );
 }
 
-function setExtractionViewMode(viewMode) {
+function commitExtractionViewMode(viewMode) {
   // Ziel: Zwischen klassischem Detail-Overlay und Inhalts-/Content-Ansicht als echte Zustandsmaschine wechseln.
   // Warum: Beide Ansichten teilen sich dieselben Symbol- und Hierarchiedaten, brauchen aber unterschiedliche Panels, Pointer-Logik und Kamerarahmen.
   const nextMode = viewMode === "content" ? "content" : "detail";
@@ -719,6 +906,31 @@ function setExtractionViewMode(viewMode) {
   syncLiveDetailPaneWidth();
   syncExperienceCamera();
   refreshRuntimeDiagnostics();
+}
+
+function setExtractionViewMode(viewMode, options = {}) {
+  // Ziel: Den View-Wechsel um Presenter-spezifische Eintritts- und Ruecktransitionen erweitern.
+  // Warum: Der Wechsel zum kleinen Kristallportal soll nicht nur ein CSS-Umschalten sein, sondern einen klaren Beginn und ein klares Ende haben.
+  const nextMode = viewMode === "content" ? "content" : "detail";
+  const immediate = options.immediate === true;
+
+  if (nextMode === "content") {
+    commitExtractionViewMode("content");
+    startExtractionTransition(
+      "enter",
+      prefersReducedMotion() ? CONTENT_REDUCED_MOTION_TRANSITION_MS : CONTENT_ENTER_TRANSITION_MS,
+      "forward"
+    );
+    return;
+  }
+
+  if (state.extraction.viewMode === "content" && !immediate) {
+    requestContentReturnToDetail();
+    return;
+  }
+
+  commitExtractionViewMode("detail");
+  resetExtractionTransition("hidden");
 }
 
 function applyExplodedLayout(isActive) {
@@ -4741,6 +4953,7 @@ function clearExtractedCrystal() {
   state.extraction.items = [];
   state.extraction.viewMode = "detail";
   state.extraction.activeContentEntryId = null;
+  resetExtractionTransition("hidden");
   applyExplodedLayout(false);
   refreshRuntimeDiagnostics();
 }
@@ -4945,8 +5158,434 @@ function syncExplodedDetailLayout() {
   syncDetailConnectorVisibility();
 }
 
+function fract(value) {
+  return value - Math.floor(value);
+}
+
+function pseudoRandom(seed) {
+  return fract(Math.sin(seed * 12.9898 + 78.233) * 43758.5453123);
+}
+
+function easeOutCubic(value) {
+  return 1 - Math.pow(1 - value, 3);
+}
+
+function easeInOutSine(value) {
+  return -(Math.cos(Math.PI * value) - 1) * 0.5;
+}
+
+function syncContentCoronaCanvas(panelRect) {
+  if (!contentCoronaCanvas || !panelRect.width || !panelRect.height) {
+    return null;
+  }
+
+  const dpr = Math.min(window.devicePixelRatio || 1, 2);
+  const width = Math.max(1, Math.round(panelRect.width));
+  const height = Math.max(1, Math.round(panelRect.height));
+  const pixelWidth = Math.max(1, Math.round(width * dpr));
+  const pixelHeight = Math.max(1, Math.round(height * dpr));
+
+  if (contentCoronaCanvas.width !== pixelWidth || contentCoronaCanvas.height !== pixelHeight) {
+    contentCoronaCanvas.width = pixelWidth;
+    contentCoronaCanvas.height = pixelHeight;
+  }
+
+  const context = contentCoronaCanvas.getContext("2d");
+
+  if (!context) {
+    return null;
+  }
+
+  context.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+  return {
+    context,
+    width,
+    height,
+    dpr
+  };
+}
+
+function createContentCoronaMetrics(now, projectionContext) {
+  // Ziel: Den Presenter-Effekt aus dem echten kleinen Kristall und seinem Container ableiten.
+  // Warum: Corona, Burst und Kameraframing sollen am sichtbaren Mini-Kristall haengen und nicht an starren Magic Numbers.
+  if (!contentCrystalPanel) {
+    return null;
+  }
+
+  const panelRect = contentCrystalPanel.getBoundingClientRect();
+  const canvasInfo = syncContentCoronaCanvas(panelRect);
+  const bounds = getProjectedCrystalBounds(projectionContext);
+
+  if (!canvasInfo || !panelRect.width || !panelRect.height) {
+    return null;
+  }
+
+  const safePadding = getContentCrystalSafePadding(panelRect);
+  const fallbackCenterX = panelRect.width * 0.5;
+  const fallbackCenterY = panelRect.height * 0.5;
+  const centerX = bounds?.centerX ?? fallbackCenterX;
+  const centerY = bounds?.centerY ?? fallbackCenterY;
+  const crystalExtent = Math.max(bounds?.width || 0, bounds?.height || 0, Math.min(panelRect.width, panelRect.height) * 0.36);
+  const minDimension = Math.min(panelRect.width, panelRect.height);
+  const baseRadius = Math.min(
+    (minDimension * 0.5) - (safePadding * 0.35),
+    Math.max(minDimension * 0.24, (crystalExtent * 0.58) + (safePadding * 0.2))
+  );
+
+  return {
+    ...canvasInfo,
+    panelRect,
+    bounds,
+    safePadding,
+    centerX,
+    centerY,
+    crystalExtent,
+    baseRadius,
+    seed: state.extraction.transition.seed,
+    now,
+    timeSeconds: now / 1000,
+    yCompression: 0.92
+  };
+}
+
+function sampleCoronaWave(angle, timeSeconds, seed) {
+  const layerA = Math.sin((angle * 3.1) + (timeSeconds * 0.72) + (seed * 0.9));
+  const layerB = Math.sin((angle * 7.4) - (timeSeconds * 1.28) + (seed * 1.7));
+  const layerC = Math.cos((angle * 11.2) + (timeSeconds * 0.46) - (seed * 0.55));
+  return (layerA * 0.55) + (layerB * 0.3) + (layerC * 0.15);
+}
+
+function drawCoronaCore(context, metrics, burstStrength) {
+  const {
+    centerX,
+    centerY,
+    baseRadius,
+    yCompression
+  } = metrics;
+  const hotRadius = baseRadius * (0.96 + (burstStrength * 0.08));
+
+  context.save();
+  context.translate(centerX, centerY);
+  context.scale(1, yCompression);
+  context.globalCompositeOperation = "lighter";
+
+  for (let pass = 0; pass < 3; pass += 1) {
+    context.beginPath();
+    context.arc(0, 0, hotRadius + (pass * 3.6), 0, TAU);
+    context.lineWidth = 3.8 + (pass * 2.5);
+    context.strokeStyle = pass === 0
+      ? "rgba(255, 249, 236, 0.96)"
+      : pass === 1
+        ? "rgba(255, 207, 102, 0.5)"
+        : "rgba(255, 96, 16, 0.22)";
+    context.shadowBlur = 26 + (pass * 12);
+    context.shadowColor = pass === 0 ? "rgba(255, 240, 210, 0.95)" : "rgba(255, 138, 38, 0.56)";
+    context.stroke();
+  }
+
+  context.restore();
+}
+
+function drawCoronaMembrane(context, metrics, burstStrength, layerIndex) {
+  const {
+    centerX,
+    centerY,
+    baseRadius,
+    timeSeconds,
+    seed,
+    yCompression
+  } = metrics;
+  const stepCount = 128;
+  const amplitude = (baseRadius * 0.072) + (burstStrength * baseRadius * 0.06);
+  const microAmplitude = (baseRadius * 0.026) + (layerIndex * 1.6);
+
+  context.save();
+  context.translate(centerX, centerY);
+  context.scale(1, yCompression);
+  context.beginPath();
+
+  for (let step = 0; step <= stepCount; step += 1) {
+    const angle = (step / stepCount) * TAU;
+    const wave = sampleCoronaWave(angle, timeSeconds + (layerIndex * 0.38), seed + (layerIndex * 0.73));
+    const rip = Math.max(0, Math.sin((angle * (4.6 + layerIndex)) - (timeSeconds * (2.1 + layerIndex)) + seed));
+    const radius = baseRadius + (wave * amplitude) + (rip * microAmplitude) + (burstStrength * rip * 18);
+    const x = Math.cos(angle) * radius;
+    const y = Math.sin(angle) * radius;
+
+    if (step === 0) {
+      context.moveTo(x, y);
+    } else {
+      context.lineTo(x, y);
+    }
+  }
+
+  context.closePath();
+
+  const fillGradient = context.createRadialGradient(0, 0, baseRadius * 0.45, 0, 0, baseRadius * 1.28);
+  fillGradient.addColorStop(0, `rgba(255, 254, 250, ${0.03 + (burstStrength * 0.02)})`);
+  fillGradient.addColorStop(0.38, `rgba(255, 205, 98, ${0.12 + (layerIndex * 0.03)})`);
+  fillGradient.addColorStop(0.7, `rgba(255, 112, 24, ${0.2 + (burstStrength * 0.08)})`);
+  fillGradient.addColorStop(1, "rgba(255, 74, 18, 0)");
+  context.fillStyle = fillGradient;
+  context.fill();
+
+  context.globalCompositeOperation = "lighter";
+  context.lineWidth = 3.2 - (layerIndex * 0.7);
+  context.strokeStyle = layerIndex === 0
+    ? `rgba(255, 238, 188, ${0.42 + (burstStrength * 0.18)})`
+    : `rgba(255, 149, 54, ${0.22 + (burstStrength * 0.1)})`;
+  context.shadowBlur = 16 + (burstStrength * 18);
+  context.shadowColor = layerIndex === 0 ? "rgba(255, 206, 116, 0.4)" : "rgba(255, 94, 16, 0.32)";
+  context.stroke();
+  context.restore();
+}
+
+function drawCoronaTentacles(context, metrics, burstStrength) {
+  const {
+    centerX,
+    centerY,
+    baseRadius,
+    timeSeconds,
+    seed,
+    yCompression
+  } = metrics;
+  const tentacleCount = prefersReducedMotion() ? 4 : 8 + Math.round(burstStrength * 7);
+
+  context.save();
+  context.translate(centerX, centerY);
+  context.scale(1, yCompression);
+  context.globalCompositeOperation = "lighter";
+
+  for (let index = 0; index < tentacleCount; index += 1) {
+    const lane = index / tentacleCount;
+    const angle = (lane * TAU) + (sampleCoronaWave(lane * TAU, timeSeconds * 0.42, seed + index) * 0.16);
+    const launchRadius = baseRadius + (Math.max(0, Math.sin((timeSeconds * 1.9) + (index * 0.84) + seed)) * burstStrength * 22);
+    const length = (baseRadius * (0.18 + pseudoRandom(seed + (index * 2.17)) * 0.24)) + (burstStrength * 36);
+    const tangent = angle + ((pseudoRandom(seed + (index * 5.1)) - 0.5) * 0.95);
+    const startX = Math.cos(angle) * launchRadius;
+    const startY = Math.sin(angle) * launchRadius;
+    const tipX = Math.cos(angle) * (launchRadius + length);
+    const tipY = Math.sin(angle) * (launchRadius + length);
+    const controlX = (startX * 0.32) + (tipX * 0.68) + (Math.cos(tangent) * length * 0.34);
+    const controlY = (startY * 0.32) + (tipY * 0.68) + (Math.sin(tangent) * length * 0.34);
+
+    context.beginPath();
+    context.moveTo(startX, startY);
+    context.quadraticCurveTo(controlX, controlY, tipX, tipY);
+    context.lineWidth = 1.2 + (burstStrength * 1.6);
+    context.strokeStyle = `rgba(255, 171, 72, ${0.18 + (burstStrength * 0.18)})`;
+    context.shadowBlur = 16;
+    context.shadowColor = "rgba(255, 116, 28, 0.3)";
+    context.stroke();
+
+    context.beginPath();
+    context.moveTo(startX, startY);
+    context.quadraticCurveTo(controlX, controlY, tipX, tipY);
+    context.lineWidth = 0.8 + (burstStrength * 0.7);
+    context.strokeStyle = `rgba(255, 241, 196, ${0.12 + (burstStrength * 0.1)})`;
+    context.stroke();
+  }
+
+  context.restore();
+}
+
+function createCoronaParticle(now, metrics, burstStrength, particleIndex) {
+  const seed = state.extraction.transition.seed + particleIndex + (now * 0.001);
+  const lifeMs = 700 + (pseudoRandom(seed + 0.4) * 520) + (burstStrength * 280);
+  const angle = pseudoRandom(seed + 1.2) * TAU;
+  const arc = (pseudoRandom(seed + 2.3) - 0.5) * (0.7 + (burstStrength * 0.9));
+  const launch = (metrics.baseRadius * (0.18 + (pseudoRandom(seed + 3.1) * 0.3))) + (burstStrength * 44);
+  const size = 2.4 + (pseudoRandom(seed + 4.8) * 4.6) + (burstStrength * 2.4);
+
+  return {
+    bornAt: now,
+    lifeMs,
+    angle,
+    arc,
+    launch,
+    size,
+    emberStart: 0.52 + (pseudoRandom(seed + 7.9) * 0.16),
+    history: []
+  };
+}
+
+function updateCoronaParticles(now, metrics, burstStrength) {
+  const transition = state.extraction.transition;
+
+  if (prefersReducedMotion()) {
+    transition.particles = [];
+    return;
+  }
+
+  const targetCount = Math.round(6 + (burstStrength * 18));
+  const spawnInterval = Math.max(36, 260 - (burstStrength * 200));
+
+  while (
+    transition.lastSpawnTime > 0
+    && now - transition.lastSpawnTime >= spawnInterval
+    && transition.particles.length < targetCount
+  ) {
+    transition.lastSpawnTime += spawnInterval;
+    transition.particles.push(
+      createCoronaParticle(now, metrics, burstStrength, transition.particles.length)
+    );
+  }
+
+  transition.particles = transition.particles.filter((particle) => {
+    const progress = (now - particle.bornAt) / particle.lifeMs;
+
+    if (progress >= 1) {
+      return false;
+    }
+
+    const arcProgress = Math.sin(progress * Math.PI);
+    const radius = metrics.baseRadius + (particle.launch * arcProgress * (1 - (progress * 0.18)));
+    const angle = particle.angle + (particle.arc * arcProgress);
+    const x = metrics.centerX + (Math.cos(angle) * radius);
+    const y = metrics.centerY + (Math.sin(angle) * radius * metrics.yCompression);
+    particle.progress = progress;
+    particle.x = x;
+    particle.y = y;
+    particle.history.unshift({ x, y, progress });
+    particle.history.length = 10;
+    return true;
+  });
+}
+
+function drawCoronaParticles(context, metrics, burstStrength) {
+  const particles = state.extraction.transition.particles;
+
+  if (!particles.length) {
+    return;
+  }
+
+  context.save();
+  context.globalCompositeOperation = "lighter";
+
+  particles.forEach((particle) => {
+    if (!particle.history.length) {
+      return;
+    }
+
+    context.beginPath();
+    particle.history.forEach((point, index) => {
+      if (index === 0) {
+        context.moveTo(point.x, point.y);
+      } else {
+        context.lineTo(point.x, point.y);
+      }
+    });
+    context.lineWidth = particle.size * (1.1 - (particle.progress * 0.45));
+    context.strokeStyle = particle.progress >= particle.emberStart
+      ? `rgba(255, 243, 205, ${0.36 + (burstStrength * 0.16)})`
+      : `rgba(255, 140, 44, ${0.28 + (burstStrength * 0.16)})`;
+    context.shadowBlur = 14 + (particle.size * 2.2);
+    context.shadowColor = particle.progress >= particle.emberStart
+      ? "rgba(255, 239, 192, 0.4)"
+      : "rgba(255, 110, 16, 0.34)";
+    context.stroke();
+
+    context.beginPath();
+    context.arc(particle.x, particle.y, particle.size * (particle.progress >= particle.emberStart ? 0.55 : 0.75), 0, TAU);
+    context.fillStyle = particle.progress >= particle.emberStart
+      ? "rgba(255, 247, 220, 0.92)"
+      : "rgba(255, 189, 98, 0.8)";
+    context.fill();
+  });
+
+  context.restore();
+}
+
+function drawContentCorona(now, metrics, burstStrength, idlePulse) {
+  // Ziel: Den Presenter-Kristall als eigenes Rueck-Portal mit organischer Corona visualisieren.
+  // Warum: Das kleine Panel soll nicht wie ein abgeschnittener zweiter View wirken, sondern wie ein hypnotischer, hochwertiger Rueckbutton mit eigener Atmosphaere.
+  const { context, width, height } = metrics;
+  context.clearRect(0, 0, width, height);
+
+  const backdropGradient = context.createRadialGradient(
+    metrics.centerX,
+    metrics.centerY,
+    metrics.baseRadius * 0.2,
+    metrics.centerX,
+    metrics.centerY,
+    metrics.baseRadius * 1.8
+  );
+  backdropGradient.addColorStop(0, `rgba(255, 231, 176, ${0.04 + (burstStrength * 0.06)})`);
+  backdropGradient.addColorStop(0.42, `rgba(255, 115, 30, ${0.08 + (idlePulse * 0.03)})`);
+  backdropGradient.addColorStop(1, "rgba(0, 0, 0, 0)");
+  context.fillStyle = backdropGradient;
+  context.fillRect(0, 0, width, height);
+
+  drawCoronaMembrane(context, metrics, burstStrength, 0);
+  drawCoronaMembrane(context, metrics, burstStrength * 0.82, 1);
+  drawCoronaTentacles(context, metrics, burstStrength);
+  drawCoronaCore(context, metrics, burstStrength);
+  updateCoronaParticles(now, metrics, burstStrength);
+  drawCoronaParticles(context, metrics, burstStrength);
+}
+
 function updateExtractionAnimation() {
-  return;
+  const transition = state.extraction.transition;
+  const isContentVisible = state.extraction.stage === "expanded" && state.extraction.viewMode === "content";
+
+  if (!isContentVisible && transition.phase === "hidden") {
+    clearContentCoronaCanvas();
+    return;
+  }
+
+  const now = performance.now();
+  const progress = transition.durationMs > 0
+    ? Math.min(1, Math.max(0, (now - transition.startTime) / transition.durationMs))
+    : 1;
+  let burstStrength = 0;
+
+  if (isContentVisible) {
+    syncPresenterCrystalFraming();
+  }
+
+  if (transition.phase === "enter") {
+    burstStrength = 1 - easeOutCubic(progress);
+
+    if (progress >= 1) {
+      transition.phase = "idle";
+      transition.durationMs = 0;
+      transition.startTime = 0;
+    }
+  } else if (transition.phase === "exit") {
+    burstStrength = Math.sin(progress * Math.PI);
+
+    if (progress >= 1) {
+      const pendingViewMode = transition.pendingViewMode || "detail";
+      commitExtractionViewMode(pendingViewMode);
+      resetExtractionTransition("hidden");
+      return;
+    }
+  }
+
+  if (!isContentVisible && transition.phase !== "exit") {
+    clearContentCoronaCanvas();
+    return;
+  }
+
+  const projectionContext = createStageProjectionContext();
+  const metrics = createContentCoronaMetrics(now, projectionContext);
+
+  if (!metrics) {
+    clearContentCoronaCanvas();
+    return;
+  }
+
+  const idlePulse = prefersReducedMotion()
+    ? 0.18
+    : 0.22 + (Math.sin((now / 1000) * 1.15) * 0.08);
+  const reducedBurstStrength = prefersReducedMotion() ? 0.12 : burstStrength;
+  const coronaOpacity = Math.min(1, 0.84 + idlePulse + (reducedBurstStrength * 0.12));
+  const coronaScale = 1 + (reducedBurstStrength * 0.025);
+
+  contentCrystalPanel?.style.setProperty("--content-corona-opacity", `${coronaOpacity}`);
+  contentCrystalPanel?.style.setProperty("--content-corona-scale", `${coronaScale}`);
+  drawContentCorona(now, metrics, reducedBurstStrength, idlePulse);
 }
 
 function updatePresenterRotation(scene) {
@@ -5086,7 +5725,7 @@ function enableBoxDragging(camera, canvas) {
         if (!dragState.moved) {
           // Ziel: Im Content-Modus per Linksklick auf den Kristallbereich wieder in die Detail-Ebene zurueckkehren.
           // Warum: Der Rueckweg darf nicht nur am Rail-Button haengen; der Kristall oben links ist selbst die semantische Zurueck-Aktion.
-          setExtractionViewMode("detail");
+          requestContentReturnToDetail();
         }
 
         return;

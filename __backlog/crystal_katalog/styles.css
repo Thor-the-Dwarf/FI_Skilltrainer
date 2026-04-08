@@ -13,8 +13,12 @@
   --accent-warm: 33 92% 60%;
   --detail-advance-width: 66px;
   --detail-pane-width: 45%;
+  --content-shell-padding: 18px;
   --content-sidebar-width: clamp(300px, 30vw, 360px);
   --content-crystal-height: clamp(220px, 32vh, 300px);
+  --content-crystal-safe-padding: 32px;
+  --content-corona-opacity: 0.98;
+  --content-corona-scale: 1;
   --shadow: 0 24px 70px rgba(3, 8, 20, 0.55);
   color-scheme: dark;
 }
@@ -252,6 +256,9 @@ body.is-exploded #renderCanvas {
 body.is-exploded.is-content-mode #renderCanvas {
   /* Ziel: In der Content-Ansicht den Kristall nur im linken oberen Fenster fuehren. */
   /* Warum: Das Inhaltsverzeichnis soll sichtbar unter dem Kristall stehen; dafuer darf der Canvas nicht weiter die ganze linke Hoehe belegen. */
+  position: absolute;
+  top: var(--content-shell-padding);
+  left: var(--content-shell-padding);
   width: var(--content-sidebar-width);
   height: var(--content-crystal-height);
 }
@@ -443,7 +450,11 @@ body.is-content-mode .detail-lines {
   display: grid;
   grid-template-columns: var(--content-sidebar-width) minmax(0, 1fr);
   gap: 22px;
-  padding: 18px calc(var(--detail-advance-width) + 18px) 18px 18px;
+  padding:
+    var(--content-shell-padding)
+    calc(var(--detail-advance-width) + var(--content-shell-padding))
+    var(--content-shell-padding)
+    var(--content-shell-padding);
   opacity: 0;
   transform: translateX(30px) scale(0.99);
   pointer-events: none;
@@ -492,6 +503,18 @@ body.is-content-mode .content-experience {
     box-shadow 220ms ease;
 }
 
+.content-corona-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  opacity: var(--content-corona-opacity);
+  transform: scale(var(--content-corona-scale));
+  pointer-events: none;
+  mix-blend-mode: screen;
+  z-index: 0;
+}
+
 .content-crystal-panel:hover .content-crystal-frame,
 .content-crystal-panel:focus-visible .content-crystal-frame {
   transform: translateY(-2px);
@@ -511,17 +534,18 @@ body.is-content-mode .content-experience {
   position: absolute;
   border-radius: 24px;
   pointer-events: none;
+  z-index: 1;
 }
 
 .content-crystal-frame::before {
   inset: 18px;
-  border: 1px dashed hsl(var(--accent) / 0.22);
+  border: 1px dashed hsl(var(--accent) / 0.14);
 }
 
 .content-crystal-frame::after {
   width: 44%;
   aspect-ratio: 1 / 1;
-  border: 2px solid hsl(var(--accent) / 0.14);
+  border: 2px solid hsl(var(--accent) / 0.1);
   transform: rotate(45deg);
 }
 
