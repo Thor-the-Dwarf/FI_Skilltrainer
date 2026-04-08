@@ -75,6 +75,8 @@ const CONTENT_CAMERA_RADIUS = 6.7;
 const EXPLODED_CRYSTAL_OFFSET_X = 0;
 const DETAIL_PANE_MIN_WIDTH_PX = 280;
 const DETAIL_PANE_PADDING_PX = 34;
+const DEFAULT_H3_RUNES_PER_FRAGMENT = 10;
+const MAX_H3_RUNES_PER_FRAGMENT = 10;
 const PRESENTER_ROTATION_SPEED = Object.freeze({
   x: 0.12,
   y: 0.18,
@@ -249,13 +251,18 @@ function populateSelect(select, placeholder, sourceItems) {
 function parseStartupConfig() {
   const params = new URLSearchParams(window.location.search);
   const selectionCandidate = Number(params.get("selection") || "1");
+  const fragmentRuneCounts = (params.get("h3counts") || "")
+    .split(",")
+    .map((value) => Number(value.trim()))
+    .filter((value) => Number.isFinite(value));
 
   return {
     selectionId: itemsById.has(selectionCandidate) ? selectionCandidate : 1,
     openDetails: ["1", "true", "yes"].includes((params.get("detail") || "").toLowerCase()),
     openContent: ["1", "true", "yes"].includes((params.get("content") || "").toLowerCase()),
     testlab: params.has("testlab") || params.has("debug"),
-    hoverEntryId: params.get("hover") || null
+    hoverEntryId: params.get("hover") || null,
+    fragmentRuneCounts
   };
 }
 
@@ -1738,7 +1745,8 @@ function createTetrahedronInteriorCrystals(scene, root, faces, selectionId, mate
   };
 
   faces.forEach((face, faceIndex) => {
-    const runeLayout = getTetrahedronRuneLayout(face.vertices, centroid);
+    const requestedFragmentRuneCount = getRequestedFragmentRuneCount(faceIndex);
+    const runeLayout = getTetrahedronRuneLayout(face.vertices, centroid, requestedFragmentRuneCount);
     const fragmentColor = getBodyColorForSelection(selectionId, `tetrahedron_${face.name}_${faceIndex + 1}`);
     const fragmentRuneColor = getBodyColorForSelection(selectionId, `tetrahedron_fragment_rune_${faceIndex + 1}`);
     const fragmentFaces = buildTetrahedronFragmentFaces(face.vertices, centroid);
@@ -1789,6 +1797,7 @@ function createTetrahedronInteriorCrystals(scene, root, faces, selectionId, mate
       selectionId,
       faceIndex,
       faceName: face.name,
+      h3Count: requestedFragmentRuneCount,
       accentHex: fragmentRuneColor,
       runeSymbol: TETRA_RUNE_SYMBOLS[faceIndex % TETRA_RUNE_SYMBOLS.length],
       runeAnchor: fragmentRuneMeshes.anchor,
@@ -3594,10 +3603,105 @@ function computePolyhedronRuneCenter(faces) {
   return vertexMidpoint.add(faceMidpoint).scale(0.5);
 }
 
-function getTetrahedronRuneLayout(vertices, centroid) {
+function normalizeFragmentRuneCount(requestedCount) {
+  if (!Number.isFinite(requestedCount)) {
+    return DEFAULT_H3_RUNES_PER_FRAGMENT;
+  }
+
+  return Math.max(1, Math.min(MAX_H3_RUNES_PER_FRAGMENT, Math.round(requestedCount)));
+}
+
+function getRequestedFragmentRuneCount(faceIndex) {
+  const configuredCount = STARTUP_CONFIG.fragmentRuneCounts?.[faceIndex];
+  return normalizeFragmentRuneCount(configuredCount);
+}
+
+function selectDistributedRuneCells(candidateCells, requestedCount, faceVertices) {
+  // Ziel: Fuer 1..10 H3-Knoten eine raeumlich verteilte Auswahl aus den moeglichen Rune-Zellen treffen.
+  // Warum: Kleinere H3-Zahlen sollen nicht stumpf in den ersten Rasterfeldern landen, sondern weiter die Ecken und Spitzen des Parent-Fragments lesbar besetzen.
+  if (!candidateCells.length) {
+    return new Set();
+  }
+
+  const targetCount = Math.min(candidateCells.length, normalizeFragmentRuneCount(requestedCount));
+
+  if (targetCount >= candidateCells.length) {
+    return new Set(candidateCells.map((_, index) => index));
+  }
+
+  const presentationQuaternion = BABYLON.Quaternion.FromEulerAngles(
+    INITIAL_CRYSTAL_ROTATION.x,
+    INITIAL_CRYSTAL_ROTATION.y,
+    INITIAL_CRYSTAL_ROTATION.z
+  );
+  const presentationMatrix = BABYLON.Matrix.Identity();
+
+  presentationQuaternion.toRotationMatrix(presentationMatrix);
+
+  const preferredVertex = faceVertices
+    .map((vertex) => ({
+      vertex,
+      worldY: BABYLON.Vector3.TransformCoordinates(vertex, presentationMatrix).y
+    }))
+    .sort((left, right) => right.worldY - left.worldY)[0]?.vertex || faceVertices[0];
+  const selectedIndices = [];
+  const selectedIndexSet = new Set();
+
+  let seedIndex = 0;
+  let bestSeedDistance = Number.POSITIVE_INFINITY;
+
+  candidateCells.forEach((candidate, candidateIndex) => {
+    const distance = BABYLON.Vector3.DistanceSquared(candidate.distributionPoint, preferredVertex);
+
+    if (distance < bestSeedDistance) {
+      bestSeedDistance = distance;
+      seedIndex = candidateIndex;
+    }
+  });
+
+  selectedIndices.push(seedIndex);
+  selectedIndexSet.add(seedIndex);
+
+  while (selectedIndices.length < targetCount) {
+    let bestCandidateIndex = -1;
+    let bestCandidateScore = Number.NEGATIVE_INFINITY;
+
+    candidateCells.forEach((candidate, candidateIndex) => {
+      if (selectedIndexSet.has(candidateIndex)) {
+        return;
+      }
+
+      const minDistanceToSelection = selectedIndices.reduce((minimum, selectedIndex) => {
+        const selectedCandidate = candidateCells[selectedIndex];
+
+        return Math.min(
+          minimum,
+          BABYLON.Vector3.DistanceSquared(candidate.distributionPoint, selectedCandidate.distributionPoint)
+        );
+      }, Number.POSITIVE_INFINITY);
+
+      if (minDistanceToSelection > bestCandidateScore) {
+        bestCandidateScore = minDistanceToSelection;
+        bestCandidateIndex = candidateIndex;
+      }
+    });
+
+    if (bestCandidateIndex === -1) {
+      break;
+    }
+
+    selectedIndices.push(bestCandidateIndex);
+    selectedIndexSet.add(bestCandidateIndex);
+  }
+
+  return selectedIndexSet;
+}
+
+function getTetrahedronRuneLayout(vertices, centroid, requestedRuneCount = DEFAULT_H3_RUNES_PER_FRAGMENT) {
   const [leftVertex, rightVertex, tipVertex] = vertices;
   const subdivision = 4;
   const positions = [];
+  const upwardCandidates = [];
   const rawFaceNormal = computeFaceNormal(vertices);
   const faceCenter = computeFaceCenter(vertices);
   const faceNormal = BABYLON.Vector3.Dot(rawFaceNormal, faceCenter) < 0
@@ -3632,41 +3736,32 @@ function getTetrahedronRuneLayout(vertices, centroid) {
         apex: centroid
       });
       const upwardRuneSize = Math.max(0.15, upwardAverageEdgeLength * 0.56);
-      const upwardRuneSymbol = SUBCRYSTAL_RUNE_SYMBOLS[runeIndex % SUBCRYSTAL_RUNE_SYMBOLS.length];
-      const upwardRuneGlyphLayout = measureRuneGlyphLayout(upwardRuneSymbol, 256, 14);
-      const upwardSubcrystalFaceEntries = upwardSubcrystalFaces.map((subcrystalFaceVertices) => ({
-        vertices: subcrystalFaceVertices
-      }));
-      const upwardHeightLine = computePreferredTetrahedronHeightLine(upwardSubcrystalFaceEntries);
-      const upwardBalancedPlacement = computeBalancedRuneAnchorPosition(
-        upwardSubcrystalFaceEntries,
-        upwardHeightLine,
-        upwardRuneSize * H3_ROOT_RUNE_SCALE * upwardRuneGlyphLayout.widthRatio,
-        upwardRuneSize * H3_ROOT_RUNE_SCALE * upwardRuneGlyphLayout.heightRatio,
-        0.006
-      );
-      const upwardDetailRunePosition = upwardBalancedPlacement.position;
-      const upwardRootRunePosition = upwardDetailRunePosition.clone();
-      const upwardRootRuneRotation = upwardBalancedPlacement.rotation.clone();
-
-      positions.push({
+      const upwardCenter = computePolyhedronRuneCenter(upwardSubcrystalFaces);
+      const upwardPosition = {
         row,
         column,
         cellIndex,
-        hasRune: true,
-        runeIndex,
-        position: upwardDetailRunePosition.clone(),
-        runePosition: upwardDetailRunePosition,
-        rootRunePosition: upwardRootRunePosition,
-        detailRunePosition: upwardDetailRunePosition,
-        rootRuneRotation: upwardRootRuneRotation,
+        hasRune: false,
+        runeIndex: null,
+        position: upwardCenter.clone(),
+        runePosition: upwardCenter.clone(),
+        rootRunePosition: upwardCenter.clone(),
+        detailRunePosition: upwardCenter.clone(),
+        rootRuneRotation: quaternionFromUnitVectors(
+          BABYLON.Axis.Z,
+          computeOutwardNormal(vertices)
+        ),
         baseVertices: upwardBaseVertices,
         apex: centroid.clone(),
         baseRadius: upwardAverageEdgeLength * 0.34,
         height: BABYLON.Vector3.Distance(computeFaceCenter(upwardBaseVertices), centroid),
-        runeSize: upwardRuneSize
-      });
-      runeIndex += 1;
+        runeSize: upwardRuneSize,
+        distributionPoint: computeFaceCenter(upwardBaseVertices),
+        subcrystalFaces: upwardSubcrystalFaces
+      };
+
+      upwardCandidates.push(upwardPosition);
+      positions.push(upwardPosition);
       cellIndex += 1;
 
       if (column >= subdivision - row - 1) {
@@ -3705,6 +3800,37 @@ function getTetrahedronRuneLayout(vertices, centroid) {
       cellIndex += 1;
     }
   }
+
+  const selectedCandidateIndices = selectDistributedRuneCells(upwardCandidates, requestedRuneCount, vertices);
+
+  upwardCandidates.forEach((candidate, candidateIndex) => {
+    if (!selectedCandidateIndices.has(candidateIndex)) {
+      return;
+    }
+
+    const runeSymbol = SUBCRYSTAL_RUNE_SYMBOLS[runeIndex % SUBCRYSTAL_RUNE_SYMBOLS.length];
+    const runeGlyphLayout = measureRuneGlyphLayout(runeSymbol, 256, 14);
+    const subcrystalFaceEntries = candidate.subcrystalFaces.map((subcrystalFaceVertices) => ({
+      vertices: subcrystalFaceVertices
+    }));
+    const heightLine = computePreferredTetrahedronHeightLine(subcrystalFaceEntries);
+    const balancedPlacement = computeBalancedRuneAnchorPosition(
+      subcrystalFaceEntries,
+      heightLine,
+      candidate.runeSize * H3_ROOT_RUNE_SCALE * runeGlyphLayout.widthRatio,
+      candidate.runeSize * H3_ROOT_RUNE_SCALE * runeGlyphLayout.heightRatio,
+      0.006
+    );
+
+    candidate.hasRune = true;
+    candidate.runeIndex = runeIndex;
+    candidate.position = balancedPlacement.position.clone();
+    candidate.runePosition = balancedPlacement.position.clone();
+    candidate.rootRunePosition = balancedPlacement.position.clone();
+    candidate.detailRunePosition = balancedPlacement.position.clone();
+    candidate.rootRuneRotation = balancedPlacement.rotation.clone();
+    runeIndex += 1;
+  });
 
   return positions;
 }
