@@ -936,15 +936,20 @@ body.is-content-mode .detail-advance-button {
 .detail-connector {
   fill: none;
   stroke: var(--detail-accent, hsl(var(--accent)));
-  stroke-width: 2.25;
+  stroke-width: 2.8;
   stroke-linecap: round;
-  opacity: 0.9;
-  filter: drop-shadow(0 0 10px color-mix(in srgb, var(--detail-accent) 38%, transparent));
+  vector-effect: non-scaling-stroke;
+  opacity: 0.96;
+  filter:
+    drop-shadow(0 0 8px color-mix(in srgb, var(--detail-accent) 52%, transparent))
+    drop-shadow(0 0 18px color-mix(in srgb, var(--detail-accent) 24%, transparent));
 }
 
 .detail-connector-hierarchy {
-  opacity: 0.78;
-  filter: none;
+  opacity: 0.98;
+  filter:
+    drop-shadow(0 0 10px hsl(0 0% 100% / 0.16))
+    drop-shadow(0 0 20px hsl(0 0% 100% / 0.08));
 }
 
 body.is-content-mode .detail-connector:not(.detail-connector-hierarchy) {
@@ -952,13 +957,13 @@ body.is-content-mode .detail-connector:not(.detail-connector-hierarchy) {
 }
 
 .detail-connector-h1-h2 {
-  stroke: hsl(0 0% 100% / 0.9);
-  stroke-width: 2.2;
+  stroke: hsl(0 0% 100% / 0.98);
+  stroke-width: 2.9;
 }
 
 .detail-connector-h2-h3 {
-  stroke: hsl(0 0% 70% / 0.76);
-  stroke-width: 1.7;
+  stroke: hsl(0 0% 78% / 0.92);
+  stroke-width: 2.15;
 }
 
 @media (max-width: 920px) {
