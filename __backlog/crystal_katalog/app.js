@@ -73,6 +73,11 @@ const DEFAULT_CAMERA_RADIUS = 6.1;
 const DETAIL_CAMERA_RADIUS = 6.35;
 const CONTENT_CAMERA_RADIUS = 6.7;
 const EXPLODED_CRYSTAL_OFFSET_X = 0;
+const PRESENTER_ROTATION_SPEED = Object.freeze({
+  x: 0.12,
+  y: 0.18,
+  z: 0.08
+});
 
 const state = {
   selectedId: STARTUP_CONFIG.selectionId,
@@ -749,6 +754,7 @@ function setupBabylonScene() {
   engine.runRenderLoop(() => {
     updateSnapAnimation();
     updateExtractionAnimation();
+    updatePresenterRotation(scene);
     updateViewerMovement(scene);
     syncDetachedRuneAnchors();
     try {
@@ -4248,6 +4254,41 @@ function syncExplodedDetailLayout() {
 
 function updateExtractionAnimation() {
   return;
+}
+
+function updatePresenterRotation(scene) {
+  // Ziel: Den Kristall im Presenter-/Content-Mode ruhig und kontinuierlich auf allen drei Achsen rotieren lassen.
+  // Warum: In dieser Ansicht ist der Kristall Teil der Praesentation und soll lebendig wirken, ohne dass die Root-Ansicht oder die manuelle Rechtsklick-Steuerung beeinflusst werden.
+  if (
+    !scene
+    || !state.crystalRoot
+    || state.extraction.stage !== "expanded"
+    || state.extraction.viewMode !== "content"
+    || state.snap.active
+  ) {
+    return;
+  }
+
+  if (state.drag.active && state.drag.button === 2) {
+    return;
+  }
+
+  const deltaSeconds = Math.min(scene.getEngine().getDeltaTime() / 1000, 1 / 30);
+
+  if (deltaSeconds <= 0) {
+    return;
+  }
+
+  const currentRotation = state.crystalRoot.rotationQuaternion || BABYLON.Quaternion.Identity();
+  const deltaRotation = BABYLON.Quaternion.RotationYawPitchRoll(
+    PRESENTER_ROTATION_SPEED.y * deltaSeconds,
+    PRESENTER_ROTATION_SPEED.x * deltaSeconds,
+    PRESENTER_ROTATION_SPEED.z * deltaSeconds
+  );
+  const nextRotation = currentRotation.multiply(deltaRotation);
+
+  nextRotation.normalize();
+  state.crystalRoot.rotationQuaternion = nextRotation;
 }
 
 function enableBoxDragging(camera, canvas) {
