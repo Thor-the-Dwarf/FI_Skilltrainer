@@ -115,6 +115,7 @@ const state = {
     activeContentEntryId: null,
     hoveredCardEntryId: null,
     hoveredRuneEntryId: null,
+    presenterTargetBeforeContent: null,
     transition: {
       phase: "hidden",
       startTime: 0,
@@ -813,6 +814,8 @@ function syncPresenterCrystalFraming() {
   const safePadding = getContentCrystalSafePadding(panelRect);
   const availableWidth = Math.max(32, panelRect.width - (safePadding * 2));
   const availableHeight = Math.max(32, panelRect.height - (safePadding * 2));
+  const desiredCenterX = panelRect.width * 0.5;
+  const desiredCenterY = panelRect.height * 0.5;
   const fitRatio = Math.max(bounds.width / availableWidth, bounds.height / availableHeight);
   const currentRadius = state.camera.radius || CONTENT_CAMERA_RADIUS;
   let targetRadius = CONTENT_CAMERA_RADIUS;
@@ -827,6 +830,25 @@ function syncPresenterCrystalFraming() {
 
   targetRadius = Math.max(state.camera.lowerRadiusLimit || 0, Math.min(state.camera.upperRadiusLimit || targetRadius, targetRadius));
   state.camera.radius = BABYLON.Scalar.Lerp(currentRadius, targetRadius, 0.12);
+
+  const deltaX = desiredCenterX - bounds.centerX;
+  const deltaY = desiredCenterY - bounds.centerY;
+  const canvasWidth = Math.max(1, projectionContext.canvasRect.width);
+  const canvasHeight = Math.max(1, projectionContext.canvasRect.height);
+  const distance = Math.max(0.001, state.camera.radius || CONTENT_CAMERA_RADIUS);
+  const verticalSpan = 2 * distance * Math.tan((state.camera.fov || 0.8) * 0.5);
+  const horizontalSpan = verticalSpan * (canvasWidth / canvasHeight);
+  const worldPerPixelX = horizontalSpan / canvasWidth;
+  const worldPerPixelY = verticalSpan / canvasHeight;
+  const cameraRight = state.camera.getDirection(BABYLON.Axis.X).normalize();
+  const cameraUp = state.camera.getDirection(BABYLON.Axis.Y).normalize();
+  const reanchorTranslation = cameraRight.scale(-deltaX * worldPerPixelX * 0.16)
+    .add(cameraUp.scale(deltaY * worldPerPixelY * 0.16));
+
+  if (reanchorTranslation.lengthSquared() > 1e-10) {
+    state.camera.target.addInPlace(reanchorTranslation);
+  }
+
   contentCrystalPanel.style.setProperty("--content-crystal-safe-padding", `${safePadding}px`);
 }
 
@@ -912,6 +934,10 @@ function commitExtractionViewMode(viewMode) {
   }
 
   if (nextMode === "content") {
+    if (!state.extraction.presenterTargetBeforeContent && state.camera?.target) {
+      state.extraction.presenterTargetBeforeContent = state.camera.target.clone();
+    }
+
     const firstContentEntry = state.extraction.items.find((item) => item.level === "h3")
       || state.extraction.items.find((item) => item.level === "h2")
       || state.extraction.items.find((item) => item.level === "h1")
@@ -922,6 +948,9 @@ function commitExtractionViewMode(viewMode) {
     }
 
     mountContentExperience(state.extraction.items);
+  } else if (state.extraction.presenterTargetBeforeContent && state.camera?.target) {
+    state.camera.target.copyFrom(state.extraction.presenterTargetBeforeContent);
+    state.extraction.presenterTargetBeforeContent = null;
   }
 
   updateDetailAdvanceButtonState();
@@ -5246,8 +5275,8 @@ function createContentLavaBallMetrics(now, projectionContext) {
   const safePadding = getContentCrystalSafePadding(panelRect);
   const fallbackCenterX = panelRect.width * 0.5;
   const fallbackCenterY = panelRect.height * 0.5;
-  const centerX = bounds?.centerX ?? fallbackCenterX;
-  const centerY = bounds?.centerY ?? fallbackCenterY;
+  const centerX = fallbackCenterX;
+  const centerY = fallbackCenterY;
   const crystalExtent = Math.max(bounds?.width || 0, bounds?.height || 0, Math.min(panelRect.width, panelRect.height) * 0.36);
   const minDimension = Math.min(panelRect.width, panelRect.height);
   const baseRadius = Math.min(
@@ -5283,6 +5312,112 @@ function sampleLavaBallWave(angle, timeSeconds, seed) {
   const layerB = Math.sin((angle * 5.2) - (timeSeconds * 0.58) + (seed * 1.7));
   const layerC = Math.cos((angle * 8.6) + (timeSeconds * 0.24) - (seed * 0.55));
   return (layerA * 0.55) + (layerB * 0.3) + (layerC * 0.15);
+}
+
+function hexToRgbaString(hex, alpha) {
+  const normalized = hex.replace("#", "");
+  const expanded = normalized.length === 3
+    ? normalized.split("").map((part) => `${part}${part}`).join("")
+    : normalized;
+  const red = Number.parseInt(expanded.slice(0, 2), 16);
+  const green = Number.parseInt(expanded.slice(2, 4), 16);
+  const blue = Number.parseInt(expanded.slice(4, 6), 16);
+  return `rgba(${red}, ${green}, ${blue}, ${alpha})`;
+}
+
+function getActivePresenterAccentHex() {
+  const activeEntry = state.extraction.items.find((item) => item.entryId === state.extraction.activeContentEntryId)
+    || state.extraction.items.find((item) => item.level === "h3")
+    || state.extraction.items.find((item) => item.level === "h2")
+    || state.extraction.items.find((item) => item.level === "h1")
+    || null;
+  const faceIndex = activeEntry?.faceIndex ?? 0;
+  const presenterPalette = ["#5cd56e", "#8c63ff", "#d98b34", "#5ba5ff"];
+  return presenterPalette[faceIndex % presenterPalette.length];
+}
+
+function drawPresenterReferenceAura(context, metrics, accentHex) {
+  const {
+    centerX,
+    centerY,
+    shellRadius
+  } = metrics;
+  const glowRadius = shellRadius * 2.25;
+  const innerGlowRadius = shellRadius * 0.42;
+
+  const glowGradient = context.createRadialGradient(
+    centerX,
+    centerY,
+    innerGlowRadius,
+    centerX,
+    centerY,
+    glowRadius
+  );
+  glowGradient.addColorStop(0, hexToRgbaString(accentHex, 0.38));
+  glowGradient.addColorStop(0.34, hexToRgbaString(accentHex, 0.26));
+  glowGradient.addColorStop(0.72, hexToRgbaString(accentHex, 0.1));
+  glowGradient.addColorStop(1, hexToRgbaString(accentHex, 0));
+
+  context.fillStyle = glowGradient;
+  context.fillRect(0, 0, metrics.width, metrics.height);
+}
+
+function drawPresenterReferenceLineFan(context, metrics, accentHex) {
+  const {
+    centerX,
+    centerY,
+    shellRadius,
+    panelRect,
+    seed,
+    timeSeconds
+  } = metrics;
+  const lineCount = prefersReducedMotion() ? 7 : 11;
+  const startRadius = shellRadius * 0.44;
+
+  context.save();
+  context.globalCompositeOperation = "source-over";
+
+  for (let index = 0; index < lineCount; index += 1) {
+    const lane = index / Math.max(1, lineCount - 1);
+    const angle = -0.1 + (lane * 0.62) + (sampleLavaBallWave(lane * TAU, timeSeconds * 0.08, seed + index) * 0.016);
+    const startX = centerX + (Math.cos(angle) * startRadius);
+    const startY = centerY + (Math.sin(angle) * startRadius);
+    const endX = centerX + panelRect.width * (1.16 + (lane * 0.28));
+    const endY = centerY - (panelRect.height * 0.05) + (lane * panelRect.height * 0.9);
+
+    context.beginPath();
+    context.moveTo(startX, startY);
+    context.lineTo(endX, endY);
+    context.lineWidth = 1.3;
+    context.strokeStyle = `rgba(124, 136, 196, ${0.08 + (lane * 0.04)})`;
+    context.stroke();
+  }
+
+  const downLinkStartX = centerX - (shellRadius * 0.06);
+  const downLinkStartY = centerY + (shellRadius * 0.32);
+  context.beginPath();
+  context.moveTo(downLinkStartX, downLinkStartY);
+  context.lineTo(centerX - (panelRect.width * 0.42), centerY + (panelRect.height * 0.9));
+  context.lineWidth = 1.25;
+  context.strokeStyle = "rgba(124, 136, 196, 0.1)";
+  context.stroke();
+  context.restore();
+}
+
+function drawPresenterReferenceCore(context, metrics) {
+  const {
+    centerX,
+    centerY,
+    holeRadius
+  } = metrics;
+  const coreRadius = holeRadius * 0.74;
+
+  context.save();
+  context.beginPath();
+  context.arc(centerX, centerY, coreRadius, 0, TAU);
+  context.fillStyle = "rgba(16, 14, 26, 0.995)";
+  context.fill();
+  context.restore();
 }
 
 function drawLavaBallCore(context, metrics, burstStrength) {
@@ -5571,32 +5706,21 @@ function carveLavaBallSightHole(context, metrics, burstStrength) {
 }
 
 function drawContentLavaBall(now, metrics, burstStrength, idlePulse) {
-  // Ziel: Den Presenter-Kristall als eigenes Rueck-Portal mit einem warmen LavaBall visualisieren.
-  // Warum: Das kleine Panel soll nicht wie ein abgeschnittener zweiter View wirken, sondern wie ein hypnotischer, hochwertiger Rueckbutton mit solarer, schlickiger Tiefe.
+  // Ziel: Den Presenter-Look an die Referenz mit weicher Aura, dunklem Kern und feinen Geraden anlehnen.
+  // Warum: Fuer diesen Schritt ist nicht der Sonnenring entscheidend, sondern die exakte Bildsprache des Referenzprojekts mit diffusen Glow-Kugeln und duennen Linienfaechern.
   const { context, width, height } = metrics;
+  const accentHex = getActivePresenterAccentHex();
   context.clearRect(0, 0, width, height);
 
-  const backdropGradient = context.createRadialGradient(
-    metrics.centerX,
-    metrics.centerY,
-    metrics.holeRadius * 0.9,
-    metrics.centerX,
-    metrics.centerY,
-    metrics.shellRadius * 1.95
-  );
-  backdropGradient.addColorStop(0, "rgba(255, 240, 208, 0)");
-  backdropGradient.addColorStop(0.38, `rgba(255, 198, 98, ${0.04 + (burstStrength * 0.035)})`);
-  backdropGradient.addColorStop(0.7, `rgba(255, 104, 24, ${0.1 + (idlePulse * 0.05)})`);
-  backdropGradient.addColorStop(1, "rgba(0, 0, 0, 0)");
+  const backdropGradient = context.createRadialGradient(metrics.centerX, metrics.centerY, 0, metrics.centerX, metrics.centerY, metrics.shellRadius * 2.8);
+  backdropGradient.addColorStop(0, "rgba(18, 16, 28, 0.12)");
+  backdropGradient.addColorStop(1, "rgba(11, 10, 20, 0)");
   context.fillStyle = backdropGradient;
   context.fillRect(0, 0, width, height);
 
-  drawLavaBallSunRays(context, metrics, burstStrength, idlePulse);
-  drawLavaBallCloudBands(context, metrics, burstStrength);
-  drawLavaBallMembrane(context, metrics, burstStrength, 0);
-  drawLavaBallCoronalGaps(context, metrics, burstStrength);
-  drawLavaBallCore(context, metrics, burstStrength);
-  carveLavaBallSightHole(context, metrics, burstStrength);
+  drawPresenterReferenceAura(context, metrics, accentHex);
+  drawPresenterReferenceLineFan(context, metrics, accentHex);
+  drawPresenterReferenceCore(context, metrics);
 }
 
 function updateExtractionAnimation() {
