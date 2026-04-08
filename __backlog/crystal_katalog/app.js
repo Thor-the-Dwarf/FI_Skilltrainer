@@ -1,7 +1,6 @@
 const catalogItems = Array.from({ length: 20 }, (_, index) => ({
   id: index + 1,
-  title: String(index + 1),
-  mark: "Slot"
+  title: String(index + 1)
 }));
 
 const items = [...catalogItems];
@@ -217,20 +216,52 @@ function renderList() {
   const fragment = document.createDocumentFragment();
 
   items.forEach((item) => {
+    const row = document.createElement("div");
     const button = document.createElement("button");
+    const presenterButton = document.createElement("button");
+    const canOpenPresenter = supportsPresenterView(item.id);
+    row.className = "list-item-row";
     button.type = "button";
-    button.className = "list-item";
+    button.className = "list-item list-item-select";
     button.dataset.itemId = String(item.id);
-    button.innerHTML = `
-      <span class="list-item-title">${item.title}</span>
-      <span class="list-item-mark">${item.mark || "Slot"}</span>
-    `;
+    button.innerHTML = `<span class="list-item-title">${item.title}</span>`;
     button.addEventListener("click", () => updateSelection(item.id));
-    fragment.appendChild(button);
+    presenterButton.type = "button";
+    presenterButton.className = "list-item-presenter";
+    presenterButton.setAttribute(
+      "aria-label",
+      canOpenPresenter
+        ? `Kristall ${item.title} direkt im PresenterView oeffnen`
+        : `PresenterView fuer Kristall ${item.title} ist noch nicht verfuegbar`
+    );
+    presenterButton.innerHTML = `<span class="list-item-presenter-icon" aria-hidden="true"></span>`;
+    presenterButton.disabled = !canOpenPresenter;
+    presenterButton.addEventListener("click", () => openPresenterFromList(item.id));
+    row.append(button, presenterButton);
+    fragment.appendChild(row);
     state.buttons.push(button);
   });
 
   listView.appendChild(fragment);
+}
+
+function supportsPresenterView(selectionId) {
+  // Ziel: Presenter-Einstiege nur fuer Kristalle anbieten, die die Presenter-Ansicht bereits wirklich tragen.
+  // Warum: Ein aktiver, aber leerlaufender Button wuerde wie ein kaputter Einstieg wirken; deshalb markieren wir unausgebaute Formen klar statt sie stillschweigend ins Nichts zu schicken.
+  return selectionId === 4;
+}
+
+function openPresenterFromList(selectionId) {
+  // Ziel: Den kleinen Listen-Button als direkten Sprung in den PresenterView nutzen.
+  // Warum: Der Nutzer will nicht erst ueber Root und Detail gehen, wenn der Einstieg in die Praesentation schon in der Liste sichtbar angeboten wird.
+  updateSelection(selectionId);
+
+  if (!supportsPresenterView(selectionId)) {
+    return;
+  }
+
+  showTetrahedronDetails();
+  setExtractionViewMode("content");
 }
 
 function renderQuickSelects() {
