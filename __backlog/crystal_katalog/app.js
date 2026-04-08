@@ -64,7 +64,7 @@ const runtimeDebugSummary = document.getElementById("runtimeDebugSummary");
 const runtimeDebugLog = document.getElementById("runtimeDebugLog");
 const STARTUP_CONFIG = parseStartupConfig();
 const diagnostics = createDiagnosticsState(STARTUP_CONFIG);
-const EXPLODED_CRYSTAL_OFFSET_X = -1.15;
+const EXPLODED_CRYSTAL_OFFSET_X = -1.04;
 
 const state = {
   selectedId: STARTUP_CONFIG.selectionId,
@@ -512,8 +512,8 @@ function syncQuickSelects(id) {
 }
 
 function applyExplodedLayout(isActive) {
-  // Ziel: Die Detailansicht als echten 40/60-Splitscreen lesbar machen.
-  // Warum: Wenn rechts 60 Prozent fuer Details reserviert sind, muss die 3D-Buehne links bewusst belegt werden, sonst verschenken wir Flaeche und der Kristall wirkt zu mittig.
+  // Ziel: Die Detailansicht mit einer sichtbar groesseren rechten Detailspalte lesbar machen.
+  // Warum: Die Detailkarten brauchen mehr Raum als die Kristallbuehne, aber eine zu harte 40/60-Aufteilung wirkte gestalterisch zu starr.
   document.body.classList.toggle("is-exploded", isActive);
 
   if (detailExperience) {
