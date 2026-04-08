@@ -952,7 +952,16 @@ body.is-content-mode .detail-advance-button {
     drop-shadow(0 0 20px hsl(0 0% 100% / 0.08));
 }
 
-body.is-content-mode .detail-connector:not(.detail-connector-hierarchy) {
+.detail-connector-network {
+  stroke: hsl(0 0% 100% / 0.62);
+  stroke-width: 1.35;
+  opacity: 0.34;
+  filter:
+    drop-shadow(0 0 8px hsl(0 0% 100% / 0.14))
+    drop-shadow(0 0 16px hsl(0 0% 100% / 0.06));
+}
+
+body.is-content-mode .detail-connector:not(.detail-connector-hierarchy):not(.detail-connector-network) {
   visibility: hidden;
 }
 

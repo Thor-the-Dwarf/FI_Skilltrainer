@@ -96,6 +96,7 @@ const state = {
     lights: [],
     hiddenMeshes: [],
     hiddenLights: [],
+    networkConnectors: [],
     stage: "idle",
     stageStartTime: 0,
     items: [],
@@ -3764,38 +3765,29 @@ function mountDetailHoverConnectors(items) {
   });
 }
 
-function mountRuneHierarchyConnectors(items) {
-  // Ziel: Die inhaltliche H1/H2/H3-Struktur als dauerhafte Rune-zu-Rune-Linien im DetailView sichtbar machen.
-  // Warum: Die Hierarchie zwischen den Runen ist eine eigene Orientierungsebene und darf nicht vom Hover auf Detailkarten abhaengen.
+function mountRuneNetworkConnectors(items) {
+  // Ziel: Zwischen allen sichtbaren Runen ein vollstaendiges Verbindungsnetz aufbauen.
+  // Warum: Fuer diesen Vergleichsstand soll die komplette Rune-zu-Rune-Dichte sichtbar sein, statt nur Eltern-Kind-Beziehungen zu zeigen.
   if (!detailLines) {
     return;
   }
 
-  const entriesById = new Map(items.map((item) => [item.entryId, item]));
+  const runeEntries = items.filter((item) => item.runeAnchorMesh);
+  state.extraction.networkConnectors = [];
 
-  items.forEach((item) => {
-    if (!item.parentId || !item.runeAnchorMesh) {
-      item.hierarchyConnectorElement = null;
-      return;
+  for (let sourceIndex = 0; sourceIndex < runeEntries.length; sourceIndex += 1) {
+    for (let targetIndex = sourceIndex + 1; targetIndex < runeEntries.length; targetIndex += 1) {
+      const connectorLine = document.createElementNS("http://www.w3.org/2000/svg", "line");
+      connectorLine.classList.add("detail-connector", "detail-connector-network");
+      connectorLine.setAttribute("visibility", "visible");
+      detailLines.appendChild(connectorLine);
+      state.extraction.networkConnectors.push({
+        sourceEntryId: runeEntries[sourceIndex].entryId,
+        targetEntryId: runeEntries[targetIndex].entryId,
+        element: connectorLine
+      });
     }
-
-    const parentEntry = entriesById.get(item.parentId);
-
-    if (!parentEntry?.runeAnchorMesh) {
-      item.hierarchyConnectorElement = null;
-      return;
-    }
-
-    const connectorLine = document.createElementNS("http://www.w3.org/2000/svg", "line");
-    const connectorClass = item.level === "h2"
-      ? "detail-connector-h1-h2"
-      : "detail-connector-h2-h3";
-
-    connectorLine.classList.add("detail-connector", "detail-connector-hierarchy", connectorClass);
-    connectorLine.setAttribute("visibility", "visible");
-    detailLines.appendChild(connectorLine);
-    item.hierarchyConnectorElement = connectorLine;
-  });
+  }
 }
 
 function mountExplodedDetails(items) {
@@ -3844,7 +3836,7 @@ function mountExplodedDetails(items) {
   });
 
   mountDetailHoverConnectors(items);
-  mountRuneHierarchyConnectors(items);
+  mountRuneNetworkConnectors(items);
   syncDetailConnectorVisibility();
 }
 
@@ -4003,6 +3995,7 @@ function clearExplodedDetails() {
 
   state.extraction.hoveredCardEntryId = null;
   state.extraction.hoveredRuneEntryId = null;
+  state.extraction.networkConnectors = [];
   updateDetailAdvanceButtonState();
 
   if (detailCards) {
@@ -4222,31 +4215,27 @@ function syncExplodedDetailLayout() {
 
   const entriesById = new Map(state.extraction.items.map((item) => [item.entryId, item]));
 
-  state.extraction.items.forEach((item) => {
-    if (!item.hierarchyConnectorElement || !item.parentId || !item.runeAnchorMesh) {
+  state.extraction.networkConnectors.forEach((connector) => {
+    const sourceEntry = entriesById.get(connector.sourceEntryId);
+    const targetEntry = entriesById.get(connector.targetEntryId);
+
+    if (!connector.element || !sourceEntry?.runeAnchorMesh || !targetEntry?.runeAnchorMesh) {
       return;
     }
 
-    const parentEntry = entriesById.get(item.parentId);
-
-    if (!parentEntry?.runeAnchorMesh) {
-      item.hierarchyConnectorElement.setAttribute("visibility", "hidden");
-      return;
-    }
-
-    const sourcePoint = projectWorldPointToStage(parentEntry.runeAnchorMesh.getAbsolutePosition());
-    const targetPoint = projectWorldPointToStage(item.runeAnchorMesh.getAbsolutePosition());
+    const sourcePoint = projectWorldPointToStage(sourceEntry.runeAnchorMesh.getAbsolutePosition());
+    const targetPoint = projectWorldPointToStage(targetEntry.runeAnchorMesh.getAbsolutePosition());
 
     if (!sourcePoint || !targetPoint) {
-      item.hierarchyConnectorElement.setAttribute("visibility", "hidden");
+      connector.element.setAttribute("visibility", "hidden");
       return;
     }
 
-    item.hierarchyConnectorElement.setAttribute("visibility", "visible");
-    item.hierarchyConnectorElement.setAttribute("x1", String(sourcePoint.x));
-    item.hierarchyConnectorElement.setAttribute("y1", String(sourcePoint.y));
-    item.hierarchyConnectorElement.setAttribute("x2", String(targetPoint.x));
-    item.hierarchyConnectorElement.setAttribute("y2", String(targetPoint.y));
+    connector.element.setAttribute("visibility", "visible");
+    connector.element.setAttribute("x1", String(sourcePoint.x));
+    connector.element.setAttribute("y1", String(sourcePoint.y));
+    connector.element.setAttribute("x2", String(targetPoint.x));
+    connector.element.setAttribute("y2", String(targetPoint.y));
   });
 
   syncDetailConnectorVisibility();
