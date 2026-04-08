@@ -3128,9 +3128,9 @@ function computeUniqueVerticesCenter(faces) {
   return computeFaceCenter(Array.from(uniqueVertices.values()));
 }
 
-function computePreferredTetrahedronHeightLine(faces) {
-  // Ziel: Die fuer den Nutzer lesbarste Hoehenlinie des Tetraeders inklusive ihrer sichtbaren Mitte bestimmen.
-  // Warum: Beim regulaeren Tetraeder ist der Volumenschwerpunkt nicht die Mitte einer Hoehenlinie; fuer die Hauptrune brauchen wir explizit die halbe Strecke zwischen Spitze und Gegenflaeche.
+function computeLongestBodyHeightLine(faces) {
+  // Ziel: Die Hoehenlinie strikt nach der Nutzerregel als laengste Linie im Koerper bestimmen.
+  // Warum: Die Hierarchie Zentrum - Flaeche - Zentrum soll spaeter rekursiv funktionieren. Dafuer brauchen H1 und H3 dieselbe eindeutige Definition: entweder Spitze-zu-Spitze oder Spitze-zu-Gegenflaeche, nie eine bloesse Darstellungsheuristik.
   const uniqueVertices = new Map();
   const presentationQuaternion = BABYLON.Quaternion.FromEulerAngles(
     INITIAL_CRYSTAL_ROTATION.x,
@@ -3153,29 +3153,83 @@ function computePreferredTetrahedronHeightLine(faces) {
     });
   });
 
-  const candidates = vertices.map((vertex, index) => {
-    const oppositeFace = vertices.filter((_, otherIndex) => otherIndex !== index);
-    const baseCenter = computeFaceCenter(oppositeFace);
-    const axisVector = vertex.subtract(baseCenter);
-    const axisLocal = axisVector.normalize();
-    const axisWorld = BABYLON.Vector3.TransformNormal(axisLocal, presentationMatrix);
-    const midpoint = BABYLON.Vector3.Lerp(baseCenter, vertex, 0.5);
+  const candidates = [];
 
-    return {
-      apex: vertex.clone(),
-      baseCenter,
-      axis: axisLocal,
-      midpoint,
-      score: axisWorld.y
-    };
+  for (let leftIndex = 0; leftIndex < vertices.length; leftIndex += 1) {
+    for (let rightIndex = leftIndex + 1; rightIndex < vertices.length; rightIndex += 1) {
+      const start = vertices[leftIndex];
+      const end = vertices[rightIndex];
+      const distanceSquared = BABYLON.Vector3.DistanceSquared(start, end);
+      const startToEndAxis = end.subtract(start).normalize();
+      const axisWorld = BABYLON.Vector3.TransformNormal(startToEndAxis, presentationMatrix);
+      const baseCenter = axisWorld.y >= 0 ? start.clone() : end.clone();
+      const apex = axisWorld.y >= 0 ? end.clone() : start.clone();
+      const axis = apex.subtract(baseCenter).normalize();
+
+      candidates.push({
+        apex,
+        baseCenter,
+        axis,
+        midpoint: BABYLON.Vector3.Lerp(baseCenter, apex, 0.5),
+        lengthSquared: distanceSquared,
+        verticalScore: Math.abs(axisWorld.y)
+      });
+    }
+  }
+
+  vertices.forEach((vertex) => {
+    faces.forEach((face) => {
+      const containsVertex = face.vertices.some((faceVertex) => {
+        return getVertexKey(faceVertex) === getVertexKey(vertex);
+      });
+
+      if (containsVertex) {
+        return;
+      }
+
+      const baseCenter = computeFaceCenter(face.vertices);
+      const axisVector = vertex.subtract(baseCenter);
+      const distanceSquared = axisVector.lengthSquared();
+
+      if (distanceSquared <= 0.000001) {
+        return;
+      }
+
+      const axisLocal = axisVector.normalize();
+      const axisWorld = BABYLON.Vector3.TransformNormal(axisLocal, presentationMatrix);
+      const orientedBaseCenter = axisWorld.y >= 0 ? baseCenter.clone() : vertex.clone();
+      const orientedApex = axisWorld.y >= 0 ? vertex.clone() : baseCenter.clone();
+      const axis = orientedApex.subtract(orientedBaseCenter).normalize();
+
+      candidates.push({
+        apex: orientedApex,
+        baseCenter: orientedBaseCenter,
+        axis,
+        midpoint: BABYLON.Vector3.Lerp(orientedBaseCenter, orientedApex, 0.5),
+        lengthSquared: distanceSquared,
+        verticalScore: Math.abs(axisWorld.y)
+      });
+    });
   });
 
-  return candidates.sort((left, right) => right.score - left.score)[0] || {
+  return candidates.sort((left, right) => {
+    if (Math.abs(right.lengthSquared - left.lengthSquared) > 0.000001) {
+      return right.lengthSquared - left.lengthSquared;
+    }
+
+    return right.verticalScore - left.verticalScore;
+  })[0] || {
     apex: BABYLON.Axis.Y.clone(),
     baseCenter: BABYLON.Vector3.Zero(),
     axis: BABYLON.Axis.Y.clone(),
     midpoint: BABYLON.Vector3.Zero()
   };
+}
+
+function computePreferredTetrahedronHeightLine(faces) {
+  // Ziel: Die Tetraeder-Hoehe direkt aus der allgemeinen Koerperregel ableiten.
+  // Warum: H1 und H3 sollen nicht je nach Form unterschiedliche Achsen-Heuristiken bekommen; das Tetraeder ist nur ein Spezialfall derselben Hoehenlinien-Definition.
+  return computeLongestBodyHeightLine(faces);
 }
 
 function computeBalancedRuneAnchorPosition(faces, heightLine, runeWidth, runeHeight, glyphPlaneOffset) {
@@ -3870,65 +3924,7 @@ function buildClusterBoundaryFaces(clusterCells) {
 }
 
 function computePreferredPolyhedronHeightLine(faces) {
-  const uniqueVertices = [];
-  const seenVertices = new Set();
-  const presentationQuaternion = BABYLON.Quaternion.FromEulerAngles(
-    INITIAL_CRYSTAL_ROTATION.x,
-    INITIAL_CRYSTAL_ROTATION.y,
-    INITIAL_CRYSTAL_ROTATION.z
-  );
-  const presentationMatrix = BABYLON.Matrix.Identity();
-
-  presentationQuaternion.toRotationMatrix(presentationMatrix);
-
-  faces.forEach((face) => {
-    face.vertices.forEach((vertex) => {
-      const key = getVertexKey(vertex);
-
-      if (!seenVertices.has(key)) {
-        seenVertices.add(key);
-        uniqueVertices.push(vertex.clone());
-      }
-    });
-  });
-
-  if (uniqueVertices.length <= 4) {
-    return computePreferredTetrahedronHeightLine(faces);
-  }
-
-  let bestStart = uniqueVertices[0];
-  let bestEnd = uniqueVertices[0];
-  let bestDistanceSquared = -1;
-
-  for (let leftIndex = 0; leftIndex < uniqueVertices.length; leftIndex += 1) {
-    for (let rightIndex = leftIndex + 1; rightIndex < uniqueVertices.length; rightIndex += 1) {
-      const distanceSquared = BABYLON.Vector3.DistanceSquared(uniqueVertices[leftIndex], uniqueVertices[rightIndex]);
-
-      if (distanceSquared > bestDistanceSquared) {
-        bestDistanceSquared = distanceSquared;
-        bestStart = uniqueVertices[leftIndex];
-        bestEnd = uniqueVertices[rightIndex];
-      }
-    }
-  }
-
-  let baseCenter = bestStart.clone();
-  let apex = bestEnd.clone();
-  let axis = apex.subtract(baseCenter).normalize();
-  const axisWorld = BABYLON.Vector3.TransformNormal(axis, presentationMatrix);
-
-  if (axisWorld.y < 0) {
-    baseCenter = bestEnd.clone();
-    apex = bestStart.clone();
-    axis = apex.subtract(baseCenter).normalize();
-  }
-
-  return {
-    apex,
-    baseCenter,
-    axis,
-    midpoint: BABYLON.Vector3.Lerp(baseCenter, apex, 0.5)
-  };
+  return computeLongestBodyHeightLine(faces);
 }
 
 function buildFractalLayoutItem(
