@@ -1676,21 +1676,21 @@ function createTetrahedronInteriorCrystals(scene, root, faces, selectionId, mate
   // Ziel: Die Form-4-Hierarchie als klar lesbare H1/H2/H3-Raumlogik aufbauen.
   // Warum: Das groesste Symbol muss im Kristallzentrum dominant lesbar sein, die H2-Symbole explizit auf den Aussenflaechen sitzen und die H3-Symbole als kleine Einschluss-Zentren der Fraktale erkennbar bleiben.
   const centroid = computeUniqueVerticesCenter(faces);
-  const crystalHeightLine = computePreferredTetrahedronHeightLine(faces);
   const crystalFaceEntries = buildPolyhedronFaceEntries(faces.map((face) => face.vertices));
+  const crystalHeightLine = computePreferredTetrahedronHeightLine(faces);
+  const crystalRunePosition = computeMaximumInscribedSphere(crystalFaceEntries).center;
   const crystalRuneGlyphSize = 0.92;
   const crystalRuneGlyphPlaneOffset = 0;
   const crystalRuneGlyphLayout = measureRuneGlyphLayout(CRYSTAL_RUNE_SYMBOL, 512, 24);
-  const crystalRunePlacement = computeBalancedRuneAnchorPosition(
+  const crystalRunePlacement = computeBalancedRuneRotationAtCenter(
     faces,
-    crystalHeightLine,
+    crystalRunePosition,
+    crystalHeightLine.axis,
     crystalRuneGlyphSize * H1_ROOT_RUNE_SCALE * crystalRuneGlyphLayout.squareRatio,
     crystalRuneGlyphSize * H1_ROOT_RUNE_SCALE * crystalRuneGlyphLayout.squareRatio,
     crystalRuneGlyphPlaneOffset
   );
-  const crystalHeightAxis = crystalRunePlacement.axis;
   const crystalRuneRotation = crystalRunePlacement.rotation;
-  const crystalRunePosition = computeMaximumInscribedSphere(crystalFaceEntries).center;
   const crystalRuneColor = getBodyColorForSelection(selectionId, "tetrahedron_crystal_rune_primary");
   const crystalRuneMeshes = createRuneMeshes(
     scene,
@@ -3395,20 +3395,17 @@ function computeMaximumInscribedSphere(faceEntries) {
   };
 }
 
-function computeBalancedRuneAnchorPosition(faces, heightLine, runeWidth, runeHeight, glyphPlaneOffset) {
-  // Ziel: Das H1/H3-Symbol entlang der gewaelten Koerperachse so platzieren, dass seine quadratische Grundflaeche moeglichst gleich weit von den naechsten Aussenflaechen entfernt bleibt.
-  // Warum: Die Nutzerregel bezieht sich explizit auf das Symbol als Quadrat. Deshalb muessen Quadratgroesse und Rollwinkel gemeinsam mit der Achsenposition optimiert werden statt nur das natuerliche Font-Rechteck zu betrachten.
-  const axis = heightLine.axis.clone().normalize();
+function computeBalancedRuneRotationAtCenter(faces, center, symmetryAxis, runeWidth, runeHeight, glyphPlaneOffset) {
+  // Ziel: Die Rotation eines quadratischen Symbols am festen Koerperzentrum ueber seine Eckabstaende bestimmen.
+  // Warum: H1 und H3 sollen im Mittelpunkt der groesstmoeglichen Innenkugel verankert bleiben. Die Symmetrieachse dient hier nur noch als stabile Rollachse fuer symmetrische Faelle, waehrend die eigentliche Wahl aus den Quadrat-Eckenabstaenden kommt.
+  const axis = symmetryAxis.clone().normalize();
   const baseRotation = quaternionFromUnitVectors(BABYLON.Axis.Y, axis);
-  const lineStart = heightLine.baseCenter;
-  const lineEnd = heightLine.apex;
   const halfWidth = runeWidth * 0.5;
   const halfHeight = runeHeight * 0.5;
   let bestCandidate = {
     axis,
-    position: heightLine.midpoint.clone(),
+    position: center.clone(),
     rotation: baseRotation.clone(),
-    verticalImbalance: Number.POSITIVE_INFINITY,
     spread: Number.POSITIVE_INFINITY,
     minClearance: Number.NEGATIVE_INFINITY
   };
@@ -3422,51 +3419,36 @@ function computeBalancedRuneAnchorPosition(faces, heightLine, runeWidth, runeHei
 
     const right = BABYLON.Vector3.TransformNormal(BABYLON.Axis.X, rotationMatrix).normalize();
     const forward = BABYLON.Vector3.TransformNormal(BABYLON.Axis.Z, rotationMatrix).normalize();
+    const planeCenter = center.add(forward.scale(glyphPlaneOffset));
+    const corners = [
+      planeCenter.add(right.scale(-halfWidth)).add(axis.scale(-halfHeight)),
+      planeCenter.add(right.scale(halfWidth)).add(axis.scale(-halfHeight)),
+      planeCenter.add(right.scale(-halfWidth)).add(axis.scale(halfHeight)),
+      planeCenter.add(right.scale(halfWidth)).add(axis.scale(halfHeight))
+    ];
+    const clearances = corners.map((corner) => computeNearestTetrahedronFaceClearance(corner, faces));
+    const minClearance = Math.min(...clearances);
+    const maxClearance = Math.max(...clearances);
+    const spread = maxClearance - minClearance;
+    const isValidInteriorFit = minClearance >= 0;
 
-    for (let step = 0; step <= 160; step += 1) {
-      const t = step / 160;
-      const anchor = BABYLON.Vector3.Lerp(lineStart, lineEnd, t);
-      const planeCenter = anchor.add(forward.scale(glyphPlaneOffset));
-      const corners = [
-        planeCenter.add(right.scale(-halfWidth)).add(axis.scale(-halfHeight)),
-        planeCenter.add(right.scale(halfWidth)).add(axis.scale(-halfHeight)),
-        planeCenter.add(right.scale(-halfWidth)).add(axis.scale(halfHeight)),
-        planeCenter.add(right.scale(halfWidth)).add(axis.scale(halfHeight))
-      ];
-      const clearances = corners.map((corner) => computeNearestTetrahedronFaceClearance(corner, faces));
-      const minClearance = Math.min(...clearances);
-      const maxClearance = Math.max(...clearances);
-      const lowerAverageClearance = (clearances[0] + clearances[1]) * 0.5;
-      const upperAverageClearance = (clearances[2] + clearances[3]) * 0.5;
-      const verticalImbalance = Math.abs(upperAverageClearance - lowerAverageClearance);
-      const spread = maxClearance - minClearance;
-      const isValidInteriorFit = minClearance >= 0;
-
-      if (
-        isValidInteriorFit
-        && (
-          verticalImbalance < bestCandidate.verticalImbalance - 0.000001
-          || (
-            Math.abs(verticalImbalance - bestCandidate.verticalImbalance) <= 0.000001
-            && (
-              spread < bestCandidate.spread - 0.000001
-              || (
-                Math.abs(spread - bestCandidate.spread) <= 0.000001
-                && minClearance > bestCandidate.minClearance
-              )
-            )
-          )
+    if (
+      isValidInteriorFit
+      && (
+        minClearance > bestCandidate.minClearance + 0.000001
+        || (
+          Math.abs(minClearance - bestCandidate.minClearance) <= 0.000001
+          && spread < bestCandidate.spread - 0.000001
         )
-      ) {
-        bestCandidate = {
-          axis: axis.clone(),
-          position: anchor,
-          rotation: rotation.clone(),
-          verticalImbalance,
-          spread,
-          minClearance
-        };
-      }
+      )
+    ) {
+      bestCandidate = {
+        axis: axis.clone(),
+        position: center.clone(),
+        rotation: rotation.clone(),
+        spread,
+        minClearance
+      };
     }
   }
 
@@ -4118,9 +4100,10 @@ function buildFractalLayoutItem(
       midpoint: parentSegmentHeightLine.midpoint.clone()
     }
     : computePreferredPolyhedronHeightLine(faceEntries);
-  const balancedPlacement = computeBalancedRuneAnchorPosition(
+  const balancedPlacement = computeBalancedRuneRotationAtCenter(
     faceEntries,
-    heightLine,
+    inscribedSphere.center,
+    heightLine.axis,
     runeSize * H3_ROOT_RUNE_SCALE * runeGlyphLayout.squareRatio,
     runeSize * H3_ROOT_RUNE_SCALE * runeGlyphLayout.squareRatio,
     0
