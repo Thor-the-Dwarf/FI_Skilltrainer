@@ -12,6 +12,7 @@
   --accent-soft: 193 70% 52%;
   --accent-warm: 33 92% 60%;
   --detail-advance-width: 58px;
+  --detail-pane-width: 56%;
   --shadow: 0 24px 70px rgba(3, 8, 20, 0.55);
   color-scheme: dark;
 }
@@ -240,6 +241,12 @@ body.is-exploded .stage-frame {
   touch-action: none;
 }
 
+body.is-exploded #renderCanvas {
+  /* Ziel: Der 3D-Bereich soll im Detailzustand wirklich nur die linke Split-Flaeche belegen. */
+  /* Warum: Solange das Canvas ueber die volle Breite laeuft, bleibt der Split selbst bei breiteren Detailkarten nur ein Overlay und ist kaum als Layoutwechsel lesbar. */
+  width: calc(100% - var(--detail-pane-width));
+}
+
 .stage-overlay {
   position: absolute;
   top: 16px;
@@ -353,6 +360,23 @@ body.is-exploded .detail-experience {
   opacity: 1;
 }
 
+.detail-experience::before {
+  /* Ziel: Dem Detailbereich eine echte sichtbare rechte Flaeche geben statt nur schwebender Cards. */
+  /* Warum: Breitenaenderungen an den Cards allein waren visuell kaum lesbar, weil die 3D-Szene weiterhin ueber die volle Stage lief. */
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: var(--detail-pane-width);
+  background:
+    linear-gradient(180deg, hsl(var(--surface-strong) / 0.82), hsl(var(--surface) / 0.94));
+  box-shadow:
+    inset 1px 0 0 hsl(0 0% 100% / 0.06),
+    inset 24px 0 48px rgba(0, 0, 0, 0.26);
+  pointer-events: none;
+}
+
 .detail-lines {
   position: absolute;
   inset: 0;
@@ -368,8 +392,7 @@ body.is-exploded .detail-experience {
   top: 0;
   right: var(--detail-advance-width);
   bottom: 0;
-  width: calc(56% - var(--detail-advance-width));
-  max-width: 940px;
+  width: calc(var(--detail-pane-width) - var(--detail-advance-width));
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
@@ -537,6 +560,7 @@ body.is-exploded .detail-experience {
 @media (max-width: 920px) {
   :root {
     --detail-advance-width: 52px;
+    --detail-pane-width: 58%;
   }
 
   .vault-shell {
@@ -554,7 +578,7 @@ body.is-exploded .detail-experience {
   }
 
   .detail-cards {
-    width: calc(58% - var(--detail-advance-width));
+    width: calc(var(--detail-pane-width) - var(--detail-advance-width));
     padding-right: 18px;
   }
 
@@ -572,6 +596,7 @@ body.is-exploded .detail-experience {
 @media (max-width: 560px) {
   :root {
     --detail-advance-width: 46px;
+    --detail-pane-width: 100%;
   }
 
   .panel {
@@ -588,7 +613,7 @@ body.is-exploded .detail-experience {
   }
 
   .detail-cards {
-    width: calc(100% - var(--detail-advance-width));
+    width: calc(var(--detail-pane-width) - var(--detail-advance-width));
     padding: 64px 12px 20px 8px;
     gap: 12px;
   }
