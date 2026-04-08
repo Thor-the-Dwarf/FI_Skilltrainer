@@ -368,7 +368,7 @@ body.is-exploded .detail-experience {
   top: 0;
   right: var(--detail-advance-width);
   bottom: 0;
-  width: calc(60% - var(--detail-advance-width));
+  width: clamp(560px, calc(48vw - var(--detail-advance-width)), 860px);
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
@@ -553,7 +553,7 @@ body.is-exploded .detail-experience {
   }
 
   .detail-cards {
-    width: calc(58% - var(--detail-advance-width));
+    width: clamp(460px, calc(54vw - var(--detail-advance-width)), 640px);
     padding-right: 18px;
   }
 
@@ -587,7 +587,7 @@ body.is-exploded .detail-experience {
   }
 
   .detail-cards {
-    width: calc(64% - var(--detail-advance-width));
+    width: calc(100% - var(--detail-advance-width));
     padding: 64px 12px 20px 8px;
     gap: 12px;
   }

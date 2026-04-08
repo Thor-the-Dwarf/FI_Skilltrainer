@@ -64,7 +64,7 @@ const runtimeDebugSummary = document.getElementById("runtimeDebugSummary");
 const runtimeDebugLog = document.getElementById("runtimeDebugLog");
 const STARTUP_CONFIG = parseStartupConfig();
 const diagnostics = createDiagnosticsState(STARTUP_CONFIG);
-const EXPLODED_CRYSTAL_OFFSET_X = -1.15;
+const EXPLODED_CRYSTAL_OFFSET_X = -0.92;
 
 const state = {
   selectedId: STARTUP_CONFIG.selectionId,
@@ -105,7 +105,8 @@ const state = {
     lastX: 0,
     lastY: 0,
     moved: false,
-    pressedFaceEntry: null
+    pressedFaceEntry: null,
+    pressedRuneEntry: null
   },
   movement: {
     forward: false,
@@ -1929,7 +1930,7 @@ function createRuneMeshes(scene, name, runeSymbol, accentHex, options = {}) {
   glyphMesh.parent = anchor;
   glyphMesh.material = glyphMaterial;
   glyphMesh.renderingGroupId = renderingGroupId;
-  glyphMesh.isPickable = false;
+  glyphMesh.isPickable = true;
   glyphMesh.alwaysSelectAsActiveMesh = alwaysVisible;
   glyphMesh.billboardMode = billboardMode;
   glyphMesh.position.z = glyphPlaneOffset;
@@ -3171,6 +3172,18 @@ function getFaceEntryFromPointerEvent(scene, canvas, event) {
   return state.faceEntries.find((entry) => entry.mesh === pickedMesh) || null;
 }
 
+function getRuneEntryFromPointerEvent(scene, canvas, event) {
+  // Ziel: Root- und Detail-Runen direkt als klickbaren Einstiegspfad auffindbar machen.
+  // Warum: Im Root-View liegen die Runen visuell oft vor den Außenflächen; wenn nur Face-Meshes klickbar sind, fühlt sich der Einstieg in den DetailView kaputt an.
+  const pickedMesh = pickMeshFromPointerEvent(scene, canvas, event);
+
+  if (!pickedMesh || !state.crystalRoot?.metadata?.runeEntries) {
+    return null;
+  }
+
+  return state.crystalRoot.metadata.runeEntries.find((entry) => entry.runeGlyphMesh === pickedMesh) || null;
+}
+
 function isTetrahedronExpanded() {
   return state.extraction.stage !== "idle";
 }
@@ -3893,6 +3906,7 @@ function enableBoxDragging(camera, canvas) {
     dragState.lastY = event.clientY;
     dragState.moved = false;
     dragState.pressedFaceEntry = getFaceEntryFromPointerEvent(state.scene, canvas, event);
+    dragState.pressedRuneEntry = getRuneEntryFromPointerEvent(state.scene, canvas, event);
     canvas.style.cursor = "grabbing";
     canvas.setPointerCapture?.(event.pointerId);
   });
@@ -3943,6 +3957,9 @@ function enableBoxDragging(camera, canvas) {
     const pickedMesh = !dragState.moved
       ? (dragState.pressedFaceEntry?.mesh || pickMeshFromPointerEvent(state.scene, canvas, event))
       : null;
+    const focusedRuneEntry = !dragState.moved
+      ? (dragState.pressedRuneEntry || getRuneEntryFromPointerEvent(state.scene, canvas, event))
+      : null;
     const focusedEntry = pickedMesh
       ? (dragState.pressedFaceEntry || state.faceEntries.find((entry) => entry.mesh === pickedMesh) || null)
       : null;
@@ -3951,6 +3968,7 @@ function enableBoxDragging(camera, canvas) {
     dragState.pointerId = null;
     dragState.button = null;
     dragState.pressedFaceEntry = null;
+    dragState.pressedRuneEntry = null;
     canvas.releasePointerCapture?.(event.pointerId);
     canvas.style.cursor = "grab";
 
@@ -3962,6 +3980,12 @@ function enableBoxDragging(camera, canvas) {
       if (!dragState.moved && !pickedMesh) {
         collapseTetrahedronIntoGroundView();
       }
+      return;
+    }
+
+    if (!focusedEntry && focusedRuneEntry && state.selectedId === 4) {
+      stopSnapAnimation();
+      showTetrahedronDetails();
       return;
     }
 
@@ -3979,6 +4003,7 @@ function enableBoxDragging(camera, canvas) {
     dragState.pointerId = null;
     dragState.button = null;
     dragState.pressedFaceEntry = null;
+    dragState.pressedRuneEntry = null;
     canvas.releasePointerCapture?.(event.pointerId);
     canvas.style.cursor = "grab";
   };
