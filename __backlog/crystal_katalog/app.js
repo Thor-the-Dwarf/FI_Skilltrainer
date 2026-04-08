@@ -417,6 +417,18 @@ function isRuneEntryVisible(entry) {
   return Boolean(entry.runeAnchorMesh);
 }
 
+function shouldRenderRuneDrawer() {
+  // Ziel: Den Drawer nur in den ausklappenden Ansichten aktivieren.
+  // Warum: Im RootView sollen die Runen wieder als ruhige 3D-Einschluesse im Kristall liegen; der Drawer mit Netz gehoert nur in Detail- und PresentationsView.
+  return state.selectedId === 4 && document.body.classList.contains("is-exploded");
+}
+
+function shouldRenderRunesInScene() {
+  // Ziel: 3D-Runen nur dann zeigen, wenn kein Drawer-Overlay dieselbe Hierarchie uebernimmt.
+  // Warum: Sonst rendern Drawer und 3D-Glyphen parallel und verdoppeln sowohl die Last als auch die visuelle Semantik.
+  return !shouldRenderRuneDrawer();
+}
+
 function createRuneReport(entry) {
   const worldPosition = entry?.runeAnchor?.getAbsolutePosition
     ? entry.runeAnchor.getAbsolutePosition()
@@ -687,11 +699,11 @@ function setExtractionViewMode(viewMode) {
 function getActiveRuneDrawerItems() {
   // Ziel: Fuer Form 4 in jedem Modus genau die Rune-Hierarchie liefern, die der Drawer gerade anzeigen soll.
   // Warum: Root-, Detail- und Presenter-View teilen dieselbe H1/H2/H3-Struktur; ein zentraler Resolver verhindert, dass jeder Modus seine eigene Rune-Liste zusammenraten muss.
-  if (state.selectedId !== 4 || !state.crystalRoot?.metadata?.runeEntries?.length) {
+  if (!shouldRenderRuneDrawer() || !state.crystalRoot?.metadata?.runeEntries?.length) {
     return [];
   }
 
-  if (isTetrahedronExpanded() && state.extraction.items.length) {
+  if (state.extraction.items.length) {
     return state.extraction.items;
   }
 
@@ -1926,7 +1938,11 @@ function createTetrahedronInteriorCrystals(scene, root, faces, selectionId, mate
     `tetrahedron_crystal_rune_${selectionId}`,
     root,
     crystalRunePosition,
-    crystalRuneRotation
+    crystalRuneRotation,
+    {
+      runeSymbol: CRYSTAL_RUNE_SYMBOL,
+      accentHex: crystalRuneColor
+    }
   );
 
   // Ziel: Die H1-Rune geometrisch wirklich im Kristallzentrum halten.
@@ -1969,7 +1985,11 @@ function createTetrahedronInteriorCrystals(scene, root, faces, selectionId, mate
       `tetrahedron_fragment_rune_${faceIndex + 1}`,
       root,
       fragmentRunePosition,
-      fragmentRuneRotation
+      fragmentRuneRotation,
+      {
+        runeSymbol: TETRA_RUNE_SYMBOLS[faceIndex % TETRA_RUNE_SYMBOLS.length],
+        accentHex: fragmentRuneColor
+      }
     );
 
     // Ziel: Die H2-Runen stabil direkt an ihren Fragmentflaechen verankern.
@@ -2040,7 +2060,11 @@ function createTetrahedronInteriorCrystals(scene, root, faces, selectionId, mate
         `tetrahedron_base_rune_${faceIndex + 1}_${runeLayoutItem.runeIndex + 1}`,
         root,
         runeLayoutItem.rootRunePosition,
-        runeLayoutItem.rootRuneRotation
+        runeLayoutItem.rootRuneRotation,
+        {
+          runeSymbol,
+          accentHex: runeColor
+        }
       );
 
       runeMeshes.anchor.scaling.setAll(1);
@@ -2084,6 +2108,12 @@ function createTetrahedronInteriorCrystals(scene, root, faces, selectionId, mate
     ...root.metadata.fragmentEntries,
     ...root.metadata.runeFragmentEntries
   ];
+
+  root.metadata.runeEntries.forEach((entry) => {
+    entry.halosEnabled = false;
+    setRuneDisplayMode(entry, false);
+    setRuneHalosEnabled(entry, false);
+  });
 }
 
 function createExtractedTetrahedronCrystal(scene, parent, entry, centroidLocal, allFaceEntries) {
@@ -2383,11 +2413,31 @@ function createRuneMeshes(scene, name, runeSymbol, accentHex, options = {}) {
   };
 }
 
-function createRuneAnchorNode(scene, name, parent, position, rotationQuaternion) {
-  // Ziel: Fuer Drawer-Runen einen leichten, rein geometrischen Weltanker bereitstellen.
-  // Warum: Form 4 soll keine teuren 3D-Glyph- und Halo-Meshes mehr rendern; fuer Projektion, Layout und Synchronisation reicht ein TransformNode als Positionsquelle.
-  const anchor = new BABYLON.TransformNode(`${name}_anchor`, scene);
+function createRuneAnchorNode(scene, name, parent, position, rotationQuaternion, options = {}) {
+  // Ziel: Einen gemeinsamen Rune-Anker fuer Root-3D und Drawer-Projektion bereitstellen.
+  // Warum: RootView soll wieder echte statische Einschluesse zeigen, waehrend Detail- und PresentationsView denselben Weltanker fuer den Drawer weiterverwenden.
+  const {
+    runeSymbol = null,
+    accentHex = "#ffffff",
+    showHalo = false,
+    glyphSize = 0.38
+  } = options;
+  if (runeSymbol) {
+    const runeMeshes = createRuneMeshes(scene, name, runeSymbol, accentHex, {
+      showHalo,
+      glyphSize,
+      billboardMode: BABYLON.AbstractMesh.BILLBOARDMODE_NONE
+    });
+    runeMeshes.anchor.parent = parent || null;
+    runeMeshes.anchor.position.copyFrom(position || BABYLON.Vector3.Zero());
+    runeMeshes.anchor.rotationQuaternion = rotationQuaternion
+      ? rotationQuaternion.clone()
+      : BABYLON.Quaternion.Identity();
 
+    return runeMeshes;
+  }
+
+  const anchor = new BABYLON.TransformNode(`${name}_anchor`, scene);
   anchor.parent = parent || null;
   anchor.position.copyFrom(position || BABYLON.Vector3.Zero());
   anchor.rotationQuaternion = rotationQuaternion
@@ -3903,8 +3953,9 @@ function setRuneHalosEnabled(item, isEnabled) {
   const haloMeshes = item.runeHaloMeshes
     || (item.runeHaloMesh ? [item.runeHaloMesh] : []);
 
+  item.halosEnabled = isEnabled;
   haloMeshes.forEach((haloMesh) => {
-    haloMesh?.setEnabled(isEnabled);
+    haloMesh?.setEnabled(Boolean(isEnabled) && shouldRenderRunesInScene());
   });
 }
 
@@ -3932,10 +3983,12 @@ function setRuneDisplayMode(item, isDetailView) {
     ? (item.detailBillboardMode ?? BABYLON.AbstractMesh.BILLBOARDMODE_ALL)
     : (item.rootBillboardMode ?? BABYLON.AbstractMesh.BILLBOARDMODE_NONE);
   item.runeGlyphMesh.billboardMode = nextBillboardMode;
+  item.runeGlyphMesh.setEnabled(shouldRenderRunesInScene());
 
   if (item.runeHaloMesh) {
     item.runeHaloMesh.scaling.setAll(nextScale);
     item.runeHaloMesh.billboardMode = nextBillboardMode;
+    item.runeHaloMesh.setEnabled(Boolean(item.halosEnabled) && shouldRenderRunesInScene());
   }
 }
 
