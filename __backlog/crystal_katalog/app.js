@@ -3631,12 +3631,23 @@ function getTetrahedronRuneLayout(vertices, centroid) {
         baseVertices: upwardBaseVertices,
         apex: centroid
       });
-      const upwardDetailRunePosition = computePolyhedronRuneCenter(upwardSubcrystalFaces);
-      const upwardRootRunePosition = upwardDetailRunePosition.clone();
-      const upwardRootRuneRotation = quaternionFromUnitVectors(
-        BABYLON.Axis.Z,
-        computeOutwardNormal(vertices)
+      const upwardRuneSize = Math.max(0.15, upwardAverageEdgeLength * 0.56);
+      const upwardRuneSymbol = SUBCRYSTAL_RUNE_SYMBOLS[runeIndex % SUBCRYSTAL_RUNE_SYMBOLS.length];
+      const upwardRuneGlyphLayout = measureRuneGlyphLayout(upwardRuneSymbol, 256, 14);
+      const upwardSubcrystalFaceEntries = upwardSubcrystalFaces.map((subcrystalFaceVertices) => ({
+        vertices: subcrystalFaceVertices
+      }));
+      const upwardHeightLine = computePreferredTetrahedronHeightLine(upwardSubcrystalFaceEntries);
+      const upwardBalancedPlacement = computeBalancedRuneAnchorPosition(
+        upwardSubcrystalFaceEntries,
+        upwardHeightLine,
+        upwardRuneSize * H3_ROOT_RUNE_SCALE * upwardRuneGlyphLayout.widthRatio,
+        upwardRuneSize * H3_ROOT_RUNE_SCALE * upwardRuneGlyphLayout.heightRatio,
+        0.006
       );
+      const upwardDetailRunePosition = upwardBalancedPlacement.position;
+      const upwardRootRunePosition = upwardDetailRunePosition.clone();
+      const upwardRootRuneRotation = upwardBalancedPlacement.rotation.clone();
 
       positions.push({
         row,
@@ -3653,7 +3664,7 @@ function getTetrahedronRuneLayout(vertices, centroid) {
         apex: centroid.clone(),
         baseRadius: upwardAverageEdgeLength * 0.34,
         height: BABYLON.Vector3.Distance(computeFaceCenter(upwardBaseVertices), centroid),
-        runeSize: Math.max(0.15, upwardAverageEdgeLength * 0.56)
+        runeSize: upwardRuneSize
       });
       runeIndex += 1;
       cellIndex += 1;
