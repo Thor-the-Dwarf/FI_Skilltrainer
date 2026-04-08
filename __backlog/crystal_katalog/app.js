@@ -1746,7 +1746,7 @@ function createTetrahedronInteriorCrystals(scene, root, faces, selectionId, mate
 
   faces.forEach((face, faceIndex) => {
     const requestedFragmentRuneCount = getRequestedFragmentRuneCount(selectionId, faceIndex);
-    const runeLayout = getTetrahedronRuneLayout(face.vertices, centroid, requestedFragmentRuneCount);
+    const fractalLayout = getTetrahedronRuneLayout(face.vertices, centroid, requestedFragmentRuneCount);
     const fragmentColor = getBodyColorForSelection(selectionId, `tetrahedron_${face.name}_${faceIndex + 1}`);
     const fragmentRuneColor = getBodyColorForSelection(selectionId, `tetrahedron_fragment_rune_${faceIndex + 1}`);
     const fragmentFaces = buildTetrahedronFragmentFaces(face.vertices, centroid);
@@ -1821,35 +1821,29 @@ function createTetrahedronInteriorCrystals(scene, root, faces, selectionId, mate
 
     root.metadata.fragmentEntries.push(fragmentEntry);
 
-    runeLayout.forEach((runeLayoutItem) => {
-      const accentSeed = runeLayoutItem.hasRune
-        ? `tetrahedron_${face.name}_${faceIndex + 1}_rune_${runeLayoutItem.runeIndex + 1}`
-        : `tetrahedron_${face.name}_${faceIndex + 1}_filler_${runeLayoutItem.cellIndex + 1}`;
+    fractalLayout.forEach((fractalLayoutItem) => {
+      const accentSeed = `tetrahedron_${face.name}_${faceIndex + 1}_fractal_${fractalLayoutItem.runeIndex + 1}`;
       const runeColor = getBodyColorForSelection(selectionId, accentSeed);
       const subcrystal = createTetrahedronRuneSubcrystal(
         scene,
         root,
-        `tetrahedron_subcrystal_${faceIndex + 1}_${runeLayoutItem.cellIndex + 1}`,
-        runeLayoutItem,
+        `tetrahedron_fractal_${faceIndex + 1}_${fractalLayoutItem.runeIndex + 1}`,
+        fractalLayoutItem,
         face.vertices,
         centroid,
         runeColor
       );
       materials.push(...subcrystal.materials);
 
-      if (!runeLayoutItem.hasRune) {
-        return;
-      }
-
-      const runeSymbol = SUBCRYSTAL_RUNE_SYMBOLS[runeLayoutItem.runeIndex % SUBCRYSTAL_RUNE_SYMBOLS.length];
+      const runeSymbol = SUBCRYSTAL_RUNE_SYMBOLS[fractalLayoutItem.runeIndex % SUBCRYSTAL_RUNE_SYMBOLS.length];
       const runeMeshes = createRuneMeshes(
         scene,
-        `tetrahedron_base_rune_${faceIndex + 1}_${runeLayoutItem.runeIndex + 1}`,
+        `tetrahedron_base_rune_${faceIndex + 1}_${fractalLayoutItem.runeIndex + 1}`,
         runeSymbol,
         runeColor,
         {
           showHalo: true,
-          glyphSize: runeLayoutItem.runeSize,
+          glyphSize: fractalLayoutItem.runeSize,
           haloScale: 1.52,
           billboardMode: BABYLON.AbstractMesh.BILLBOARDMODE_NONE,
           emissiveIntensity: 1.45
@@ -1857,8 +1851,8 @@ function createTetrahedronInteriorCrystals(scene, root, faces, selectionId, mate
       );
 
       runeMeshes.anchor.parent = root;
-      runeMeshes.anchor.position.copyFrom(runeLayoutItem.rootRunePosition);
-      runeMeshes.anchor.rotationQuaternion = runeLayoutItem.rootRuneRotation.clone();
+      runeMeshes.anchor.position.copyFrom(fractalLayoutItem.rootRunePosition);
+      runeMeshes.anchor.rotationQuaternion = fractalLayoutItem.rootRuneRotation.clone();
       runeMeshes.anchor.scaling.setAll(1);
       runeMeshes.glyphMesh.renderingGroupId = 3;
 
@@ -1869,12 +1863,12 @@ function createTetrahedronInteriorCrystals(scene, root, faces, selectionId, mate
       root.metadata?.runeLights?.push(...runeMeshes.lights);
       materials.push(...runeMeshes.materials);
       const runeEntry = {
-        entryId: `${fragmentEntry.entryId}_rune_${runeLayoutItem.runeIndex + 1}`,
+        entryId: `${fragmentEntry.entryId}_rune_${fractalLayoutItem.runeIndex + 1}`,
         level: "h3",
         parentId: fragmentEntry.entryId,
         faceIndex,
         faceName: face.name,
-        runeIndex: runeLayoutItem.runeIndex,
+        runeIndex: fractalLayoutItem.runeIndex,
         selectionId,
         accentHex: runeColor,
         runeSymbol,
@@ -1882,9 +1876,9 @@ function createTetrahedronInteriorCrystals(scene, root, faces, selectionId, mate
         runeAnchorMesh: runeMeshes.anchor,
         runeGlyphMesh: runeMeshes.glyphMesh,
         runeHaloMesh: runeMeshes.haloMesh,
-        rootRunePosition: runeLayoutItem.rootRunePosition.clone(),
-        detailRunePosition: runeLayoutItem.detailRunePosition.clone(),
-        rootRuneRotation: runeLayoutItem.rootRuneRotation.clone(),
+        rootRunePosition: fractalLayoutItem.rootRunePosition.clone(),
+        detailRunePosition: fractalLayoutItem.detailRunePosition.clone(),
+        rootRuneRotation: fractalLayoutItem.rootRuneRotation.clone(),
         rootRuneScale: H3_ROOT_RUNE_SCALE,
         detailRuneScale: H3_DETAIL_RUNE_SCALE,
         rootBillboardMode: BABYLON.AbstractMesh.BILLBOARDMODE_NONE,
@@ -1893,7 +1887,7 @@ function createTetrahedronInteriorCrystals(scene, root, faces, selectionId, mate
           selectionId,
           faceName: face.name,
           faceIndex,
-          runeIndex: runeLayoutItem.runeIndex,
+          runeIndex: fractalLayoutItem.runeIndex,
           runeSymbol,
           accentHex: runeColor
         })
@@ -2214,7 +2208,9 @@ function createRuneMeshes(scene, name, runeSymbol, accentHex, options = {}) {
 function createTetrahedronRuneSubcrystal(scene, parent, name, layoutItem, faceVertices, centroid, accentHex) {
   const root = new BABYLON.TransformNode(name, scene);
   const materials = [];
-  const subcrystalFaces = buildTetrahedronSubcrystalFaces(layoutItem);
+  const subcrystalFaces = layoutItem.fractalFaces
+    ? layoutItem.fractalFaces.map((vertices) => vertices.map((vertex) => vertex.clone()))
+    : buildTetrahedronSubcrystalFaces(layoutItem);
   const renderedFaceKeys = parent.metadata?.subcrystalFaceKeys;
 
   root.parent = parent;
@@ -3266,8 +3262,10 @@ function computeBalancedRuneAnchorPosition(faces, heightLine, runeWidth, runeHei
 
 function computeNearestTetrahedronFaceClearance(point, faces) {
   return faces.reduce((minimumDistance, face) => {
-    const faceCenter = computeFaceCenter(face.vertices);
-    const outwardNormal = computeOutwardNormal(face.vertices, faceCenter);
+    const faceCenter = face.faceCenter ? face.faceCenter.clone() : computeFaceCenter(face.vertices);
+    const outwardNormal = face.outwardNormal
+      ? face.outwardNormal.clone().normalize()
+      : computeOutwardNormal(face.vertices, faceCenter);
     const signedDistance = BABYLON.Vector3.Dot(outwardNormal, point.subtract(faceCenter));
     const interiorClearance = -signedDistance;
 
@@ -3510,6 +3508,10 @@ function createTetrahedronFragmentBoundaries(scene, parent, name, faces, accentH
 }
 
 function buildTetrahedronSubcrystalFaces(layoutItem) {
+  if (Array.isArray(layoutItem.subcrystalFaces) && layoutItem.subcrystalFaces.length) {
+    return layoutItem.subcrystalFaces.map((faceVertices) => faceVertices.map((vertex) => vertex.clone()));
+  }
+
   if (layoutItem.baseVertices && layoutItem.apex) {
     const baseVertices = [
       layoutItem.baseVertices[0],
@@ -3603,6 +3605,37 @@ function computePolyhedronRuneCenter(faces) {
   return vertexMidpoint.add(faceMidpoint).scale(0.5);
 }
 
+function computePolyhedronCenterFromFaces(faceVerticesCollection) {
+  const uniqueVertices = new Map();
+
+  faceVerticesCollection.forEach((faceVertices) => {
+    faceVertices.forEach((vertex) => {
+      uniqueVertices.set(getVertexKey(vertex), vertex.clone());
+    });
+  });
+
+  return computeFaceCenter(Array.from(uniqueVertices.values()));
+}
+
+function buildPolyhedronFaceEntries(faceVerticesCollection) {
+  const polyhedronCenter = computePolyhedronCenterFromFaces(faceVerticesCollection);
+
+  return faceVerticesCollection.map((faceVertices) => {
+    const vertices = faceVertices.map((vertex) => vertex.clone());
+    const faceCenter = computeFaceCenter(vertices);
+    const normal = computeFaceNormal(vertices);
+    const outwardNormal = BABYLON.Vector3.Dot(normal, faceCenter.subtract(polyhedronCenter)) < 0
+      ? normal.scale(-1)
+      : normal;
+
+    return {
+      vertices,
+      faceCenter,
+      outwardNormal
+    };
+  });
+}
+
 function normalizeFragmentRuneCount(requestedCount) {
   if (!Number.isFinite(requestedCount)) {
     return DEFAULT_H3_RUNES_PER_FRAGMENT;
@@ -3626,6 +3659,309 @@ function getRequestedFragmentRuneCount(selectionId, faceIndex) {
   }
 
   return getDefaultFragmentRuneCount(selectionId, faceIndex);
+}
+
+function buildTetrahedronSegmentCells(vertices, centroid) {
+  // Ziel: Das H2-Segment in eine feine, vollstaendig schliessende Zellstruktur zerlegen.
+  // Warum: Die spaeteren H3-Fraktale sollen aus echten Volumenzellen zusammengesetzt werden, statt als Rune-Zellen plus getrennte Filler behandelt zu werden.
+  const [leftVertex, rightVertex, tipVertex] = vertices;
+  const subdivision = 4;
+  const cells = [];
+  const upwardCandidates = [];
+  const rawFaceNormal = computeFaceNormal(vertices);
+  const faceCenter = computeFaceCenter(vertices);
+  const faceNormal = BABYLON.Vector3.Dot(rawFaceNormal, faceCenter) < 0
+    ? rawFaceNormal.scale(-1).normalize()
+    : rawFaceNormal.normalize();
+  const inwardNormal = faceNormal.scale(-1);
+  const planeDepth = Math.max(
+    0.08,
+    BABYLON.Vector3.Dot(centroid.subtract(faceCenter), inwardNormal)
+  );
+  const inset = planeDepth * 0.015;
+  const u = rightVertex.subtract(leftVertex).scale(1 / subdivision);
+  const v = tipVertex.subtract(leftVertex).scale(1 / subdivision);
+  let cellIndex = 0;
+
+  for (let row = 0; row < subdivision; row += 1) {
+    for (let column = 0; column < subdivision - row; column += 1) {
+      const surfaceA = leftVertex.add(u.scale(column)).add(v.scale(row));
+      const surfaceB = leftVertex.add(u.scale(column + 1)).add(v.scale(row));
+      const surfaceC = leftVertex.add(u.scale(column)).add(v.scale(row + 1));
+      const upwardBaseVertices = [surfaceA, surfaceB, surfaceC].map((vertex) => {
+        return vertex.add(inwardNormal.scale(inset));
+      });
+      const upwardSubcrystalFaces = buildTetrahedronSubcrystalFaces({
+        baseVertices: upwardBaseVertices,
+        apex: centroid
+      });
+      const upwardAverageEdgeLength = (
+        BABYLON.Vector3.Distance(upwardBaseVertices[0], upwardBaseVertices[1])
+        + BABYLON.Vector3.Distance(upwardBaseVertices[1], upwardBaseVertices[2])
+        + BABYLON.Vector3.Distance(upwardBaseVertices[2], upwardBaseVertices[0])
+      ) / 3;
+      const upwardCell = {
+        row,
+        column,
+        cellIndex,
+        isRuneCandidate: true,
+        baseVertices: upwardBaseVertices,
+        apex: centroid.clone(),
+        baseRadius: upwardAverageEdgeLength * 0.34,
+        height: BABYLON.Vector3.Distance(computeFaceCenter(upwardBaseVertices), centroid),
+        runeSize: Math.max(0.15, upwardAverageEdgeLength * 0.56),
+        distributionPoint: computeFaceCenter(upwardBaseVertices),
+        subcrystalFaces: upwardSubcrystalFaces
+      };
+
+      cells.push(upwardCell);
+      upwardCandidates.push(upwardCell);
+      cellIndex += 1;
+
+      if (column >= subdivision - row - 1) {
+        continue;
+      }
+
+      const surfaceD = leftVertex.add(u.scale(column + 1)).add(v.scale(row + 1));
+      const downwardBaseVertices = [surfaceB, surfaceD, surfaceC].map((vertex) => {
+        return vertex.add(inwardNormal.scale(inset));
+      });
+      const downwardAverageEdgeLength = (
+        BABYLON.Vector3.Distance(downwardBaseVertices[0], downwardBaseVertices[1])
+        + BABYLON.Vector3.Distance(downwardBaseVertices[1], downwardBaseVertices[2])
+        + BABYLON.Vector3.Distance(downwardBaseVertices[2], downwardBaseVertices[0])
+      ) / 3;
+      const downwardSubcrystalFaces = buildTetrahedronSubcrystalFaces({
+        baseVertices: downwardBaseVertices,
+        apex: centroid
+      });
+
+      cells.push({
+        row,
+        column,
+        cellIndex,
+        isRuneCandidate: false,
+        baseVertices: downwardBaseVertices,
+        apex: centroid.clone(),
+        baseRadius: downwardAverageEdgeLength * 0.34,
+        height: BABYLON.Vector3.Distance(computeFaceCenter(downwardBaseVertices), centroid),
+        runeSize: Math.max(0.15, downwardAverageEdgeLength * 0.56),
+        distributionPoint: computeFaceCenter(downwardBaseVertices),
+        subcrystalFaces: downwardSubcrystalFaces
+      });
+      cellIndex += 1;
+    }
+  }
+
+  return { cells, upwardCandidates };
+}
+
+function buildTetrahedronCellAdjacency(cells) {
+  const adjacency = new Map(cells.map((cell) => [cell.cellIndex, new Set()]));
+  const faceOwners = new Map();
+
+  cells.forEach((cell) => {
+    cell.subcrystalFaces.forEach((faceVertices) => {
+      const faceKey = getFaceKey(faceVertices);
+      const owners = faceOwners.get(faceKey) || [];
+      owners.push(cell.cellIndex);
+      faceOwners.set(faceKey, owners);
+    });
+  });
+
+  faceOwners.forEach((owners) => {
+    if (owners.length !== 2) {
+      return;
+    }
+
+    adjacency.get(owners[0])?.add(owners[1]);
+    adjacency.get(owners[1])?.add(owners[0]);
+  });
+
+  return adjacency;
+}
+
+function assignCellsToFractalSeeds(cells, seedCells) {
+  // Ziel: Alle Segmentzellen genau einem H3-Fraktal zuordnen.
+  // Warum: H3 soll 1:1 einen echten Parent-Koerper haben; anonyme Filler-Zellen wuerden die Parent-Logik des Nutzers wieder brechen.
+  const adjacency = buildTetrahedronCellAdjacency(cells);
+  const cellById = new Map(cells.map((cell) => [cell.cellIndex, cell]));
+  const seedById = new Map(seedCells.map((cell) => [cell.cellIndex, cell]));
+  const assignments = new Map(seedCells.map((cell) => [cell.cellIndex, []]));
+  const assignedCellToSeed = new Map();
+  const frontier = seedCells.map((seedCell, seedOrder) => ({
+    cellIndex: seedCell.cellIndex,
+    seedCellIndex: seedCell.cellIndex,
+    seedOrder,
+    graphDistance: 0,
+    euclideanDistance: 0
+  }));
+
+  while (frontier.length) {
+    frontier.sort((left, right) => {
+      if (left.graphDistance !== right.graphDistance) {
+        return left.graphDistance - right.graphDistance;
+      }
+
+      if (Math.abs(left.euclideanDistance - right.euclideanDistance) > 0.000001) {
+        return left.euclideanDistance - right.euclideanDistance;
+      }
+
+      if (left.seedOrder !== right.seedOrder) {
+        return left.seedOrder - right.seedOrder;
+      }
+
+      return left.cellIndex - right.cellIndex;
+    });
+
+    const current = frontier.shift();
+
+    if (!current || assignedCellToSeed.has(current.cellIndex)) {
+      continue;
+    }
+
+    assignedCellToSeed.set(current.cellIndex, current.seedCellIndex);
+    assignments.get(current.seedCellIndex)?.push(cellById.get(current.cellIndex));
+
+    const seedCell = seedById.get(current.seedCellIndex);
+    const neighborIds = Array.from(adjacency.get(current.cellIndex) || []);
+
+    neighborIds.forEach((neighborId) => {
+      if (assignedCellToSeed.has(neighborId)) {
+        return;
+      }
+
+      frontier.push({
+        cellIndex: neighborId,
+        seedCellIndex: current.seedCellIndex,
+        seedOrder: current.seedOrder,
+        graphDistance: current.graphDistance + 1,
+        euclideanDistance: BABYLON.Vector3.DistanceSquared(
+          cellById.get(neighborId).distributionPoint,
+          seedCell.distributionPoint
+        )
+      });
+    });
+  }
+
+  return assignments;
+}
+
+function buildClusterBoundaryFaces(clusterCells) {
+  const faceOccurrences = new Map();
+
+  clusterCells.forEach((cell) => {
+    cell.subcrystalFaces.forEach((faceVertices) => {
+      const faceKey = getFaceKey(faceVertices);
+      const entry = faceOccurrences.get(faceKey) || {
+        count: 0,
+        vertices: faceVertices.map((vertex) => vertex.clone())
+      };
+
+      entry.count += 1;
+      faceOccurrences.set(faceKey, entry);
+    });
+  });
+
+  return Array.from(faceOccurrences.values())
+    .filter((entry) => entry.count === 1)
+    .map((entry) => entry.vertices.map((vertex) => vertex.clone()));
+}
+
+function computePreferredPolyhedronHeightLine(faces) {
+  const uniqueVertices = [];
+  const seenVertices = new Set();
+  const presentationQuaternion = BABYLON.Quaternion.FromEulerAngles(
+    INITIAL_CRYSTAL_ROTATION.x,
+    INITIAL_CRYSTAL_ROTATION.y,
+    INITIAL_CRYSTAL_ROTATION.z
+  );
+  const presentationMatrix = BABYLON.Matrix.Identity();
+
+  presentationQuaternion.toRotationMatrix(presentationMatrix);
+
+  faces.forEach((face) => {
+    face.vertices.forEach((vertex) => {
+      const key = getVertexKey(vertex);
+
+      if (!seenVertices.has(key)) {
+        seenVertices.add(key);
+        uniqueVertices.push(vertex.clone());
+      }
+    });
+  });
+
+  if (uniqueVertices.length <= 4) {
+    return computePreferredTetrahedronHeightLine(faces);
+  }
+
+  let bestStart = uniqueVertices[0];
+  let bestEnd = uniqueVertices[0];
+  let bestDistanceSquared = -1;
+
+  for (let leftIndex = 0; leftIndex < uniqueVertices.length; leftIndex += 1) {
+    for (let rightIndex = leftIndex + 1; rightIndex < uniqueVertices.length; rightIndex += 1) {
+      const distanceSquared = BABYLON.Vector3.DistanceSquared(uniqueVertices[leftIndex], uniqueVertices[rightIndex]);
+
+      if (distanceSquared > bestDistanceSquared) {
+        bestDistanceSquared = distanceSquared;
+        bestStart = uniqueVertices[leftIndex];
+        bestEnd = uniqueVertices[rightIndex];
+      }
+    }
+  }
+
+  let baseCenter = bestStart.clone();
+  let apex = bestEnd.clone();
+  let axis = apex.subtract(baseCenter).normalize();
+  const axisWorld = BABYLON.Vector3.TransformNormal(axis, presentationMatrix);
+
+  if (axisWorld.y < 0) {
+    baseCenter = bestEnd.clone();
+    apex = bestStart.clone();
+    axis = apex.subtract(baseCenter).normalize();
+  }
+
+  return {
+    apex,
+    baseCenter,
+    axis,
+    midpoint: BABYLON.Vector3.Lerp(baseCenter, apex, 0.5)
+  };
+}
+
+function buildFractalLayoutItem(clusterCells, runeIndex) {
+  const boundaryFaces = buildClusterBoundaryFaces(clusterCells);
+  const faceEntries = buildPolyhedronFaceEntries(boundaryFaces);
+  const runeSymbol = SUBCRYSTAL_RUNE_SYMBOLS[runeIndex % SUBCRYSTAL_RUNE_SYMBOLS.length];
+  const runeGlyphLayout = measureRuneGlyphLayout(runeSymbol, 256, 14);
+  const maxRuneSize = clusterCells.reduce((maximum, cell) => {
+    return Math.max(maximum, cell.runeSize || 0);
+  }, 0);
+  const runeSize = Math.max(0.16, maxRuneSize * Math.max(1, Math.sqrt(clusterCells.length) * 0.78));
+  const heightLine = computePreferredPolyhedronHeightLine(faceEntries);
+  const balancedPlacement = computeBalancedRuneAnchorPosition(
+    faceEntries,
+    heightLine,
+    runeSize * H3_ROOT_RUNE_SCALE * runeGlyphLayout.widthRatio,
+    runeSize * H3_ROOT_RUNE_SCALE * runeGlyphLayout.heightRatio,
+    0.006
+  );
+
+  return {
+    cellIndex: clusterCells[0]?.cellIndex ?? runeIndex,
+    hasRune: true,
+    runeIndex,
+    position: balancedPlacement.position.clone(),
+    runePosition: balancedPlacement.position.clone(),
+    rootRunePosition: balancedPlacement.position.clone(),
+    detailRunePosition: balancedPlacement.position.clone(),
+    rootRuneRotation: balancedPlacement.rotation.clone(),
+    runeSize,
+    distributionPoint: computePolyhedronCenterFromFaces(boundaryFaces),
+    subcrystalFaces: boundaryFaces,
+    childCellIndices: clusterCells.map((cell) => cell.cellIndex)
+  };
 }
 
 function selectDistributedRuneCells(candidateCells, requestedCount, faceVertices) {
@@ -3710,141 +4046,15 @@ function selectDistributedRuneCells(candidateCells, requestedCount, faceVertices
 }
 
 function getTetrahedronRuneLayout(vertices, centroid, requestedRuneCount = DEFAULT_H3_RUNES_PER_FRAGMENT) {
-  const [leftVertex, rightVertex, tipVertex] = vertices;
-  const subdivision = 4;
-  const positions = [];
-  const upwardCandidates = [];
-  const rawFaceNormal = computeFaceNormal(vertices);
-  const faceCenter = computeFaceCenter(vertices);
-  const faceNormal = BABYLON.Vector3.Dot(rawFaceNormal, faceCenter) < 0
-    ? rawFaceNormal.scale(-1).normalize()
-    : rawFaceNormal.normalize();
-  const inwardNormal = faceNormal.scale(-1);
-  const planeDepth = Math.max(
-    0.08,
-    BABYLON.Vector3.Dot(centroid.subtract(faceCenter), inwardNormal)
-  );
-  const inset = planeDepth * 0.015;
-  const u = rightVertex.subtract(leftVertex).scale(1 / subdivision);
-  const v = tipVertex.subtract(leftVertex).scale(1 / subdivision);
-  let runeIndex = 0;
-  let cellIndex = 0;
-
-  for (let row = 0; row < subdivision; row += 1) {
-    for (let column = 0; column < subdivision - row; column += 1) {
-      const surfaceA = leftVertex.add(u.scale(column)).add(v.scale(row));
-      const surfaceB = leftVertex.add(u.scale(column + 1)).add(v.scale(row));
-      const surfaceC = leftVertex.add(u.scale(column)).add(v.scale(row + 1));
-      const upwardBaseVertices = [surfaceA, surfaceB, surfaceC].map((vertex) => {
-        return vertex.add(inwardNormal.scale(inset));
-      });
-      const upwardAverageEdgeLength = (
-        BABYLON.Vector3.Distance(upwardBaseVertices[0], upwardBaseVertices[1])
-        + BABYLON.Vector3.Distance(upwardBaseVertices[1], upwardBaseVertices[2])
-        + BABYLON.Vector3.Distance(upwardBaseVertices[2], upwardBaseVertices[0])
-      ) / 3;
-      const upwardSubcrystalFaces = buildTetrahedronSubcrystalFaces({
-        baseVertices: upwardBaseVertices,
-        apex: centroid
-      });
-      const upwardRuneSize = Math.max(0.15, upwardAverageEdgeLength * 0.56);
-      const upwardCenter = computePolyhedronRuneCenter(upwardSubcrystalFaces);
-      const upwardPosition = {
-        row,
-        column,
-        cellIndex,
-        hasRune: false,
-        runeIndex: null,
-        position: upwardCenter.clone(),
-        runePosition: upwardCenter.clone(),
-        rootRunePosition: upwardCenter.clone(),
-        detailRunePosition: upwardCenter.clone(),
-        rootRuneRotation: quaternionFromUnitVectors(
-          BABYLON.Axis.Z,
-          computeOutwardNormal(vertices)
-        ),
-        baseVertices: upwardBaseVertices,
-        apex: centroid.clone(),
-        baseRadius: upwardAverageEdgeLength * 0.34,
-        height: BABYLON.Vector3.Distance(computeFaceCenter(upwardBaseVertices), centroid),
-        runeSize: upwardRuneSize,
-        distributionPoint: computeFaceCenter(upwardBaseVertices),
-        subcrystalFaces: upwardSubcrystalFaces
-      };
-
-      upwardCandidates.push(upwardPosition);
-      positions.push(upwardPosition);
-      cellIndex += 1;
-
-      if (column >= subdivision - row - 1) {
-        continue;
-      }
-
-      const surfaceD = leftVertex.add(u.scale(column + 1)).add(v.scale(row + 1));
-      const downwardBaseVertices = [surfaceB, surfaceD, surfaceC].map((vertex) => {
-        return vertex.add(inwardNormal.scale(inset));
-      });
-      const downwardAverageEdgeLength = (
-        BABYLON.Vector3.Distance(downwardBaseVertices[0], downwardBaseVertices[1])
-        + BABYLON.Vector3.Distance(downwardBaseVertices[1], downwardBaseVertices[2])
-        + BABYLON.Vector3.Distance(downwardBaseVertices[2], downwardBaseVertices[0])
-      ) / 3;
-      const downwardSubcrystalFaces = buildTetrahedronSubcrystalFaces({
-        baseVertices: downwardBaseVertices,
-        apex: centroid
-      });
-      const downwardCenter = computePolyhedronRuneCenter(downwardSubcrystalFaces);
-
-      positions.push({
-        row,
-        column,
-        cellIndex,
-        hasRune: false,
-        runeIndex: null,
-        position: downwardCenter.clone(),
-        runePosition: downwardCenter,
-        baseVertices: downwardBaseVertices,
-        apex: centroid.clone(),
-        baseRadius: downwardAverageEdgeLength * 0.34,
-        height: BABYLON.Vector3.Distance(computeFaceCenter(downwardBaseVertices), centroid),
-        runeSize: 0
-      });
-      cellIndex += 1;
-    }
-  }
-
+  const { cells, upwardCandidates } = buildTetrahedronSegmentCells(vertices, centroid);
   const selectedCandidateIndices = selectDistributedRuneCells(upwardCandidates, requestedRuneCount, vertices);
+  const seedCells = upwardCandidates.filter((_, candidateIndex) => selectedCandidateIndices.has(candidateIndex));
+  const clusterAssignments = assignCellsToFractalSeeds(cells, seedCells);
 
-  upwardCandidates.forEach((candidate, candidateIndex) => {
-    if (!selectedCandidateIndices.has(candidateIndex)) {
-      return;
-    }
-
-    const runeSymbol = SUBCRYSTAL_RUNE_SYMBOLS[runeIndex % SUBCRYSTAL_RUNE_SYMBOLS.length];
-    const runeGlyphLayout = measureRuneGlyphLayout(runeSymbol, 256, 14);
-    const subcrystalFaceEntries = candidate.subcrystalFaces.map((subcrystalFaceVertices) => ({
-      vertices: subcrystalFaceVertices
-    }));
-    const heightLine = computePreferredTetrahedronHeightLine(subcrystalFaceEntries);
-    const balancedPlacement = computeBalancedRuneAnchorPosition(
-      subcrystalFaceEntries,
-      heightLine,
-      candidate.runeSize * H3_ROOT_RUNE_SCALE * runeGlyphLayout.widthRatio,
-      candidate.runeSize * H3_ROOT_RUNE_SCALE * runeGlyphLayout.heightRatio,
-      0.006
-    );
-
-    candidate.hasRune = true;
-    candidate.runeIndex = runeIndex;
-    candidate.position = balancedPlacement.position.clone();
-    candidate.runePosition = balancedPlacement.position.clone();
-    candidate.rootRunePosition = balancedPlacement.position.clone();
-    candidate.detailRunePosition = balancedPlacement.position.clone();
-    candidate.rootRuneRotation = balancedPlacement.rotation.clone();
-    runeIndex += 1;
+  return seedCells.map((seedCell, runeIndex) => {
+    const clusterCells = clusterAssignments.get(seedCell.cellIndex) || [seedCell];
+    return buildFractalLayoutItem(clusterCells, runeIndex);
   });
-
-  return positions;
 }
 
 function setRuneHalosEnabled(item, isEnabled) {
