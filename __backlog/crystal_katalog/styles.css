@@ -11,7 +11,7 @@
   --accent: 193 85% 60%;
   --accent-soft: 193 70% 52%;
   --accent-warm: 33 92% 60%;
-  --detail-advance-width: 88px;
+  --detail-advance-width: 58px;
   --detail-pane-width: 45%;
   --content-sidebar-width: clamp(300px, 30vw, 360px);
   --content-crystal-height: clamp(220px, 32vh, 300px);
@@ -791,15 +791,15 @@ body.is-content-mode .content-stage {
   align-items: center;
   justify-content: center;
   margin: 0;
-  padding: 0 10px 0 0;
+  padding: 0;
   border: 0;
   pointer-events: none;
   cursor: pointer;
   background:
-    linear-gradient(180deg, hsl(var(--surface-strong) / 0.2), hsl(var(--surface) / 0.72));
+    linear-gradient(180deg, hsl(var(--surface-strong) / 0.34), hsl(var(--surface) / 0.88));
   box-shadow:
     inset 1px 0 0 hsl(0 0% 100% / 0.07),
-    inset 18px 0 30px hsl(0 0% 100% / 0.02);
+    inset 14px 0 28px hsl(0 0% 100% / 0.025);
   opacity: 0.94;
   transition:
     opacity 180ms ease,
@@ -825,38 +825,17 @@ body.is-content-mode .detail-advance-button {
     linear-gradient(180deg, hsl(var(--surface-strong) / 0.46), hsl(var(--surface) / 0.96));
   box-shadow:
     inset 1px 0 0 hsl(0 0% 100% / 0.09),
-    inset 18px 0 30px hsl(0 0% 100% / 0.04);
+    inset 14px 0 28px hsl(0 0% 100% / 0.04);
   transform: translateX(-1px);
   outline: none;
 }
 
 .detail-advance-pill {
-  display: grid;
-  justify-items: center;
-  gap: 9px;
-  padding: 14px 10px 14px 12px;
-  border: 1px solid hsl(197 82% 44% / 0.34);
-  border-radius: 999px;
-  background:
-    linear-gradient(180deg, hsl(214 50% 12% / 0.92), hsl(216 38% 7% / 0.96));
-  box-shadow:
-    0 18px 32px rgba(0, 0, 0, 0.28),
-    inset 0 0 0 1px hsl(0 0% 100% / 0.04),
-    0 0 28px hsl(197 82% 44% / 0.08);
-  transition:
-    border-color 180ms ease,
-    box-shadow 180ms ease,
-    transform 180ms ease;
-}
-
-.detail-advance-button:hover .detail-advance-pill,
-.detail-advance-button:focus-visible .detail-advance-pill {
-  border-color: hsl(197 88% 58% / 0.48);
-  box-shadow:
-    0 22px 38px rgba(0, 0, 0, 0.34),
-    inset 0 0 0 1px hsl(0 0% 100% / 0.06),
-    0 0 34px hsl(197 88% 58% / 0.12);
-  transform: translateX(-1px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
 }
 
 .detail-advance-icon {
@@ -864,6 +843,7 @@ body.is-content-mode .detail-advance-button {
   width: 34px;
   height: 28px;
   display: block;
+  filter: drop-shadow(0 0 14px hsl(197 88% 58% / 0.14));
 }
 
 .detail-advance-icon-screen {
@@ -902,33 +882,8 @@ body.is-content-mode .detail-advance-button {
   box-shadow: 0 0 12px hsl(197 88% 58% / 0.16);
 }
 
-.detail-advance-label {
-  font-size: 0.67rem;
-  font-weight: 800;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-  color: hsl(198 96% 88% / 0.94);
-}
-
 .detail-advance-button.is-back .detail-advance-icon {
   transform: scaleX(-1);
-}
-
-.detail-advance-button.is-back .detail-advance-label::before {
-  content: "Zurück";
-}
-
-.detail-advance-button.is-back .detail-advance-label {
-  font-size: 0;
-  letter-spacing: 0;
-}
-
-.detail-advance-button.is-back .detail-advance-label::before {
-  font-size: 0.67rem;
-  font-weight: 800;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-  color: hsl(198 96% 88% / 0.94);
 }
 
 .detail-branch {
@@ -1111,7 +1066,7 @@ body.is-content-mode .detail-connector:not(.detail-connector-hierarchy):not(.det
 
 @media (max-width: 920px) {
   :root {
-    --detail-advance-width: 82px;
+    --detail-advance-width: 54px;
     --detail-pane-width: 50%;
     --content-sidebar-width: clamp(260px, 34vw, 320px);
     --content-crystal-height: clamp(200px, 28vh, 250px);
@@ -1162,7 +1117,7 @@ body.is-content-mode .detail-connector:not(.detail-connector-hierarchy):not(.det
 
 @media (max-width: 560px) {
   :root {
-    --detail-advance-width: 72px;
+    --detail-advance-width: 48px;
     --detail-pane-width: 100%;
     --content-sidebar-width: 100%;
     --content-crystal-height: 220px;
@@ -1225,18 +1180,13 @@ body.is-content-mode .detail-connector:not(.detail-connector-hierarchy):not(.det
     min-height: 220px;
   }
   .detail-advance-pill {
-    gap: 7px;
-    padding: 12px 8px 12px 10px;
+    width: 100%;
+    height: 100%;
   }
 
   .detail-advance-icon {
-    width: 30px;
-    height: 24px;
-  }
-
-  .detail-advance-label::before,
-  .detail-advance-label {
-    font-size: 0.6rem;
+    width: 28px;
+    height: 22px;
   }
 
   .detail-card {
