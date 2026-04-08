@@ -3815,7 +3815,7 @@ function createDetailCard(item) {
 
   item.detailCardElement = card;
   setRuneDisplayMode(item, true);
-  setRuneHalosEnabled(item, true);
+  setRuneHalosEnabled(item, false);
 
   return card;
 }
