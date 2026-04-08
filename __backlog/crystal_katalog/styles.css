@@ -401,9 +401,11 @@ body.is-exploded .detail-experience {
   top: 0;
   right: var(--detail-advance-width);
   bottom: 0;
-  width: calc(var(--detail-pane-width) - var(--detail-advance-width));
+  width: fit-content;
+  max-width: calc(var(--detail-pane-width) - var(--detail-advance-width));
   display: flex;
   flex-direction: column;
+  align-items: flex-start;
   justify-content: flex-start;
   gap: 14px;
   padding: 28px 22px 24px 14px;
@@ -847,6 +849,8 @@ body.is-content-mode .detail-advance-button {
 .detail-branch {
   display: grid;
   gap: 8px;
+  width: max-content;
+  max-width: 100%;
   padding: 4px 0 0;
   border: none;
   background: transparent;
@@ -857,6 +861,9 @@ body.is-content-mode .detail-advance-button {
 .detail-children {
   display: grid;
   grid-template-columns: 1fr;
+  justify-items: start;
+  width: max-content;
+  max-width: 100%;
   gap: 6px;
   padding: 4px 0 0 22px;
   margin-left: 16px;
@@ -868,6 +875,8 @@ body.is-content-mode .detail-advance-button {
 .detail-card {
   position: relative;
   pointer-events: auto;
+  width: max-content;
+  max-width: 100%;
   padding: 6px 10px 6px 0;
   border: none;
   border-radius: 0;
@@ -892,6 +901,8 @@ body.is-content-mode .detail-advance-button {
 .detail-card-row {
   display: flex;
   align-items: center;
+  width: max-content;
+  max-width: 100%;
   gap: 10px;
   min-height: 38px;
 }
@@ -950,6 +961,7 @@ body.is-content-mode .detail-advance-button {
   font-size: 0.98rem;
   font-weight: 700;
   line-height: 1.28;
+  white-space: nowrap;
   color: hsl(var(--text));
 }
 
@@ -1035,7 +1047,8 @@ body.is-content-mode .detail-connector:not(.detail-connector-hierarchy):not(.det
   }
 
   .detail-cards {
-    width: calc(var(--detail-pane-width) - var(--detail-advance-width));
+    width: fit-content;
+    max-width: calc(var(--detail-pane-width) - var(--detail-advance-width));
     padding-right: 18px;
   }
 
