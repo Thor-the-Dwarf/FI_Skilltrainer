@@ -73,8 +73,8 @@ const diagnostics = createDiagnosticsState(STARTUP_CONFIG);
 const DEFAULT_CAMERA_RADIUS = 6.1;
 const DETAIL_CAMERA_RADIUS = 6.35;
 const CONTENT_CAMERA_RADIUS = 6.7;
-const CONTENT_ENTER_TRANSITION_MS = 900;
-const CONTENT_EXIT_TRANSITION_MS = 650;
+const CONTENT_ENTER_TRANSITION_MS = 1280;
+const CONTENT_EXIT_TRANSITION_MS = 920;
 const CONTENT_REDUCED_MOTION_TRANSITION_MS = 220;
 const EXPLODED_CRYSTAL_OFFSET_X = 0;
 const DETAIL_PANE_MIN_WIDTH_PX = 280;
@@ -5250,9 +5250,9 @@ function createContentCoronaMetrics(now, projectionContext) {
 }
 
 function sampleCoronaWave(angle, timeSeconds, seed) {
-  const layerA = Math.sin((angle * 3.1) + (timeSeconds * 0.72) + (seed * 0.9));
-  const layerB = Math.sin((angle * 7.4) - (timeSeconds * 1.28) + (seed * 1.7));
-  const layerC = Math.cos((angle * 11.2) + (timeSeconds * 0.46) - (seed * 0.55));
+  const layerA = Math.sin((angle * 2.5) + (timeSeconds * 0.34) + (seed * 0.9));
+  const layerB = Math.sin((angle * 5.2) - (timeSeconds * 0.58) + (seed * 1.7));
+  const layerC = Math.cos((angle * 8.6) + (timeSeconds * 0.24) - (seed * 0.55));
   return (layerA * 0.55) + (layerB * 0.3) + (layerC * 0.15);
 }
 
@@ -5297,8 +5297,8 @@ function drawCoronaMembrane(context, metrics, burstStrength, layerIndex) {
     yCompression
   } = metrics;
   const stepCount = 128;
-  const amplitude = (baseRadius * 0.072) + (burstStrength * baseRadius * 0.06);
-  const microAmplitude = (baseRadius * 0.026) + (layerIndex * 1.6);
+  const amplitude = (baseRadius * 0.094) + (burstStrength * baseRadius * 0.048);
+  const microAmplitude = (baseRadius * 0.04) + (layerIndex * 2.4);
 
   context.save();
   context.translate(centerX, centerY);
@@ -5307,9 +5307,9 @@ function drawCoronaMembrane(context, metrics, burstStrength, layerIndex) {
 
   for (let step = 0; step <= stepCount; step += 1) {
     const angle = (step / stepCount) * TAU;
-    const wave = sampleCoronaWave(angle, timeSeconds + (layerIndex * 0.38), seed + (layerIndex * 0.73));
-    const rip = Math.max(0, Math.sin((angle * (4.6 + layerIndex)) - (timeSeconds * (2.1 + layerIndex)) + seed));
-    const radius = baseRadius + (wave * amplitude) + (rip * microAmplitude) + (burstStrength * rip * 18);
+    const wave = sampleCoronaWave(angle, timeSeconds + (layerIndex * 0.22), seed + (layerIndex * 0.73));
+    const rip = Math.max(0, Math.sin((angle * (3.1 + (layerIndex * 0.7))) - (timeSeconds * (0.86 + (layerIndex * 0.18))) + seed));
+    const radius = baseRadius + (wave * amplitude) + (rip * microAmplitude) + (burstStrength * rip * 12);
     const x = Math.cos(angle) * radius;
     const y = Math.sin(angle) * radius;
 
@@ -5323,19 +5323,19 @@ function drawCoronaMembrane(context, metrics, burstStrength, layerIndex) {
   context.closePath();
 
   const fillGradient = context.createRadialGradient(0, 0, baseRadius * 0.45, 0, 0, baseRadius * 1.28);
-  fillGradient.addColorStop(0, `rgba(255, 254, 250, ${0.03 + (burstStrength * 0.02)})`);
-  fillGradient.addColorStop(0.38, `rgba(255, 205, 98, ${0.12 + (layerIndex * 0.03)})`);
-  fillGradient.addColorStop(0.7, `rgba(255, 112, 24, ${0.2 + (burstStrength * 0.08)})`);
+  fillGradient.addColorStop(0, `rgba(255, 254, 250, ${0.045 + (burstStrength * 0.018)})`);
+  fillGradient.addColorStop(0.38, `rgba(255, 205, 98, ${0.18 + (layerIndex * 0.05)})`);
+  fillGradient.addColorStop(0.7, `rgba(255, 112, 24, ${0.3 + (burstStrength * 0.08)})`);
   fillGradient.addColorStop(1, "rgba(255, 74, 18, 0)");
   context.fillStyle = fillGradient;
   context.fill();
 
   context.globalCompositeOperation = "lighter";
-  context.lineWidth = 3.2 - (layerIndex * 0.7);
+  context.lineWidth = 4.8 - (layerIndex * 0.9);
   context.strokeStyle = layerIndex === 0
-    ? `rgba(255, 238, 188, ${0.42 + (burstStrength * 0.18)})`
-    : `rgba(255, 149, 54, ${0.22 + (burstStrength * 0.1)})`;
-  context.shadowBlur = 16 + (burstStrength * 18);
+    ? `rgba(255, 238, 188, ${0.48 + (burstStrength * 0.14)})`
+    : `rgba(255, 149, 54, ${0.28 + (burstStrength * 0.08)})`;
+  context.shadowBlur = 20 + (burstStrength * 16);
   context.shadowColor = layerIndex === 0 ? "rgba(255, 206, 116, 0.4)" : "rgba(255, 94, 16, 0.32)";
   context.stroke();
   context.restore();
@@ -5350,7 +5350,7 @@ function drawCoronaTentacles(context, metrics, burstStrength) {
     seed,
     yCompression
   } = metrics;
-  const tentacleCount = prefersReducedMotion() ? 4 : 8 + Math.round(burstStrength * 7);
+  const tentacleCount = prefersReducedMotion() ? 3 : 5 + Math.round(burstStrength * 4);
 
   context.save();
   context.translate(centerX, centerY);
@@ -5359,10 +5359,10 @@ function drawCoronaTentacles(context, metrics, burstStrength) {
 
   for (let index = 0; index < tentacleCount; index += 1) {
     const lane = index / tentacleCount;
-    const angle = (lane * TAU) + (sampleCoronaWave(lane * TAU, timeSeconds * 0.42, seed + index) * 0.16);
-    const launchRadius = baseRadius + (Math.max(0, Math.sin((timeSeconds * 1.9) + (index * 0.84) + seed)) * burstStrength * 22);
-    const length = (baseRadius * (0.18 + pseudoRandom(seed + (index * 2.17)) * 0.24)) + (burstStrength * 36);
-    const tangent = angle + ((pseudoRandom(seed + (index * 5.1)) - 0.5) * 0.95);
+    const angle = (lane * TAU) + (sampleCoronaWave(lane * TAU, timeSeconds * 0.24, seed + index) * 0.12);
+    const launchRadius = baseRadius + (Math.max(0, Math.sin((timeSeconds * 0.92) + (index * 0.52) + seed)) * burstStrength * 12);
+    const length = (baseRadius * (0.26 + pseudoRandom(seed + (index * 2.17)) * 0.18)) + (burstStrength * 20);
+    const tangent = angle + ((pseudoRandom(seed + (index * 5.1)) - 0.5) * 0.55);
     const startX = Math.cos(angle) * launchRadius;
     const startY = Math.sin(angle) * launchRadius;
     const tipX = Math.cos(angle) * (launchRadius + length);
@@ -5373,17 +5373,17 @@ function drawCoronaTentacles(context, metrics, burstStrength) {
     context.beginPath();
     context.moveTo(startX, startY);
     context.quadraticCurveTo(controlX, controlY, tipX, tipY);
-    context.lineWidth = 1.2 + (burstStrength * 1.6);
-    context.strokeStyle = `rgba(255, 171, 72, ${0.18 + (burstStrength * 0.18)})`;
-    context.shadowBlur = 16;
+    context.lineWidth = 2.8 + (burstStrength * 1.3);
+    context.strokeStyle = `rgba(255, 171, 72, ${0.22 + (burstStrength * 0.12)})`;
+    context.shadowBlur = 18;
     context.shadowColor = "rgba(255, 116, 28, 0.3)";
     context.stroke();
 
     context.beginPath();
     context.moveTo(startX, startY);
     context.quadraticCurveTo(controlX, controlY, tipX, tipY);
-    context.lineWidth = 0.8 + (burstStrength * 0.7);
-    context.strokeStyle = `rgba(255, 241, 196, ${0.12 + (burstStrength * 0.1)})`;
+    context.lineWidth = 1.4 + (burstStrength * 0.5);
+    context.strokeStyle = `rgba(255, 241, 196, ${0.16 + (burstStrength * 0.06)})`;
     context.stroke();
   }
 
@@ -5392,20 +5392,41 @@ function drawCoronaTentacles(context, metrics, burstStrength) {
 
 function createCoronaParticle(now, metrics, burstStrength, particleIndex) {
   const seed = state.extraction.transition.seed + particleIndex + (now * 0.001);
-  const lifeMs = 700 + (pseudoRandom(seed + 0.4) * 520) + (burstStrength * 280);
+  const typeRoll = pseudoRandom(seed + 8.8);
+  const type = typeRoll < 0.56
+    ? "island"
+    : typeRoll < 0.87
+      ? "drifter"
+      : "flyer";
+  const lifeMs = type === "flyer"
+    ? 1180 + (pseudoRandom(seed + 0.4) * 640) + (burstStrength * 220)
+    : 1480 + (pseudoRandom(seed + 0.4) * 920) + (burstStrength * 320);
   const angle = pseudoRandom(seed + 1.2) * TAU;
-  const arc = (pseudoRandom(seed + 2.3) - 0.5) * (0.7 + (burstStrength * 0.9));
-  const launch = (metrics.baseRadius * (0.18 + (pseudoRandom(seed + 3.1) * 0.3))) + (burstStrength * 44);
-  const size = 2.4 + (pseudoRandom(seed + 4.8) * 4.6) + (burstStrength * 2.4);
+  const arc = type === "flyer"
+    ? (pseudoRandom(seed + 2.3) - 0.5) * (0.5 + (burstStrength * 0.52))
+    : (pseudoRandom(seed + 2.3) - 0.5) * 0.22;
+  const launch = type === "flyer"
+    ? (metrics.baseRadius * (0.16 + (pseudoRandom(seed + 3.1) * 0.16))) + (burstStrength * 18)
+    : type === "drifter"
+      ? (metrics.baseRadius * (0.1 + (pseudoRandom(seed + 3.1) * 0.12))) + (burstStrength * 8)
+      : (metrics.baseRadius * (0.04 + (pseudoRandom(seed + 3.1) * 0.06))) + (burstStrength * 3.5);
+  const size = type === "island"
+    ? 5.8 + (pseudoRandom(seed + 4.8) * 7.6) + (burstStrength * 2.2)
+    : type === "drifter"
+      ? 3.8 + (pseudoRandom(seed + 4.8) * 4.8) + (burstStrength * 1.3)
+      : 2.3 + (pseudoRandom(seed + 4.8) * 2.7) + (burstStrength * 1.1);
 
   return {
+    type,
     bornAt: now,
     lifeMs,
     angle,
     arc,
     launch,
     size,
-    emberStart: 0.52 + (pseudoRandom(seed + 7.9) * 0.16),
+    emberStart: type === "flyer"
+      ? 0.58 + (pseudoRandom(seed + 7.9) * 0.12)
+      : 0.72 + (pseudoRandom(seed + 7.9) * 0.1),
     history: []
   };
 }
@@ -5418,8 +5439,8 @@ function updateCoronaParticles(now, metrics, burstStrength) {
     return;
   }
 
-  const targetCount = Math.round(6 + (burstStrength * 18));
-  const spawnInterval = Math.max(36, 260 - (burstStrength * 200));
+  const targetCount = Math.round(4 + (burstStrength * 9));
+  const spawnInterval = Math.max(120, 420 - (burstStrength * 180));
 
   while (
     transition.lastSpawnTime > 0
@@ -5439,16 +5460,28 @@ function updateCoronaParticles(now, metrics, burstStrength) {
       return false;
     }
 
-    const arcProgress = Math.sin(progress * Math.PI);
-    const radius = metrics.baseRadius + (particle.launch * arcProgress * (1 - (progress * 0.18)));
-    const angle = particle.angle + (particle.arc * arcProgress);
+    let liftCurve = 0;
+
+    if (particle.type === "flyer") {
+      const arcProgress = Math.sin(progress * Math.PI);
+      liftCurve = arcProgress * (1 - (progress * 0.18));
+    } else if (particle.type === "drifter") {
+      liftCurve = Math.sin(progress * Math.PI * 0.72) * (0.84 - (progress * 0.12));
+    } else {
+      const rise = Math.min(1, progress / 0.3);
+      const settle = progress > 0.62 ? (progress - 0.62) / 0.38 : 0;
+      liftCurve = (easeOutCubic(rise) * 0.72) - (easeInOutSine(Math.min(1, settle)) * 0.26);
+    }
+
+    const radius = metrics.baseRadius + (particle.launch * liftCurve);
+    const angle = particle.angle + (particle.arc * liftCurve);
     const x = metrics.centerX + (Math.cos(angle) * radius);
     const y = metrics.centerY + (Math.sin(angle) * radius * metrics.yCompression);
     particle.progress = progress;
     particle.x = x;
     particle.y = y;
     particle.history.unshift({ x, y, progress });
-    particle.history.length = 10;
+    particle.history.length = particle.type === "island" ? 18 : 14;
     return true;
   });
 }
@@ -5476,21 +5509,64 @@ function drawCoronaParticles(context, metrics, burstStrength) {
         context.lineTo(point.x, point.y);
       }
     });
-    context.lineWidth = particle.size * (1.1 - (particle.progress * 0.45));
-    context.strokeStyle = particle.progress >= particle.emberStart
-      ? `rgba(255, 243, 205, ${0.36 + (burstStrength * 0.16)})`
-      : `rgba(255, 140, 44, ${0.28 + (burstStrength * 0.16)})`;
-    context.shadowBlur = 14 + (particle.size * 2.2);
-    context.shadowColor = particle.progress >= particle.emberStart
-      ? "rgba(255, 239, 192, 0.4)"
-      : "rgba(255, 110, 16, 0.34)";
+    context.lineWidth = particle.size * (
+      particle.type === "island"
+        ? (1.55 - (particle.progress * 0.32))
+        : 1.18 - (particle.progress * 0.42)
+    );
+    context.strokeStyle = particle.type === "island"
+      ? `rgba(255, 126, 38, ${0.3 + (burstStrength * 0.12)})`
+      : particle.progress >= particle.emberStart
+        ? `rgba(255, 243, 205, ${0.36 + (burstStrength * 0.16)})`
+        : `rgba(255, 140, 44, ${0.28 + (burstStrength * 0.16)})`;
+    context.shadowBlur = 16 + (particle.size * 2.8);
+    context.shadowColor = particle.type === "island"
+      ? "rgba(255, 102, 16, 0.38)"
+      : particle.progress >= particle.emberStart
+        ? "rgba(255, 239, 192, 0.4)"
+        : "rgba(255, 110, 16, 0.34)";
     context.stroke();
 
     context.beginPath();
+    particle.history.forEach((point, index) => {
+      if (index === 0) {
+        context.moveTo(point.x, point.y);
+      } else {
+        context.lineTo(point.x, point.y);
+      }
+    });
+    context.lineWidth = particle.size * (
+      particle.type === "island"
+        ? (0.8 - (particle.progress * 0.18))
+        : 0.5
+    );
+    context.strokeStyle = particle.progress >= particle.emberStart
+      ? `rgba(255, 243, 205, ${0.36 + (burstStrength * 0.16)})`
+      : `rgba(255, 140, 44, ${0.28 + (burstStrength * 0.16)})`;
+    context.stroke();
+
+    if (particle.type === "island") {
+      context.beginPath();
+      context.ellipse(
+        particle.x,
+        particle.y,
+        particle.size * 0.92,
+        particle.size * 0.64,
+        particle.angle,
+        0,
+        TAU
+      );
+      context.fillStyle = "rgba(255, 118, 34, 0.36)";
+      context.fill();
+    }
+
+    context.beginPath();
     context.arc(particle.x, particle.y, particle.size * (particle.progress >= particle.emberStart ? 0.55 : 0.75), 0, TAU);
-    context.fillStyle = particle.progress >= particle.emberStart
-      ? "rgba(255, 247, 220, 0.92)"
-      : "rgba(255, 189, 98, 0.8)";
+    context.fillStyle = particle.type === "island"
+      ? "rgba(255, 212, 132, 0.82)"
+      : particle.progress >= particle.emberStart
+        ? "rgba(255, 247, 220, 0.92)"
+        : "rgba(255, 189, 98, 0.8)";
     context.fill();
   });
 
@@ -5578,7 +5654,7 @@ function updateExtractionAnimation() {
 
   const idlePulse = prefersReducedMotion()
     ? 0.18
-    : 0.22 + (Math.sin((now / 1000) * 1.15) * 0.08);
+    : 0.2 + (Math.sin((now / 1000) * 0.62) * 0.06);
   const reducedBurstStrength = prefersReducedMotion() ? 0.12 : burstStrength;
   const coronaOpacity = Math.min(1, 0.84 + idlePulse + (reducedBurstStrength * 0.12));
   const coronaScale = 1 + (reducedBurstStrength * 0.025);
