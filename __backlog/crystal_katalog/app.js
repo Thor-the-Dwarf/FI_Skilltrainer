@@ -3931,7 +3931,13 @@ function computePreferredPolyhedronHeightLine(faces) {
   };
 }
 
-function buildFractalLayoutItem(clusterCells, runeIndex, totalFractalCount, parentSegmentFaces = null) {
+function buildFractalLayoutItem(
+  clusterCells,
+  runeIndex,
+  totalFractalCount,
+  parentSegmentFaces = null,
+  parentSegmentHeightLine = null
+) {
   const boundaryFaces = totalFractalCount === 1 && Array.isArray(parentSegmentFaces) && parentSegmentFaces.length
     ? parentSegmentFaces.map((faceVertices) => faceVertices.map((vertex) => vertex.clone()))
     : buildClusterBoundaryFaces(clusterCells);
@@ -3944,7 +3950,14 @@ function buildFractalLayoutItem(clusterCells, runeIndex, totalFractalCount, pare
   const baseRuneSize = maxRuneSize * Math.max(1, Math.sqrt(clusterCells.length) * 0.78);
   const runeSizeCap = totalFractalCount === 1 ? 0.28 : 0.62;
   const runeSize = Math.max(0.16, Math.min(runeSizeCap, baseRuneSize));
-  const heightLine = computePreferredPolyhedronHeightLine(faceEntries);
+  const heightLine = totalFractalCount === 1 && parentSegmentHeightLine
+    ? {
+      apex: parentSegmentHeightLine.apex.clone(),
+      baseCenter: parentSegmentHeightLine.baseCenter.clone(),
+      axis: parentSegmentHeightLine.axis.clone(),
+      midpoint: parentSegmentHeightLine.midpoint.clone()
+    }
+    : computePreferredPolyhedronHeightLine(faceEntries);
   const balancedPlacement = computeBalancedRuneAnchorPosition(
     faceEntries,
     heightLine,
@@ -4058,10 +4071,25 @@ function getTetrahedronRuneLayout(vertices, centroid, requestedRuneCount = DEFAU
   const seedCells = upwardCandidates.filter((_, candidateIndex) => selectedCandidateIndices.has(candidateIndex));
   const clusterAssignments = assignCellsToFractalSeeds(cells, seedCells);
   const parentSegmentFaces = buildTetrahedronFragmentFaces(vertices, centroid);
+  const parentSegmentBaseCenter = computeFaceCenter(vertices);
+  const parentSegmentApex = centroid.clone();
+  const parentSegmentAxis = parentSegmentApex.subtract(parentSegmentBaseCenter).normalize();
+  const parentSegmentHeightLine = {
+    apex: parentSegmentApex,
+    baseCenter: parentSegmentBaseCenter,
+    axis: parentSegmentAxis,
+    midpoint: BABYLON.Vector3.Lerp(parentSegmentBaseCenter, parentSegmentApex, 0.5)
+  };
 
   return seedCells.map((seedCell, runeIndex) => {
     const clusterCells = clusterAssignments.get(seedCell.cellIndex) || [seedCell];
-    return buildFractalLayoutItem(clusterCells, runeIndex, seedCells.length, parentSegmentFaces);
+    return buildFractalLayoutItem(
+      clusterCells,
+      runeIndex,
+      seedCells.length,
+      parentSegmentFaces,
+      parentSegmentHeightLine
+    );
   });
 }
 
