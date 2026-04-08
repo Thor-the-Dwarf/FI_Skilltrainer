@@ -3647,8 +3647,8 @@ function normalizeFragmentRuneCount(requestedCount) {
 function getDefaultFragmentRuneCount(selectionId, faceIndex) {
   // Ziel: Auch ohne explizite Konfiguration pro H2-Fragment unterschiedliche H3-Anzahlen erzeugen.
   // Warum: Der Prototyp soll die 1..10-Faehigkeit direkt sichtbar vorfuehren; viermal der alte 10er-Zustand wuerde sonst wie ein nicht umgesetzter Umbau wirken.
-  const seededValue = seededRange((selectionId * 17.913) + 4.271, faceIndex + 1, 1, 10);
-  return Math.max(1, Math.min(9, Math.round(seededValue)));
+  const defaultCounts = [1, 3, 6, 10];
+  return defaultCounts[faceIndex] || DEFAULT_H3_RUNES_PER_FRAGMENT;
 }
 
 function getRequestedFragmentRuneCount(selectionId, faceIndex) {
