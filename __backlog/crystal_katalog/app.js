@@ -64,7 +64,9 @@ const runtimeDebugSummary = document.getElementById("runtimeDebugSummary");
 const runtimeDebugLog = document.getElementById("runtimeDebugLog");
 const STARTUP_CONFIG = parseStartupConfig();
 const diagnostics = createDiagnosticsState(STARTUP_CONFIG);
-const EXPLODED_CRYSTAL_OFFSET_X = -1.04;
+const DEFAULT_CAMERA_RADIUS = 6.1;
+const DETAIL_CAMERA_RADIUS = 6.35;
+const EXPLODED_CRYSTAL_OFFSET_X = 0;
 
 const state = {
   selectedId: STARTUP_CONFIG.selectionId,
@@ -512,8 +514,8 @@ function syncQuickSelects(id) {
 }
 
 function applyExplodedLayout(isActive) {
-  // Ziel: Die Detailansicht mit einer sichtbar groesseren rechten Detailspalte lesbar machen.
-  // Warum: Die Detailkarten brauchen mehr Raum als die Kristallbuehne, aber eine zu harte 40/60-Aufteilung wirkte gestalterisch zu starr.
+  // Ziel: Im Detailzustand eine Buehne schaffen, auf der der Kristall links gross, zentriert und unbeschnitten lesbar bleibt.
+  // Warum: Das relevante Qualitaetskriterium ist hier nicht ein starres Prozentverhaeltnis, sondern dass der Kristall klar praesentiert wird und die Details trotzdem rechts genug Platz haben.
   document.body.classList.toggle("is-exploded", isActive);
 
   if (detailExperience) {
@@ -522,6 +524,10 @@ function applyExplodedLayout(isActive) {
 
   if (state.crystalRoot) {
     state.crystalRoot.position.x = isActive ? EXPLODED_CRYSTAL_OFFSET_X : 0;
+  }
+
+  if (state.camera) {
+    state.camera.radius = isActive ? DETAIL_CAMERA_RADIUS : DEFAULT_CAMERA_RADIUS;
   }
 
   requestAnimationFrame(() => {
@@ -548,7 +554,7 @@ function setupBabylonScene() {
     "camera",
     -Math.PI / 2,
     Math.PI / 2.35,
-    6.1,
+    DEFAULT_CAMERA_RADIUS,
     new BABYLON.Vector3(0, 0, 0),
     scene
   );
@@ -645,7 +651,7 @@ function rebuildCrystal(shapeConfig, selectionId) {
   crystal.root.rotationQuaternion = getInitialQuaternionForShape(shapeConfig, crystal);
 
   if (state.camera) {
-    state.camera.radius = 6.1;
+    state.camera.radius = state.extraction.stage === "expanded" ? DETAIL_CAMERA_RADIUS : DEFAULT_CAMERA_RADIUS;
   }
 
   crystal.root.position.x = state.extraction.stage === "expanded" ? EXPLODED_CRYSTAL_OFFSET_X : 0;

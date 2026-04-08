@@ -12,7 +12,7 @@
   --accent-soft: 193 70% 52%;
   --accent-warm: 33 92% 60%;
   --detail-advance-width: 58px;
-  --detail-pane-width: 56%;
+  --detail-pane-width: 45%;
   --shadow: 0 24px 70px rgba(3, 8, 20, 0.55);
   color-scheme: dark;
 }
@@ -243,7 +243,7 @@ body.is-exploded .stage-frame {
 
 body.is-exploded #renderCanvas {
   /* Ziel: Der 3D-Bereich soll im Detailzustand wirklich nur die linke Split-Flaeche belegen. */
-  /* Warum: Solange das Canvas ueber die volle Breite laeuft, bleibt der Split selbst bei breiteren Detailkarten nur ein Overlay und ist kaum als Layoutwechsel lesbar. */
+  /* Warum: Der Kristall braucht im Detailzustand genug eigene Buehne, damit er gross und vollstaendig sichtbar bleibt statt an die linke Kante gedrueckt zu werden. */
   width: calc(100% - var(--detail-pane-width));
 }
 
@@ -568,7 +568,7 @@ body.is-exploded .detail-advance-button {
 @media (max-width: 920px) {
   :root {
     --detail-advance-width: 52px;
-    --detail-pane-width: 58%;
+    --detail-pane-width: 50%;
   }
 
   .vault-shell {
