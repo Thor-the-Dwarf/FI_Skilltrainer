@@ -7227,9 +7227,8 @@ function updateViewerMovement(scene) {
 
   const forwardAmount = Number(state.movement.forward) - Number(state.movement.backward);
   const strafeAmount = Number(state.movement.right) - Number(state.movement.left);
-  const effectiveStrafeAmount = state.selectedId === null ? -strafeAmount : strafeAmount;
 
-  if (forwardAmount === 0 && effectiveStrafeAmount === 0) {
+  if (forwardAmount === 0 && strafeAmount === 0) {
     return;
   }
 
@@ -7243,7 +7242,7 @@ function updateViewerMovement(scene) {
 
   cameraForward.normalize();
   cameraRight.normalize();
-  const movementVector = cameraForward.scale(forwardAmount).add(cameraRight.scale(effectiveStrafeAmount));
+  const movementVector = cameraForward.scale(forwardAmount).add(cameraRight.scale(strafeAmount));
 
   if (movementVector.lengthSquared() < 1e-6) {
     return;
