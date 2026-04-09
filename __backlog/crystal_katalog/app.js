@@ -5265,13 +5265,14 @@ function buildPresenterHaloNodes(metrics) {
   // Ziel: Die frei schwebenden HaloNodes des Referenzprojekts im Presenter stabil nachbauen.
   // Warum: Die Miniaturansicht soll die echte Kristallstruktur erahnen lassen. Deshalb sitzt jede HaloSphere auf der projizierten Symbolposition und darf nur innerhalb ihres eigenen Radius leicht driften.
   const timeSeconds = metrics.timeSeconds;
+  const structureSpreadScale = 2;
   const levelProfiles = {
     h1: { radiusMin: 17, radiusMax: 20, haloMinFactor: 2.9, haloMaxFactor: 4.2 },
     h2: { radiusMin: 12, radiusMax: 14.5, haloMinFactor: 2.45, haloMaxFactor: 3.45 },
     h3: { radiusMin: 7.25, radiusMax: 9.25, haloMinFactor: 2.0, haloMaxFactor: 2.85 }
   };
 
-  return state.extraction.items
+  const anchoredNodes = state.extraction.items
     .filter((item) => item?.runeSymbol && item.runeAnchorMesh)
     .map((item) => {
       const seed = hashStringToSeed(String(item.entryId));
@@ -5324,6 +5325,34 @@ function buildPresenterHaloNodes(metrics) {
       };
     })
     .filter(Boolean);
+
+  if (!anchoredNodes.length) {
+    return anchoredNodes;
+  }
+
+  const structureCenter = anchoredNodes.reduce((accumulator, node) => {
+    accumulator.x += node.anchorX;
+    accumulator.y += node.anchorY;
+    return accumulator;
+  }, { x: 0, y: 0 });
+
+  structureCenter.x /= anchoredNodes.length;
+  structureCenter.y /= anchoredNodes.length;
+
+  return anchoredNodes.map((node) => {
+    const expandedAnchorX = structureCenter.x + ((node.anchorX - structureCenter.x) * structureSpreadScale);
+    const expandedAnchorY = structureCenter.y + ((node.anchorY - structureCenter.y) * structureSpreadScale);
+    const driftDeltaX = node.x - node.anchorX;
+    const driftDeltaY = node.y - node.anchorY;
+
+    return {
+      ...node,
+      anchorX: expandedAnchorX,
+      anchorY: expandedAnchorY,
+      x: expandedAnchorX + driftDeltaX,
+      y: expandedAnchorY + driftDeltaY
+    };
+  });
 }
 
 function drawPresenterHaloNetwork(context, metrics, nodesById) {
