@@ -71,7 +71,7 @@ const STARTUP_CONFIG = parseStartupConfig();
 const diagnostics = createDiagnosticsState(STARTUP_CONFIG);
 const DEFAULT_CAMERA_RADIUS = 6.1;
 const DETAIL_CAMERA_RADIUS = 6.35;
-const CONTENT_CAMERA_RADIUS = 6.15;
+const CONTENT_CAMERA_RADIUS = 4.7;
 const CONTENT_ENTER_TRANSITION_MS = 1280;
 const CONTENT_EXIT_TRANSITION_MS = 920;
 const CONTENT_REDUCED_MOTION_TRANSITION_MS = 220;
@@ -5578,12 +5578,13 @@ function stepPresenterHaloSimulation(metrics, simulation) {
   // Ziel: H1 starr halten und H2/H3 federnd um mitrotierende Kristall-Ankerpunkte tanzen lassen.
   // Warum: Die Miniatur soll die Kristallstruktur zeigen, ohne dass alle Spheres als ein starrer Klumpen rotieren; deshalb bewegen sich nur die Anchor-Points mit dem Kristall, nicht die komplette Node-Wolke.
   const deltaSeconds = BABYLON.Scalar.Clamp((metrics.now - simulation.lastTime) / 1000, 1 / 240, 1 / 30);
-  const damping = 0.88;
+  const driftTime = metrics.now / 1000;
+  const damping = 0.91;
   const h2Spring = 5.4;
   const h3Spring = 4.9;
   const parentPull = 1.75;
-  const anchorPull = 1.2;
-  const repulsionStrength = 4200;
+  const anchorPull = 0.46;
+  const repulsionStrength = 4600;
   const minGapFactor = 0.92;
   const movableNodes = Array.from(simulation.nodes.values()).filter((node) => node.level !== "h1");
 
@@ -5600,8 +5601,12 @@ function stepPresenterHaloSimulation(metrics, simulation) {
   });
 
   movableNodes.forEach((node) => {
-    const targetX = node.anchorX;
-    const targetY = node.anchorY;
+    const driftPhase = node.orbitPhase + (driftTime * node.orbitSpeed);
+    const driftRadius = node.level === "h2"
+      ? node.radius * 1.28
+      : node.radius * 1.46;
+    const targetX = node.anchorX + (Math.cos(driftPhase) * driftRadius);
+    const targetY = node.anchorY + (Math.sin(driftPhase * 1.17) * driftRadius * 0.9);
     const springStrength = node.level === "h2" ? h2Spring : h3Spring;
 
     node.targetX = targetX;
@@ -5653,7 +5658,7 @@ function stepPresenterHaloSimulation(metrics, simulation) {
     const anchorDx = node.posX - node.anchorX;
     const anchorDy = node.posY - node.anchorY;
     const anchorDistance = Math.hypot(anchorDx, anchorDy);
-    const maxAnchorDistance = Math.max(12, node.radius * 1.96);
+    const maxAnchorDistance = Math.max(24, node.radius * 3.92);
 
     node.velX += (node.anchorX - node.posX) * anchorPull * deltaSeconds;
     node.velY += (node.anchorY - node.posY) * anchorPull * deltaSeconds;
