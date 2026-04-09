@@ -464,7 +464,6 @@ body.is-exploded .detail-experience {
     opacity 240ms ease,
     transform 280ms ease,
     width 280ms ease;
-  transform: translate(var(--detail-overlay-shift-x, 0px), var(--detail-overlay-shift-y, 0px));
 }
 
 .detail-lines {
@@ -499,7 +498,6 @@ body.is-exploded .detail-experience {
   scrollbar-width: thin;
   scrollbar-color: hsl(var(--line-strong) / 0.9) transparent;
   z-index: 2;
-  transform: translate(var(--detail-overlay-shift-x, 0px), var(--detail-overlay-shift-y, 0px));
   transition:
     opacity 240ms ease,
     transform 280ms ease;
@@ -512,10 +510,7 @@ body.is-exploded .detail-cards {
 body.is-content-mode .detail-experience::before,
 body.is-content-mode .detail-cards {
   opacity: 0;
-  transform: translate(
-    calc(34px + var(--detail-overlay-shift-x, 0px)),
-    var(--detail-overlay-shift-y, 0px)
-  ) scale(0.985);
+  transform: translateX(34px) scale(0.985);
   pointer-events: none;
 }
 
