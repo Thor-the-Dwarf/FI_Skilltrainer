@@ -1317,8 +1317,11 @@ function setupBabylonScene() {
 
   engine.runRenderLoop(() => {
     updateSnapAnimation();
-    updateExtractionAnimation();
     updatePresenterRotation(scene);
+    if (state.extraction.stage === "expanded" && state.extraction.viewMode === "content") {
+      syncExperienceCamera();
+    }
+    updateExtractionAnimation();
     updateViewerMovement(scene);
     syncDetachedRuneAnchors();
     try {
