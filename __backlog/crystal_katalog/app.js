@@ -754,7 +754,15 @@ function computeCurrentCrystalCenter() {
   }
 
   if (state.faceEntries.length >= 4) {
-    return computeMaximumInscribedSphere(state.faceEntries).center.clone();
+    const polyhedronFaceEntries = buildPolyhedronFaceEntries(
+      state.faceEntries
+        .map((faceEntry) => faceEntry?.vertices)
+        .filter((vertices) => Array.isArray(vertices) && vertices.length >= 3)
+    );
+
+    if (polyhedronFaceEntries.length >= 4) {
+      return computeMaximumInscribedSphere(polyhedronFaceEntries).center.clone();
+    }
   }
 
   return computeFaceCenter(boundaryPoints);
@@ -803,7 +811,7 @@ function computeContentCameraRadius() {
   const usableHorizontalHalfFov = Math.atan(Math.tan(baseHorizontalHalfFov) * (shellRadiusPx / viewportHalfWidth));
   const limitingHalfFov = Math.max(0.12, Math.min(usableVerticalHalfFov, usableHorizontalHalfFov));
   const bodyRadius = Math.sqrt(maxDistanceSquared) * 0.5;
-  const fittedRadius = bodyRadius / Math.sin(limitingHalfFov);
+  const fittedRadius = bodyRadius / Math.tan(limitingHalfFov);
 
   return BABYLON.Scalar.Clamp(fittedRadius, 2.2, 8.8);
 }
@@ -5251,13 +5259,26 @@ function projectWorldPointToStageWithContext(worldPoint, projectionContext) {
     projectionContext.viewport
   );
 
-  if (projected.z < 0 || projected.z > 1) {
+  if (
+    !Number.isFinite(projected.x)
+    || !Number.isFinite(projected.y)
+    || !Number.isFinite(projected.z)
+    || projected.z < 0
+    || projected.z > 1
+  ) {
+    return null;
+  }
+
+  const projectedX = (projected.x / projectionContext.renderWidth) * projectionContext.canvasRect.width;
+  const projectedY = (projected.y / projectionContext.renderHeight) * projectionContext.canvasRect.height;
+
+  if (!Number.isFinite(projectedX) || !Number.isFinite(projectedY)) {
     return null;
   }
 
   return {
-    x: (projected.x / projectionContext.renderWidth) * projectionContext.canvasRect.width,
-    y: (projected.y / projectionContext.renderHeight) * projectionContext.canvasRect.height
+    x: projectedX,
+    y: projectedY
   };
 }
 
@@ -5499,8 +5520,8 @@ function ensurePresenterHaloLayout(metrics) {
       return [
         node.entryId,
         {
-          normalizedX: expandedAnchorX / Math.max(1, metrics.width),
-          normalizedY: expandedAnchorY / Math.max(1, metrics.height)
+          normalizedX: Number.isFinite(expandedAnchorX) ? expandedAnchorX / Math.max(1, metrics.width) : 0.5,
+          normalizedY: Number.isFinite(expandedAnchorY) ? expandedAnchorY / Math.max(1, metrics.height) : 0.5
         }
       ];
     })
@@ -5552,6 +5573,11 @@ function buildPresenterHaloSimulation(metrics, layoutMap, levelProfiles) {
       );
       const anchorX = layoutEntry.normalizedX * metrics.width;
       const anchorY = layoutEntry.normalizedY * metrics.height;
+
+      if (!Number.isFinite(anchorX) || !Number.isFinite(anchorY)) {
+        return;
+      }
+
       const parentLayout = item.parentId ? layoutMap.get(item.parentId) : null;
       const parentAnchorX = parentLayout ? parentLayout.normalizedX * metrics.width : centerX;
       const parentAnchorY = parentLayout ? parentLayout.normalizedY * metrics.height : centerY;
