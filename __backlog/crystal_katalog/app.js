@@ -83,7 +83,9 @@ const DETAIL_OVERLAY_DRIFT_Y_IMPULSE = 0.28;
 const DETAIL_OVERLAY_DRIFT_MAX_OFFSET_PX = 46;
 const DETAIL_OVERLAY_DRIFT_SPRING = 0.12;
 const DETAIL_OVERLAY_DRIFT_DAMPING = 0.8;
-const VAULT_CAMERA_RADIUS = 13.4;
+const VAULT_CAMERA_RADIUS = 18.2;
+const VAULT_CAMERA_ALPHA = -Math.PI / 2;
+const VAULT_CAMERA_BETA = Math.PI / 2.7;
 const VAULT_CRYSTAL_SCALE_MIN = 0.34;
 const VAULT_CRYSTAL_SCALE_MAX = 0.5;
 const VAULT_LAYOUT_RADIUS = 5.4;
@@ -1726,6 +1728,8 @@ function rebuildVault() {
 
   if (state.camera) {
     state.camera.target.copyFrom(BABYLON.Vector3.Zero());
+    state.camera.alpha = VAULT_CAMERA_ALPHA;
+    state.camera.beta = VAULT_CAMERA_BETA;
     state.camera.radius = VAULT_CAMERA_RADIUS;
   }
 
@@ -6990,6 +6994,10 @@ function enableBoxDragging(camera, canvas) {
 
   canvas.addEventListener("pointerdown", (event) => {
     if (event.button !== 0 && event.button !== 2) {
+      return;
+    }
+
+    if (event.button === 2 && state.selectedId === null) {
       return;
     }
 
