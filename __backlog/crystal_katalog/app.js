@@ -5368,10 +5368,10 @@ function drawPresenterHaloSymbol(context, node) {
   const textureSize = 512;
   const outlineWidth = 22;
   const glyphLayout = measureRuneGlyphLayout(node.symbol, textureSize, outlineWidth);
-  const fontSize = Math.round(textureSize * 0.5);
+  const fontSize = Math.round(textureSize * 0.54);
   const halfTexture = textureSize * 0.5;
   const inscribedSquareHalfExtent = node.radius / Math.SQRT2;
-  const desiredHalfExtent = inscribedSquareHalfExtent * 0.96;
+  const desiredHalfExtent = inscribedSquareHalfExtent * 0.992;
   const displayScale = desiredHalfExtent / halfTexture;
 
   context.save();
