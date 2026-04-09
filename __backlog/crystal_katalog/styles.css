@@ -17,14 +17,14 @@
   --content-sidebar-width: clamp(360px, 36vw, 460px);
   --content-crystal-size: clamp(340px, 34vw, 420px);
   --content-crystal-safe-padding: 32px;
-  --content-lavaball-opacity: 0.78;
+  --content-lavaball-opacity: 0.56;
   --content-lavaball-scale: 1;
   --content-halo-bg-start: 258 32% 10%;
   --content-halo-bg-mid: 241 34% 7%;
   --content-halo-bg-end: 238 44% 5%;
   --content-halo-line-rgb: 194, 206, 255;
   --content-halo-core-rgb: 17, 14, 29;
-  --content-halo-core-alpha: 0.72;
+  --content-halo-core-alpha: 0.54;
   --shadow: 0 24px 70px rgba(3, 8, 20, 0.55);
   color-scheme: dark;
 }
@@ -572,7 +572,13 @@ body.is-content-mode .content-experience {
   border-radius: 999px;
   border: 1px solid hsl(0 0% 100% / 0.14);
   background:
-    radial-gradient(circle at 50% 44%, rgba(22, 25, 34, 0.9), rgba(3, 3, 7, 0.98) 68%, rgba(0, 0, 0, 1) 100%);
+    radial-gradient(
+      circle at 50% 48%,
+      rgba(22, 25, 34, 0.12) 0,
+      rgba(16, 19, 27, 0.16) 34%,
+      rgba(7, 7, 12, 0.72) 72%,
+      rgba(0, 0, 0, 0.92) 100%
+    );
   box-shadow:
     inset 0 0 0 1px hsl(0 0% 100% / 0.04),
     inset 0 0 58px rgba(112, 132, 180, 0.06),
@@ -592,7 +598,7 @@ body.is-content-mode .content-experience {
   opacity: var(--content-lavaball-opacity);
   transform: scale(var(--content-lavaball-scale));
   pointer-events: none;
-  mix-blend-mode: normal;
+  mix-blend-mode: screen;
   z-index: 2;
   transform-origin: center;
 }

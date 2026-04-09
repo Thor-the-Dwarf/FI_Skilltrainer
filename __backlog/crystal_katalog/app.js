@@ -86,12 +86,12 @@ const PRESENTER_ROTATION_SPEED = Object.freeze({
   z: 0.08
 });
 const PRESENTER_CRYSTAL_LOOK = Object.freeze({
-  alpha: 0.18,
+  alpha: 0.34,
   diffuse: Object.freeze({ r: 0.94, g: 0.96, b: 0.99 }),
   ambient: Object.freeze({ r: 0.18, g: 0.19, b: 0.21 }),
-  emissive: Object.freeze({ r: 0.028, g: 0.032, b: 0.038 }),
+  emissive: Object.freeze({ r: 0.05, g: 0.058, b: 0.068 }),
   specular: Object.freeze({ r: 0.98, g: 0.99, b: 1.0 }),
-  specularPower: 196
+  specularPower: 220
 });
 const reducedMotionQuery = typeof window.matchMedia === "function"
   ? window.matchMedia("(prefers-reduced-motion: reduce)")
@@ -5927,7 +5927,7 @@ function updateExtractionAnimation() {
     ? 0.18
     : 0.2 + (Math.sin((now / 1000) * 0.62) * 0.06);
   const reducedBurstStrength = prefersReducedMotion() ? 0.12 : burstStrength;
-  const lavaBallOpacity = Math.min(1, 0.68 + idlePulse + (reducedBurstStrength * 0.08));
+  const lavaBallOpacity = Math.min(1, 0.5 + idlePulse + (reducedBurstStrength * 0.06));
   const lavaBallScale = 1 + (reducedBurstStrength * 0.025);
 
   contentCrystalPanel?.style.setProperty("--content-lavaball-opacity", `${lavaBallOpacity}`);
