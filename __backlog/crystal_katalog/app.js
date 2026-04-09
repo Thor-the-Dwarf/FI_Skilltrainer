@@ -5696,79 +5696,77 @@ function seededPresenterRange(seed, min, max) {
 }
 
 function drawPresenterContainerHalo(context, metrics) {
-  // Ziel: Den grossen runden Presenter-Kopf selbst wie eine HaloSphere lesen lassen.
-  // Warum: Der Container soll Teil desselben Drawings sein wie Netz und Spheres, nicht wie ein steifer separater Ring mit aufgesetztem Effekt.
+  // Ziel: Den grossen runden Presenter-Kopf wie die referenzierte HaloSphere mit dunklem Kern und pinkem Glow zeichnen.
+  // Warum: Der Nutzer will hier keine Spektraloptik, sondern genau den weichen magentafarbenen HaloSphere-Look des Bildbeispiels fuer den aeusseren Container.
   const centerX = metrics.width * 0.5;
   const centerY = metrics.height * 0.5;
-  const outerRadius = Math.min(metrics.width, metrics.height) * 0.49;
-  const ringOuterRadius = outerRadius * 0.995;
-  const ringInnerRadius = outerRadius * 0.81;
-  const blurOuterRadius = outerRadius * 1.08;
-  const rotation = prefersReducedMotion() ? 0 : metrics.timeSeconds * 0.085;
-  const spectrumStops = [
-    [0.0, "rgba(255, 54, 24, 0.92)"],
-    [0.12, "rgba(255, 112, 0, 0.96)"],
-    [0.24, "rgba(255, 208, 64, 0.98)"],
-    [0.37, "rgba(138, 255, 102, 0.94)"],
-    [0.5, "rgba(74, 255, 218, 0.9)"],
-    [0.63, "rgba(78, 146, 255, 0.94)"],
-    [0.76, "rgba(118, 86, 255, 0.96)"],
-    [0.88, "rgba(210, 78, 255, 0.92)"],
-    [1.0, "rgba(255, 54, 24, 0.92)"]
-  ];
+  const outerRadius = Math.min(metrics.width, metrics.height) * 0.485;
+  const coreRadius = outerRadius * 0.47;
+  const glowRadius = outerRadius * 1.06;
+  const beamCount = 18;
+  const beamRotation = prefersReducedMotion() ? 0 : metrics.timeSeconds * 0.045;
+  const beamStartRadius = coreRadius * 1.02;
+  const beamEndRadius = outerRadius * 1.26;
+  const beamBaseAlpha = 0.16;
+  const glowGradient = context.createRadialGradient(
+    centerX,
+    centerY,
+    coreRadius * 0.84,
+    centerX,
+    centerY,
+    glowRadius
+  );
 
-  const buildSpectrumGradient = () => {
-    if (typeof context.createConicGradient === "function") {
-      const gradient = context.createConicGradient(rotation, centerX, centerY);
-
-      spectrumStops.forEach(([stop, color]) => {
-        gradient.addColorStop(stop, color);
-      });
-
-      return gradient;
-    }
-
-    const fallbackGradient = context.createRadialGradient(
-      centerX,
-      centerY,
-      ringInnerRadius,
-      centerX,
-      centerY,
-      ringOuterRadius
-    );
-
-    fallbackGradient.addColorStop(0, "rgba(255, 200, 120, 0.18)");
-    fallbackGradient.addColorStop(0.55, "rgba(150, 176, 255, 0.32)");
-    fallbackGradient.addColorStop(1, "rgba(214, 92, 255, 0.24)");
-    return fallbackGradient;
-  };
-
-  const spectrumGradient = buildSpectrumGradient();
+  glowGradient.addColorStop(0, "rgba(255, 108, 212, 0)");
+  glowGradient.addColorStop(0.18, "rgba(255, 108, 212, 0.14)");
+  glowGradient.addColorStop(0.52, "rgba(233, 84, 188, 0.34)");
+  glowGradient.addColorStop(0.82, "rgba(193, 68, 152, 0.28)");
+  glowGradient.addColorStop(1, "rgba(126, 44, 104, 0)");
 
   context.save();
-  context.filter = `blur(${Math.max(18, outerRadius * 0.08)}px) saturate(155%)`;
+  context.filter = `blur(${Math.max(24, outerRadius * 0.11)}px)`;
   context.beginPath();
-  context.arc(centerX, centerY, blurOuterRadius, 0, TAU);
-  context.arc(centerX, centerY, ringInnerRadius * 0.985, 0, TAU, true);
-  context.fillStyle = spectrumGradient;
-  context.globalAlpha = 0.54;
-  context.fill("evenodd");
+  context.arc(centerX, centerY, glowRadius, 0, TAU);
+  context.fillStyle = glowGradient;
+  context.globalAlpha = 1;
+  context.fill();
+  context.restore();
+
+  context.save();
+  for (let index = 0; index < beamCount; index += 1) {
+    const phase = index / beamCount;
+    const angle = beamRotation + (phase * TAU);
+    const startX = centerX + (Math.cos(angle) * beamStartRadius);
+    const startY = centerY + (Math.sin(angle) * beamStartRadius);
+    const endX = centerX + (Math.cos(angle) * beamEndRadius);
+    const endY = centerY + (Math.sin(angle) * beamEndRadius);
+    const beamGradient = context.createLinearGradient(startX, startY, endX, endY);
+    const alpha = beamBaseAlpha * (0.7 + (Math.sin((metrics.timeSeconds * 0.4) + (phase * TAU)) * 0.22 + 0.22));
+
+    beamGradient.addColorStop(0, `rgba(255, 210, 244, ${(alpha * 0.72).toFixed(4)})`);
+    beamGradient.addColorStop(0.55, `rgba(255, 140, 224, ${(alpha * 0.42).toFixed(4)})`);
+    beamGradient.addColorStop(1, "rgba(255, 140, 224, 0)");
+    context.strokeStyle = beamGradient;
+    context.lineWidth = Math.max(1, outerRadius * 0.008);
+    context.beginPath();
+    context.moveTo(startX, startY);
+    context.lineTo(endX, endY);
+    context.stroke();
+  }
   context.restore();
 
   context.save();
   context.beginPath();
-  context.arc(centerX, centerY, ringOuterRadius, 0, TAU);
-  context.arc(centerX, centerY, ringInnerRadius, 0, TAU, true);
-  context.fillStyle = spectrumGradient;
-  context.globalAlpha = 0.86;
-  context.fill("evenodd");
+  context.arc(centerX, centerY, coreRadius, 0, TAU);
+  context.fillStyle = "rgba(14, 12, 24, 0.985)";
+  context.fill();
   context.restore();
 
   context.save();
   context.beginPath();
-  context.arc(centerX, centerY, ringOuterRadius, 0, TAU);
-  context.lineWidth = Math.max(1.5, outerRadius * 0.012);
-  context.strokeStyle = "rgba(255, 255, 255, 0.16)";
+  context.arc(centerX, centerY, coreRadius, 0, TAU);
+  context.lineWidth = Math.max(1.5, outerRadius * 0.01);
+  context.strokeStyle = "rgba(255, 214, 246, 0.06)";
   context.stroke();
   context.restore();
 }
