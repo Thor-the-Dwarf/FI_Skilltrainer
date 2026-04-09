@@ -1,3 +1,12 @@
+import {
+  canOpenDetailShell as selectionCanOpenDetailShell,
+  canOpenPresenterShell,
+  getCrystalSelectionDefinition,
+  supportsFullHierarchy as selectionSupportsFullHierarchy,
+  supportsVaultProxyLod
+} from "./crystals/registry.js";
+import { buildSelectionPlaceholderDetailItems } from "./crystals/shared/placeholder-shell.js";
+
 const catalogItems = Array.from({ length: 20 }, (_, index) => ({
   id: index + 1,
   title: String(index + 1)
@@ -291,9 +300,13 @@ function renderList() {
 }
 
 function supportsPresenterView(selectionId) {
-  // Ziel: Presenter-Einstiege nur fuer Kristalle anbieten, die die Presenter-Ansicht bereits wirklich tragen.
-  // Warum: Ein aktiver, aber leerlaufender Button wuerde wie ein kaputter Einstieg wirken; deshalb markieren wir unausgebaute Formen klar statt sie stillschweigend ins Nichts zu schicken.
-  return selectionId === 4;
+  // Ziel: Alle Selections schon jetzt ueber dieselbe Presenter-Shell betreten koennen.
+  // Warum: Der echte Fachcontent bleibt kristallspezifisch, aber der Einstiegspfad soll fuer die Rollout-Wellen bereits stabil und wiederverwendbar sein.
+  return canOpenPresenterShell(selectionId);
+}
+
+function canOpenDetailShell(selectionId) {
+  return selectionId !== null && selectionCanOpenDetailShell(selectionId);
 }
 
 function openPresenterFromList(selectionId) {
@@ -305,7 +318,7 @@ function openPresenterFromList(selectionId) {
     return;
   }
 
-  showTetrahedronDetails();
+  showSelectionDetails();
   setExtractionViewMode("content");
 }
 
@@ -340,7 +353,7 @@ function bindDetailAdvanceButton() {
   }
 
   detailAdvanceButton.addEventListener("click", () => {
-    if (!isTetrahedronExpanded()) {
+    if (!isDetailShellExpanded()) {
       return;
     }
 
@@ -363,7 +376,7 @@ function bindContentCrystalPanel() {
   }
 
   const activateReturn = () => {
-    if (!isTetrahedronExpanded() || state.extraction.viewMode !== "content") {
+    if (!isDetailShellExpanded() || state.extraction.viewMode !== "content") {
       return;
     }
 
@@ -972,12 +985,12 @@ function installGlobalDiagnosticHooks() {
       };
     },
     openDetails() {
-      showTetrahedronDetails();
+      showSelectionDetails();
       refreshRuntimeDiagnostics();
       return this.getReport();
     },
     openContentMode() {
-      showTetrahedronDetails();
+      showSelectionDetails();
       setExtractionViewMode("content");
       refreshRuntimeDiagnostics();
       return this.getReport();
@@ -1052,7 +1065,7 @@ function syncQuickSelects(id) {
 }
 
 function supportsVaultCloseByDetail(selectionId) {
-  return selectionId === 4;
+  return supportsVaultProxyLod(selectionId);
 }
 
 function collectCrystalBoundaryPoints(faceEntries = state.faceEntries) {
@@ -1784,9 +1797,9 @@ function setupBabylonScene() {
   enableViewerMovement(camera);
   installWebGLCanvasDiagnostics(renderCanvas);
 
-  if (STARTUP_CONFIG.openDetails && STARTUP_CONFIG.selectionId === 4) {
+  if (STARTUP_CONFIG.openDetails && canOpenDetailShell(STARTUP_CONFIG.selectionId)) {
     requestAnimationFrame(() => {
-      showTetrahedronDetails();
+      showSelectionDetails();
       refreshRuntimeDiagnostics();
     });
   }
@@ -2129,7 +2142,7 @@ function beginFocusTransition(selectionId, shapeConfig) {
   state.focusTransition.toCameraRadius = DEFAULT_CAMERA_RADIUS;
   state.focusTransition.fromTargetPoint = focusTarget.clone();
   state.focusTransition.toTargetPoint = focusTarget;
-  state.focusTransition.openDetailOnComplete = selectionId === 4;
+  state.focusTransition.openDetailOnComplete = canOpenDetailShell(selectionId);
   refreshRuntimeDiagnostics();
 }
 
@@ -5144,9 +5157,9 @@ function focusFaceEntry(entry) {
     return;
   }
 
-  if (state.selectedId === 4 && entry.shapeKind === "tetrahedron") {
+  if (canOpenDetailShell(state.selectedId) && entry.selectionId === state.selectedId) {
     stopSnapAnimation();
-    showTetrahedronDetails();
+    showSelectionDetails();
     return;
   }
 
@@ -5237,8 +5250,12 @@ function getRuneEntryFromPointerEvent(scene, canvas, event) {
   return state.crystalRoot.metadata.runeEntries.find((entry) => entry.runeGlyphMesh === pickedMesh) || null;
 }
 
-function isTetrahedronExpanded() {
+function isDetailShellExpanded() {
   return state.extraction.stage !== "idle";
+}
+
+function isTetrahedronExpanded() {
+  return isDetailShellExpanded();
 }
 
 function createTetrahedronDetailData(entry) {
@@ -6505,21 +6522,23 @@ function clearExplodedDetails() {
   refreshRuntimeDiagnostics();
 }
 
-function showTetrahedronDetails() {
+function showSelectionDetails() {
   if (
-    state.selectedId !== 4
+    !canOpenDetailShell(state.selectedId)
     || !state.scene
     || !state.crystalRoot
-    || isTetrahedronExpanded()
+    || isDetailShellExpanded()
   ) {
     return;
   }
 
-  const tetraEntries = state.faceEntries
-    .filter((faceEntry) => faceEntry.shapeKind === "tetrahedron" && faceEntry.vertices)
-    .sort((left, right) => left.faceIndex - right.faceIndex);
+  const detailItems = getDetailItemsForSelection(
+    state.selectedId,
+    state.crystalRoot.metadata,
+    state.faceEntries
+  );
 
-  if (!tetraEntries.length) {
+  if (!detailItems.length) {
     return;
   }
 
@@ -6532,7 +6551,6 @@ function showTetrahedronDetails() {
   state.extraction.presenterHaloLayout = null;
   state.extraction.presenterHaloSimulation = null;
   applyExplodedLayout(true);
-  const detailItems = getTetrahedronDetailItems(state.crystalRoot.metadata);
 
   state.extraction.items = detailItems;
   mountExplodedDetails(detailItems);
@@ -6547,6 +6565,31 @@ function showTetrahedronDetails() {
   }
 
   refreshRuntimeDiagnostics();
+}
+
+function showTetrahedronDetails() {
+  showSelectionDetails();
+}
+
+function getDetailItemsForSelection(selectionId, metadata, faceEntries = state.faceEntries) {
+  if (selectionSupportsFullHierarchy(selectionId)) {
+    return getTetrahedronDetailItems(metadata);
+  }
+
+  const selectionDefinition = getCrystalSelectionDefinition(selectionId);
+  const selectionTitle = itemsById.get(selectionId)?.title || String(selectionId || "");
+  const shapeConfig = getShapeConfigForSelection(selectionId);
+
+  return buildSelectionPlaceholderDetailItems({
+    selectionId,
+    selectionTitle,
+    faceEntries,
+    familyLabel: selectionDefinition.shapeFamily || shapeConfig.kind,
+    faceAccentResolver: (faceEntry, faceIndex) => (
+      faceEntry?.accentHex
+      || getBodyColorForSelection(selectionId, `${shapeConfig.kind}_placeholder_${faceIndex + 1}`)
+    )
+  });
 }
 
 function getTetrahedronDetailItems(metadata) {
@@ -7680,7 +7723,7 @@ function enableBoxDragging(camera, canvas) {
       return;
     }
 
-    if (isTetrahedronExpanded()) {
+    if (isDetailShellExpanded()) {
       if (state.extraction.viewMode === "content") {
         if (!dragState.moved) {
           // Ziel: Im Content-Modus per Linksklick auf den Kristallbereich wieder in die Detail-Ebene zurueckkehren.
@@ -7703,19 +7746,19 @@ function enableBoxDragging(camera, canvas) {
       return;
     }
 
-    if (!dragState.moved && state.selectedId === 4) {
+    if (!dragState.moved && canOpenDetailShell(state.selectedId)) {
       // Ziel: Den Einstieg in den Form-4-DetailView auch dann robust halten, wenn transparentes Innenleben das Picking unzuverlaessig macht.
       // Warum: Fuer den Nutzer ist der Linksklick auf den Grundkristall die semantische Aktion; ob Babylon dabei gerade eine Aussenflaeche, ein Symbol oder gar nichts liefert, darf den Einstieg nicht blockieren.
       if (!focusedEntry && !focusedSymbolEntry) {
         stopSnapAnimation();
-        showTetrahedronDetails();
+        showSelectionDetails();
         return;
       }
     }
 
-    if (!focusedEntry && focusedSymbolEntry && state.selectedId === 4) {
+    if (!focusedEntry && focusedSymbolEntry && canOpenDetailShell(state.selectedId)) {
       stopSnapAnimation();
-      showTetrahedronDetails();
+      showSelectionDetails();
       return;
     }
 
