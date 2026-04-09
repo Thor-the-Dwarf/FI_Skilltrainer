@@ -59,15 +59,47 @@ const SELECTION_DEFINITIONS = new Map([
     })
   ],
   [9, createSelectionDefinition(9, { shapeFamily: "corner-cut-bipyramidal", rolloutState: "partial" })],
-  [10, createSelectionDefinition(10, { shapeFamily: "bipyramidal", rolloutState: "partial" })],
+  [
+    10,
+    createSelectionDefinition(10, {
+      shapeFamily: "bipyramidal",
+      rolloutState: "full",
+      supportsFullHierarchy: true,
+      supportsVaultLod: true
+    })
+  ],
   [11, createSelectionDefinition(11, { shapeFamily: "corner-cut-bipyramidal", rolloutState: "partial" })],
   [12, createSelectionDefinition(12, { shapeFamily: "dodecahedral", rolloutState: "partial" })],
   [13, createSelectionDefinition(13, { shapeFamily: "corner-cut-bipyramidal", rolloutState: "partial" })],
-  [14, createSelectionDefinition(14, { shapeFamily: "bipyramidal", rolloutState: "partial" })],
+  [
+    14,
+    createSelectionDefinition(14, {
+      shapeFamily: "bipyramidal",
+      rolloutState: "full",
+      supportsFullHierarchy: true,
+      supportsVaultLod: true
+    })
+  ],
   [15, createSelectionDefinition(15, { shapeFamily: "corner-cut-bipyramidal", rolloutState: "partial" })],
-  [16, createSelectionDefinition(16, { shapeFamily: "bipyramidal", rolloutState: "partial" })],
+  [
+    16,
+    createSelectionDefinition(16, {
+      shapeFamily: "bipyramidal",
+      rolloutState: "full",
+      supportsFullHierarchy: true,
+      supportsVaultLod: true
+    })
+  ],
   [17, createSelectionDefinition(17, { shapeFamily: "corner-cut-bipyramidal", rolloutState: "partial" })],
-  [18, createSelectionDefinition(18, { shapeFamily: "bipyramidal", rolloutState: "partial" })],
+  [
+    18,
+    createSelectionDefinition(18, {
+      shapeFamily: "bipyramidal",
+      rolloutState: "full",
+      supportsFullHierarchy: true,
+      supportsVaultLod: true
+    })
+  ],
   [19, createSelectionDefinition(19, { shapeFamily: "corner-cut-bipyramidal", rolloutState: "partial" })],
   [20, createSelectionDefinition(20, { shapeFamily: "icosahedral", rolloutState: "partial" })]
 ]);

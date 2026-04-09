@@ -2,6 +2,10 @@ import { getSelection04DetailItems, getSelection04VaultLodConfig } from "./selec
 import { getSelection05DetailItems, getSelection05VaultLodConfig } from "./selection-05.js";
 import { getSelection06DetailItems, getSelection06VaultLodConfig } from "./selection-06.js";
 import { getSelection08DetailItems, getSelection08VaultLodConfig } from "./selection-08.js";
+import { getSelection10DetailItems, getSelection10VaultLodConfig } from "./selection-10.js";
+import { getSelection14DetailItems, getSelection14VaultLodConfig } from "./selection-14.js";
+import { getSelection16DetailItems, getSelection16VaultLodConfig } from "./selection-16.js";
+import { getSelection18DetailItems, getSelection18VaultLodConfig } from "./selection-18.js";
 
 const SELECTION_MODULES = new Map([
   [
@@ -36,6 +40,38 @@ const SELECTION_MODULES = new Map([
     {
       detailItems: (selectionContext) => getSelection08DetailItems(selectionContext),
       vaultLodConfig: () => getSelection08VaultLodConfig(),
+      interiorKind: "bipyramid"
+    }
+  ],
+  [
+    10,
+    {
+      detailItems: (selectionContext) => getSelection10DetailItems(selectionContext),
+      vaultLodConfig: () => getSelection10VaultLodConfig(),
+      interiorKind: "bipyramid"
+    }
+  ],
+  [
+    14,
+    {
+      detailItems: (selectionContext) => getSelection14DetailItems(selectionContext),
+      vaultLodConfig: () => getSelection14VaultLodConfig(),
+      interiorKind: "bipyramid"
+    }
+  ],
+  [
+    16,
+    {
+      detailItems: (selectionContext) => getSelection16DetailItems(selectionContext),
+      vaultLodConfig: () => getSelection16VaultLodConfig(),
+      interiorKind: "bipyramid"
+    }
+  ],
+  [
+    18,
+    {
+      detailItems: (selectionContext) => getSelection18DetailItems(selectionContext),
+      vaultLodConfig: () => getSelection18VaultLodConfig(),
       interiorKind: "bipyramid"
     }
   ]
