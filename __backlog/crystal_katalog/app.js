@@ -5515,24 +5515,80 @@ function ensurePresenterHaloSimulation(metrics, layoutMap, levelProfiles) {
   return state.extraction.presenterHaloSimulation;
 }
 
+function updatePresenterHaloAnchors(metrics, simulation) {
+  // Ziel: Die Presenter-Ankerpunkte jedes Frame aus der aktuell rotierenden Kristallprojektion nachfuehren.
+  // Warum: Der Kristall soll zusammen mit seinen Anchor-Points langsam rotieren, waehrend die Spheres nur federnd um diese mitwandernden Punkte tanzen.
+  const structureSpreadScale = 2;
+  const anchoredNodes = state.extraction.items
+    .filter((item) => item?.runeSymbol && item.runeAnchorMesh)
+    .map((item) => {
+      const projectedPoint = projectWorldPointToStageWithContext(
+        item.runeAnchorMesh.getAbsolutePosition(),
+        metrics.projectionContext
+      );
+
+      if (!projectedPoint) {
+        return null;
+      }
+
+      return {
+        entryId: item.entryId,
+        anchorX: (metrics.projectionContext.canvasRect.left + projectedPoint.x) - metrics.panelRect.left,
+        anchorY: (metrics.projectionContext.canvasRect.top + projectedPoint.y) - metrics.panelRect.top
+      };
+    })
+    .filter(Boolean);
+
+  if (!anchoredNodes.length) {
+    return;
+  }
+
+  const structureCenter = anchoredNodes.reduce((accumulator, node) => {
+    accumulator.x += node.anchorX;
+    accumulator.y += node.anchorY;
+    return accumulator;
+  }, { x: 0, y: 0 });
+
+  structureCenter.x /= anchoredNodes.length;
+  structureCenter.y /= anchoredNodes.length;
+
+  anchoredNodes.forEach((node) => {
+    const simulationNode = simulation.nodes.get(node.entryId);
+
+    if (!simulationNode) {
+      return;
+    }
+
+    simulationNode.anchorX = structureCenter.x + ((node.anchorX - structureCenter.x) * structureSpreadScale);
+    simulationNode.anchorY = structureCenter.y + ((node.anchorY - structureCenter.y) * structureSpreadScale);
+  });
+
+  const h1Node = simulation.h1EntryId ? simulation.nodes.get(simulation.h1EntryId) : null;
+
+  if (h1Node) {
+    simulation.centerX = h1Node.anchorX;
+    simulation.centerY = h1Node.anchorY;
+  } else {
+    simulation.centerX = structureCenter.x;
+    simulation.centerY = structureCenter.y;
+  }
+}
+
 function stepPresenterHaloSimulation(metrics, simulation) {
-  // Ziel: H1 starr halten und H2/H3 federnd um ihre jeweiligen Gravitationspunkte tanzen lassen.
-  // Warum: Dadurch bekommt jede HaloSphere ihren eigenen bouncigen Pfad, waehrend die Gesamtskizze des Kristalls weiter erkennbar bleibt.
+  // Ziel: H1 starr halten und H2/H3 federnd um mitrotierende Kristall-Ankerpunkte tanzen lassen.
+  // Warum: Die Miniatur soll die Kristallstruktur zeigen, ohne dass alle Spheres als ein starrer Klumpen rotieren; deshalb bewegen sich nur die Anchor-Points mit dem Kristall, nicht die komplette Node-Wolke.
   const deltaSeconds = BABYLON.Scalar.Clamp((metrics.now - simulation.lastTime) / 1000, 1 / 240, 1 / 30);
-  const rotationSpeed = 0.22;
-  const damping = 0.9;
+  const damping = 0.88;
   const h2Spring = 5.4;
-  const h3Spring = 4.2;
-  const parentPull = 1.35;
+  const h3Spring = 4.9;
+  const parentPull = 1.75;
+  const anchorPull = 1.2;
   const repulsionStrength = 4200;
   const minGapFactor = 0.92;
   const movableNodes = Array.from(simulation.nodes.values()).filter((node) => node.level !== "h1");
 
   simulation.lastTime = metrics.now;
-  simulation.rotationAngle += deltaSeconds * rotationSpeed;
-
-  const cosRotation = Math.cos(simulation.rotationAngle);
-  const sinRotation = Math.sin(simulation.rotationAngle);
+  updatePresenterHaloAnchors(metrics, simulation);
 
   simulation.nodes.forEach((node) => {
     if (node.level === "h1") {
@@ -5544,24 +5600,9 @@ function stepPresenterHaloSimulation(metrics, simulation) {
   });
 
   movableNodes.forEach((node) => {
-    let targetX = simulation.centerX;
-    let targetY = simulation.centerY;
-    let springStrength = h2Spring;
-
-    if (node.level === "h2") {
-      targetX = simulation.centerX + ((node.restFromH1X * cosRotation) - (node.restFromH1Y * sinRotation));
-      targetY = simulation.centerY + ((node.restFromH1X * sinRotation) + (node.restFromH1Y * cosRotation));
-    } else {
-      const parentNode = node.parentId ? simulation.nodes.get(node.parentId) : null;
-      const parentX = parentNode?.posX ?? simulation.centerX;
-      const parentY = parentNode?.posY ?? simulation.centerY;
-      const orbitAngle = simulation.rotationAngle + node.orbitPhase;
-      const orbitCos = Math.cos(orbitAngle * node.orbitSpeed);
-      const orbitSin = Math.sin(orbitAngle * node.orbitSpeed);
-      targetX = parentX + ((node.restFromParentX * orbitCos) - (node.restFromParentY * orbitSin));
-      targetY = parentY + ((node.restFromParentX * orbitSin) + (node.restFromParentY * orbitCos));
-      springStrength = h3Spring;
-    }
+    const targetX = node.anchorX;
+    const targetY = node.anchorY;
+    const springStrength = node.level === "h2" ? h2Spring : h3Spring;
 
     node.targetX = targetX;
     node.targetY = targetY;
@@ -5595,7 +5636,7 @@ function stepPresenterHaloSimulation(metrics, simulation) {
   }
 
   movableNodes.forEach((node) => {
-    if (node.level === "h3" && node.parentId) {
+    if (node.parentId) {
       const parentNode = simulation.nodes.get(node.parentId);
 
       if (parentNode) {
@@ -5608,6 +5649,23 @@ function stepPresenterHaloSimulation(metrics, simulation) {
     node.velY *= damping;
     node.posX += node.velX;
     node.posY += node.velY;
+
+    const anchorDx = node.posX - node.anchorX;
+    const anchorDy = node.posY - node.anchorY;
+    const anchorDistance = Math.hypot(anchorDx, anchorDy);
+    const maxAnchorDistance = Math.max(6, node.radius * 0.98);
+
+    node.velX += (node.anchorX - node.posX) * anchorPull * deltaSeconds;
+    node.velY += (node.anchorY - node.posY) * anchorPull * deltaSeconds;
+
+    if (anchorDistance > maxAnchorDistance) {
+      const clampFactor = maxAnchorDistance / anchorDistance;
+
+      node.posX = node.anchorX + (anchorDx * clampFactor);
+      node.posY = node.anchorY + (anchorDy * clampFactor);
+      node.velX *= 0.62;
+      node.velY *= 0.62;
+    }
   });
 }
 
@@ -5682,8 +5740,8 @@ function seededPresenterRange(seed, min, max) {
 }
 
 function buildPresenterHaloNodes(metrics) {
-  // Ziel: Die frei schwebenden HaloNodes des Referenzprojekts im Presenter stabil nachbauen.
-  // Warum: Die Miniaturansicht soll die echte Kristallstruktur erahnen lassen. Deshalb sitzt jede HaloSphere auf der projizierten Symbolposition und darf nur innerhalb ihres eigenen Radius leicht driften.
+  // Ziel: Die HaloNodes als von der Kristallstruktur getragene, aber eigenstaendig federnde Presenter-Miniatur aufbauen.
+  // Warum: Die Nutzeransicht soll den Kristall und seine Anchor-Points langsam rotieren sehen, waehrend jede Sphere nur lokal um ihren Ankerpunkt herum bounct.
   const presenterHaloLayout = ensurePresenterHaloLayout(metrics);
   const levelProfiles = getPresenterHaloLevelProfiles();
   const simulation = ensurePresenterHaloSimulation(metrics, presenterHaloLayout, levelProfiles);
