@@ -746,6 +746,17 @@ function collectCurrentCrystalBoundaryPoints() {
   return boundaryPoints;
 }
 
+function collectCurrentCrystalBoundaryWorldPoints() {
+  const boundaryPoints = collectCurrentCrystalBoundaryPoints();
+
+  if (!boundaryPoints.length || !state.crystalRoot) {
+    return boundaryPoints;
+  }
+
+  const worldMatrix = state.crystalRoot.computeWorldMatrix(true);
+  return boundaryPoints.map((point) => BABYLON.Vector3.TransformCoordinates(point, worldMatrix));
+}
+
 function computeCurrentCrystalCenter() {
   const boundaryPoints = collectCurrentCrystalBoundaryPoints();
 
@@ -761,11 +772,23 @@ function computeCurrentCrystalCenter() {
     );
 
     if (polyhedronFaceEntries.length >= 4) {
-      return computeMaximumInscribedSphere(polyhedronFaceEntries).center.clone();
+      const localCenter = computeMaximumInscribedSphere(polyhedronFaceEntries).center.clone();
+
+      if (!state.crystalRoot) {
+        return localCenter;
+      }
+
+      return BABYLON.Vector3.TransformCoordinates(localCenter, state.crystalRoot.computeWorldMatrix(true));
     }
   }
 
-  return computeFaceCenter(boundaryPoints);
+  const localFallbackCenter = computeFaceCenter(boundaryPoints);
+
+  if (!state.crystalRoot) {
+    return localFallbackCenter;
+  }
+
+  return BABYLON.Vector3.TransformCoordinates(localFallbackCenter, state.crystalRoot.computeWorldMatrix(true));
 }
 
 function getPresenterBoundaryMetrics(width, height) {
@@ -791,7 +814,7 @@ function computeContentCameraRadius() {
     return CONTENT_CAMERA_RADIUS;
   }
 
-  const boundaryPoints = collectCurrentCrystalBoundaryPoints();
+  const boundaryPoints = collectCurrentCrystalBoundaryWorldPoints();
 
   if (boundaryPoints.length < 2) {
     return CONTENT_CAMERA_RADIUS;
@@ -803,6 +826,7 @@ function computeContentCameraRadius() {
 
   for (let iterationIndex = 0; iterationIndex < 4; iterationIndex += 1) {
     state.camera.radius = fittedRadius;
+    state.scene?.updateTransformMatrix?.();
     const projectionContext = createStageProjectionContext();
 
     if (!projectionContext) {
