@@ -164,6 +164,7 @@ const state = {
   },
   focusTransition: {
     active: false,
+    mode: "idle",
     startTime: 0,
     durationMs: FOCUS_TRANSITION_MS,
     fromPosition: null,
@@ -175,7 +176,8 @@ const state = {
     toRotation: null,
     fromCameraRadius: DEFAULT_CAMERA_RADIUS,
     toCameraRadius: DEFAULT_CAMERA_RADIUS,
-    targetPoint: null,
+    fromTargetPoint: null,
+    toTargetPoint: null,
     openDetailOnComplete: false
   },
   drag: {
@@ -306,7 +308,7 @@ function openPresenterFromList(selectionId) {
 }
 
 function clearSelection() {
-  updateSelection(null, { animateFocus: false });
+  updateSelection(null, { animateFocus: true });
 }
 
 function renderQuickSelects() {
@@ -1190,7 +1192,11 @@ function updateFocusTransition() {
   state.crystalRoot.position.copyFrom(bezierPosition);
   state.crystalRoot.scaling.copyFrom(nextScale);
   state.crystalRoot.rotationQuaternion = nextRotation;
-  state.camera.target.copyFrom(transition.targetPoint);
+  state.camera.target.copyFrom(BABYLON.Vector3.Lerp(
+    transition.fromTargetPoint,
+    transition.toTargetPoint,
+    easedProgress
+  ));
   state.camera.radius = BABYLON.Scalar.Lerp(
     transition.fromCameraRadius,
     transition.toCameraRadius,
@@ -1200,25 +1206,30 @@ function updateFocusTransition() {
   const backdropNetwork = state.vaultBackdropRoot?.metadata?.network || null;
   const backdropFade = 1 - easedProgress;
 
-  backdropMaterials.forEach((material) => {
-    material.alpha *= 0.985;
-    material.alpha = Math.min(material.alpha, 0.46 * backdropFade);
-  });
+  if (transition.mode === "to-focus") {
+    backdropMaterials.forEach((material) => {
+      material.alpha *= 0.985;
+      material.alpha = Math.min(material.alpha, 0.46 * backdropFade);
+    });
 
-  if (backdropNetwork) {
-    backdropNetwork.alpha = 0.18 * backdropFade;
+    if (backdropNetwork) {
+      backdropNetwork.alpha = 0.18 * backdropFade;
+    }
   }
 
   if (rawProgress >= 1) {
     state.crystalRoot.position.copyFrom(transition.toPosition);
     state.crystalRoot.scaling.copyFrom(transition.toScale);
     state.crystalRoot.rotationQuaternion = transition.toRotation.clone();
-    state.camera.target.copyFrom(transition.targetPoint);
+    state.camera.target.copyFrom(transition.toTargetPoint);
     state.camera.radius = transition.toCameraRadius;
     const shouldOpenDetail = transition.openDetailOnComplete;
+    const transitionMode = transition.mode;
     resetFocusTransition();
 
-    if (shouldOpenDetail) {
+    if (transitionMode === "to-vault") {
+      promoteVaultBackdropToActiveCrystal();
+    } else if (shouldOpenDetail) {
       showTetrahedronDetails();
     } else {
       clearVaultBackdrop();
@@ -1905,6 +1916,39 @@ function clearVaultBackdrop() {
   state.vaultBackdropRoot = null;
 }
 
+function createSeparateVaultBackdrop(scene, excludedSelectionId = null) {
+  if (!scene) {
+    return null;
+  }
+
+  clearVaultBackdrop();
+  const vault = createCrystalVault(scene);
+  const backdropRoot = vault.root;
+  const network = backdropRoot.metadata?.vaultNetworkMesh || null;
+  const crystalRootsById = backdropRoot.metadata?.vaultCrystalRootsById || null;
+  const hiddenCrystalRoot = excludedSelectionId !== null
+    ? crystalRootsById?.get?.(excludedSelectionId) || null
+    : null;
+
+  if (hiddenCrystalRoot && !hiddenCrystalRoot.isDisposed?.()) {
+    hiddenCrystalRoot.setEnabled(false);
+  }
+
+  backdropRoot.getChildMeshes(false).forEach((mesh) => {
+    mesh.isPickable = false;
+  });
+
+  backdropRoot.metadata = {
+    ...(backdropRoot.metadata || {}),
+    materials: vault.materials,
+    faceEntries: vault.faceEntries,
+    network,
+    hiddenCrystalRoot
+  };
+  state.vaultBackdropRoot = backdropRoot;
+  return backdropRoot;
+}
+
 function ensureVaultBackdrop(scene, excludedSelectionId = null) {
   if (!scene || !state.crystalRoot?.metadata?.isVault) {
     return null;
@@ -1950,8 +1994,65 @@ function ensureVaultBackdrop(scene, excludedSelectionId = null) {
   return backdropRoot;
 }
 
+function disposeActiveCrystalOnly() {
+  state.materials.forEach((material) => material.dispose());
+  state.materials = [];
+  state.faceEntries = [];
+
+  if (state.crystalRoot) {
+    state.crystalRoot.metadata?.detachedRuneAnchors?.forEach((anchor) => {
+      anchor?.dispose?.();
+    });
+    state.crystalRoot.dispose(false);
+    state.crystalRoot = null;
+  }
+}
+
+function promoteVaultBackdropToActiveCrystal() {
+  const backdropRoot = state.vaultBackdropRoot;
+
+  if (!backdropRoot) {
+    rebuildVault();
+    return;
+  }
+
+  const hiddenCrystalRoot = backdropRoot.metadata?.hiddenCrystalRoot || null;
+  const faceEntries = backdropRoot.metadata?.faceEntries || [];
+  const materials = backdropRoot.metadata?.materials || [];
+  const network = backdropRoot.metadata?.network || null;
+
+  disposeActiveCrystalOnly();
+
+  if (hiddenCrystalRoot && !hiddenCrystalRoot.isDisposed?.()) {
+    hiddenCrystalRoot.setEnabled(true);
+  }
+
+  faceEntries.forEach((entry) => {
+    if (entry?.mesh) {
+      entry.mesh.isPickable = true;
+    }
+  });
+
+  if (network) {
+    network.alpha = 0.18;
+  }
+
+  state.crystalRoot = backdropRoot;
+  state.materials = materials;
+  state.faceEntries = faceEntries;
+  state.vaultBackdropRoot = null;
+
+  if (state.camera) {
+    state.camera.target.copyFrom(BABYLON.Vector3.Zero());
+    state.camera.radius = VAULT_CAMERA_RADIUS;
+  }
+
+  refreshRuntimeDiagnostics();
+}
+
 function resetFocusTransition() {
   state.focusTransition.active = false;
+  state.focusTransition.mode = "idle";
   state.focusTransition.startTime = 0;
   state.focusTransition.fromPosition = null;
   state.focusTransition.controlPosition = null;
@@ -1962,7 +2063,8 @@ function resetFocusTransition() {
   state.focusTransition.toRotation = null;
   state.focusTransition.fromCameraRadius = DEFAULT_CAMERA_RADIUS;
   state.focusTransition.toCameraRadius = DEFAULT_CAMERA_RADIUS;
-  state.focusTransition.targetPoint = null;
+  state.focusTransition.fromTargetPoint = null;
+  state.focusTransition.toTargetPoint = null;
   state.focusTransition.openDetailOnComplete = false;
 }
 
@@ -2006,6 +2108,7 @@ function beginFocusTransition(selectionId, shapeConfig) {
   state.camera.radius = currentCameraRadius;
 
   state.focusTransition.active = true;
+  state.focusTransition.mode = "to-focus";
   state.focusTransition.startTime = performance.now();
   state.focusTransition.durationMs = FOCUS_TRANSITION_MS;
   state.focusTransition.fromPosition = fromPosition;
@@ -2017,13 +2120,71 @@ function beginFocusTransition(selectionId, shapeConfig) {
   state.focusTransition.toRotation = getInitialQuaternionForShape(shapeConfig, root);
   state.focusTransition.fromCameraRadius = currentCameraRadius;
   state.focusTransition.toCameraRadius = DEFAULT_CAMERA_RADIUS;
-  state.focusTransition.targetPoint = focusTarget;
+  state.focusTransition.fromTargetPoint = focusTarget.clone();
+  state.focusTransition.toTargetPoint = focusTarget;
   state.focusTransition.openDetailOnComplete = selectionId === 4;
+  refreshRuntimeDiagnostics();
+}
+
+function beginReturnToVaultTransition(selectionId) {
+  if (!state.scene || !state.camera || !state.crystalRoot) {
+    rebuildVault();
+    return;
+  }
+
+  const snapshot = getVaultSnapshotData();
+  const placement = snapshot.crystalsById.get(selectionId) || null;
+  const currentRoot = state.crystalRoot;
+
+  if (!placement) {
+    rebuildVault();
+    return;
+  }
+
+  clearExtractedCrystal();
+  createSeparateVaultBackdrop(state.scene, selectionId);
+
+  const fromPosition = currentRoot.position.clone();
+  const toPosition = placement.position.clone();
+  const arcDistance = BABYLON.Vector3.Distance(fromPosition, toPosition);
+  const midpoint = BABYLON.Vector3.Lerp(fromPosition, toPosition, 0.5);
+  const curveLift = state.camera.getDirection(BABYLON.Axis.Y)
+    .normalize()
+    .scale(Math.max(0.4, arcDistance * FOCUS_TRANSITION_CURVE_FACTOR));
+  const controlPosition = midpoint.add(curveLift);
+  const currentScale = currentRoot.scaling.clone();
+  const currentRotation = (currentRoot.rotationQuaternion || BABYLON.Quaternion.Identity()).clone();
+
+  state.focusTransition.active = true;
+  state.focusTransition.mode = "to-vault";
+  state.focusTransition.startTime = performance.now();
+  state.focusTransition.durationMs = FOCUS_TRANSITION_MS;
+  state.focusTransition.fromPosition = fromPosition;
+  state.focusTransition.controlPosition = controlPosition;
+  state.focusTransition.toPosition = toPosition;
+  state.focusTransition.fromScale = currentScale;
+  state.focusTransition.toScale = new BABYLON.Vector3(placement.scale, placement.scale, placement.scale);
+  state.focusTransition.fromRotation = currentRotation;
+  state.focusTransition.toRotation = placement.rotationQuaternion.clone();
+  state.focusTransition.fromCameraRadius = state.camera.radius;
+  state.focusTransition.toCameraRadius = VAULT_CAMERA_RADIUS;
+  state.focusTransition.fromTargetPoint = state.camera.target.clone();
+  state.focusTransition.toTargetPoint = BABYLON.Vector3.Zero();
+  state.focusTransition.openDetailOnComplete = false;
   refreshRuntimeDiagnostics();
 }
 
 function syncCrystalForSelection(options = {}) {
   if (state.selectedId === null) {
+    if (
+      options.animateFocus
+      && options.previousSelectionId !== null
+      && state.extraction.stage === "expanded"
+    ) {
+      beginReturnToVaultTransition(options.previousSelectionId);
+      return;
+    }
+
     rebuildVault();
     return;
   }
@@ -6303,6 +6464,11 @@ function getTetrahedronDetailItems(metadata) {
 
 function collapseTetrahedronIntoGroundView() {
   if (state.extraction.stage !== "expanded") {
+    return;
+  }
+
+  if (state.selectedId !== null) {
+    updateSelection(null, { animateFocus: true });
     return;
   }
 
