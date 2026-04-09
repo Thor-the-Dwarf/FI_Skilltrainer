@@ -5508,6 +5508,9 @@ function buildPresenterHaloSimulation(metrics, layoutMap, levelProfiles) {
     height: metrics.height,
     centerX,
     centerY,
+    boundsCenterX: metrics.width * 0.5,
+    boundsCenterY: metrics.height * 0.5,
+    boundsRadius: Math.min(metrics.width, metrics.height) * 0.485,
     h1EntryId: h1Item?.entryId || null,
     rotationAngle: 0,
     lastTime: metrics.now,
@@ -5575,8 +5578,18 @@ function updatePresenterHaloAnchors(metrics, simulation) {
       return;
     }
 
-    simulationNode.anchorX = structureCenter.x + ((node.anchorX - structureCenter.x) * structureSpreadScale);
-    simulationNode.anchorY = structureCenter.y + ((node.anchorY - structureCenter.y) * structureSpreadScale);
+    const expandedAnchorX = structureCenter.x + ((node.anchorX - structureCenter.x) * structureSpreadScale);
+    const expandedAnchorY = structureCenter.y + ((node.anchorY - structureCenter.y) * structureSpreadScale);
+    const anchorClamp = clampPointToCircle(
+      expandedAnchorX,
+      expandedAnchorY,
+      simulation.boundsCenterX,
+      simulation.boundsCenterY,
+      Math.max(18, simulation.boundsRadius - (simulationNode.radius + 10))
+    );
+
+    simulationNode.anchorX = anchorClamp.x;
+    simulationNode.anchorY = anchorClamp.y;
   });
 
   const h1Node = simulation.h1EntryId ? simulation.nodes.get(simulation.h1EntryId) : null;
@@ -5608,9 +5621,19 @@ function stepPresenterHaloSimulation(metrics, simulation) {
     const phaseY = (orbitTime * node.orbitSpeedY) + node.orbitPhaseY;
     const phaseZ = (orbitTime * node.orbitSpeedZ) + node.orbitPhaseZ;
     const depthScale = 0.86 + ((Math.sin(phaseZ) + 1) * 0.07);
+    const unclampedX = node.anchorX + (Math.cos(phaseX) * node.orbitRadiusX * depthScale);
+    const unclampedY = node.anchorY + (Math.sin(phaseY) * node.orbitRadiusY * depthScale);
+    const visualRadius = node.radius + (node.haloSize * 0.96);
+    const clampedPoint = clampPointToCircle(
+      unclampedX,
+      unclampedY,
+      simulation.boundsCenterX,
+      simulation.boundsCenterY,
+      Math.max(12, simulation.boundsRadius - visualRadius - 4)
+    );
 
-    node.posX = node.anchorX + (Math.cos(phaseX) * node.orbitRadiusX * depthScale);
-    node.posY = node.anchorY + (Math.sin(phaseY) * node.orbitRadiusY * depthScale);
+    node.posX = clampedPoint.x;
+    node.posY = clampedPoint.y;
   });
 }
 
@@ -5682,6 +5705,23 @@ function hashStringToSeed(value) {
 
 function seededPresenterRange(seed, min, max) {
   return min + (pseudoRandom(seed) * (max - min));
+}
+
+function clampPointToCircle(x, y, centerX, centerY, maxDistance) {
+  const offsetX = x - centerX;
+  const offsetY = y - centerY;
+  const distance = Math.hypot(offsetX, offsetY);
+
+  if (distance <= maxDistance || distance <= 0.0001) {
+    return { x, y };
+  }
+
+  const scale = maxDistance / distance;
+
+  return {
+    x: centerX + (offsetX * scale),
+    y: centerY + (offsetY * scale)
+  };
 }
 
 function drawPresenterContainerHalo(context, metrics) {
