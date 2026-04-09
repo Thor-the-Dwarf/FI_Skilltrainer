@@ -5893,17 +5893,16 @@ function drawPresenterContainerHalo(context, metrics) {
   const centerX = boundary.centerX;
   const centerY = boundary.centerY;
   const outerRadius = boundary.radius;
-  const coreRadius = outerRadius * 0.47;
   const glowRadius = outerRadius * 1.06;
   const beamCount = 18;
   const beamRotation = prefersReducedMotion() ? 0 : metrics.timeSeconds * 0.045;
-  const beamStartRadius = coreRadius * 1.02;
+  const beamStartRadius = outerRadius * 0.14;
   const beamEndRadius = outerRadius * 1.26;
   const beamBaseAlpha = 0.16;
   const glowGradient = context.createRadialGradient(
     centerX,
     centerY,
-    coreRadius * 0.84,
+    outerRadius * 0.08,
     centerX,
     centerY,
     glowRadius
@@ -5945,21 +5944,6 @@ function drawPresenterContainerHalo(context, metrics) {
     context.lineTo(endX, endY);
     context.stroke();
   }
-  context.restore();
-
-  context.save();
-  context.beginPath();
-  context.arc(centerX, centerY, coreRadius, 0, TAU);
-  context.fillStyle = "rgba(14, 12, 24, 0.985)";
-  context.fill();
-  context.restore();
-
-  context.save();
-  context.beginPath();
-  context.arc(centerX, centerY, coreRadius, 0, TAU);
-  context.lineWidth = Math.max(1.5, outerRadius * 0.01);
-  context.strokeStyle = "rgba(255, 214, 246, 0.06)";
-  context.stroke();
   context.restore();
 }
 
