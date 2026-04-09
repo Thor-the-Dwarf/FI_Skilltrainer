@@ -15,15 +15,33 @@ function getSortedFaceEntries(faceEntries = []) {
     .sort((left, right) => (left.faceIndex ?? 0) - (right.faceIndex ?? 0));
 }
 
+function buildPlaceholderFaceEntries(sortedFaceEntries, fragmentCount) {
+  const requestedFragmentCount = Math.max(sortedFaceEntries.length, Number(fragmentCount) || 0, 1);
+  const normalizedEntries = [];
+
+  for (let index = 0; index < requestedFragmentCount; index += 1) {
+    const sourceEntry = sortedFaceEntries[index] || null;
+    normalizedEntries.push({
+      ...(sourceEntry || {}),
+      faceIndex: Number.isFinite(sourceEntry?.faceIndex) ? sourceEntry.faceIndex : index,
+      placeholderFace: !sourceEntry
+    });
+  }
+
+  return normalizedEntries;
+}
+
 export function buildSelectionPlaceholderDetailItems({
   selectionId,
   selectionTitle,
   faceEntries,
   familyLabel,
-  faceAccentResolver
+  faceAccentResolver,
+  fragmentCount,
+  fragmentRuneCountResolver
 }) {
   const sortedFaceEntries = getSortedFaceEntries(faceEntries);
-  const fragmentSources = sortedFaceEntries.length ? sortedFaceEntries : [{ faceIndex: 0 }];
+  const fragmentSources = buildPlaceholderFaceEntries(sortedFaceEntries, fragmentCount);
   const firstAccentHex = faceAccentResolver?.(fragmentSources[0], 0) || "#d8dde8";
   const crystalEntryId = `selection-${selectionId}__placeholder__h1`;
   const items = [
@@ -51,7 +69,7 @@ export function buildSelectionPlaceholderDetailItems({
     const fractalSymbol = FRACTAL_SYMBOLS[sourceIndex % FRACTAL_SYMBOLS.length];
     const accentHex = faceAccentResolver?.(faceEntry, normalizedFaceIndex) || firstAccentHex;
     const fragmentEntryId = `selection-${selectionId}__placeholder__h2__${normalizedFaceIndex + 1}`;
-    const fractalEntryId = `selection-${selectionId}__placeholder__h3__${normalizedFaceIndex + 1}__1`;
+    const fragmentRuneCount = Math.max(1, Math.round(fragmentRuneCountResolver?.(faceEntry, normalizedFaceIndex) || 1));
 
     items.push({
       entryId: fragmentEntryId,
@@ -69,21 +87,26 @@ export function buildSelectionPlaceholderDetailItems({
       }
     });
 
-    items.push({
-      entryId: fractalEntryId,
-      selectionId,
-      level: "h3",
-      parentId: fragmentEntryId,
-      faceIndex: normalizedFaceIndex,
-      runeIndex: 0,
-      runeSymbol: fractalSymbol,
-      placeholder: true,
-      detail: {
-        accentHex,
-        title: `Fraktal ${fragmentLabel}1 ${fractalSymbol}`,
-        subtitle: `Placeholder fuer das erste Fraktal in Fragment ${fragmentLabel}.`
-      }
-    });
+    for (let runeIndex = 0; runeIndex < fragmentRuneCount; runeIndex += 1) {
+      const fractalEntryId = `selection-${selectionId}__placeholder__h3__${normalizedFaceIndex + 1}__${runeIndex + 1}`;
+      const runeSymbol = FRACTAL_SYMBOLS[(sourceIndex + runeIndex) % FRACTAL_SYMBOLS.length] || fractalSymbol;
+
+      items.push({
+        entryId: fractalEntryId,
+        selectionId,
+        level: "h3",
+        parentId: fragmentEntryId,
+        faceIndex: normalizedFaceIndex,
+        runeIndex,
+        runeSymbol,
+        placeholder: true,
+        detail: {
+          accentHex,
+          title: `Fraktal ${fragmentLabel}${runeIndex + 1} ${runeSymbol}`,
+          subtitle: `Placeholder fuer Fraktal ${fragmentLabel}${runeIndex + 1} in der Familie ${familyLabel}.`
+        }
+      });
+    }
   });
 
   return items;
