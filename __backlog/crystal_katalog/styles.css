@@ -17,14 +17,14 @@
   --content-sidebar-width: clamp(300px, 30vw, 360px);
   --content-crystal-height: clamp(220px, 32vh, 300px);
   --content-crystal-safe-padding: 32px;
-  --content-lavaball-opacity: 0.98;
+  --content-lavaball-opacity: 0.78;
   --content-lavaball-scale: 1;
   --content-halo-bg-start: 258 32% 10%;
   --content-halo-bg-mid: 241 34% 7%;
   --content-halo-bg-end: 238 44% 5%;
   --content-halo-line-rgb: 194, 206, 255;
   --content-halo-core-rgb: 17, 14, 29;
-  --content-halo-core-alpha: 0.98;
+  --content-halo-core-alpha: 0.72;
   --shadow: 0 24px 70px rgba(3, 8, 20, 0.55);
   color-scheme: dark;
 }
@@ -570,12 +570,13 @@ body.is-content-mode .content-experience {
   background:
     linear-gradient(
       180deg,
-      hsl(var(--content-halo-bg-start) / 0.96),
-      hsl(var(--content-halo-bg-mid) / 0.98) 42%,
-      hsl(var(--content-halo-bg-end) / 1)
+      hsl(var(--content-halo-bg-start) / 0.26),
+      hsl(var(--content-halo-bg-mid) / 0.18) 42%,
+      hsl(var(--content-halo-bg-end) / 0.12)
     );
   box-shadow:
-    inset 0 0 0 1px hsl(0 0% 100% / 0.02),
+    inset 0 0 0 1px hsl(0 0% 100% / 0.08),
+    inset 0 0 34px rgba(210, 228, 255, 0.03),
     0 18px 32px rgba(0, 0, 0, 0.18);
   overflow: hidden;
   transition:
