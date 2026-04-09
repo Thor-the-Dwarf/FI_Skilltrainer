@@ -1014,11 +1014,11 @@ function syncQuickSelects(id) {
   }
 }
 
-function collectCurrentCrystalBoundaryPoints() {
+function collectCrystalBoundaryPoints(faceEntries = state.faceEntries) {
   const uniqueVertices = new Map();
   const boundaryPoints = [];
 
-  state.faceEntries.forEach((faceEntry) => {
+  faceEntries.forEach((faceEntry) => {
     if (faceEntry?.faceCenter) {
       boundaryPoints.push(faceEntry.faceCenter.clone());
     }
@@ -1035,6 +1035,10 @@ function collectCurrentCrystalBoundaryPoints() {
   return boundaryPoints;
 }
 
+function collectCurrentCrystalBoundaryPoints() {
+  return collectCrystalBoundaryPoints(state.faceEntries);
+}
+
 function collectCurrentCrystalBoundaryWorldPoints() {
   const boundaryPoints = collectCurrentCrystalBoundaryPoints();
 
@@ -1046,38 +1050,53 @@ function collectCurrentCrystalBoundaryWorldPoints() {
   return boundaryPoints.map((point) => BABYLON.Vector3.TransformCoordinates(point, worldMatrix));
 }
 
-function computeCurrentCrystalCenter() {
-  const boundaryPoints = collectCurrentCrystalBoundaryPoints();
+function computeCurrentCrystalCenterLocal(faceEntries = state.faceEntries) {
+  const boundaryPoints = collectCrystalBoundaryPoints(faceEntries);
 
   if (!boundaryPoints.length) {
     return BABYLON.Vector3.Zero();
   }
 
-  if (state.faceEntries.length >= 4) {
+  if (faceEntries.length >= 4) {
     const polyhedronFaceEntries = buildPolyhedronFaceEntries(
-      state.faceEntries
+      faceEntries
         .map((faceEntry) => faceEntry?.vertices)
         .filter((vertices) => Array.isArray(vertices) && vertices.length >= 3)
     );
 
     if (polyhedronFaceEntries.length >= 4) {
-      const localCenter = computeMaximumInscribedSphere(polyhedronFaceEntries).center.clone();
-
-      if (!state.crystalRoot) {
-        return localCenter;
-      }
-
-      return BABYLON.Vector3.TransformCoordinates(localCenter, state.crystalRoot.computeWorldMatrix(true));
+      return computeMaximumInscribedSphere(polyhedronFaceEntries).center.clone();
     }
   }
 
-  const localFallbackCenter = computeFaceCenter(boundaryPoints);
+  return computeFaceCenter(boundaryPoints);
+}
 
-  if (!state.crystalRoot) {
-    return localFallbackCenter;
+function cacheCurrentCrystalCenterLocal(root = state.crystalRoot, faceEntries = state.faceEntries) {
+  if (!root) {
+    return BABYLON.Vector3.Zero();
   }
 
-  return BABYLON.Vector3.TransformCoordinates(localFallbackCenter, state.crystalRoot.computeWorldMatrix(true));
+  root.metadata = root.metadata || {};
+
+  if (!root.metadata.cameraFocusCenterLocal) {
+    root.metadata.cameraFocusCenterLocal = computeCurrentCrystalCenterLocal(faceEntries);
+  }
+
+  return root.metadata.cameraFocusCenterLocal.clone();
+}
+
+function computeCurrentCrystalCenter() {
+  const cachedLocalCenter = cacheCurrentCrystalCenterLocal();
+
+  if (!state.crystalRoot) {
+    return cachedLocalCenter;
+  }
+
+  return BABYLON.Vector3.TransformCoordinates(
+    cachedLocalCenter,
+    state.crystalRoot.computeWorldMatrix(true)
+  );
 }
 
 function getPresenterBoundaryMetrics(width, height) {
@@ -1766,6 +1785,7 @@ function rebuildCrystal(shapeConfig, selectionId) {
   state.crystalRoot = crystal.root;
   state.materials = crystal.materials;
   state.faceEntries = crystal.faceEntries;
+  cacheCurrentCrystalCenterLocal(crystal.root, crystal.faceEntries);
   syncExperienceCamera();
   refreshRuntimeDiagnostics();
 }
