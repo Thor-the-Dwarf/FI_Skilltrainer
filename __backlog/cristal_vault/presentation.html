@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="de">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Kristal Vault Praesentation</title>
+    <link rel="icon" href="data:," />
+    <meta
+      name="description"
+      content="Kursfaehige Kristal-Vault-Praesentation mit Inhaltsverzeichnis und generierten Varianten-Skeletten."
+    />
+    <link rel="stylesheet" href="./presentation.css" />
+  </head>
+  <body class="presentation-app">
+    <div class="presentation-shell">
+      <div class="presentation-layout">
+        <aside class="presentation-sidebar">
+          <div class="presentation-cover"></div>
+          <nav class="presentation-toc" aria-label="Inhaltsverzeichnis"></nav>
+        </aside>
+
+        <main class="presentation-stage" aria-live="polite">
+          <article class="presentation-slide"></article>
+          <div class="presentation-appbar">
+            <button class="presentation-appbar__button presentation-appbar__button--vault" id="presentationVaultButton" type="button">Zum Vault</button>
+            <button class="presentation-appbar__button" id="presentationPrevButton" type="button">Zurueck</button>
+            <span class="presentation-appbar__label" id="presentationAppbarLabel"></span>
+            <button class="presentation-appbar__button" id="presentationNextButton" type="button">Weiter</button>
+          </div>
+        </main>
+
+        <aside class="presentation-explainer" hidden></aside>
+        <svg class="presentation-connector-layer" aria-hidden="true" hidden></svg>
+      </div>
+      <div class="presentation-cover-transition-layer" aria-hidden="true" hidden></div>
+    </div>
+
+    <script src="./vault-data.js"></script>
+    <script src="./generated-course-source-data.js"></script>
+    <script src="./course-story-registry.js"></script>
+    <script type="module" src="./presentation.js"></script>
+  </body>
+</html>
