@@ -5261,21 +5261,27 @@ function seededPresenterRange(seed, min, max) {
 
 function buildPresenterHaloNodes(metrics) {
   // Ziel: Die frei schwebenden HaloNodes des Referenzprojekts im Presenter stabil nachbauen.
-  // Warum: Der Nutzer will genau diesen Background-Look; deshalb duerfen die Nodes nicht aus der engen Kristallprojektion herausklumpen, sondern brauchen eine eigene schwebende Panel-Verteilung.
+  // Warum: Der Nutzer will genau diesen Background-Look, aber mit klarer H1/H2/H3-Groessenhierarchie. Deshalb bekommen Symbolkern und Halo je Ebene feste Groessenprofile statt nur lose Zufallswerte.
   const marginX = Math.max(26, metrics.width * 0.08);
   const marginY = Math.max(24, metrics.height * 0.1);
   const timeSeconds = metrics.timeSeconds;
+  const levelProfiles = {
+    h1: { radiusMin: 17, radiusMax: 20, haloMinFactor: 2.9, haloMaxFactor: 4.2 },
+    h2: { radiusMin: 12, radiusMax: 14.5, haloMinFactor: 2.45, haloMaxFactor: 3.45 },
+    h3: { radiusMin: 7.25, radiusMax: 9.25, haloMinFactor: 2.0, haloMaxFactor: 2.85 }
+  };
 
   return state.extraction.items
     .filter((item) => item?.runeSymbol)
     .map((item) => {
       const seed = hashStringToSeed(String(item.entryId));
-      const baseRadius = item.level === "h1"
-        ? seededPresenterRange(seed + 1, 11, 14)
-        : item.level === "h2"
-          ? seededPresenterRange(seed + 1, 9, 12)
-          : seededPresenterRange(seed + 1, 7, 10);
-      const haloSize = seededPresenterRange(seed + 2, baseRadius * 2.2, baseRadius * 3.8);
+      const levelProfile = levelProfiles[item.level] || levelProfiles.h3;
+      const baseRadius = seededPresenterRange(seed + 1, levelProfile.radiusMin, levelProfile.radiusMax);
+      const haloSize = seededPresenterRange(
+        seed + 2,
+        baseRadius * levelProfile.haloMinFactor,
+        baseRadius * levelProfile.haloMaxFactor
+      );
       const period = seededPresenterRange(seed + 3, 260, 420);
       const anchorX = seededPresenterRange(seed + 4, marginX, Math.max(marginX, metrics.width - marginX));
       const anchorY = seededPresenterRange(seed + 5, marginY, Math.max(marginY, metrics.height - marginY));
