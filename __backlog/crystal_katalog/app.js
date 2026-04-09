@@ -1105,6 +1105,25 @@ function syncRootViewCamera() {
   state.camera.radius = DEFAULT_CAMERA_RADIUS;
 }
 
+function rotateCameraInPlace(camera, deltaX, deltaY, sensitivity) {
+  if (!camera) {
+    return;
+  }
+
+  const currentPosition = camera.globalPosition.clone();
+  const nextRadius = Math.max(0.001, camera.radius || DEFAULT_CAMERA_RADIUS);
+
+  camera.alpha -= deltaX * sensitivity;
+  camera.beta = BABYLON.Scalar.Clamp(
+    camera.beta - deltaY * sensitivity,
+    0.18,
+    Math.PI - 0.18
+  );
+
+  const forwardDirection = camera.getForwardRay(nextRadius).direction.normalize();
+  camera.target.copyFrom(currentPosition.add(forwardDirection.scale(nextRadius)));
+}
+
 function computeContentCameraRadius() {
   // Ziel: Den Presenter-Kristall exakt aus der echten Koerpergroesse heraus fitten.
   // Warum: Die massgebliche Grenze ist dieselbe Kreisgrenze, an der auch die Presenter-Spheres abprallen. Kristall, Shell und Orbit-Clamp muessen deshalb denselben Radius teilen.
@@ -7045,12 +7064,7 @@ function enableBoxDragging(camera, canvas) {
       state.crystalRoot.rotationQuaternion = nextRotation;
       pushDetailOverlayDrift(deltaX, deltaY);
     } else if (dragState.button === 0 && !isSingleCrystalRootView()) {
-      camera.alpha -= deltaX * cameraOrbitSensitivity;
-      camera.beta = BABYLON.Scalar.Clamp(
-        camera.beta - deltaY * cameraOrbitSensitivity,
-        0.18,
-        Math.PI - 0.18
-      );
+      rotateCameraInPlace(camera, deltaX, deltaY, cameraOrbitSensitivity);
     }
 
     dragState.lastX = event.clientX;
