@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Kristal Katalog</title>
+  <link rel="icon" href="data:,">
+  <link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+  <main class="vault-shell">
+    <section class="vault-grid">
+      <aside class="panel panel-list" aria-label="Kristal-Katalog-Liste">
+        <div class="list-controls" aria-label="Schnellzugriff">
+          <label class="list-control">
+            <span class="list-control-label">Kristalle</span>
+            <select id="catalogSelect" class="list-control-select" aria-label="Kristall auswaehlen"></select>
+          </label>
+        </div>
+        <div id="listView" class="list-view" role="list" aria-label="Kristal-Katalog-Elemente"></div>
+      </aside>
+
+      <section class="panel panel-stage" aria-label="Babylon.js Szene">
+        <div class="stage-frame">
+          <canvas id="renderCanvas" aria-label="Babylon.js Vorschau"></canvas>
+          <div id="detailExperience" class="detail-experience" aria-hidden="true">
+            <svg id="detailLines" class="detail-lines" aria-hidden="true"></svg>
+            <div id="detailCards" class="detail-cards" aria-label="Details"></div>
+            <div id="contentExperience" class="content-experience" aria-hidden="true">
+              <aside class="content-sidebar" aria-label="Kristall und Inhaltsverzeichnis">
+                <section
+                  id="contentCrystalPanel"
+                  class="content-crystal-panel"
+                  role="button"
+                  tabindex="0"
+                  aria-label="Zurueck zu den Details"
+                >
+                  <div class="content-crystal-frame">
+                    <canvas id="contentLavaBallCanvas" class="content-lavaball-canvas" aria-hidden="true"></canvas>
+                    <span class="content-crystal-badge">Kristall</span>
+                    <span class="content-crystal-mark">Symbol-Navigator</span>
+                  </div>
+                </section>
+                <nav id="contentToc" class="content-toc" aria-label="Inhaltsverzeichnis"></nav>
+              </aside>
+              <section id="contentStage" class="content-stage" aria-live="polite"></section>
+            </div>
+            <button
+              id="detailAdvanceButton"
+              class="detail-advance-button"
+              type="button"
+              aria-label="Zum naechsten Feature"
+            >
+              <span class="detail-advance-pill" aria-hidden="true">
+                <span class="detail-advance-icon">
+                  <span class="detail-advance-icon-screen"></span>
+                  <span class="detail-advance-icon-play"></span>
+                  <span class="detail-advance-icon-base"></span>
+                </span>
+              </span>
+            </button>
+          </div>
+          <aside id="runtimeDebug" class="runtime-debug" aria-live="polite" hidden>
+            <div class="runtime-debug-header">
+              <strong class="runtime-debug-title">Testlab</strong>
+              <span id="runtimeDebugMode" class="runtime-debug-mode">idle</span>
+            </div>
+            <div id="runtimeDebugSummary" class="runtime-debug-summary"></div>
+            <pre id="runtimeDebugLog" class="runtime-debug-log"></pre>
+          </aside>
+          <div class="stage-overlay">
+            <span id="selectionPill" class="overlay-pill">Aktiv: 1</span>
+            <span id="enginePill" class="overlay-pill overlay-pill-muted">Babylon.js lokal</span>
+          </div>
+        </div>
+      </section>
+    </section>
+  </main>
+
+  <script src="../../frontend/vendor/vendor/babylon/babylon.js"></script>
+  <script type="module" src="./app.js"></script>
+</body>
+</html>

@@ -1,15 +1,11 @@
 import {
   canOpenDetailShell as selectionCanOpenDetailShell,
   canOpenPresenterShell,
-  getSelectionPlaceholderDetailProfile,
   getCrystalSelectionDefinition,
   supportsFullHierarchy as selectionSupportsFullHierarchy,
   supportsVaultProxyLod
 } from "./crystals/registry.js";
-import { getSelection04DetailItems, getSelection04VaultLodConfig } from "./crystals/selection-04.js";
-import { buildDetailHierarchyModel, getPreferredActiveContentEntry } from "./crystals/shared/detail-shell.js";
 import { buildSelectionPlaceholderDetailItems } from "./crystals/shared/placeholder-shell.js";
-import { normalizeVaultLodConfig, resolveVaultLodTier } from "./crystals/shared/vault-lod.js";
 
 const catalogItems = Array.from({ length: 20 }, (_, index) => ({
   id: index + 1,
@@ -104,6 +100,8 @@ const FOCUS_TRANSITION_CURVE_FACTOR = 0.2;
 const VAULT_CRYSTAL_SCALE_MIN = 0.34;
 const VAULT_CRYSTAL_SCALE_MAX = 0.5;
 const VAULT_LAYOUT_RADIUS = 5.4;
+const VAULT_CLOSEBY_DETAIL_ENTER_DISTANCE = 10.8;
+const VAULT_CLOSEBY_DETAIL_EXIT_DISTANCE = 11.9;
 const DEFAULT_H3_RUNES_PER_FRAGMENT = 10;
 const MAX_H3_RUNES_PER_FRAGMENT = 10;
 const PRESENTER_ROTATION_SPEED = Object.freeze({
@@ -1248,7 +1246,7 @@ function updateFocusTransition() {
     if (transitionMode === "to-vault") {
       promoteVaultBackdropToActiveCrystal();
     } else if (shouldOpenDetail) {
-      showSelectionDetails();
+      showTetrahedronDetails();
     } else {
       clearVaultBackdrop();
     }
@@ -3213,10 +3211,6 @@ function initializeVaultCrystalLod(root, faceEntries, selectionId) {
     return;
   }
 
-  const selectionLodConfig = normalizeVaultLodConfig(
-    selectionId === 4 ? getSelection04VaultLodConfig() : {}
-  );
-
   const outerMeshes = new Set(faceEntries.map((entry) => entry.mesh).filter(Boolean));
   const detailMeshes = root.getChildMeshes(false).filter((mesh) => !outerMeshes.has(mesh));
 
@@ -3224,8 +3218,8 @@ function initializeVaultCrystalLod(root, faceEntries, selectionId) {
     ...(root.metadata || {}),
     vaultLod: {
       tier: "unknown",
-      enterDistance: selectionLodConfig.enterDistance,
-      exitDistance: selectionLodConfig.exitDistance,
+      enterDistance: VAULT_CLOSEBY_DETAIL_ENTER_DISTANCE,
+      exitDistance: VAULT_CLOSEBY_DETAIL_EXIT_DISTANCE,
       detailMeshes,
       runeEntries: [...(root.metadata?.runeEntries || [])],
       runeLights: [...(root.metadata?.runeLights || [])]
@@ -3242,7 +3236,7 @@ function applyVaultCrystalLodTier(root, nextTier) {
     return;
   }
 
-  const isFullTier = nextTier === "near" || nextTier === "focused";
+  const isFullTier = nextTier === "full";
 
   vaultLod.detailMeshes.forEach((mesh) => {
     if (!mesh?.isDisposed?.()) {
@@ -3299,13 +3293,9 @@ function syncVaultCrystalLod() {
       cameraPosition,
       crystalRoot.getAbsolutePosition()
     );
-    const nextTier = resolveVaultLodTier({
-      currentTier: vaultLod.tier,
-      distanceToCamera,
-      enterDistance: vaultLod.enterDistance,
-      exitDistance: vaultLod.exitDistance,
-      focused: false
-    });
+    const nextTier = vaultLod.tier === "full"
+      ? (distanceToCamera <= vaultLod.exitDistance ? "full" : "proxy")
+      : (distanceToCamera <= vaultLod.enterDistance ? "full" : "proxy");
 
     applyVaultCrystalLodTier(crystalRoot, nextTier);
   });
@@ -6301,11 +6291,19 @@ function mountExplodedDetails(items) {
 
   detailCards.innerHTML = "";
   detailLines.innerHTML = "";
-  const {
-    crystalEntry,
-    fragmentEntries,
-    runeEntriesByParent
-  } = buildDetailHierarchyModel(items);
+  const crystalEntry = items.find((item) => item.level === "h1") || null;
+  const fragmentEntries = items
+    .filter((item) => item.level === "h2")
+    .sort((left, right) => left.faceIndex - right.faceIndex);
+  const runeEntriesByParent = new Map();
+
+  items
+    .filter((item) => item.level === "h3")
+    .forEach((item) => {
+      const collection = runeEntriesByParent.get(item.parentId) || [];
+      collection.push(item);
+      runeEntriesByParent.set(item.parentId, collection);
+    });
 
   if (crystalEntry) {
     detailCards.appendChild(createDetailCard(crystalEntry));
@@ -6402,12 +6400,20 @@ function mountContentExperience(items) {
   contentToc.innerHTML = "";
   contentStage.innerHTML = "";
 
-  const {
-    crystalEntry,
-    fragmentEntries,
-    runeEntriesByParent,
-    entriesById
-  } = buildDetailHierarchyModel(items);
+  const crystalEntry = items.find((item) => item.level === "h1") || null;
+  const fragmentEntries = items
+    .filter((item) => item.level === "h2")
+    .sort((left, right) => left.faceIndex - right.faceIndex);
+  const runeEntriesByParent = new Map();
+  const itemsById = new Map(items.map((item) => [item.entryId, item]));
+
+  items
+    .filter((item) => item.level === "h3")
+    .forEach((item) => {
+      const collection = runeEntriesByParent.get(item.parentId) || [];
+      collection.push(item);
+      runeEntriesByParent.set(item.parentId, collection);
+    });
 
   const label = document.createElement("p");
   const crystalTitle = document.createElement("h2");
@@ -6436,13 +6442,17 @@ function mountContentExperience(items) {
     contentToc.appendChild(group);
   });
 
-  const activeEntry = getPreferredActiveContentEntry(items, state.extraction.activeContentEntryId);
+  const activeEntry = itemsById.get(state.extraction.activeContentEntryId)
+    || items.find((item) => item.level === "h3")
+    || items.find((item) => item.level === "h2")
+    || crystalEntry
+    || null;
 
   if (!activeEntry) {
     return;
   }
 
-  const content = createDummyContentPayload(activeEntry, crystalEntry, entriesById);
+  const content = createDummyContentPayload(activeEntry, crystalEntry, itemsById);
   const sheet = document.createElement("article");
   const eyebrow = document.createElement("p");
   const title = document.createElement("h2");
@@ -6563,11 +6573,10 @@ function showTetrahedronDetails() {
 
 function getDetailItemsForSelection(selectionId, metadata, faceEntries = state.faceEntries) {
   if (selectionSupportsFullHierarchy(selectionId)) {
-    return getSelection04DetailItems(metadata);
+    return getTetrahedronDetailItems(metadata);
   }
 
   const selectionDefinition = getCrystalSelectionDefinition(selectionId);
-  const placeholderProfile = getSelectionPlaceholderDetailProfile(selectionId);
   const selectionTitle = itemsById.get(selectionId)?.title || String(selectionId || "");
   const shapeConfig = getShapeConfigForSelection(selectionId);
 
@@ -6575,14 +6584,30 @@ function getDetailItemsForSelection(selectionId, metadata, faceEntries = state.f
     selectionId,
     selectionTitle,
     faceEntries,
-    familyLabel: placeholderProfile.familyLabel || selectionDefinition.shapeFamily || shapeConfig.kind,
-    fragmentCount: placeholderProfile.fragmentCount,
-    fragmentRuneCountResolver: (_faceEntry, faceIndex) => Math.min(3, getRequestedFragmentRuneCount(selectionId, faceIndex)),
+    familyLabel: selectionDefinition.shapeFamily || shapeConfig.kind,
     faceAccentResolver: (faceEntry, faceIndex) => (
       faceEntry?.accentHex
       || getBodyColorForSelection(selectionId, `${shapeConfig.kind}_placeholder_${faceIndex + 1}`)
     )
   });
+}
+
+function getTetrahedronDetailItems(metadata) {
+  const crystalEntry = metadata?.crystalRuneEntry ? [metadata.crystalRuneEntry] : [];
+  const fragmentEntries = (metadata?.fragmentEntries || [])
+    .slice()
+    .sort((left, right) => left.faceIndex - right.faceIndex);
+  const runeEntries = (metadata?.runeFragmentEntries || [])
+    .slice()
+    .sort((left, right) => {
+      if (left.faceIndex !== right.faceIndex) {
+        return left.faceIndex - right.faceIndex;
+      }
+
+      return left.runeIndex - right.runeIndex;
+    });
+
+  return [...crystalEntry, ...fragmentEntries, ...runeEntries];
 }
 
 function collapseTetrahedronIntoGroundView() {
