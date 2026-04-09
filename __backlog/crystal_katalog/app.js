@@ -119,6 +119,7 @@ const state = {
     presenterHaloLayout: null,
     presenterHaloSimulation: null,
     livePaneWidthPx: null,
+    detailSync: createDetailSyncState(),
     stage: "idle",
     stageStartTime: 0,
     items: [],
@@ -212,6 +213,7 @@ renderList();
 renderQuickSelects();
 bindDetailAdvanceButton();
 bindContentCrystalPanel();
+bindDetailCardViewport();
 updateSelection(STARTUP_CONFIG.selectionId);
 setupBabylonScene();
 
@@ -328,6 +330,18 @@ function bindContentCrystalPanel() {
   });
 }
 
+function bindDetailCardViewport() {
+  if (!detailCards || detailCards.dataset.detailViewportBound === "true") {
+    return;
+  }
+
+  detailCards.dataset.detailViewportBound = "true";
+  detailCards.addEventListener("scroll", () => {
+    markDetailSyncLayoutDirty();
+    scheduleDetailCardTargetRefresh();
+  }, { passive: true });
+}
+
 function requestContentReturnToDetail() {
   // Ziel: Den Rueckweg aus dem PresenterView als kurze Portal-Transition statt als harten View-Sprung fahren.
   // Warum: Der kleine Kristall oben links ist semantisch der Rueckbutton; sein LavaBall-Effekt soll den Wechsel tragen und nicht nach dem Klick einfach abrupt verschwinden.
@@ -406,8 +420,116 @@ function createDiagnosticsState(startupConfig) {
       visibleH2: 0,
       visibleH3: 0
     },
+    performance: {
+      sceneRenderMs: createRollingMetric(),
+      detailLayoutMs: createRollingMetric(),
+      detailHoverPickMs: createRollingMetric()
+    },
+    performancePanelUpdatedAt: 0,
     samples: []
   };
+}
+
+function createRollingMetric() {
+  return {
+    samples: [],
+    lastMs: 0,
+    avgMs: 0,
+    maxMs: 0
+  };
+}
+
+function recordDiagnosticTiming(metricKey, durationMs) {
+  const metric = diagnostics.performance?.[metricKey];
+
+  if (!metric || !Number.isFinite(durationMs)) {
+    return;
+  }
+
+  metric.samples.push(durationMs);
+
+  if (metric.samples.length > 45) {
+    metric.samples.shift();
+  }
+
+  metric.lastMs = durationMs;
+  metric.maxMs = Math.max(metric.maxMs, durationMs);
+  metric.avgMs = metric.samples.reduce((sum, sample) => sum + sample, 0) / metric.samples.length;
+}
+
+function formatDiagnosticTiming(metricKey) {
+  const metric = diagnostics.performance?.[metricKey];
+
+  if (!metric?.samples?.length) {
+    return "n/a";
+  }
+
+  return `${metric.avgMs.toFixed(2)}ms avg`;
+}
+
+function maybeUpdateRuntimePerformancePanel() {
+  if (!diagnostics.enabled) {
+    return;
+  }
+
+  const now = performance.now();
+
+  if (now - diagnostics.performancePanelUpdatedAt < 420) {
+    return;
+  }
+
+  diagnostics.performancePanelUpdatedAt = now;
+  updateRuntimeDebugPanel();
+}
+
+function createDetailSyncState() {
+  return {
+    layoutDirty: true,
+    visibilityDirty: true,
+    cardTargetsByEntryId: new Map(),
+    screenPointsByEntryId: new Map(),
+    screenRadiiByEntryId: new Map(),
+    entriesById: new Map(),
+    networkConnectorDefs: [],
+    hoverConnectorDefs: [],
+    cardRefreshFrameId: 0
+  };
+}
+
+function resetDetailSyncState() {
+  const detailSync = state.extraction.detailSync || createDetailSyncState();
+
+  if (detailSync.cardRefreshFrameId) {
+    cancelAnimationFrame(detailSync.cardRefreshFrameId);
+  }
+
+  detailSync.layoutDirty = true;
+  detailSync.visibilityDirty = true;
+  detailSync.cardTargetsByEntryId.clear();
+  detailSync.screenPointsByEntryId.clear();
+  detailSync.screenRadiiByEntryId.clear();
+  detailSync.entriesById.clear();
+  detailSync.networkConnectorDefs = [];
+  detailSync.hoverConnectorDefs = [];
+  detailSync.cardRefreshFrameId = 0;
+  state.extraction.detailSync = detailSync;
+  return detailSync;
+}
+
+function markDetailSyncLayoutDirty() {
+  const detailSync = state.extraction.detailSync;
+
+  if (detailSync) {
+    detailSync.layoutDirty = true;
+  }
+}
+
+function markDetailSyncVisibilityDirty() {
+  const detailSync = state.extraction.detailSync;
+
+  if (detailSync) {
+    detailSync.visibilityDirty = true;
+  }
 }
 
 function formatDiagnosticValue(value) {
@@ -480,7 +602,8 @@ function updateRuntimeDebugPanel() {
   runtimeDebugSummary.textContent = [
     `Selection ${metrics.selectionId} · Faces ${metrics.faceEntries} · Detail ${metrics.detailOpen ? "offen" : "zu"} · Modus ${metrics.viewMode}`,
     `H1 ${metrics.visibleH1}/${metrics.h1} · H2 ${metrics.visibleH2}/${metrics.h2} · H3 ${metrics.visibleH3}/${metrics.h3}`,
-    `Errors ${errorCount} · Events ${eventCount}`
+    `Errors ${errorCount} · Events ${eventCount}`,
+    `Perf render ${formatDiagnosticTiming("sceneRenderMs")} · overlay ${formatDiagnosticTiming("detailLayoutMs")} · hover ${formatDiagnosticTiming("detailHoverPickMs")}`
   ].join("\n");
 
   runtimeDebugLog.textContent = [...liveConditionEntries, ...diagnostics.errorEntries, ...diagnostics.eventEntries]
@@ -617,6 +740,22 @@ function syncDetachedRuneAnchors() {
   });
 }
 
+function shouldSyncDetachedRuneAnchors() {
+  if (!state.crystalRoot?.metadata) {
+    return false;
+  }
+
+  if (state.selectedId === 4 && state.extraction.stage === "expanded") {
+    return false;
+  }
+
+  const metadata = state.crystalRoot.metadata;
+  return Boolean(
+    metadata?.crystalRuneEntry?.followCrystalTransform
+    || metadata?.fragmentEntries?.some?.((entry) => entry?.followCrystalTransform)
+  );
+}
+
 function installGlobalDiagnosticHooks() {
   if (window.__crystalTestLabHooksInstalled) {
     return;
@@ -648,6 +787,16 @@ function installGlobalDiagnosticHooks() {
         viewMode: state.extraction.viewMode,
         activeContentEntryId: state.extraction.activeContentEntryId,
         metrics: { ...diagnostics.metrics },
+        performance: Object.fromEntries(
+          Object.entries(diagnostics.performance || {}).map(([key, metric]) => [
+            key,
+            {
+              lastMs: metric.lastMs,
+              avgMs: metric.avgMs,
+              maxMs: metric.maxMs
+            }
+          ])
+        ),
         conditions: [...diagnostics.conditionEntries.entries()].map(([key, value]) => ({ key, ...value })),
         errors: diagnostics.errorEntries.map((entry) => ({ ...entry })),
         events: diagnostics.eventEntries.map((entry) => ({ ...entry })),
@@ -889,6 +1038,8 @@ function clearLiveDetailPaneWidth() {
   document.body.style.removeProperty("--detail-pane-live-width");
   state.extraction.livePaneWidthPx = null;
   state.scene?.getEngine?.().resize();
+  markDetailSyncLayoutDirty();
+  scheduleDetailCardTargetRefresh();
 }
 
 function syncLiveDetailPaneWidth() {
@@ -931,6 +1082,8 @@ function syncLiveDetailPaneWidth() {
   document.body.style.setProperty("--detail-pane-live-width", `${clampedWidth}px`);
   state.extraction.livePaneWidthPx = clampedWidth;
   state.scene?.getEngine?.().resize();
+  markDetailSyncLayoutDirty();
+  scheduleDetailCardTargetRefresh();
 }
 
 function updateDetailAdvanceButtonState() {
@@ -1170,6 +1323,8 @@ function commitExtractionViewMode(viewMode) {
 
   state.extraction.viewMode = nextMode;
   document.body.classList.toggle("is-content-mode", nextMode === "content");
+  markDetailSyncLayoutDirty();
+  markDetailSyncVisibilityDirty();
 
   if (contentExperience) {
     contentExperience.setAttribute("aria-hidden", String(nextMode !== "content"));
@@ -1206,6 +1361,8 @@ function commitExtractionViewMode(viewMode) {
   syncPresenterSymbolHalos(nextMode === "content");
   updateDetailAdvanceButtonState();
   syncLiveDetailPaneWidth();
+  scheduleDetailCardTargetRefresh();
+  syncDetailConnectorVisibility();
   syncExperienceCamera();
   refreshRuntimeDiagnostics();
 }
@@ -1347,19 +1504,26 @@ function setupBabylonScene() {
     }
     updateExtractionAnimation();
     updateViewerMovement(scene);
-    syncDetachedRuneAnchors();
+    if (shouldSyncDetachedRuneAnchors()) {
+      syncDetachedRuneAnchors();
+    }
     try {
+      const renderStartedAt = performance.now();
       scene.render();
+      recordDiagnosticTiming("sceneRenderMs", performance.now() - renderStartedAt);
     } catch (error) {
       pushDiagnostic("error", "scene.render() fehlgeschlagen", error, "render-loop-crash");
       return;
     }
     syncExplodedDetailLayout();
+    maybeUpdateRuntimePerformancePanel();
   });
 
   window.addEventListener("resize", () => {
     engine.resize();
     syncLiveDetailPaneWidth();
+    markDetailSyncLayoutDirty();
+    scheduleDetailCardTargetRefresh();
   });
 }
 
@@ -4799,26 +4963,120 @@ function getActiveDetailHoverEntryId() {
   return state.extraction.hoveredCardEntryId || state.extraction.hoveredRuneEntryId || null;
 }
 
-function syncDetailConnectorVisibility() {
-  // Ziel: Connectoren standardmaessig unsichtbar halten und nur fuer den aktiv gehoverteten Eintrag zeigen.
-  // Warum: Die Linien sollen den Blick nicht dauerhaft ueberladen, sondern nur als gezielte Orientierungsbruecke zwischen Detail und Symbol dienen.
-  const activeEntryId = getActiveDetailHoverEntryId();
+function rebuildDetailSyncCache(items) {
+  const detailSync = resetDetailSyncState();
 
-  state.extraction.items.forEach((item) => {
-    if (!item.detailConnectorElement) {
+  detailSync.entriesById = new Map(items.map((item) => [item.entryId, item]));
+  detailSync.hoverConnectorDefs = items
+    .filter((item) => item.detailConnectorElement && item.runeAnchorMesh)
+    .map((item) => ({
+      entryId: item.entryId,
+      entry: item,
+      element: item.detailConnectorElement
+    }));
+  detailSync.networkConnectorDefs = state.extraction.networkConnectors
+    .map((connector) => ({
+      ...connector,
+      sourceEntry: detailSync.entriesById.get(connector.sourceEntryId) || null,
+      targetEntry: detailSync.entriesById.get(connector.targetEntryId) || null
+    }))
+    .filter((connector) => connector.element && connector.sourceEntry && connector.targetEntry);
+
+  scheduleDetailCardTargetRefresh();
+}
+
+function scheduleDetailCardTargetRefresh() {
+  const detailSync = state.extraction.detailSync;
+
+  if (!detailSync || !detailCards || state.extraction.stage !== "expanded") {
+    return;
+  }
+
+  if (detailSync.cardRefreshFrameId) {
+    return;
+  }
+
+  detailSync.cardRefreshFrameId = requestAnimationFrame(() => {
+    detailSync.cardRefreshFrameId = 0;
+    refreshDetailCardTargets();
+  });
+}
+
+function refreshDetailCardTargets() {
+  const detailSync = state.extraction.detailSync;
+
+  if (!detailSync) {
+    return;
+  }
+
+  if (
+    !detailCards
+    || !renderCanvas
+    || state.extraction.stage !== "expanded"
+    || state.extraction.viewMode !== "detail"
+  ) {
+    detailSync.cardTargetsByEntryId.clear();
+    detailSync.layoutDirty = false;
+    return;
+  }
+
+  const canvasRect = renderCanvas.getBoundingClientRect();
+
+  if (!canvasRect.width || !canvasRect.height) {
+    return;
+  }
+
+  detailSync.cardTargetsByEntryId.clear();
+  detailSync.hoverConnectorDefs.forEach((connector) => {
+    const cardElement = connector.entry?.detailCardElement;
+
+    if (!cardElement) {
       return;
     }
 
-    if (!activeEntryId || item.entryId !== activeEntryId) {
-      item.detailConnectorElement.setAttribute("visibility", "hidden");
+    const cardRect = cardElement.getBoundingClientRect();
+
+    if (!cardRect.width && !cardRect.height) {
+      return;
     }
+
+    detailSync.cardTargetsByEntryId.set(connector.entryId, {
+      x: (cardRect.left - canvasRect.left) + 2,
+      y: (cardRect.top - canvasRect.top) + (cardRect.height / 2)
+    });
   });
+
+  detailSync.layoutDirty = false;
+}
+
+function syncDetailConnectorVisibility() {
+  // Ziel: Connectoren standardmaessig unsichtbar halten und nur fuer den aktiv gehoverteten Eintrag zeigen.
+  // Warum: Die Linien sollen den Blick nicht dauerhaft ueberladen, sondern nur als gezielte Orientierungsbruecke zwischen Detail und Symbol dienen.
+  const detailSync = state.extraction.detailSync;
+  const activeEntryId = getActiveDetailHoverEntryId();
+
+  if (!detailSync) {
+    return;
+  }
+
+  detailSync.hoverConnectorDefs.forEach((connector) => {
+    if (!connector.element) {
+      return;
+    }
+
+    const shouldShow = state.extraction.viewMode !== "content"
+      && Boolean(activeEntryId && connector.entryId === activeEntryId);
+    connector.element.setAttribute("visibility", shouldShow ? "visible" : "hidden");
+  });
+
+  detailSync.visibilityDirty = false;
 }
 
 function setHoveredDetailCardEntry(entryId) {
   // Ziel: Card-Hover explizit in den Connector-Zustand ueberfuehren.
   // Warum: Die Detailkarten liegen in einer eigenen DOM-Ebene und muessen dieselbe Hover-Quelle bedienen wie die 3D-Symbole im Canvas.
   state.extraction.hoveredCardEntryId = entryId;
+  markDetailSyncVisibilityDirty();
   syncDetailConnectorVisibility();
 }
 
@@ -4826,6 +5084,7 @@ function setHoveredRuneEntry(entryId) {
   // Ziel: Symbol-Hover aus der Szene in dieselbe Connector-Logik wie Card-Hover einspeisen.
   // Warum: Die Linie soll auftauchen, egal ob der Nutzer am Text oder direkt am Symbol andockt.
   state.extraction.hoveredRuneEntryId = entryId;
+  markDetailSyncVisibilityDirty();
   syncDetailConnectorVisibility();
 }
 
@@ -4985,6 +5244,7 @@ function mountExplodedDetails(items) {
 
   mountDetailHoverConnectors(items);
   mountRuneNetworkConnectors(items);
+  rebuildDetailSyncCache(items);
   syncDetailConnectorVisibility();
   requestAnimationFrame(() => {
     syncLiveDetailPaneWidth();
@@ -5149,6 +5409,7 @@ function clearExplodedDetails() {
   state.extraction.networkConnectors = [];
   state.extraction.presenterHaloLayout = null;
   state.extraction.presenterHaloSimulation = null;
+  resetDetailSyncState();
   updateDetailAdvanceButtonState();
 
   if (detailCards) {
@@ -5334,141 +5595,145 @@ function projectWorldPointToStageWithContext(worldPoint, projectionContext) {
 function pickDetailItemFromRuneHover(scene, canvas, event) {
   // Ziel: Einen gehoverten Detaileintrag ueber das sichtbare Symbol im Canvas finden.
   // Warum: Ein screen-space Hover-Test an den projizierten Symbol-Ankern ist stabiler als Pickbarkeit umzuschalten und bewahrt den bestehenden Face-Klickpfad.
+  const startedAt = performance.now();
+  const detailSync = state.extraction.detailSync;
+
   if (!scene || !state.camera) {
     return null;
   }
 
-  const rect = canvas.getBoundingClientRect();
-  const pointerX = event.clientX - rect.left;
-  const pointerY = event.clientY - rect.top;
-  const cameraRight = state.camera.getDirection(BABYLON.Axis.X).normalize();
-  const projectionContext = createStageProjectionContext();
-  let bestMatch = null;
-  let bestDistance = Number.POSITIVE_INFINITY;
-
-  state.extraction.items.forEach((item) => {
-    if (!item.runeAnchorMesh || !item.runeGlyphMesh) {
-      return;
+  try {
+    if (!detailSync?.screenPointsByEntryId?.size) {
+      return null;
     }
 
-    const centerWorld = item.runeAnchorMesh.getAbsolutePosition();
-    const centerPoint = projectWorldPointToStageWithContext(centerWorld, projectionContext);
+    const rect = canvas.getBoundingClientRect();
+    const pointerX = event.clientX - rect.left;
+    const pointerY = event.clientY - rect.top;
+    let bestMatch = null;
+    let bestDistance = Number.POSITIVE_INFINITY;
 
-    if (!centerPoint) {
-      return;
-    }
+    detailSync.hoverConnectorDefs.forEach((connector) => {
+      const centerPoint = detailSync.screenPointsByEntryId.get(connector.entryId) || null;
 
-    const radiusWorld = item.runeGlyphMesh.getBoundingInfo()?.boundingSphere?.radiusWorld || 0.18;
-    const edgePoint = projectWorldPointToStageWithContext(
-      centerWorld.add(cameraRight.scale(radiusWorld)),
-      projectionContext
-    );
-    const radiusPx = edgePoint
-      ? Math.hypot(edgePoint.x - centerPoint.x, edgePoint.y - centerPoint.y)
-      : 18;
-    const hoverRadius = Math.max(12, radiusPx * 1.15);
-    const pointerDistance = Math.hypot(pointerX - centerPoint.x, pointerY - centerPoint.y);
+      if (!centerPoint) {
+        return;
+      }
 
-    if (pointerDistance <= hoverRadius && pointerDistance < bestDistance) {
-      bestDistance = pointerDistance;
-      bestMatch = item;
-    }
-  });
+      const radiusPx = detailSync.screenRadiiByEntryId.get(connector.entryId) || 18;
+      const hoverRadius = Math.max(12, radiusPx * 1.15);
+      const pointerDistance = Math.hypot(pointerX - centerPoint.x, pointerY - centerPoint.y);
 
-  return bestMatch;
+      if (pointerDistance <= hoverRadius && pointerDistance < bestDistance) {
+        bestDistance = pointerDistance;
+        bestMatch = connector.entry;
+      }
+    });
+
+    return bestMatch;
+  } finally {
+    recordDiagnosticTiming("detailHoverPickMs", performance.now() - startedAt);
+  }
 }
 
 function syncExplodedDetailLayout() {
   // Ziel: Die Hover-Connectoren framegenau zwischen Symbol und zugehoeriger Detailkarte halten.
   // Warum: Die Karten leben im DOM und die Symbole im Babylon-Canvas; nur eine laufende Projektion haelt beide Ebenen deckungsgleich verbunden.
+  const startedAt = performance.now();
+  const detailSync = state.extraction.detailSync;
+
   if (!detailCards || !detailLines || !state.extraction.items.length) {
     return;
   }
 
-  const projectionContext = createStageProjectionContext();
+  try {
+    if (!detailSync) {
+      return;
+    }
 
-  if (!projectionContext) {
-    return;
+    if (detailSync.layoutDirty) {
+      refreshDetailCardTargets();
+    }
+
+    if (detailSync.visibilityDirty) {
+      syncDetailConnectorVisibility();
+    }
+
+    const projectionContext = createStageProjectionContext();
+
+    if (!projectionContext) {
+      return;
+    }
+
+    const isContentMode = state.extraction.viewMode === "content";
+    const cameraRight = state.camera?.getDirection(BABYLON.Axis.X)?.normalize?.() || BABYLON.Axis.X;
+
+    detailSync.screenPointsByEntryId.clear();
+    detailSync.screenRadiiByEntryId.clear();
+
+    detailSync.entriesById.forEach((item, entryId) => {
+      if (!item.runeAnchorMesh) {
+        return;
+      }
+
+      const centerWorld = item.runeAnchorMesh.getAbsolutePosition();
+      const centerPoint = projectWorldPointToStageWithContext(centerWorld, projectionContext);
+
+      if (!centerPoint) {
+        return;
+      }
+
+      detailSync.screenPointsByEntryId.set(entryId, centerPoint);
+
+      if (!item.runeGlyphMesh) {
+        return;
+      }
+
+      const radiusWorld = item.runeGlyphMesh.getBoundingInfo()?.boundingSphere?.radiusWorld || 0.18;
+      const edgePoint = projectWorldPointToStageWithContext(
+        centerWorld.add(cameraRight.scale(radiusWorld)),
+        projectionContext
+      );
+      const radiusPx = edgePoint
+        ? Math.hypot(edgePoint.x - centerPoint.x, edgePoint.y - centerPoint.y)
+        : 18;
+
+      detailSync.screenRadiiByEntryId.set(entryId, radiusPx);
+    });
+
+    detailSync.hoverConnectorDefs.forEach((connector) => {
+      const sourcePoint = detailSync.screenPointsByEntryId.get(connector.entryId) || null;
+      const targetPoint = detailSync.cardTargetsByEntryId.get(connector.entryId) || null;
+
+      if (!connector.element || isContentMode || !sourcePoint || !targetPoint) {
+        connector.element?.setAttribute("visibility", "hidden");
+        return;
+      }
+
+      connector.element.setAttribute("x1", String(sourcePoint.x));
+      connector.element.setAttribute("y1", String(sourcePoint.y));
+      connector.element.setAttribute("x2", String(targetPoint.x));
+      connector.element.setAttribute("y2", String(targetPoint.y));
+    });
+
+    detailSync.networkConnectorDefs.forEach((connector) => {
+      const sourcePoint = detailSync.screenPointsByEntryId.get(connector.sourceEntryId) || null;
+      const targetPoint = detailSync.screenPointsByEntryId.get(connector.targetEntryId) || null;
+
+      if (!sourcePoint || !targetPoint) {
+        connector.element.setAttribute("visibility", "hidden");
+        return;
+      }
+
+      connector.element.setAttribute("visibility", "visible");
+      connector.element.setAttribute("x1", String(sourcePoint.x));
+      connector.element.setAttribute("y1", String(sourcePoint.y));
+      connector.element.setAttribute("x2", String(targetPoint.x));
+      connector.element.setAttribute("y2", String(targetPoint.y));
+    });
+  } finally {
+    recordDiagnosticTiming("detailLayoutMs", performance.now() - startedAt);
   }
-
-  const activeEntryId = getActiveDetailHoverEntryId();
-  const isContentMode = state.extraction.viewMode === "content";
-  const runePointByEntryId = new Map();
-
-  state.extraction.items.forEach((item) => {
-    if (!item.runeAnchorMesh) {
-      return;
-    }
-
-    const projectedPoint = projectWorldPointToStageWithContext(
-      item.runeAnchorMesh.getAbsolutePosition(),
-      projectionContext
-    );
-
-    if (projectedPoint) {
-      runePointByEntryId.set(item.entryId, projectedPoint);
-    }
-  });
-
-  state.extraction.items.forEach((item) => {
-    if (!item.detailConnectorElement || !item.detailCardElement || !item.runeAnchorMesh) {
-      return;
-    }
-
-    if (isContentMode) {
-      item.detailConnectorElement.setAttribute("visibility", "hidden");
-      return;
-    }
-
-    const sourcePoint = runePointByEntryId.get(item.entryId) || null;
-    const cardRect = item.detailCardElement.getBoundingClientRect();
-    const canvasRect = projectionContext.canvasRect;
-    const targetPoint = {
-      x: (cardRect.left - canvasRect.left) + 2,
-      y: (cardRect.top - canvasRect.top) + (cardRect.height / 2)
-    };
-
-    if (!sourcePoint) {
-      item.detailConnectorElement.setAttribute("visibility", "hidden");
-      return;
-    }
-
-    item.detailConnectorElement.setAttribute(
-      "visibility",
-      activeEntryId && item.entryId === activeEntryId ? "visible" : "hidden"
-    );
-    item.detailConnectorElement.setAttribute("x1", String(sourcePoint.x));
-    item.detailConnectorElement.setAttribute("y1", String(sourcePoint.y));
-    item.detailConnectorElement.setAttribute("x2", String(targetPoint.x));
-    item.detailConnectorElement.setAttribute("y2", String(targetPoint.y));
-  });
-
-  const entriesById = new Map(state.extraction.items.map((item) => [item.entryId, item]));
-
-  state.extraction.networkConnectors.forEach((connector) => {
-    const sourceEntry = entriesById.get(connector.sourceEntryId);
-    const targetEntry = entriesById.get(connector.targetEntryId);
-
-    if (!connector.element || !sourceEntry?.runeAnchorMesh || !targetEntry?.runeAnchorMesh) {
-      return;
-    }
-
-    const sourcePoint = runePointByEntryId.get(sourceEntry.entryId) || null;
-    const targetPoint = runePointByEntryId.get(targetEntry.entryId) || null;
-
-    if (!sourcePoint || !targetPoint) {
-      connector.element.setAttribute("visibility", "hidden");
-      return;
-    }
-
-    connector.element.setAttribute("visibility", "visible");
-    connector.element.setAttribute("x1", String(sourcePoint.x));
-    connector.element.setAttribute("y1", String(sourcePoint.y));
-    connector.element.setAttribute("x2", String(targetPoint.x));
-    connector.element.setAttribute("y2", String(targetPoint.y));
-  });
-
-  syncDetailConnectorVisibility();
 }
 
 function fract(value) {
