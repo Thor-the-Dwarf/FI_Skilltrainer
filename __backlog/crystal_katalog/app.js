@@ -175,7 +175,8 @@ const state = {
     toRotation: null,
     fromCameraRadius: DEFAULT_CAMERA_RADIUS,
     toCameraRadius: DEFAULT_CAMERA_RADIUS,
-    targetPoint: null
+    targetPoint: null,
+    openDetailOnComplete: false
   },
   drag: {
     active: false,
@@ -1195,6 +1196,18 @@ function updateFocusTransition() {
     transition.toCameraRadius,
     easedProgress
   );
+  const backdropMaterials = state.vaultBackdropRoot?.metadata?.materials || [];
+  const backdropNetwork = state.vaultBackdropRoot?.metadata?.network || null;
+  const backdropFade = 1 - easedProgress;
+
+  backdropMaterials.forEach((material) => {
+    material.alpha *= 0.985;
+    material.alpha = Math.min(material.alpha, 0.46 * backdropFade);
+  });
+
+  if (backdropNetwork) {
+    backdropNetwork.alpha = 0.18 * backdropFade;
+  }
 
   if (rawProgress >= 1) {
     state.crystalRoot.position.copyFrom(transition.toPosition);
@@ -1202,7 +1215,12 @@ function updateFocusTransition() {
     state.crystalRoot.rotationQuaternion = transition.toRotation.clone();
     state.camera.target.copyFrom(transition.targetPoint);
     state.camera.radius = transition.toCameraRadius;
+    const shouldOpenDetail = transition.openDetailOnComplete;
     resetFocusTransition();
+
+    if (shouldOpenDetail) {
+      showTetrahedronDetails();
+    }
   }
 }
 
@@ -1867,11 +1885,13 @@ function getVaultSnapshotData() {
 }
 
 function clearVaultBackdrop() {
+  const materials = state.vaultBackdropRoot?.metadata?.materials || [];
+  materials.forEach((material) => material?.dispose?.());
   state.vaultBackdropRoot?.dispose?.(false);
   state.vaultBackdropRoot = null;
 }
 
-function ensureVaultBackdrop(scene) {
+function ensureVaultBackdrop(scene, excludedSelectionId = null) {
   if (!scene) {
     return null;
   }
@@ -1884,6 +1904,31 @@ function ensureVaultBackdrop(scene) {
   }
 
   const backdropRoot = new BABYLON.TransformNode("vault_focus_backdrop", scene);
+  const materials = [];
+
+  snapshot.vaultCrystals
+    .filter((entry) => entry.selectionId !== excludedSelectionId)
+    .forEach((entry) => {
+      const shapeConfig = getShapeConfigForSelection(entry.selectionId);
+      const crystal = createCrystalByConfig(scene, shapeConfig, entry.selectionId);
+
+      crystal.root.parent = backdropRoot;
+      crystal.root.position.copyFrom(entry.position);
+      crystal.root.rotationQuaternion = entry.rotationQuaternion.clone();
+      crystal.root.scaling.setAll(entry.scale);
+      crystal.root.getChildMeshes(false).forEach((mesh) => {
+        mesh.isPickable = false;
+      });
+      crystal.root.metadata?.runeEntries?.forEach((runeEntry) => {
+        runeEntry.runeGlyphMesh?.setEnabled(false);
+        runeEntry.runeHaloMesh?.setEnabled(false);
+      });
+      crystal.materials.forEach((material) => {
+        material.alpha *= 0.46;
+      });
+      materials.push(...crystal.materials);
+    });
+
   const network = BABYLON.MeshBuilder.CreateLineSystem(
     "vault_focus_backdrop_lines",
     { lines: snapshot.linePairs, updatable: false },
@@ -1896,6 +1941,10 @@ function ensureVaultBackdrop(scene) {
   network.isPickable = false;
   network.renderingGroupId = 0;
   network.alwaysSelectAsActiveMesh = true;
+  backdropRoot.metadata = {
+    materials,
+    network
+  };
   state.vaultBackdropRoot = backdropRoot;
   return backdropRoot;
 }
@@ -1911,6 +1960,7 @@ function resetFocusTransition() {
   state.focusTransition.fromRotation = null;
   state.focusTransition.toRotation = null;
   state.focusTransition.targetPoint = null;
+  state.focusTransition.openDetailOnComplete = false;
 }
 
 function beginFocusTransition(selectionId, shapeConfig) {
@@ -1925,7 +1975,7 @@ function beginFocusTransition(selectionId, shapeConfig) {
   const currentCameraRadius = state.camera.radius;
 
   rebuildCrystal(shapeConfig, selectionId);
-  ensureVaultBackdrop(state.scene);
+  ensureVaultBackdrop(state.scene, selectionId);
 
   if (!placement || !state.crystalRoot) {
     syncRootViewCamera();
@@ -1960,6 +2010,7 @@ function beginFocusTransition(selectionId, shapeConfig) {
   state.focusTransition.fromCameraRadius = currentCameraRadius;
   state.focusTransition.toCameraRadius = DEFAULT_CAMERA_RADIUS;
   state.focusTransition.targetPoint = focusTarget;
+  state.focusTransition.openDetailOnComplete = selectionId === 4;
 }
 
 function syncCrystalForSelection(options = {}) {
@@ -1970,7 +2021,7 @@ function syncCrystalForSelection(options = {}) {
 
   const shapeConfig = getShapeConfigForSelection(state.selectedId);
 
-  if (options.animateFocus && state.extraction.stage === "idle") {
+  if (options.animateFocus && options.previousSelectionId === null && state.extraction.stage === "idle") {
     beginFocusTransition(state.selectedId, shapeConfig);
     return;
   }
