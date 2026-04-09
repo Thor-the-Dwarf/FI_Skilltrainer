@@ -72,7 +72,15 @@ const SELECTION_DEFINITIONS = new Map([
       supportsVaultLod: true
     })
   ],
-  [7, createSelectionDefinition(7, { shapeFamily: "prism-cap", rolloutState: "partial" })],
+  [
+    7,
+    createSelectionDefinition(7, {
+      shapeFamily: "prism-cap",
+      rolloutState: "full",
+      supportsFullHierarchy: true,
+      supportsVaultLod: true
+    })
+  ],
   [
     8,
     createSelectionDefinition(8, {

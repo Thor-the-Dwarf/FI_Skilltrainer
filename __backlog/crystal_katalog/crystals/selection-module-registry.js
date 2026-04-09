@@ -4,6 +4,7 @@ import { getSelection03DetailItems, getSelection03VaultLodConfig } from "./selec
 import { getSelection04DetailItems, getSelection04VaultLodConfig } from "./selection-04.js";
 import { getSelection05DetailItems, getSelection05VaultLodConfig } from "./selection-05.js";
 import { getSelection06DetailItems, getSelection06VaultLodConfig } from "./selection-06.js";
+import { getSelection07DetailItems, getSelection07VaultLodConfig } from "./selection-07.js";
 import { getSelection08DetailItems, getSelection08VaultLodConfig } from "./selection-08.js";
 import { getSelection09DetailItems, getSelection09VaultLodConfig } from "./selection-09.js";
 import { getSelection10DetailItems, getSelection10VaultLodConfig } from "./selection-10.js";
@@ -68,6 +69,14 @@ const SELECTION_MODULES = new Map([
       detailItems: (selectionContext) => getSelection06DetailItems(selectionContext),
       vaultLodConfig: () => getSelection06VaultLodConfig(),
       interiorKind: "prism"
+    }
+  ],
+  [
+    7,
+    {
+      detailItems: (selectionContext) => getSelection07DetailItems(selectionContext),
+      vaultLodConfig: () => getSelection07VaultLodConfig(),
+      interiorKind: "prism-cap"
     }
   ],
   [
