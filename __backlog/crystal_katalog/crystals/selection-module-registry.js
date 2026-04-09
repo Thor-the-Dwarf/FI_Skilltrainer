@@ -3,6 +3,7 @@ import { getSelection05DetailItems, getSelection05VaultLodConfig } from "./selec
 import { getSelection06DetailItems, getSelection06VaultLodConfig } from "./selection-06.js";
 import { getSelection08DetailItems, getSelection08VaultLodConfig } from "./selection-08.js";
 import { getSelection10DetailItems, getSelection10VaultLodConfig } from "./selection-10.js";
+import { getSelection11DetailItems, getSelection11VaultLodConfig } from "./selection-11.js";
 import { getSelection14DetailItems, getSelection14VaultLodConfig } from "./selection-14.js";
 import { getSelection16DetailItems, getSelection16VaultLodConfig } from "./selection-16.js";
 import { getSelection18DetailItems, getSelection18VaultLodConfig } from "./selection-18.js";
@@ -50,6 +51,14 @@ const SELECTION_MODULES = new Map([
       detailItems: (selectionContext) => getSelection10DetailItems(selectionContext),
       vaultLodConfig: () => getSelection10VaultLodConfig(),
       interiorKind: "bipyramid"
+    }
+  ],
+  [
+    11,
+    {
+      detailItems: (selectionContext) => getSelection11DetailItems(selectionContext),
+      vaultLodConfig: () => getSelection11VaultLodConfig(),
+      interiorKind: "corner-cut-bipyramid"
     }
   ],
   [
