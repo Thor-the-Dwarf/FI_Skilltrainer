@@ -63,6 +63,7 @@ import {
   };
 
   const slideToCrystalId = {};
+  const slideById = new Map();
   const explanationToCrystalIds = new Map();
   const crystalHierarchyVisualCache = new Map();
   const crystalPlaceholderMarkupCache = new Map();
@@ -70,6 +71,7 @@ import {
   vault.presentationCristals.forEach((crystal) => {
     crystal.slides.forEach((slide) => {
       slideToCrystalId[slide.id] = crystal.id;
+      slideById.set(slide.id, slide);
 
       slide.explanationIds.forEach((explanationId) => {
         const crystalIds = explanationToCrystalIds.get(explanationId) || new Set();
@@ -414,7 +416,10 @@ import {
 
     const crystal = getCurrentCrystal();
 
-    refs.cover.innerHTML = renderCrystalPlaceholderMarkup(crystal, "sidebar");
+    const nextMarkup = renderCrystalPlaceholderMarkup(crystal, "sidebar");
+    if (refs.cover.innerHTML !== nextMarkup) {
+      refs.cover.innerHTML = nextMarkup;
+    }
   }
 
   /*
@@ -437,10 +442,14 @@ import {
 
     const crystal = getCurrentCrystal();
 
-    refs.toc.innerHTML = `
+    const nextMarkup = `
       <p class="presentation-toc__label">${escapeHtml(vault.course.title)}</p>
       ${renderCrystalTocGroup(crystal)}
     `;
+
+    if (refs.toc.innerHTML !== nextMarkup) {
+      refs.toc.innerHTML = nextMarkup;
+    }
   }
 
   function renderCrystalTocGroup(crystal) {
@@ -609,10 +618,27 @@ import {
     const placeholderLead =
       variant.focus ||
       `${activeVariantSpec?.label || "Variante"}-Placeholder fuer ${slide.title}. Die spaetere Fassung wird hier als eigene Arbeitsfolie ausgearbeitet.`;
+    /*
+    ZIEL:
+    Echte Fassungen sprachlich als fertige Stufen und nicht weiter als Placeholder markieren.
+    WAS WURDE PROBIERT:
+    Der Renderer liest jetzt Status und Detailfeld der Variante aus und schaltet Beschriftung sowie Fallback-Texte daran um.
+    WESHALB WURDE SO ENTSCHIEDEN:
+    Sobald erste Slides redaktionell ausgebaut sind, darf die Buehne diesen Fortschritt nicht durch Placeholder-Wording entwerten.
+    */
+    const variantIsReady = variant.status === "ready";
+    const variantSectionLabel = variantIsReady
+      ? (activeVariantSpec?.label || "Variante")
+      : `${activeVariantSpec?.label || "Variante"}-Placeholder`;
     const placeholderCopy =
       variant.notes ||
-      `Dieses Master reserviert die spaetere ${activeVariantSpec?.label || "Variante"}-Fassung fuer ${slide.title} im Kristall ${crystal.title}.`;
+      (
+        variantIsReady
+          ? `${activeVariantSpec?.label || "Variante"} bildet ${slide.title} bereits als nutzbare Fachfassung innerhalb des Kristalls ${crystal.title} ab.`
+          : `Dieses Master reserviert die spaetere ${activeVariantSpec?.label || "Variante"}-Fassung fuer ${slide.title} im Kristall ${crystal.title}.`
+      );
     const placeholderDetail =
+      variant.detail ||
       variant.sourceBrief ||
       `Vorlaeufig bleibt die Folie eine Strukturprobe: Kernthese, Abgrenzung, Verknuepfungen und Visual werden spaeter redaktionell in dieser Masterform konkretisiert.`;
     const placeholderSummary =
@@ -788,7 +814,7 @@ import {
       <section class="presentation-master" data-master="${escapeHtml(masterId)}" data-layout="${escapeHtml(masterSpec.layout)}">
         <div class="presentation-master__copy">
           <article class="presentation-master__card presentation-master__card--copy">
-            <span class="presentation-master__label">${escapeHtml(`${variantLabel}-Placeholder`)}</span>
+            <span class="presentation-master__label">${escapeHtml(variantSectionLabel)}</span>
             <p class="presentation-master__text">${escapeHtml(placeholderCopy)}</p>
             <p class="presentation-master__text">${escapeHtml(placeholderDetail)}</p>
             <p class="presentation-master__text presentation-master__text--muted">${escapeHtml(placeholderSummary)}</p>
@@ -1349,9 +1375,17 @@ import {
     return vault.crystalById[state.crystalId];
   }
 
+  /*
+  ZIEL:
+  Den aktuell aktiven Slide ohne wiederholte lineare Suche aus dem Presenter-Zustand auflösen.
+  WAS WURDE PROBIERT:
+  Anfangs wurde im aktuellen Kristallarray bei jedem Zugriff per find gesucht.
+  WESHALB WURDE SO ENTSCHIEDEN:
+  Die zentrale Slide-Map reduziert wiederholte Sucharbeit und vereinheitlicht den Zugriff für Stage, URL-Sync und Hilfsfunktionen.
+  */
   function getCurrentSlide() {
     const crystal = getCurrentCrystal();
-    return crystal.slides.find((slide) => slide.id === state.slideId) || crystal.slides[0];
+    return slideById.get(state.slideId) || crystal.slides[0];
   }
 
   function isCrystalCoverActive() {
@@ -1386,13 +1420,16 @@ import {
       });
   }
 
+  /*
+  ZIEL:
+  Beliebige Slides im Presenter konsistent über eine vorbereitete Lookup-Struktur abrufen.
+  WAS WURDE PROBIERT:
+  Zunächst wurde dafür pro Aufruf über den zugehörigen Kristall erneut im Slides-Array gesucht.
+  WESHALB WURDE SO ENTSCHIEDEN:
+  Die vorbereitete Map ist einfacher, schneller und vermeidet doppelte Zustandslogik zwischen Slide- und Kristallauflösung.
+  */
   function getSlideById(slideId) {
-    const crystalId = slideToCrystalId[slideId];
-    if (!crystalId) {
-      return null;
-    }
-
-    return vault.crystalById[crystalId].slides.find((slide) => slide.id === slideId) || null;
+    return slideById.get(slideId) || null;
   }
 
   function buildCrystalPresentationUrl(crystalId) {
