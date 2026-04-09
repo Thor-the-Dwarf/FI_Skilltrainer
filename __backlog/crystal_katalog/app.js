@@ -1905,6 +1905,86 @@ function getVaultSnapshotData() {
   return state.vaultSnapshot;
 }
 
+function applyVaultBackdropVisualState(backdropRoot) {
+  if (!backdropRoot || backdropRoot.isDisposed?.()) {
+    return;
+  }
+
+  const materials = backdropRoot.metadata?.materials || [];
+  const network = backdropRoot.metadata?.network || null;
+
+  backdropRoot.getChildMeshes(false).forEach((mesh) => {
+    mesh.isPickable = false;
+  });
+
+  materials.forEach((material) => {
+    if (!material) {
+      return;
+    }
+
+    material.metadata = material.metadata || {};
+
+    if (typeof material.metadata.vaultBackdropBaseAlpha !== "number") {
+      material.metadata.vaultBackdropBaseAlpha = material.alpha;
+    }
+
+    if (typeof material.alpha === "number") {
+      material.alpha = Math.min(material.metadata.vaultBackdropBaseAlpha, 0.46);
+    }
+  });
+
+  if (network) {
+    network.metadata = network.metadata || {};
+
+    if (typeof network.metadata.vaultBackdropBaseAlpha !== "number") {
+      network.metadata.vaultBackdropBaseAlpha = network.alpha;
+    }
+
+    network.alpha = Math.min(network.metadata.vaultBackdropBaseAlpha, 0.18);
+  }
+}
+
+function parkVaultBackdropForReuse() {
+  const backdropRoot = state.vaultBackdropRoot;
+
+  if (!backdropRoot || backdropRoot.isDisposed?.()) {
+    return;
+  }
+
+  applyVaultBackdropVisualState(backdropRoot);
+  backdropRoot.setEnabled(false);
+}
+
+function awakenVaultBackdropForTransition(excludedSelectionId = null) {
+  const backdropRoot = state.vaultBackdropRoot;
+
+  if (!backdropRoot || backdropRoot.isDisposed?.()) {
+    return null;
+  }
+
+  const previousHiddenCrystalRoot = backdropRoot.metadata?.hiddenCrystalRoot || null;
+  const crystalRootsById = backdropRoot.metadata?.vaultCrystalRootsById || null;
+  const hiddenCrystalRoot = excludedSelectionId !== null
+    ? crystalRootsById?.get?.(excludedSelectionId) || null
+    : null;
+
+  if (previousHiddenCrystalRoot && !previousHiddenCrystalRoot.isDisposed?.()) {
+    previousHiddenCrystalRoot.setEnabled(true);
+  }
+
+  if (hiddenCrystalRoot && !hiddenCrystalRoot.isDisposed?.()) {
+    hiddenCrystalRoot.setEnabled(false);
+  }
+
+  backdropRoot.metadata = {
+    ...(backdropRoot.metadata || {}),
+    hiddenCrystalRoot
+  };
+  applyVaultBackdropVisualState(backdropRoot);
+  backdropRoot.setEnabled(true);
+  return backdropRoot;
+}
+
 function clearVaultBackdrop() {
   const backdropRoot = state.vaultBackdropRoot;
 
@@ -1953,6 +2033,7 @@ function createSeparateVaultBackdrop(scene, excludedSelectionId = null) {
     network,
     hiddenCrystalRoot
   };
+  applyVaultBackdropVisualState(backdropRoot);
   state.vaultBackdropRoot = backdropRoot;
   return backdropRoot;
 }
@@ -1979,22 +2060,13 @@ function ensureVaultBackdrop(scene, excludedSelectionId = null) {
     mesh.isPickable = false;
   });
 
-  materials.forEach((material) => {
-    if (typeof material.alpha === "number") {
-      material.alpha = Math.min(material.alpha, 0.46);
-    }
-  });
-
-  if (network) {
-    network.alpha = 0.18;
-  }
-
   backdropRoot.metadata = {
     ...(backdropRoot.metadata || {}),
     materials,
     network,
     hiddenCrystalRoot
   };
+  applyVaultBackdropVisualState(backdropRoot);
   state.vaultBackdropRoot = backdropRoot;
   state.crystalRoot = null;
   state.materials = [];
@@ -2152,7 +2224,7 @@ function beginReturnToVaultTransition(selectionId) {
   }
 
   clearExtractedCrystal();
-  createSeparateVaultBackdrop(state.scene, selectionId);
+  awakenVaultBackdropForTransition(selectionId);
 
   const fromPosition = currentRoot.position.clone();
   const toPosition = placement.position.clone();
@@ -9012,7 +9084,7 @@ function showSelectionDetails() {
   }
 
   stopSnapAnimation();
-  clearVaultBackdrop();
+  parkVaultBackdropForReuse();
   clearFocusedFace();
   clearExtractedCrystal();
   state.extraction.viewMode = "detail";
