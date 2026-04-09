@@ -1,3 +1,4 @@
+import { getSelection03DetailItems, getSelection03VaultLodConfig } from "./selection-03.js";
 import { getSelection04DetailItems, getSelection04VaultLodConfig } from "./selection-04.js";
 import { getSelection05DetailItems, getSelection05VaultLodConfig } from "./selection-05.js";
 import { getSelection06DetailItems, getSelection06VaultLodConfig } from "./selection-06.js";
@@ -16,6 +17,14 @@ import { getSelection19DetailItems, getSelection19VaultLodConfig } from "./selec
 import { getSelection20DetailItems, getSelection20VaultLodConfig } from "./selection-20.js";
 
 const SELECTION_MODULES = new Map([
+  [
+    3,
+    {
+      detailItems: (selectionContext) => getSelection03DetailItems(selectionContext),
+      vaultLodConfig: () => getSelection03VaultLodConfig(),
+      interiorKind: "cylinder"
+    }
+  ],
   [
     4,
     {
