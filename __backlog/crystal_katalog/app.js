@@ -134,6 +134,9 @@ const state = {
     items: [],
     viewMode: "detail",
     activeContentEntryId: null,
+    selectedDetailEntryIds: new Set(),
+    selectedDetailPrimaryEntryId: null,
+    selectedDetailPrimaryGroupId: null,
     hoveredCardEntryId: null,
     hoveredRuneEntryId: null,
     presenterTargetBeforeContent: null,
@@ -950,11 +953,16 @@ function installGlobalDiagnosticHooks() {
       return this.getReport();
     },
     hoverDetail(entryId) {
-      setHoveredDetailCardEntry(entryId || null);
+      if (entryId) {
+        activateDetailSelection(entryId, { toggle: false });
+      } else {
+        clearDetailSelection();
+      }
       refreshRuntimeDiagnostics();
       return this.getReport();
     },
     clearHover() {
+      clearDetailSelection();
       setHoveredDetailCardEntry(null);
       setHoveredRuneEntry(null);
       refreshRuntimeDiagnostics();
@@ -1508,6 +1516,7 @@ function commitExtractionViewMode(viewMode) {
 
   syncPresenterSymbolOnlyMeshes(nextMode === "content");
   syncPresenterSymbolHalos(nextMode === "content");
+  applyDetailSelectionState();
   updateDetailAdvanceButtonState();
   syncLiveDetailPaneWidth();
   scheduleDetailCardTargetRefresh();
@@ -5293,10 +5302,140 @@ function setRuneDisplayMode(item, isDetailView) {
   }
 }
 
-function getActiveDetailHoverEntryId() {
-  // Ziel: Einen einzigen sichtbaren Hover-Zustand fuer Detail-zu-Symbol-Verbindungen ableiten.
-  // Warum: Karte und Symbol koennen unabhaengig gehovert werden; fuer die Connector-Sichtbarkeit brauchen wir daraus eine einfache, priorisierte Leselogik.
-  return state.extraction.hoveredCardEntryId || state.extraction.hoveredRuneEntryId || null;
+function getExtractionItemByEntryId(entryId) {
+  if (!entryId) {
+    return null;
+  }
+
+  return state.extraction.detailSync?.entriesById?.get(entryId)
+    || state.extraction.items.find((item) => item.entryId === entryId)
+    || null;
+}
+
+function getDetailSelectionGroupId(entryOrId) {
+  const item = typeof entryOrId === "string"
+    ? getExtractionItemByEntryId(entryOrId)
+    : entryOrId;
+
+  if (!item) {
+    return null;
+  }
+
+  return item.level === "h3"
+    ? item.parentId
+    : item.entryId;
+}
+
+function getDetailSelectionGroupEntryIds(groupId) {
+  if (!groupId) {
+    return [];
+  }
+
+  return state.extraction.items
+    .filter((item) => item.entryId === groupId || (item.level === "h3" && item.parentId === groupId))
+    .map((item) => item.entryId);
+}
+
+function applyDetailSelectionState() {
+  const selectedEntryIds = state.extraction.selectedDetailEntryIds;
+  const primaryEntryId = state.extraction.selectedDetailPrimaryEntryId;
+  const shouldShowSelection = state.extraction.viewMode !== "content";
+
+  state.extraction.items.forEach((item) => {
+    const isSelected = selectedEntryIds.has(item.entryId);
+
+    item.detailCardElement?.classList.toggle("is-selected", isSelected);
+    item.detailCardElement?.classList.toggle("is-primary-selected", primaryEntryId === item.entryId);
+    setRuneHalosEnabled(item, shouldShowSelection && isSelected);
+  });
+
+  markDetailSyncVisibilityDirty();
+  syncDetailConnectorVisibility();
+}
+
+function clearDetailSelection() {
+  if (
+    state.extraction.selectedDetailEntryIds.size === 0
+    && !state.extraction.selectedDetailPrimaryEntryId
+    && !state.extraction.selectedDetailPrimaryGroupId
+  ) {
+    return;
+  }
+
+  state.extraction.selectedDetailEntryIds.clear();
+  state.extraction.selectedDetailPrimaryEntryId = null;
+  state.extraction.selectedDetailPrimaryGroupId = null;
+  applyDetailSelectionState();
+}
+
+function centerRuneEntry(entry, durationMs = 500) {
+  if (!entry?.runeAnchorMesh || !state.crystalRoot || !state.camera) {
+    return;
+  }
+
+  const currentRotation = (state.crystalRoot.rotationQuaternion || BABYLON.Quaternion.Identity()).clone();
+  const crystalCenterWorld = computeCurrentCrystalCenter();
+  const desiredDirection = state.camera.globalPosition
+    .subtract(crystalCenterWorld)
+    .normalize();
+  const currentWorldDirection = entry.runeAnchorMesh
+    .getAbsolutePosition()
+    .subtract(crystalCenterWorld);
+
+  if (currentWorldDirection.lengthSquared() < 1e-6) {
+    return;
+  }
+
+  currentWorldDirection.normalize();
+  const snapDelta = quaternionFromUnitVectors(currentWorldDirection, desiredDirection);
+  const targetRotation = snapDelta.multiply(currentRotation);
+
+  targetRotation.normalize();
+  startSnapAnimation(currentRotation, targetRotation, durationMs);
+}
+
+function activateDetailSelection(entryId, options = {}) {
+  const entry = getExtractionItemByEntryId(entryId);
+
+  if (!entry) {
+    return;
+  }
+
+  const toggle = options.toggle !== false;
+  const rotate = options.rotate !== false;
+  const groupId = getDetailSelectionGroupId(entry);
+  const groupEntryIds = getDetailSelectionGroupEntryIds(groupId);
+  const groupAlreadySelected = groupEntryIds.length > 0
+    && groupEntryIds.every((candidateEntryId) => state.extraction.selectedDetailEntryIds.has(candidateEntryId));
+  const isSamePrimary = state.extraction.selectedDetailPrimaryEntryId === entry.entryId;
+
+  if (toggle && groupAlreadySelected && isSamePrimary) {
+    groupEntryIds.forEach((candidateEntryId) => {
+      state.extraction.selectedDetailEntryIds.delete(candidateEntryId);
+    });
+
+    if (state.extraction.selectedDetailPrimaryGroupId === groupId) {
+      state.extraction.selectedDetailPrimaryEntryId = null;
+      state.extraction.selectedDetailPrimaryGroupId = null;
+    }
+
+    applyDetailSelectionState();
+    refreshRuntimeDiagnostics();
+    return;
+  }
+
+  groupEntryIds.forEach((candidateEntryId) => {
+    state.extraction.selectedDetailEntryIds.add(candidateEntryId);
+  });
+  state.extraction.selectedDetailPrimaryEntryId = entry.entryId;
+  state.extraction.selectedDetailPrimaryGroupId = groupId;
+  applyDetailSelectionState();
+
+  if (rotate) {
+    centerRuneEntry(entry, 500);
+  }
+
+  refreshRuntimeDiagnostics();
 }
 
 function rebuildDetailSyncCache(items) {
@@ -5386,10 +5525,9 @@ function refreshDetailCardTargets() {
 }
 
 function syncDetailConnectorVisibility() {
-  // Ziel: Connectoren standardmaessig unsichtbar halten und nur fuer den aktiv gehoverteten Eintrag zeigen.
-  // Warum: Die Linien sollen den Blick nicht dauerhaft ueberladen, sondern nur als gezielte Orientierungsbruecke zwischen Detail und Symbol dienen.
+  // Ziel: Connectoren nur fuer bewusst ausgewaehlte Detaileintraege zeigen.
+  // Warum: Hover-basierte Linien erzeugen zu viel visuelles Flackern; die Orientierung soll erst nach einem klaren Klick entstehen.
   const detailSync = state.extraction.detailSync;
-  const activeEntryId = getActiveDetailHoverEntryId();
 
   if (!detailSync) {
     return;
@@ -5401,7 +5539,7 @@ function syncDetailConnectorVisibility() {
     }
 
     const shouldShow = state.extraction.viewMode !== "content"
-      && Boolean(activeEntryId && connector.entryId === activeEntryId);
+      && state.extraction.selectedDetailEntryIds.has(connector.entryId);
     connector.element.setAttribute("visibility", shouldShow ? "visible" : "hidden");
   });
 
@@ -5409,19 +5547,11 @@ function syncDetailConnectorVisibility() {
 }
 
 function setHoveredDetailCardEntry(entryId) {
-  // Ziel: Card-Hover explizit in den Connector-Zustand ueberfuehren.
-  // Warum: Die Detailkarten liegen in einer eigenen DOM-Ebene und muessen dieselbe Hover-Quelle bedienen wie die 3D-Symbole im Canvas.
   state.extraction.hoveredCardEntryId = entryId;
-  markDetailSyncVisibilityDirty();
-  syncDetailConnectorVisibility();
 }
 
 function setHoveredRuneEntry(entryId) {
-  // Ziel: Symbol-Hover aus der Szene in dieselbe Connector-Logik wie Card-Hover einspeisen.
-  // Warum: Die Linie soll auftauchen, egal ob der Nutzer am Text oder direkt am Symbol andockt.
   state.extraction.hoveredRuneEntryId = entryId;
-  markDetailSyncVisibilityDirty();
-  syncDetailConnectorVisibility();
 }
 
 function getDetailCardTitleText(item) {
@@ -5445,6 +5575,8 @@ function createDetailCard(item) {
   const title = document.createElement(titleTagName);
 
   card.className = `detail-card detail-card-${item.level}`;
+  card.tabIndex = 0;
+  card.setAttribute("role", "button");
   card.style.setProperty("--detail-accent", item.detail.accentHex);
   row.className = "detail-card-row";
   rune.className = `detail-card-rune detail-card-rune-${item.level}`;
@@ -5454,13 +5586,16 @@ function createDetailCard(item) {
   title.textContent = getDetailCardTitleText(item);
   row.append(rune, title);
   card.append(row);
-  card.addEventListener("pointerenter", () => {
-    setHoveredDetailCardEntry(item.entryId);
+  card.addEventListener("click", () => {
+    activateDetailSelection(item.entryId);
   });
-  card.addEventListener("pointerleave", () => {
-    if (state.extraction.hoveredCardEntryId === item.entryId) {
-      setHoveredDetailCardEntry(null);
+  card.addEventListener("keydown", (event) => {
+    if (event.key !== "Enter" && event.key !== " ") {
+      return;
     }
+
+    event.preventDefault();
+    activateDetailSelection(item.entryId);
   });
 
   item.detailCardElement = card;
@@ -5472,7 +5607,7 @@ function createDetailCard(item) {
 
 function mountDetailHoverConnectors(items) {
   // Ziel: Fuer jeden Detaileintrag eine eigene Verbindung zu seinem Symbol vorbereiten.
-  // Warum: Die alte permanente Linienwand wird durch bedarfsorientierte Hover-Connectoren ersetzt, damit die Zuordnung nur bei Interesse sichtbar wird.
+  // Warum: Die Zuordnung zwischen Baum und Symbol soll auf Klick sichtbar werden, ohne dauerhaft alle Linien zu zeigen.
   if (!detailLines) {
     return;
   }
@@ -5581,6 +5716,7 @@ function mountExplodedDetails(items) {
   mountDetailHoverConnectors(items);
   mountRuneNetworkConnectors(items);
   rebuildDetailSyncCache(items);
+  applyDetailSelectionState();
   syncDetailConnectorVisibility();
   requestAnimationFrame(() => {
     syncLiveDetailPaneWidth();
@@ -5742,6 +5878,9 @@ function clearExplodedDetails() {
 
   state.extraction.hoveredCardEntryId = null;
   state.extraction.hoveredRuneEntryId = null;
+  state.extraction.selectedDetailEntryIds.clear();
+  state.extraction.selectedDetailPrimaryEntryId = null;
+  state.extraction.selectedDetailPrimaryGroupId = null;
   state.extraction.networkConnectors = [];
   state.extraction.presenterHaloLayout = null;
   state.extraction.presenterHaloSimulation = null;
@@ -5795,12 +5934,12 @@ function showTetrahedronDetails() {
   applyExplodedLayout(true);
   const detailItems = getTetrahedronDetailItems(state.crystalRoot.metadata);
 
-  mountExplodedDetails(detailItems);
   state.extraction.items = detailItems;
+  mountExplodedDetails(detailItems);
   state.extraction.stage = "expanded";
 
   if (STARTUP_CONFIG.hoverEntryId) {
-    setHoveredDetailCardEntry(STARTUP_CONFIG.hoverEntryId);
+    activateDetailSelection(STARTUP_CONFIG.hoverEntryId, { toggle: false });
   }
 
   if (STARTUP_CONFIG.openContent) {
@@ -6854,6 +6993,10 @@ function enableBoxDragging(camera, canvas) {
       return;
     }
 
+    if (event.button === 2 && isTetrahedronExpanded() && state.extraction.viewMode === "detail") {
+      return;
+    }
+
     stopSnapAnimation();
     dragState.active = true;
     dragState.pointerId = event.pointerId;
@@ -6870,17 +7013,6 @@ function enableBoxDragging(camera, canvas) {
   });
 
   canvas.addEventListener("pointermove", (event) => {
-    if (isTetrahedronExpanded()) {
-      if (dragState.active) {
-        setHoveredRuneEntry(null);
-      } else if (state.extraction.viewMode === "content") {
-        setHoveredRuneEntry(null);
-      } else {
-        const hoveredDetailItem = pickDetailItemFromRuneHover(state.scene, canvas, event);
-        setHoveredRuneEntry(hoveredDetailItem?.entryId || null);
-      }
-    }
-
     if (event.pointerId !== dragState.pointerId || !dragState.active || !state.crystalRoot) {
       return;
     }
@@ -6957,7 +7089,13 @@ function enableBoxDragging(camera, canvas) {
 
       if (!dragState.moved && !pickedMesh) {
         collapseTetrahedronIntoGroundView();
+        return;
       }
+
+      if (!dragState.moved && focusedSymbolEntry) {
+        activateDetailSelection(focusedSymbolEntry.entryId);
+      }
+
       return;
     }
 
@@ -7002,9 +7140,6 @@ function enableBoxDragging(camera, canvas) {
 
   canvas.addEventListener("pointerup", endDrag);
   canvas.addEventListener("pointercancel", cancelDrag);
-  canvas.addEventListener("pointerleave", () => {
-    setHoveredRuneEntry(null);
-  });
 }
 
 function enableViewerMovement(camera) {
@@ -7164,9 +7299,10 @@ function quaternionFromUnitVectors(fromVector, toVector) {
   return quaternion;
 }
 
-function startSnapAnimation(fromQuaternion, toQuaternion) {
+function startSnapAnimation(fromQuaternion, toQuaternion, durationMs = 220) {
   state.snap.active = true;
   state.snap.startTime = performance.now();
+  state.snap.durationMs = Math.max(1, durationMs);
   state.snap.fromQuaternion = fromQuaternion.clone();
   state.snap.toQuaternion = toQuaternion.clone();
 }

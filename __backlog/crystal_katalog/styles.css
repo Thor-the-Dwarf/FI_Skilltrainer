@@ -1069,6 +1069,7 @@ body.is-content-mode .detail-advance-button {
 .detail-card {
   position: relative;
   pointer-events: auto;
+  cursor: pointer;
   width: max-content;
   max-width: 100%;
   padding: 6px 10px 6px 0;
@@ -1136,16 +1137,28 @@ body.is-content-mode .detail-advance-button {
     transform 160ms ease;
 }
 
-.detail-card:hover .detail-card-row,
-.detail-card:focus-within .detail-card-row {
+.detail-card:focus-visible {
+  outline: none;
+}
+
+.detail-card.is-selected .detail-card-row,
+.detail-card:focus-visible .detail-card-row {
   background: hsl(0 0% 100% / 0.05);
   box-shadow:
     inset 0 0 0 1px hsl(0 0% 100% / 0.05),
     0 8px 18px rgba(0, 0, 0, 0.18);
 }
 
-.detail-card-h3:hover .detail-card-row,
-.detail-card-h3:focus-within .detail-card-row {
+.detail-card.is-primary-selected .detail-card-row {
+  background: hsl(0 0% 100% / 0.085);
+  box-shadow:
+    inset 0 0 0 1px color-mix(in srgb, var(--detail-accent) 28%, hsl(0 0% 100% / 0.08)),
+    0 10px 24px rgba(0, 0, 0, 0.22);
+}
+
+.detail-card-h3.is-selected .detail-card-row,
+.detail-card-h3.is-primary-selected .detail-card-row,
+.detail-card-h3:focus-visible .detail-card-row {
   background: hsl(0 0% 100% / 0.07);
   transform: translateX(2px);
 }
@@ -1174,6 +1187,14 @@ body.is-content-mode .detail-advance-button {
   font-size: 1rem;
   font-weight: 600;
   color: hsl(var(--text-muted));
+}
+
+.detail-card.is-selected .detail-card-title {
+  color: hsl(var(--text));
+}
+
+.detail-card.is-primary-selected .detail-card-title {
+  color: color-mix(in srgb, var(--detail-accent) 60%, hsl(var(--text)));
 }
 
 .detail-connector {
