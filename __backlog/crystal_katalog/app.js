@@ -5255,7 +5255,7 @@ function hashStringToSeed(value) {
   return Math.abs(hash) + 1;
 }
 
-function seededRange(seed, min, max) {
+function seededPresenterRange(seed, min, max) {
   return min + (pseudoRandom(seed) * (max - min));
 }
 
@@ -5271,20 +5271,20 @@ function buildPresenterHaloNodes(metrics) {
     .map((item) => {
       const seed = hashStringToSeed(String(item.entryId));
       const baseRadius = item.level === "h1"
-        ? seededRange(seed + 1, 11, 14)
+        ? seededPresenterRange(seed + 1, 11, 14)
         : item.level === "h2"
-          ? seededRange(seed + 1, 9, 12)
-          : seededRange(seed + 1, 7, 10);
-      const haloSize = seededRange(seed + 2, baseRadius * 2.2, baseRadius * 3.8);
-      const period = seededRange(seed + 3, 260, 420);
-      const anchorX = seededRange(seed + 4, marginX, Math.max(marginX, metrics.width - marginX));
-      const anchorY = seededRange(seed + 5, marginY, Math.max(marginY, metrics.height - marginY));
-      const driftX = seededRange(seed + 6, 5, 18);
-      const driftY = seededRange(seed + 7, 5, 16);
+          ? seededPresenterRange(seed + 1, 9, 12)
+          : seededPresenterRange(seed + 1, 7, 10);
+      const haloSize = seededPresenterRange(seed + 2, baseRadius * 2.2, baseRadius * 3.8);
+      const period = seededPresenterRange(seed + 3, 260, 420);
+      const anchorX = seededPresenterRange(seed + 4, marginX, Math.max(marginX, metrics.width - marginX));
+      const anchorY = seededPresenterRange(seed + 5, marginY, Math.max(marginY, metrics.height - marginY));
+      const driftX = seededPresenterRange(seed + 6, 5, 18);
+      const driftY = seededPresenterRange(seed + 7, 5, 16);
       const speedX = TAU / period;
-      const speedY = TAU / (period * seededRange(seed + 8, 0.82, 1.26));
-      const phaseX = seededRange(seed + 9, 0, TAU);
-      const phaseY = seededRange(seed + 10, 0, TAU);
+      const speedY = TAU / (period * seededPresenterRange(seed + 8, 0.82, 1.26));
+      const phaseX = seededPresenterRange(seed + 9, 0, TAU);
+      const phaseY = seededPresenterRange(seed + 10, 0, TAU);
       const x = anchorX + (Math.cos((timeSeconds * speedX) + phaseX) * driftX);
       const y = anchorY + (Math.sin((timeSeconds * speedY) + phaseY) * driftY);
 
