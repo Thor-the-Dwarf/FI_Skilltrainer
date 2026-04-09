@@ -770,7 +770,7 @@ function computeCurrentCrystalCenter() {
 
 function computeContentCameraRadius() {
   // Ziel: Den Presenter-Kristall exakt aus der echten Koerpergroesse heraus fitten.
-  // Warum: Der aeussere violette Kreis bleibt fest. Deshalb muss die laengste 3D-Distanz im Kristall direkt auf den Durchmesser genau dieses Kreises gemappt werden, nicht auf das rechteckige Canvas und nicht auf eine zufaellige aktuelle Projektion.
+  // Warum: Laut abgestimmter Begriffsregel ist jetzt die komplette Drawing Area massgeblich. Der Kristall soll also die tatsaechliche Canvas-Zeichenflaeche fuellen, nicht einen kleineren Hilfskreis darin.
   if (!state.camera || state.faceEntries.length === 0) {
     return CONTENT_CAMERA_RADIUS;
   }
@@ -802,14 +802,11 @@ function computeContentCameraRadius() {
     return CONTENT_CAMERA_RADIUS;
   }
 
-  const shellRadiusPx = Math.min(panelRect.width, panelRect.height) * 0.485;
   const viewportHalfWidth = Math.max(1, panelRect.width * 0.5);
   const viewportHalfHeight = Math.max(1, panelRect.height * 0.5);
   const baseVerticalHalfFov = (state.camera.fov || 0.8) * 0.5;
   const baseHorizontalHalfFov = Math.atan(Math.tan(baseVerticalHalfFov) * (panelRect.width / Math.max(1, panelRect.height)));
-  const usableVerticalHalfFov = Math.atan(Math.tan(baseVerticalHalfFov) * (shellRadiusPx / viewportHalfHeight));
-  const usableHorizontalHalfFov = Math.atan(Math.tan(baseHorizontalHalfFov) * (shellRadiusPx / viewportHalfWidth));
-  const limitingHalfFov = Math.max(0.12, Math.min(usableVerticalHalfFov, usableHorizontalHalfFov));
+  const limitingHalfFov = Math.max(0.12, Math.min(baseVerticalHalfFov, baseHorizontalHalfFov));
   const bodyRadius = Math.sqrt(maxDistanceSquared) * 0.5;
   const fittedRadius = bodyRadius / Math.tan(limitingHalfFov);
 
