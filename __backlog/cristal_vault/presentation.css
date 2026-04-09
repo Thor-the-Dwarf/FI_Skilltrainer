@@ -210,19 +210,28 @@ body.is-crystal-cover-active .presentation-cover {
   fill: rgba(13, 66, 107, 0.96);
 }
 
+/*
+ZIEL:
+Das fruehere kantige Placeholder-Kristallbild in ein rundes Orb-Cover fuer den separaten Presenter ueberfuehren.
+WAS WURDE PROBIERT:
+Zuerst stand hier ein Wireframe-/Karten-Look mit separaten Facet- und Bead-Elementen. Danach wurde der Bereich auf eine runde Orb-Shell mit eingebettetem SVG umgestellt.
+WESHALB WURDE SO ENTSCHIEDEN:
+Der Orb-Look passt besser zur neuen datengetriebenen Miniaturansicht und reduziert gleichzeitig DOM-Komplexitaet im Cover.
+*/
 .presentation-cover__placeholder {
   width: 100%;
   position: relative;
   display: grid;
-  align-content: end;
+  align-content: center;
+  justify-items: center;
   aspect-ratio: 1 / 1;
   padding: 18px;
   border-radius: 22px;
   border: 1px solid rgba(255, 255, 255, 0.08);
   background:
-    radial-gradient(circle at 24% 24%, rgba(77, 153, 221, 0.14), transparent 28%),
-    radial-gradient(circle at 78% 72%, rgba(255, 255, 255, 0.06), transparent 24%),
-    radial-gradient(circle at 50% 38%, rgba(72, 118, 184, 0.12), transparent 26%),
+    radial-gradient(circle at 24% 24%, rgba(77, 153, 221, 0.18), transparent 28%),
+    radial-gradient(circle at 78% 72%, rgba(255, 255, 255, 0.07), transparent 24%),
+    radial-gradient(circle at 50% 38%, rgba(72, 118, 184, 0.14), transparent 26%),
     linear-gradient(180deg, rgba(9, 15, 23, 0.98), rgba(16, 24, 35, 0.98));
   transition: opacity 180ms ease, visibility 180ms ease;
   overflow: hidden;
@@ -243,38 +252,18 @@ body.is-crystal-cover-active .presentation-cover {
 }
 
 .presentation-cover__placeholder::before {
-  content: "";
-  position: absolute;
-  inset: 12%;
-  border-radius: 24px;
-  border: 1px dashed rgba(121, 194, 255, 0.18);
+  content: none;
 }
 
 .presentation-cover__placeholder::after {
-  content: "";
-  position: absolute;
-  inset: 8%;
-  border: 5px solid rgba(95, 150, 219, 0.18);
-  border-radius: 48px;
-  transform: rotate(45deg);
-}
-
-.presentation-cover__placeholder--stage::before,
-.presentation-cover__placeholder--transition::before {
-  inset: 10%;
-}
-
-.presentation-cover__placeholder--stage::after,
-.presentation-cover__placeholder--transition::after {
-  inset: 18%;
-  border-radius: 52px;
+  content: none;
 }
 
 .presentation-cover__ratio {
   position: absolute;
   top: 14px;
   right: 14px;
-  z-index: 1;
+  z-index: 2;
   padding: 6px 10px;
   border-radius: 999px;
   border: 1px solid rgba(121, 194, 255, 0.24);
@@ -285,293 +274,128 @@ body.is-crystal-cover-active .presentation-cover {
   font-weight: 700;
 }
 
-.presentation-cover__crystal {
-  position: absolute;
-  top: 12%;
-  left: 50%;
-  width: min(62%, 330px);
+/*
+ZIEL:
+Die visuelle Grundbuehne fuer das Kristall-Miniaturbild als ruhige Orb-Shell mit Aura und klarer Kreisgeometrie definieren.
+WAS WURDE PROBIERT:
+Vorher lagen Glow, Wireframes und einzelne Nodes als getrennte HTML-Ebenen uebereinander. Danach wurde das in Orb-Shell, Aura und ein zentrales SVG gebuendelt.
+WESHALB WURDE SO ENTSCHIEDEN:
+Die gebuendelte Struktur ist leichter zu warten, harmoniert mit dem neuen SVG-Pfad und vermeidet visuelle Brueche zwischen Sidebar- und Stage-Cover.
+*/
+.presentation-cover__orb-shell {
+  position: relative;
+  z-index: 1;
+  width: min(84%, 340px);
   aspect-ratio: 1 / 1;
-  transform: translateX(-50%);
-  isolation: isolate;
+  display: grid;
+  place-items: center;
 }
 
-.presentation-cover__placeholder--stage .presentation-cover__crystal,
-.presentation-cover__placeholder--transition .presentation-cover__crystal {
-  top: 9%;
-  width: min(56%, 420px);
+.presentation-cover__placeholder--stage .presentation-cover__orb-shell,
+.presentation-cover__placeholder--transition .presentation-cover__orb-shell {
+  width: min(68%, 560px);
 }
 
-.presentation-cover__glow {
+.presentation-cover__orb-aura {
   position: absolute;
-  inset: 18%;
+  inset: 4%;
   border-radius: 50%;
-  background:
-    radial-gradient(circle, rgba(124, 196, 255, 0.34) 0%, rgba(64, 110, 170, 0.12) 46%, transparent 70%);
-  filter: blur(10px);
-}
-
-.presentation-cover__connectors {
-  position: absolute;
-  inset: 0;
+  filter: blur(24px);
+  opacity: 0.68;
   pointer-events: none;
 }
 
-.presentation-cover__connector {
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  width: 1px;
-  height: var(--connector-length, 20%);
-  transform-origin: top center;
-  transform: translate(-50%, -50%) rotate(var(--connector-angle, 0deg));
-  opacity: 0.5;
+.presentation-cover__orb-aura--one {
+  background:
+    radial-gradient(circle at 28% 26%, rgba(213, 119, 255, 0.24), transparent 34%),
+    radial-gradient(circle at 76% 30%, rgba(164, 255, 170, 0.2), transparent 26%),
+    radial-gradient(circle at 72% 74%, rgba(114, 176, 255, 0.24), transparent 30%),
+    radial-gradient(circle at 24% 72%, rgba(255, 154, 222, 0.18), transparent 28%);
 }
 
-.presentation-cover__connector::before {
+.presentation-cover__orb-aura--two {
+  inset: 12%;
+  background:
+    radial-gradient(circle, rgba(215, 235, 255, 0.08) 0%, rgba(215, 235, 255, 0) 72%);
+  filter: blur(18px);
+}
+
+.presentation-cover__orb {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  overflow: hidden;
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 255, 255, 0.05),
+    inset 0 0 46px rgba(116, 150, 199, 0.08),
+    0 30px 60px rgba(0, 0, 0, 0.3);
+}
+
+.presentation-cover__orb::before {
   content: "";
   position: absolute;
-  inset: 0;
-  background: linear-gradient(180deg, rgba(126, 192, 255, 0.36), rgba(126, 192, 255, 0));
-}
-
-.presentation-cover__wire {
-  position: absolute;
-  inset: 0;
-  border-radius: 42px;
-  border: 2px solid rgba(79, 126, 188, 0.2);
-}
-
-.presentation-cover__wire--outer {
-  inset: 2%;
-  transform: rotate(45deg);
-  border-width: 4px;
-  border-color: rgba(86, 138, 206, 0.24);
-}
-
-.presentation-cover__wire--inner {
-  inset: 17%;
-  transform: rotate(45deg);
-  border-color: rgba(121, 194, 255, 0.18);
-}
-
-.presentation-cover__wire--spine {
-  inset: 16% 38%;
-  border-radius: 999px;
-  border-color: rgba(121, 194, 255, 0.12);
-  background: linear-gradient(180deg, rgba(121, 194, 255, 0.06), transparent);
-}
-
-.presentation-cover__core {
-  position: absolute;
-  inset: 34%;
-  z-index: 1;
-  display: grid;
-  place-items: center;
-  gap: 4px;
+  inset: 6%;
   border-radius: 50%;
-  border: 1px solid rgba(175, 215, 255, 0.3);
-  background:
-    radial-gradient(circle at 32% 28%, rgba(206, 231, 255, 0.34), transparent 26%),
-    radial-gradient(circle at 50% 50%, rgba(34, 51, 79, 0.94), rgba(11, 18, 30, 0.98));
-  box-shadow:
-    inset 0 0 0 1px rgba(255, 255, 255, 0.06),
-    0 0 26px rgba(78, 136, 214, 0.14);
+  border: 1px solid rgba(220, 232, 255, 0.08);
+  pointer-events: none;
 }
 
-.presentation-cover__core-rune {
-  color: #eef5ff;
-  font-size: clamp(2rem, 4vw, 3.35rem);
-  font-weight: 800;
-  line-height: 1;
-  text-shadow: 0 0 24px rgba(151, 203, 255, 0.28);
-}
-
-.presentation-cover__core-meta {
-  color: rgba(214, 231, 252, 0.74);
-  font-family: var(--ui-font);
-  font-size: 0.76rem;
-  font-weight: 700;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-}
-
-.presentation-cover__facet {
+.presentation-cover__orb::after {
+  content: "";
   position: absolute;
-  z-index: 1;
-  display: grid;
-  justify-items: center;
-  gap: 3px;
-  width: 58px;
-  padding: 9px 8px;
-  border-radius: 18px;
-  border: 1px solid rgba(121, 194, 255, 0.18);
-  background: linear-gradient(180deg, rgba(36, 51, 73, 0.82), rgba(18, 27, 41, 0.94));
-  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.18);
-  left: var(--facet-x, 50%);
-  top: var(--facet-y, 50%);
-  transform: translate(-50%, -50%);
+  inset: 14%;
+  border-radius: 50%;
+  border: 1px solid rgba(220, 232, 255, 0.04);
+  pointer-events: none;
 }
 
-.presentation-cover__facet-rune {
-  color: #edf5ff;
-  font-size: 1.08rem;
-  font-weight: 800;
-  line-height: 1;
+.presentation-cover__orb-svg {
+  display: block;
+  width: 100%;
+  height: 100%;
 }
 
-.presentation-cover__facet-meta {
-  color: rgba(193, 214, 238, 0.64);
-  font-family: var(--ui-font);
-  font-size: 0.64rem;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-}
-
-.presentation-cover__bead-orbit {
+/*
+ZIEL:
+Den Ruecksprung vom Presenter-Cover in den Vault-Detailpfad klar sichtbar halten, ohne das Orb selbst zu ueberlagern.
+WAS WURDE PROBIERT:
+Der Button blieb erhalten, wurde aber an die neue runde Orb-Komposition und ihre Z-Ebenen angepasst.
+WESHALB WURDE SO ENTSCHIEDEN:
+So bleibt die Navigation klar erreichbar, waehrend das Miniaturbild visuell ungestoert in der Mitte steht.
+*/
+.presentation-cover__vault-return {
   position: absolute;
-  inset: 0;
-}
-
-.presentation-cover__bead {
-  position: absolute;
-  display: grid;
-  place-items: center;
-  width: 24px;
-  height: 24px;
-  border-radius: 999px;
-  border: 1px solid rgba(126, 195, 255, 0.18);
-  background: rgba(18, 26, 38, 0.82);
-  color: rgba(237, 245, 255, 0.74);
-  font-size: 0.8rem;
-  line-height: 1;
-  box-shadow: 0 0 12px rgba(92, 154, 226, 0.12);
-  left: var(--bead-x, 50%);
-  top: var(--bead-y, 50%);
-  transform: translate(-50%, -50%);
-}
-
-.presentation-cover__placeholder--stage .presentation-cover__bead,
-.presentation-cover__placeholder--transition .presentation-cover__bead {
-  width: 26px;
-  height: 26px;
-  font-size: 0.86rem;
-}
-
-.presentation-cover__summary-card {
-  position: relative;
-  z-index: 1;
-  display: grid;
-  gap: 10px;
-  margin: auto 0 72px;
-  padding: 14px 16px;
-  border-radius: 22px;
-  border: 1px solid rgba(121, 194, 255, 0.12);
-  background:
-    linear-gradient(180deg, rgba(20, 30, 43, 0.9), rgba(10, 17, 28, 0.92));
-  box-shadow:
-    0 18px 30px rgba(0, 0, 0, 0.22),
-    inset 0 0 0 1px rgba(255, 255, 255, 0.04);
-}
-
-.presentation-cover__placeholder--stage .presentation-cover__summary-card,
-.presentation-cover__placeholder--transition .presentation-cover__summary-card {
-  margin-bottom: 106px;
-  padding: 18px 20px;
-}
-
-.presentation-cover__stats {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-}
-
-.presentation-cover__stat {
-  padding: 6px 10px;
-  border-radius: 999px;
-  border: 1px solid rgba(121, 194, 255, 0.14);
-  background: rgba(255, 255, 255, 0.04);
-  color: rgba(229, 240, 255, 0.8);
-  font-family: var(--ui-font);
-  font-size: 0.72rem;
-  font-weight: 700;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-}
-
-.presentation-cover__story-arc {
-  margin: 0;
-  color: rgba(233, 241, 250, 0.9);
-  font-family: var(--display-font);
-  font-size: clamp(1rem, 1.5vw, 1.28rem);
-  line-height: 1.08;
-}
-
-.presentation-cover__slide-stack {
-  display: grid;
-  gap: 8px;
-}
-
-.presentation-cover__slide-preview {
-  display: grid;
-  grid-template-columns: auto minmax(0, 1fr);
-  gap: 10px;
-  align-items: start;
-}
-
-.presentation-cover__slide-index {
-  color: rgba(160, 194, 233, 0.68);
-  font-family: var(--ui-font);
-  font-size: 0.7rem;
-  font-weight: 700;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-}
-
-.presentation-cover__slide-title {
-  color: rgba(223, 233, 245, 0.88);
-  font-size: 0.92rem;
-  line-height: 1.24;
-}
-
-.presentation-cover__meta {
-  position: absolute;
-  left: 18px;
+  left: 50%;
   bottom: 18px;
-  right: 18px;
-  z-index: 1;
-  display: grid;
-  gap: 4px;
-  color: rgba(237, 244, 255, 0.82);
-}
-
-.presentation-cover__placeholder--stage .presentation-cover__meta,
-.presentation-cover__placeholder--transition .presentation-cover__meta {
-  left: 26px;
-  right: 26px;
-  bottom: 24px;
-}
-
-.presentation-cover__meta strong {
-  font-size: 1.3rem;
-  line-height: 1;
-  text-wrap: balance;
-}
-
-.presentation-cover__placeholder--stage .presentation-cover__meta strong,
-.presentation-cover__placeholder--transition .presentation-cover__meta strong {
-  font-size: clamp(1.52rem, 2vw, 2.1rem);
-}
-
-.presentation-cover__meta span {
+  z-index: 2;
+  transform: translateX(-50%);
+  min-width: min(76%, 240px);
+  padding: 10px 16px;
+  border-radius: 999px;
+  border: 1px solid rgba(195, 214, 255, 0.16);
+  background: rgba(9, 16, 26, 0.78);
+  color: rgba(235, 243, 255, 0.9);
   font-family: var(--ui-font);
-  font-size: 0.84rem;
+  font-size: 0.82rem;
+  font-weight: 700;
   letter-spacing: 0.06em;
-  text-transform: uppercase;
+  cursor: pointer;
+  transition:
+    transform 180ms ease,
+    border-color 180ms ease,
+    background 180ms ease;
 }
 
-.presentation-cover__placeholder--stage .presentation-cover__meta span,
-.presentation-cover__placeholder--transition .presentation-cover__meta span {
-  font-size: 0.92rem;
+.presentation-cover__vault-return:hover,
+.presentation-cover__vault-return:focus-visible {
+  transform: translateX(-50%) translateY(-1px);
+  border-color: rgba(214, 229, 255, 0.28);
+  background: rgba(14, 22, 34, 0.92);
+}
+
+.presentation-cover__vault-return:focus-visible {
+  outline: none;
 }
 
 .presentation-toc__label {
