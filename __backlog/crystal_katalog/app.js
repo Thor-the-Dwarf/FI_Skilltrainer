@@ -746,19 +746,30 @@ function collectCurrentCrystalBoundaryPoints() {
   return boundaryPoints;
 }
 
+function computeCurrentCrystalCenter() {
+  const boundaryPoints = collectCurrentCrystalBoundaryPoints();
+
+  if (!boundaryPoints.length) {
+    return BABYLON.Vector3.Zero();
+  }
+
+  if (state.faceEntries.length >= 4) {
+    return computeMaximumInscribedSphere(state.faceEntries).center.clone();
+  }
+
+  return computeFaceCenter(boundaryPoints);
+}
+
 function computeContentCameraRadius() {
   // Ziel: Den Presenter-Kristall exakt aus der echten Koerpergroesse heraus fitten.
-  // Warum: Der Nutzer will den groessten Spitzen-/Flaechenabstand des Kristalls an den Durchmesser des runden Containers koppeln, statt weiter mit einer statischen Zoom-Konstante zu arbeiten.
+  // Warum: Der Nutzer meint mit Container den sichtbaren Kreis. Der Presenter-Fit muss also gegen den Kreisradius des Panels arbeiten und nicht gegen das umgebende Quadrat des Canvas.
   if (!state.camera || state.faceEntries.length === 0) {
     return CONTENT_CAMERA_RADIUS;
   }
 
-  const canvasRect = renderCanvas?.getBoundingClientRect?.() || { width: 0, height: 0 };
   const panelRect = contentCrystalPanel?.getBoundingClientRect?.() || { width: 0, height: 0 };
-  const viewportWidth = Math.max(canvasRect.width || 0, panelRect.width || 0);
-  const viewportHeight = Math.max(canvasRect.height || 0, panelRect.height || 0);
 
-  if (viewportWidth <= 1 || viewportHeight <= 1) {
+  if (panelRect.width <= 1 || panelRect.height <= 1) {
     return CONTENT_CAMERA_RADIUS;
   }
 
@@ -768,27 +779,45 @@ function computeContentCameraRadius() {
     return CONTENT_CAMERA_RADIUS;
   }
 
-  let maxDistanceSquared = 0;
+  const circleCenterX = panelRect.width * 0.5;
+  const circleCenterY = panelRect.height * 0.5;
+  const allowedRadius = Math.max(24, (Math.min(panelRect.width, panelRect.height) * 0.5) - 4);
+  const originalRadius = state.camera.radius;
+  let fittedRadius = Math.max(2.2, originalRadius);
 
-  for (let leftIndex = 0; leftIndex < boundaryPoints.length; leftIndex += 1) {
-    for (let rightIndex = leftIndex + 1; rightIndex < boundaryPoints.length; rightIndex += 1) {
-      maxDistanceSquared = Math.max(
-        maxDistanceSquared,
-        BABYLON.Vector3.DistanceSquared(boundaryPoints[leftIndex], boundaryPoints[rightIndex])
-      );
+  for (let iterationIndex = 0; iterationIndex < 3; iterationIndex += 1) {
+    state.camera.radius = fittedRadius;
+    const projectionContext = createStageProjectionContext();
+
+    if (!projectionContext) {
+      break;
     }
+
+    let maxProjectedDistance = 0;
+
+    boundaryPoints.forEach((boundaryPoint) => {
+      const projectedPoint = projectWorldPointToStageWithContext(boundaryPoint, projectionContext);
+
+      if (!projectedPoint) {
+        return;
+      }
+
+      const localX = (projectionContext.canvasRect.left + projectedPoint.x) - panelRect.left;
+      const localY = (projectionContext.canvasRect.top + projectedPoint.y) - panelRect.top;
+      maxProjectedDistance = Math.max(
+        maxProjectedDistance,
+        Math.hypot(localX - circleCenterX, localY - circleCenterY)
+      );
+    });
+
+    if (maxProjectedDistance <= 0.0001) {
+      break;
+    }
+
+    fittedRadius *= maxProjectedDistance / allowedRadius;
   }
 
-  if (maxDistanceSquared <= 0.000001) {
-    return CONTENT_CAMERA_RADIUS;
-  }
-
-  const crystalRadius = Math.sqrt(maxDistanceSquared) * 0.5;
-  const aspectRatio = viewportWidth / Math.max(1, viewportHeight);
-  const verticalFov = state.camera.fov || 0.8;
-  const horizontalFov = 2 * Math.atan(Math.tan(verticalFov * 0.5) * aspectRatio);
-  const limitingHalfFov = Math.max(0.12, Math.min(verticalFov, horizontalFov) * 0.5);
-  const fittedRadius = crystalRadius / Math.tan(limitingHalfFov);
+  state.camera.radius = originalRadius;
 
   return BABYLON.Scalar.Clamp(fittedRadius, 2.2, 8.8);
 }
@@ -1112,6 +1141,10 @@ function commitExtractionViewMode(viewMode) {
 
     if (!state.extraction.presenterTargetBeforeContent && state.camera?.target) {
       state.extraction.presenterTargetBeforeContent = state.camera.target.clone();
+    }
+
+    if (state.camera?.target && state.faceEntries.length) {
+      state.camera.target.copyFrom(computeCurrentCrystalCenter());
     }
 
     const firstContentEntry = state.extraction.items.find((item) => item.level === "h3")
