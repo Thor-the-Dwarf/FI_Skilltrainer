@@ -2701,6 +2701,16 @@ function createSegmentedSphere(scene, shapeConfig, selectionId) {
 function createCone(scene, shapeConfig, selectionId) {
   const root = new BABYLON.TransformNode(`vault_${shapeConfig.kind}_root`, scene);
   root.rotationQuaternion = BABYLON.Quaternion.Identity();
+  root.metadata = {
+    runeLights: [],
+    runeEntries: [],
+    crystalRuneEntry: null,
+    fragmentEntries: [],
+    runeFragmentEntries: [],
+    fragmentFaceKeys: new Set(),
+    subcrystalFaceKeys: new Set(),
+    detachedRuneAnchors: []
+  };
   const materials = [];
   const faceEntries = [];
 
@@ -2755,7 +2765,295 @@ function createCone(scene, shapeConfig, selectionId) {
     snapEligible: true
   });
 
+  if (resolveSelectionInteriorKind(selectionId) === "cone") {
+    createConeInteriorCrystals(scene, root, shapeConfig, selectionId, materials);
+  }
+
   return { root, materials, faceEntries };
+}
+
+function buildConeBaseRuneLayout(center, radius, count) {
+  return buildCylinderCapRuneLayout(center, new BABYLON.Vector3(0, -1, 0), radius, count);
+}
+
+function buildConeSideRuneLayout(radius, height, count) {
+  const targetCount = Math.max(1, Math.min(3, normalizeFragmentRuneCount(count)));
+  const layouts = [];
+  const yOffsets = targetCount === 1
+    ? [height * 0.04]
+    : targetCount === 2
+      ? [-height * 0.12, height * 0.12]
+      : [-height * 0.16, 0, height * 0.16];
+
+  for (let runeIndex = 0; runeIndex < targetCount; runeIndex += 1) {
+    const angle = targetCount === 1
+      ? 0
+      : (runeIndex - ((targetCount - 1) / 2)) * 0.36;
+    const radial = new BABYLON.Vector3(Math.cos(angle), 0, Math.sin(angle)).normalize();
+    const y = yOffsets[runeIndex] || 0;
+    const radiusAtY = BABYLON.Scalar.Clamp(
+      radius * ((height / 2 - y) / height),
+      radius * 0.18,
+      radius * 0.72
+    );
+    const position = new BABYLON.Vector3(
+      radial.x * radiusAtY,
+      y,
+      radial.z * radiusAtY
+    );
+    const sideNormal = new BABYLON.Vector3(radial.x, radius / height, radial.z).normalize();
+
+    layouts.push({
+      runeIndex,
+      position,
+      rotation: quaternionFromUnitVectors(BABYLON.Axis.Z, sideNormal),
+      runeSize: Math.max(0.14, Math.min(radius * 0.18, height * 0.12))
+    });
+  }
+
+  return layouts;
+}
+
+function createConeInteriorCrystals(scene, root, shapeConfig, selectionId, materials) {
+  const coneRadius = shapeConfig.radius;
+  const coneHeight = shapeConfig.height;
+  const crystalRunePosition = new BABYLON.Vector3(0, -coneHeight / 8, 0);
+  const crystalRuneRotation = BABYLON.Quaternion.Identity();
+  const crystalRuneColor = getBodyColorForSelection(selectionId, "cone_crystal_rune_primary");
+  const crystalRuneMeshes = createRuneMeshes(
+    scene,
+    `cone_crystal_rune_${selectionId}`,
+    CRYSTAL_RUNE_SYMBOL,
+    crystalRuneColor,
+    {
+      showHalo: true,
+      glyphSize: 0.88,
+      haloScale: 1.74,
+      billboardMode: BABYLON.AbstractMesh.BILLBOARDMODE_NONE,
+      emissiveIntensity: 3.18,
+      alwaysVisible: true,
+      renderingGroupId: 3,
+      glyphPlaneOffset: 0,
+      haloPlaneOffset: -0.024,
+      alphaMode: BABYLON.Engine.ALPHA_COMBINE,
+      textureSize: 512,
+      outlineWidth: 24
+    }
+  );
+
+  crystalRuneMeshes.anchor.parent = root;
+  crystalRuneMeshes.anchor.position.copyFrom(crystalRunePosition);
+  crystalRuneMeshes.anchor.rotationQuaternion = crystalRuneRotation.clone();
+  crystalRuneMeshes.anchor.scaling.setAll(1);
+  materials.push(...crystalRuneMeshes.materials);
+  root.metadata.crystalRuneEntry = {
+    entryId: `cone_crystal_${selectionId}`,
+    level: "h1",
+    parentId: null,
+    selectionId,
+    accentHex: crystalRuneColor,
+    runeSymbol: CRYSTAL_RUNE_SYMBOL,
+    runeAnchor: crystalRuneMeshes.anchor,
+    runeAnchorMesh: crystalRuneMeshes.anchor,
+    runeGlyphMesh: crystalRuneMeshes.glyphMesh,
+    runeHaloMesh: crystalRuneMeshes.haloMesh,
+    rootRunePosition: crystalRunePosition.clone(),
+    detailRunePosition: crystalRunePosition.clone(),
+    rootRuneRotation: crystalRuneRotation.clone(),
+    rootRuneScale: H1_ROOT_RUNE_SCALE,
+    detailRuneScale: H1_DETAIL_RUNE_SCALE,
+    rootBillboardMode: BABYLON.AbstractMesh.BILLBOARDMODE_NONE,
+    detailBillboardMode: BABYLON.AbstractMesh.BILLBOARDMODE_ALL,
+    detail: createCrystalDetailData({
+      selectionId,
+      runeSymbol: CRYSTAL_RUNE_SYMBOL,
+      accentHex: crystalRuneColor
+    })
+  };
+
+  const sideH3Count = resolveConfiguredDetailFragmentRuneCount(
+    selectionId,
+    0,
+    STARTUP_CONFIG.fragmentRuneCounts
+  );
+  const baseH3Count = resolveConfiguredDetailFragmentRuneCount(
+    selectionId,
+    1,
+    STARTUP_CONFIG.fragmentRuneCounts
+  );
+  const fragmentDefinitions = [
+    {
+      faceName: "side",
+      faceIndex: 0,
+      fragmentCenter: new BABYLON.Vector3(coneRadius * 0.52, 0, 0),
+      fragmentNormal: new BABYLON.Vector3(1, coneRadius / coneHeight, 0).normalize(),
+      requestedFragmentRuneCount: sideH3Count,
+      layout: buildConeSideRuneLayout(coneRadius, coneHeight, sideH3Count),
+      glyphSize: 0.76
+    },
+    {
+      faceName: "base",
+      faceIndex: 1,
+      fragmentCenter: new BABYLON.Vector3(0, -coneHeight / 2, 0),
+      fragmentNormal: new BABYLON.Vector3(0, -1, 0),
+      requestedFragmentRuneCount: baseH3Count,
+      layout: buildConeBaseRuneLayout(
+        new BABYLON.Vector3(0, -coneHeight / 2, 0),
+        coneRadius,
+        baseH3Count
+      ),
+      glyphSize: 0.72
+    }
+  ];
+
+  fragmentDefinitions.forEach((fragmentDefinition) => {
+    const fragmentRuneColor = getBodyColorForSelection(
+      selectionId,
+      `cone_fragment_rune_${fragmentDefinition.faceIndex + 1}`
+    );
+    const fragmentRuneSymbol = SUBCRYSTAL_RUNE_SYMBOLS[
+      fragmentDefinition.faceIndex % SUBCRYSTAL_RUNE_SYMBOLS.length
+    ];
+    const fragmentRuneMeshes = createRuneMeshes(
+      scene,
+      `cone_fragment_rune_${fragmentDefinition.faceIndex + 1}`,
+      fragmentRuneSymbol,
+      fragmentRuneColor,
+      {
+        showHalo: true,
+        glyphSize: fragmentDefinition.glyphSize,
+        haloScale: 1.66,
+        billboardMode: BABYLON.AbstractMesh.BILLBOARDMODE_NONE,
+        emissiveIntensity: 2.66,
+        alwaysVisible: false,
+        renderingGroupId: 3,
+        glyphPlaneOffset: 0,
+        haloPlaneOffset: -0.018,
+        alphaMode: BABYLON.Engine.ALPHA_COMBINE,
+        textureSize: 512,
+        outlineWidth: 22
+      }
+    );
+    const fragmentRotation = quaternionFromUnitVectors(BABYLON.Axis.Z, fragmentDefinition.fragmentNormal);
+
+    fragmentRuneMeshes.anchor.parent = root;
+    fragmentRuneMeshes.anchor.position.copyFrom(fragmentDefinition.fragmentCenter);
+    fragmentRuneMeshes.anchor.rotationQuaternion = fragmentRotation.clone();
+    fragmentRuneMeshes.anchor.scaling.setAll(1);
+    materials.push(...fragmentRuneMeshes.materials);
+
+    const fragmentEntry = {
+      entryId: `cone_fragment_${fragmentDefinition.faceIndex + 1}`,
+      level: "h2",
+      parentId: root.metadata.crystalRuneEntry.entryId,
+      selectionId,
+      faceIndex: fragmentDefinition.faceIndex,
+      faceName: fragmentDefinition.faceName,
+      h3Count: fragmentDefinition.requestedFragmentRuneCount,
+      accentHex: fragmentRuneColor,
+      runeSymbol: fragmentRuneSymbol,
+      runeAnchor: fragmentRuneMeshes.anchor,
+      runeAnchorMesh: fragmentRuneMeshes.anchor,
+      runeGlyphMesh: fragmentRuneMeshes.glyphMesh,
+      runeHaloMesh: fragmentRuneMeshes.haloMesh,
+      rootRunePosition: fragmentDefinition.fragmentCenter.clone(),
+      detailRunePosition: fragmentDefinition.fragmentCenter.clone(),
+      rootRuneRotation: fragmentRotation.clone(),
+      rootRuneScale: H2_ROOT_RUNE_SCALE,
+      detailRuneScale: H2_DETAIL_RUNE_SCALE,
+      rootBillboardMode: BABYLON.AbstractMesh.BILLBOARDMODE_NONE,
+      detailBillboardMode: BABYLON.AbstractMesh.BILLBOARDMODE_ALL,
+      detail: createFragmentDetailData({
+        selectionId,
+        faceIndex: fragmentDefinition.faceIndex,
+        runeSymbol: fragmentRuneSymbol,
+        accentHex: fragmentRuneColor
+      })
+    };
+
+    root.metadata.fragmentEntries.push(fragmentEntry);
+
+    fragmentDefinition.layout.forEach((layoutItem) => {
+      const runeColor = getBodyColorForSelection(
+        selectionId,
+        `cone_${fragmentDefinition.faceName}_${fragmentDefinition.faceIndex + 1}_fractal_${layoutItem.runeIndex + 1}`
+      );
+      const runeSymbol = SUBCRYSTAL_RUNE_SYMBOLS[
+        (fragmentDefinition.faceIndex + layoutItem.runeIndex + 1) % SUBCRYSTAL_RUNE_SYMBOLS.length
+      ];
+      const runeMeshes = createRuneMeshes(
+        scene,
+        `cone_base_rune_${fragmentDefinition.faceIndex + 1}_${layoutItem.runeIndex + 1}`,
+        runeSymbol,
+        runeColor,
+        {
+          showHalo: true,
+          glyphSize: layoutItem.runeSize,
+          haloScale: 1.5,
+          billboardMode: BABYLON.AbstractMesh.BILLBOARDMODE_NONE,
+          emissiveIntensity: 1.4,
+          glyphPlaneOffset: 0,
+          haloPlaneOffset: -0.006
+        }
+      );
+
+      materials.push(...runeMeshes.materials);
+      runeMeshes.anchor.parent = root;
+      runeMeshes.anchor.position.copyFrom(layoutItem.position);
+      runeMeshes.anchor.rotationQuaternion = layoutItem.rotation.clone();
+      runeMeshes.anchor.scaling.setAll(1);
+
+      if (runeMeshes.glyphMesh) {
+        runeMeshes.glyphMesh.renderingGroupId = 3;
+      }
+
+      if (runeMeshes.haloMesh) {
+        runeMeshes.haloMesh.renderingGroupId = 3;
+      }
+
+      root.metadata.runeLights.push(...runeMeshes.lights);
+      root.metadata.runeFragmentEntries.push({
+        entryId: `${fragmentEntry.entryId}_rune_${layoutItem.runeIndex + 1}`,
+        level: "h3",
+        parentId: fragmentEntry.entryId,
+        faceIndex: fragmentDefinition.faceIndex,
+        faceName: fragmentDefinition.faceName,
+        runeIndex: layoutItem.runeIndex,
+        selectionId,
+        accentHex: runeColor,
+        runeSymbol,
+        runeAnchor: runeMeshes.anchor,
+        runeAnchorMesh: runeMeshes.anchor,
+        runeGlyphMesh: runeMeshes.glyphMesh,
+        runeHaloMesh: runeMeshes.haloMesh,
+        rootRunePosition: layoutItem.position.clone(),
+        detailRunePosition: layoutItem.position.clone(),
+        rootRuneRotation: layoutItem.rotation.clone(),
+        rootRuneScale: H3_ROOT_RUNE_SCALE,
+        detailRuneScale: H3_DETAIL_RUNE_SCALE,
+        rootBillboardMode: BABYLON.AbstractMesh.BILLBOARDMODE_NONE,
+        detailBillboardMode: BABYLON.AbstractMesh.BILLBOARDMODE_ALL,
+        detail: createRuneFragmentDetailData({
+          selectionId,
+          faceName: fragmentDefinition.faceName,
+          faceIndex: fragmentDefinition.faceIndex,
+          runeIndex: layoutItem.runeIndex,
+          runeSymbol,
+          accentHex: runeColor
+        })
+      });
+    });
+  });
+
+  root.metadata.runeEntries = [
+    root.metadata.crystalRuneEntry,
+    ...root.metadata.fragmentEntries,
+    ...root.metadata.runeFragmentEntries
+  ];
+  root.metadata.runeEntries.forEach((item) => {
+    setRuneHalosEnabled(item, false);
+    setRuneDisplayMode(item, false);
+  });
 }
 
 function createCylinder(scene, shapeConfig, selectionId) {

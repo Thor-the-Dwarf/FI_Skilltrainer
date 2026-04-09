@@ -19,7 +19,15 @@ function createSelectionDefinition(selectionId, overrides = {}) {
 
 const SELECTION_DEFINITIONS = new Map([
   [1, createSelectionDefinition(1, { shapeFamily: "cell-cluster", rolloutState: "partial" })],
-  [2, createSelectionDefinition(2, { shapeFamily: "cell-cluster", rolloutState: "partial" })],
+  [
+    2,
+    createSelectionDefinition(2, {
+      shapeFamily: "cell-cluster",
+      rolloutState: "full",
+      supportsFullHierarchy: true,
+      supportsVaultLod: true
+    })
+  ],
   [
     3,
     createSelectionDefinition(3, {

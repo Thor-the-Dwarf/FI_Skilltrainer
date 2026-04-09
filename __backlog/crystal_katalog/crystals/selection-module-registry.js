@@ -1,3 +1,4 @@
+import { getSelection02DetailItems, getSelection02VaultLodConfig } from "./selection-02.js";
 import { getSelection03DetailItems, getSelection03VaultLodConfig } from "./selection-03.js";
 import { getSelection04DetailItems, getSelection04VaultLodConfig } from "./selection-04.js";
 import { getSelection05DetailItems, getSelection05VaultLodConfig } from "./selection-05.js";
@@ -17,6 +18,14 @@ import { getSelection19DetailItems, getSelection19VaultLodConfig } from "./selec
 import { getSelection20DetailItems, getSelection20VaultLodConfig } from "./selection-20.js";
 
 const SELECTION_MODULES = new Map([
+  [
+    2,
+    {
+      detailItems: (selectionContext) => getSelection02DetailItems(selectionContext),
+      vaultLodConfig: () => getSelection02VaultLodConfig(),
+      interiorKind: "cone"
+    }
+  ],
   [
     3,
     {
