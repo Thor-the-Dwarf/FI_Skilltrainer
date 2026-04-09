@@ -280,6 +280,10 @@ function openPresenterFromList(selectionId) {
   setExtractionViewMode("content");
 }
 
+function clearSelection() {
+  updateSelection(null);
+}
+
 function renderQuickSelects() {
   populateSelect(catalogSelect, "Keine Auswahl · Vault", catalogItems);
 
@@ -287,7 +291,7 @@ function renderQuickSelects() {
     const rawValue = catalogSelect.value;
 
     if (!rawValue) {
-      updateSelection(null);
+      clearSelection();
       return;
     }
 
@@ -404,16 +408,18 @@ function populateSelect(select, placeholder, sourceItems) {
 function parseStartupConfig() {
   const params = new URLSearchParams(window.location.search);
   const rawSelection = params.get("selection");
-  const selectionCandidate = rawSelection === null ? 1 : Number(rawSelection);
+  const selectionCandidate = rawSelection === null ? null : Number(rawSelection);
   const fragmentRuneCounts = (params.get("h3counts") || "")
     .split(",")
     .map((value) => Number(value.trim()))
     .filter((value) => Number.isFinite(value));
 
   return {
-    selectionId: rawSelection && ["vault", "all", "none", "0"].includes(rawSelection.toLowerCase())
+    selectionId: rawSelection === null
       ? null
-      : itemsById.has(selectionCandidate) ? selectionCandidate : 1,
+      : rawSelection && ["vault", "all", "none", "0"].includes(rawSelection.toLowerCase())
+      ? null
+      : itemsById.has(selectionCandidate) ? selectionCandidate : null,
     openDetails: ["1", "true", "yes"].includes((params.get("detail") || "").toLowerCase()),
     openContent: ["1", "true", "yes"].includes((params.get("content") || "").toLowerCase()),
     testlab: params.has("testlab") || params.has("debug"),
