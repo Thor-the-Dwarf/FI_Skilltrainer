@@ -58,7 +58,15 @@ const SELECTION_DEFINITIONS = new Map([
       supportsVaultLod: true
     })
   ],
-  [9, createSelectionDefinition(9, { shapeFamily: "corner-cut-bipyramidal", rolloutState: "partial" })],
+  [
+    9,
+    createSelectionDefinition(9, {
+      shapeFamily: "corner-cut-bipyramidal",
+      rolloutState: "full",
+      supportsFullHierarchy: true,
+      supportsVaultLod: true
+    })
+  ],
   [
     10,
     createSelectionDefinition(10, {
@@ -77,7 +85,15 @@ const SELECTION_DEFINITIONS = new Map([
       supportsVaultLod: true
     })
   ],
-  [12, createSelectionDefinition(12, { shapeFamily: "dodecahedral", rolloutState: "partial" })],
+  [
+    12,
+    createSelectionDefinition(12, {
+      shapeFamily: "dodecahedral",
+      rolloutState: "full",
+      supportsFullHierarchy: true,
+      supportsVaultLod: true
+    })
+  ],
   [
     13,
     createSelectionDefinition(13, {

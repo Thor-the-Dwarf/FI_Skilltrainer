@@ -2,8 +2,10 @@ import { getSelection04DetailItems, getSelection04VaultLodConfig } from "./selec
 import { getSelection05DetailItems, getSelection05VaultLodConfig } from "./selection-05.js";
 import { getSelection06DetailItems, getSelection06VaultLodConfig } from "./selection-06.js";
 import { getSelection08DetailItems, getSelection08VaultLodConfig } from "./selection-08.js";
+import { getSelection09DetailItems, getSelection09VaultLodConfig } from "./selection-09.js";
 import { getSelection10DetailItems, getSelection10VaultLodConfig } from "./selection-10.js";
 import { getSelection11DetailItems, getSelection11VaultLodConfig } from "./selection-11.js";
+import { getSelection12DetailItems, getSelection12VaultLodConfig } from "./selection-12.js";
 import { getSelection13DetailItems, getSelection13VaultLodConfig } from "./selection-13.js";
 import { getSelection14DetailItems, getSelection14VaultLodConfig } from "./selection-14.js";
 import { getSelection15DetailItems, getSelection15VaultLodConfig } from "./selection-15.js";
@@ -50,6 +52,14 @@ const SELECTION_MODULES = new Map([
     }
   ],
   [
+    9,
+    {
+      detailItems: (selectionContext) => getSelection09DetailItems(selectionContext),
+      vaultLodConfig: () => getSelection09VaultLodConfig(),
+      interiorKind: "corner-cut-bipyramid"
+    }
+  ],
+  [
     10,
     {
       detailItems: (selectionContext) => getSelection10DetailItems(selectionContext),
@@ -63,6 +73,14 @@ const SELECTION_MODULES = new Map([
       detailItems: (selectionContext) => getSelection11DetailItems(selectionContext),
       vaultLodConfig: () => getSelection11VaultLodConfig(),
       interiorKind: "corner-cut-bipyramid"
+    }
+  ],
+  [
+    12,
+    {
+      detailItems: (selectionContext) => getSelection12DetailItems(selectionContext),
+      vaultLodConfig: () => getSelection12VaultLodConfig(),
+      interiorKind: "dodecahedron"
     }
   ],
   [
