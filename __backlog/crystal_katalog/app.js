@@ -5887,8 +5887,8 @@ function clampPointToCircle(x, y, centerX, centerY, maxDistance) {
 }
 
 function drawPresenterContainerHalo(context, metrics) {
-  // Ziel: Den grossen runden Presenter-Kopf wie die referenzierte HaloSphere mit dunklem Kern und pinkem Glow zeichnen.
-  // Warum: Der Nutzer will hier keine Spektraloptik, sondern genau den weichen magentafarbenen HaloSphere-Look des Bildbeispiels fuer den aeusseren Container.
+  // Ziel: Den grossen Presenter-Kreis als wandelnde HaloSphere mit Regenbogenspektrum zeichnen.
+  // Warum: Der violette Container soll seinen weichen Glow-Charakter behalten, farblich aber lebendig durch das sichtbare Spektrum wandern statt statisch nur magenta zu bleiben.
   const boundary = getPresenterBoundaryMetrics(metrics.width, metrics.height);
   const centerX = boundary.centerX;
   const centerY = boundary.centerY;
@@ -5896,6 +5896,8 @@ function drawPresenterContainerHalo(context, metrics) {
   const glowRadius = outerRadius * 1.06;
   const beamCount = 18;
   const beamRotation = prefersReducedMotion() ? 0 : metrics.timeSeconds * 0.045;
+  const chromaRotation = prefersReducedMotion() ? 0 : metrics.timeSeconds * 0.16;
+  const lobeTime = prefersReducedMotion() ? 0 : metrics.timeSeconds * 0.22;
   const beamStartRadius = outerRadius * 0.14;
   const beamEndRadius = outerRadius * 1.26;
   const beamBaseAlpha = 0.16;
@@ -5908,11 +5910,71 @@ function drawPresenterContainerHalo(context, metrics) {
     glowRadius
   );
 
-  glowGradient.addColorStop(0, "rgba(255, 108, 212, 0)");
-  glowGradient.addColorStop(0.18, "rgba(255, 108, 212, 0.14)");
-  glowGradient.addColorStop(0.52, "rgba(233, 84, 188, 0.34)");
-  glowGradient.addColorStop(0.82, "rgba(193, 68, 152, 0.28)");
-  glowGradient.addColorStop(1, "rgba(126, 44, 104, 0)");
+  glowGradient.addColorStop(0, "rgba(255, 255, 255, 0)");
+  glowGradient.addColorStop(0.18, "rgba(255, 255, 255, 0.06)");
+  glowGradient.addColorStop(0.52, "rgba(236, 222, 255, 0.18)");
+  glowGradient.addColorStop(0.82, "rgba(182, 152, 255, 0.14)");
+  glowGradient.addColorStop(1, "rgba(0, 0, 0, 0)");
+
+  if (typeof context.createConicGradient === "function") {
+    const conicGradient = context.createConicGradient(chromaRotation, centerX, centerY);
+    const spectralStops = [
+      { stop: 0, hue: 0 },
+      { stop: 0.16, hue: 32 },
+      { stop: 0.32, hue: 62 },
+      { stop: 0.48, hue: 126 },
+      { stop: 0.64, hue: 198 },
+      { stop: 0.8, hue: 258 },
+      { stop: 0.92, hue: 318 },
+      { stop: 1, hue: 360 }
+    ];
+
+    spectralStops.forEach(({ stop, hue }) => {
+      conicGradient.addColorStop(stop, `hsla(${hue}, 100%, 68%, 0.26)`);
+    });
+
+    context.save();
+    context.filter = `blur(${Math.max(20, outerRadius * 0.095)}px)`;
+    context.beginPath();
+    context.arc(centerX, centerY, outerRadius * 1.01, 0, TAU);
+    context.fillStyle = conicGradient;
+    context.globalAlpha = 0.52;
+    context.fill();
+    context.restore();
+  }
+
+  const spectralLobeCount = 7;
+
+  context.save();
+  context.filter = `blur(${Math.max(26, outerRadius * 0.14)}px)`;
+
+  for (let index = 0; index < spectralLobeCount; index += 1) {
+    const phase = index / spectralLobeCount;
+    const lobeAngle = (phase * TAU) + chromaRotation + (Math.sin(lobeTime + (phase * TAU)) * 0.18);
+    const lobeDistance = outerRadius * (0.64 + (Math.sin((lobeTime * 1.3) + (phase * TAU)) * 0.05));
+    const lobeX = centerX + (Math.cos(lobeAngle) * lobeDistance);
+    const lobeY = centerY + (Math.sin(lobeAngle) * lobeDistance);
+    const hue = (phase * 360 + (metrics.timeSeconds * 24)) % 360;
+    const lobeGradient = context.createRadialGradient(
+      lobeX,
+      lobeY,
+      0,
+      lobeX,
+      lobeY,
+      outerRadius * 0.62
+    );
+
+    lobeGradient.addColorStop(0, `hsla(${hue}, 100%, 72%, 0.28)`);
+    lobeGradient.addColorStop(0.34, `hsla(${(hue + 18) % 360}, 100%, 66%, 0.18)`);
+    lobeGradient.addColorStop(1, `hsla(${(hue + 32) % 360}, 100%, 58%, 0)`);
+
+    context.beginPath();
+    context.arc(lobeX, lobeY, outerRadius * 0.62, 0, TAU);
+    context.fillStyle = lobeGradient;
+    context.fill();
+  }
+
+  context.restore();
 
   context.save();
   context.filter = `blur(${Math.max(24, outerRadius * 0.11)}px)`;
@@ -5933,10 +5995,11 @@ function drawPresenterContainerHalo(context, metrics) {
     const endY = centerY + (Math.sin(angle) * beamEndRadius);
     const beamGradient = context.createLinearGradient(startX, startY, endX, endY);
     const alpha = beamBaseAlpha * (0.7 + (Math.sin((metrics.timeSeconds * 0.4) + (phase * TAU)) * 0.22 + 0.22));
+    const hue = ((phase * 360) + (metrics.timeSeconds * 20)) % 360;
 
-    beamGradient.addColorStop(0, `rgba(255, 210, 244, ${(alpha * 0.72).toFixed(4)})`);
-    beamGradient.addColorStop(0.55, `rgba(255, 140, 224, ${(alpha * 0.42).toFixed(4)})`);
-    beamGradient.addColorStop(1, "rgba(255, 140, 224, 0)");
+    beamGradient.addColorStop(0, `hsla(${hue}, 100%, 86%, ${(alpha * 0.7).toFixed(4)})`);
+    beamGradient.addColorStop(0.55, `hsla(${(hue + 18) % 360}, 100%, 70%, ${(alpha * 0.42).toFixed(4)})`);
+    beamGradient.addColorStop(1, `hsla(${(hue + 32) % 360}, 100%, 62%, 0)`);
     context.strokeStyle = beamGradient;
     context.lineWidth = Math.max(1, outerRadius * 0.008);
     context.beginPath();
