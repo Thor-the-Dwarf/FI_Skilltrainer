@@ -5439,6 +5439,12 @@ function buildPresenterHaloSimulation(metrics, layoutMap, levelProfiles) {
   const centerX = (h1Layout?.normalizedX || 0.5) * metrics.width;
   const centerY = (h1Layout?.normalizedY || 0.5) * metrics.height;
   const simulationNodes = new Map();
+  const minDimension = Math.min(metrics.width, metrics.height);
+  const orbitRadiusByLevel = {
+    h1: 0,
+    h2: Math.max(20, minDimension * 0.072),
+    h3: Math.max(34, minDimension * 0.128)
+  };
 
   state.extraction.items
     .filter((item) => item?.runeSymbol)
@@ -5462,10 +5468,7 @@ function buildPresenterHaloSimulation(metrics, layoutMap, levelProfiles) {
       const parentLayout = item.parentId ? layoutMap.get(item.parentId) : null;
       const parentAnchorX = parentLayout ? parentLayout.normalizedX * metrics.width : centerX;
       const parentAnchorY = parentLayout ? parentLayout.normalizedY * metrics.height : centerY;
-      const absoluteAnchor = item.runeAnchorMesh?.getAbsolutePosition?.().clone?.()
-        || BABYLON.Vector3.Zero();
-      const orbitRadiusMultiplier = item.level === "h2" ? 2.85 : item.level === "h3" ? 3.4 : 0;
-      const orbitRadiusBase = radius * orbitRadiusMultiplier;
+      const orbitRadiusBase = orbitRadiusByLevel[item.level] || 0;
 
       simulationNodes.set(item.entryId, {
         entryId: item.entryId,
@@ -5478,7 +5481,6 @@ function buildPresenterHaloSimulation(metrics, layoutMap, levelProfiles) {
         haloSize,
         anchorX,
         anchorY,
-        anchorWorld: absoluteAnchor,
         restFromH1X: anchorX - centerX,
         restFromH1Y: anchorY - centerY,
         restFromParentX: anchorX - parentAnchorX,
@@ -5488,12 +5490,12 @@ function buildPresenterHaloSimulation(metrics, layoutMap, levelProfiles) {
         orbitPhaseX: seededPresenterRange(seed + 5, 0, TAU),
         orbitPhaseY: seededPresenterRange(seed + 6, 0, TAU),
         orbitPhaseZ: seededPresenterRange(seed + 7, 0, TAU),
-        orbitSpeedX: seededPresenterRange(seed + 8, 0.22, 0.46),
-        orbitSpeedY: seededPresenterRange(seed + 9, 0.28, 0.54),
-        orbitSpeedZ: seededPresenterRange(seed + 10, 0.18, 0.4),
+        orbitSpeedX: seededPresenterRange(seed + 8, 0.2, 0.34),
+        orbitSpeedY: seededPresenterRange(seed + 9, 0.24, 0.38),
+        orbitSpeedZ: seededPresenterRange(seed + 10, 0.18, 0.3),
         orbitRadiusX: orbitRadiusBase,
-        orbitRadiusY: orbitRadiusBase * seededPresenterRange(seed + 11, 0.76, 1.08),
-        orbitRadiusZ: orbitRadiusBase * seededPresenterRange(seed + 12, 0.56, 0.94),
+        orbitRadiusY: orbitRadiusBase * 0.78,
+        orbitRadiusZ: orbitRadiusBase * 0.34,
         posX: anchorX,
         posY: anchorY,
         velX: 0,
@@ -5547,7 +5549,6 @@ function updatePresenterHaloAnchors(metrics, simulation) {
 
       return {
         entryId: item.entryId,
-        anchorWorld: item.runeAnchorMesh.getAbsolutePosition().clone(),
         anchorX: (metrics.projectionContext.canvasRect.left + projectedPoint.x) - metrics.panelRect.left,
         anchorY: (metrics.projectionContext.canvasRect.top + projectedPoint.y) - metrics.panelRect.top
       };
@@ -5576,7 +5577,6 @@ function updatePresenterHaloAnchors(metrics, simulation) {
 
     simulationNode.anchorX = structureCenter.x + ((node.anchorX - structureCenter.x) * structureSpreadScale);
     simulationNode.anchorY = structureCenter.y + ((node.anchorY - structureCenter.y) * structureSpreadScale);
-    simulationNode.anchorWorld = node.anchorWorld.clone();
   });
 
   const h1Node = simulation.h1EntryId ? simulation.nodes.get(simulation.h1EntryId) : null;
@@ -5596,32 +5596,21 @@ function stepPresenterHaloSimulation(metrics, simulation) {
   const orbitTime = metrics.now / 1000;
   simulation.lastTime = metrics.now;
   updatePresenterHaloAnchors(metrics, simulation);
-  const crystalMatrix = state.crystalRoot?.getWorldMatrix?.() || BABYLON.Matrix.Identity();
 
   simulation.nodes.forEach((node) => {
-    if (node.level === "h1" || !node.anchorWorld) {
+    if (node.level === "h1") {
       node.posX = node.anchorX;
       node.posY = node.anchorY;
       return;
     }
 
-    const localOrbitOffset = new BABYLON.Vector3(
-      Math.cos((orbitTime * node.orbitSpeedX) + node.orbitPhaseX) * node.orbitRadiusX,
-      Math.sin((orbitTime * node.orbitSpeedY) + node.orbitPhaseY) * node.orbitRadiusY,
-      Math.cos((orbitTime * node.orbitSpeedZ) + node.orbitPhaseZ) * node.orbitRadiusZ
-    );
-    const worldOrbitOffset = BABYLON.Vector3.TransformNormal(localOrbitOffset, crystalMatrix);
-    const worldOrbitPoint = node.anchorWorld.add(worldOrbitOffset);
-    const projectedPoint = projectWorldPointToStageWithContext(worldOrbitPoint, metrics.projectionContext);
+    const phaseX = (orbitTime * node.orbitSpeedX) + node.orbitPhaseX;
+    const phaseY = (orbitTime * node.orbitSpeedY) + node.orbitPhaseY;
+    const phaseZ = (orbitTime * node.orbitSpeedZ) + node.orbitPhaseZ;
+    const depthScale = 0.86 + ((Math.sin(phaseZ) + 1) * 0.07);
 
-    if (!projectedPoint) {
-      node.posX = node.anchorX;
-      node.posY = node.anchorY;
-      return;
-    }
-
-    node.posX = (metrics.projectionContext.canvasRect.left + projectedPoint.x) - metrics.panelRect.left;
-    node.posY = (metrics.projectionContext.canvasRect.top + projectedPoint.y) - metrics.panelRect.top;
+    node.posX = node.anchorX + (Math.cos(phaseX) * node.orbitRadiusX * depthScale);
+    node.posY = node.anchorY + (Math.sin(phaseY) * node.orbitRadiusY * depthScale);
   });
 }
 
