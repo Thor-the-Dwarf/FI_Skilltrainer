@@ -107,6 +107,7 @@ const state = {
     hiddenMeshes: [],
     hiddenLights: [],
     networkConnectors: [],
+    presenterHaloLayout: null,
     livePaneWidthPx: null,
     stage: "idle",
     stageStartTime: 0,
@@ -876,6 +877,8 @@ function commitExtractionViewMode(viewMode) {
   }
 
   if (nextMode === "content") {
+    state.extraction.presenterHaloLayout = null;
+
     if (!state.extraction.presenterTargetBeforeContent && state.camera?.target) {
       state.extraction.presenterTargetBeforeContent = state.camera.target.clone();
     }
@@ -4837,6 +4840,7 @@ function clearExplodedDetails() {
   state.extraction.hoveredCardEntryId = null;
   state.extraction.hoveredRuneEntryId = null;
   state.extraction.networkConnectors = [];
+  state.extraction.presenterHaloLayout = null;
   updateDetailAdvanceButtonState();
 
   if (detailCards) {
@@ -4881,6 +4885,7 @@ function showTetrahedronDetails() {
   clearExtractedCrystal();
   state.extraction.viewMode = "detail";
   state.extraction.activeContentEntryId = null;
+  state.extraction.presenterHaloLayout = null;
   applyExplodedLayout(true);
   const detailItems = getTetrahedronDetailItems(state.crystalRoot.metadata);
 
@@ -5191,6 +5196,66 @@ function syncContentLavaBallCanvas(panelRect) {
   };
 }
 
+function ensurePresenterHaloLayout(metrics) {
+  // Ziel: Die Presenter-Halo-Struktur beim Eintritt in den Presenter als feste Ausgangsfigur einfrieren.
+  // Warum: Wenn die Halo-Zentren jedes Frame neu aus der rotierenden Kristallprojektion kommen, wirkt alles wie ein einziger rotierender Klumpen statt wie viele eigenstaendige Spheres mit eigenen Bahnen.
+  if (state.extraction.presenterHaloLayout) {
+    return state.extraction.presenterHaloLayout;
+  }
+
+  const structureSpreadScale = 2;
+  const anchoredNodes = state.extraction.items
+    .filter((item) => item?.runeSymbol && item.runeAnchorMesh)
+    .map((item) => {
+      const projectedPoint = projectWorldPointToStageWithContext(
+        item.runeAnchorMesh.getAbsolutePosition(),
+        metrics.projectionContext
+      );
+
+      if (!projectedPoint) {
+        return null;
+      }
+
+      return {
+        entryId: item.entryId,
+        anchorX: (metrics.projectionContext.canvasRect.left + projectedPoint.x) - metrics.panelRect.left,
+        anchorY: (metrics.projectionContext.canvasRect.top + projectedPoint.y) - metrics.panelRect.top
+      };
+    })
+    .filter(Boolean);
+
+  if (!anchoredNodes.length) {
+    state.extraction.presenterHaloLayout = new Map();
+    return state.extraction.presenterHaloLayout;
+  }
+
+  const structureCenter = anchoredNodes.reduce((accumulator, node) => {
+    accumulator.x += node.anchorX;
+    accumulator.y += node.anchorY;
+    return accumulator;
+  }, { x: 0, y: 0 });
+
+  structureCenter.x /= anchoredNodes.length;
+  structureCenter.y /= anchoredNodes.length;
+
+  state.extraction.presenterHaloLayout = new Map(
+    anchoredNodes.map((node) => {
+      const expandedAnchorX = structureCenter.x + ((node.anchorX - structureCenter.x) * structureSpreadScale);
+      const expandedAnchorY = structureCenter.y + ((node.anchorY - structureCenter.y) * structureSpreadScale);
+
+      return [
+        node.entryId,
+        {
+          normalizedX: expandedAnchorX / Math.max(1, metrics.width),
+          normalizedY: expandedAnchorY / Math.max(1, metrics.height)
+        }
+      ];
+    })
+  );
+
+  return state.extraction.presenterHaloLayout;
+}
+
 function createContentLavaBallMetrics(now) {
   // Ziel: Den Presenter-Hintergrund aus Panel und echter 3D-Projektion zugleich ableiten.
   // Warum: Die HaloSpheres sollen die Kristallstruktur erahnen lassen; dafuer brauchen sie die projizierten Symbolanker als Zentrum und nicht nur eine freie Panel-Verteilung.
@@ -5265,14 +5330,14 @@ function buildPresenterHaloNodes(metrics) {
   // Ziel: Die frei schwebenden HaloNodes des Referenzprojekts im Presenter stabil nachbauen.
   // Warum: Die Miniaturansicht soll die echte Kristallstruktur erahnen lassen. Deshalb sitzt jede HaloSphere auf der projizierten Symbolposition und darf nur innerhalb ihres eigenen Radius leicht driften.
   const timeSeconds = metrics.timeSeconds;
-  const structureSpreadScale = 2;
+  const presenterHaloLayout = ensurePresenterHaloLayout(metrics);
   const levelProfiles = {
     h1: { radiusMin: 17, radiusMax: 20, haloMinFactor: 2.9, haloMaxFactor: 4.2 },
     h2: { radiusMin: 12, radiusMax: 14.5, haloMinFactor: 2.45, haloMaxFactor: 3.45 },
     h3: { radiusMin: 7.25, radiusMax: 9.25, haloMinFactor: 2.0, haloMaxFactor: 2.85 }
   };
 
-  const anchoredNodes = state.extraction.items
+  return state.extraction.items
     .filter((item) => item?.runeSymbol && item.runeAnchorMesh)
     .map((item) => {
       const seed = hashStringToSeed(String(item.entryId));
@@ -5284,17 +5349,14 @@ function buildPresenterHaloNodes(metrics) {
         baseRadius * levelProfile.haloMaxFactor
       );
       const period = seededPresenterRange(seed + 3, 260, 420);
-      const projectedPoint = projectWorldPointToStageWithContext(
-        item.runeAnchorMesh.getAbsolutePosition(),
-        metrics.projectionContext
-      );
+      const layoutEntry = presenterHaloLayout.get(item.entryId) || null;
 
-      if (!projectedPoint) {
+      if (!layoutEntry) {
         return null;
       }
 
-      const anchorX = (metrics.projectionContext.canvasRect.left + projectedPoint.x) - metrics.panelRect.left;
-      const anchorY = (metrics.projectionContext.canvasRect.top + projectedPoint.y) - metrics.panelRect.top;
+      const anchorX = layoutEntry.normalizedX * metrics.width;
+      const anchorY = layoutEntry.normalizedY * metrics.height;
       const driftRadius = baseRadius * 0.72;
       const driftX = seededPresenterRange(seed + 6, driftRadius * 0.22, driftRadius * 0.86);
       const driftY = seededPresenterRange(seed + 7, driftRadius * 0.18, driftRadius * 0.82);
@@ -5325,34 +5387,6 @@ function buildPresenterHaloNodes(metrics) {
       };
     })
     .filter(Boolean);
-
-  if (!anchoredNodes.length) {
-    return anchoredNodes;
-  }
-
-  const structureCenter = anchoredNodes.reduce((accumulator, node) => {
-    accumulator.x += node.anchorX;
-    accumulator.y += node.anchorY;
-    return accumulator;
-  }, { x: 0, y: 0 });
-
-  structureCenter.x /= anchoredNodes.length;
-  structureCenter.y /= anchoredNodes.length;
-
-  return anchoredNodes.map((node) => {
-    const expandedAnchorX = structureCenter.x + ((node.anchorX - structureCenter.x) * structureSpreadScale);
-    const expandedAnchorY = structureCenter.y + ((node.anchorY - structureCenter.y) * structureSpreadScale);
-    const driftDeltaX = node.x - node.anchorX;
-    const driftDeltaY = node.y - node.anchorY;
-
-    return {
-      ...node,
-      anchorX: expandedAnchorX,
-      anchorY: expandedAnchorY,
-      x: expandedAnchorX + driftDeltaX,
-      y: expandedAnchorY + driftDeltaY
-    };
-  });
 }
 
 function drawPresenterHaloNetwork(context, metrics, nodesById) {
