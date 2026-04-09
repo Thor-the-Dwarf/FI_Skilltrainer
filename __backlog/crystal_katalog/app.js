@@ -5653,7 +5653,7 @@ function stepPresenterHaloSimulation(metrics, simulation) {
     const anchorDx = node.posX - node.anchorX;
     const anchorDy = node.posY - node.anchorY;
     const anchorDistance = Math.hypot(anchorDx, anchorDy);
-    const maxAnchorDistance = Math.max(6, node.radius * 0.98);
+    const maxAnchorDistance = Math.max(12, node.radius * 1.96);
 
     node.velX += (node.anchorX - node.posX) * anchorPull * deltaSeconds;
     node.velY += (node.anchorY - node.posY) * anchorPull * deltaSeconds;
