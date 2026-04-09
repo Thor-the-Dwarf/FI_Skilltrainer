@@ -7,7 +7,9 @@ import {
   const params = new URLSearchParams(window.location.search);
   const registry = window.cristalVaultCourseRegistry || null;
   const requestedCourseId = params.get("course") || registry?.defaultCourseId || "QuS2";
-  const vault = registry?.vaultByCourseId?.[requestedCourseId] || window.qus2StoryVaultData;
+  const vault = typeof registry?.getCompiledVault === "function"
+    ? registry.getCompiledVault(requestedCourseId)
+    : registry?.vaultByCourseId?.[requestedCourseId] || window.qus2StoryVaultData;
 
   if (!vault) {
     console.error("Cristal Vault story data missing.");
@@ -62,6 +64,8 @@ import {
 
   const slideToCrystalId = {};
   const explanationToCrystalIds = new Map();
+  const crystalHierarchyVisualCache = new Map();
+  const crystalPlaceholderMarkupCache = new Map();
 
   vault.presentationCristals.forEach((crystal) => {
     crystal.slides.forEach((slide) => {
@@ -141,6 +145,14 @@ import {
   init();
 
   function init() {
+    /*
+    ZIEL:
+    Die Praesentation mit lazy Registry-Daten und aufgeloestem Startzustand booten.
+    WAS WURDE PROBIERT:
+    Theme, URL-Zustand, Events und Initial-Render werden in einer kompakten Startsequenz zusammengezogen.
+    WESHALB WURDE SO ENTSCHIEDEN:
+    Damit bleibt der Einstieg vorhersehbar und die neue selection-basierte Deep-Link-Variante landet sofort im richtigen Kurskontext.
+    */
     applyCourseTheme();
     resolveInitialState();
     bindGlobalEvents();
@@ -149,6 +161,15 @@ import {
   }
 
   function resolveInitialState() {
+    /*
+    ZIEL:
+    crystal-, slide- und jetzt auch selection-basierte Start-URLs auf einen gueltigen Anzeigestatus abbilden.
+    WAS WURDE PROBIERT:
+    Die Aufloesung prueft nacheinander slide, crystal, selection, explanation und faellt sonst auf die Kursdefaults zurueck.
+    WESHALB WURDE SO ENTSCHIEDEN:
+    So kann der Vault nur einen leichten selection-Link erzeugen, waehrend die Praesentation spaeter selbst den ersten passenden Kristall und Slide bestimmt.
+    */
+    const requestedSelectionId = Number.parseInt(params.get("selection") || "", 10);
     const requestedCrystal = params.get("crystal");
     const requestedSlide = params.get("slide");
     const requestedExplanation = params.get("explanation");
@@ -171,6 +192,13 @@ import {
     } else if (requestedCrystal && vault.crystalById[requestedCrystal]) {
       state.crystalId = requestedCrystal;
       state.slideId = vault.crystalById[requestedCrystal].slides[0]?.id || null;
+    } else if (Number.isInteger(requestedSelectionId) && requestedSelectionId > 0) {
+      const selectedCrystal = vault.presentationCristals.find(
+        (crystal, crystalIndex) => (crystal.selectionId || crystalIndex + 1) === requestedSelectionId
+      ) || null;
+
+      state.crystalId = selectedCrystal?.id || vault.defaults.startingCrystalId;
+      state.slideId = selectedCrystal?.slides?.[0]?.id || vault.crystalById[state.crystalId]?.slides?.[0]?.id || null;
     } else if (requestedExplanation && explanationToCrystalIds.has(requestedExplanation)) {
       state.crystalId = Array.from(explanationToCrystalIds.get(requestedExplanation))[0];
       state.slideId = vault.crystalById[state.crystalId].slides[0]?.id || null;
@@ -217,22 +245,7 @@ import {
       }
     });
 
-    document.addEventListener("click", (event) => {
-      if (!event.target.closest(".presentation-toc__branch")) {
-        closeTocMenu({ rerender: true });
-      }
-
-      if (
-        !state.activeExplanationId ||
-        event.target.closest("[data-explanation-id]") ||
-        event.target.closest(".presentation-explainer")
-      ) {
-        return;
-      }
-
-      closeExplanation();
-      renderExplainer();
-    });
+    document.addEventListener("click", handleDelegatedClick);
 
     document.addEventListener("keydown", (event) => {
       if (event.key === "Escape") {
@@ -258,6 +271,71 @@ import {
 
     window.addEventListener("resize", scheduleConnector);
     window.addEventListener("scroll", scheduleConnector, true);
+  }
+
+  /*
+  ZIEL:
+  Alle wiederkehrenden Presenter-Klickziele zentral behandeln, statt sie nach jedem Render erneut an einzelne DOM-Knoten zu binden.
+  WAS WURDE PROBIERT:
+  Zuvor wurden Cover-, TOC-, Slide- und Varianten-Buttons nach renderCover, renderToc und renderStage jeweils neu gebunden.
+  WESHALB WURDE SO ENTSCHIEDEN:
+  Event-Delegation reduziert Rebind-Kosten bei häufigen Renders, macht den Miniaturbild-Pfad robuster und vermeidet doppelte Listener auf kurzlebigen DOM-Strukturen.
+  */
+  function handleDelegatedClick(event) {
+    const vaultDetailButton = event.target.closest("[data-vault-detail-nav]");
+    if (vaultDetailButton) {
+      event.preventDefault();
+      event.stopPropagation();
+      window.location.assign(buildVaultUrl({ openContent: false }));
+      return;
+    }
+
+    const crystalCoverButton = event.target.closest("[data-crystal-cover-nav]");
+    if (crystalCoverButton) {
+      event.preventDefault();
+      navigateToCrystalCover(crystalCoverButton.dataset.crystalCoverNav || state.crystalId);
+      return;
+    }
+
+    const slideNavButton = event.target.closest("[data-slide-nav]");
+    if (slideNavButton) {
+      event.preventDefault();
+      navigateToSlide(slideNavButton.dataset.slideNav || state.slideId);
+      return;
+    }
+
+    const tocMenuTriggerButton = event.target.closest("[data-toc-menu-trigger]");
+    if (tocMenuTriggerButton) {
+      event.preventDefault();
+      event.stopPropagation();
+      toggleTocMenu(tocMenuTriggerButton.dataset.tocMenuTrigger || "");
+      return;
+    }
+
+    const tocModeOptionButton = event.target.closest("[data-toc-mode-option]");
+    if (tocModeOptionButton) {
+      event.preventDefault();
+      event.stopPropagation();
+      activatePresentationVariant(tocModeOptionButton.dataset.tocModeOption || "");
+      closeTocMenu({ rerender: false });
+      render();
+      return;
+    }
+
+    if (!event.target.closest(".presentation-toc__branch")) {
+      closeTocMenu({ rerender: true });
+    }
+
+    if (
+      !state.activeExplanationId ||
+      event.target.closest("[data-explanation-id]") ||
+      event.target.closest(".presentation-explainer")
+    ) {
+      return;
+    }
+
+    closeExplanation();
+    renderExplainer();
   }
 
   function exposeLab() {
@@ -323,6 +401,14 @@ import {
     syncUrl();
   }
 
+  /*
+  ZIEL:
+  Das kompakte Sidebar-Cover fuer den aktuell aktiven Kristall im Presenter aktuell halten.
+  WAS WURDE PROBIERT:
+  Das Sidebar-Cover wurde erst als statischer Placeholder und spaeter als datengetriebener Kristall-Renderpfad aufgebaut.
+  WESHALB WURDE SO ENTSCHIEDEN:
+  Das Sidebar-Cover soll leicht bleiben, aber trotzdem dieselbe Kristallhierarchie wie Stage und Vault andeuten.
+  */
   function renderCover() {
     if (!refs.cover) {
       return;
@@ -338,6 +424,14 @@ import {
     refs.cover.innerHTML = renderCrystalPlaceholderMarkup(crystal, "sidebar");
   }
 
+  /*
+  ZIEL:
+  Die Presenter-TOC aus Kursdaten und aktuellem Kristallzustand neu zusammensetzen.
+  WAS WURDE PROBIERT:
+  Zuerst wurden TOC-Inhalte inklusive Event-Bindungen vollständig pro Render aufgebaut.
+  WESHALB WURDE SO ENTSCHIEDEN:
+  Das Markup wird weiter pro Zustand neu erzeugt, aber die Interaktion laeuft jetzt delegiert, damit Re-Renders nicht immer neue Listener produzieren.
+  */
   function renderToc() {
     if (!refs.toc) {
       return;
@@ -354,37 +448,6 @@ import {
       <p class="presentation-toc__label">${escapeHtml(vault.course.title)}</p>
       ${renderCrystalTocGroup(crystal)}
     `;
-
-    refs.toc.querySelectorAll("[data-crystal-cover-nav]").forEach((button) => {
-      button.addEventListener("click", (event) => {
-        event.preventDefault();
-        navigateToCrystalCover(button.dataset.crystalCoverNav || state.crystalId);
-      });
-    });
-
-    refs.toc.querySelectorAll("[data-slide-nav]").forEach((button) => {
-      button.addEventListener("click", () => {
-        navigateToSlide(button.dataset.slideNav || state.slideId);
-      });
-    });
-
-    refs.toc.querySelectorAll("[data-toc-menu-trigger]").forEach((button) => {
-      button.addEventListener("click", (event) => {
-        event.preventDefault();
-        event.stopPropagation();
-        toggleTocMenu(button.dataset.tocMenuTrigger || "");
-      });
-    });
-
-    refs.toc.querySelectorAll("[data-toc-mode-option]").forEach((button) => {
-      button.addEventListener("click", (event) => {
-        event.preventDefault();
-        event.stopPropagation();
-        activatePresentationVariant(button.dataset.tocModeOption || "");
-        closeTocMenu({ rerender: false });
-        render();
-      });
-    });
   }
 
   function renderCrystalTocGroup(crystal) {
@@ -484,6 +547,14 @@ import {
     renderMinimalSlide();
   }
 
+  /*
+  ZIEL:
+  Den grossen Stage-Cover-Zustand fuer einen Kristall im separaten Presenter rendern.
+  WAS WURDE PROBIERT:
+  Der Stage-Cover war erst ein generischer Platzhalter und wurde dann auf dieselbe datengetriebene Kristallhierarchie wie das Sidebar-Cover gehoben.
+  WESHALB WURDE SO ENTSCHIEDEN:
+  So bleibt der eigentliche Praesentationspfad visuell konsistent, waehrend Stage und Sidebar dieselbe Kristalllogik mit unterschiedlicher Gewichtung nutzen.
+  */
   function renderCrystalCoverSlide() {
     const crystal = getCurrentCrystal();
 
@@ -1351,7 +1422,8 @@ import {
     return url.toString();
   }
 
-  function buildVaultUrl() {
+  function buildVaultUrl(options = {}) {
+    const openContent = options.openContent !== false;
     const url = new URL("./index.html", window.location.href);
     const currentCrystal = getCurrentCrystal();
     const selectionId = currentCrystal?.selectionId || 1;
@@ -1360,7 +1432,7 @@ import {
     url.searchParams.set("selection", String(selectionId));
     url.searchParams.set("detail", "1");
 
-    if (!isArticleView()) {
+    if (!isArticleView() && openContent) {
       url.searchParams.set("content", "1");
     }
 
@@ -1538,61 +1610,248 @@ import {
       .join("");
   }
 
+  /*
+  ZIEL:
+  Den Presenter-Cover-Kristall pro Kristall und Kontext nur einmal aufbauen und danach wiederverwendbar ausliefern.
+  WAS WURDE PROBIERT:
+  Zuerst wurde das Markup bei jedem Render neu zusammengesetzt, obwohl dieselben Sidebar-, Stage- und Transition-Zustände wiederkehren.
+  WESHALB WURDE SO ENTSCHIEDEN:
+  Das Cache pro Kristall und Kontext spart String-Aufbau, hält den separaten Presenter leichtgewichtig und vermeidet unnötige DOM-Neuzusammenstellung.
+  */
   function renderCrystalPlaceholderMarkup(crystal, context) {
     const hierarchyVisual = buildCrystalHierarchyVisual(crystal);
-    const previewSlides = (crystal.slides || []).slice(0, context === "sidebar" ? 2 : 4);
-    const facetMarkup = buildFacetOrbitMarkup(hierarchyVisual, context);
-    const beadMarkup = buildBeadOrbitMarkup(hierarchyVisual, context);
-    const connectorMarkup = buildConnectorOrbitMarkup(hierarchyVisual, context);
-    const slidePreviewMarkup = previewSlides
-      .map((slide) => `
-        <article class="presentation-cover__slide-preview">
-          <span class="presentation-cover__slide-index">${String(slide.orderInCristal || 0).padStart(2, "0")}</span>
-          <span class="presentation-cover__slide-title">${escapeHtml(slide.title)}</span>
-        </article>
-      `)
-      .join("");
+    const cacheKey = `${getCrystalHierarchyCacheKey(crystal)}::${context}`;
 
-    return `
+    if (crystalPlaceholderMarkupCache.has(cacheKey)) {
+      return crystalPlaceholderMarkupCache.get(cacheKey);
+    }
+
+    const orbSvgMarkup = buildCrystalOrbSvg(hierarchyVisual, context, cacheKey);
+    const showReturnButton = context !== "transition";
+    const detailLabel = context === "stage" ? "Zum Kristall-Detail im Vault" : "Kristall-Detail";
+    const markup = `
       <div class="presentation-cover__placeholder presentation-cover__placeholder--${escapeHtml(context)}" data-crystal-placeholder="${escapeHtml(context)}">
         <span class="presentation-cover__ratio">1:1</span>
 
-        <div class="presentation-cover__crystal">
-          <div class="presentation-cover__wire presentation-cover__wire--outer"></div>
-          <div class="presentation-cover__wire presentation-cover__wire--inner"></div>
-          <div class="presentation-cover__wire presentation-cover__wire--spine"></div>
-          <div class="presentation-cover__glow"></div>
-          <div class="presentation-cover__connectors">
-            ${connectorMarkup}
-          </div>
-          <div class="presentation-cover__core">
-            <span class="presentation-cover__core-rune">${escapeHtml(hierarchyVisual.h1Rune)}</span>
-            <span class="presentation-cover__core-meta">H1</span>
-          </div>
-          ${facetMarkup}
-          <div class="presentation-cover__bead-orbit">
-            ${beadMarkup}
+        <div class="presentation-cover__orb-shell">
+          <div class="presentation-cover__orb-aura presentation-cover__orb-aura--one"></div>
+          <div class="presentation-cover__orb-aura presentation-cover__orb-aura--two"></div>
+          <div class="presentation-cover__orb">
+            ${orbSvgMarkup}
           </div>
         </div>
 
-        <div class="presentation-cover__summary-card">
-          <div class="presentation-cover__stats">
-            <span class="presentation-cover__stat">Tag ${String(crystal.dayIndex).padStart(2, "0")}</span>
-            <span class="presentation-cover__stat">${(crystal.slides || []).length} Slides</span>
-            <span class="presentation-cover__stat">H2 ${hierarchyVisual.h2Count} · H3 ${hierarchyVisual.h3Count}</span>
-          </div>
-          <p class="presentation-cover__story-arc">${escapeHtml(crystal.storyArc || crystal.summary || `${vault.course.selectorTitle || vault.course.id}-Kristall`)}</p>
-          <div class="presentation-cover__slide-stack">
-            ${slidePreviewMarkup}
-          </div>
-        </div>
-
-        <div class="presentation-cover__meta">
-          <strong>${escapeHtml(crystal.title)}</strong>
-          <span>${escapeHtml(crystal.sortKey)}</span>
-        </div>
+        ${
+          showReturnButton
+            ? `
+              <button
+                type="button"
+                class="presentation-cover__vault-return"
+                data-vault-detail-nav="true"
+                aria-label="${escapeHtml(detailLabel)}"
+              >
+                ${escapeHtml(detailLabel)}
+              </button>
+            `
+            : ""
+        }
       </div>
     `;
+
+    crystalPlaceholderMarkupCache.set(cacheKey, markup);
+    return markup;
+  }
+
+  /*
+  ZIEL:
+  Ein datengetriebenes Miniaturbild erzeugen, das die H1-, H2- und H3-Hierarchie des Kristalls im Presenter visuell andeutet.
+  WAS WURDE PROBIERT:
+  Zunächst wurde mit festen Facetten- und Bead-Orbits gearbeitet. Danach wurde der Pfad auf echte H2- und H3-Daten aus der Selection-Runtime umgestellt.
+  WESHALB WURDE SO ENTSCHIEDEN:
+  So bleibt das Cover für kleine und große Kristalle konsistent, ohne einen zweiten, vom eigentlichen Kristallsystem losgelösten Placeholder-Stil pflegen zu müssen.
+  */
+  function buildCrystalOrbSvg(hierarchyVisual, context, cacheKey) {
+    const h2Visible = hierarchyVisual.h2Items.slice(0, context === "sidebar" ? 7 : 12);
+    const h3Visible = hierarchyVisual.h3Items.slice(0, context === "sidebar" ? 10 : 18);
+    const h2Radius = context === "sidebar" ? 31 : 33;
+    const h3Radius = context === "sidebar" ? 41 : 43;
+    const center = { x: 50, y: 50 };
+    const orbBackgroundGradientId = buildPresenterSvgId("presentationCoverOrbBg", cacheKey);
+    const coreGlowGradientId = buildPresenterSvgId("presentationCoverCoreGlow", cacheKey);
+    const h2Points = h2Visible.map((item, index) => ({
+      item,
+      ...getOrbitPoint(index, h2Visible.length, h2Radius, -Math.PI / 2.2)
+    }));
+    const h3Points = h3Visible.map((item, index) => ({
+      item,
+      ...getOrbitPoint(index, h3Visible.length, h3Radius, -Math.PI / 2.7)
+    }));
+    const planePalette = [
+      "rgba(211, 164, 255, 0.24)",
+      "rgba(169, 255, 191, 0.22)",
+      "rgba(168, 212, 255, 0.2)",
+      "rgba(255, 193, 220, 0.2)",
+      "rgba(215, 255, 149, 0.18)"
+    ];
+    /*
+    ZIEL:
+    Die H2-Flächen im Miniaturbild als ruhige, leicht transparente Ebenen sichtbar machen.
+    WAS WURDE PROBIERT:
+    Vorher gab es nur Orbit-Nodes ohne Flächenbezug. Danach wurden wenige große Ebenen zwischen Zentrum, H2 und H3 aufgespannt.
+    WESHALB WURDE SO ENTSCHIEDEN:
+    Wenige Flächen lesen sich im kleinen Presenter besser als ein dichtes Polygonnetz und halten das SVG trotzdem leicht.
+    */
+    const planeMarkup = h2Points
+      .slice(0, Math.min(5, h2Points.length))
+      .map((point, index) => {
+        const nextH2 = h2Points[(index + 1) % h2Points.length] || point;
+        const linkedH3 = h3Points[index % Math.max(1, h3Points.length)] || { x: 50, y: 18 };
+        const color = planePalette[index % planePalette.length];
+        const secondaryColor = setRgbaAlpha(color, 0.11);
+
+        return `
+          <polygon
+            points="${center.x},${center.y} ${point.x.toFixed(2)},${point.y.toFixed(2)} ${linkedH3.x.toFixed(2)},${linkedH3.y.toFixed(2)}"
+            fill="${color}"
+            stroke="rgba(255,255,255,0.14)"
+            stroke-width="0.16"
+          />
+          <polygon
+            points="${center.x},${center.y} ${nextH2.x.toFixed(2)},${nextH2.y.toFixed(2)} ${linkedH3.x.toFixed(2)},${linkedH3.y.toFixed(2)}"
+            fill="${secondaryColor}"
+            stroke="rgba(255,255,255,0.08)"
+            stroke-width="0.12"
+          />
+        `;
+      })
+      .join("");
+    /*
+    ZIEL:
+    Die hierarchische Verbindung zwischen Zentrum, H2 und H3 im Cover sichtbar lassen.
+    WAS WURDE PROBIERT:
+    Die Linien wurden zunächst nur als dekorative Strahlen gedacht und später an echte H2- und H3-Anker gebunden.
+    WESHALB WURDE SO ENTSCHIEDEN:
+    Das ergibt mehr logische Lesbarkeit im Miniaturbild, ohne die volle Netzkomplexität des Vaults in den Presenter zu ziehen.
+    */
+    const lineMarkup = [
+      ...h2Points.map(
+        (point) => `
+          <line
+            x1="${center.x}"
+            y1="${center.y}"
+            x2="${point.x.toFixed(2)}"
+            y2="${point.y.toFixed(2)}"
+            stroke="rgba(203, 222, 255, 0.14)"
+            stroke-width="0.18"
+          />
+        `
+      ),
+      ...h3Points.map((point, index) => {
+        const anchor = h2Points[index % Math.max(1, h2Points.length)] || center;
+
+        return `
+          <line
+            x1="${anchor.x.toFixed(2)}"
+            y1="${anchor.y.toFixed(2)}"
+            x2="${point.x.toFixed(2)}"
+            y2="${point.y.toFixed(2)}"
+            stroke="rgba(192, 213, 255, 0.12)"
+            stroke-width="0.12"
+          />
+        `;
+      })
+    ].join("");
+    /*
+    ZIEL:
+    H2-Rune-Nodes und H3-Beads klar voneinander trennen.
+    WAS WURDE PROBIERT:
+    Zunächst wurden nur vereinzelte Orbit-Elemente gezeigt. Danach wurden H2 mit Rune und H3 als reduzierte Beads getrennt aufgebaut.
+    WESHALB WURDE SO ENTSCHIEDEN:
+    Im kleinen Cover ist die Hierarchietrennung wichtiger als maximale Detailtreue, deshalb bekommen H2 mehr visuelles Gewicht als H3.
+    */
+    const h2NodeMarkup = h2Points
+      .map(
+        (point) => `
+          <g>
+            <circle cx="${point.x.toFixed(2)}" cy="${point.y.toFixed(2)}" r="${context === "sidebar" ? "4.1" : "4.4"}" fill="rgba(201, 127, 255, 0.18)" />
+            <circle cx="${point.x.toFixed(2)}" cy="${point.y.toFixed(2)}" r="${context === "sidebar" ? "2.15" : "2.35"}" fill="rgba(19, 24, 35, 0.96)" stroke="rgba(232, 241, 255, 0.18)" stroke-width="0.12" />
+            <text x="${point.x.toFixed(2)}" y="${(point.y + 0.48).toFixed(2)}" text-anchor="middle" dominant-baseline="middle" fill="#dfe9ff" font-size="${context === "sidebar" ? "1.6" : "1.8"}" font-weight="700">${escapeHtml(point.item.runeSymbol || "ᚠ")}</text>
+          </g>
+        `
+      )
+      .join("");
+    const h3NodeMarkup = h3Points
+      .map(
+        (point, index) => `
+          <g>
+            <circle cx="${point.x.toFixed(2)}" cy="${point.y.toFixed(2)}" r="${index % 4 === 0 ? "5.2" : "4.6"}" fill="rgba(167, 255, 163, ${index % 3 === 0 ? "0.18" : "0.12"})" />
+            <circle cx="${point.x.toFixed(2)}" cy="${point.y.toFixed(2)}" r="${index % 4 === 0 ? "2.1" : "1.7"}" fill="rgba(22, 28, 40, 0.95)" />
+          </g>
+        `
+      )
+      .join("");
+
+    return `
+      <svg class="presentation-cover__orb-svg" viewBox="0 0 100 100" aria-hidden="true">
+        <defs>
+          <radialGradient id="${orbBackgroundGradientId}" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stop-color="rgba(34,52,78,0.86)" />
+            <stop offset="54%" stop-color="rgba(16,24,36,0.94)" />
+            <stop offset="100%" stop-color="rgba(5,9,16,0.98)" />
+          </radialGradient>
+          <radialGradient id="${coreGlowGradientId}" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stop-color="rgba(184, 219, 255, 0.34)" />
+            <stop offset="100%" stop-color="rgba(184, 219, 255, 0)" />
+          </radialGradient>
+        </defs>
+
+        <circle cx="50" cy="50" r="49" fill="url(#${orbBackgroundGradientId})" stroke="rgba(255,255,255,0.08)" stroke-width="0.35" />
+        <circle cx="50" cy="50" r="44" fill="none" stroke="rgba(190,210,255,0.06)" stroke-width="0.12" />
+        <circle cx="50" cy="50" r="39" fill="none" stroke="rgba(190,210,255,0.04)" stroke-width="0.1" />
+        ${planeMarkup}
+        ${lineMarkup}
+        ${h3NodeMarkup}
+        ${h2NodeMarkup}
+        <circle cx="50" cy="50" r="10.8" fill="url(#${coreGlowGradientId})" />
+        <circle cx="50" cy="50" r="7.4" fill="rgba(23,31,46,0.95)" stroke="rgba(216,231,255,0.16)" stroke-width="0.28" />
+        <text x="50" y="50.7" text-anchor="middle" dominant-baseline="middle" fill="#dfe9ff" font-size="4.2" font-weight="700">${escapeHtml(hierarchyVisual.h1Rune || "ᚱ")}</text>
+      </svg>
+    `;
+  }
+
+  /*
+  ZIEL:
+  SVG-Definitionen pro Coverinstanz eindeutig benennen.
+  WAS WURDE PROBIERT:
+  Vorher wurden feste Gradient-IDs verwendet, die bei gleichzeitigem Sidebar- und Stage-Cover kollidieren konnten.
+  WESHALB WURDE SO ENTSCHIEDEN:
+  Eindeutige IDs verhindern DOM-Kollisionen, ohne die vorhandene Cover-Struktur ändern zu müssen.
+  */
+  function buildPresenterSvgId(prefix, suffix) {
+    const safeSuffix = String(suffix || "default")
+      .replace(/[^a-zA-Z0-9_-]+/g, "-")
+      .replace(/-+/g, "-")
+      .replace(/^-|-$/g, "");
+    return `${prefix}-${safeSuffix || "default"}`;
+  }
+
+  /*
+  ZIEL:
+  Varianten derselben RGBA-Farbe robust mit anderer Transparenz ableiten.
+  WAS WURDE PROBIERT:
+  Zuvor wurde die Alpha-Komponente per Regex direkt im Farbstring ersetzt.
+  WESHALB WURDE SO ENTSCHIEDEN:
+  Die parserbasierte Variante ist weniger fehleranfällig als String-Hacks und hat den zuletzt aufgetretenen Presenter-Fehler beseitigt.
+  */
+  function setRgbaAlpha(color, alpha) {
+    const rgbaMatch = /^rgba\(\s*([0-9.]+)\s*,\s*([0-9.]+)\s*,\s*([0-9.]+)\s*,\s*([0-9.]+)\s*\)$/i.exec(String(color || "").trim());
+    if (!rgbaMatch) {
+      return color;
+    }
+
+    const [, red, green, blue] = rgbaMatch;
+    const normalizedAlpha = Number.isFinite(alpha) ? Math.max(0, Math.min(1, alpha)) : 1;
+    return `rgba(${red}, ${green}, ${blue}, ${normalizedAlpha})`;
   }
 
   function countFacesForSelectionShape(selectionId) {
@@ -1631,7 +1890,33 @@ import {
     }
   }
 
+  /*
+  ZIEL:
+  Einen stabilen Schlüssel für Hierarchie- und Markup-Caches bereitstellen.
+  WAS WURDE PROBIERT:
+  Statt lose nur nach Selection zu cachen, wird der Kristall-Identifier mit der Selection kombiniert.
+  WESHALB WURDE SO ENTSCHIEDEN:
+  Damit bleiben Cover-Zustände eindeutig, selbst wenn mehrere Kristalle dieselbe Selection-Familie teilen würden.
+  */
+  function getCrystalHierarchyCacheKey(crystal) {
+    return `${crystal?.id || "crystal"}::${Number(crystal?.selectionId) || 1}`;
+  }
+
+  /*
+  ZIEL:
+  Die für den Presenter nötige H1-, H2- und H3-Zusammenfassung aus der eigentlichen Selection-Runtime ableiten.
+  WAS WURDE PROBIERT:
+  Zuerst gab es nur statische Placeholder-Daten. Danach wurde die Presenter-Hierarchie über resolveSelectionDetailItemsForRuntime aus den echten Selection-Modulen berechnet.
+  WESHALB WURDE SO ENTSCHIEDEN:
+  So zeigt der Presenter dieselbe fachliche Kristallstruktur wie Vault und DetailView, ohne die komplette schwere Runtime im Cover nachzubauen.
+  */
   function buildCrystalHierarchyVisual(crystal) {
+    const cacheKey = getCrystalHierarchyCacheKey(crystal);
+
+    if (crystalHierarchyVisualCache.has(cacheKey)) {
+      return crystalHierarchyVisualCache.get(cacheKey);
+    }
+
     const selectionId = Number(crystal?.selectionId) || 1;
     const shapeConfig = getShapeConfigForSelection(selectionId);
     const faceCount = countFacesForSelectionShape(selectionId);
@@ -1649,7 +1934,7 @@ import {
     const h2Items = detailItems.filter((item) => item?.level === "h2");
     const h3Items = detailItems.filter((item) => item?.level === "h3");
 
-    return {
+    const hierarchyVisual = {
       h1Rune: h1Item?.runeSymbol || "ᚱ",
       h2Count: h2Items.length,
       h3Count: h3Items.length,
@@ -1658,72 +1943,9 @@ import {
       fragmentRunes: h2Items.slice(0, 4).map((item) => item.runeSymbol || "ᚠ"),
       fractalRunes: h3Items.slice(0, 8).map((item) => item.runeSymbol || "ᚾ")
     };
-  }
 
-  function buildFacetOrbitMarkup(hierarchyVisual, context) {
-    const maxVisibleFacets = context === "sidebar" ? 4 : 8;
-    const visibleFacets = hierarchyVisual.h2Items.slice(0, maxVisibleFacets);
-    const angleOffset = context === "sidebar" ? -Math.PI / 2 : -Math.PI / 2.4;
-    const radius = context === "sidebar" ? 34 : 38;
-
-    return visibleFacets
-      .map((item, index) => {
-        const point = getOrbitPoint(index, visibleFacets.length, radius, angleOffset);
-        return `
-          <article
-            class="presentation-cover__facet"
-            style="--facet-x:${point.x.toFixed(2)}%; --facet-y:${point.y.toFixed(2)}%;"
-          >
-            <span class="presentation-cover__facet-rune">${escapeHtml(item.runeSymbol || "ᚠ")}</span>
-            <span class="presentation-cover__facet-meta">H2</span>
-          </article>
-        `;
-      })
-      .join("");
-  }
-
-  function buildBeadOrbitMarkup(hierarchyVisual, context) {
-    const maxVisibleBeads = context === "sidebar" ? 6 : 12;
-    const visibleBeads = hierarchyVisual.h3Items.slice(0, maxVisibleBeads);
-    const angleOffset = context === "sidebar" ? -Math.PI / 2.7 : -Math.PI / 2.9;
-    const radius = context === "sidebar" ? 42 : 46;
-
-    return visibleBeads
-      .map((item, index) => {
-        const point = getOrbitPoint(index, visibleBeads.length, radius, angleOffset);
-        return `
-          <span
-            class="presentation-cover__bead"
-            style="--bead-x:${point.x.toFixed(2)}%; --bead-y:${point.y.toFixed(2)}%;"
-          >
-            ${escapeHtml(item.runeSymbol || "ᚾ")}
-          </span>
-        `;
-      })
-      .join("");
-  }
-
-  function buildConnectorOrbitMarkup(hierarchyVisual, context) {
-    const maxVisibleFacets = context === "sidebar" ? 4 : 8;
-    const visibleFacets = hierarchyVisual.h2Items.slice(0, maxVisibleFacets);
-    const angleOffset = context === "sidebar" ? -Math.PI / 2 : -Math.PI / 2.4;
-    const radius = context === "sidebar" ? 34 : 38;
-
-    return visibleFacets
-      .map((_, index) => {
-        const point = getOrbitPoint(index, visibleFacets.length, radius, angleOffset);
-        const deltaX = point.x - 50;
-        const deltaY = point.y - 50;
-        const angleDeg = (Math.atan2(deltaY, deltaX) * 180) / Math.PI + 90;
-        const length = Math.max(8, Math.hypot(deltaX, deltaY) - (context === "sidebar" ? 15 : 17));
-        return `
-          <span
-            class="presentation-cover__connector"
-            style="--connector-angle:${angleDeg.toFixed(2)}deg; --connector-length:${length.toFixed(2)}%;"
-          ></span>
-        `;
-      })
-      .join("");
+    crystalHierarchyVisualCache.set(cacheKey, hierarchyVisual);
+    return hierarchyVisual;
   }
 
   function getOrbitPoint(index, total, radius, angleOffset) {
