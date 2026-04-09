@@ -38,3 +38,20 @@ export function resolveConfiguredDetailFragmentRuneCount(selectionId, faceIndex,
     resolveConfiguredFragmentRuneCount(selectionId, faceIndex, configuredCounts)
   );
 }
+
+export function createConfiguredFragmentRuneCountResolver(selectionId, configuredCounts) {
+  return (_faceEntry, faceIndex) => resolveConfiguredFragmentRuneCount(
+    selectionId,
+    faceIndex,
+    configuredCounts
+  );
+}
+
+export function createConfiguredDetailFragmentRuneCountResolver(selectionId, configuredCounts, maxCount = 3) {
+  return (_faceEntry, faceIndex) => resolveConfiguredDetailFragmentRuneCount(
+    selectionId,
+    faceIndex,
+    configuredCounts,
+    maxCount
+  );
+}

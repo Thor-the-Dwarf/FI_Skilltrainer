@@ -1,30 +1,22 @@
 import { buildDetailHierarchyModel, getPreferredActiveContentEntry } from "./crystals/shared/detail-shell.js";
 import {
   canOpenSelectionDetailShell,
-  canOpenSelectionPresenterView
-} from "./crystals/shared/selection-entry-capabilities.js";
-import {
-  DEFAULT_H3_RUNES_PER_FRAGMENT,
-  normalizeFragmentRuneCount,
-  resolveConfiguredDetailFragmentRuneCount,
-  resolveConfiguredFragmentRuneCount
-} from "./crystals/shared/fragment-runes.js";
-import { resolveSelectionDetailItems } from "./crystals/shared/selection-detail-items.js";
-import {
+  canOpenSelectionPresenterView,
   DEFAULT_CUBE_EDGE,
   DEFAULT_CUBE_RADIUS,
-  getShapeConfigForSelection
-} from "./crystals/shared/selection-shape-config.js";
-import {
+  DEFAULT_H3_RUNES_PER_FRAGMENT,
+  getShapeConfigForSelection,
+  getSelectionVaultLodConfig,
+  normalizeFragmentRuneCount,
   requiresSelectionHierarchyDiagnostics,
+  resolveConfiguredDetailFragmentRuneCount,
+  resolveConfiguredFragmentRuneCount,
+  resolveSelectionDetailItemsForRuntime,
   resolveSelectionDiagnosticLabel,
   resolveSelectionInteriorKind,
-  shouldPauseDetachedAnchorSync
-} from "./crystals/selection-module-registry.js";
-import {
-  getSelectionVaultLodConfig,
+  shouldPauseDetachedAnchorSync,
   supportsVaultCloseByDetail
-} from "./crystals/shared/selection-vault-lod.js";
+} from "./crystals/shared/selection-runtime.js";
 import { resolveVaultLodTier } from "./crystals/shared/vault-lod.js";
 
 const catalogItems = Array.from({ length: 20 }, (_, index) => ({
@@ -7122,11 +7114,20 @@ function showSelectionDetails() {
     return;
   }
 
-  const detailItems = getDetailItemsForSelection(
-    state.selectedId,
-    state.crystalRoot.metadata,
-    state.faceEntries
-  );
+  const selectionTitle = itemsById.get(state.selectedId)?.title || String(state.selectedId || "");
+  const shapeConfig = getShapeConfigForSelection(state.selectedId);
+  const detailItems = resolveSelectionDetailItemsForRuntime({
+    selectionId: state.selectedId,
+    metadata: state.crystalRoot.metadata,
+    faceEntries: state.faceEntries,
+    selectionTitle,
+    shapeKind: shapeConfig.kind,
+    configuredFragmentRuneCounts: STARTUP_CONFIG.fragmentRuneCounts,
+    faceAccentResolver: (faceEntry, faceIndex) => (
+      faceEntry?.accentHex
+      || getBodyColorForSelection(state.selectedId, `${shapeConfig.kind}_placeholder_${faceIndex + 1}`)
+    )
+  });
 
   if (!detailItems.length) {
     return;
@@ -7159,28 +7160,6 @@ function showSelectionDetails() {
 
 function showTetrahedronDetails() {
   showSelectionDetails();
-}
-
-function getDetailItemsForSelection(selectionId, metadata, faceEntries = state.faceEntries) {
-  const selectionTitle = itemsById.get(selectionId)?.title || String(selectionId || "");
-  const shapeConfig = getShapeConfigForSelection(selectionId);
-
-  return resolveSelectionDetailItems({
-    selectionId,
-    metadata,
-    selectionTitle,
-    faceEntries,
-    shapeKind: shapeConfig.kind,
-    fragmentRuneCountResolver: (_faceEntry, faceIndex) => resolveConfiguredDetailFragmentRuneCount(
-      selectionId,
-      faceIndex,
-      STARTUP_CONFIG.fragmentRuneCounts
-    ),
-    faceAccentResolver: (faceEntry, faceIndex) => (
-      faceEntry?.accentHex
-      || getBodyColorForSelection(selectionId, `${shapeConfig.kind}_placeholder_${faceIndex + 1}`)
-    )
-  });
 }
 
 function collapseTetrahedronIntoGroundView() {
