@@ -762,7 +762,7 @@ function computeCurrentCrystalCenter() {
 
 function computeContentCameraRadius() {
   // Ziel: Den Presenter-Kristall exakt aus der echten Koerpergroesse heraus fitten.
-  // Warum: Der Nutzer meint mit Container den sichtbaren Kreis. Der Presenter-Fit muss also gegen den Kreisradius des Panels arbeiten und nicht gegen das umgebende Quadrat des Canvas.
+  // Warum: Der aeussere violette Kreis bleibt fest. Deshalb muss die laengste 3D-Distanz im Kristall direkt auf den Durchmesser genau dieses Kreises gemappt werden, nicht auf das rechteckige Canvas und nicht auf eine zufaellige aktuelle Projektion.
   if (!state.camera || state.faceEntries.length === 0) {
     return CONTENT_CAMERA_RADIUS;
   }
@@ -779,45 +779,31 @@ function computeContentCameraRadius() {
     return CONTENT_CAMERA_RADIUS;
   }
 
-  const circleCenterX = panelRect.width * 0.5;
-  const circleCenterY = panelRect.height * 0.5;
-  const allowedRadius = Math.max(24, (Math.min(panelRect.width, panelRect.height) * 0.5) - 4);
-  const originalRadius = state.camera.radius;
-  let fittedRadius = Math.max(2.2, originalRadius);
+  let maxDistanceSquared = 0;
 
-  for (let iterationIndex = 0; iterationIndex < 3; iterationIndex += 1) {
-    state.camera.radius = fittedRadius;
-    const projectionContext = createStageProjectionContext();
-
-    if (!projectionContext) {
-      break;
-    }
-
-    let maxProjectedDistance = 0;
-
-    boundaryPoints.forEach((boundaryPoint) => {
-      const projectedPoint = projectWorldPointToStageWithContext(boundaryPoint, projectionContext);
-
-      if (!projectedPoint) {
-        return;
-      }
-
-      const localX = (projectionContext.canvasRect.left + projectedPoint.x) - panelRect.left;
-      const localY = (projectionContext.canvasRect.top + projectedPoint.y) - panelRect.top;
-      maxProjectedDistance = Math.max(
-        maxProjectedDistance,
-        Math.hypot(localX - circleCenterX, localY - circleCenterY)
+  for (let leftIndex = 0; leftIndex < boundaryPoints.length; leftIndex += 1) {
+    for (let rightIndex = leftIndex + 1; rightIndex < boundaryPoints.length; rightIndex += 1) {
+      maxDistanceSquared = Math.max(
+        maxDistanceSquared,
+        BABYLON.Vector3.DistanceSquared(boundaryPoints[leftIndex], boundaryPoints[rightIndex])
       );
-    });
-
-    if (maxProjectedDistance <= 0.0001) {
-      break;
     }
-
-    fittedRadius *= maxProjectedDistance / allowedRadius;
   }
 
-  state.camera.radius = originalRadius;
+  if (maxDistanceSquared <= 0.000001) {
+    return CONTENT_CAMERA_RADIUS;
+  }
+
+  const shellRadiusPx = Math.min(panelRect.width, panelRect.height) * 0.485;
+  const viewportHalfWidth = Math.max(1, panelRect.width * 0.5);
+  const viewportHalfHeight = Math.max(1, panelRect.height * 0.5);
+  const baseVerticalHalfFov = (state.camera.fov || 0.8) * 0.5;
+  const baseHorizontalHalfFov = Math.atan(Math.tan(baseVerticalHalfFov) * (panelRect.width / Math.max(1, panelRect.height)));
+  const usableVerticalHalfFov = Math.atan(Math.tan(baseVerticalHalfFov) * (shellRadiusPx / viewportHalfHeight));
+  const usableHorizontalHalfFov = Math.atan(Math.tan(baseHorizontalHalfFov) * (shellRadiusPx / viewportHalfWidth));
+  const limitingHalfFov = Math.max(0.12, Math.min(usableVerticalHalfFov, usableHorizontalHalfFov));
+  const bodyRadius = Math.sqrt(maxDistanceSquared) * 0.5;
+  const fittedRadius = bodyRadius / Math.sin(limitingHalfFov);
 
   return BABYLON.Scalar.Clamp(fittedRadius, 2.2, 8.8);
 }
