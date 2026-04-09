@@ -108,6 +108,7 @@ const state = {
     hiddenLights: [],
     networkConnectors: [],
     presenterHaloLayout: null,
+    presenterHaloSimulation: null,
     livePaneWidthPx: null,
     stage: "idle",
     stageStartTime: 0,
@@ -878,6 +879,7 @@ function commitExtractionViewMode(viewMode) {
 
   if (nextMode === "content") {
     state.extraction.presenterHaloLayout = null;
+    state.extraction.presenterHaloSimulation = null;
 
     if (!state.extraction.presenterTargetBeforeContent && state.camera?.target) {
       state.extraction.presenterTargetBeforeContent = state.camera.target.clone();
@@ -4841,6 +4843,7 @@ function clearExplodedDetails() {
   state.extraction.hoveredRuneEntryId = null;
   state.extraction.networkConnectors = [];
   state.extraction.presenterHaloLayout = null;
+  state.extraction.presenterHaloSimulation = null;
   updateDetailAdvanceButtonState();
 
   if (detailCards) {
@@ -4886,6 +4889,7 @@ function showTetrahedronDetails() {
   state.extraction.viewMode = "detail";
   state.extraction.activeContentEntryId = null;
   state.extraction.presenterHaloLayout = null;
+  state.extraction.presenterHaloSimulation = null;
   applyExplodedLayout(true);
   const detailItems = getTetrahedronDetailItems(state.crystalRoot.metadata);
 
@@ -5256,6 +5260,195 @@ function ensurePresenterHaloLayout(metrics) {
   return state.extraction.presenterHaloLayout;
 }
 
+function getPresenterHaloLevelProfiles() {
+  return {
+    h1: { radiusMin: 17, radiusMax: 20, haloMinFactor: 2.9, haloMaxFactor: 4.2 },
+    h2: { radiusMin: 12, radiusMax: 14.5, haloMinFactor: 2.45, haloMaxFactor: 3.45 },
+    h3: { radiusMin: 7.25, radiusMax: 9.25, haloMinFactor: 2.0, haloMaxFactor: 2.85 }
+  };
+}
+
+function buildPresenterHaloSimulation(metrics, layoutMap, levelProfiles) {
+  // Ziel: Die Presenter-HaloNodes als kleine Feder-/Repulsions-Simulation initialisieren.
+  // Warum: Die Nodes sollen nicht wie ein einziger rotierender Klumpen reagieren, sondern eigene Bahnen haben, die trotzdem auf der Kristallstruktur basieren.
+  const itemsById = new Map(state.extraction.items.map((item) => [item.entryId, item]));
+  const h1Item = state.extraction.items.find((item) => item.level === "h1") || null;
+  const h1Layout = h1Item ? layoutMap.get(h1Item.entryId) : null;
+  const centerX = (h1Layout?.normalizedX || 0.5) * metrics.width;
+  const centerY = (h1Layout?.normalizedY || 0.5) * metrics.height;
+  const simulationNodes = new Map();
+
+  state.extraction.items
+    .filter((item) => item?.runeSymbol)
+    .forEach((item) => {
+      const layoutEntry = layoutMap.get(item.entryId) || null;
+
+      if (!layoutEntry) {
+        return;
+      }
+
+      const seed = hashStringToSeed(String(item.entryId));
+      const levelProfile = levelProfiles[item.level] || levelProfiles.h3;
+      const radius = seededPresenterRange(seed + 1, levelProfile.radiusMin, levelProfile.radiusMax);
+      const haloSize = seededPresenterRange(
+        seed + 2,
+        radius * levelProfile.haloMinFactor,
+        radius * levelProfile.haloMaxFactor
+      );
+      const anchorX = layoutEntry.normalizedX * metrics.width;
+      const anchorY = layoutEntry.normalizedY * metrics.height;
+      const parentLayout = item.parentId ? layoutMap.get(item.parentId) : null;
+      const parentAnchorX = parentLayout ? parentLayout.normalizedX * metrics.width : centerX;
+      const parentAnchorY = parentLayout ? parentLayout.normalizedY * metrics.height : centerY;
+
+      simulationNodes.set(item.entryId, {
+        entryId: item.entryId,
+        level: item.level,
+        symbol: item.runeSymbol,
+        accentHex: item.detail?.accentHex || item.accentHex || "#70ec73",
+        parentId: item.parentId || null,
+        seed,
+        radius,
+        haloSize,
+        anchorX,
+        anchorY,
+        restFromH1X: anchorX - centerX,
+        restFromH1Y: anchorY - centerY,
+        restFromParentX: anchorX - parentAnchorX,
+        restFromParentY: anchorY - parentAnchorY,
+        orbitPhase: seededPresenterRange(seed + 3, 0, TAU),
+        orbitSpeed: seededPresenterRange(seed + 4, 0.32, 0.86),
+        posX: anchorX,
+        posY: anchorY,
+        velX: 0,
+        velY: 0
+      });
+    });
+
+  return {
+    width: metrics.width,
+    height: metrics.height,
+    centerX,
+    centerY,
+    h1EntryId: h1Item?.entryId || null,
+    rotationAngle: 0,
+    lastTime: metrics.now,
+    nodes: simulationNodes,
+    itemsById
+  };
+}
+
+function ensurePresenterHaloSimulation(metrics, layoutMap, levelProfiles) {
+  const simulation = state.extraction.presenterHaloSimulation;
+
+  if (
+    simulation
+    && Math.abs(simulation.width - metrics.width) < 1
+    && Math.abs(simulation.height - metrics.height) < 1
+  ) {
+    return simulation;
+  }
+
+  state.extraction.presenterHaloSimulation = buildPresenterHaloSimulation(metrics, layoutMap, levelProfiles);
+  return state.extraction.presenterHaloSimulation;
+}
+
+function stepPresenterHaloSimulation(metrics, simulation) {
+  // Ziel: H1 starr halten und H2/H3 federnd um ihre jeweiligen Gravitationspunkte tanzen lassen.
+  // Warum: Dadurch bekommt jede HaloSphere ihren eigenen bouncigen Pfad, waehrend die Gesamtskizze des Kristalls weiter erkennbar bleibt.
+  const deltaSeconds = BABYLON.Scalar.Clamp((metrics.now - simulation.lastTime) / 1000, 1 / 240, 1 / 30);
+  const rotationSpeed = 0.22;
+  const damping = 0.9;
+  const h2Spring = 5.4;
+  const h3Spring = 4.2;
+  const parentPull = 1.35;
+  const repulsionStrength = 4200;
+  const minGapFactor = 0.92;
+  const movableNodes = Array.from(simulation.nodes.values()).filter((node) => node.level !== "h1");
+
+  simulation.lastTime = metrics.now;
+  simulation.rotationAngle += deltaSeconds * rotationSpeed;
+
+  const cosRotation = Math.cos(simulation.rotationAngle);
+  const sinRotation = Math.sin(simulation.rotationAngle);
+
+  simulation.nodes.forEach((node) => {
+    if (node.level === "h1") {
+      node.posX = simulation.centerX;
+      node.posY = simulation.centerY;
+      node.velX = 0;
+      node.velY = 0;
+    }
+  });
+
+  movableNodes.forEach((node) => {
+    let targetX = simulation.centerX;
+    let targetY = simulation.centerY;
+    let springStrength = h2Spring;
+
+    if (node.level === "h2") {
+      targetX = simulation.centerX + ((node.restFromH1X * cosRotation) - (node.restFromH1Y * sinRotation));
+      targetY = simulation.centerY + ((node.restFromH1X * sinRotation) + (node.restFromH1Y * cosRotation));
+    } else {
+      const parentNode = node.parentId ? simulation.nodes.get(node.parentId) : null;
+      const parentX = parentNode?.posX ?? simulation.centerX;
+      const parentY = parentNode?.posY ?? simulation.centerY;
+      const orbitAngle = simulation.rotationAngle + node.orbitPhase;
+      const orbitCos = Math.cos(orbitAngle * node.orbitSpeed);
+      const orbitSin = Math.sin(orbitAngle * node.orbitSpeed);
+      targetX = parentX + ((node.restFromParentX * orbitCos) - (node.restFromParentY * orbitSin));
+      targetY = parentY + ((node.restFromParentX * orbitSin) + (node.restFromParentY * orbitCos));
+      springStrength = h3Spring;
+    }
+
+    node.targetX = targetX;
+    node.targetY = targetY;
+
+    node.velX += (targetX - node.posX) * springStrength * deltaSeconds;
+    node.velY += (targetY - node.posY) * springStrength * deltaSeconds;
+  });
+
+  for (let leftIndex = 0; leftIndex < movableNodes.length; leftIndex += 1) {
+    const leftNode = movableNodes[leftIndex];
+
+    for (let rightIndex = leftIndex + 1; rightIndex < movableNodes.length; rightIndex += 1) {
+      const rightNode = movableNodes[rightIndex];
+      const dx = rightNode.posX - leftNode.posX;
+      const dy = rightNode.posY - leftNode.posY;
+      const distance = Math.max(0.001, Math.hypot(dx, dy));
+      const minDistance = (leftNode.radius + rightNode.radius) * minGapFactor;
+      const directionX = dx / distance;
+      const directionY = dy / distance;
+      const softRepulsion = repulsionStrength / (distance * distance);
+      const collisionPush = distance < minDistance
+        ? (minDistance - distance) * 18
+        : 0;
+      const impulse = (softRepulsion + collisionPush) * deltaSeconds;
+
+      leftNode.velX -= directionX * impulse;
+      leftNode.velY -= directionY * impulse;
+      rightNode.velX += directionX * impulse;
+      rightNode.velY += directionY * impulse;
+    }
+  }
+
+  movableNodes.forEach((node) => {
+    if (node.level === "h3" && node.parentId) {
+      const parentNode = simulation.nodes.get(node.parentId);
+
+      if (parentNode) {
+        node.velX += (parentNode.posX - node.posX) * parentPull * deltaSeconds;
+        node.velY += (parentNode.posY - node.posY) * parentPull * deltaSeconds;
+      }
+    }
+
+    node.velX *= damping;
+    node.velY *= damping;
+    node.posX += node.velX;
+    node.posY += node.velY;
+  });
+}
+
 function createContentLavaBallMetrics(now) {
   // Ziel: Den Presenter-Hintergrund aus Panel und echter 3D-Projektion zugleich ableiten.
   // Warum: Die HaloSpheres sollen die Kristallstruktur erahnen lassen; dafuer brauchen sie die projizierten Symbolanker als Zentrum und nicht nur eine freie Panel-Verteilung.
@@ -5329,64 +5522,24 @@ function seededPresenterRange(seed, min, max) {
 function buildPresenterHaloNodes(metrics) {
   // Ziel: Die frei schwebenden HaloNodes des Referenzprojekts im Presenter stabil nachbauen.
   // Warum: Die Miniaturansicht soll die echte Kristallstruktur erahnen lassen. Deshalb sitzt jede HaloSphere auf der projizierten Symbolposition und darf nur innerhalb ihres eigenen Radius leicht driften.
-  const timeSeconds = metrics.timeSeconds;
   const presenterHaloLayout = ensurePresenterHaloLayout(metrics);
-  const levelProfiles = {
-    h1: { radiusMin: 17, radiusMax: 20, haloMinFactor: 2.9, haloMaxFactor: 4.2 },
-    h2: { radiusMin: 12, radiusMax: 14.5, haloMinFactor: 2.45, haloMaxFactor: 3.45 },
-    h3: { radiusMin: 7.25, radiusMax: 9.25, haloMinFactor: 2.0, haloMaxFactor: 2.85 }
-  };
+  const levelProfiles = getPresenterHaloLevelProfiles();
+  const simulation = ensurePresenterHaloSimulation(metrics, presenterHaloLayout, levelProfiles);
 
-  return state.extraction.items
-    .filter((item) => item?.runeSymbol && item.runeAnchorMesh)
-    .map((item) => {
-      const seed = hashStringToSeed(String(item.entryId));
-      const levelProfile = levelProfiles[item.level] || levelProfiles.h3;
-      const baseRadius = seededPresenterRange(seed + 1, levelProfile.radiusMin, levelProfile.radiusMax);
-      const haloSize = seededPresenterRange(
-        seed + 2,
-        baseRadius * levelProfile.haloMinFactor,
-        baseRadius * levelProfile.haloMaxFactor
-      );
-      const period = seededPresenterRange(seed + 3, 260, 420);
-      const layoutEntry = presenterHaloLayout.get(item.entryId) || null;
+  stepPresenterHaloSimulation(metrics, simulation);
 
-      if (!layoutEntry) {
-        return null;
-      }
-
-      const anchorX = layoutEntry.normalizedX * metrics.width;
-      const anchorY = layoutEntry.normalizedY * metrics.height;
-      const driftRadius = baseRadius * 0.72;
-      const driftX = seededPresenterRange(seed + 6, driftRadius * 0.22, driftRadius * 0.86);
-      const driftY = seededPresenterRange(seed + 7, driftRadius * 0.18, driftRadius * 0.82);
-      const speedX = TAU / period;
-      const speedY = TAU / (period * seededPresenterRange(seed + 8, 0.82, 1.26));
-      const phaseX = seededPresenterRange(seed + 9, 0, TAU);
-      const phaseY = seededPresenterRange(seed + 10, 0, TAU);
-      const normalizedX = Math.cos((timeSeconds * speedX) + phaseX);
-      const normalizedY = Math.sin((timeSeconds * speedY) + phaseY);
-      const localOffsetX = normalizedX * driftX;
-      const localOffsetY = normalizedY * driftY;
-      const driftLength = Math.hypot(localOffsetX, localOffsetY);
-      const driftClamp = driftLength > driftRadius ? driftRadius / driftLength : 1;
-      const x = anchorX + (localOffsetX * driftClamp);
-      const y = anchorY + (localOffsetY * driftClamp);
-
-      return {
-        entryId: item.entryId,
-        level: item.level,
-        symbol: item.runeSymbol,
-        accentHex: item.detail?.accentHex || item.accentHex || "#70ec73",
-        anchorX,
-        anchorY,
-        x,
-        y,
-        radius: baseRadius,
-        haloSize
-      };
-    })
-    .filter(Boolean);
+  return Array.from(simulation.nodes.values()).map((node) => ({
+    entryId: node.entryId,
+    level: node.level,
+    symbol: node.symbol,
+    accentHex: node.accentHex,
+    anchorX: node.anchorX,
+    anchorY: node.anchorY,
+    x: node.posX,
+    y: node.posY,
+    radius: node.radius,
+    haloSize: node.haloSize
+  }));
 }
 
 function drawPresenterHaloNetwork(context, metrics, nodesById) {
