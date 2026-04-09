@@ -5192,22 +5192,24 @@ function syncContentLavaBallCanvas(panelRect) {
 }
 
 function createContentLavaBallMetrics(now) {
-  // Ziel: Den Presenter-Hintergrund nur noch aus dem echten Panel-Container ableiten.
-  // Warum: Der Referenz-Look ist ein freischwebendes Halo-Netz im Panel und kein an den Kristall gebundener Portalring mehr.
+  // Ziel: Den Presenter-Hintergrund aus Panel und echter 3D-Projektion zugleich ableiten.
+  // Warum: Die HaloSpheres sollen die Kristallstruktur erahnen lassen; dafuer brauchen sie die projizierten Symbolanker als Zentrum und nicht nur eine freie Panel-Verteilung.
   if (!contentCrystalPanel) {
     return null;
   }
 
   const panelRect = contentCrystalPanel.getBoundingClientRect();
   const canvasInfo = syncContentLavaBallCanvas(panelRect);
+  const projectionContext = createStageProjectionContext();
 
-  if (!canvasInfo || !panelRect.width || !panelRect.height) {
+  if (!canvasInfo || !panelRect.width || !panelRect.height || !projectionContext) {
     return null;
   }
 
   return {
     ...canvasInfo,
     panelRect,
+    projectionContext,
     seed: state.extraction.transition.seed,
     now,
     timeSeconds: now / 1000
@@ -5261,9 +5263,7 @@ function seededPresenterRange(seed, min, max) {
 
 function buildPresenterHaloNodes(metrics) {
   // Ziel: Die frei schwebenden HaloNodes des Referenzprojekts im Presenter stabil nachbauen.
-  // Warum: Der Nutzer will genau diesen Background-Look, aber mit klarer H1/H2/H3-Groessenhierarchie. Deshalb bekommen Symbolkern und Halo je Ebene feste Groessenprofile statt nur lose Zufallswerte.
-  const marginX = Math.max(26, metrics.width * 0.08);
-  const marginY = Math.max(24, metrics.height * 0.1);
+  // Warum: Die Miniaturansicht soll die echte Kristallstruktur erahnen lassen. Deshalb sitzt jede HaloSphere auf der projizierten Symbolposition und darf nur innerhalb ihres eigenen Radius leicht driften.
   const timeSeconds = metrics.timeSeconds;
   const levelProfiles = {
     h1: { radiusMin: 17, radiusMax: 20, haloMinFactor: 2.9, haloMaxFactor: 4.2 },
@@ -5272,7 +5272,7 @@ function buildPresenterHaloNodes(metrics) {
   };
 
   return state.extraction.items
-    .filter((item) => item?.runeSymbol)
+    .filter((item) => item?.runeSymbol && item.runeAnchorMesh)
     .map((item) => {
       const seed = hashStringToSeed(String(item.entryId));
       const levelProfile = levelProfiles[item.level] || levelProfiles.h3;
@@ -5283,28 +5283,47 @@ function buildPresenterHaloNodes(metrics) {
         baseRadius * levelProfile.haloMaxFactor
       );
       const period = seededPresenterRange(seed + 3, 260, 420);
-      const anchorX = seededPresenterRange(seed + 4, marginX, Math.max(marginX, metrics.width - marginX));
-      const anchorY = seededPresenterRange(seed + 5, marginY, Math.max(marginY, metrics.height - marginY));
-      const driftX = seededPresenterRange(seed + 6, 5, 18);
-      const driftY = seededPresenterRange(seed + 7, 5, 16);
+      const projectedPoint = projectWorldPointToStageWithContext(
+        item.runeAnchorMesh.getAbsolutePosition(),
+        metrics.projectionContext
+      );
+
+      if (!projectedPoint) {
+        return null;
+      }
+
+      const anchorX = (metrics.projectionContext.canvasRect.left + projectedPoint.x) - metrics.panelRect.left;
+      const anchorY = (metrics.projectionContext.canvasRect.top + projectedPoint.y) - metrics.panelRect.top;
+      const driftRadius = baseRadius * 0.72;
+      const driftX = seededPresenterRange(seed + 6, driftRadius * 0.22, driftRadius * 0.86);
+      const driftY = seededPresenterRange(seed + 7, driftRadius * 0.18, driftRadius * 0.82);
       const speedX = TAU / period;
       const speedY = TAU / (period * seededPresenterRange(seed + 8, 0.82, 1.26));
       const phaseX = seededPresenterRange(seed + 9, 0, TAU);
       const phaseY = seededPresenterRange(seed + 10, 0, TAU);
-      const x = anchorX + (Math.cos((timeSeconds * speedX) + phaseX) * driftX);
-      const y = anchorY + (Math.sin((timeSeconds * speedY) + phaseY) * driftY);
+      const normalizedX = Math.cos((timeSeconds * speedX) + phaseX);
+      const normalizedY = Math.sin((timeSeconds * speedY) + phaseY);
+      const localOffsetX = normalizedX * driftX;
+      const localOffsetY = normalizedY * driftY;
+      const driftLength = Math.hypot(localOffsetX, localOffsetY);
+      const driftClamp = driftLength > driftRadius ? driftRadius / driftLength : 1;
+      const x = anchorX + (localOffsetX * driftClamp);
+      const y = anchorY + (localOffsetY * driftClamp);
 
       return {
         entryId: item.entryId,
         level: item.level,
         symbol: item.runeSymbol,
         accentHex: item.detail?.accentHex || item.accentHex || "#70ec73",
+        anchorX,
+        anchorY,
         x,
         y,
         radius: baseRadius,
         haloSize
       };
-    });
+    })
+    .filter(Boolean);
 }
 
 function drawPresenterHaloNetwork(context, metrics, nodesById) {
