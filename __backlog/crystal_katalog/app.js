@@ -1,14 +1,16 @@
 import {
   canOpenDetailShell as selectionCanOpenDetailShell,
   canOpenPresenterShell,
-  getSelectionPlaceholderDetailProfile,
-  getCrystalSelectionDefinition,
-  supportsFullHierarchy as selectionSupportsFullHierarchy,
   supportsVaultProxyLod
 } from "./crystals/registry.js";
-import { getSelection04DetailItems, getSelection04VaultLodConfig } from "./crystals/selection-04.js";
+import { getSelection04VaultLodConfig } from "./crystals/selection-04.js";
 import { buildDetailHierarchyModel, getPreferredActiveContentEntry } from "./crystals/shared/detail-shell.js";
-import { buildSelectionPlaceholderDetailItems } from "./crystals/shared/placeholder-shell.js";
+import {
+  DEFAULT_H3_RUNES_PER_FRAGMENT,
+  normalizeFragmentRuneCount,
+  resolveRequestedFragmentRuneCount
+} from "./crystals/shared/fragment-runes.js";
+import { resolveSelectionDetailItems } from "./crystals/shared/selection-detail-items.js";
 import { normalizeVaultLodConfig, resolveVaultLodTier } from "./crystals/shared/vault-lod.js";
 
 const catalogItems = Array.from({ length: 20 }, (_, index) => ({
@@ -104,8 +106,6 @@ const FOCUS_TRANSITION_CURVE_FACTOR = 0.2;
 const VAULT_CRYSTAL_SCALE_MIN = 0.34;
 const VAULT_CRYSTAL_SCALE_MAX = 0.5;
 const VAULT_LAYOUT_RADIUS = 5.4;
-const DEFAULT_H3_RUNES_PER_FRAGMENT = 10;
-const MAX_H3_RUNES_PER_FRAGMENT = 10;
 const PRESENTER_ROTATION_SPEED = Object.freeze({
   x: 0.12,
   y: 0.18,
@@ -5488,29 +5488,12 @@ function buildPolyhedronFaceEntries(faceVerticesCollection) {
   });
 }
 
-function normalizeFragmentRuneCount(requestedCount) {
-  if (!Number.isFinite(requestedCount)) {
-    return DEFAULT_H3_RUNES_PER_FRAGMENT;
-  }
-
-  return Math.max(1, Math.min(MAX_H3_RUNES_PER_FRAGMENT, Math.round(requestedCount)));
-}
-
-function getDefaultFragmentRuneCount(selectionId, faceIndex) {
-  // Ziel: Auch ohne explizite Konfiguration pro H2-Fragment unterschiedliche H3-Anzahlen erzeugen.
-  // Warum: Der Prototyp soll die 1..10-Faehigkeit direkt sichtbar vorfuehren; viermal der alte 10er-Zustand wuerde sonst wie ein nicht umgesetzter Umbau wirken.
-  const defaultCounts = [1, 3, 6, 10];
-  return defaultCounts[faceIndex] || DEFAULT_H3_RUNES_PER_FRAGMENT;
-}
-
 function getRequestedFragmentRuneCount(selectionId, faceIndex) {
-  const configuredCount = STARTUP_CONFIG.fragmentRuneCounts?.[faceIndex];
-
-  if (Number.isFinite(configuredCount)) {
-    return normalizeFragmentRuneCount(configuredCount);
-  }
-
-  return getDefaultFragmentRuneCount(selectionId, faceIndex);
+  return resolveRequestedFragmentRuneCount(
+    selectionId,
+    faceIndex,
+    STARTUP_CONFIG.fragmentRuneCounts?.[faceIndex]
+  );
 }
 
 function buildTetrahedronSegmentCells(vertices, centroid) {
@@ -6562,21 +6545,15 @@ function showTetrahedronDetails() {
 }
 
 function getDetailItemsForSelection(selectionId, metadata, faceEntries = state.faceEntries) {
-  if (selectionSupportsFullHierarchy(selectionId)) {
-    return getSelection04DetailItems(metadata);
-  }
-
-  const selectionDefinition = getCrystalSelectionDefinition(selectionId);
-  const placeholderProfile = getSelectionPlaceholderDetailProfile(selectionId);
   const selectionTitle = itemsById.get(selectionId)?.title || String(selectionId || "");
   const shapeConfig = getShapeConfigForSelection(selectionId);
 
-  return buildSelectionPlaceholderDetailItems({
+  return resolveSelectionDetailItems({
     selectionId,
+    metadata,
     selectionTitle,
     faceEntries,
-    familyLabel: placeholderProfile.familyLabel || selectionDefinition.shapeFamily || shapeConfig.kind,
-    fragmentCount: placeholderProfile.fragmentCount,
+    shapeKind: shapeConfig.kind,
     fragmentRuneCountResolver: (_faceEntry, faceIndex) => Math.min(3, getRequestedFragmentRuneCount(selectionId, faceIndex)),
     faceAccentResolver: (faceEntry, faceIndex) => (
       faceEntry?.accentHex
