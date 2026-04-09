@@ -85,6 +85,14 @@ const PRESENTER_ROTATION_SPEED = Object.freeze({
   y: 0.18,
   z: 0.08
 });
+const PRESENTER_CRYSTAL_LOOK = Object.freeze({
+  alpha: 0.1,
+  diffuse: Object.freeze({ r: 0.94, g: 0.96, b: 0.99 }),
+  ambient: Object.freeze({ r: 0.18, g: 0.19, b: 0.21 }),
+  emissive: Object.freeze({ r: 0.018, g: 0.02, b: 0.024 }),
+  specular: Object.freeze({ r: 0.98, g: 0.99, b: 1.0 }),
+  specularPower: 184
+});
 const reducedMotionQuery = typeof window.matchMedia === "function"
   ? window.matchMedia("(prefers-reduced-motion: reduce)")
   : null;
@@ -105,6 +113,7 @@ const state = {
     materials: [],
     lights: [],
     hiddenMeshes: [],
+    presenterCrystalMaterials: [],
     hiddenLights: [],
     networkConnectors: [],
     presenterHaloLayout: null,
@@ -802,14 +811,158 @@ function updateDetailAdvanceButtonState() {
   );
 }
 
+function getPresenterRuneMeshSet() {
+  // Ziel: Im Presenter die echten 3D-Symbolmeshes exakt von der Kristallgeometrie trennen.
+  // Warum: Der Canvas-Presenter soll nur Symbole und Netz selbst zeichnen; gleichzeitig darf die neutrale Kristallhuelle dahinter sichtbar bleiben.
+  const runeMeshes = new Set();
+
+  state.extraction.items.forEach((item) => {
+    if (item?.runeGlyphMesh) {
+      runeMeshes.add(item.runeGlyphMesh);
+    }
+
+    const haloMeshes = item?.runeHaloMeshes
+      || (item?.runeHaloMesh ? [item.runeHaloMesh] : []);
+
+    haloMeshes.forEach((haloMesh) => {
+      if (haloMesh) {
+        runeMeshes.add(haloMesh);
+      }
+    });
+  });
+
+  return runeMeshes;
+}
+
+function capturePresenterCrystalMaterial(material) {
+  // Ziel: Die Originaloptik eines Kristallmaterials vollstaendig sichern.
+  // Warum: Root- und DetailView muessen nach dem Presenter wieder exakt zu ihrem vorherigen Farb- und Transparenzzustand zurueckkehren.
+  return {
+    material,
+    diffuseColor: material.diffuseColor?.clone?.() || null,
+    ambientColor: material.ambientColor?.clone?.() || null,
+    emissiveColor: material.emissiveColor?.clone?.() || null,
+    specularColor: material.specularColor?.clone?.() || null,
+    specularPower: material.specularPower,
+    alpha: material.alpha,
+    disableLighting: material.disableLighting,
+    backFaceCulling: material.backFaceCulling,
+    twoSidedLighting: material.twoSidedLighting,
+    transparencyMode: material.transparencyMode,
+    alphaMode: material.alphaMode,
+    needDepthPrePass: material.needDepthPrePass,
+    separateCullingPass: material.separateCullingPass,
+    forceDepthWrite: material.forceDepthWrite,
+    zOffset: material.zOffset
+  };
+}
+
+function restorePresenterCrystalMaterials() {
+  // Ziel: Presenter-spezifische Glasoptik rueckstandslos entfernen.
+  // Warum: Die neutrale Glanzhuelle ist nur fuer den Mini-Presenter gedacht; ohne sauberes Restore wuerden die anderen Views farblich verwaessern.
+  state.extraction.presenterCrystalMaterials.forEach((entry) => {
+    const material = entry?.material;
+
+    if (!material || material.isDisposed?.()) {
+      return;
+    }
+
+    if (entry.diffuseColor && material.diffuseColor) {
+      material.diffuseColor.copyFrom(entry.diffuseColor);
+    }
+
+    if (entry.ambientColor && material.ambientColor) {
+      material.ambientColor.copyFrom(entry.ambientColor);
+    }
+
+    if (entry.emissiveColor && material.emissiveColor) {
+      material.emissiveColor.copyFrom(entry.emissiveColor);
+    }
+
+    if (entry.specularColor && material.specularColor) {
+      material.specularColor.copyFrom(entry.specularColor);
+    }
+
+    material.specularPower = entry.specularPower;
+    material.alpha = entry.alpha;
+    material.disableLighting = entry.disableLighting;
+    material.backFaceCulling = entry.backFaceCulling;
+    material.twoSidedLighting = entry.twoSidedLighting;
+    material.transparencyMode = entry.transparencyMode;
+    material.alphaMode = entry.alphaMode;
+    material.needDepthPrePass = entry.needDepthPrePass;
+    material.separateCullingPass = entry.separateCullingPass;
+    material.forceDepthWrite = entry.forceDepthWrite;
+    material.zOffset = entry.zOffset;
+  });
+
+  state.extraction.presenterCrystalMaterials = [];
+}
+
+function applyPresenterCrystalMaterials() {
+  // Ziel: Dem Presenter eine farblose, stark transparente Kristallhuelle geben.
+  // Warum: Der Nutzer will den Kristall wiedersehen, aber nur als glaenzenden Trager hinter dem Halo-Netz statt als farbigen Hauptdarsteller.
+  if (!state.crystalRoot || state.extraction.presenterCrystalMaterials.length) {
+    return;
+  }
+
+  const runeMeshes = getPresenterRuneMeshSet();
+  const presenterMaterials = new Set();
+
+  state.crystalRoot.getChildMeshes(false).forEach((mesh) => {
+    if (runeMeshes.has(mesh) || !mesh.material) {
+      return;
+    }
+
+    presenterMaterials.add(mesh.material);
+  });
+
+  presenterMaterials.forEach((material) => {
+    state.extraction.presenterCrystalMaterials.push(capturePresenterCrystalMaterial(material));
+    material.diffuseColor = new BABYLON.Color3(
+      PRESENTER_CRYSTAL_LOOK.diffuse.r,
+      PRESENTER_CRYSTAL_LOOK.diffuse.g,
+      PRESENTER_CRYSTAL_LOOK.diffuse.b
+    );
+    material.ambientColor = new BABYLON.Color3(
+      PRESENTER_CRYSTAL_LOOK.ambient.r,
+      PRESENTER_CRYSTAL_LOOK.ambient.g,
+      PRESENTER_CRYSTAL_LOOK.ambient.b
+    );
+    material.emissiveColor = new BABYLON.Color3(
+      PRESENTER_CRYSTAL_LOOK.emissive.r,
+      PRESENTER_CRYSTAL_LOOK.emissive.g,
+      PRESENTER_CRYSTAL_LOOK.emissive.b
+    );
+    material.specularColor = new BABYLON.Color3(
+      PRESENTER_CRYSTAL_LOOK.specular.r,
+      PRESENTER_CRYSTAL_LOOK.specular.g,
+      PRESENTER_CRYSTAL_LOOK.specular.b
+    );
+    material.specularPower = PRESENTER_CRYSTAL_LOOK.specularPower;
+    material.alpha = PRESENTER_CRYSTAL_LOOK.alpha;
+    material.disableLighting = false;
+    material.backFaceCulling = false;
+    material.twoSidedLighting = true;
+    material.transparencyMode = BABYLON.Material.MATERIAL_ALPHABLEND;
+    material.alphaMode = BABYLON.Engine.ALPHA_COMBINE;
+    material.needDepthPrePass = true;
+    material.separateCullingPass = true;
+    material.forceDepthWrite = false;
+    material.zOffset = -1;
+  });
+}
+
 function syncPresenterSymbolOnlyMeshes(isContentMode) {
-  // Ziel: Im Presenter die Babylon-Geometrie komplett ausblenden.
-  // Warum: Der kleine Presenter-Hintergrund wird jetzt vollstaendig auf dem Canvas im HaloSphere-Stil des Referenzprojekts gezeichnet; sichtbare 3D-Meshes wuerden den Look doppeln und verunreinigen.
+  // Ziel: Im Presenter nur die 3D-Symbolmeshes verstecken, nicht den Kristallkoerper.
+  // Warum: Der Canvas zeichnet Symbole und Netz bereits selbst; der Kristall soll aber als farblose Glanzhuelle hinter diesen Ebenen wieder sichtbar sein.
   if (!state.crystalRoot) {
     return;
   }
 
   if (!isContentMode) {
+    restorePresenterCrystalMaterials();
+
     state.extraction.hiddenMeshes.forEach((entry) => {
       if (!entry?.mesh || entry.mesh.isDisposed?.()) {
         return;
@@ -821,11 +974,19 @@ function syncPresenterSymbolOnlyMeshes(isContentMode) {
     return;
   }
 
+  applyPresenterCrystalMaterials();
+
   if (state.extraction.hiddenMeshes.length) {
     return;
   }
 
+  const runeMeshes = getPresenterRuneMeshSet();
+
   state.crystalRoot.getChildMeshes(false).forEach((mesh) => {
+    if (!runeMeshes.has(mesh)) {
+      return;
+    }
+
     state.extraction.hiddenMeshes.push({
       mesh,
       wasVisible: mesh.isVisible
@@ -4941,6 +5102,7 @@ function clearExtractedCrystal() {
   state.extraction.materials = [];
   state.extraction.lights = [];
   state.extraction.hiddenMeshes = [];
+  state.extraction.presenterCrystalMaterials = [];
   state.extraction.hiddenLights = [];
   state.extraction.stage = "idle";
   state.extraction.stageStartTime = 0;
