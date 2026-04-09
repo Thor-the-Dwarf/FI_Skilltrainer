@@ -725,6 +725,74 @@ function syncQuickSelects(id) {
   }
 }
 
+function collectCurrentCrystalBoundaryPoints() {
+  const uniqueVertices = new Map();
+  const boundaryPoints = [];
+
+  state.faceEntries.forEach((faceEntry) => {
+    if (faceEntry?.faceCenter) {
+      boundaryPoints.push(faceEntry.faceCenter.clone());
+    }
+
+    (faceEntry?.vertices || []).forEach((vertex) => {
+      uniqueVertices.set(getVertexKey(vertex), vertex.clone());
+    });
+  });
+
+  uniqueVertices.forEach((vertex) => {
+    boundaryPoints.push(vertex);
+  });
+
+  return boundaryPoints;
+}
+
+function computeContentCameraRadius() {
+  // Ziel: Den Presenter-Kristall exakt aus der echten Koerpergroesse heraus fitten.
+  // Warum: Der Nutzer will den groessten Spitzen-/Flaechenabstand des Kristalls an den Durchmesser des runden Containers koppeln, statt weiter mit einer statischen Zoom-Konstante zu arbeiten.
+  if (!state.camera || state.faceEntries.length === 0) {
+    return CONTENT_CAMERA_RADIUS;
+  }
+
+  const canvasRect = renderCanvas?.getBoundingClientRect?.() || { width: 0, height: 0 };
+  const panelRect = contentCrystalPanel?.getBoundingClientRect?.() || { width: 0, height: 0 };
+  const viewportWidth = Math.max(canvasRect.width || 0, panelRect.width || 0);
+  const viewportHeight = Math.max(canvasRect.height || 0, panelRect.height || 0);
+
+  if (viewportWidth <= 1 || viewportHeight <= 1) {
+    return CONTENT_CAMERA_RADIUS;
+  }
+
+  const boundaryPoints = collectCurrentCrystalBoundaryPoints();
+
+  if (boundaryPoints.length < 2) {
+    return CONTENT_CAMERA_RADIUS;
+  }
+
+  let maxDistanceSquared = 0;
+
+  for (let leftIndex = 0; leftIndex < boundaryPoints.length; leftIndex += 1) {
+    for (let rightIndex = leftIndex + 1; rightIndex < boundaryPoints.length; rightIndex += 1) {
+      maxDistanceSquared = Math.max(
+        maxDistanceSquared,
+        BABYLON.Vector3.DistanceSquared(boundaryPoints[leftIndex], boundaryPoints[rightIndex])
+      );
+    }
+  }
+
+  if (maxDistanceSquared <= 0.000001) {
+    return CONTENT_CAMERA_RADIUS;
+  }
+
+  const crystalRadius = Math.sqrt(maxDistanceSquared) * 0.5;
+  const aspectRatio = viewportWidth / Math.max(1, viewportHeight);
+  const verticalFov = state.camera.fov || 0.8;
+  const horizontalFov = 2 * Math.atan(Math.tan(verticalFov * 0.5) * aspectRatio);
+  const limitingHalfFov = Math.max(0.12, Math.min(verticalFov, horizontalFov) * 0.5);
+  const fittedRadius = crystalRadius / Math.tan(limitingHalfFov);
+
+  return BABYLON.Scalar.Clamp(fittedRadius, 2.2, 8.8);
+}
+
 function syncExperienceCamera() {
   // Ziel: Die Kamera an den aktiven UI-Zustand koppeln, statt alle Ansichten mit demselben Framing zu erzwingen.
   // Warum: Detail-Overlay und Inhalts-/Content-Ansicht haben unterschiedliche Buehnenbreiten; ohne kameraseitige Anpassung wird der Kristall entweder zu klein oder abgeschnitten.
@@ -738,7 +806,7 @@ function syncExperienceCamera() {
   }
 
   state.camera.radius = state.extraction.viewMode === "content"
-    ? CONTENT_CAMERA_RADIUS
+    ? computeContentCameraRadius()
     : DETAIL_CAMERA_RADIUS;
 }
 
@@ -1154,7 +1222,7 @@ function setupBabylonScene() {
     new BABYLON.Vector3(0, 0, 0),
     scene
   );
-  camera.lowerRadiusLimit = 4.6;
+  camera.lowerRadiusLimit = 2.2;
   camera.upperRadiusLimit = 8.8;
   camera.wheelDeltaPercentage = 0.01;
   camera.minZ = 0.05;
