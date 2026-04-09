@@ -6815,6 +6815,7 @@ function updatePresenterRotation(scene) {
 function enableBoxDragging(camera, canvas) {
   const dragState = state.drag;
   const dragSensitivity = 0.0035;
+  const cameraOrbitSensitivity = 0.0052;
   const clickThresholdPx = 8;
 
   canvas.style.cursor = "grab";
@@ -6877,6 +6878,13 @@ function enableBoxDragging(camera, canvas) {
       nextRotation.normalize();
       state.crystalRoot.rotationQuaternion = nextRotation;
       pushDetailOverlayDrift(deltaX, deltaY);
+    } else if (dragState.button === 0) {
+      camera.alpha -= deltaX * cameraOrbitSensitivity;
+      camera.beta = BABYLON.Scalar.Clamp(
+        camera.beta - deltaY * cameraOrbitSensitivity,
+        0.18,
+        Math.PI - 0.18
+      );
     }
 
     dragState.lastX = event.clientX;
@@ -7038,10 +7046,15 @@ function updateViewerMovement(scene) {
   }
 
   const deltaSeconds = scene.getEngine().getDeltaTime() / 1000;
-  const cameraForward = state.camera.target
-    .subtract(state.camera.globalPosition)
-    .normalize();
-  const cameraRight = state.camera.getDirection(BABYLON.Axis.X).normalize();
+  const cameraForward = state.camera.target.subtract(state.camera.globalPosition);
+  cameraForward.y = 0;
+
+  if (cameraForward.lengthSquared() < 1e-6) {
+    return;
+  }
+
+  cameraForward.normalize();
+  const cameraRight = BABYLON.Vector3.Cross(cameraForward, BABYLON.Axis.Y).normalize();
   const movementVector = cameraForward.scale(forwardAmount).add(cameraRight.scale(strafeAmount));
 
   if (movementVector.lengthSquared() < 1e-6) {
