@@ -5365,12 +5365,13 @@ function drawPresenterHaloSphere(context, node) {
 function drawPresenterHaloSymbol(context, node) {
   // Ziel: Das eigentliche Symbol exakt im Zentrum des dunklen HaloSphere-Kerns zeichnen.
   // Warum: Im Unterschied zum Referenzprojekt haben unsere Nodes keinen leeren Kern, sondern tragen dort die Symbolglyphen als semantische Mitte.
-  const textureSize = 256;
-  const outlineWidth = 16;
+  const textureSize = 512;
+  const outlineWidth = 22;
   const glyphLayout = measureRuneGlyphLayout(node.symbol, textureSize, outlineWidth);
-  const fontSize = Math.round(textureSize * 0.46);
+  const fontSize = Math.round(textureSize * 0.5);
   const halfTexture = textureSize * 0.5;
-  const desiredHalfExtent = node.radius * 0.68;
+  const inscribedSquareHalfExtent = node.radius / Math.SQRT2;
+  const desiredHalfExtent = inscribedSquareHalfExtent * 0.96;
   const displayScale = desiredHalfExtent / halfTexture;
 
   context.save();
@@ -5378,10 +5379,11 @@ function drawPresenterHaloSymbol(context, node) {
   context.scale(displayScale, displayScale);
   context.fillStyle = node.accentHex;
   context.shadowColor = `${node.accentHex}ee`;
-  context.shadowBlur = Math.max(8, node.radius * 0.52);
-  context.strokeStyle = "rgba(0, 0, 0, 0.88)";
+  context.shadowBlur = Math.max(5, node.radius * 0.28);
+  context.strokeStyle = "rgba(6, 5, 12, 0.96)";
   context.lineWidth = outlineWidth;
   context.lineJoin = "round";
+  context.lineCap = "round";
   context.font = `700 ${fontSize}px 'Noto Sans Symbols 2', 'Segoe UI Symbol', 'Arial Unicode MS', 'Times New Roman'`;
   context.textAlign = "center";
   context.textBaseline = "alphabetic";
