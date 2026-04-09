@@ -731,127 +731,6 @@ function syncExperienceCamera() {
     : DETAIL_CAMERA_RADIUS;
 }
 
-function getContentCrystalSafePadding(panelRect) {
-  const minDimension = Math.max(1, Math.min(panelRect.width, panelRect.height));
-  return Math.min(68, Math.max(32, minDimension * 0.16));
-}
-
-function getProjectedCrystalBounds(projectionContext) {
-  // Ziel: Den sichtbaren Aussenkoerper des Kristalls als 2D-Bounds im aktuellen Canvas bestimmen.
-  // Warum: Der PresenterView soll nicht mit einer festen Kamerazahl arbeiten, sondern den real projizierten Kristall gegen den Container einpassen.
-  if (!projectionContext || !state.crystalRoot || !state.faceEntries.length) {
-    return null;
-  }
-
-  state.crystalRoot.computeWorldMatrix(true);
-  const worldMatrix = state.crystalRoot.getWorldMatrix();
-  const uniqueVertices = new Map();
-  let minX = Number.POSITIVE_INFINITY;
-  let minY = Number.POSITIVE_INFINITY;
-  let maxX = Number.NEGATIVE_INFINITY;
-  let maxY = Number.NEGATIVE_INFINITY;
-
-  state.faceEntries.forEach((entry) => {
-    entry.vertices.forEach((vertex) => {
-      const key = getVertexKey(vertex);
-
-      if (!uniqueVertices.has(key)) {
-        uniqueVertices.set(key, vertex.clone());
-      }
-    });
-  });
-
-  uniqueVertices.forEach((vertex) => {
-    const worldVertex = BABYLON.Vector3.TransformCoordinates(vertex, worldMatrix);
-    const point = projectWorldPointToStageWithContext(worldVertex, projectionContext);
-
-    if (!point) {
-      return;
-    }
-
-    minX = Math.min(minX, point.x);
-    minY = Math.min(minY, point.y);
-    maxX = Math.max(maxX, point.x);
-    maxY = Math.max(maxY, point.y);
-  });
-
-  if (!Number.isFinite(minX) || !Number.isFinite(minY) || !Number.isFinite(maxX) || !Number.isFinite(maxY)) {
-    return null;
-  }
-
-  return {
-    minX,
-    minY,
-    maxX,
-    maxY,
-    width: maxX - minX,
-    height: maxY - minY,
-    centerX: (minX + maxX) * 0.5,
-    centerY: (minY + maxY) * 0.5
-  };
-}
-
-function syncPresenterCrystalFraming() {
-  // Ziel: Den kleinen Presenter-Kristall innerhalb seines Panels vollstaendig und mit harmonischem Padding sichtbar halten.
-  // Warum: Der PresenterView ist hier eher ein schicker Rueck-Button als eine zweite Hauptszene; abgeschnittene Spitzen zerstoeren genau diesen Eindruck.
-  if (
-    state.extraction.stage !== "expanded"
-    || state.extraction.viewMode !== "content"
-    || !state.camera
-    || !contentCrystalPanel
-  ) {
-    return;
-  }
-
-  const projectionContext = createStageProjectionContext();
-  const panelRect = contentCrystalPanel.getBoundingClientRect();
-  const bounds = getProjectedCrystalBounds(projectionContext);
-
-  if (!projectionContext || !bounds || !panelRect.width || !panelRect.height) {
-    return;
-  }
-
-  const safePadding = getContentCrystalSafePadding(panelRect);
-  const availableWidth = Math.max(32, panelRect.width - (safePadding * 2));
-  const availableHeight = Math.max(32, panelRect.height - (safePadding * 2));
-  const desiredCenterX = panelRect.width * 0.5;
-  const desiredCenterY = panelRect.height * 0.5;
-  const fitRatio = Math.max(bounds.width / availableWidth, bounds.height / availableHeight);
-  const currentRadius = state.camera.radius || CONTENT_CAMERA_RADIUS;
-  let targetRadius = CONTENT_CAMERA_RADIUS;
-
-  if (fitRatio > 1.001) {
-    targetRadius = currentRadius * fitRatio;
-  } else if (fitRatio < 0.76) {
-    targetRadius = currentRadius * Math.max(0.96, fitRatio / 0.76);
-  } else {
-    targetRadius = currentRadius;
-  }
-
-  targetRadius = Math.max(state.camera.lowerRadiusLimit || 0, Math.min(state.camera.upperRadiusLimit || targetRadius, targetRadius));
-  state.camera.radius = BABYLON.Scalar.Lerp(currentRadius, targetRadius, 0.12);
-
-  const deltaX = desiredCenterX - bounds.centerX;
-  const deltaY = desiredCenterY - bounds.centerY;
-  const canvasWidth = Math.max(1, projectionContext.canvasRect.width);
-  const canvasHeight = Math.max(1, projectionContext.canvasRect.height);
-  const distance = Math.max(0.001, state.camera.radius || CONTENT_CAMERA_RADIUS);
-  const verticalSpan = 2 * distance * Math.tan((state.camera.fov || 0.8) * 0.5);
-  const horizontalSpan = verticalSpan * (canvasWidth / canvasHeight);
-  const worldPerPixelX = horizontalSpan / canvasWidth;
-  const worldPerPixelY = verticalSpan / canvasHeight;
-  const cameraRight = state.camera.getDirection(BABYLON.Axis.X).normalize();
-  const cameraUp = state.camera.getDirection(BABYLON.Axis.Y).normalize();
-  const reanchorTranslation = cameraRight.scale(-deltaX * worldPerPixelX * 0.16)
-    .add(cameraUp.scale(deltaY * worldPerPixelY * 0.16));
-
-  if (reanchorTranslation.lengthSquared() > 1e-10) {
-    state.camera.target.addInPlace(reanchorTranslation);
-  }
-
-  contentCrystalPanel.style.setProperty("--content-crystal-safe-padding", `${safePadding}px`);
-}
-
 function clearLiveDetailPaneWidth() {
   // Ziel: Die dynamische Detailbreite verlassen, sobald kein Tree mehr auf der rechten Seite steht.
   // Warum: Root- und PresentationsView sollen nicht versehentlich die schmale Tree-Breite des DetailViews mitschleppen.
@@ -922,8 +801,8 @@ function updateDetailAdvanceButtonState() {
 }
 
 function syncPresenterSymbolOnlyMeshes(isContentMode) {
-  // Ziel: Im Presenter nur Symbole und ihr Netz zeigen, nicht die Kristallkoerper.
-  // Warum: Die kleine Presenterflaeche soll als abstraktes Symbolnetz lesbar werden; die eigentliche Kristallgeometrie macht diese Ansicht nur unruhiger.
+  // Ziel: Im Presenter die Babylon-Geometrie komplett ausblenden.
+  // Warum: Der kleine Presenter-Hintergrund wird jetzt vollstaendig auf dem Canvas im HaloSphere-Stil des Referenzprojekts gezeichnet; sichtbare 3D-Meshes wuerden den Look doppeln und verunreinigen.
   if (!state.crystalRoot) {
     return;
   }
@@ -944,18 +823,7 @@ function syncPresenterSymbolOnlyMeshes(isContentMode) {
     return;
   }
 
-  const allowedMeshes = new Set();
-  state.extraction.items.forEach((item) => {
-    [item.runeGlyphMesh, item.runeHaloMesh].filter(Boolean).forEach((mesh) => {
-      allowedMeshes.add(mesh);
-    });
-  });
-
   state.crystalRoot.getChildMeshes(false).forEach((mesh) => {
-    if (allowedMeshes.has(mesh)) {
-      return;
-    }
-
     state.extraction.hiddenMeshes.push({
       mesh,
       wasVisible: mesh.isVisible
@@ -965,13 +833,9 @@ function syncPresenterSymbolOnlyMeshes(isContentMode) {
 }
 
 function syncPresenterSymbolHalos(isContentMode) {
-  // Ziel: Im Presenter die vorhandenen HaloSpheres gezielt nur um die sichtbaren Symbole einschalten.
-  // Warum: Der Nutzer will den abstrakten Symbolnetz-Look im Presenter um die bekannten HaloRinge erweitern, ohne Root- oder DetailView wieder mit Kreisen zu ueberladen.
-  const shouldShowHalos = Boolean(
-    isContentMode
-    && state.extraction.stage === "expanded"
-    && state.extraction.viewMode === "content"
-  );
+  // Ziel: Die alten 3D-HaloMeshes im Presenter deaktiviert halten.
+  // Warum: Der neue Presenter-Look zeichnet HaloSpheres und Symbole direkt auf dem Canvas nach dem Referenzprojekt; parallele Babylon-Halos wuerden nur doppelte Kreise erzeugen.
+  const shouldShowHalos = false;
 
   state.extraction.items.forEach((item) => {
     setRuneHalosEnabled(item, shouldShowHalos);
@@ -5327,453 +5191,222 @@ function syncContentLavaBallCanvas(panelRect) {
   };
 }
 
-function createContentLavaBallMetrics(now, projectionContext) {
-  // Ziel: Den Presenter-Effekt aus dem echten kleinen Kristall und seinem Container ableiten.
-  // Warum: LavaBall, Burst und Kameraframing sollen am sichtbaren Mini-Kristall haengen und nicht an starren Magic Numbers.
+function createContentLavaBallMetrics(now) {
+  // Ziel: Den Presenter-Hintergrund nur noch aus dem echten Panel-Container ableiten.
+  // Warum: Der Referenz-Look ist ein freischwebendes Halo-Netz im Panel und kein an den Kristall gebundener Portalring mehr.
   if (!contentCrystalPanel) {
     return null;
   }
 
   const panelRect = contentCrystalPanel.getBoundingClientRect();
   const canvasInfo = syncContentLavaBallCanvas(panelRect);
-  const bounds = getProjectedCrystalBounds(projectionContext);
 
   if (!canvasInfo || !panelRect.width || !panelRect.height) {
     return null;
   }
 
-  const safePadding = getContentCrystalSafePadding(panelRect);
-  const fallbackCenterX = panelRect.width * 0.5;
-  const fallbackCenterY = panelRect.height * 0.5;
-  const centerX = fallbackCenterX;
-  const centerY = fallbackCenterY;
-  const crystalExtent = Math.max(bounds?.width || 0, bounds?.height || 0, Math.min(panelRect.width, panelRect.height) * 0.36);
-  const minDimension = Math.min(panelRect.width, panelRect.height);
-  const baseRadius = Math.min(
-    (minDimension * 0.5) - (safePadding * 0.35),
-    Math.max(minDimension * 0.24, (crystalExtent * 0.58) + (safePadding * 0.2))
-  );
-
-  const holeRadius = baseRadius * 0.82;
-  const shellRadius = baseRadius * 1.04;
-  const shellThickness = Math.max(baseRadius * 0.28, safePadding * 0.75);
-
   return {
     ...canvasInfo,
     panelRect,
-    bounds,
-    safePadding,
-    centerX,
-    centerY,
-    crystalExtent,
-    baseRadius,
-    holeRadius,
-    shellRadius,
-    shellThickness,
     seed: state.extraction.transition.seed,
     now,
-    timeSeconds: now / 1000,
-    yCompression: 0.92
+    timeSeconds: now / 1000
   };
 }
 
-function sampleLavaBallWave(angle, timeSeconds, seed) {
-  const layerA = Math.sin((angle * 2.5) + (timeSeconds * 0.34) + (seed * 0.9));
-  const layerB = Math.sin((angle * 5.2) - (timeSeconds * 0.58) + (seed * 1.7));
-  const layerC = Math.cos((angle * 8.6) + (timeSeconds * 0.24) - (seed * 0.55));
-  return (layerA * 0.55) + (layerB * 0.3) + (layerC * 0.15);
-}
-
-function hexToRgbaString(hex, alpha) {
+function hexToRgbChannels(hex) {
   const normalized = hex.replace("#", "");
   const expanded = normalized.length === 3
     ? normalized.split("").map((part) => `${part}${part}`).join("")
     : normalized;
-  const red = Number.parseInt(expanded.slice(0, 2), 16);
-  const green = Number.parseInt(expanded.slice(2, 4), 16);
-  const blue = Number.parseInt(expanded.slice(4, 6), 16);
-  return `rgba(${red}, ${green}, ${blue}, ${alpha})`;
+  return [
+    Number.parseInt(expanded.slice(0, 2), 16),
+    Number.parseInt(expanded.slice(2, 4), 16),
+    Number.parseInt(expanded.slice(4, 6), 16)
+  ];
 }
 
-function getActivePresenterAccentHex() {
-  const activeEntry = state.extraction.items.find((item) => item.entryId === state.extraction.activeContentEntryId)
-    || state.extraction.items.find((item) => item.level === "h3")
-    || state.extraction.items.find((item) => item.level === "h2")
-    || state.extraction.items.find((item) => item.level === "h1")
-    || null;
-  const faceIndex = activeEntry?.faceIndex ?? 0;
-  const presenterPalette = ["#5cd56e", "#8c63ff", "#d98b34", "#5ba5ff"];
-  return presenterPalette[faceIndex % presenterPalette.length];
+function normalizeRgbTriplet(value, fallback) {
+  const normalized = String(value || "")
+    .trim()
+    .replace(/\s*,\s*/g, ", ")
+    .replace(/\s+/g, " ");
+  return normalized || fallback;
 }
 
-function drawPresenterReferenceAura(context, metrics, accentHex) {
-  const {
-    centerX,
-    centerY,
-    shellRadius
-  } = metrics;
-  const glowRadius = shellRadius * 2.25;
-  const innerGlowRadius = shellRadius * 0.42;
+function clamp01(value, fallback) {
+  const numericValue = Number.parseFloat(String(value || "").trim());
 
-  const glowGradient = context.createRadialGradient(
-    centerX,
-    centerY,
-    innerGlowRadius,
-    centerX,
-    centerY,
-    glowRadius
+  if (!Number.isFinite(numericValue)) {
+    return fallback;
+  }
+
+  return BABYLON.Scalar.Clamp(numericValue, 0, 1);
+}
+
+function hashStringToSeed(value) {
+  let hash = 0;
+
+  for (let index = 0; index < value.length; index += 1) {
+    hash = ((hash << 5) - hash) + value.charCodeAt(index);
+    hash |= 0;
+  }
+
+  return Math.abs(hash) + 1;
+}
+
+function seededRange(seed, min, max) {
+  return min + (pseudoRandom(seed) * (max - min));
+}
+
+function buildPresenterHaloNodes(metrics) {
+  // Ziel: Die frei schwebenden HaloNodes des Referenzprojekts im Presenter stabil nachbauen.
+  // Warum: Der Nutzer will genau diesen Background-Look; deshalb duerfen die Nodes nicht aus der engen Kristallprojektion herausklumpen, sondern brauchen eine eigene schwebende Panel-Verteilung.
+  const marginX = Math.max(26, metrics.width * 0.08);
+  const marginY = Math.max(24, metrics.height * 0.1);
+  const timeSeconds = metrics.timeSeconds;
+
+  return state.extraction.items
+    .filter((item) => item?.runeSymbol)
+    .map((item) => {
+      const seed = hashStringToSeed(String(item.entryId));
+      const baseRadius = item.level === "h1"
+        ? seededRange(seed + 1, 11, 14)
+        : item.level === "h2"
+          ? seededRange(seed + 1, 9, 12)
+          : seededRange(seed + 1, 7, 10);
+      const haloSize = seededRange(seed + 2, baseRadius * 2.2, baseRadius * 3.8);
+      const period = seededRange(seed + 3, 260, 420);
+      const anchorX = seededRange(seed + 4, marginX, Math.max(marginX, metrics.width - marginX));
+      const anchorY = seededRange(seed + 5, marginY, Math.max(marginY, metrics.height - marginY));
+      const driftX = seededRange(seed + 6, 5, 18);
+      const driftY = seededRange(seed + 7, 5, 16);
+      const speedX = TAU / period;
+      const speedY = TAU / (period * seededRange(seed + 8, 0.82, 1.26));
+      const phaseX = seededRange(seed + 9, 0, TAU);
+      const phaseY = seededRange(seed + 10, 0, TAU);
+      const x = anchorX + (Math.cos((timeSeconds * speedX) + phaseX) * driftX);
+      const y = anchorY + (Math.sin((timeSeconds * speedY) + phaseY) * driftY);
+
+      return {
+        entryId: item.entryId,
+        level: item.level,
+        symbol: item.runeSymbol,
+        accentHex: item.detail?.accentHex || item.accentHex || "#70ec73",
+        x,
+        y,
+        radius: baseRadius,
+        haloSize
+      };
+    });
+}
+
+function drawPresenterHaloNetwork(context, metrics, nodesById) {
+  // Ziel: Die feinen Netzlinien des Referenzprojekts mit unserem aktuellen Symbolnetz nachbauen.
+  // Warum: Der Look soll wie im Vorbild schweben, die Verbindungslogik aber aus unseren echten H2/H3-Regeln kommen.
+  const maxDist = Math.min(Math.max(metrics.width, metrics.height) * 0.82, 920);
+  const styles = getComputedStyle(document.documentElement);
+  const lineRgb = normalizeRgbTriplet(
+    styles.getPropertyValue("--content-halo-line-rgb"),
+    "194, 206, 255"
   );
-  glowGradient.addColorStop(0, hexToRgbaString(accentHex, 0.38));
-  glowGradient.addColorStop(0.34, hexToRgbaString(accentHex, 0.26));
-  glowGradient.addColorStop(0.72, hexToRgbaString(accentHex, 0.1));
-  glowGradient.addColorStop(1, hexToRgbaString(accentHex, 0));
 
-  context.fillStyle = glowGradient;
-  context.fillRect(0, 0, metrics.width, metrics.height);
-}
+  state.extraction.networkConnectors.forEach((connector) => {
+    const sourceNode = nodesById.get(connector.sourceEntryId) || null;
+    const targetNode = nodesById.get(connector.targetEntryId) || null;
 
-function drawPresenterReferenceLineFan(context, metrics, accentHex) {
-  const {
-    centerX,
-    centerY,
-    shellRadius,
-    panelRect,
-    seed,
-    timeSeconds
-  } = metrics;
-  const lineCount = prefersReducedMotion() ? 7 : 11;
-  const startRadius = shellRadius * 0.44;
-
-  context.save();
-  context.globalCompositeOperation = "source-over";
-
-  for (let index = 0; index < lineCount; index += 1) {
-    const lane = index / Math.max(1, lineCount - 1);
-    const angle = -0.1 + (lane * 0.62) + (sampleLavaBallWave(lane * TAU, timeSeconds * 0.08, seed + index) * 0.016);
-    const startX = centerX + (Math.cos(angle) * startRadius);
-    const startY = centerY + (Math.sin(angle) * startRadius);
-    const endX = centerX + panelRect.width * (1.16 + (lane * 0.28));
-    const endY = centerY - (panelRect.height * 0.05) + (lane * panelRect.height * 0.9);
-
-    context.beginPath();
-    context.moveTo(startX, startY);
-    context.lineTo(endX, endY);
-    context.lineWidth = 1.3;
-    context.strokeStyle = `rgba(124, 136, 196, ${0.08 + (lane * 0.04)})`;
-    context.stroke();
-  }
-
-  const downLinkStartX = centerX - (shellRadius * 0.06);
-  const downLinkStartY = centerY + (shellRadius * 0.32);
-  context.beginPath();
-  context.moveTo(downLinkStartX, downLinkStartY);
-  context.lineTo(centerX - (panelRect.width * 0.42), centerY + (panelRect.height * 0.9));
-  context.lineWidth = 1.25;
-  context.strokeStyle = "rgba(124, 136, 196, 0.1)";
-  context.stroke();
-  context.restore();
-}
-
-function drawLavaBallCore(context, metrics, burstStrength) {
-  const {
-    centerX,
-    centerY,
-    holeRadius,
-    shellRadius,
-    yCompression
-  } = metrics;
-  const brightInnerRadius = holeRadius * (1.03 + (burstStrength * 0.045));
-  const outerHeatRadius = shellRadius * (1.02 + (burstStrength * 0.025));
-
-  context.save();
-  context.translate(centerX, centerY);
-  context.scale(1, yCompression);
-  context.globalCompositeOperation = "lighter";
-
-  for (let pass = 0; pass < 4; pass += 1) {
-    const radius = pass < 2
-      ? brightInnerRadius + (pass * 4.2)
-      : outerHeatRadius + ((pass - 2) * 6.8);
-
-    context.beginPath();
-    context.arc(0, 0, radius, 0, TAU);
-    context.lineWidth = pass === 0 ? 4.4 : pass === 1 ? 7.6 : 10 + ((pass - 2) * 4);
-    context.strokeStyle = pass === 0
-      ? "rgba(255, 249, 236, 0.96)"
-      : pass === 1
-        ? `rgba(255, 214, 122, ${0.48 + (burstStrength * 0.16)})`
-        : `rgba(255, 108, 28, ${0.18 + (burstStrength * 0.06)})`;
-    context.shadowBlur = pass < 2 ? 24 + (pass * 10) : 30 + ((pass - 2) * 8);
-    context.shadowColor = pass < 2
-      ? "rgba(255, 233, 182, 0.72)"
-      : "rgba(255, 109, 22, 0.34)";
-    context.stroke();
-  }
-
-  context.restore();
-}
-
-function drawLavaBallMembrane(context, metrics, burstStrength, layerIndex) {
-  const {
-    centerX,
-    centerY,
-    timeSeconds,
-    seed,
-    holeRadius,
-    shellRadius,
-    shellThickness,
-    yCompression
-  } = metrics;
-  const stepCount = 144;
-  const outerBase = shellRadius + (layerIndex * 4.6);
-  const innerBase = holeRadius * (1.02 + (layerIndex * 0.04));
-  const thickness = (shellThickness * (0.92 - (layerIndex * 0.18))) + (burstStrength * 12);
-  const outerWaveAmp = (shellThickness * 0.26) + (burstStrength * 10) + (layerIndex * 1.5);
-  const innerWaveAmp = (shellThickness * 0.11) + (layerIndex * 1.1);
-
-  context.save();
-  context.translate(centerX, centerY);
-  context.scale(1, yCompression);
-  context.beginPath();
-
-  for (let step = 0; step <= stepCount; step += 1) {
-    const angle = (step / stepCount) * TAU;
-    const wave = sampleLavaBallWave(angle, timeSeconds + (layerIndex * 0.18), seed + (layerIndex * 0.73));
-    const rip = Math.max(0, Math.sin((angle * (3.6 + (layerIndex * 0.68))) - (timeSeconds * (0.72 + (layerIndex * 0.14))) + seed));
-    const radius = outerBase + thickness + (wave * outerWaveAmp) + (rip * shellThickness * 0.16);
-    const x = Math.cos(angle) * radius;
-    const y = Math.sin(angle) * radius;
-
-    if (step === 0) {
-      context.moveTo(x, y);
-    } else {
-      context.lineTo(x, y);
+    if (!sourceNode || !targetNode) {
+      return;
     }
-  }
 
-  for (let step = stepCount; step >= 0; step -= 1) {
-    const angle = (step / stepCount) * TAU;
-    const wave = sampleLavaBallWave(angle, (timeSeconds * 0.84) - (layerIndex * 0.12), seed + 10 + (layerIndex * 1.17));
-    const rip = Math.max(0, Math.cos((angle * (4.3 + (layerIndex * 0.5))) + (timeSeconds * (0.46 + (layerIndex * 0.1))) + seed));
-    const radius = innerBase + (wave * innerWaveAmp) + (rip * shellThickness * 0.08);
-    const x = Math.cos(angle) * radius;
-    const y = Math.sin(angle) * radius;
-    context.lineTo(x, y);
-  }
+    const dist = Math.hypot(sourceNode.x - targetNode.x, sourceNode.y - targetNode.y);
+    if (dist > maxDist) {
+      return;
+    }
 
-  context.closePath();
+    const alpha = Math.max(0.03, 0.16 - ((dist / maxDist) * 0.15));
+    context.strokeStyle = `rgba(${lineRgb}, ${alpha.toFixed(4)})`;
+    context.lineWidth = 1;
+    context.beginPath();
+    context.moveTo(sourceNode.x, sourceNode.y);
+    context.lineTo(targetNode.x, targetNode.y);
+    context.stroke();
+  });
+}
 
-  const fillGradient = context.createRadialGradient(0, 0, innerBase * 0.92, 0, 0, outerBase + (thickness * 1.3));
-  fillGradient.addColorStop(0, `rgba(255, 252, 243, ${0.03 + (burstStrength * 0.01)})`);
-  fillGradient.addColorStop(0.18, `rgba(255, 237, 192, ${0.06 + (layerIndex * 0.02)})`);
-  fillGradient.addColorStop(0.42, `rgba(255, 191, 84, ${0.22 + (layerIndex * 0.05)})`);
-  fillGradient.addColorStop(0.72, `rgba(255, 112, 28, ${0.38 + (burstStrength * 0.08)})`);
-  fillGradient.addColorStop(1, "rgba(255, 78, 18, 0)");
-  context.fillStyle = fillGradient;
+function drawPresenterHaloSphere(context, node) {
+  // Ziel: Jede Symbolposition als weiche HaloSphere mit dunklem Kern lesen lassen.
+  // Warum: Genau diese Kombination aus farbiger Aura und dunklem Zentrum ist der visuelle Kern des Referenzprojekts; unsere Symbole kommen anschliessend in dieses Zentrum hinein.
+  const styles = getComputedStyle(document.documentElement);
+  const coreRgb = normalizeRgbTriplet(
+    styles.getPropertyValue("--content-halo-core-rgb"),
+    "17, 14, 29"
+  );
+  const coreAlpha = clamp01(styles.getPropertyValue("--content-halo-core-alpha"), 0.98);
+  const [red, green, blue] = hexToRgbChannels(node.accentHex);
+  const outerRadius = node.radius + node.haloSize;
+  const gradient = context.createRadialGradient(node.x, node.y, node.radius, node.x, node.y, outerRadius);
+  gradient.addColorStop(0, `rgba(${red}, ${green}, ${blue}, 0.5)`);
+  gradient.addColorStop(0.58, `rgba(${red}, ${green}, ${blue}, 0.2)`);
+  gradient.addColorStop(1, `rgba(${red}, ${green}, ${blue}, 0)`);
+
+  context.beginPath();
+  context.arc(node.x, node.y, outerRadius, 0, TAU);
+  context.arc(node.x, node.y, node.radius, 0, TAU, true);
+  context.fillStyle = gradient;
   context.fill("evenodd");
 
-  context.globalCompositeOperation = "lighter";
-  context.lineWidth = 5.2 - (layerIndex * 0.9);
-  context.strokeStyle = layerIndex === 0
-    ? `rgba(255, 236, 188, ${0.44 + (burstStrength * 0.12)})`
-    : `rgba(255, 142, 52, ${0.26 + (burstStrength * 0.08)})`;
-  context.shadowBlur = 20 + (burstStrength * 14);
-  context.shadowColor = layerIndex === 0 ? "rgba(255, 207, 116, 0.42)" : "rgba(255, 94, 16, 0.3)";
-  context.stroke();
-
   context.beginPath();
-  context.arc(0, 0, innerBase + (layerIndex * 1.8), 0, TAU);
-  context.lineWidth = 1.8 + (burstStrength * 0.7);
-  context.strokeStyle = `rgba(255, 248, 224, ${0.16 + (burstStrength * 0.04)})`;
-  context.stroke();
-  context.restore();
-}
-
-function drawLavaBallCoronalGaps(context, metrics, burstStrength) {
-  const {
-    centerX,
-    centerY,
-    holeRadius,
-    shellThickness,
-    timeSeconds,
-    seed,
-    yCompression
-  } = metrics;
-  const gapCount = prefersReducedMotion() ? 2 : 4;
-
-  context.save();
-  context.translate(centerX, centerY);
-  context.scale(1, yCompression);
-  context.globalCompositeOperation = "destination-out";
-
-  for (let index = 0; index < gapCount; index += 1) {
-    const anchor = (index / gapCount) * TAU;
-    const drift = sampleLavaBallWave(anchor, timeSeconds * 0.22, seed + (index * 2.1)) * 0.12;
-    const angle = anchor + drift;
-    const spread = 0.18 + (pseudoRandom(seed + (index * 4.3)) * 0.12);
-
-    context.beginPath();
-    context.arc(0, 0, holeRadius * (1.18 + (pseudoRandom(seed + index) * 0.08)), angle - spread, angle + spread);
-    context.lineWidth = shellThickness * (0.46 + (burstStrength * 0.08));
-    context.strokeStyle = `rgba(0, 0, 0, ${0.22 + (burstStrength * 0.08)})`;
-    context.shadowBlur = 18;
-    context.shadowColor = "rgba(0, 0, 0, 0.24)";
-    context.stroke();
-  }
-
-  context.restore();
-}
-
-function drawLavaBallSunRays(context, metrics, burstStrength, idlePulse) {
-  // Ziel: Den Ring wie eine Sonne hinter Wolken mit weit auslaufenden Strahlen lesen lassen.
-  // Warum: Der Nutzer will keinen Auswurf mit Brocken mehr, sondern lange ruhige Lichtfaecher, die das Panel weich und solar nach aussen aufziehen.
-  const {
-    centerX,
-    centerY,
-    shellRadius,
-    timeSeconds,
-    seed,
-    yCompression
-  } = metrics;
-  const rayCount = prefersReducedMotion() ? 10 : 16;
-
-  context.save();
-  context.translate(centerX, centerY);
-  context.scale(1, yCompression);
-  context.globalCompositeOperation = "lighter";
-
-  for (let index = 0; index < rayCount; index += 1) {
-    const lane = index / rayCount;
-    const angle = (lane * TAU) + (sampleLavaBallWave(lane * TAU, timeSeconds * 0.11, seed + (index * 0.73)) * 0.08);
-    const angularWidth = 0.07 + (pseudoRandom(seed + (index * 3.1)) * 0.08);
-    const reach = shellRadius * (1.4 + (pseudoRandom(seed + (index * 4.2)) * 0.95) + (burstStrength * 0.25));
-    const innerRadius = shellRadius * (0.96 + (pseudoRandom(seed + index) * 0.06));
-    const outerRadius = shellRadius + reach;
-    const brightness = 0.08 + (pseudoRandom(seed + (index * 5.7)) * 0.12) + (idlePulse * 0.18) + (burstStrength * 0.1);
-    const leftAngle = angle - angularWidth;
-    const rightAngle = angle + angularWidth;
-
-    const gradient = context.createLinearGradient(
-      Math.cos(angle) * innerRadius,
-      Math.sin(angle) * innerRadius,
-      Math.cos(angle) * outerRadius,
-      Math.sin(angle) * outerRadius
-    );
-    gradient.addColorStop(0, `rgba(255, 244, 214, ${0.3 + (brightness * 0.4)})`);
-    gradient.addColorStop(0.25, `rgba(255, 190, 88, ${0.14 + brightness})`);
-    gradient.addColorStop(0.72, `rgba(255, 124, 26, ${0.08 + (brightness * 0.55)})`);
-    gradient.addColorStop(1, "rgba(255, 124, 26, 0)");
-
-    context.beginPath();
-    context.moveTo(Math.cos(leftAngle) * innerRadius, Math.sin(leftAngle) * innerRadius);
-    context.lineTo(Math.cos(leftAngle) * outerRadius, Math.sin(leftAngle) * outerRadius);
-    context.lineTo(Math.cos(rightAngle) * outerRadius, Math.sin(rightAngle) * outerRadius);
-    context.lineTo(Math.cos(rightAngle) * innerRadius, Math.sin(rightAngle) * innerRadius);
-    context.closePath();
-    context.fillStyle = gradient;
-    context.shadowBlur = 16 + (brightness * 18);
-    context.shadowColor = "rgba(255, 184, 74, 0.24)";
-    context.fill();
-  }
-
-  context.restore();
-}
-
-function drawLavaBallCloudBands(context, metrics, burstStrength) {
-  // Ziel: Die Lichtstrahlen mit weichen wolkigen Schleiern brechen.
-  // Warum: Erst diese Abschattungen machen den Look eher zu Sonnenaufgang hinter Wolken als zu einem reinen Sci-Fi-Ring.
-  const {
-    centerX,
-    centerY,
-    shellRadius,
-    seed,
-    timeSeconds,
-    yCompression
-  } = metrics;
-  const bandCount = prefersReducedMotion() ? 2 : 3;
-
-  context.save();
-  context.translate(centerX, centerY);
-  context.scale(1, yCompression);
-
-  for (let index = 0; index < bandCount; index += 1) {
-    const drift = sampleLavaBallWave(index * 1.7, timeSeconds * 0.08, seed + (index * 9.1));
-    const offsetY = (shellRadius * (-0.34 + (index * 0.28))) + (drift * shellRadius * 0.08);
-    const width = shellRadius * (1.72 + (index * 0.18));
-    const height = shellRadius * (0.22 + (index * 0.04));
-    const tilt = -0.18 + (index * 0.14) + (drift * 0.04);
-
-    context.save();
-    context.rotate(tilt);
-    const gradient = context.createRadialGradient(0, offsetY, width * 0.08, 0, offsetY, width);
-    gradient.addColorStop(0, `rgba(10, 11, 15, ${0.16 + (burstStrength * 0.04)})`);
-    gradient.addColorStop(0.45, `rgba(18, 20, 24, ${0.12 + (index * 0.03)})`);
-    gradient.addColorStop(1, "rgba(0, 0, 0, 0)");
-    context.fillStyle = gradient;
-    context.beginPath();
-    context.ellipse(0, offsetY, width, height, 0, 0, TAU);
-    context.fill();
-    context.restore();
-  }
-
-  context.restore();
-}
-
-function carveLavaBallSightHole(context, metrics, burstStrength) {
-  // Ziel: Den Kristall trotz Front-Layer klar durch den LavaBall hindurch sichtbar halten.
-  // Warum: Der Effekt soll vor dem Kristall sitzen, ihn aber nicht mit einer voll deckenden Flaeche verdecken; das Sichtloch ist deshalb Teil der Form statt nur reduzierte Gesamtdeckkraft.
-  const {
-    centerX,
-    centerY,
-    holeRadius,
-    yCompression
-  } = metrics;
-
-  context.save();
-  context.translate(centerX, centerY);
-  context.scale(1, yCompression);
-  context.globalCompositeOperation = "destination-out";
-  const cutGradient = context.createRadialGradient(0, 0, holeRadius * 0.22, 0, 0, holeRadius * 1.08);
-  cutGradient.addColorStop(0, "rgba(0, 0, 0, 0.9)");
-  cutGradient.addColorStop(0.58, "rgba(0, 0, 0, 0.74)");
-  cutGradient.addColorStop(0.88, `rgba(0, 0, 0, ${0.28 + (burstStrength * 0.08)})`);
-  cutGradient.addColorStop(1, "rgba(0, 0, 0, 0)");
-  context.fillStyle = cutGradient;
-  context.beginPath();
-  context.ellipse(0, 0, holeRadius * 1.12, holeRadius * 0.98, 0, 0, TAU);
+  context.arc(node.x, node.y, node.radius, 0, TAU);
+  context.fillStyle = `rgba(${coreRgb}, ${coreAlpha.toFixed(2)})`;
   context.fill();
-  context.restore();
+}
+
+function drawPresenterHaloSymbol(context, node) {
+  // Ziel: Das eigentliche Symbol exakt im Zentrum des dunklen HaloSphere-Kerns zeichnen.
+  // Warum: Im Unterschied zum Referenzprojekt haben unsere Nodes keinen leeren Kern, sondern tragen dort die Symbolglyphen als semantische Mitte.
+  const textureSize = 256;
+  const outlineWidth = 16;
+  const glyphLayout = measureRuneGlyphLayout(node.symbol, textureSize, outlineWidth);
+  const fontSize = Math.round(textureSize * 0.46);
+  const halfTexture = textureSize * 0.5;
+  const desiredHalfExtent = node.radius * 0.68;
+  const displayScale = desiredHalfExtent / halfTexture;
 
   context.save();
-  context.translate(centerX, centerY);
-  context.scale(1, yCompression);
-  context.globalCompositeOperation = "lighter";
-  const sheenGradient = context.createRadialGradient(0, 0, holeRadius * 0.3, 0, 0, holeRadius * 1.08);
-  sheenGradient.addColorStop(0, "rgba(255, 255, 255, 0)");
-  sheenGradient.addColorStop(0.72, `rgba(255, 240, 206, ${0.045 + (burstStrength * 0.02)})`);
-  sheenGradient.addColorStop(1, `rgba(255, 176, 74, ${0.12 + (burstStrength * 0.04)})`);
-  context.fillStyle = sheenGradient;
-  context.beginPath();
-  context.ellipse(0, 0, holeRadius * 1.08, holeRadius * 0.94, 0, 0, TAU);
-  context.fill();
+  context.translate(node.x, node.y);
+  context.scale(displayScale, displayScale);
+  context.fillStyle = node.accentHex;
+  context.shadowColor = `${node.accentHex}ee`;
+  context.shadowBlur = Math.max(8, node.radius * 0.52);
+  context.strokeStyle = "rgba(0, 0, 0, 0.88)";
+  context.lineWidth = outlineWidth;
+  context.lineJoin = "round";
+  context.font = `700 ${fontSize}px 'Noto Sans Symbols 2', 'Segoe UI Symbol', 'Arial Unicode MS', 'Times New Roman'`;
+  context.textAlign = "center";
+  context.textBaseline = "alphabetic";
+  context.scale(glyphLayout.drawScaleX, glyphLayout.drawScaleY);
+  context.strokeText(node.symbol, glyphLayout.offsetX, glyphLayout.offsetY);
+  context.fillText(node.symbol, glyphLayout.offsetX, glyphLayout.offsetY);
   context.restore();
 }
 
-function drawContentLavaBall(now, metrics, burstStrength, idlePulse) {
-  // Ziel: Den Presenter-Look an die Referenz mit weicher Aura, dunklem Kern und feinen Geraden anlehnen.
-  // Warum: Fuer diesen Schritt ist nicht der Sonnenring entscheidend, sondern die exakte Bildsprache des Referenzprojekts mit diffusen Glow-Kugeln und duennen Linienfaechern.
+function drawContentLavaBall(metrics) {
+  // Ziel: Den Presenter-Hintergrund wie im Referenzprojekt aus HaloSpheres und feinem Netz zeichnen.
+  // Warum: Der Nutzer will genau diesen schwebenden Background-Look, nur dass in den Zentren der HaloSpheres unsere Symbole sitzen.
   const { context, width, height } = metrics;
-  const accentHex = getActivePresenterAccentHex();
+  const nodes = buildPresenterHaloNodes(metrics);
+  const nodesById = new Map(nodes.map((node) => [node.entryId, node]));
+
   context.clearRect(0, 0, width, height);
 
-  const backdropGradient = context.createRadialGradient(metrics.centerX, metrics.centerY, 0, metrics.centerX, metrics.centerY, metrics.shellRadius * 2.8);
-  backdropGradient.addColorStop(0, "rgba(18, 16, 28, 0.12)");
-  backdropGradient.addColorStop(1, "rgba(11, 10, 20, 0)");
-  context.fillStyle = backdropGradient;
-  context.fillRect(0, 0, width, height);
+  if (!nodes.length) {
+    return;
+  }
 
-  drawPresenterReferenceAura(context, metrics, accentHex);
-  drawPresenterReferenceLineFan(context, metrics, accentHex);
+  drawPresenterHaloNetwork(context, metrics, nodesById);
+  nodes.forEach((node) => drawPresenterHaloSphere(context, node));
+  nodes.forEach((node) => drawPresenterHaloSymbol(context, node));
 }
 
 function updateExtractionAnimation() {
@@ -5790,10 +5423,6 @@ function updateExtractionAnimation() {
     ? Math.min(1, Math.max(0, (now - transition.startTime) / transition.durationMs))
     : 1;
   let burstStrength = 0;
-
-  if (isContentVisible) {
-    syncPresenterCrystalFraming();
-  }
 
   if (transition.phase === "enter") {
     burstStrength = 1 - easeOutCubic(progress);
@@ -5819,8 +5448,7 @@ function updateExtractionAnimation() {
     return;
   }
 
-  const projectionContext = createStageProjectionContext();
-  const metrics = createContentLavaBallMetrics(now, projectionContext);
+  const metrics = createContentLavaBallMetrics(now);
 
   if (!metrics) {
     clearContentLavaBallCanvas();
@@ -5836,7 +5464,7 @@ function updateExtractionAnimation() {
 
   contentCrystalPanel?.style.setProperty("--content-lavaball-opacity", `${lavaBallOpacity}`);
   contentCrystalPanel?.style.setProperty("--content-lavaball-scale", `${lavaBallScale}`);
-  drawContentLavaBall(now, metrics, reducedBurstStrength, idlePulse);
+  drawContentLavaBall(metrics);
 }
 
 function updatePresenterRotation(scene) {
