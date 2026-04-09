@@ -78,6 +78,11 @@ const CONTENT_REDUCED_MOTION_TRANSITION_MS = 220;
 const EXPLODED_CRYSTAL_OFFSET_X = 0;
 const DETAIL_PANE_MIN_WIDTH_PX = 280;
 const DETAIL_PANE_PADDING_PX = 34;
+const DETAIL_OVERLAY_DRIFT_X_IMPULSE = 0.42;
+const DETAIL_OVERLAY_DRIFT_Y_IMPULSE = 0.28;
+const DETAIL_OVERLAY_DRIFT_MAX_OFFSET_PX = 46;
+const DETAIL_OVERLAY_DRIFT_SPRING = 0.12;
+const DETAIL_OVERLAY_DRIFT_DAMPING = 0.8;
 const DEFAULT_H3_RUNES_PER_FRAGMENT = 10;
 const MAX_H3_RUNES_PER_FRAGMENT = 10;
 const PRESENTER_ROTATION_SPEED = Object.freeze({
@@ -492,7 +497,13 @@ function createDetailSyncState() {
     entriesById: new Map(),
     networkConnectorDefs: [],
     hoverConnectorDefs: [],
-    cardRefreshFrameId: 0
+    cardRefreshFrameId: 0,
+    overlayOffsetX: 0,
+    overlayOffsetY: 0,
+    overlayVelocityX: 0,
+    overlayVelocityY: 0,
+    appliedOverlayOffsetX: 0,
+    appliedOverlayOffsetY: 0
   };
 }
 
@@ -512,7 +523,14 @@ function resetDetailSyncState() {
   detailSync.networkConnectorDefs = [];
   detailSync.hoverConnectorDefs = [];
   detailSync.cardRefreshFrameId = 0;
+  detailSync.overlayOffsetX = 0;
+  detailSync.overlayOffsetY = 0;
+  detailSync.overlayVelocityX = 0;
+  detailSync.overlayVelocityY = 0;
+  detailSync.appliedOverlayOffsetX = 0;
+  detailSync.appliedOverlayOffsetY = 0;
   state.extraction.detailSync = detailSync;
+  applyDetailOverlayShift(0, 0);
   return detailSync;
 }
 
@@ -530,6 +548,94 @@ function markDetailSyncVisibilityDirty() {
   if (detailSync) {
     detailSync.visibilityDirty = true;
   }
+}
+
+function applyDetailOverlayShift(offsetX, offsetY) {
+  if (!detailExperience) {
+    return;
+  }
+
+  detailExperience.style.setProperty("--detail-overlay-shift-x", `${offsetX.toFixed(2)}px`);
+  detailExperience.style.setProperty("--detail-overlay-shift-y", `${offsetY.toFixed(2)}px`);
+}
+
+function pushDetailOverlayDrift(deltaX, deltaY) {
+  const detailSync = state.extraction.detailSync;
+
+  if (
+    !detailSync
+    || state.extraction.stage !== "expanded"
+    || state.extraction.viewMode !== "detail"
+  ) {
+    return;
+  }
+
+  detailSync.overlayVelocityX += deltaX * DETAIL_OVERLAY_DRIFT_X_IMPULSE;
+  detailSync.overlayVelocityY += deltaY * DETAIL_OVERLAY_DRIFT_Y_IMPULSE;
+}
+
+function updateDetailOverlaySlide() {
+  const detailSync = state.extraction.detailSync;
+
+  if (!detailSync) {
+    return;
+  }
+
+  const shouldAnimate = state.extraction.stage === "expanded" && state.extraction.viewMode === "detail";
+
+  if (!shouldAnimate) {
+    if (
+      detailSync.overlayOffsetX !== 0
+      || detailSync.overlayOffsetY !== 0
+      || detailSync.appliedOverlayOffsetX !== 0
+      || detailSync.appliedOverlayOffsetY !== 0
+    ) {
+      detailSync.overlayOffsetX = 0;
+      detailSync.overlayOffsetY = 0;
+      detailSync.overlayVelocityX = 0;
+      detailSync.overlayVelocityY = 0;
+      detailSync.appliedOverlayOffsetX = 0;
+      detailSync.appliedOverlayOffsetY = 0;
+      applyDetailOverlayShift(0, 0);
+    }
+    return;
+  }
+
+  detailSync.overlayVelocityX += -detailSync.overlayOffsetX * DETAIL_OVERLAY_DRIFT_SPRING;
+  detailSync.overlayVelocityY += -detailSync.overlayOffsetY * DETAIL_OVERLAY_DRIFT_SPRING;
+  detailSync.overlayVelocityX *= DETAIL_OVERLAY_DRIFT_DAMPING;
+  detailSync.overlayVelocityY *= DETAIL_OVERLAY_DRIFT_DAMPING;
+  detailSync.overlayOffsetX = BABYLON.Scalar.Clamp(
+    detailSync.overlayOffsetX + detailSync.overlayVelocityX,
+    -DETAIL_OVERLAY_DRIFT_MAX_OFFSET_PX,
+    DETAIL_OVERLAY_DRIFT_MAX_OFFSET_PX
+  );
+  detailSync.overlayOffsetY = BABYLON.Scalar.Clamp(
+    detailSync.overlayOffsetY + detailSync.overlayVelocityY,
+    -DETAIL_OVERLAY_DRIFT_MAX_OFFSET_PX,
+    DETAIL_OVERLAY_DRIFT_MAX_OFFSET_PX
+  );
+
+  if (Math.abs(detailSync.overlayOffsetX) < 0.05 && Math.abs(detailSync.overlayVelocityX) < 0.05) {
+    detailSync.overlayOffsetX = 0;
+    detailSync.overlayVelocityX = 0;
+  }
+
+  if (Math.abs(detailSync.overlayOffsetY) < 0.05 && Math.abs(detailSync.overlayVelocityY) < 0.05) {
+    detailSync.overlayOffsetY = 0;
+    detailSync.overlayVelocityY = 0;
+  }
+
+  if (
+    Math.abs(detailSync.appliedOverlayOffsetX - detailSync.overlayOffsetX) < 0.05
+    && Math.abs(detailSync.appliedOverlayOffsetY - detailSync.overlayOffsetY) < 0.05
+  ) {
+    return;
+  }
+
+  detailSync.appliedOverlayOffsetX = detailSync.overlayOffsetX;
+  detailSync.appliedOverlayOffsetY = detailSync.overlayOffsetY;
+  applyDetailOverlayShift(detailSync.overlayOffsetX, detailSync.overlayOffsetY);
 }
 
 function formatDiagnosticValue(value) {
@@ -1504,6 +1610,7 @@ function setupBabylonScene() {
     }
     updateExtractionAnimation();
     updateViewerMovement(scene);
+    updateDetailOverlaySlide();
     if (shouldSyncDetachedRuneAnchors()) {
       syncDetachedRuneAnchors();
     }
@@ -6566,6 +6673,7 @@ function enableBoxDragging(camera, canvas) {
 
       nextRotation.normalize();
       state.crystalRoot.rotationQuaternion = nextRotation;
+      pushDetailOverlayDrift(deltaX, deltaY);
     }
 
     dragState.lastX = event.clientX;
