@@ -83,6 +83,10 @@ const DETAIL_OVERLAY_DRIFT_Y_IMPULSE = 0.28;
 const DETAIL_OVERLAY_DRIFT_MAX_OFFSET_PX = 46;
 const DETAIL_OVERLAY_DRIFT_SPRING = 0.12;
 const DETAIL_OVERLAY_DRIFT_DAMPING = 0.8;
+const VAULT_CAMERA_RADIUS = 13.4;
+const VAULT_CRYSTAL_SCALE_MIN = 0.34;
+const VAULT_CRYSTAL_SCALE_MAX = 0.5;
+const VAULT_LAYOUT_RADIUS = 5.4;
 const DEFAULT_H3_RUNES_PER_FRAGMENT = 10;
 const MAX_H3_RUNES_PER_FRAGMENT = 10;
 const PRESENTER_ROTATION_SPEED = Object.freeze({
@@ -235,7 +239,9 @@ function renderList() {
     button.className = "list-item list-item-select";
     button.dataset.itemId = String(item.id);
     button.innerHTML = `<span class="list-item-title">${item.title}</span>`;
-    button.addEventListener("click", () => updateSelection(item.id));
+    button.addEventListener("click", () => {
+      updateSelection(state.selectedId === item.id ? null : item.id);
+    });
     presenterButton.type = "button";
     presenterButton.className = "list-item-presenter";
     presenterButton.setAttribute(
@@ -275,10 +281,17 @@ function openPresenterFromList(selectionId) {
 }
 
 function renderQuickSelects() {
-  populateSelect(catalogSelect, "Kristall springen", catalogItems);
+  populateSelect(catalogSelect, "Keine Auswahl · Vault", catalogItems);
 
   catalogSelect.addEventListener("change", () => {
-    const selectedValue = Number(catalogSelect.value);
+    const rawValue = catalogSelect.value;
+
+    if (!rawValue) {
+      updateSelection(null);
+      return;
+    }
+
+    const selectedValue = Number(rawValue);
 
     if (!Number.isNaN(selectedValue) && selectedValue > 0) {
       updateSelection(selectedValue);
@@ -390,14 +403,17 @@ function populateSelect(select, placeholder, sourceItems) {
 
 function parseStartupConfig() {
   const params = new URLSearchParams(window.location.search);
-  const selectionCandidate = Number(params.get("selection") || "1");
+  const rawSelection = params.get("selection");
+  const selectionCandidate = rawSelection === null ? 1 : Number(rawSelection);
   const fragmentRuneCounts = (params.get("h3counts") || "")
     .split(",")
     .map((value) => Number(value.trim()))
     .filter((value) => Number.isFinite(value));
 
   return {
-    selectionId: itemsById.has(selectionCandidate) ? selectionCandidate : 1,
+    selectionId: rawSelection && ["vault", "all", "none", "0"].includes(rawSelection.toLowerCase())
+      ? null
+      : itemsById.has(selectionCandidate) ? selectionCandidate : 1,
     openDetails: ["1", "true", "yes"].includes((params.get("detail") || "").toLowerCase()),
     openContent: ["1", "true", "yes"].includes((params.get("content") || "").toLowerCase()),
     testlab: params.has("testlab") || params.has("debug"),
@@ -780,7 +796,7 @@ function refreshRuntimeDiagnostics() {
   const runeEntries = Array.isArray(metadata?.runeFragmentEntries) ? metadata.runeFragmentEntries : [];
 
   diagnostics.metrics = {
-    selectionId: state.selectedId,
+    selectionId: state.selectedId ?? "vault",
     detailOpen: state.extraction.stage === "expanded",
     viewMode: state.extraction.viewMode,
     faceEntries: state.faceEntries.length,
@@ -952,10 +968,10 @@ function installGlobalDiagnosticHooks() {
 }
 
 function updateSelection(id) {
-  state.selectedId = id;
+  state.selectedId = itemsById.has(id) ? id : null;
 
   state.buttons.forEach((button) => {
-    const isActive = Number(button.dataset.itemId) === id;
+    const isActive = state.selectedId !== null && Number(button.dataset.itemId) === state.selectedId;
     button.classList.toggle("is-active", isActive);
     button.setAttribute("aria-pressed", String(isActive));
 
@@ -964,8 +980,10 @@ function updateSelection(id) {
     }
   });
 
-  selectionPill.textContent = `Aktiv: ${itemsById.get(id)?.title || id}`;
-  syncQuickSelects(id);
+  selectionPill.textContent = state.selectedId === null
+    ? "Vault"
+    : `Aktiv: ${itemsById.get(state.selectedId)?.title || state.selectedId}`;
+  syncQuickSelects(state.selectedId);
 
   if (state.scene) {
     syncCrystalForSelection();
@@ -1653,8 +1671,29 @@ function installWebGLCanvasDiagnostics(canvas) {
 }
 
 function syncCrystalForSelection() {
+  if (state.selectedId === null) {
+    rebuildVault();
+    return;
+  }
+
   const shapeConfig = getShapeConfigForSelection(state.selectedId);
   rebuildCrystal(shapeConfig, state.selectedId);
+}
+
+function rebuildVault() {
+  disposeCurrentCrystal();
+
+  const vault = createCrystalVault(state.scene);
+  state.crystalRoot = vault.root;
+  state.materials = vault.materials;
+  state.faceEntries = vault.faceEntries;
+
+  if (state.camera) {
+    state.camera.target.copyFrom(BABYLON.Vector3.Zero());
+    state.camera.radius = VAULT_CAMERA_RADIUS;
+  }
+
+  refreshRuntimeDiagnostics();
 }
 
 function rebuildCrystal(shapeConfig, selectionId) {
@@ -1679,6 +1718,77 @@ function getInitialQuaternionForShape(shapeConfig, crystal) {
     INITIAL_CRYSTAL_ROTATION.y,
     INITIAL_CRYSTAL_ROTATION.z
   );
+}
+
+function getVaultQuaternionForSelection(selectionId) {
+  const baseQuaternion = BABYLON.Quaternion.FromEulerAngles(
+    INITIAL_CRYSTAL_ROTATION.x,
+    INITIAL_CRYSTAL_ROTATION.y,
+    INITIAL_CRYSTAL_ROTATION.z
+  );
+  const seededYaw = BABYLON.Quaternion.RotationAxis(BABYLON.Axis.Y, ((selectionId * 0.49) % TAU) - Math.PI);
+  const seededPitch = BABYLON.Quaternion.RotationAxis(
+    BABYLON.Axis.X,
+    seededRange(selectionId, 701, -0.42, 0.42)
+  );
+  const seededRoll = BABYLON.Quaternion.RotationAxis(
+    BABYLON.Axis.Z,
+    seededRange(selectionId, 702, -0.34, 0.34)
+  );
+  const nextQuaternion = seededYaw.multiply(seededPitch).multiply(seededRoll).multiply(baseQuaternion);
+
+  nextQuaternion.normalize();
+  return nextQuaternion;
+}
+
+function getVaultCrystalPlacement(selectionId, index, totalCount) {
+  const ratio = (index + 0.5) / totalCount;
+  const theta = Math.acos(1 - (2 * ratio));
+  const goldenAngle = Math.PI * (3 - Math.sqrt(5));
+  const phi = index * goldenAngle;
+  const shellRadius = VAULT_LAYOUT_RADIUS * (0.86 + seededRange(selectionId, 801, -0.08, 0.08));
+  const drift = 1 + seededRange(selectionId, 802, -0.12, 0.12);
+
+  return {
+    position: new BABYLON.Vector3(
+      Math.cos(phi) * Math.sin(theta) * shellRadius * drift * 1.24,
+      Math.cos(theta) * shellRadius * 0.9,
+      Math.sin(phi) * Math.sin(theta) * shellRadius * drift
+    ),
+    scale: seededRange(selectionId, 803, VAULT_CRYSTAL_SCALE_MIN, VAULT_CRYSTAL_SCALE_MAX),
+    rotationQuaternion: getVaultQuaternionForSelection(selectionId)
+  };
+}
+
+function createCrystalVault(scene) {
+  const root = new BABYLON.TransformNode("vault_gallery_root", scene);
+  root.rotationQuaternion = BABYLON.Quaternion.Identity();
+  root.metadata = {
+    isVault: true
+  };
+  const materials = [];
+  const faceEntries = [];
+  const totalCount = items.length;
+
+  items.forEach((item, index) => {
+    const shapeConfig = getShapeConfigForSelection(item.id);
+    const crystal = createCrystalByConfig(scene, shapeConfig, item.id);
+    const placement = getVaultCrystalPlacement(item.id, index, totalCount);
+
+    crystal.root.parent = root;
+    crystal.root.position.copyFrom(placement.position);
+    crystal.root.rotationQuaternion = placement.rotationQuaternion.clone();
+    crystal.root.scaling.setAll(placement.scale);
+    crystal.root.metadata = {
+      ...(crystal.root.metadata || {}),
+      vaultSelectionId: item.id
+    };
+
+    materials.push(...crystal.materials);
+    faceEntries.push(...crystal.faceEntries);
+  });
+
+  return { root, materials, faceEntries };
 }
 
 function disposeCurrentCrystal() {
@@ -4326,6 +4436,15 @@ function focusFaceEntry(entry) {
   centerFaceEntry(entry);
 }
 
+function handleVaultFaceSelection(entry) {
+  if (state.selectedId !== null || !entry?.selectionId) {
+    return false;
+  }
+
+  updateSelection(entry.selectionId);
+  return true;
+}
+
 function centerFaceEntry(entry) {
   if (!entry?.snapEligible || !state.crystalRoot || !state.camera) {
     return;
@@ -6741,6 +6860,10 @@ function enableBoxDragging(camera, canvas) {
     }
 
     if (focusedEntry) {
+      if (handleVaultFaceSelection(focusedEntry)) {
+        return;
+      }
+
       focusFaceEntry(focusedEntry);
     }
   };
