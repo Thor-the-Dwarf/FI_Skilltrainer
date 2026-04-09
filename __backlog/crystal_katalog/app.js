@@ -91,6 +91,8 @@ const FOCUS_TRANSITION_CURVE_FACTOR = 0.2;
 const VAULT_CRYSTAL_SCALE_MIN = 0.34;
 const VAULT_CRYSTAL_SCALE_MAX = 0.5;
 const VAULT_LAYOUT_RADIUS = 5.4;
+const VAULT_CLOSEBY_DETAIL_ENTER_DISTANCE = 10.8;
+const VAULT_CLOSEBY_DETAIL_EXIT_DISTANCE = 11.9;
 const DEFAULT_H3_RUNES_PER_FRAGMENT = 10;
 const MAX_H3_RUNES_PER_FRAGMENT = 10;
 const PRESENTER_ROTATION_SPEED = Object.freeze({
@@ -955,6 +957,15 @@ function installGlobalDiagnosticHooks() {
         conditions: [...diagnostics.conditionEntries.entries()].map(([key, value]) => ({ key, ...value })),
         errors: diagnostics.errorEntries.map((entry) => ({ ...entry })),
         events: diagnostics.eventEntries.map((entry) => ({ ...entry })),
+        vaultLod: state.crystalRoot?.metadata?.isVault
+          ? [...(state.crystalRoot.metadata?.vaultCrystalRootsById?.entries?.() || [])].map(([selectionId, root]) => ({
+            selectionId,
+            tier: root?.metadata?.vaultLod?.tier || null,
+            distanceToCamera: state.camera
+              ? BABYLON.Vector3.Distance(state.camera.globalPosition, root.getAbsolutePosition())
+              : null
+          }))
+          : [],
         crystalRune: metadata?.crystalRuneEntry ? createRuneReport(metadata.crystalRuneEntry) : null,
         fragmentRunes: (metadata?.fragmentEntries || []).map(createRuneReport),
         runeFragmentRunes: (metadata?.runeFragmentEntries || []).map(createRuneReport)
@@ -1038,6 +1049,10 @@ function syncQuickSelects(id) {
   if (catalogSelect) {
     catalogSelect.value = catalogItems.some((item) => item.id === id) ? String(id) : "";
   }
+}
+
+function supportsVaultCloseByDetail(selectionId) {
+  return selectionId === 4;
 }
 
 function collectCrystalBoundaryPoints(faceEntries = state.faceEntries) {
@@ -1784,6 +1799,8 @@ function setupBabylonScene() {
       // Fokusflug steuert Kamera und Kristall selbst.
     } else if (isSingleCrystalRootView()) {
       syncRootViewCamera();
+    } else if (state.selectedId === null) {
+      syncVaultCrystalLod();
     } else if (state.extraction.stage === "expanded" && state.extraction.viewMode === "content") {
       syncExperienceCamera();
     }
@@ -2035,6 +2052,8 @@ function promoteVaultBackdropToActiveCrystal() {
     state.camera.radius = VAULT_CAMERA_RADIUS;
   }
 
+  syncVaultCrystalLod();
+
   refreshRuntimeDiagnostics();
 }
 
@@ -2204,6 +2223,8 @@ function rebuildVault() {
     state.camera.radius = VAULT_CAMERA_RADIUS;
   }
 
+  syncVaultCrystalLod();
+
   refreshRuntimeDiagnostics();
 }
 
@@ -2280,10 +2301,10 @@ function createCrystalVault(scene) {
   const totalCount = items.length;
   const vaultCrystals = [];
 
-  items.forEach((item, index) => {
-    const shapeConfig = getShapeConfigForSelection(item.id);
-    const crystal = createCrystalByConfig(scene, shapeConfig, item.id);
-    const placement = getVaultCrystalPlacement(item.id, index, totalCount);
+    items.forEach((item, index) => {
+      const shapeConfig = getShapeConfigForSelection(item.id);
+      const crystal = createCrystalByConfig(scene, shapeConfig, item.id);
+      const placement = getVaultCrystalPlacement(item.id, index, totalCount);
 
     crystal.root.parent = root;
     crystal.root.position.copyFrom(placement.position);
@@ -2297,6 +2318,7 @@ function createCrystalVault(scene) {
     materials.push(...crystal.materials);
     faceEntries.push(...crystal.faceEntries);
     vaultCrystalRootsById.set(item.id, crystal.root);
+    initializeVaultCrystalLod(crystal.root, crystal.faceEntries, item.id);
     vaultCrystals.push({
       selectionId: item.id,
       position: placement.position.clone()
@@ -3169,6 +3191,101 @@ function createTransparentCrystal(scene, shapeName, faces, selectionId) {
   }
 
   return { root, materials, faceEntries };
+}
+
+function initializeVaultCrystalLod(root, faceEntries, selectionId) {
+  if (!root || !supportsVaultCloseByDetail(selectionId)) {
+    return;
+  }
+
+  const outerMeshes = new Set(faceEntries.map((entry) => entry.mesh).filter(Boolean));
+  const detailMeshes = root.getChildMeshes(false).filter((mesh) => !outerMeshes.has(mesh));
+
+  root.metadata = {
+    ...(root.metadata || {}),
+    vaultLod: {
+      tier: "unknown",
+      enterDistance: VAULT_CLOSEBY_DETAIL_ENTER_DISTANCE,
+      exitDistance: VAULT_CLOSEBY_DETAIL_EXIT_DISTANCE,
+      detailMeshes,
+      runeEntries: [...(root.metadata?.runeEntries || [])],
+      runeLights: [...(root.metadata?.runeLights || [])]
+    }
+  };
+
+  applyVaultCrystalLodTier(root, "proxy");
+}
+
+function applyVaultCrystalLodTier(root, nextTier) {
+  const vaultLod = root?.metadata?.vaultLod;
+
+  if (!vaultLod || vaultLod.tier === nextTier) {
+    return;
+  }
+
+  const isFullTier = nextTier === "full";
+
+  vaultLod.detailMeshes.forEach((mesh) => {
+    if (!mesh?.isDisposed?.()) {
+      mesh.setEnabled(isFullTier);
+    }
+  });
+
+  vaultLod.runeEntries.forEach((entry) => {
+    if (entry?.runeAnchor && !entry.runeAnchor.isDisposed?.()) {
+      entry.runeAnchor.setEnabled(isFullTier);
+    }
+
+    if (entry?.runeGlyphMesh && !entry.runeGlyphMesh.isDisposed?.()) {
+      entry.runeGlyphMesh.setEnabled(isFullTier);
+    }
+
+    setRuneHalosEnabled(entry, false);
+
+    if (isFullTier) {
+      setRuneDisplayMode(entry, false);
+    }
+  });
+
+  vaultLod.runeLights.forEach((light) => {
+    if (light) {
+      light.setEnabled(isFullTier);
+    }
+  });
+
+  vaultLod.tier = nextTier;
+}
+
+function syncVaultCrystalLod() {
+  if (!state.camera || !state.crystalRoot?.metadata?.isVault) {
+    return;
+  }
+
+  state.camera.computeWorldMatrix(true);
+  const cameraPosition = state.camera.globalPosition.clone();
+  const crystalRootsById = state.crystalRoot.metadata?.vaultCrystalRootsById;
+
+  if (!(crystalRootsById instanceof Map)) {
+    return;
+  }
+
+  crystalRootsById.forEach((crystalRoot, selectionId) => {
+    const vaultLod = crystalRoot?.metadata?.vaultLod;
+
+    if (!vaultLod) {
+      return;
+    }
+
+    const distanceToCamera = BABYLON.Vector3.Distance(
+      cameraPosition,
+      crystalRoot.getAbsolutePosition()
+    );
+    const nextTier = vaultLod.tier === "full"
+      ? (distanceToCamera <= vaultLod.exitDistance ? "full" : "proxy")
+      : (distanceToCamera <= vaultLod.enterDistance ? "full" : "proxy");
+
+    applyVaultCrystalLodTier(crystalRoot, nextTier);
+  });
 }
 
 function createTetrahedronInteriorCrystals(scene, root, faces, selectionId, materials) {
