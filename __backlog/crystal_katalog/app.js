@@ -768,9 +768,19 @@ function computeCurrentCrystalCenter() {
   return computeFaceCenter(boundaryPoints);
 }
 
+function getPresenterBoundaryMetrics(width, height) {
+  const safeWidth = Math.max(1, width);
+  const safeHeight = Math.max(1, height);
+  return {
+    centerX: safeWidth * 0.5,
+    centerY: safeHeight * 0.5,
+    radius: Math.min(safeWidth, safeHeight) * 0.485
+  };
+}
+
 function computeContentCameraRadius() {
   // Ziel: Den Presenter-Kristall exakt aus der echten Koerpergroesse heraus fitten.
-  // Warum: Laut abgestimmter Begriffsregel ist jetzt die komplette Drawing Area massgeblich. Der Kristall soll also die tatsaechliche Canvas-Zeichenflaeche fuellen, nicht einen kleineren Hilfskreis darin.
+  // Warum: Die massgebliche Grenze ist dieselbe Kreisgrenze, an der auch die Presenter-Spheres abprallen. Kristall, Shell und Orbit-Clamp muessen deshalb denselben Radius teilen.
   if (!state.camera || state.faceEntries.length === 0) {
     return CONTENT_CAMERA_RADIUS;
   }
@@ -787,28 +797,43 @@ function computeContentCameraRadius() {
     return CONTENT_CAMERA_RADIUS;
   }
 
-  let maxDistanceSquared = 0;
+  const boundary = getPresenterBoundaryMetrics(panelRect.width, panelRect.height);
+  const originalRadius = state.camera.radius;
+  let fittedRadius = Math.max(2.2, originalRadius || CONTENT_CAMERA_RADIUS);
 
-  for (let leftIndex = 0; leftIndex < boundaryPoints.length; leftIndex += 1) {
-    for (let rightIndex = leftIndex + 1; rightIndex < boundaryPoints.length; rightIndex += 1) {
-      maxDistanceSquared = Math.max(
-        maxDistanceSquared,
-        BABYLON.Vector3.DistanceSquared(boundaryPoints[leftIndex], boundaryPoints[rightIndex])
-      );
+  for (let iterationIndex = 0; iterationIndex < 4; iterationIndex += 1) {
+    state.camera.radius = fittedRadius;
+    const projectionContext = createStageProjectionContext();
+
+    if (!projectionContext) {
+      break;
     }
+
+    let maxProjectedDistance = 0;
+
+    boundaryPoints.forEach((boundaryPoint) => {
+      const projectedPoint = projectWorldPointToStageWithContext(boundaryPoint, projectionContext);
+
+      if (!projectedPoint) {
+        return;
+      }
+
+      const localX = (projectionContext.canvasRect.left + projectedPoint.x) - panelRect.left;
+      const localY = (projectionContext.canvasRect.top + projectedPoint.y) - panelRect.top;
+      maxProjectedDistance = Math.max(
+        maxProjectedDistance,
+        Math.hypot(localX - boundary.centerX, localY - boundary.centerY)
+      );
+    });
+
+    if (maxProjectedDistance <= 0.0001) {
+      break;
+    }
+
+    fittedRadius *= maxProjectedDistance / boundary.radius;
   }
 
-  if (maxDistanceSquared <= 0.000001) {
-    return CONTENT_CAMERA_RADIUS;
-  }
-
-  const viewportHalfWidth = Math.max(1, panelRect.width * 0.5);
-  const viewportHalfHeight = Math.max(1, panelRect.height * 0.5);
-  const baseVerticalHalfFov = (state.camera.fov || 0.8) * 0.5;
-  const baseHorizontalHalfFov = Math.atan(Math.tan(baseVerticalHalfFov) * (panelRect.width / Math.max(1, panelRect.height)));
-  const limitingHalfFov = Math.max(0.12, Math.min(baseVerticalHalfFov, baseHorizontalHalfFov));
-  const bodyRadius = Math.sqrt(maxDistanceSquared) * 0.5;
-  const fittedRadius = bodyRadius / Math.tan(limitingHalfFov);
+  state.camera.radius = originalRadius;
 
   return BABYLON.Scalar.Clamp(fittedRadius, 2.2, 8.8);
 }
@@ -5618,9 +5643,9 @@ function buildPresenterHaloSimulation(metrics, layoutMap, levelProfiles) {
     height: metrics.height,
     centerX,
     centerY,
-    boundsCenterX: metrics.width * 0.5,
-    boundsCenterY: metrics.height * 0.5,
-    boundsRadius: Math.min(metrics.width, metrics.height) * 0.485,
+    boundsCenterX: getPresenterBoundaryMetrics(metrics.width, metrics.height).centerX,
+    boundsCenterY: getPresenterBoundaryMetrics(metrics.width, metrics.height).centerY,
+    boundsRadius: getPresenterBoundaryMetrics(metrics.width, metrics.height).radius,
     h1EntryId: h1Item?.entryId || null,
     rotationAngle: 0,
     lastTime: metrics.now,
@@ -5837,9 +5862,10 @@ function clampPointToCircle(x, y, centerX, centerY, maxDistance) {
 function drawPresenterContainerHalo(context, metrics) {
   // Ziel: Den grossen runden Presenter-Kopf wie die referenzierte HaloSphere mit dunklem Kern und pinkem Glow zeichnen.
   // Warum: Der Nutzer will hier keine Spektraloptik, sondern genau den weichen magentafarbenen HaloSphere-Look des Bildbeispiels fuer den aeusseren Container.
-  const centerX = metrics.width * 0.5;
-  const centerY = metrics.height * 0.5;
-  const outerRadius = Math.min(metrics.width, metrics.height) * 0.485;
+  const boundary = getPresenterBoundaryMetrics(metrics.width, metrics.height);
+  const centerX = boundary.centerX;
+  const centerY = boundary.centerY;
+  const outerRadius = boundary.radius;
   const coreRadius = outerRadius * 0.47;
   const glowRadius = outerRadius * 1.06;
   const beamCount = 18;
