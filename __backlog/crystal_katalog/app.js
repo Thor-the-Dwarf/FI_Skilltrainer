@@ -1220,6 +1220,8 @@ function updateFocusTransition() {
 
     if (shouldOpenDetail) {
       showTetrahedronDetails();
+    } else {
+      clearVaultBackdrop();
     }
   }
 }
@@ -1885,67 +1887,66 @@ function getVaultSnapshotData() {
 }
 
 function clearVaultBackdrop() {
-  const materials = state.vaultBackdropRoot?.metadata?.materials || [];
+  const backdropRoot = state.vaultBackdropRoot;
+
+  if (!backdropRoot) {
+    return;
+  }
+
+  const materials = backdropRoot.metadata?.materials || [];
+  const hiddenCrystalRoot = backdropRoot.metadata?.hiddenCrystalRoot || null;
+
+  if (hiddenCrystalRoot && !hiddenCrystalRoot.isDisposed?.()) {
+    hiddenCrystalRoot.setEnabled(true);
+  }
+
+  backdropRoot.dispose(false);
   materials.forEach((material) => material?.dispose?.());
-  state.vaultBackdropRoot?.dispose?.(false);
   state.vaultBackdropRoot = null;
 }
 
 function ensureVaultBackdrop(scene, excludedSelectionId = null) {
-  if (!scene) {
+  if (!scene || !state.crystalRoot?.metadata?.isVault) {
     return null;
   }
 
   clearVaultBackdrop();
-  const snapshot = getVaultSnapshotData();
+  const backdropRoot = state.crystalRoot;
+  const materials = [...state.materials];
+  const network = backdropRoot.metadata?.vaultNetworkMesh || null;
+  const crystalRootsById = backdropRoot.metadata?.vaultCrystalRootsById || null;
+  const hiddenCrystalRoot = excludedSelectionId !== null
+    ? crystalRootsById?.get?.(excludedSelectionId) || null
+    : null;
 
-  if (!snapshot.linePairs.length) {
-    return null;
+  if (hiddenCrystalRoot && !hiddenCrystalRoot.isDisposed?.()) {
+    hiddenCrystalRoot.setEnabled(false);
   }
 
-  const backdropRoot = new BABYLON.TransformNode("vault_focus_backdrop", scene);
-  const materials = [];
+  backdropRoot.getChildMeshes(false).forEach((mesh) => {
+    mesh.isPickable = false;
+  });
 
-  snapshot.vaultCrystals
-    .filter((entry) => entry.selectionId !== excludedSelectionId)
-    .forEach((entry) => {
-      const shapeConfig = getShapeConfigForSelection(entry.selectionId);
-      const crystal = createCrystalByConfig(scene, shapeConfig, entry.selectionId);
+  materials.forEach((material) => {
+    if (typeof material.alpha === "number") {
+      material.alpha = Math.min(material.alpha, 0.46);
+    }
+  });
 
-      crystal.root.parent = backdropRoot;
-      crystal.root.position.copyFrom(entry.position);
-      crystal.root.rotationQuaternion = entry.rotationQuaternion.clone();
-      crystal.root.scaling.setAll(entry.scale);
-      crystal.root.getChildMeshes(false).forEach((mesh) => {
-        mesh.isPickable = false;
-      });
-      crystal.root.metadata?.runeEntries?.forEach((runeEntry) => {
-        runeEntry.runeGlyphMesh?.setEnabled(false);
-        runeEntry.runeHaloMesh?.setEnabled(false);
-      });
-      crystal.materials.forEach((material) => {
-        material.alpha *= 0.46;
-      });
-      materials.push(...crystal.materials);
-    });
+  if (network) {
+    network.alpha = 0.18;
+  }
 
-  const network = BABYLON.MeshBuilder.CreateLineSystem(
-    "vault_focus_backdrop_lines",
-    { lines: snapshot.linePairs, updatable: false },
-    scene
-  );
-
-  network.parent = backdropRoot;
-  network.color = BABYLON.Color3.FromHexString("#7ec8ff");
-  network.alpha = 0.18;
-  network.isPickable = false;
-  network.renderingGroupId = 0;
-  network.alwaysSelectAsActiveMesh = true;
   backdropRoot.metadata = {
+    ...(backdropRoot.metadata || {}),
     materials,
-    network
+    network,
+    hiddenCrystalRoot
   };
   state.vaultBackdropRoot = backdropRoot;
+  state.crystalRoot = null;
+  state.materials = [];
+  state.faceEntries = [];
   return backdropRoot;
 }
 
@@ -1959,6 +1960,8 @@ function resetFocusTransition() {
   state.focusTransition.toScale = null;
   state.focusTransition.fromRotation = null;
   state.focusTransition.toRotation = null;
+  state.focusTransition.fromCameraRadius = DEFAULT_CAMERA_RADIUS;
+  state.focusTransition.toCameraRadius = DEFAULT_CAMERA_RADIUS;
   state.focusTransition.targetPoint = null;
   state.focusTransition.openDetailOnComplete = false;
 }
@@ -1973,9 +1976,14 @@ function beginFocusTransition(selectionId, shapeConfig) {
   const placement = snapshot.crystalsById.get(selectionId) || null;
   const focusTarget = state.camera.target.clone();
   const currentCameraRadius = state.camera.radius;
-
-  rebuildCrystal(shapeConfig, selectionId);
   ensureVaultBackdrop(state.scene, selectionId);
+
+  const crystal = createCrystalByConfig(state.scene, shapeConfig, selectionId);
+  crystal.root.rotationQuaternion = getInitialQuaternionForShape(shapeConfig, crystal);
+  state.crystalRoot = crystal.root;
+  state.materials = crystal.materials;
+  state.faceEntries = crystal.faceEntries;
+  cacheCurrentCrystalCenterLocal(crystal.root, crystal.faceEntries);
 
   if (!placement || !state.crystalRoot) {
     syncRootViewCamera();
@@ -2011,6 +2019,7 @@ function beginFocusTransition(selectionId, shapeConfig) {
   state.focusTransition.toCameraRadius = DEFAULT_CAMERA_RADIUS;
   state.focusTransition.targetPoint = focusTarget;
   state.focusTransition.openDetailOnComplete = selectionId === 4;
+  refreshRuntimeDiagnostics();
 }
 
 function syncCrystalForSelection(options = {}) {
@@ -2116,9 +2125,7 @@ function getVaultCrystalPlacement(selectionId, index, totalCount) {
 function createCrystalVault(scene) {
   const root = new BABYLON.TransformNode("vault_gallery_root", scene);
   root.rotationQuaternion = BABYLON.Quaternion.Identity();
-  root.metadata = {
-    isVault: true
-  };
+  const vaultCrystalRootsById = new Map();
   const materials = [];
   const faceEntries = [];
   const totalCount = items.length;
@@ -2140,13 +2147,19 @@ function createCrystalVault(scene) {
 
     materials.push(...crystal.materials);
     faceEntries.push(...crystal.faceEntries);
+    vaultCrystalRootsById.set(item.id, crystal.root);
     vaultCrystals.push({
       selectionId: item.id,
       position: placement.position.clone()
     });
   });
 
-  createVaultNetwork(scene, root, vaultCrystals);
+  const vaultNetworkMesh = createVaultNetwork(scene, root, vaultCrystals);
+  root.metadata = {
+    isVault: true,
+    vaultCrystalRootsById,
+    vaultNetworkMesh
+  };
 
   return { root, materials, faceEntries };
 }
