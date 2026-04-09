@@ -1769,6 +1769,7 @@ function createCrystalVault(scene) {
   const materials = [];
   const faceEntries = [];
   const totalCount = items.length;
+  const vaultCrystals = [];
 
   items.forEach((item, index) => {
     const shapeConfig = getShapeConfigForSelection(item.id);
@@ -1786,9 +1787,92 @@ function createCrystalVault(scene) {
 
     materials.push(...crystal.materials);
     faceEntries.push(...crystal.faceEntries);
+    vaultCrystals.push({
+      selectionId: item.id,
+      position: placement.position.clone()
+    });
   });
 
+  createVaultNetwork(scene, root, vaultCrystals);
+
   return { root, materials, faceEntries };
+}
+
+function getVaultConnectionTargetIds(selectionId, totalCount) {
+  const maxConnections = Math.min(selectionId, Math.max(0, totalCount - 1));
+  const targets = [];
+  let distance = 1;
+
+  while (targets.length < maxConnections && (selectionId - distance >= 1 || selectionId + distance <= totalCount)) {
+    const leftId = selectionId - distance;
+    const rightId = selectionId + distance;
+
+    if (leftId >= 1) {
+      targets.push(leftId);
+    }
+
+    if (targets.length >= maxConnections) {
+      break;
+    }
+
+    if (rightId <= totalCount) {
+      targets.push(rightId);
+    }
+
+    distance += 1;
+  }
+
+  return targets;
+}
+
+function createVaultNetwork(scene, parent, vaultCrystals) {
+  if (!vaultCrystals.length) {
+    return null;
+  }
+
+  const positionsById = new Map(vaultCrystals.map((entry) => [entry.selectionId, entry.position]));
+  const linePairs = [];
+  const seenPairs = new Set();
+  const totalCount = vaultCrystals.length;
+
+  vaultCrystals.forEach((entry) => {
+    getVaultConnectionTargetIds(entry.selectionId, totalCount).forEach((targetId) => {
+      const leftId = Math.min(entry.selectionId, targetId);
+      const rightId = Math.max(entry.selectionId, targetId);
+      const pairKey = `${leftId}:${rightId}`;
+
+      if (seenPairs.has(pairKey)) {
+        return;
+      }
+
+      const start = positionsById.get(leftId);
+      const end = positionsById.get(rightId);
+
+      if (!start || !end) {
+        return;
+      }
+
+      seenPairs.add(pairKey);
+      linePairs.push([start.clone(), end.clone()]);
+    });
+  });
+
+  if (!linePairs.length) {
+    return null;
+  }
+
+  const network = BABYLON.MeshBuilder.CreateLineSystem(
+    "vault_network_lines",
+    { lines: linePairs, updatable: false },
+    scene
+  );
+  network.parent = parent;
+  network.color = BABYLON.Color3.FromHexString("#7ec8ff");
+  network.alpha = 0.18;
+  network.isPickable = false;
+  network.renderingGroupId = 0;
+  network.alwaysSelectAsActiveMesh = true;
+  return network;
 }
 
 function disposeCurrentCrystal() {
