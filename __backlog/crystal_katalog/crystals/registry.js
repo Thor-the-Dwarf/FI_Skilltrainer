@@ -30,7 +30,15 @@ const SELECTION_DEFINITIONS = new Map([
       supportsVaultLod: true
     })
   ],
-  [5, createSelectionDefinition(5, { shapeFamily: "pyramidal", rolloutState: "partial" })],
+  [
+    5,
+    createSelectionDefinition(5, {
+      shapeFamily: "pyramidal",
+      rolloutState: "full",
+      supportsFullHierarchy: true,
+      supportsVaultLod: true
+    })
+  ],
   [6, createSelectionDefinition(6, { shapeFamily: "prismatic", rolloutState: "partial" })],
   [7, createSelectionDefinition(7, { shapeFamily: "prism-cap", rolloutState: "partial" })],
   [8, createSelectionDefinition(8, { shapeFamily: "bipyramidal", rolloutState: "partial" })],

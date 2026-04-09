@@ -18,10 +18,6 @@ export function resolveSelectionDetailItems({
   fragmentRuneCountResolver,
   faceAccentResolver
 }) {
-  if (supportsFullHierarchy(selectionId)) {
-    return getSelection04DetailItems(metadata);
-  }
-
   const selectionDefinition = getCrystalSelectionDefinition(selectionId);
   const placeholderProfile = getSelectionPlaceholderDetailProfile(selectionId);
   const selectionContext = {
@@ -36,6 +32,11 @@ export function resolveSelectionDetailItems({
   };
 
   switch (selectionId) {
+    case 4:
+      if (supportsFullHierarchy(selectionId)) {
+        return getSelection04DetailItems(metadata);
+      }
+      break;
     case 5:
       return getSelection05DetailItems(selectionContext);
     case 6:
@@ -44,6 +45,10 @@ export function resolveSelectionDetailItems({
       return getSelection08DetailItems(selectionContext);
     default:
       break;
+  }
+
+  if (supportsFullHierarchy(selectionId)) {
+    return getSelection04DetailItems(metadata);
   }
 
   return buildSelectionPlaceholderDetailItems({
