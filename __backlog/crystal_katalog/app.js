@@ -1080,6 +1080,21 @@ function getPresenterBoundaryMetrics(width, height) {
   };
 }
 
+function isSingleCrystalRootView() {
+  return state.selectedId !== null && state.extraction.stage === "idle";
+}
+
+function syncRootViewCamera() {
+  if (!state.camera || !state.crystalRoot || !isSingleCrystalRootView()) {
+    return;
+  }
+
+  state.camera.target.copyFrom(computeCurrentCrystalCenter());
+  state.camera.alpha = -Math.PI / 2;
+  state.camera.beta = Math.PI / 2.35;
+  state.camera.radius = DEFAULT_CAMERA_RADIUS;
+}
+
 function computeContentCameraRadius() {
   // Ziel: Den Presenter-Kristall exakt aus der echten Koerpergroesse heraus fitten.
   // Warum: Die massgebliche Grenze ist dieselbe Kreisgrenze, an der auch die Presenter-Spheres abprallen. Kristall, Shell und Orbit-Clamp muessen deshalb denselben Radius teilen.
@@ -1149,7 +1164,11 @@ function syncExperienceCamera() {
   }
 
   if (state.extraction.stage !== "expanded") {
-    state.camera.radius = DEFAULT_CAMERA_RADIUS;
+    if (isSingleCrystalRootView()) {
+      syncRootViewCamera();
+    } else {
+      state.camera.radius = DEFAULT_CAMERA_RADIUS;
+    }
     return;
   }
 
@@ -1629,7 +1648,9 @@ function setupBabylonScene() {
   engine.runRenderLoop(() => {
     updateSnapAnimation();
     updatePresenterRotation(scene);
-    if (state.extraction.stage === "expanded" && state.extraction.viewMode === "content") {
+    if (isSingleCrystalRootView()) {
+      syncRootViewCamera();
+    } else if (state.extraction.stage === "expanded" && state.extraction.viewMode === "content") {
       syncExperienceCamera();
     }
     updateExtractionAnimation();
@@ -1708,13 +1729,12 @@ function rebuildCrystal(shapeConfig, selectionId) {
   const crystal = createCrystalByConfig(state.scene, shapeConfig, selectionId);
   crystal.root.rotationQuaternion = getInitialQuaternionForShape(shapeConfig, crystal);
 
-  syncExperienceCamera();
-
   crystal.root.position.x = state.extraction.stage === "expanded" ? EXPLODED_CRYSTAL_OFFSET_X : 0;
 
   state.crystalRoot = crystal.root;
   state.materials = crystal.materials;
   state.faceEntries = crystal.faceEntries;
+  syncExperienceCamera();
   refreshRuntimeDiagnostics();
 }
 
@@ -6884,7 +6904,7 @@ function enableBoxDragging(camera, canvas) {
       nextRotation.normalize();
       state.crystalRoot.rotationQuaternion = nextRotation;
       pushDetailOverlayDrift(deltaX, deltaY);
-    } else if (dragState.button === 0) {
+    } else if (dragState.button === 0 && !isSingleCrystalRootView()) {
       camera.alpha -= deltaX * cameraOrbitSensitivity;
       camera.beta = BABYLON.Scalar.Clamp(
         camera.beta - deltaY * cameraOrbitSensitivity,
@@ -7041,6 +7061,10 @@ function enableViewerMovement(camera) {
 
 function updateViewerMovement(scene) {
   if (!state.camera) {
+    return;
+  }
+
+  if (isSingleCrystalRootView()) {
     return;
   }
 
