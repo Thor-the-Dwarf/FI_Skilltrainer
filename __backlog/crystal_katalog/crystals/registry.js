@@ -101,7 +101,15 @@ const SELECTION_DEFINITIONS = new Map([
     })
   ],
   [19, createSelectionDefinition(19, { shapeFamily: "corner-cut-bipyramidal", rolloutState: "partial" })],
-  [20, createSelectionDefinition(20, { shapeFamily: "icosahedral", rolloutState: "partial" })]
+  [
+    20,
+    createSelectionDefinition(20, {
+      shapeFamily: "icosahedral",
+      rolloutState: "full",
+      supportsFullHierarchy: true,
+      supportsVaultLod: true
+    })
+  ]
 ]);
 
 export function getCrystalSelectionDefinition(selectionId) {

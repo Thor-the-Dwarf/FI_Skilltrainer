@@ -6,6 +6,7 @@ import { getSelection10DetailItems, getSelection10VaultLodConfig } from "./selec
 import { getSelection14DetailItems, getSelection14VaultLodConfig } from "./selection-14.js";
 import { getSelection16DetailItems, getSelection16VaultLodConfig } from "./selection-16.js";
 import { getSelection18DetailItems, getSelection18VaultLodConfig } from "./selection-18.js";
+import { getSelection20DetailItems, getSelection20VaultLodConfig } from "./selection-20.js";
 
 const SELECTION_MODULES = new Map([
   [
@@ -73,6 +74,14 @@ const SELECTION_MODULES = new Map([
       detailItems: (selectionContext) => getSelection18DetailItems(selectionContext),
       vaultLodConfig: () => getSelection18VaultLodConfig(),
       interiorKind: "bipyramid"
+    }
+  ],
+  [
+    20,
+    {
+      detailItems: (selectionContext) => getSelection20DetailItems(selectionContext),
+      vaultLodConfig: () => getSelection20VaultLodConfig(),
+      interiorKind: "icosahedron"
     }
   ]
 ]);
