@@ -39,9 +39,25 @@ const SELECTION_DEFINITIONS = new Map([
       supportsVaultLod: true
     })
   ],
-  [6, createSelectionDefinition(6, { shapeFamily: "prismatic", rolloutState: "partial" })],
+  [
+    6,
+    createSelectionDefinition(6, {
+      shapeFamily: "prismatic",
+      rolloutState: "full",
+      supportsFullHierarchy: true,
+      supportsVaultLod: true
+    })
+  ],
   [7, createSelectionDefinition(7, { shapeFamily: "prism-cap", rolloutState: "partial" })],
-  [8, createSelectionDefinition(8, { shapeFamily: "bipyramidal", rolloutState: "partial" })],
+  [
+    8,
+    createSelectionDefinition(8, {
+      shapeFamily: "bipyramidal",
+      rolloutState: "full",
+      supportsFullHierarchy: true,
+      supportsVaultLod: true
+    })
+  ],
   [9, createSelectionDefinition(9, { shapeFamily: "corner-cut-bipyramidal", rolloutState: "partial" })],
   [10, createSelectionDefinition(10, { shapeFamily: "bipyramidal", rolloutState: "partial" })],
   [11, createSelectionDefinition(11, { shapeFamily: "corner-cut-bipyramidal", rolloutState: "partial" })],

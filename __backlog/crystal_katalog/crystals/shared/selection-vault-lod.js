@@ -1,6 +1,5 @@
 import { supportsVaultProxyLod } from "../registry.js";
-import { getSelection04VaultLodConfig } from "../selection-04.js";
-import { getSelection05VaultLodConfig } from "../selection-05.js";
+import { resolveSelectionModuleVaultLodConfig } from "../selection-module-registry.js";
 import { normalizeVaultLodConfig } from "./vault-lod.js";
 
 export function supportsVaultCloseByDetail(selectionId) {
@@ -8,11 +7,5 @@ export function supportsVaultCloseByDetail(selectionId) {
 }
 
 export function getSelectionVaultLodConfig(selectionId) {
-  return normalizeVaultLodConfig(
-    selectionId === 4
-      ? getSelection04VaultLodConfig()
-      : selectionId === 5
-        ? getSelection05VaultLodConfig()
-        : {}
-  );
+  return normalizeVaultLodConfig(resolveSelectionModuleVaultLodConfig(selectionId) || {});
 }

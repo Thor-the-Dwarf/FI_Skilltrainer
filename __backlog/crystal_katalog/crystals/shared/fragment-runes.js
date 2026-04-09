@@ -23,3 +23,18 @@ export function resolveRequestedFragmentRuneCount(selectionId, faceIndex, config
 
   return getDefaultFragmentRuneCount(selectionId, faceIndex);
 }
+
+export function resolveConfiguredFragmentRuneCount(selectionId, faceIndex, configuredCounts) {
+  return resolveRequestedFragmentRuneCount(
+    selectionId,
+    faceIndex,
+    configuredCounts?.[faceIndex]
+  );
+}
+
+export function resolveConfiguredDetailFragmentRuneCount(selectionId, faceIndex, configuredCounts, maxCount = 3) {
+  return Math.min(
+    maxCount,
+    resolveConfiguredFragmentRuneCount(selectionId, faceIndex, configuredCounts)
+  );
+}

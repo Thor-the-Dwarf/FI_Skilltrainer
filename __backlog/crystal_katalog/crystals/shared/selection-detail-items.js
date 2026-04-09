@@ -3,10 +3,7 @@ import {
   getSelectionPlaceholderDetailProfile,
   supportsFullHierarchy
 } from "../registry.js";
-import { getSelection04DetailItems } from "../selection-04.js";
-import { getSelection05DetailItems } from "../selection-05.js";
-import { getSelection06DetailItems } from "../selection-06.js";
-import { getSelection08DetailItems } from "../selection-08.js";
+import { resolveSelectionModuleDetailItems } from "../selection-module-registry.js";
 import { buildSelectionPlaceholderDetailItems } from "./placeholder-shell.js";
 
 export function resolveSelectionDetailItems({
@@ -31,24 +28,14 @@ export function resolveSelectionDetailItems({
     faceAccentResolver
   };
 
-  switch (selectionId) {
-    case 4:
-      if (supportsFullHierarchy(selectionId)) {
-        return getSelection04DetailItems(metadata);
-      }
-      break;
-    case 5:
-      return getSelection05DetailItems(selectionContext);
-    case 6:
-      return getSelection06DetailItems(selectionContext);
-    case 8:
-      return getSelection08DetailItems(selectionContext);
-    default:
-      break;
+  const selectionSpecificItems = resolveSelectionModuleDetailItems(selectionId, selectionContext);
+
+  if (selectionSpecificItems?.length) {
+    return selectionSpecificItems;
   }
 
   if (supportsFullHierarchy(selectionId)) {
-    return getSelection04DetailItems(metadata);
+    return [];
   }
 
   return buildSelectionPlaceholderDetailItems({

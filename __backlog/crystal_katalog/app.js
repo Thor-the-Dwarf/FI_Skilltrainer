@@ -1,12 +1,13 @@
-import {
-  canOpenDetailShell as selectionCanOpenDetailShell,
-  canOpenPresenterShell
-} from "./crystals/registry.js";
 import { buildDetailHierarchyModel, getPreferredActiveContentEntry } from "./crystals/shared/detail-shell.js";
+import {
+  canOpenSelectionDetailShell,
+  canOpenSelectionPresenterView
+} from "./crystals/shared/selection-entry-capabilities.js";
 import {
   DEFAULT_H3_RUNES_PER_FRAGMENT,
   normalizeFragmentRuneCount,
-  resolveRequestedFragmentRuneCount
+  resolveConfiguredDetailFragmentRuneCount,
+  resolveConfiguredFragmentRuneCount
 } from "./crystals/shared/fragment-runes.js";
 import { resolveSelectionDetailItems } from "./crystals/shared/selection-detail-items.js";
 import {
@@ -14,6 +15,12 @@ import {
   DEFAULT_CUBE_RADIUS,
   getShapeConfigForSelection
 } from "./crystals/shared/selection-shape-config.js";
+import {
+  requiresSelectionHierarchyDiagnostics,
+  resolveSelectionDiagnosticLabel,
+  resolveSelectionInteriorKind,
+  shouldPauseDetachedAnchorSync
+} from "./crystals/selection-module-registry.js";
 import {
   getSelectionVaultLodConfig,
   supportsVaultCloseByDetail
@@ -273,7 +280,7 @@ function renderList() {
     const row = document.createElement("div");
     const button = document.createElement("button");
     const presenterButton = document.createElement("button");
-    const canOpenPresenter = supportsPresenterView(item.id);
+    const canOpenPresenter = canOpenSelectionPresenterView(item.id);
     row.className = "list-item-row";
     button.type = "button";
     button.className = "list-item list-item-select";
@@ -301,22 +308,12 @@ function renderList() {
   listView.appendChild(fragment);
 }
 
-function supportsPresenterView(selectionId) {
-  // Ziel: Alle Selections schon jetzt ueber dieselbe Presenter-Shell betreten koennen.
-  // Warum: Der echte Fachcontent bleibt kristallspezifisch, aber der Einstiegspfad soll fuer die Rollout-Wellen bereits stabil und wiederverwendbar sein.
-  return canOpenPresenterShell(selectionId);
-}
-
-function canOpenDetailShell(selectionId) {
-  return selectionId !== null && selectionCanOpenDetailShell(selectionId);
-}
-
 function openPresenterFromList(selectionId) {
   // Ziel: Den kleinen Listen-Button als direkten Sprung in den PresenterView nutzen.
   // Warum: Der Nutzer will nicht erst ueber Root und Detail gehen, wenn der Einstieg in die Praesentation schon in der Liste sichtbar angeboten wird.
   updateSelection(selectionId, { animateFocus: false });
 
-  if (!supportsPresenterView(selectionId)) {
+  if (!canOpenSelectionPresenterView(selectionId)) {
     return;
   }
 
@@ -863,15 +860,18 @@ function refreshRuntimeDiagnostics() {
     ...runeEntries.slice(0, 4).map(createRuneReport)
   ];
 
+  const hierarchyDiagnosticsActive = requiresSelectionHierarchyDiagnostics(state.selectedId);
+  const hierarchyDiagnosticLabel = resolveSelectionDiagnosticLabel(state.selectedId);
+
   setDiagnosticCondition(
     "missing-h1",
-    "Form 4 hat kein H1-Zentralsymbol im Metadata-Pfad.",
-    state.selectedId === 4 && !crystalEntry.length
+    `${hierarchyDiagnosticLabel} hat kein H1-Zentralsymbol im Metadata-Pfad.`,
+    hierarchyDiagnosticsActive && !crystalEntry.length
   );
   setDiagnosticCondition(
     "missing-h2",
-    "Form 4 hat keine H2-Fragmentsymbole im Metadata-Pfad.",
-    state.selectedId === 4 && !fragmentEntries.length
+    `${hierarchyDiagnosticLabel} hat keine H2-Fragmentsymbole im Metadata-Pfad.`,
+    hierarchyDiagnosticsActive && !fragmentEntries.length
   );
 
   updateRuntimeDebugPanel();
@@ -917,7 +917,7 @@ function shouldSyncDetachedRuneAnchors() {
     return false;
   }
 
-  if (state.selectedId === 4 && state.extraction.stage === "expanded") {
+  if (shouldPauseDetachedAnchorSync(state.selectedId, state.extraction.stage)) {
     return false;
   }
 
@@ -1795,7 +1795,7 @@ function setupBabylonScene() {
   enableViewerMovement(camera);
   installWebGLCanvasDiagnostics(renderCanvas);
 
-  if (STARTUP_CONFIG.openDetails && canOpenDetailShell(STARTUP_CONFIG.selectionId)) {
+  if (STARTUP_CONFIG.openDetails && canOpenSelectionDetailShell(STARTUP_CONFIG.selectionId)) {
     requestAnimationFrame(() => {
       showSelectionDetails();
       refreshRuntimeDiagnostics();
@@ -2140,7 +2140,7 @@ function beginFocusTransition(selectionId, shapeConfig) {
   state.focusTransition.toCameraRadius = DEFAULT_CAMERA_RADIUS;
   state.focusTransition.fromTargetPoint = focusTarget.clone();
   state.focusTransition.toTargetPoint = focusTarget;
-  state.focusTransition.openDetailOnComplete = canOpenDetailShell(selectionId);
+  state.focusTransition.openDetailOnComplete = canOpenSelectionDetailShell(selectionId);
   refreshRuntimeDiagnostics();
 }
 
@@ -2987,10 +2987,16 @@ function createTransparentCrystal(scene, shapeName, faces, selectionId) {
     });
   });
 
-  if (shapeName === "tetrahedron" && selectionId === 4) {
+  const interiorKind = resolveSelectionInteriorKind(selectionId);
+
+  if (shapeName === "tetrahedron" && interiorKind === "tetrahedron") {
     createTetrahedronInteriorCrystals(scene, root, faces, selectionId, materials);
-  } else if (shapeName === "pyramid" && selectionId === 5) {
+  } else if (shapeName === "pyramid" && interiorKind === "pyramid") {
     createPyramidInteriorCrystals(scene, root, faces, selectionId, materials);
+  } else if (shapeName === "prism" && interiorKind === "prism") {
+    createPrismInteriorCrystals(scene, root, faces, selectionId, materials);
+  } else if (shapeName === "bipyramid" && interiorKind === "bipyramid") {
+    createBipyramidInteriorCrystals(scene, root, faces, selectionId, materials);
   }
 
   return { root, materials, faceEntries };
@@ -3171,7 +3177,11 @@ function createTetrahedronInteriorCrystals(scene, root, faces, selectionId, mate
   };
 
   faces.forEach((face, faceIndex) => {
-    const requestedFragmentRuneCount = getRequestedFragmentRuneCount(selectionId, faceIndex);
+    const requestedFragmentRuneCount = resolveConfiguredFragmentRuneCount(
+      selectionId,
+      faceIndex,
+      STARTUP_CONFIG.fragmentRuneCounts
+    );
     const fractalLayout = getTetrahedronRuneLayout(face.vertices, centroid, requestedFragmentRuneCount);
     const fragmentColor = getBodyColorForSelection(selectionId, `tetrahedron_${face.name}_${faceIndex + 1}`);
     const fragmentRuneColor = getBodyColorForSelection(selectionId, `tetrahedron_fragment_rune_${faceIndex + 1}`);
@@ -3405,7 +3415,11 @@ function createPyramidInteriorCrystals(scene, root, faces, selectionId, material
   };
 
   faces.forEach((face, faceIndex) => {
-    const requestedFragmentRuneCount = Math.min(3, getRequestedFragmentRuneCount(selectionId, faceIndex));
+    const requestedFragmentRuneCount = resolveConfiguredDetailFragmentRuneCount(
+      selectionId,
+      faceIndex,
+      STARTUP_CONFIG.fragmentRuneCounts
+    );
     const fragmentFaces = buildFaceSegmentPolyhedronFaces(face.vertices, centroid);
     const fractalLayout = getPolyhedronSegmentRuneLayout(face.vertices, centroid, requestedFragmentRuneCount);
     const fragmentColor = getBodyColorForSelection(selectionId, `pyramid_${face.name}_${faceIndex + 1}`);
@@ -3500,6 +3514,478 @@ function createPyramidInteriorCrystals(scene, root, faces, selectionId, material
       const runeMeshes = createRuneMeshes(
         scene,
         `pyramid_base_rune_${faceIndex + 1}_${fractalLayoutItem.runeIndex + 1}`,
+        runeSymbol,
+        runeColor,
+        {
+          showHalo: true,
+          glyphSize: fractalLayoutItem.runeSize,
+          haloScale: 1.52,
+          billboardMode: BABYLON.AbstractMesh.BILLBOARDMODE_NONE,
+          emissiveIntensity: 1.45,
+          glyphPlaneOffset: 0,
+          haloPlaneOffset: -0.006
+        }
+      );
+
+      materials.push(...subcrystal.materials, ...runeMeshes.materials);
+      runeMeshes.anchor.parent = root;
+      runeMeshes.anchor.position.copyFrom(fractalLayoutItem.rootRunePosition);
+      runeMeshes.anchor.rotationQuaternion = fractalLayoutItem.rootRuneRotation.clone();
+      runeMeshes.anchor.scaling.setAll(1);
+      runeMeshes.glyphMesh.renderingGroupId = 3;
+
+      if (runeMeshes.haloMesh) {
+        runeMeshes.haloMesh.renderingGroupId = 3;
+      }
+
+      root.metadata.runeLights.push(...runeMeshes.lights);
+      root.metadata.runeFragmentEntries.push({
+        entryId: `${fragmentEntry.entryId}_rune_${fractalLayoutItem.runeIndex + 1}`,
+        level: "h3",
+        parentId: fragmentEntry.entryId,
+        faceIndex,
+        faceName: face.name,
+        runeIndex: fractalLayoutItem.runeIndex,
+        selectionId,
+        accentHex: runeColor,
+        runeSymbol,
+        runeAnchor: runeMeshes.anchor,
+        runeAnchorMesh: runeMeshes.anchor,
+        runeGlyphMesh: runeMeshes.glyphMesh,
+        runeHaloMesh: runeMeshes.haloMesh,
+        rootRunePosition: fractalLayoutItem.rootRunePosition.clone(),
+        detailRunePosition: fractalLayoutItem.detailRunePosition.clone(),
+        rootRuneRotation: fractalLayoutItem.rootRuneRotation.clone(),
+        rootRuneScale: H3_ROOT_RUNE_SCALE,
+        detailRuneScale: H3_DETAIL_RUNE_SCALE,
+        rootBillboardMode: BABYLON.AbstractMesh.BILLBOARDMODE_NONE,
+        detailBillboardMode: BABYLON.AbstractMesh.BILLBOARDMODE_ALL,
+        detail: createRuneFragmentDetailData({
+          selectionId,
+          faceName: face.name,
+          faceIndex,
+          runeIndex: fractalLayoutItem.runeIndex,
+          runeSymbol,
+          accentHex: runeColor
+        })
+      });
+    });
+  });
+
+  root.metadata.runeEntries = [
+    root.metadata.crystalRuneEntry,
+    ...root.metadata.fragmentEntries,
+    ...root.metadata.runeFragmentEntries
+  ];
+  root.metadata.runeEntries.forEach((item) => {
+    setRuneHalosEnabled(item, false);
+    setRuneDisplayMode(item, false);
+  });
+}
+
+function createPrismInteriorCrystals(scene, root, faces, selectionId, materials) {
+  const centroid = computeUniqueVerticesCenter(faces);
+  const crystalFaceEntries = buildPolyhedronFaceEntries(faces.map((face) => face.vertices));
+  const crystalHeightLine = computePreferredPolyhedronHeightLine(faces);
+  const crystalRunePosition = computeMaximumInscribedSphere(crystalFaceEntries).center;
+  const crystalRuneGlyphSize = 0.88;
+  const crystalRuneGlyphPlaneOffset = 0;
+  const crystalRuneGlyphLayout = measureRuneGlyphLayout(CRYSTAL_RUNE_SYMBOL, 512, 24);
+  const crystalRunePlacement = computeBalancedRuneRotationAtCenter(
+    crystalFaceEntries,
+    crystalRunePosition,
+    crystalHeightLine.axis,
+    crystalRuneGlyphSize * H1_ROOT_RUNE_SCALE * crystalRuneGlyphLayout.squareRatio,
+    crystalRuneGlyphSize * H1_ROOT_RUNE_SCALE * crystalRuneGlyphLayout.squareRatio,
+    crystalRuneGlyphPlaneOffset
+  );
+  const crystalRuneColor = getBodyColorForSelection(selectionId, "prism_crystal_rune_primary");
+  const crystalRuneMeshes = createRuneMeshes(
+    scene,
+    `prism_crystal_rune_${selectionId}`,
+    CRYSTAL_RUNE_SYMBOL,
+    crystalRuneColor,
+    {
+      showHalo: true,
+      glyphSize: crystalRuneGlyphSize,
+      haloScale: 1.76,
+      billboardMode: BABYLON.AbstractMesh.BILLBOARDMODE_NONE,
+      emissiveIntensity: 3.4,
+      alwaysVisible: true,
+      renderingGroupId: 3,
+      glyphPlaneOffset: crystalRuneGlyphPlaneOffset,
+      haloPlaneOffset: -0.024,
+      alphaMode: BABYLON.Engine.ALPHA_COMBINE,
+      textureSize: 512,
+      outlineWidth: 24
+    }
+  );
+
+  crystalRuneMeshes.anchor.parent = root;
+  crystalRuneMeshes.anchor.position.copyFrom(crystalRunePosition);
+  crystalRuneMeshes.anchor.rotationQuaternion = crystalRunePlacement.rotation.clone();
+  crystalRuneMeshes.anchor.scaling.setAll(1);
+  materials.push(...crystalRuneMeshes.materials);
+  root.metadata.crystalRuneEntry = {
+    entryId: `prism_crystal_${selectionId}`,
+    level: "h1",
+    parentId: null,
+    selectionId,
+    accentHex: crystalRuneColor,
+    runeSymbol: CRYSTAL_RUNE_SYMBOL,
+    runeAnchor: crystalRuneMeshes.anchor,
+    runeAnchorMesh: crystalRuneMeshes.anchor,
+    runeGlyphMesh: crystalRuneMeshes.glyphMesh,
+    runeHaloMesh: crystalRuneMeshes.haloMesh,
+    rootRunePosition: crystalRunePosition.clone(),
+    detailRunePosition: crystalRunePosition.clone(),
+    rootRuneRotation: crystalRunePlacement.rotation.clone(),
+    rootRuneScale: H1_ROOT_RUNE_SCALE,
+    detailRuneScale: H1_DETAIL_RUNE_SCALE,
+    rootBillboardMode: BABYLON.AbstractMesh.BILLBOARDMODE_NONE,
+    detailBillboardMode: BABYLON.AbstractMesh.BILLBOARDMODE_ALL,
+    detail: createCrystalDetailData({
+      selectionId,
+      runeSymbol: CRYSTAL_RUNE_SYMBOL,
+      accentHex: crystalRuneColor
+    })
+  };
+
+  faces.forEach((face, faceIndex) => {
+    const requestedFragmentRuneCount = resolveConfiguredDetailFragmentRuneCount(
+      selectionId,
+      faceIndex,
+      STARTUP_CONFIG.fragmentRuneCounts
+    );
+    const fragmentFaces = buildFaceSegmentPolyhedronFaces(face.vertices, centroid);
+    const fractalLayout = getPolyhedronSegmentRuneLayout(face.vertices, centroid, requestedFragmentRuneCount);
+    const fragmentColor = getBodyColorForSelection(selectionId, `prism_${face.name}_${faceIndex + 1}`);
+    const fragmentRuneColor = getBodyColorForSelection(selectionId, `prism_fragment_rune_${faceIndex + 1}`);
+    const fragmentRuneSymbol = SUBCRYSTAL_RUNE_SYMBOLS[faceIndex % SUBCRYSTAL_RUNE_SYMBOLS.length];
+    const fragmentRunePosition = computeFragmentFaceRunePosition(face.vertices, centroid);
+    const fragmentRuneRotation = quaternionFromUnitVectors(BABYLON.Axis.Z, computeOutwardNormal(face.vertices));
+    const fragmentRuneMeshes = createRuneMeshes(
+      scene,
+      `prism_fragment_rune_${faceIndex + 1}`,
+      fragmentRuneSymbol,
+      fragmentRuneColor,
+      {
+        showHalo: true,
+        glyphSize: 0.82,
+        haloScale: 1.68,
+        billboardMode: BABYLON.AbstractMesh.BILLBOARDMODE_NONE,
+        emissiveIntensity: 2.75,
+        alwaysVisible: false,
+        renderingGroupId: 3,
+        glyphPlaneOffset: 0.028,
+        haloPlaneOffset: -0.018,
+        alphaMode: BABYLON.Engine.ALPHA_COMBINE,
+        textureSize: 512,
+        outlineWidth: 22
+      }
+    );
+
+    fragmentRuneMeshes.anchor.parent = root;
+    fragmentRuneMeshes.anchor.position.copyFrom(fragmentRunePosition);
+    fragmentRuneMeshes.anchor.rotationQuaternion = fragmentRuneRotation.clone();
+    fragmentRuneMeshes.anchor.scaling.setAll(1);
+    materials.push(...fragmentRuneMeshes.materials);
+    createTetrahedronFragmentBoundaries(
+      scene,
+      root,
+      `prism_fragment_${faceIndex + 1}`,
+      fragmentFaces.slice(1),
+      fragmentColor,
+      materials
+    );
+
+    const fragmentEntry = {
+      entryId: `prism_fragment_${faceIndex + 1}`,
+      level: "h2",
+      parentId: root.metadata.crystalRuneEntry.entryId,
+      selectionId,
+      faceIndex,
+      faceName: face.name,
+      h3Count: requestedFragmentRuneCount,
+      accentHex: fragmentRuneColor,
+      runeSymbol: fragmentRuneSymbol,
+      runeAnchor: fragmentRuneMeshes.anchor,
+      runeAnchorMesh: fragmentRuneMeshes.anchor,
+      runeGlyphMesh: fragmentRuneMeshes.glyphMesh,
+      runeHaloMesh: fragmentRuneMeshes.haloMesh,
+      rootRunePosition: fragmentRunePosition.clone(),
+      detailRunePosition: fragmentRunePosition.clone(),
+      rootRuneRotation: fragmentRuneRotation.clone(),
+      rootRuneScale: H2_ROOT_RUNE_SCALE,
+      detailRuneScale: H2_DETAIL_RUNE_SCALE,
+      rootBillboardMode: BABYLON.AbstractMesh.BILLBOARDMODE_NONE,
+      detailBillboardMode: BABYLON.AbstractMesh.BILLBOARDMODE_ALL,
+      detail: createFragmentDetailData({
+        selectionId,
+        faceIndex,
+        runeSymbol: fragmentRuneSymbol,
+        accentHex: fragmentRuneColor
+      })
+    };
+
+    root.metadata.fragmentEntries.push(fragmentEntry);
+
+    fractalLayout.forEach((fractalLayoutItem) => {
+      const runeColor = getBodyColorForSelection(
+        selectionId,
+        `prism_${face.name}_${faceIndex + 1}_fractal_${fractalLayoutItem.runeIndex + 1}`
+      );
+      const runeSymbol = SUBCRYSTAL_RUNE_SYMBOLS[
+        (faceIndex + fractalLayoutItem.runeIndex + 1) % SUBCRYSTAL_RUNE_SYMBOLS.length
+      ];
+      const subcrystal = createTetrahedronRuneSubcrystal(
+        scene,
+        root,
+        `prism_fractal_${faceIndex + 1}_${fractalLayoutItem.runeIndex + 1}`,
+        { fractalFaces: fractalLayoutItem.subcrystalFaces },
+        face.vertices,
+        centroid,
+        runeColor
+      );
+      const runeMeshes = createRuneMeshes(
+        scene,
+        `prism_base_rune_${faceIndex + 1}_${fractalLayoutItem.runeIndex + 1}`,
+        runeSymbol,
+        runeColor,
+        {
+          showHalo: true,
+          glyphSize: fractalLayoutItem.runeSize,
+          haloScale: 1.52,
+          billboardMode: BABYLON.AbstractMesh.BILLBOARDMODE_NONE,
+          emissiveIntensity: 1.45,
+          glyphPlaneOffset: 0,
+          haloPlaneOffset: -0.006
+        }
+      );
+
+      materials.push(...subcrystal.materials, ...runeMeshes.materials);
+      runeMeshes.anchor.parent = root;
+      runeMeshes.anchor.position.copyFrom(fractalLayoutItem.rootRunePosition);
+      runeMeshes.anchor.rotationQuaternion = fractalLayoutItem.rootRuneRotation.clone();
+      runeMeshes.anchor.scaling.setAll(1);
+      runeMeshes.glyphMesh.renderingGroupId = 3;
+
+      if (runeMeshes.haloMesh) {
+        runeMeshes.haloMesh.renderingGroupId = 3;
+      }
+
+      root.metadata.runeLights.push(...runeMeshes.lights);
+      root.metadata.runeFragmentEntries.push({
+        entryId: `${fragmentEntry.entryId}_rune_${fractalLayoutItem.runeIndex + 1}`,
+        level: "h3",
+        parentId: fragmentEntry.entryId,
+        faceIndex,
+        faceName: face.name,
+        runeIndex: fractalLayoutItem.runeIndex,
+        selectionId,
+        accentHex: runeColor,
+        runeSymbol,
+        runeAnchor: runeMeshes.anchor,
+        runeAnchorMesh: runeMeshes.anchor,
+        runeGlyphMesh: runeMeshes.glyphMesh,
+        runeHaloMesh: runeMeshes.haloMesh,
+        rootRunePosition: fractalLayoutItem.rootRunePosition.clone(),
+        detailRunePosition: fractalLayoutItem.detailRunePosition.clone(),
+        rootRuneRotation: fractalLayoutItem.rootRuneRotation.clone(),
+        rootRuneScale: H3_ROOT_RUNE_SCALE,
+        detailRuneScale: H3_DETAIL_RUNE_SCALE,
+        rootBillboardMode: BABYLON.AbstractMesh.BILLBOARDMODE_NONE,
+        detailBillboardMode: BABYLON.AbstractMesh.BILLBOARDMODE_ALL,
+        detail: createRuneFragmentDetailData({
+          selectionId,
+          faceName: face.name,
+          faceIndex,
+          runeIndex: fractalLayoutItem.runeIndex,
+          runeSymbol,
+          accentHex: runeColor
+        })
+      });
+    });
+  });
+
+  root.metadata.runeEntries = [
+    root.metadata.crystalRuneEntry,
+    ...root.metadata.fragmentEntries,
+    ...root.metadata.runeFragmentEntries
+  ];
+  root.metadata.runeEntries.forEach((item) => {
+    setRuneHalosEnabled(item, false);
+    setRuneDisplayMode(item, false);
+  });
+}
+
+function createBipyramidInteriorCrystals(scene, root, faces, selectionId, materials) {
+  const centroid = computeUniqueVerticesCenter(faces);
+  const crystalFaceEntries = buildPolyhedronFaceEntries(faces.map((face) => face.vertices));
+  const crystalHeightLine = computePreferredPolyhedronHeightLine(faces);
+  const crystalRunePosition = computeMaximumInscribedSphere(crystalFaceEntries).center;
+  const crystalRuneGlyphSize = 0.9;
+  const crystalRuneGlyphPlaneOffset = 0;
+  const crystalRuneGlyphLayout = measureRuneGlyphLayout(CRYSTAL_RUNE_SYMBOL, 512, 24);
+  const crystalRunePlacement = computeBalancedRuneRotationAtCenter(
+    crystalFaceEntries,
+    crystalRunePosition,
+    crystalHeightLine.axis,
+    crystalRuneGlyphSize * H1_ROOT_RUNE_SCALE * crystalRuneGlyphLayout.squareRatio,
+    crystalRuneGlyphSize * H1_ROOT_RUNE_SCALE * crystalRuneGlyphLayout.squareRatio,
+    crystalRuneGlyphPlaneOffset
+  );
+  const crystalRuneColor = getBodyColorForSelection(selectionId, "bipyramid_crystal_rune_primary");
+  const crystalRuneMeshes = createRuneMeshes(
+    scene,
+    `bipyramid_crystal_rune_${selectionId}`,
+    CRYSTAL_RUNE_SYMBOL,
+    crystalRuneColor,
+    {
+      showHalo: true,
+      glyphSize: crystalRuneGlyphSize,
+      haloScale: 1.76,
+      billboardMode: BABYLON.AbstractMesh.BILLBOARDMODE_NONE,
+      emissiveIntensity: 3.4,
+      alwaysVisible: true,
+      renderingGroupId: 3,
+      glyphPlaneOffset: crystalRuneGlyphPlaneOffset,
+      haloPlaneOffset: -0.024,
+      alphaMode: BABYLON.Engine.ALPHA_COMBINE,
+      textureSize: 512,
+      outlineWidth: 24
+    }
+  );
+
+  crystalRuneMeshes.anchor.parent = root;
+  crystalRuneMeshes.anchor.position.copyFrom(crystalRunePosition);
+  crystalRuneMeshes.anchor.rotationQuaternion = crystalRunePlacement.rotation.clone();
+  crystalRuneMeshes.anchor.scaling.setAll(1);
+  materials.push(...crystalRuneMeshes.materials);
+  root.metadata.crystalRuneEntry = {
+    entryId: `bipyramid_crystal_${selectionId}`,
+    level: "h1",
+    parentId: null,
+    selectionId,
+    accentHex: crystalRuneColor,
+    runeSymbol: CRYSTAL_RUNE_SYMBOL,
+    runeAnchor: crystalRuneMeshes.anchor,
+    runeAnchorMesh: crystalRuneMeshes.anchor,
+    runeGlyphMesh: crystalRuneMeshes.glyphMesh,
+    runeHaloMesh: crystalRuneMeshes.haloMesh,
+    rootRunePosition: crystalRunePosition.clone(),
+    detailRunePosition: crystalRunePosition.clone(),
+    rootRuneRotation: crystalRunePlacement.rotation.clone(),
+    rootRuneScale: H1_ROOT_RUNE_SCALE,
+    detailRuneScale: H1_DETAIL_RUNE_SCALE,
+    rootBillboardMode: BABYLON.AbstractMesh.BILLBOARDMODE_NONE,
+    detailBillboardMode: BABYLON.AbstractMesh.BILLBOARDMODE_ALL,
+    detail: createCrystalDetailData({
+      selectionId,
+      runeSymbol: CRYSTAL_RUNE_SYMBOL,
+      accentHex: crystalRuneColor
+    })
+  };
+
+  faces.forEach((face, faceIndex) => {
+    const requestedFragmentRuneCount = resolveConfiguredDetailFragmentRuneCount(
+      selectionId,
+      faceIndex,
+      STARTUP_CONFIG.fragmentRuneCounts
+    );
+    const fragmentFaces = buildTetrahedronFragmentFaces(face.vertices, centroid);
+    const fractalLayout = getTetrahedronRuneLayout(face.vertices, centroid, requestedFragmentRuneCount);
+    const fragmentColor = getBodyColorForSelection(selectionId, `bipyramid_${face.name}_${faceIndex + 1}`);
+    const fragmentRuneColor = getBodyColorForSelection(selectionId, `bipyramid_fragment_rune_${faceIndex + 1}`);
+    const fragmentRuneSymbol = SUBCRYSTAL_RUNE_SYMBOLS[faceIndex % SUBCRYSTAL_RUNE_SYMBOLS.length];
+    const fragmentRunePosition = computeFragmentFaceRunePosition(face.vertices, centroid);
+    const fragmentRuneRotation = quaternionFromUnitVectors(BABYLON.Axis.Z, computeOutwardNormal(face.vertices));
+    const fragmentRuneMeshes = createRuneMeshes(
+      scene,
+      `bipyramid_fragment_rune_${faceIndex + 1}`,
+      fragmentRuneSymbol,
+      fragmentRuneColor,
+      {
+        showHalo: true,
+        glyphSize: 0.74,
+        haloScale: 1.68,
+        billboardMode: BABYLON.AbstractMesh.BILLBOARDMODE_NONE,
+        emissiveIntensity: 2.7,
+        alwaysVisible: false,
+        renderingGroupId: 3,
+        glyphPlaneOffset: 0.028,
+        haloPlaneOffset: -0.018,
+        alphaMode: BABYLON.Engine.ALPHA_COMBINE,
+        textureSize: 512,
+        outlineWidth: 22
+      }
+    );
+
+    fragmentRuneMeshes.anchor.parent = root;
+    fragmentRuneMeshes.anchor.position.copyFrom(fragmentRunePosition);
+    fragmentRuneMeshes.anchor.rotationQuaternion = fragmentRuneRotation.clone();
+    fragmentRuneMeshes.anchor.scaling.setAll(1);
+    materials.push(...fragmentRuneMeshes.materials);
+    createTetrahedronFragmentBoundaries(
+      scene,
+      root,
+      `bipyramid_fragment_${faceIndex + 1}`,
+      fragmentFaces.slice(1),
+      fragmentColor,
+      materials
+    );
+
+    const fragmentEntry = {
+      entryId: `bipyramid_fragment_${faceIndex + 1}`,
+      level: "h2",
+      parentId: root.metadata.crystalRuneEntry.entryId,
+      selectionId,
+      faceIndex,
+      faceName: face.name,
+      h3Count: requestedFragmentRuneCount,
+      accentHex: fragmentRuneColor,
+      runeSymbol: fragmentRuneSymbol,
+      runeAnchor: fragmentRuneMeshes.anchor,
+      runeAnchorMesh: fragmentRuneMeshes.anchor,
+      runeGlyphMesh: fragmentRuneMeshes.glyphMesh,
+      runeHaloMesh: fragmentRuneMeshes.haloMesh,
+      rootRunePosition: fragmentRunePosition.clone(),
+      detailRunePosition: fragmentRunePosition.clone(),
+      rootRuneRotation: fragmentRuneRotation.clone(),
+      rootRuneScale: H2_ROOT_RUNE_SCALE,
+      detailRuneScale: H2_DETAIL_RUNE_SCALE,
+      rootBillboardMode: BABYLON.AbstractMesh.BILLBOARDMODE_NONE,
+      detailBillboardMode: BABYLON.AbstractMesh.BILLBOARDMODE_ALL,
+      detail: createFragmentDetailData({
+        selectionId,
+        faceIndex,
+        runeSymbol: fragmentRuneSymbol,
+        accentHex: fragmentRuneColor
+      })
+    };
+
+    root.metadata.fragmentEntries.push(fragmentEntry);
+
+    fractalLayout.forEach((fractalLayoutItem) => {
+      const runeColor = getBodyColorForSelection(
+        selectionId,
+        `bipyramid_${face.name}_${faceIndex + 1}_fractal_${fractalLayoutItem.runeIndex + 1}`
+      );
+      const runeSymbol = SUBCRYSTAL_RUNE_SYMBOLS[
+        (faceIndex + fractalLayoutItem.runeIndex + 1) % SUBCRYSTAL_RUNE_SYMBOLS.length
+      ];
+      const subcrystal = createTetrahedronRuneSubcrystal(
+        scene,
+        root,
+        `bipyramid_fractal_${faceIndex + 1}_${fractalLayoutItem.runeIndex + 1}`,
+        fractalLayoutItem,
+        face.vertices,
+        centroid,
+        runeColor
+      );
+      const runeMeshes = createRuneMeshes(
+        scene,
+        `bipyramid_base_rune_${faceIndex + 1}_${fractalLayoutItem.runeIndex + 1}`,
         runeSymbol,
         runeColor,
         {
@@ -5186,7 +5672,7 @@ function focusFaceEntry(entry) {
     return;
   }
 
-  if (canOpenDetailShell(state.selectedId) && entry.selectionId === state.selectedId) {
+  if (canOpenSelectionDetailShell(state.selectedId) && entry.selectionId === state.selectedId) {
     stopSnapAnimation();
     showSelectionDetails();
     return;
@@ -5625,14 +6111,6 @@ function buildPolyhedronFaceEntries(faceVerticesCollection) {
       outwardNormal
     };
   });
-}
-
-function getRequestedFragmentRuneCount(selectionId, faceIndex) {
-  return resolveRequestedFragmentRuneCount(
-    selectionId,
-    faceIndex,
-    STARTUP_CONFIG.fragmentRuneCounts?.[faceIndex]
-  );
 }
 
 function buildTetrahedronSegmentCells(vertices, centroid) {
@@ -6636,7 +7114,7 @@ function clearExplodedDetails() {
 
 function showSelectionDetails() {
   if (
-    !canOpenDetailShell(state.selectedId)
+    !canOpenSelectionDetailShell(state.selectedId)
     || !state.scene
     || !state.crystalRoot
     || isDetailShellExpanded()
@@ -6693,7 +7171,11 @@ function getDetailItemsForSelection(selectionId, metadata, faceEntries = state.f
     selectionTitle,
     faceEntries,
     shapeKind: shapeConfig.kind,
-    fragmentRuneCountResolver: (_faceEntry, faceIndex) => Math.min(3, getRequestedFragmentRuneCount(selectionId, faceIndex)),
+    fragmentRuneCountResolver: (_faceEntry, faceIndex) => resolveConfiguredDetailFragmentRuneCount(
+      selectionId,
+      faceIndex,
+      STARTUP_CONFIG.fragmentRuneCounts
+    ),
     faceAccentResolver: (faceEntry, faceIndex) => (
       faceEntry?.accentHex
       || getBodyColorForSelection(selectionId, `${shapeConfig.kind}_placeholder_${faceIndex + 1}`)
@@ -7837,7 +8319,7 @@ function enableBoxDragging(camera, canvas) {
       return;
     }
 
-    if (!dragState.moved && canOpenDetailShell(state.selectedId)) {
+    if (!dragState.moved && canOpenSelectionDetailShell(state.selectedId)) {
       // Ziel: Den Einstieg in den Form-4-DetailView auch dann robust halten, wenn transparentes Innenleben das Picking unzuverlaessig macht.
       // Warum: Fuer den Nutzer ist der Linksklick auf den Grundkristall die semantische Aktion; ob Babylon dabei gerade eine Aussenflaeche, ein Symbol oder gar nichts liefert, darf den Einstieg nicht blockieren.
       if (!focusedEntry && !focusedSymbolEntry) {
@@ -7847,7 +8329,7 @@ function enableBoxDragging(camera, canvas) {
       }
     }
 
-    if (!focusedEntry && focusedSymbolEntry && canOpenDetailShell(state.selectedId)) {
+    if (!focusedEntry && focusedSymbolEntry && canOpenSelectionDetailShell(state.selectedId)) {
       stopSnapAnimation();
       showSelectionDetails();
       return;
