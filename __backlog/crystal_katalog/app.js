@@ -7213,14 +7213,14 @@ function updateViewerMovement(scene) {
 
   const deltaSeconds = scene.getEngine().getDeltaTime() / 1000;
   const cameraForward = state.camera.target.subtract(state.camera.globalPosition);
-  cameraForward.y = 0;
+  const cameraRight = state.camera.getDirection(BABYLON.Axis.X);
 
-  if (cameraForward.lengthSquared() < 1e-6) {
+  if (cameraForward.lengthSquared() < 1e-6 || cameraRight.lengthSquared() < 1e-6) {
     return;
   }
 
   cameraForward.normalize();
-  const cameraRight = BABYLON.Vector3.Cross(cameraForward, BABYLON.Axis.Y).normalize();
+  cameraRight.normalize();
   const movementVector = cameraForward.scale(forwardAmount).add(cameraRight.scale(effectiveStrafeAmount));
 
   if (movementVector.lengthSquared() < 1e-6) {
