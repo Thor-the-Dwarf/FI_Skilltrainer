@@ -1192,16 +1192,6 @@ function updateFocusTransition() {
   state.crystalRoot.position.copyFrom(bezierPosition);
   state.crystalRoot.scaling.copyFrom(nextScale);
   state.crystalRoot.rotationQuaternion = nextRotation;
-  state.camera.target.copyFrom(BABYLON.Vector3.Lerp(
-    transition.fromTargetPoint,
-    transition.toTargetPoint,
-    easedProgress
-  ));
-  state.camera.radius = BABYLON.Scalar.Lerp(
-    transition.fromCameraRadius,
-    transition.toCameraRadius,
-    easedProgress
-  );
   const backdropMaterials = state.vaultBackdropRoot?.metadata?.materials || [];
   const backdropNetwork = state.vaultBackdropRoot?.metadata?.network || null;
   const backdropFade = 1 - easedProgress;
@@ -1221,8 +1211,6 @@ function updateFocusTransition() {
     state.crystalRoot.position.copyFrom(transition.toPosition);
     state.crystalRoot.scaling.copyFrom(transition.toScale);
     state.crystalRoot.rotationQuaternion = transition.toRotation.clone();
-    state.camera.target.copyFrom(transition.toTargetPoint);
-    state.camera.radius = transition.toCameraRadius;
     const shouldOpenDetail = transition.openDetailOnComplete;
     const transitionMode = transition.mode;
     resetFocusTransition();
