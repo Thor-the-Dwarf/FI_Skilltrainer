@@ -5695,6 +5695,84 @@ function seededPresenterRange(seed, min, max) {
   return min + (pseudoRandom(seed) * (max - min));
 }
 
+function drawPresenterContainerHalo(context, metrics) {
+  // Ziel: Den grossen runden Presenter-Kopf selbst wie eine HaloSphere lesen lassen.
+  // Warum: Der Container soll Teil desselben Drawings sein wie Netz und Spheres, nicht wie ein steifer separater Ring mit aufgesetztem Effekt.
+  const centerX = metrics.width * 0.5;
+  const centerY = metrics.height * 0.5;
+  const outerRadius = Math.min(metrics.width, metrics.height) * 0.49;
+  const ringOuterRadius = outerRadius * 0.995;
+  const ringInnerRadius = outerRadius * 0.81;
+  const blurOuterRadius = outerRadius * 1.08;
+  const rotation = prefersReducedMotion() ? 0 : metrics.timeSeconds * 0.085;
+  const spectrumStops = [
+    [0.0, "rgba(255, 54, 24, 0.92)"],
+    [0.12, "rgba(255, 112, 0, 0.96)"],
+    [0.24, "rgba(255, 208, 64, 0.98)"],
+    [0.37, "rgba(138, 255, 102, 0.94)"],
+    [0.5, "rgba(74, 255, 218, 0.9)"],
+    [0.63, "rgba(78, 146, 255, 0.94)"],
+    [0.76, "rgba(118, 86, 255, 0.96)"],
+    [0.88, "rgba(210, 78, 255, 0.92)"],
+    [1.0, "rgba(255, 54, 24, 0.92)"]
+  ];
+
+  const buildSpectrumGradient = () => {
+    if (typeof context.createConicGradient === "function") {
+      const gradient = context.createConicGradient(rotation, centerX, centerY);
+
+      spectrumStops.forEach(([stop, color]) => {
+        gradient.addColorStop(stop, color);
+      });
+
+      return gradient;
+    }
+
+    const fallbackGradient = context.createRadialGradient(
+      centerX,
+      centerY,
+      ringInnerRadius,
+      centerX,
+      centerY,
+      ringOuterRadius
+    );
+
+    fallbackGradient.addColorStop(0, "rgba(255, 200, 120, 0.18)");
+    fallbackGradient.addColorStop(0.55, "rgba(150, 176, 255, 0.32)");
+    fallbackGradient.addColorStop(1, "rgba(214, 92, 255, 0.24)");
+    return fallbackGradient;
+  };
+
+  const spectrumGradient = buildSpectrumGradient();
+
+  context.save();
+  context.filter = `blur(${Math.max(18, outerRadius * 0.08)}px) saturate(155%)`;
+  context.beginPath();
+  context.arc(centerX, centerY, blurOuterRadius, 0, TAU);
+  context.arc(centerX, centerY, ringInnerRadius * 0.985, 0, TAU, true);
+  context.fillStyle = spectrumGradient;
+  context.globalAlpha = 0.54;
+  context.fill("evenodd");
+  context.restore();
+
+  context.save();
+  context.beginPath();
+  context.arc(centerX, centerY, ringOuterRadius, 0, TAU);
+  context.arc(centerX, centerY, ringInnerRadius, 0, TAU, true);
+  context.fillStyle = spectrumGradient;
+  context.globalAlpha = 0.86;
+  context.fill("evenodd");
+  context.restore();
+
+  context.save();
+  context.beginPath();
+  context.arc(centerX, centerY, ringOuterRadius, 0, TAU);
+  context.lineWidth = Math.max(1.5, outerRadius * 0.012);
+  context.strokeStyle = "rgba(255, 255, 255, 0.16)";
+  context.stroke();
+  context.restore();
+}
+
 function buildPresenterHaloNodes(metrics) {
   // Ziel: Die HaloNodes als von der Kristallstruktur getragene, aber eigenstaendig federnde Presenter-Miniatur aufbauen.
   // Warum: Die Nutzeransicht soll den Kristall und seine Anchor-Points langsam rotieren sehen, waehrend jede Sphere nur lokal um ihren Ankerpunkt herum bounct.
@@ -5823,6 +5901,7 @@ function drawContentLavaBall(metrics) {
     return;
   }
 
+  drawPresenterContainerHalo(context, metrics);
   drawPresenterHaloNetwork(context, metrics, nodesById);
   nodes.forEach((node) => drawPresenterHaloSphere(context, node));
   nodes.forEach((node) => drawPresenterHaloSymbol(context, node));
