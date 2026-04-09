@@ -15,7 +15,7 @@
   --detail-pane-width: 45%;
   --content-shell-padding: 18px;
   --content-sidebar-width: clamp(300px, 30vw, 360px);
-  --content-crystal-height: clamp(220px, 32vh, 300px);
+  --content-crystal-size: clamp(280px, 30vw, 340px);
   --content-crystal-safe-padding: 32px;
   --content-lavaball-opacity: 0.78;
   --content-lavaball-scale: 1;
@@ -334,9 +334,9 @@ body.is-exploded.is-content-mode #renderCanvas {
   /* Warum: Das Inhaltsverzeichnis soll sichtbar unter dem Kristall stehen; dafuer darf der Canvas nicht weiter die ganze linke Hoehe belegen. */
   position: absolute;
   top: var(--content-shell-padding);
-  left: var(--content-shell-padding);
-  width: var(--content-sidebar-width);
-  height: var(--content-crystal-height);
+  left: calc(var(--content-shell-padding) + ((var(--content-sidebar-width) - var(--content-crystal-size)) * 0.5));
+  width: var(--content-crystal-size);
+  height: var(--content-crystal-size);
 }
 
 .stage-overlay {
@@ -548,12 +548,16 @@ body.is-content-mode .content-experience {
 .content-sidebar {
   min-height: 0;
   display: grid;
-  grid-template-rows: var(--content-crystal-height) minmax(0, 1fr);
+  grid-template-rows: var(--content-crystal-size) minmax(0, 1fr);
   gap: 16px;
 }
 
 .content-crystal-panel {
   position: relative;
+  width: var(--content-crystal-size);
+  height: var(--content-crystal-size);
+  justify-self: center;
+  align-self: start;
   pointer-events: none;
   cursor: pointer;
 }
@@ -565,19 +569,14 @@ body.is-content-mode .content-experience {
   display: grid;
   place-items: center;
   isolation: isolate;
-  border-radius: 26px;
-  border: 1px solid hsl(0 0% 100% / 0.04);
+  border-radius: 999px;
+  border: 1px solid hsl(0 0% 100% / 0.14);
   background:
-    linear-gradient(
-      180deg,
-      hsl(var(--content-halo-bg-start) / 0.26),
-      hsl(var(--content-halo-bg-mid) / 0.18) 42%,
-      hsl(var(--content-halo-bg-end) / 0.12)
-    );
+    radial-gradient(circle at 50% 44%, rgba(22, 25, 34, 0.9), rgba(3, 3, 7, 0.98) 68%, rgba(0, 0, 0, 1) 100%);
   box-shadow:
-    inset 0 0 0 1px hsl(0 0% 100% / 0.08),
-    inset 0 0 34px rgba(210, 228, 255, 0.03),
-    0 18px 32px rgba(0, 0, 0, 0.18);
+    inset 0 0 0 1px hsl(0 0% 100% / 0.04),
+    inset 0 0 58px rgba(112, 132, 180, 0.06),
+    0 22px 42px rgba(0, 0, 0, 0.28);
   overflow: hidden;
   transition:
     transform 220ms ease,
@@ -1220,7 +1219,7 @@ body.is-content-mode .detail-connector-network {
     --detail-advance-width: 60px;
     --detail-pane-width: 50%;
     --content-sidebar-width: clamp(260px, 34vw, 320px);
-    --content-crystal-height: clamp(200px, 28vh, 250px);
+    --content-crystal-size: clamp(220px, 26vw, 280px);
   }
 
   .vault-shell {
@@ -1271,7 +1270,7 @@ body.is-content-mode .detail-connector-network {
     --detail-advance-width: 54px;
     --detail-pane-width: 100%;
     --content-sidebar-width: 100%;
-    --content-crystal-height: 220px;
+    --content-crystal-size: 220px;
   }
 
   .panel {
@@ -1301,12 +1300,13 @@ body.is-content-mode .detail-connector-network {
   }
 
   body.is-exploded.is-content-mode #renderCanvas {
-    width: 100%;
-    height: 220px;
+    left: calc(var(--content-shell-padding) + ((var(--content-sidebar-width) - var(--content-crystal-size)) * 0.5));
+    width: var(--content-crystal-size);
+    height: var(--content-crystal-size);
   }
 
   .content-sidebar {
-    grid-template-rows: 220px minmax(220px, 1fr);
+    grid-template-rows: var(--content-crystal-size) minmax(220px, 1fr);
   }
 
   .content-toc {
