@@ -338,6 +338,14 @@ import {
     renderExplainer();
   }
 
+  /*
+  ZIEL:
+  Eine schlanke Lab-API bereitstellen, die dieselben Presenter-Navigationspfade nutzt wie die echte UI.
+  WAS WURDE PROBIERT:
+  Zuerst schrieb die Lab-API den Presenter-State direkt selbst um und rief danach render() auf.
+  WESHALB WURDE SO ENTSCHIEDEN:
+  Die Weiterleitung auf navigateToSlide und navigateToCrystalCover verhindert Logikdrift zwischen Testpfad und realer Bedienung.
+  */
   function exposeLab() {
     const labApi = {
       getState() {
@@ -348,12 +356,7 @@ import {
           return false;
         }
 
-        state.crystalId = crystalId;
-        state.slideId = vault.crystalById[crystalId].slides[0]?.id || null;
-        state.isCrystalCoverActive = false;
-        state.articleExplanationId = null;
-        closeExplanation();
-        render();
+        navigateToSlide(vault.crystalById[crystalId].slides[0]?.id || null);
         return true;
       },
       selectSlide(slideId) {
@@ -361,12 +364,7 @@ import {
           return false;
         }
 
-        state.crystalId = slideToCrystalId[slideId];
-        state.slideId = slideId;
-        state.isCrystalCoverActive = false;
-        state.articleExplanationId = null;
-        closeExplanation();
-        render();
+        navigateToSlide(slideId);
         return true;
       },
       openCrystalCover(crystalId) {
@@ -374,12 +372,7 @@ import {
           return false;
         }
 
-        state.crystalId = crystalId;
-        state.slideId = null;
-        state.isCrystalCoverActive = true;
-        state.articleExplanationId = null;
-        closeExplanation();
-        render();
+        navigateToCrystalCover(crystalId);
         return true;
       },
     };
@@ -1275,26 +1268,43 @@ import {
     }
   }
 
+  /*
+  ZIEL:
+  Den Fenstertitel nur dann aktualisieren, wenn sich der semantische Presenter-Zustand wirklich geändert hat.
+  WAS WURDE PROBIERT:
+  Vorher wurde document.title bei jedem Render direkt neu gesetzt, auch wenn derselbe Titel bereits aktiv war.
+  WESHALB WURDE SO ENTSCHIEDEN:
+  Das vermeidet unnötige DOM-Schreibzugriffe in häufigen Renderpfaden und hält die Presenter-Reaktion etwas ruhiger.
+  */
   function updateDocumentTitle() {
     const courseLabel = vault.course.selectorTitle || vault.course.id || "Kurs";
+    let nextTitle = "";
 
     if (isExplanationArticleView()) {
       const explanation = getCurrentExplanation();
-      document.title = `${explanation.title} | ${vault.course.title}`;
-      return;
+      nextTitle = `${explanation.title} | ${vault.course.title}`;
+    } else if (isCrystalCoverActive()) {
+      nextTitle = `${getCurrentCrystal().title} | ${courseLabel} Praesentation`;
+    } else {
+      const slide = getCurrentSlide();
+      nextTitle = isArticleView()
+        ? `${slide.title} | ${vault.course.title}`
+        : `${getCurrentCrystal().title} | ${courseLabel} Praesentation`;
     }
 
-    if (isCrystalCoverActive()) {
-      document.title = `${getCurrentCrystal().title} | ${courseLabel} Praesentation`;
-      return;
+    if (document.title !== nextTitle) {
+      document.title = nextTitle;
     }
-
-    const slide = getCurrentSlide();
-    document.title = isArticleView()
-      ? `${slide.title} | ${vault.course.title}`
-      : `${getCurrentCrystal().title} | ${courseLabel} Praesentation`;
   }
 
+  /*
+  ZIEL:
+  Die Presenter-URL nur bei echten Zustandsänderungen mit dem aktuellen View abgleichen.
+  WAS WURDE PROBIERT:
+  Zuerst wurde history.replaceState bei jedem Render direkt ausgeführt.
+  WESHALB WURDE SO ENTSCHIEDEN:
+  Der Vorabvergleich vermeidet unnötige History-Operationen in häufigen Presenter-Rendern und hält Test- und Laufzeitpfade leichter.
+  */
   function syncUrl() {
     try {
       const url = new URL(window.location.href);
@@ -1327,7 +1337,9 @@ import {
 
       url.searchParams.set("variant", getActiveVariantKind());
 
-      history.replaceState({}, "", url.toString());
+      if (url.toString() !== window.location.href) {
+        history.replaceState({}, "", url.toString());
+      }
     } catch (error) {
       // Ignore history failures in restricted or test contexts.
     }
@@ -1422,6 +1434,14 @@ import {
     return url.toString();
   }
 
+  /*
+  ZIEL:
+  Einen Ruecksprung in den passenden Vault-Kontext erzeugen.
+  WAS WURDE PROBIERT:
+  Der Builder setzt Kurs, Selection und optional den Content-Flag so, dass derselbe Kristall im Presenter wiedergefunden wird.
+  WESHALB WURDE SO ENTSCHIEDEN:
+  Die Praesentation soll nicht blind auf die Startseite fallen, sondern gezielt in den dazugehoerigen Kristallkontext zurueckkehren.
+  */
   function buildVaultUrl(options = {}) {
     const openContent = options.openContent !== false;
     const url = new URL("./index.html", window.location.href);
@@ -1958,6 +1978,14 @@ import {
     };
   }
 
+  /*
+  ZIEL:
+  Vom Presenter-TOC oder aus einem Slide effizient in den Kristall-Cover-Zustand wechseln.
+  WAS WURDE PROBIERT:
+  Der Wechsel setzte zunächst immer blind Zustand und Render neu.
+  WESHALB WURDE SO ENTSCHIEDEN:
+  Die zusätzlichen Guards vermeiden unnötige Voll-Render, wenn bereits derselbe Kristall im Cover aktiv ist.
+  */
   function navigateToCrystalCover(crystalId) {
     if (!crystalId || !vault.crystalById[crystalId] || isArticleView()) {
       return;
@@ -1987,12 +2015,24 @@ import {
     });
   }
 
+  /*
+  ZIEL:
+  Zwischen Slides und vom Cover zurück in den Slide-Zustand nur dann umschalten, wenn sich der Zielzustand wirklich ändert.
+  WAS WURDE PROBIERT:
+  Der Pfad rendert grundsätzlich vollständig, weil Cover, TOC, Stage und Explainer gemeinsam aktualisiert werden müssen.
+  WESHALB WURDE SO ENTSCHIEDEN:
+  Die frühe Abbruchbedingung spart sinnlose Voll-Render bei Klicks auf bereits aktive Slides und hält den Presenter spürbar direkter.
+  */
   function navigateToSlide(slideId) {
     if (!slideId || !slideToCrystalId[slideId]) {
       return;
     }
 
     const nextCrystalId = slideToCrystalId[slideId];
+    if (state.crystalId === nextCrystalId && state.slideId === slideId && !isCrystalCoverActive() && !isArticleView()) {
+      return;
+    }
+
     const leavingCrystalCover = isCrystalCoverActive();
     const crystal = vault.crystalById[nextCrystalId];
     const originRect = leavingCrystalCover
@@ -2018,6 +2058,14 @@ import {
     }
   }
 
+  /*
+  ZIEL:
+  Den Wechsel zwischen Sidebar- und Stage-Cover als leichte Cover-Transition zeigen, ohne den separaten Presenter unnötig schwer zu machen.
+  WAS WURDE PROBIERT:
+  Der Übergang arbeitet mit einem eigenen Transition-Layer und wiederverwendet das gecachte Transition-Markup.
+  WESHALB WURDE SO ENTSCHIEDEN:
+  So bleibt die Cover-Animation sichtbar, ohne die eigentlichen Presenter-Zielknoten dauerhaft zu verschieben oder mehrfach neu aufzubauen.
+  */
   function runCrystalCoverTransition({ crystal, fromRect, toRect, hideTarget }) {
     if (!refs.coverTransition || !fromRect || !toRect || fromRect.width <= 0 || toRect.width <= 0) {
       if (hideTarget) {
