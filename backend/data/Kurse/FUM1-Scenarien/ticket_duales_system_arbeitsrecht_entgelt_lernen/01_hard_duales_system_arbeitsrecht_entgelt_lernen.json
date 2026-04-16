@@ -1,0 +1,143 @@
+{
+  "scenario": {
+    "company": "CampusWerk Lernsysteme GmbH",
+    "scale": "Bildungsträger und IT-Dienstleister mit zwei Standorten und wachsendem Ausbildungsteam",
+    "context": "Zum Ausbildungsstart sollen parallel Verträge geprüft, ein standortübergreifender Einsatz geplant, Minderjährige in Veranstaltungen geschützt, Fragen zu Abrechnung und Zusatzleistungen beantwortet und individuelle Entwicklungswege abgestimmt werden. Gleichzeitig will die Geschäftsführung ein mobiles Lernmodell einführen, für das Mitbestimmung, Arbeitsstättenfragen und klare Zuständigkeiten berücksichtigt werden müssen.",
+    "mission": "Sie verbinden Ausbildungsrecht, Tarif- und Mitbestimmungslogik, Entgeltfälle sowie Entwicklungs- und Schutzfragen zu einer belastbaren Gesamtentscheidung für den Start des Jahrgangs.",
+    "station": {
+      "id": "FUM1-ST-01-HARD",
+      "department": "Ausbildung, Personal, Mitbestimmung und Lernentwicklung",
+      "profile": "Gesamtabwägung aus Vertrag, Schutz, Entgelt, Beteiligung und Entwicklung",
+      "constraints": [
+        "Rechte und Pflichten gemeinsam denken statt isoliert abprüfen",
+        "Schutzgesetze, Mitbestimmung und Tarifwirkung auf reale Entscheidungen beziehen",
+        "Entwicklungs- und Lernfragen nicht vom betrieblichen Rahmen abkoppeln"
+      ]
+    },
+    "customerRequest": {
+      "from": "geschaeftsfuehrung@campuswerk.example",
+      "to": "neu.im.team@campuswerk.example",
+      "subject": "Komplettpaket zum Start des Ausbildungsjahrgangs 2026",
+      "date": "2026-04-16",
+      "body": "Bitte bereiten Sie eine belastbare Einschätzung für den Start des neuen Jahrgangs vor. Wir müssen Vertragsunterlagen prüfen, einen Einsatz über zwei Standorte organisieren, einen Infoabend mit Minderjährigen rechtlich sauber planen, Fragen zu Netto, Zuschüssen und geldwerten Vorteilen beantworten und außerdem klären, wie mobiles Lernen mit Mitbestimmung, Arbeitsschutz und persönlicher Entwicklung zusammenpasst."
+    }
+  },
+  "questions": [
+    {
+      "id": "ctx01",
+      "type": "context_card",
+      "title": "Verknüpfte Entscheidungen statt Einzelfragen",
+      "contentBlocks": [
+        {
+          "type": "text",
+          "text": "Im harten Schwierigkeitsgrad hängen Vertragsprüfung, Arbeitszeit, Jugendschutz, Entgelt, Mitbestimmung und Weiterbildung unmittelbar zusammen. Wer einen Punkt isoliert löst, riskiert an anderer Stelle einen Fehler. Die fachliche Aufgabe besteht darin, aus mehreren richtigen Teilgedanken eine tragfähige Gesamtentscheidung zu bauen."
+        },
+        {
+          "type": "table",
+          "columns": ["Komplexer Themenknoten", "Warum kritisch?"],
+          "rows": [
+            ["mobiles Lernen", "braucht klare Regeln, Zuständigkeiten und einen sauberen betrieblichen Rahmen"],
+            ["Abendveranstaltungen", "berühren Schutz- und Arbeitszeitfragen direkt"],
+            ["Entgeltfragen", "müssen verständlich erklärt werden, ohne rechtliche Begriffe zu vermischen"]
+          ]
+        }
+      ]
+    },
+    {
+      "id": "q01",
+      "type": "multi_select",
+      "title": "Gesamtstart sauber strukturieren",
+      "prompt": "Welche Bausteine müssen für einen sauberen Ausbildungsstart gemeinsam gedacht werden? Mehrere Antworten sind richtig.",
+      "options": [
+        { "text": "Vertrags- und Planlage prüfen", "correct": true, "rationale": "Ohne saubere Unterlagen fehlt die Grundlage." },
+        { "text": "Schutz- und Arbeitszeitfragen früh mitprüfen", "correct": true, "rationale": "Sie wirken direkt auf Termine und Einsätze." },
+        { "text": "Abrechnung und Zusatzleistungen verständlich erklären", "correct": true, "rationale": "Auch das gehört zur belastbaren Orientierung." },
+        { "text": "Mitbestimmung und betriebliche Regeln bei neuen Lernmodellen einordnen", "correct": true, "rationale": "Gerade bei mobilen oder allgemeinen Regelungen ist das wichtig." },
+        { "text": "die schwierigen Punkte ohne Dokumentation spontan im Tagesgeschäft auflösen", "correct": false, "rationale": "Das wäre fachlich riskant." }
+      ],
+      "feedback": {
+        "correct": "Richtig: Im harten Slot zählt die verknüpfte Gesamtentscheidung.",
+        "wrong": "Bitte Vertrag, Schutz, Entgelt und betriebliche Regeln stärker als zusammenhängendes Paket lesen."
+      },
+      "progressLinks": ["fum1_duales_system_arbeitsrecht", "fum1_entgelt_lernen_entwicklung"]
+    },
+    {
+      "id": "q02",
+      "type": "single_choice",
+      "title": "Minderjährige und Abendveranstaltung",
+      "prompt": "Welche Entscheidung wirkt für einen Abendtermin mit minderjährigen Auszubildenden fachlich am tragfähigsten?",
+      "options": [
+        { "text": "Den Termin nur nach vorheriger Schutz- und Zeitprüfung freigeben und den Ablauf notfalls anpassen", "rationale": "Genau das verbindet Projektinteresse und Jugendschutz sauber." },
+        { "text": "Den Termin immer durchführen, solange die Veranstaltung pädagogisch nützlich klingt", "rationale": "So pauschal dürfen Schutzfragen nicht behandelt werden." },
+        { "text": "Minderjährige teilnehmen lassen, wenn sie auf Vergütung verzichten", "rationale": "Das ist fachlich unsauber." },
+        { "text": "Die Rechtslage erst nach der Veranstaltung prüfen", "rationale": "Die Prüfung muss vorher erfolgen." }
+      ],
+      "correctIndex": 0,
+      "feedback": {
+        "correct": "Richtig: Erst die rechtliche und organisatorische Prüfung, dann die Zusage.",
+        "wrong": "Bitte Jugendarbeitsschutz nicht als nachträgliche Formalie lesen."
+      },
+      "progressLinks": ["fum1_duales_system_arbeitsrecht"]
+    },
+    {
+      "id": "sep01",
+      "type": "followup_divider",
+      "title": "Folgeauftrag 1 - Mobile Lernregelung",
+      "from": "geschaeftsfuehrung@campuswerk.example",
+      "to": "neu.im.team@campuswerk.example",
+      "subject": "Mobiles Lernen für den neuen Jahrgang einführen",
+      "date": "2026-04-16",
+      "body": "Ab dem Herbst soll ein Teil der Lernzeiten mobil vorbereitet werden. Bitte prüfen Sie, welche betrieblichen Regeln, Mitbestimmungsthemen und Schutzaspekte sauber geklärt werden müssen, bevor daraus ein Standardmodell wird."
+    },
+    {
+      "id": "q03",
+      "type": "multi_select",
+      "title": "Mobiles Lernen rechtlich sauber aufsetzen",
+      "prompt": "Welche Punkte sollten vor einem allgemeinen Modell für mobiles Lernen geprüft oder geregelt werden? Mehrere Antworten sind richtig.",
+      "options": [
+        { "text": "klare betriebliche Regeln und Zuständigkeiten", "correct": true, "rationale": "Ohne klare Regeln wird das Modell unscharf." },
+        { "text": "Mitbestimmungsfragen bei allgemeinen Regelungen", "correct": true, "rationale": "Das kann bei allgemeinen Rahmenregeln relevant sein." },
+        { "text": "geeignete Arbeitsbedingungen und Schutzaspekte", "correct": true, "rationale": "Auch der Arbeits- und Gesundheitsschutz muss mitgedacht werden." },
+        { "text": "Kommunikation, Dokumentation und erreichbare Ansprechpartner", "correct": true, "rationale": "Gerade bei räumlicher Distanz ist das wichtig." },
+        { "text": "bewusst keinerlei Rahmen setzen, damit alles flexibler wirkt", "correct": false, "rationale": "Das wäre fachlich nicht tragfähig." }
+      ],
+      "feedback": {
+        "correct": "Richtig: Mobiles Lernen braucht mehr als Technik, nämlich einen belastbaren betrieblichen Rahmen.",
+        "wrong": "Bitte Regeln, Schutz und Mitbestimmung stärker gemeinsam denken."
+      },
+      "progressLinks": ["fum1_duales_system_arbeitsrecht", "fum1_entgelt_lernen_entwicklung"]
+    },
+    {
+      "id": "q04",
+      "type": "single_choice",
+      "title": "Gesamtentscheidung im Startpaket",
+      "prompt": "Welche Haltung ist für den gesamten Ausbildungsstart fachlich am besten?",
+      "options": [
+        { "text": "Verträge, Schutzregeln, Entgeltlogik und Entwicklungslinien gemeinsam planen und sauber dokumentieren", "rationale": "Genau das ergibt eine tragfähige Gesamtentscheidung." },
+        { "text": "Jedes Thema isoliert und ohne Rückbezug abarbeiten", "rationale": "Dann entstehen leicht Widersprüche." },
+        { "text": "Nur die Entgeltseite klären, weil der Rest später folgt", "rationale": "Das wäre zu kurz gegriffen." },
+        { "text": "Schwierige Punkte offenlassen, um schneller fertig zu werden", "rationale": "Das würde den Start unnötig riskant machen." }
+      ],
+      "correctIndex": 0,
+      "feedback": {
+        "correct": "Richtig: Im harten Slot zählt die verknüpfte, dokumentierte Gesamtlogik.",
+        "wrong": "Bitte die Themen nicht als voneinander losgelöste Inseln behandeln."
+      },
+      "progressLinks": ["fum1_duales_system_arbeitsrecht", "fum1_entgelt_lernen_entwicklung"]
+    },
+    {
+      "id": "q05",
+      "type": "short_text",
+      "title": "Startpaket fachlich bündeln",
+      "prompt": "Beschreiben Sie in 6 bis 8 Sätzen, wie Sie Vertragsprüfung, Minderjährigenschutz, Abrechnungsfragen und mobile Lernregeln gemeinsam in ein belastbares Startpaket für den Jahrgang überführen würden.",
+      "minChars": 260,
+      "requiredKeywords": ["Vertrag", "Schutz", "Abrechnung", "Regeln"],
+      "expectedOutline": "Vertragsklarheit, Schutzprüfung, nachvollziehbare Entgelterklärung und sauberer Rahmen für mobiles Lernen verbinden.",
+      "feedback": {
+        "correct": "Richtig: Die vier Themen sind zu einer fachlich tragfähigen Startentscheidung gebündelt.",
+        "wrong": "Bitte die Einzelthemen stärker miteinander verknüpfen und nicht nur nacheinander aufzählen."
+      },
+      "progressLinks": ["fum1_duales_system_arbeitsrecht", "fum1_entgelt_lernen_entwicklung"]
+    }
+  ]
+}

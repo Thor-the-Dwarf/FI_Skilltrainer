@@ -3795,25 +3795,47 @@
       return words.length ? `${prefix} - ${words.join(" ")}` : prefix;
     }
 
+    /*
+    AGENT ID: codex
+    DATE TIME STAMP: 2026-04-16 19:54:54 CEST
+    ZIEL:
+    Der neue FUM1-Kurs soll in der sichtbaren UI als FÜM1 erscheinen, obwohl der technische Ordnername aus ASCII-Gründen ohne Umlaut geführt wird.
+    WESHALB WURDE SO ENTSCHIEDEN:
+    Der Nutzer will sichtbare Lerninhalte und Kursbezeichnungen konsistent mit echten Umlauten sehen. Für Dateinamen bleibt ASCII sinnvoll, für die Anzeige aber nicht.
+    WAS WURDE PROBIERT:
+    Statt die Ordnerlogik umzubenennen, wird nur die Shortcut-Anzeige gezielt für FUM1 auf FÜM1 gemappt. So bleibt die technische Struktur stabil und die UI zeigt trotzdem die gewünschte Schreibweise.
+    */
     function getFolderShortcutLabel(folder) {
       const safe = sanitizeFolderName(folder);
       if (!safe) return "";
+      if (/^FUM1(?:-(?:Scenarien|Quiz))?$/i.test(safe)) return "FÜM1";
       const shortcutMatch = safe.match(/^([A-Za-z]{2}\d{2})/);
       if (shortcutMatch && shortcutMatch[1]) return shortcutMatch[1].toUpperCase();
       return safe.replace(/-?Scenarien$/i, "");
     }
 
+    /*
+    AGENT ID: codex
+    DATE TIME STAMP: 2026-04-15 06:10:32 CEST
+    ZIEL:
+    Ticketlabels sollen die Schwierigkeit explizit tragen koennen, ohne dass die bestehende Badge-Titel-Aufteilung der UI kaputtgeht.
+    WESHALB WURDE SO ENTSCHIEDEN:
+    Die aktuelle AP1-Basis wird jetzt konsequent als Easy ausgezeichnet und spaeter kommen Medium und Hard im selben Muster dazu.
+    WAS WURDE PROBIERT:
+    Erst wurden nur die Datenlabels angepasst; danach wurde die Label-Aufteilung erweitert, damit Badge und Resttitel auch mit Easy, Medium und Hard sauber erkannt werden.
+    */
     function splitScenarioTicketLabel(label = "") {
       const raw = String(label || "").trim();
       if (!raw) {
         return { badge: "", title: "Ticket" };
       }
-      const match = raw.match(/^(Ticket\s+\d{2}|Ticket\s+\d+|\d{2})\s*[-–—:]\s*(.+)$/i);
+      const match = raw.match(/^(Ticket\s+\d{2}|Ticket\s+\d+|\d{2})(?:\s+(Easy|Medium|Hard))?\s*[-–—:]\s*(.+)$/i);
       if (match) {
-        const normalizedBadge = /^ticket/i.test(match[1]) ? match[1] : `Ticket ${match[1]}`;
+        const normalizedBadgeBase = /^ticket/i.test(match[1]) ? match[1] : `Ticket ${match[1]}`;
+        const difficultyLabel = String(match[2] || "").trim();
         return {
-          badge: normalizedBadge.replace(/\s+/g, " ").trim(),
-          title: match[2].trim() || raw
+          badge: [normalizedBadgeBase.replace(/\s+/g, " ").trim(), difficultyLabel].filter(Boolean).join(" ").trim(),
+          title: match[3].trim() || raw
         };
       }
       return { badge: "", title: raw };

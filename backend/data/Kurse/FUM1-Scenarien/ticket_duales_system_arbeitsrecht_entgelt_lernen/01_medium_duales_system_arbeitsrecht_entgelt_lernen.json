@@ -1,0 +1,143 @@
+{
+  "scenario": {
+    "company": "CampusWerk Lernsysteme GmbH",
+    "scale": "Bildungsträger und IT-Dienstleister mit zwei Standorten",
+    "context": "Für den neuen Ausbildungsjahrgang sollen die Verträge kurzfristig um eine zweite Einsatzstelle ergänzt, ein Abendtermin mit Minderjährigen sauber geplant, offene Fragen zur Entgeltabrechnung beantwortet und individuelle Weiterbildungswege vorbereitet werden. Die Personalabteilung will vermeiden, dass aus vielen Einzelthemen widersprüchliche Zusagen entstehen.",
+    "mission": "Sie ordnen Rechte, Pflichten, Schutzregeln, Tarifbezüge, Entgeltfragen und Weiterbildungswege so ein, dass die Ausbildungskoordination belastbar entscheiden kann.",
+    "station": {
+      "id": "FUM1-ST-01-MED",
+      "department": "Ausbildung, Personal und Lernkoordination",
+      "profile": "Vertragsänderungen, Schutzregeln, Entgeltfälle und Kompetenzentwicklung",
+      "constraints": [
+        "Vertrags- und Ausbildungslogik nicht vermischen",
+        "Schutzgesetze auf echte Alltagssituationen anwenden",
+        "Entgelt- und Entwicklungsfragen nachvollziehbar begründen"
+      ]
+    },
+    "customerRequest": {
+      "from": "personal@campuswerk.example",
+      "to": "neu.im.team@campuswerk.example",
+      "subject": "Koordination für Standortwechsel, Abendtermin und Lernpfade",
+      "date": "2026-04-16",
+      "body": "Bitte prüfen Sie für den neuen Ausbildungsjahrgang drei Dinge besonders sorgfältig: Erstens müssen einige Verträge wegen eines zweiten Einsatzortes angepasst werden. Zweitens soll ein Infoabend mit Minderjährigen rechtlich sauber geplant werden. Drittens brauchen wir eine verständliche Orientierung zu Entgeltfragen, tariflichen Grundlagen und möglichen Weiterbildungswegen."
+    }
+  },
+  "questions": [
+    {
+      "id": "ctx01",
+      "type": "context_card",
+      "title": "Mittlere Komplexität im Ausbildungsalltag",
+      "contentBlocks": [
+        {
+          "type": "text",
+          "text": "Im mittleren Schwierigkeitsgrad reicht es nicht mehr, nur Begriffe zu definieren. Jetzt müssen Vertragsbestandteile, Schutzregeln, Mitbestimmung, Abrechnung und Weiterentwicklung in echte betriebliche Situationen übertragen werden. Der fachliche Anspruch liegt darin, saubere Entscheidungen für mehrere zusammenhängende Fälle zu treffen."
+        },
+        {
+          "type": "table",
+          "columns": ["Fall", "Klärpunkt"],
+          "rows": [
+            ["zweiter Einsatzort", "Vertragsanpassung und Ausbildungsplan sauber einordnen"],
+            ["Abendtermin mit Minderjährigen", "Jugendarbeitsschutz und Arbeitszeit mitdenken"],
+            ["Fragen zur Abrechnung", "Abzüge, Zuschüsse und tarifliche Wirkung verständlich erklären"]
+          ]
+        }
+      ]
+    },
+    {
+      "id": "q01",
+      "type": "multi_select",
+      "title": "Vertragsänderung vorbereiten",
+      "prompt": "Welche Punkte sollten bei einer geänderten Einsatzstelle nicht nur informell, sondern sauber festgehalten werden? Mehrere Antworten sind richtig.",
+      "options": [
+        { "text": "ab wann die Änderung gelten soll", "correct": true, "rationale": "Der zeitliche Beginn muss klar sein." },
+        { "text": "welcher Ausbildungsabschnitt oder Lernort betroffen ist", "correct": true, "rationale": "Auch der Ausbildungsbezug muss nachvollziehbar bleiben." },
+        { "text": "welche Ansprechpersonen und organisatorischen Rahmenbedingungen gelten", "correct": true, "rationale": "Das hilft im Alltag und bei Rückfragen." },
+        { "text": "nur die private Lieblingsroute zur neuen Adresse", "correct": false, "rationale": "Das ist kein fachlicher Vertrags- oder Organisationspunkt." },
+        { "text": "ob der betriebliche Ausbildungsplan angepasst werden muss", "correct": true, "rationale": "Der Ausbildungsplan muss zur gelebten Ausbildung passen." }
+      ],
+      "feedback": {
+        "correct": "Richtig: Vertrags- und Ausbildungsänderung brauchen saubere Dokumentation statt bloßer Zuruflogik.",
+        "wrong": "Bitte stärker zwischen organisatorisch relevanten Punkten und rein privaten Details unterscheiden."
+      },
+      "progressLinks": ["fum1_duales_system_arbeitsrecht"]
+    },
+    {
+      "id": "q02",
+      "type": "single_choice",
+      "title": "Minderjährige beim Abendtermin",
+      "prompt": "Was ist bei einem geplanten Abendtermin mit minderjährigen Auszubildenden fachlich am wichtigsten?",
+      "options": [
+        { "text": "Jugendarbeitsschutz und Ruhezeiten vor der Zusage prüfen und den Ablauf gegebenenfalls anpassen", "rationale": "Genau diese Schutzlogik ist hier entscheidend." },
+        { "text": "Ein Abendtermin ist immer automatisch zulässig, wenn er pädagogisch sinnvoll klingt", "rationale": "So pauschal stimmt das gerade nicht." },
+        { "text": "Minderjährige dürfen nur dann teilnehmen, wenn sie auf Vergütung verzichten", "rationale": "Das ist fachlich falsch." },
+        { "text": "Es reicht aus, wenn der Betrieb die Schule erst nachträglich informiert", "rationale": "Eine saubere Prüfung muss vorher stattfinden." }
+      ],
+      "correctIndex": 0,
+      "feedback": {
+        "correct": "Richtig: Erst Schutzregeln prüfen, dann den Termin sauber organisieren.",
+        "wrong": "Bitte Jugendarbeitsschutz und Arbeitszeit nicht als Nebenthema behandeln."
+      },
+      "progressLinks": ["fum1_duales_system_arbeitsrecht"]
+    },
+    {
+      "id": "sep01",
+      "type": "followup_divider",
+      "title": "Folgeauftrag 1 - Entgelt und Tarifbezug erklären",
+      "from": "abrechnung@campuswerk.example",
+      "to": "neu.im.team@campuswerk.example",
+      "subject": "Fragen zum Nettobetrag und zu Zuschüssen verständlich beantworten",
+      "date": "2026-04-16",
+      "body": "Mehrere neue Auszubildende haben nach ihrer ersten Abrechnung Rückfragen zu Netto, Sozialabgaben, möglichen Zuschüssen und zur Rolle von Tarifverträgen gestellt. Bitte bereiten Sie fachlich saubere Erklärungen vor, die nicht bevormundend klingen."
+    },
+    {
+      "id": "q03",
+      "type": "multi_select",
+      "title": "Abrechnung verständlich vorbereiten",
+      "prompt": "Welche Aussagen helfen dabei, eine Entgeltabrechnung fachlich richtig zu erklären? Mehrere Antworten sind richtig.",
+      "options": [
+        { "text": "Der Nettobetrag ist nicht identisch mit dem Bruttobetrag, weil Abzüge berücksichtigt werden.", "correct": true, "rationale": "Das ist eine wichtige Grundklärung." },
+        { "text": "Sozialabgaben sind Teil gesetzlicher Sicherungssysteme und keine Strafe.", "correct": true, "rationale": "Genau diese Einordnung hilft Missverständnisse zu vermeiden." },
+        { "text": "Tarifverträge können Einfluss auf Vergütung und Rahmenbedingungen haben.", "correct": true, "rationale": "Das ist fachlich relevant." },
+        { "text": "Vorschüsse und Zuschüsse sind immer exakt dasselbe.", "correct": false, "rationale": "Beides sollte sauber unterschieden werden." },
+        { "text": "Geldwerte Vorteile können je nach Gestaltung ebenfalls abrechnungsrelevant sein.", "correct": true, "rationale": "Auch dieser Punkt gehört in die Erklärung." }
+      ],
+      "feedback": {
+        "correct": "Richtig: So werden Abrechnung, Tarifwirkung und Zusatzleistungen verständlich eingeordnet.",
+        "wrong": "Bitte Brutto, Netto, Abzüge und Zusatzleistungen klarer voneinander trennen."
+      },
+      "progressLinks": ["fum1_entgelt_lernen_entwicklung"]
+    },
+    {
+      "id": "q04",
+      "type": "single_choice",
+      "title": "Weiterbildungsweg wählen",
+      "prompt": "Welche Entscheidung wirkt für die Kompetenzentwicklung eines Auszubildenden am sinnvollsten?",
+      "options": [
+        { "text": "Weiterbildungsform und Lernquelle am tatsächlichen Lernziel und Entwicklungsstand ausrichten", "rationale": "Genau diese Passung macht Weiterbildung sinnvoll." },
+        { "text": "Immer denselben Weg wählen, unabhängig vom Thema", "rationale": "So würden Lernziele und Bedarf leicht verfehlt." },
+        { "text": "Nur externe Maßnahmen gelten als echte Weiterbildung", "rationale": "Interne und externe Wege können beide sinnvoll sein." },
+        { "text": "Weiterbildung erst nach mehreren Jahren Berufserfahrung überhaupt zulassen", "rationale": "Lernen beginnt deutlich früher." }
+      ],
+      "correctIndex": 0,
+      "feedback": {
+        "correct": "Richtig: Weiterbildung muss zum Bedarf, Ziel und Lernstand passen.",
+        "wrong": "Bitte Weiterbildung stärker als zielgerichtete Entscheidung und nicht als starres Schema betrachten."
+      },
+      "progressLinks": ["fum1_entgelt_lernen_entwicklung"]
+    },
+    {
+      "id": "q05",
+      "type": "short_text",
+      "title": "Koordinierte Entscheidung formulieren",
+      "prompt": "Formulieren Sie in 5 bis 7 Sätzen, wie Sie den Fall mit Vertragsänderung, Minderjährigenschutz und Entgeltfragen geordnet bearbeiten würden. Gehen Sie dabei auf Dokumentation, Schutzregeln und eine verständliche Kommunikation ein.",
+      "minChars": 230,
+      "requiredKeywords": ["Vertrag", "Schutz", "Abrechnung"],
+      "expectedOutline": "Vertrags- und Plananpassung, Schutzprüfung für Abendtermine und klare Erklärung von Abrechnung oder Tarifbezug zusammenführen.",
+      "feedback": {
+        "correct": "Richtig: Die drei Teilfälle sind zu einer sauberen Koordinationsentscheidung verbunden.",
+        "wrong": "Bitte Vertragsanpassung, Schutzprüfung und Abrechnung nicht als voneinander getrennte Einzelreaktionen stehen lassen."
+      },
+      "progressLinks": ["fum1_duales_system_arbeitsrecht", "fum1_entgelt_lernen_entwicklung"]
+    }
+  ]
+}
