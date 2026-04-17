@@ -1,0 +1,406 @@
+{
+  "scenarioFolder": "FUM1-Scenarien",
+  "quizFolder": "FUM1-Quiz",
+  "scenarioFile": "ticket_programmspezifikation_datenmodelle_schnittstellen/05_easy_programmspezifikation_datenmodelle_schnittstellen.json",
+  "quizFile": "quiz_programmspezifikation_datenmodelle_schnittstellen/quiz05_easy_V03_programmspezifikation_datenmodelle_schnittstellen.json",
+  "ticketId": "05_easy_programmspezifikation_datenmodelle_schnittstellen.json",
+  "versionId": "V03",
+  "title": "Ticket 05 Easy - Programmspezifikation, Datenmodelle und Schnittstellen (V03)",
+  "description": "Manuell verfasste dritte FÜM1-Version zu Programmspezifikation, Modellierung, Schnittstellen und Datenhaltung.",
+  "topics": [
+    "Programmspezifikation, Modellierung und Technologiewahl fachlich sicher einordnen",
+    "Datenhaltung, Schnittstellen und strukturierte Softwareplanung nachvollziehbar bewerten"
+  ],
+  "defaultInteractionType": "single",
+  "defaultQuestionKind": "eine_richtige_antwort_waehlen",
+  "defaultBadgeLabel": "Welche Antwort trifft am besten zu?",
+  "questions": [
+    {
+      "id": "fum1_t05_q01",
+      "conceptId": "fum1_t05_programmspezifikation_zweck",
+      "variantId": "fum1_t05_programmspezifikation_zweck_v03",
+      "interactionType": "single",
+      "prompt": "Welche Rolle übernimmt die Programmspezifikation am Projektanfang am besten?",
+      "maxSelections": 1,
+      "options": [
+        { "id": "a", "text": "Sie macht den fachlichen Auftrag und die erwartete Lösung nachvollziehbar.", "correct": true, "explanation": "Genau diese Klärung ist ihre Aufgabe." },
+        { "id": "b", "text": "Sie ersetzt alle Gespräche mit Fachseite und Entwicklung.", "correct": false, "explanation": "Gespräche bleiben weiterhin nötig." },
+        { "id": "c", "text": "Sie regelt ausschließlich spätere Designfarben.", "correct": false, "explanation": "Dafür ist sie viel zu eng gefasst." },
+        { "id": "d", "text": "Sie wird erst nach der Fertigstellung interessant.", "correct": false, "explanation": "Sie ist gerade zu Beginn besonders wichtig." }
+      ]
+    },
+    {
+      "id": "fum1_t05_q02",
+      "conceptId": "fum1_t05_anforderungen_abstimmen",
+      "variantId": "fum1_t05_anforderungen_abstimmen_v03",
+      "interactionType": "multi",
+      "prompt": "Welche Punkte gehören in das erste strukturierte Anforderungsgespräch? Mehrere Aussagen sind richtig.",
+      "maxSelections": 4,
+      "options": [
+        { "id": "a", "text": "welche Funktionen im Werkzeug den größten fachlichen Nutzen bringen", "correct": true, "explanation": "Der Nutzen der Funktionen muss früh geklärt werden." },
+        { "id": "b", "text": "welche Rollen später auf Daten oder Abläufe zugreifen", "correct": true, "explanation": "Rollen prägen Prozesse und Rechte." },
+        { "id": "c", "text": "welche Informationen das System verwalten soll", "correct": true, "explanation": "Diese Frage bestimmt das Datenmodell mit." },
+        { "id": "d", "text": "welche Schnittstellen oder Datenaustausche berücksichtigt werden müssen", "correct": true, "explanation": "Auch dieser Austausch muss früh mitgedacht werden." },
+        { "id": "e", "text": "ob die Projektdokumentation komplett vermieden werden darf", "correct": false, "explanation": "Dokumentation gehört weiter zum Projekt." }
+      ]
+    },
+    {
+      "id": "fum1_t05_q03",
+      "conceptId": "fum1_t05_anforderungen_dokumentieren",
+      "variantId": "fum1_t05_anforderungen_dokumentieren_v03",
+      "interactionType": "binary",
+      "prompt": "Prüfe die Aussage: Schriftlich dokumentierte Anforderungen sind wichtig, damit spätere Entscheidungen nachvollziehbar bleiben.",
+      "maxSelections": 1,
+      "options": [
+        { "id": "a", "text": "Ja", "correct": true, "explanation": "Richtig. Genau diese Nachvollziehbarkeit ist wichtig." },
+        { "id": "b", "text": "Nein", "correct": false, "explanation": "Doch, ohne Dokumentation wird vieles unklar." }
+      ]
+    },
+    {
+      "id": "fum1_t05_q04",
+      "conceptId": "fum1_t05_datenmodell_aus_anforderungen",
+      "variantId": "fum1_t05_datenmodell_aus_anforderungen_v03",
+      "interactionType": "single",
+      "prompt": "Woraus sollte ein erster Modellierungsentwurf am ehesten entstehen?",
+      "maxSelections": 1,
+      "options": [
+        { "id": "a", "text": "Aus den fachlichen Objekten, Zuständen und Beziehungen, die vorher abgestimmt wurden", "correct": true, "explanation": "So bleibt das Modell fachlich sauber begründet." },
+        { "id": "b", "text": "Aus zufälligen Tabellenbegriffen ohne Projektbezug", "correct": false, "explanation": "Das würde kein brauchbares Fachmodell ergeben." },
+        { "id": "c", "text": "Nur aus dem Namen des eingesetzten Frameworks", "correct": false, "explanation": "Technik ist nicht der fachliche Ursprung." },
+        { "id": "d", "text": "Nur aus der späteren Farbgestaltung der Oberfläche", "correct": false, "explanation": "Das ist kein sinnvoller Modellierungsstart." }
+      ]
+    },
+    {
+      "id": "fum1_t05_q05",
+      "conceptId": "fum1_t05_strukturen_aus_anforderungen",
+      "variantId": "fum1_t05_strukturen_aus_anforderungen_v03",
+      "interactionType": "single",
+      "prompt": "Wann sind Strukturen wirklich aus fachlichen Anforderungen abgeleitet?",
+      "maxSelections": 1,
+      "options": [
+        { "id": "a", "text": "Wenn die Aufteilung der Lösung die tatsächlichen Rollen, Daten und Abläufe des Projekts widerspiegelt", "correct": true, "explanation": "Dann orientiert sich die Struktur an der Fachseite." },
+        { "id": "b", "text": "Wenn sie nur nach Zufall oder persönlicher Gewohnheit entsteht", "correct": false, "explanation": "Das wäre gerade nicht fachlich abgeleitet." },
+        { "id": "c", "text": "Wenn alle Teile unabhängig von ihren Aufgaben identisch bleiben", "correct": false, "explanation": "So würde Fachlogik verloren gehen." },
+        { "id": "d", "text": "Wenn Strukturfragen erst nach dem Produktivstart besprochen werden", "correct": false, "explanation": "Dann käme die Strukturarbeit zu spät." }
+      ]
+    },
+    {
+      "id": "fum1_t05_q06",
+      "conceptId": "fum1_t05_entitaet_attribut",
+      "variantId": "fum1_t05_entitaet_attribut_v03",
+      "interactionType": "single",
+      "prompt": "Welche Aussage zu Entität und Attribut ist fachlich stimmig?",
+      "maxSelections": 1,
+      "options": [
+        { "id": "a", "text": "Eine Entität kann zum Beispiel ein Raum sein, ein Attribut dazu etwa die Raumnummer.", "correct": true, "explanation": "So ist die Unterscheidung sauber getroffen." },
+        { "id": "b", "text": "Entität und Attribut meinen immer dasselbe.", "correct": false, "explanation": "Beides ist im Modell klar voneinander getrennt." },
+        { "id": "c", "text": "Attribute gibt es nur bei Netzwerken, Entitäten nur im Arbeitsrecht.", "correct": false, "explanation": "Das ist fachlich unsinnig." },
+        { "id": "d", "text": "Ein Attribut ist immer wichtiger als die Entität selbst.", "correct": false, "explanation": "So lässt sich der Zusammenhang nicht beschreiben." }
+      ]
+    },
+    {
+      "id": "fum1_t05_q07",
+      "conceptId": "fum1_t05_primarschluessel",
+      "variantId": "fum1_t05_primarschluessel_v03",
+      "interactionType": "single",
+      "prompt": "Wofür braucht eine Tabelle einen Primärschlüssel?",
+      "maxSelections": 1,
+      "options": [
+        { "id": "a", "text": "Damit einzelne Datensätze eindeutig identifizierbar bleiben", "correct": true, "explanation": "Das ist die Kernidee des Primärschlüssels." },
+        { "id": "b", "text": "Damit Formulare schöner aussehen", "correct": false, "explanation": "Das ist kein Datenbankzweck." },
+        { "id": "c", "text": "Damit automatisch jede Dokumentation entsteht", "correct": false, "explanation": "Ein Schlüssel erzeugt keine Dokumentation." },
+        { "id": "d", "text": "Damit Entgelte berechnet werden", "correct": false, "explanation": "Auch das ist fachfremd." }
+      ]
+    },
+    {
+      "id": "fum1_t05_q08",
+      "conceptId": "fum1_t05_fremdschluessel",
+      "variantId": "fum1_t05_fremdschluessel_v03",
+      "interactionType": "binary",
+      "prompt": "Prüfe die Aussage: Ein Fremdschlüssel unterstützt die Verknüpfung fachlich zusammengehöriger Datensätze über mehrere Tabellen hinweg.",
+      "maxSelections": 1,
+      "options": [
+        { "id": "a", "text": "Ja", "correct": true, "explanation": "Richtig. Genau dafür wird er eingesetzt." },
+        { "id": "b", "text": "Nein", "correct": false, "explanation": "Doch, dieser Zusammenhang ist zentral." }
+      ]
+    },
+    {
+      "id": "fum1_t05_q09",
+      "conceptId": "fum1_t05_kardinalitaet",
+      "variantId": "fum1_t05_kardinalitaet_v03",
+      "interactionType": "single",
+      "prompt": "Was wird mit einer Kardinalität beschrieben?",
+      "maxSelections": 1,
+      "options": [
+        { "id": "a", "text": "Die mögliche Anzahl von Beziehungen zwischen zwei Entitätstypen", "correct": true, "explanation": "Genau diese Mengenbeziehung ist gemeint." },
+        { "id": "b", "text": "Die Farbe der Tabellenköpfe", "correct": false, "explanation": "Das ist fachlich belanglos." },
+        { "id": "c", "text": "Die Länge des Passworts für das WLAN", "correct": false, "explanation": "Auch das gehört nicht zur Kardinalität." },
+        { "id": "d", "text": "Die Höhe einer Kirchensteuer", "correct": false, "explanation": "Das ist ein anderes Themengebiet." }
+      ]
+    },
+    {
+      "id": "fum1_t05_q10",
+      "conceptId": "fum1_t05_datentypen",
+      "variantId": "fum1_t05_datentypen_v03",
+      "interactionType": "single",
+      "prompt": "Welcher Leitgedanke hilft bei der Wahl von Datentypen?",
+      "maxSelections": 1,
+      "options": [
+        { "id": "a", "text": "Der Datentyp soll die fachliche Form der Information passend abbilden.", "correct": true, "explanation": "Dann bleiben die Daten sinnvoll nutzbar." },
+        { "id": "b", "text": "Alle Werte werden vorsichtshalber als Freitext angelegt.", "correct": false, "explanation": "Das wäre oft ungenau und schlecht prüfbar." },
+        { "id": "c", "text": "Die Entscheidung wird rein zufällig getroffen.", "correct": false, "explanation": "Datentypen sollten fachlich begründet sein." },
+        { "id": "d", "text": "Datentypen sind nur für ausgedruckte Listen relevant.", "correct": false, "explanation": "Gerade in Software sind sie wichtig." }
+      ]
+    },
+    {
+      "id": "fum1_t05_q11",
+      "conceptId": "fum1_t05_validierung",
+      "variantId": "fum1_t05_validierung_v03",
+      "interactionType": "multi",
+      "prompt": "Welche Prüfungen helfen dabei, fehlerhafte Eingaben früh abzufangen? Mehrere Aussagen sind richtig.",
+      "maxSelections": 4,
+      "options": [
+        { "id": "a", "text": "Pflichtfelder kontrollieren", "correct": true, "explanation": "Unvollständige Eingaben werden so früh sichtbar." },
+        { "id": "b", "text": "Formate und Datentypen abgleichen", "correct": true, "explanation": "Damit lassen sich viele Fehler sofort abfangen." },
+        { "id": "c", "text": "Wertebereiche auf Plausibilität prüfen", "correct": true, "explanation": "Auch Grenz- und Plausibilitätsprüfungen sind wichtig." },
+        { "id": "d", "text": "Abhängigkeiten zwischen Eingabefeldern berücksichtigen", "correct": true, "explanation": "Feldbeziehungen gehören oft zur Datenqualität." },
+        { "id": "e", "text": "Alle Werte grundsätzlich ungeprüft speichern", "correct": false, "explanation": "Das wäre gerade kein Validierungskonzept." }
+      ]
+    },
+    {
+      "id": "fum1_t05_q12",
+      "conceptId": "fum1_t05_schnittstelle_zweck",
+      "variantId": "fum1_t05_schnittstelle_zweck_v03",
+      "interactionType": "single",
+      "prompt": "Was ist die Kernaufgabe einer Schnittstelle in diesem Werkzeug?",
+      "maxSelections": 1,
+      "options": [
+        { "id": "a", "text": "Sie beschreibt, wie Daten oder Funktionen geregelt ausgetauscht werden.", "correct": true, "explanation": "Genau das ist der fachliche Kern einer Schnittstelle." },
+        { "id": "b", "text": "Sie ersetzt automatisch das Rollenmodell.", "correct": false, "explanation": "Das wären unterschiedliche Dinge." },
+        { "id": "c", "text": "Sie dient nur dem Aussehen der Anwendung.", "correct": false, "explanation": "Auch das trifft nicht zu." },
+        { "id": "d", "text": "Sie ist ausschließlich für Papierdruck zuständig.", "correct": false, "explanation": "Das wäre viel zu eng." }
+      ]
+    },
+    {
+      "id": "fum1_t05_q13",
+      "conceptId": "fum1_t05_schnittstellenbeschreibung",
+      "variantId": "fum1_t05_schnittstellenbeschreibung_v03",
+      "interactionType": "multi",
+      "prompt": "Welche Informationen sollte eine Schnittstellenbeschreibung enthalten? Mehrere Aussagen sind richtig.",
+      "maxSelections": 4,
+      "options": [
+        { "id": "a", "text": "welche Daten hinein- oder herausgehen", "correct": true, "explanation": "Der Datenaustausch ist zentral." },
+        { "id": "b", "text": "welche Formate, Regeln und Pflichtfelder gelten", "correct": true, "explanation": "Formate und Regeln müssen klar feststehen." },
+        { "id": "c", "text": "welche Reaktionen bei Fehlern oder ungültigen Daten zu erwarten sind", "correct": true, "explanation": "Auch Fehlerfälle gehören beschrieben." },
+        { "id": "d", "text": "wer beteiligt ist oder Verantwortung trägt", "correct": true, "explanation": "Der Nutzungskontext ist ebenfalls wichtig." },
+        { "id": "e", "text": "welche Musik in der Teeküche lief", "correct": false, "explanation": "Das ist für die Schnittstelle bedeutungslos." }
+      ]
+    },
+    {
+      "id": "fum1_t05_q14",
+      "conceptId": "fum1_t05_uml_zweck",
+      "variantId": "fum1_t05_uml_zweck_v03",
+      "interactionType": "binary",
+      "prompt": "Prüfe die Aussage: UML kann helfen, Fachseite und Entwicklung schneller zu einem gemeinsamen Bild von Struktur und Ablauf zu führen.",
+      "maxSelections": 1,
+      "options": [
+        { "id": "a", "text": "Ja", "correct": true, "explanation": "Richtig. Genau darin liegt ein großer Nutzen von UML." },
+        { "id": "b", "text": "Nein", "correct": false, "explanation": "Doch, UML wird oft gerade zu diesem Zweck eingesetzt." }
+      ]
+    },
+    {
+      "id": "fum1_t05_q15",
+      "conceptId": "fum1_t05_use_case",
+      "variantId": "fum1_t05_use_case_v03",
+      "interactionType": "single",
+      "prompt": "Wann ist ein Use-Case-Diagramm besonders hilfreich?",
+      "maxSelections": 1,
+      "options": [
+        { "id": "a", "text": "Wenn gezeigt werden soll, welche Akteure welche Nutzung des Systems erwarten", "correct": true, "explanation": "Genau dafür ist diese Sicht gedacht." },
+        { "id": "b", "text": "Wenn Netzwerkkabel nummeriert werden sollen", "correct": false, "explanation": "Das ist kein Use-Case-Thema." },
+        { "id": "c", "text": "Wenn Primärschlüssel automatisch erzeugt werden sollen", "correct": false, "explanation": "Auch das ist ein anderer Bereich." },
+        { "id": "d", "text": "Wenn Lohnsteuer berechnet werden soll", "correct": false, "explanation": "Das ist fachfremd." }
+      ]
+    },
+    {
+      "id": "fum1_t05_q16",
+      "conceptId": "fum1_t05_klassendiagramm",
+      "variantId": "fum1_t05_klassendiagramm_v03",
+      "interactionType": "single",
+      "prompt": "Wodurch unterstützt ein Klassendiagramm die Planung der Lösung?",
+      "maxSelections": 1,
+      "options": [
+        { "id": "a", "text": "Es macht Klassen, Eigenschaften und Beziehungen in einer strukturierten Form sichtbar.", "correct": true, "explanation": "Das ist seine klassische Stärke." },
+        { "id": "b", "text": "Es ersetzt alle fachlichen Gespräche.", "correct": false, "explanation": "Modelle unterstützen Gespräche, ersetzen sie aber nicht vollständig." },
+        { "id": "c", "text": "Es misst elektrische Spannungen.", "correct": false, "explanation": "Das gehört nicht zur UML." },
+        { "id": "d", "text": "Es dient nur der Routerkonfiguration.", "correct": false, "explanation": "Auch das ist unzutreffend." }
+      ]
+    },
+    {
+      "id": "fum1_t05_q17",
+      "conceptId": "fum1_t05_aktivitaetsdiagramm",
+      "variantId": "fum1_t05_aktivitaetsdiagramm_v03",
+      "interactionType": "single",
+      "prompt": "Welcher Sachverhalt lässt sich mit einem Aktivitätsdiagramm besonders gut besprechen?",
+      "maxSelections": 1,
+      "options": [
+        { "id": "a", "text": "Ein Prozess mit Schritten, Entscheidungen und möglichen Verzweigungen", "correct": true, "explanation": "Dafür ist das Aktivitätsdiagramm besonders geeignet." },
+        { "id": "b", "text": "Die Höhe einer Ausbildungsvergütung", "correct": false, "explanation": "Das ist kein UML-Ablaufthema." },
+        { "id": "c", "text": "Die Auswahl eines RAID-Levels", "correct": false, "explanation": "Auch das gehört in einen anderen Bereich." },
+        { "id": "d", "text": "Die Stärke eines WLAN-Signals", "correct": false, "explanation": "Das ist ein Netzwerk- und kein Prozessdiagramm." }
+      ]
+    },
+    {
+      "id": "fum1_t05_q18",
+      "conceptId": "fum1_t05_programmiersprache_anwendungsfall",
+      "variantId": "fum1_t05_programmiersprache_anwendungsfall_v03",
+      "interactionType": "single",
+      "prompt": "Was ist für die Wahl einer Programmiersprache fachlich am wichtigsten?",
+      "maxSelections": 1,
+      "options": [
+        { "id": "a", "text": "Die Sprache muss zu Problem, Plattform und Projektzielen passen.", "correct": true, "explanation": "So wird die Auswahl sachlich begründet." },
+        { "id": "b", "text": "Nur das Bauchgefühl einer Person entscheidet.", "correct": false, "explanation": "Ein Projekt braucht nachvollziehbare Kriterien." },
+        { "id": "c", "text": "Es muss immer automatisch die neueste Sprache sein.", "correct": false, "explanation": "Neuheit ist kein ausreichendes Kriterium." },
+        { "id": "d", "text": "Die Sprache hat grundsätzlich keinen Einfluss.", "correct": false, "explanation": "Doch, die Wahl beeinflusst Umsetzung und Betrieb." }
+      ]
+    },
+    {
+      "id": "fum1_t05_q19",
+      "conceptId": "fum1_t05_programmiersprache_team",
+      "variantId": "fum1_t05_programmiersprache_team_v03",
+      "interactionType": "multi",
+      "prompt": "Welche ergänzenden Kriterien können eine Sprachwahl sinnvoll absichern? Mehrere Aussagen sind richtig.",
+      "maxSelections": 4,
+      "options": [
+        { "id": "a", "text": "wie gut die Lösung später wartbar bleibt", "correct": true, "explanation": "Wartbarkeit ist ein wichtiges Qualitätsziel." },
+        { "id": "b", "text": "welches Wissen und welche Erfahrung das Team mitbringt", "correct": true, "explanation": "Teamkompetenz beeinflusst Aufwand und Risiko." },
+        { "id": "c", "text": "welche Bibliotheken und Werkzeuge praktisch verfügbar sind", "correct": true, "explanation": "Werkzeuge können die Umsetzung deutlich erleichtern." },
+        { "id": "d", "text": "wie pflegbar die Lösung über längere Zeit bleibt", "correct": true, "explanation": "Langfristige Pflege gehört in die Entscheidung." },
+        { "id": "e", "text": "welches Getränk am häufigsten im Team getrunken wird", "correct": false, "explanation": "Das ist kein technisches oder fachliches Kriterium." }
+      ]
+    },
+    {
+      "id": "fum1_t05_q20",
+      "conceptId": "fum1_t05_datenhaltung_frueh_planen",
+      "variantId": "fum1_t05_datenhaltung_frueh_planen_v03",
+      "interactionType": "binary",
+      "prompt": "Prüfe die Aussage: Datenhaltung ist kein Nachthema, sondern sollte schon vor der Umsetzung strukturiert geplant werden.",
+      "maxSelections": 1,
+      "options": [
+        { "id": "a", "text": "Ja", "correct": true, "explanation": "Richtig. Gerade frühe Planung verhindert spätere Brüche." },
+        { "id": "b", "text": "Nein", "correct": false, "explanation": "Doch, Datenhaltung gehört an den Projektanfang." }
+      ]
+    },
+    {
+      "id": "fum1_t05_q21",
+      "conceptId": "fum1_t05_datei_vs_datenbank",
+      "variantId": "fum1_t05_datei_vs_datenbank_v03",
+      "interactionType": "single",
+      "prompt": "Wann spricht der fachliche Bedarf eher für eine Datenbanklösung?",
+      "maxSelections": 1,
+      "options": [
+        { "id": "a", "text": "Wenn zusammenhängende, strukturierte Daten zuverlässig gespeichert und ausgewertet werden sollen", "correct": true, "explanation": "Dann ist eine Datenbank oft die passende Grundlage." },
+        { "id": "b", "text": "Wenn keinerlei Struktur oder Beziehung zwischen Daten besteht", "correct": false, "explanation": "Dann ist die Fragestellung eine andere." },
+        { "id": "c", "text": "Wenn nur eine einzelne Grafik abgelegt werden soll", "correct": false, "explanation": "Dafür braucht es nicht zwingend eine Datenbank." },
+        { "id": "d", "text": "Wenn nur ein Ausdruck für das schwarze Brett entsteht", "correct": false, "explanation": "Auch das ist kein typischer Datenbankfall." }
+      ]
+    },
+    {
+      "id": "fum1_t05_q22",
+      "conceptId": "fum1_t05_dbms_integrieren",
+      "variantId": "fum1_t05_dbms_integrieren_v03",
+      "interactionType": "single",
+      "prompt": "Warum ist ein Datenbanksystem für ein internes Verwaltungswerkzeug oft sinnvoll?",
+      "maxSelections": 1,
+      "options": [
+        { "id": "a", "text": "Weil strukturierte Daten konsistent abgelegt, gesucht und verändert werden können", "correct": true, "explanation": "Das beschreibt den Kernnutzen eines DBMS gut." },
+        { "id": "b", "text": "Weil damit jede Fachanalyse entfällt", "correct": false, "explanation": "Ein DBMS ersetzt keine Anforderungsanalyse." },
+        { "id": "c", "text": "Weil dadurch automatisch alle Schnittstellen überflüssig werden", "correct": false, "explanation": "Schnittstellen bleiben weiterhin relevant." },
+        { "id": "d", "text": "Weil es nur zum Etikettieren von Hardware gedacht ist", "correct": false, "explanation": "Das ist kein passender Nutzen." }
+      ]
+    },
+    {
+      "id": "fum1_t05_q23",
+      "conceptId": "fum1_t05_speicherkonzept",
+      "variantId": "fum1_t05_speicherkonzept_v03",
+      "interactionType": "single",
+      "prompt": "Welche Überlegung gehört besonders in ein Speicherkonzept?",
+      "maxSelections": 1,
+      "options": [
+        { "id": "a", "text": "Wie sich Datenmenge, Zugriff, Sicherung und Wiederherstellung auf die Lösung auswirken", "correct": true, "explanation": "Diese Faktoren sind für das Konzept zentral." },
+        { "id": "b", "text": "Welche Farbe die Türen im Flur haben", "correct": false, "explanation": "Das ist fachlich belanglos." },
+        { "id": "c", "text": "Wie viele Pausen pro Tag stattfinden", "correct": false, "explanation": "Auch das hat mit dem Speicherkonzept nichts zu tun." },
+        { "id": "d", "text": "Wer die Kaffeemaschine gereinigt hat", "correct": false, "explanation": "Das ist kein technisches Kriterium." }
+      ]
+    },
+    {
+      "id": "fum1_t05_q24",
+      "conceptId": "fum1_t05_software_zur_datenverwaltung_anpassen",
+      "variantId": "fum1_t05_software_zur_datenverwaltung_anpassen_v03",
+      "interactionType": "single",
+      "prompt": "Wie zeigt sich eine sinnvolle Anpassung von Software zur Verwaltung von Daten am ehesten?",
+      "maxSelections": 1,
+      "options": [
+        { "id": "a", "text": "Die Anwendung passt Masken, Prüfungen und Abläufe an die tatsächlichen Fachprozesse an.", "correct": true, "explanation": "Genau darin liegt die fachlich gute Anpassung." },
+        { "id": "b", "text": "Es wird nur die Datei umbenannt.", "correct": false, "explanation": "Das wäre keine inhaltliche Anpassung." },
+        { "id": "c", "text": "Alle Anforderungen werden bewusst ignoriert.", "correct": false, "explanation": "Dann wäre die Lösung fachlich untauglich." },
+        { "id": "d", "text": "Es werden nur andere Hintergrundgrafiken verwendet.", "correct": false, "explanation": "Das betrifft nicht die Datenverwaltung." }
+      ]
+    },
+    {
+      "id": "fum1_t05_q25",
+      "conceptId": "fum1_t05_modularisierung",
+      "variantId": "fum1_t05_modularisierung_v03",
+      "interactionType": "binary",
+      "prompt": "Prüfe die Aussage: Modularisierung kann helfen, Verantwortlichkeiten klarer zu schneiden und spätere Änderungen gezielter umzusetzen.",
+      "maxSelections": 1,
+      "options": [
+        { "id": "a", "text": "Ja", "correct": true, "explanation": "Richtig. Genau diese Wirkung wird mit Modularisierung oft angestrebt." },
+        { "id": "b", "text": "Nein", "correct": false, "explanation": "Doch, das gehört zu ihren Vorteilen." }
+      ]
+    },
+    {
+      "id": "fum1_t05_q26",
+      "conceptId": "fum1_t05_testfaelle_aus_anforderungen",
+      "variantId": "fum1_t05_testfaelle_aus_anforderungen_v03",
+      "interactionType": "single",
+      "prompt": "Warum ist es sinnvoll, Testfälle an Anforderungen auszurichten?",
+      "maxSelections": 1,
+      "options": [
+        { "id": "a", "text": "Weil Anforderungen beschreiben, welches Verhalten oder Ergebnis überprüft werden soll", "correct": true, "explanation": "Darauf lässt sich ein Test direkt beziehen." },
+        { "id": "b", "text": "Weil Tests mit Anforderungen nichts zu tun haben", "correct": false, "explanation": "Das wäre fachlich falsch." },
+        { "id": "c", "text": "Weil dann keine Dokumentation mehr nötig wäre", "correct": false, "explanation": "Dokumentation bleibt weiterhin sinnvoll." },
+        { "id": "d", "text": "Weil dadurch automatisch alle Fehler verschwinden", "correct": false, "explanation": "Tests machen Fehler sichtbar, sie beseitigen sie nicht automatisch." }
+      ]
+    },
+    {
+      "id": "fum1_t05_q27",
+      "conceptId": "fum1_t05_schnittstellenaenderungen_dokumentieren",
+      "variantId": "fum1_t05_schnittstellenaenderungen_dokumentieren_v03",
+      "interactionType": "single",
+      "prompt": "Warum ist eine saubere Dokumentation von Schnittstellenänderungen so wichtig?",
+      "maxSelections": 1,
+      "options": [
+        { "id": "a", "text": "Damit alle beteiligten Seiten Änderungen nachvollziehen und ihre Anbindung sicher anpassen können", "correct": true, "explanation": "Genau so werden Fehler durch stille Änderungen vermieden." },
+        { "id": "b", "text": "Damit nie wieder jemand nachfragen darf", "correct": false, "explanation": "Rückfragen können trotzdem sinnvoll bleiben." },
+        { "id": "c", "text": "Damit Tests überflüssig werden", "correct": false, "explanation": "Dokumentation ersetzt Tests nicht." },
+        { "id": "d", "text": "Damit nur größere Dateien entstehen", "correct": false, "explanation": "Das wäre kein fachlicher Nutzen." }
+      ]
+    },
+    {
+      "id": "fum1_t05_q28",
+      "conceptId": "fum1_t05_projektstart_kombination",
+      "variantId": "fum1_t05_projektstart_kombination_v03",
+      "interactionType": "multi",
+      "prompt": "Welche Schritte ergeben zusammen einen fachlich sauberen Start für das Verwaltungswerkzeug? Mehrere Aussagen sind richtig.",
+      "maxSelections": 4,
+      "options": [
+        { "id": "a", "text": "Anforderungen mit der Fachseite klären und dokumentieren", "correct": true, "explanation": "Das ist die notwendige Grundlage." },
+        { "id": "b", "text": "ein erstes Daten- und Strukturmodell entwerfen", "correct": true, "explanation": "So wird die spätere Lösung fachlich greifbar." },
+        { "id": "c", "text": "Schnittstellen, Verantwortlichkeiten und Datenflüsse festhalten", "correct": true, "explanation": "Auch diese Punkte müssen früh geklärt werden." },
+        { "id": "d", "text": "die technische Umsetzung begründet auswählen", "correct": true, "explanation": "Technische Entscheidungen sollten nachvollziehbar sein." },
+        { "id": "e", "text": "Sonderfälle sofort programmieren, bevor der Fachkern feststeht", "correct": false, "explanation": "Das wäre kein geordneter Projektstart." }
+      ]
+    }
+  ]
+}
