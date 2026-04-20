@@ -8,11 +8,13 @@
 - Playwright Screenshot-API fuer `animations`, `mask`, `maskColor` und Skalierungsoptionen: <https://playwright.dev/docs/api/class-page#page-screenshot>
 - Playwright ARIA Snapshots fuer stabile Struktur-/Semantik-Regressionen: <https://playwright.dev/docs/aria-snapshots>
 - Playwright Trace Viewer fuer reproduzierbare Fehlersuche mit DOM-, Netzwerk- und Konsolen-Kontext: <https://playwright.dev/docs/trace-viewer-intro>
+- Playwright Release Notes fuer `page.screencast`, CLI-Traceanalyse, `retain-on-failure-and-retries`, `page.ariaSnapshot()` und agentenorientierte Browser-Interoperabilitaet: <https://playwright.dev/docs/release-notes>
 - Chrome DevTools Performance Panel fuer CPU-/Thread-Analyse: <https://developer.chrome.com/docs/devtools/performance/overview>
 - Chrome DevTools Performance Features Reference fuer Live Metrics, Screenshots, Throttling und Long-Task-Auswertung: <https://developer.chrome.com/docs/devtools/performance/reference>
 - Chrome DevTools Rendering Tab fuer Paint-/Layout-/Layer-Overlays und Rendering-Statistiken: <https://developer.chrome.com/docs/devtools/rendering>
 - Chrome DevTools Memory-Analyse fuer Heap-Snapshots, Detached DOM Trees und Allocation Timelines: <https://developer.chrome.com/docs/devtools/memory-problems>
 - Chrome DevTools AI assistance for performance als optionale Auswertungsschicht auf vorhandenen Profiles: <https://developer.chrome.com/docs/devtools/ai-assistance/performance>
+- Chrome DevTools MCP fuer agentengetriebene Browser-Verifikation und Performance-Traces: <https://developer.chrome.com/blog/chrome-devtools-mcp>
 - Chrome 147 DevTools-Update zu AI assistance mit automatischer Kontextwahl und Trace-Start: <https://developer.chrome.com/blog/new-in-devtools-147?hl=en>
 - MDN `webglcontextlost`: <https://developer.mozilla.org/en-US/docs/Web/API/HTMLCanvasElement/webglcontextlost_event>
 - MDN `webglcontextrestored`: <https://developer.mozilla.org/en-US/docs/Web/API/HTMLCanvasElement/webglcontextrestored_event>
@@ -33,15 +35,21 @@
    - Playwright Assertions
    - ARIA-Snapshots
 5. Screenshot-Diffs nur in stabiler Umgebung und zuerst mit `stylePath`, danach bei Bedarf mit `mask`/`maskColor` und deaktivierten Animationen stabilisieren.
-6. Bei unklarer Laufzeitqualitaet vor dem Voll-Trace zuerst Rendering Tab, Performance Monitor oder Live Metrics zur schnellen Einordnung nutzen.
-7. Trace-Aufzeichnung fuer flaky oder schwer reproduzierbare Fehler standardmaessig mitdenken.
-8. Wenn ein Problem visuell, GPU-nah oder im Tiefenpuffer steckt:
+6. Wenn Playwright verfuegbar ist, neue Artefaktarten bewusst trennen:
+   - ARIA-Snapshot-Assertions oder direkte `ariaSnapshot()`-Artefakte fuer Semantik
+   - Screenshot-Baselines fuer visuelle Regressionen
+   - Trace-Dateien fuer Fehlerpfade, bei flaky Tests mit `retain-on-failure-and-retries`
+   - Screencasts nur fuer menschliche Review-Walkthroughs und Agenten-Receipts
+7. Bei unklarer Laufzeitqualitaet vor dem Voll-Trace zuerst Rendering Tab, Performance Monitor oder Live Metrics zur schnellen Einordnung nutzen.
+8. Trace-Aufzeichnung fuer flaky oder schwer reproduzierbare Fehler standardmaessig mitdenken. Fuer Agenten-/Terminalarbeit zuerst pruefen, ob `npx playwright trace` schneller zum relevanten Schritt fuehrt als der GUI-Trace-Viewer.
+9. Wenn ein Problem visuell, GPU-nah oder im Tiefenpuffer steckt:
    - Babylon Inspector fuer interaktive Szenenpruefung
    - SpectorJS fuer Frame-Capture
    - Browser DevTools Performance/Rendering
    - Memory Panel bei Asset-Churn, Scene-Switches oder schleichender Degradation
    - optional DevTools AI assistance zur schnelleren Profil-Einordnung
-9. Danach erst Code-Hypothesen festziehen.
+   - optional Chrome DevTools MCP, wenn ein Coding-Agent den Browserlauf oder Performance-Trace selbst erzeugen soll
+10. Danach erst Code-Hypothesen festziehen.
 
 ## Mindestanforderungen fuer einen stabilen Testlauf
 
@@ -59,11 +67,13 @@
   - ARIA-Snapshots fuer semantische Regressionen
   - Traces fuer Fehlersuche und Nachvollziehbarkeit
 - Playwrights Screenshot-API ist inzwischen relevant genug fuer den Testpfad selbst, weil `animations`, `mask` und `maskColor` volatile Bereiche sauberer stabilisieren als ad-hoc CSS allein.
+- Playwright 1.59 erweitert den praktischen Testpfad: `page.screencast` liefert annotierte Review-Videos, `npx playwright trace` macht gespeicherte Traces terminal-/agententauglich, `retain-on-failure-and-retries` erleichtert flaky-Vergleiche, und direkte ARIA-Snapshot-Methoden liefern schnelle Semantik-Artefakte.
 - Kontext-Restore sollte nicht als simples "Event kam zurueck, also okay" bewertet werden. Nach offiziellem MDN-Hinweis sind alte WebGL-Ressourcen nach Restore ungueltig und muessen neu erstellt werden.
 - MDN betont staerker als frueher, dass VRAM-Budgets, gezieltes Flush-Verhalten und das Vermeiden blockierender WebGL-Calls Teil der Stabilitaetsdiagnose sind, nicht nur Engine-Optimierung.
 - Chrome DevTools deckt den schnellen Vorfilter inzwischen besser ab: Rendering-Overlays, Live Metrics, Performance Monitor und Memory-Workflows sollten vor tiefen Einzelwerkzeugen eingesetzt werden.
 - Chrome DevTools hat inzwischen eine offizielle AI-Assistenz fuer Performance-Profile. Das ist nuetzlich fuer Triage, ersetzt aber keine Rohdaten und kein manuelles Profil-Review.
 - Seit dem Chrome-147-Update vom 7. April 2026 kann DevTools AI assistance den Kontext haeufig selbst waehlen und bei offenen Performance-Fragen direkt einen Trace starten. Das beschleunigt Triage, aendert aber nicht die Belegpflicht.
+- Chrome DevTools MCP ist als offizieller Preview-Pfad fuer agentengetriebene Browser-Verifikation und Performance-Traces relevant, aber nur als Werkzeug zur Artefakt-Erzeugung. Die Bewertung bleibt an Rohdaten und Review gebunden.
 - `WEBGL_debug_renderer_info` sollte wegen eingeschraenkter Verfuegbarkeit und Datenschutz-Fingerprinting-Risiken nur noch als Edge-Case-Diagnose dienen.
 
 ## Was weiter gueltig bleibt
@@ -73,11 +83,13 @@
 - SpectorJS bleibt das beste freie Werkzeug fuer konkrete WebGL-Frame-Inspektion.
 - Browser-Performance-Tools bleiben Pflicht bei Framedrops, Hitches, Main-Thread-Blockaden und unklarer GPU-/CPU-Verteilung.
 - ARIA-Snapshots bleiben der robusteste kostenlose Gegenpol zu fragilen Pixeltests, wenn Struktur wichtiger ist als exakte Renderausgabe.
+- Video-/Screencast-Artefakte helfen beim Review komplexer 3D-Flows, bleiben aber ein Begleitnachweis.
 
 ## Zu deprecaten oder umzurahmen
 
 - Desktop-Screenshots als primaerer Nachweis: deprecated.
 - Reine Pixel-Checks ohne Stabilisierung oder Begleitartefakt: umrahmen als schwaches Signal.
+- Reine Video-Receipts ohne Assertion, DOM-Report, Trace oder Profil: umrahmen als Review-Material, nicht als Regressionstest.
 - Renderer-/Vendor-Auslese als Standardtestpfad: deprecated, nur Edge-Case-Diagnose.
 - Dauerhafte `getError()`-/`getParameter()`-Abfragen im Renderpfad: deprecated als allgemeine Testprobe, nur gezielt ausserhalb heisser Pfade einsetzen.
 - Dauerhaft geoeffneter Babylon Inspector im Standardworkflow: umrahmen als ad-hoc Debugpfad statt Regressionstool.

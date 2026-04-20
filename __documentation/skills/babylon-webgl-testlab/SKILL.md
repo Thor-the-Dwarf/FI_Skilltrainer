@@ -28,12 +28,16 @@ Nutze dieses Skill fuer alle Babylon-/WebGL-lastigen Prototypen in diesem Repo, 
    - fuer Screenshot-Stabilisierung zuerst `stylePath`, dann `mask`/`maskColor`, bei Bedarf `animations: 'disabled'`
    - `stylePath` zum Ausblenden volatiler UI-Anteile
    - `toMatchAriaSnapshot()` fuer Struktur-/Label-Regressionen statt nur Pixelbild
-   - Trace-Aufzeichnung mindestens `on-first-retry`, bei lokaler Fehlersuche notfalls `--trace on`
+   - `page.ariaSnapshot()` oder `locator.ariaSnapshot({ depth, mode })` fuer schnelle Semantik-Artefakte ohne Snapshot-Datei, wenn die installierte Playwright-Version das unterstuetzt
+   - Trace-Aufzeichnung mindestens `on-first-retry`, bei flaky 3D-Laeufen bevorzugt `retain-on-failure-and-retries`, damit erfolgreiche und fehlgeschlagene Versuche vergleichbar bleiben
+   - `npx playwright trace ...` fuer agenten- oder terminaltaugliche Trace-Sichtung nutzen, wenn kein GUI-Trace-Viewer sinnvoll ist
+   - `page.screencast` nur als Review-/Walkthrough-Artefakt mit klaren Kapiteln/Aktionsmarkern einsetzen; es ersetzt keine Assertions, Screenshots, Traces oder Testlab-Reports
 6. Erst wenn Rendering-/Frame-Probleme danach unklar bleiben:
    - Babylon Inspector / Debug Layer fuer Szene-, Material-, Kamera- und State-Inspektion
    - SpectorJS fuer WebGL-Frame-Capture, Draw-Calls, Ressourcen und Pipeline-Zustaende
    - Browser-Performance-Tools zuerst fuer Live-Metriken, Rendering-Overlays, CPU-, Main-Thread- und Long-Task-Analyse
    - Chrome DevTools AI assistance nur als Erklaerungs-/Priorisierungshilfe auf bereits aufgezeichneten Profilen
+   - Chrome DevTools MCP nur fuer agentengetriebene Browserverifikation oder Performance-Traces nutzen; Ergebnisse immer mit Rohtrace, Screenshot, DOM-Report oder manuellem Review belegen
 7. Fuehre am Ende jedes Auftrags das Schlussprotokoll aus:
    `references/closeout-protocol.md`
 
@@ -53,17 +57,21 @@ Nutze dieses Skill fuer alle Babylon-/WebGL-lastigen Prototypen in diesem Repo, 
 
 - Testlab-Overlay plus DOM-Probe ist der Standardpfad fuer repo-interne Smoke- und Strukturtests.
 - Playwright ist der naechste Schritt, wenn reproduzierbare Browserinteraktion, Screenshot-Diffs, ARIA-Snapshots oder Traces gebraucht werden.
+- Playwright-Screencasts sind hilfreich fuer menschliche Review-Nachweise von komplexen 3D-Flows, aber nur zusaetzlich zu maschinenlesbaren Checks.
+- Playwright-CLI-Traceanalyse ist sinnvoll, wenn ein Agent oder Terminal-Workflow schnell herausfinden muss, welcher Schritt in einem gespeicherten Trace kippt.
 - Babylon Inspector ist interaktiv stark, aber kein belastbarer Ersatz fuer automatisierte Regressionen.
 - SpectorJS ist die richtige Wahl fuer Draw-Call-, FBO-, Shader-, Texture- oder Clear-Order-Fragen.
 - Chrome/Firefox DevTools sind fuer Performance, Memory-Druck, Event-Timing und GPU-nahe Laufzeitbilder gedacht, nicht fuer semantische UI-Regressionen.
 - Chrome Rendering Tab und Performance Monitor sind der schnelle Vorfilter, bevor du schwere Traces oder Spector-Captures sammelst.
 - Das Memory Panel ist Pflicht, wenn Babylon-Szenen, DOM-Overlays oder Asset-Wechsel ueber Zeit langsamer oder instabiler werden.
 - AI-Assistance in DevTools darf Hypothesen verdichten, aber nie die primaeren Artefakte ersetzen. Behalte immer Trace, Overlay-Report oder Spector-Capture als Beleg.
+- Chrome DevTools MCP kann einen Coding-Agenten in echte Chrome-Laufzeit bringen. Nutze es als Verifikations- und Trace-Erzeuger, nicht als alleinige Bewertungsinstanz.
 
 ## Veraltete oder umzurahmende Methoden
 
 - Desktop-Screenshots auf die Arbeitsflaeche bleiben de facto deprecated. Nutze stattdessen Testlab-Reports, Playwright-Artefakte oder gezielte Browser-Captures.
 - Reine Pixelvergleiche ohne Trace, DOM-Report oder klare Stabilisierungsmassnahmen sind fuer 3D-UI zu fragil.
+- Reine Video-/Screencast-Receipts ohne Assertions oder maschinenlesbares Diagnoseartefakt sind nur Review-Hilfe, kein Regressionstest.
 - `WEBGL_debug_renderer_info` nur fuer gezielte GPU-Diagnose nutzen. Nicht als allgemeine Testentscheidung oder Fingerprinting-Abkuerzung einplanen.
 - Dauerhafte `gl.getError()`-/`getParameter()`-Polls im Renderpfad sind als Standardprobe deprecated, weil sie Stalls und Jank verstecken oder sogar erzeugen koennen.
 - Babylon Inspector nicht dauerhaft im Produktworkflow verdrahten. Er ist Diagnosewerkzeug, kein Standardbestandteil des reproduzierbaren Testpfads.
