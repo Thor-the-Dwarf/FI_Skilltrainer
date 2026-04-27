@@ -24,6 +24,7 @@ Nutze dieses Skill fuer alle Babylon-/WebGL-lastigen Prototypen in diesem Repo, 
 4. Fuer headless Checks verwende zuerst den DOM-Probe-Script:
    `zsh __documentation/skills/babylon-webgl-testlab/scripts/run_crystal_katalog_dom_probe.sh`
 5. Wenn Playwright im Projekt verfuegbar ist, nutze ihn fuer wiederholbare Browserlaeufe:
+   - fuer Server-Readiness keine Sleeps verdrahten; stattdessen `webServer.url`, `webServer.port` oder `webServer.wait` mit echtem Readiness-Signal nutzen
    - `toHaveScreenshot()` nur in stabiler Umgebung und mit bewusstem Baseline-Review
    - fuer Screenshot-Stabilisierung zuerst `stylePath`, dann `mask`/`maskColor`, bei Bedarf `animations: 'disabled'`
    - `stylePath` zum Ausblenden volatiler UI-Anteile
@@ -32,6 +33,8 @@ Nutze dieses Skill fuer alle Babylon-/WebGL-lastigen Prototypen in diesem Repo, 
    - Trace-Aufzeichnung mindestens `on-first-retry`, bei flaky 3D-Laeufen bevorzugt `retain-on-failure-and-retries`, damit erfolgreiche und fehlgeschlagene Versuche vergleichbar bleiben
    - `npx playwright trace ...` fuer agenten- oder terminaltaugliche Trace-Sichtung nutzen, wenn kein GUI-Trace-Viewer sinnvoll ist
    - `page.screencast` nur als Review-/Walkthrough-Artefakt mit klaren Kapiteln/Aktionsmarkern einsetzen; es ersetzt keine Assertions, Screenshots, Traces oder Testlab-Reports
+   - fuer agentische Review-Loops sind `browser.bind()`, `playwright-cli show`, `npx playwright test --debug=cli` und gebundene Browser-Sessions sinnvoll, wenn ein Agent und ein Mensch denselben Lauf untersuchen muessen
+   - bei Visual-Baselines Browseridentitaet bewusst festhalten: Seit Playwright 1.57 laufen Default-Builds auf Chrome for Testing statt auf frueheren Chromium-Binaries
 6. Erst wenn Rendering-/Frame-Probleme danach unklar bleiben:
    - Babylon Inspector / Debug Layer fuer Szene-, Material-, Kamera- und State-Inspektion
    - SpectorJS fuer WebGL-Frame-Capture, Draw-Calls, Ressourcen und Pipeline-Zustaende
@@ -57,7 +60,9 @@ Nutze dieses Skill fuer alle Babylon-/WebGL-lastigen Prototypen in diesem Repo, 
 
 - Testlab-Overlay plus DOM-Probe ist der Standardpfad fuer repo-interne Smoke- und Strukturtests.
 - Playwright ist der naechste Schritt, wenn reproduzierbare Browserinteraktion, Screenshot-Diffs, ARIA-Snapshots oder Traces gebraucht werden.
+- Playwright ist seit den aktuellen Releases auch fuer agentengetriebene Reviews brauchbarer geworden: gebundene Browser-Sessions, CLI-Debugging und CLI-Traceanalyse verkuerzen den Weg zwischen Fehler, Artefakt und Review.
 - Playwright-Screencasts sind hilfreich fuer menschliche Review-Nachweise von komplexen 3D-Flows, aber nur zusaetzlich zu maschinenlesbaren Checks.
+- Fuer repo-lokale Serverstarts sind explizite Readiness-Signale belastbarer als Sleeps oder "Port wird schon offen sein"-Annahmen.
 - Playwright-CLI-Traceanalyse ist sinnvoll, wenn ein Agent oder Terminal-Workflow schnell herausfinden muss, welcher Schritt in einem gespeicherten Trace kippt.
 - Babylon Inspector ist interaktiv stark, aber kein belastbarer Ersatz fuer automatisierte Regressionen.
 - SpectorJS ist die richtige Wahl fuer Draw-Call-, FBO-, Shader-, Texture- oder Clear-Order-Fragen.
@@ -72,6 +77,7 @@ Nutze dieses Skill fuer alle Babylon-/WebGL-lastigen Prototypen in diesem Repo, 
 - Desktop-Screenshots auf die Arbeitsflaeche bleiben de facto deprecated. Nutze stattdessen Testlab-Reports, Playwright-Artefakte oder gezielte Browser-Captures.
 - Reine Pixelvergleiche ohne Trace, DOM-Report oder klare Stabilisierungsmassnahmen sind fuer 3D-UI zu fragil.
 - Reine Video-/Screencast-Receipts ohne Assertions oder maschinenlesbares Diagnoseartefakt sind nur Review-Hilfe, kein Regressionstest.
+- Sleep-basierte Warteketten vor Browserstarts sind als Standardmethode deprecated; nutze stattdessen echte Server-Readiness ueber Playwright oder den Sandbox-Report.
 - `WEBGL_debug_renderer_info` nur fuer gezielte GPU-Diagnose nutzen. Nicht als allgemeine Testentscheidung oder Fingerprinting-Abkuerzung einplanen.
 - Dauerhafte `gl.getError()`-/`getParameter()`-Polls im Renderpfad sind als Standardprobe deprecated, weil sie Stalls und Jank verstecken oder sogar erzeugen koennen.
 - Babylon Inspector nicht dauerhaft im Produktworkflow verdrahten. Er ist Diagnosewerkzeug, kein Standardbestandteil des reproduzierbaren Testpfads.
