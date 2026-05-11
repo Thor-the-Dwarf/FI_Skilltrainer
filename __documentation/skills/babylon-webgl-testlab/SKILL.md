@@ -26,6 +26,7 @@ Nutze dieses Skill fuer alle Babylon-/WebGL-lastigen Prototypen in diesem Repo, 
 5. Wenn Playwright im Projekt verfuegbar ist, nutze ihn fuer wiederholbare Browserlaeufe:
    - fuer Server-Readiness keine Sleeps verdrahten; stattdessen `webServer.url`, `webServer.port` oder `webServer.wait` mit echtem Readiness-Signal nutzen
    - vor tiefen Traces zuerst leichte Fehlerartefakte sichern: `page.pageErrors()` und `page.consoleMessages()` fuer die juengsten Laufzeitfehler/Konsolenhinweise abfragen, wenn die installierte Playwright-Version das unterstuetzt
+   - bei Asset- oder Ladeverdacht zuerst `page.requests()` fuer den juengsten Anfrage-Satz pruefen, bevor ein voller Trace oder HAR noetig wird
    - `toHaveScreenshot()` nur in stabiler Umgebung und mit bewusstem Baseline-Review
    - fuer Screenshot-Stabilisierung zuerst `stylePath`, dann `mask`/`maskColor`, bei Bedarf `animations: 'disabled'`
    - `stylePath` zum Ausblenden volatiler UI-Anteile
@@ -36,11 +37,13 @@ Nutze dieses Skill fuer alle Babylon-/WebGL-lastigen Prototypen in diesem Repo, 
    - HTML-Report `Speedboard` und Timeline nutzen, wenn 3D-Tests ploetzlich langsamer oder nur unter Last flaky werden; das ist der schnelle Weg vor tiefen Performance-Profilen
    - `page.screencast` nur als Review-/Walkthrough-Artefakt mit klaren Kapiteln/Aktionsmarkern einsetzen; es ersetzt keine Assertions, Screenshots, Traces oder Testlab-Reports
    - fuer agentische Review-Loops sind `browser.bind()`, `playwright-cli show`, `npx playwright test --debug=cli` und gebundene Browser-Sessions sinnvoll, wenn ein Agent und ein Mensch denselben Lauf untersuchen muessen
+   - fuer agentische Testgenerierung oder Reparatur nur die offiziellen Playwright Test Agents (`planner`, `generator`, `healer`) und frisch erzeugte Agent-Definitionen verwenden; generierte Tests immer gegen DOM-Report, Screenshot-Baseline oder Trace verifizieren
    - bei Visual-Baselines Browseridentitaet bewusst festhalten: Seit Playwright 1.57 laufen Default-Builds auf Chrome for Testing statt auf frueheren Chromium-Binaries
 6. Erst wenn Rendering-/Frame-Probleme danach unklar bleiben:
    - Babylon Inspector / Debug Layer fuer Szene-, Material-, Kamera- und State-Inspektion
    - SpectorJS fuer WebGL-Frame-Capture, Draw-Calls, Ressourcen und Pipeline-Zustaende
    - Browser-Performance-Tools zuerst fuer Live-Metriken, Rendering-Overlays, CPU-, Main-Thread- und Long-Task-Analyse
+   - bei Browserabsturz, GPU-Reset oder tabweiten Haengern zusaetzlich Chrome DevTools Crash reports sichten, bevor das Problem nur der Szene oder Babylon selbst zugeschrieben wird
    - Firefox Profiler als zweite CPU-/Main-Thread-Sicht hinzuziehen, wenn Chrome-Traces zu vage bleiben oder ein browseruebergreifender Jank-Verdacht besteht
    - Chrome DevTools AI assistance nur als Erklaerungs-/Priorisierungshilfe auf bereits aufgezeichneten Profilen
    - Chrome DevTools MCP nur fuer agentengetriebene Browserverifikation oder Performance-Traces nutzen; Ergebnisse immer mit Rohtrace, Screenshot, DOM-Report oder manuellem Review belegen
@@ -54,6 +57,7 @@ Nutze dieses Skill fuer alle Babylon-/WebGL-lastigen Prototypen in diesem Repo, 
 - bei Restore-Faellen nicht nur Event protokollieren, sondern Ressourcen und State explizit neu aufbauen
 - `gl.isContextLost()` und `gl.getContextAttributes()` bei unklaren GPU-/Fallback-Faellen mitprotokollieren
 - bei lang laufenden Szenen oder Asset-Churn frueh Memory-Panel, Heap-Snapshots und Detached-DOM-Pruefung einplanen
+- fuer Leak-Verdacht in browserautomatisierten Laeufen nach reproduzierbaren Freigabepunkten `page.requestGC()` als Hilfsprobe einplanen; Freigabe immer ueber WeakRef-/Objektbeobachtung oder Heap-Artefakt absichern
 - H1/H2/H3-Anzahlen und Sichtbarkeit im Testlab-Report
 - Root- und Detail-View separat
 - Kontextverlust und Restore nur gezielt simulieren, nicht dauernd
@@ -65,6 +69,8 @@ Nutze dieses Skill fuer alle Babylon-/WebGL-lastigen Prototypen in diesem Repo, 
 - Playwright ist der naechste Schritt, wenn reproduzierbare Browserinteraktion, Screenshot-Diffs, ARIA-Snapshots oder Traces gebraucht werden.
 - Playwright sollte vor tiefen Traces zuerst die leichten Artefakte liefern: juengste `pageErrors`, Konsolenmeldungen, ARIA-Snapshots und nur dann den schweren Trace.
 - Playwright ist seit den aktuellen Releases auch fuer agentengetriebene Reviews brauchbarer geworden: gebundene Browser-Sessions, CLI-Debugging und CLI-Traceanalyse verkuerzen den Weg zwischen Fehler, Artefakt und Review.
+- Playwrights juengste leichte Diagnosepfade sind fuer 3D-QA wertvoll: `page.requests()` deckt fehlende Asset-, Shader- oder Datenanfragen frueh auf, und `page.requestGC()` hilft bei kontrollierten Leak-Proben in langen Szenen.
+- Offizielle Playwright Test Agents sind nuetzlich fuer AI-gestuetzte Testplanung, -erzeugung und -reparatur, aber nur als beschleunigender Pfad. Die repo-lokale Wahrheit bleibt im DOM-Report, in Traces, Baselines und manueller Review.
 - Playwright-Screencasts sind hilfreich fuer menschliche Review-Nachweise von komplexen 3D-Flows, aber nur zusaetzlich zu maschinenlesbaren Checks.
 - Speedboard und Timeline im HTML-Report sind der schnellste kostenfreie Vorfilter, wenn 3D-Tests ploetzlich langsam, worker-unausgewogen oder nur unter Retry flaky werden.
 - Fuer repo-lokale Serverstarts sind explizite Readiness-Signale belastbarer als Sleeps oder "Port wird schon offen sein"-Annahmen.
@@ -72,6 +78,7 @@ Nutze dieses Skill fuer alle Babylon-/WebGL-lastigen Prototypen in diesem Repo, 
 - Babylon Inspector ist interaktiv stark, aber kein belastbarer Ersatz fuer automatisierte Regressionen.
 - SpectorJS ist die richtige Wahl fuer Draw-Call-, FBO-, Shader-, Texture- oder Clear-Order-Fragen.
 - Chrome/Firefox DevTools sind fuer Performance, Memory-Druck, Event-Timing und GPU-nahe Laufzeitbilder gedacht, nicht fuer semantische UI-Regressionen.
+- Chrome DevTools Crash reports sind ein eigener Diagnosepfad fuer Browserinstabilitaet unter GPU-, Treiber- oder Tabdruck und sollten vor reiner App-Schuldzuweisung geprueft werden.
 - Firefox Profiler ist die passende Zweitmeinung fuer CPU- und Thread-Jank, wenn ein Problem nicht klar Babylon-, App- oder Chrome-spezifisch ist.
 - Chrome Rendering Tab und Performance Monitor sind der schnelle Vorfilter, bevor du schwere Traces oder Spector-Captures sammelst.
 - Das Memory Panel ist Pflicht, wenn Babylon-Szenen, DOM-Overlays oder Asset-Wechsel ueber Zeit langsamer oder instabiler werden.

@@ -7,9 +7,11 @@
 - Playwright Visual Comparisons fuer Screenshot-Baselines, `stylePath` und Snapshot-Review: <https://playwright.dev/docs/test-snapshots>
 - Playwright Screenshot-API fuer `animations`, `mask`, `maskColor` und Skalierungsoptionen: <https://playwright.dev/docs/api/class-page#page-screenshot>
 - Playwright ARIA Snapshots fuer stabile Struktur-/Semantik-Regressionen: <https://playwright.dev/docs/aria-snapshots>
+- Playwright Test Agents fuer offizielle agentische Testplanung, -erzeugung und -reparatur: <https://playwright.dev/docs/test-agents>
 - Playwright Trace Viewer fuer reproduzierbare Fehlersuche mit DOM-, Netzwerk- und Konsolen-Kontext: <https://playwright.dev/docs/trace-viewer-intro>
 - Playwright Release Notes fuer `page.screencast`, CLI-Traceanalyse, `retain-on-failure-and-retries`, `page.ariaSnapshot()`, `browser.bind()` und `--debug=cli`: <https://playwright.dev/docs/release-notes>
 - Playwright Release Notes fuer `Speedboard`, Timeline sowie `page.consoleMessages()` und `page.pageErrors()`: <https://playwright.dev/docs/release-notes>
+- Playwright Page API fuer `page.requests()` und `page.requestGC()` als leichte Netz- und Leak-Probes: <https://playwright.dev/docs/api/class-page>
 - Playwright Browser API fuer gebundene Browser-Sessions: <https://playwright.dev/docs/api/class-browser#browser-bind>
 - Playwright TestConfig `webServer` fuer belastbare Server-Readiness statt Sleeps: <https://playwright.dev/docs/api/class-testconfig>
 - Playwright Browsers-Dokumentation fuer Browser-Binaries, Channels und reproduzierbare Visual-Baselines: <https://playwright.dev/docs/browsers>
@@ -21,6 +23,7 @@
 - Chrome DevTools AI assistance / Chat als optionale Auswertungsschicht auf vorhandenen Profilen, DOM- oder Netzwerk-Kontexten: <https://developer.chrome.com/docs/devtools/ai-assistance/chat#ai-assistance-for-performance>
 - Chrome DevTools MCP fuer agentengetriebene Browser-Verifikation und Performance-Traces: <https://developer.chrome.com/blog/chrome-devtools-mcp>
 - Chrome 147 DevTools-Update zu AI assistance mit automatischer Kontextwahl und Trace-Start: <https://developer.chrome.com/blog/new-in-devtools-147?hl=en>
+- Chrome 148 DevTools-Update zu Crash reports, vollem Accessibility-Tree und MCP-0.24-Reliability-Verbesserungen: <https://developer.chrome.com/blog/new-in-devtools-148?hl=en>
 - Firefox Profiler als offizielle zweite CPU-/Thread-Sicht fuer browseruebergreifende Performanceanalyse: <https://firefox-source-docs.mozilla.org/tools/profiler/index.html>
 - MDN `webglcontextlost`: <https://developer.mozilla.org/en-US/docs/Web/API/HTMLCanvasElement/webglcontextlost_event>
 - MDN `webglcontextrestored`: <https://developer.mozilla.org/en-US/docs/Web/API/HTMLCanvasElement/webglcontextrestored_event>
@@ -43,12 +46,14 @@
 5. Screenshot-Diffs nur in stabiler Umgebung und zuerst mit `stylePath`, danach bei Bedarf mit `mask`/`maskColor` und deaktivierten Animationen stabilisieren.
 6. Wenn Playwright verfuegbar ist, neue Artefaktarten bewusst trennen:
    - `page.pageErrors()` und `page.consoleMessages()` fuer billige Vorab-Hinweise auf Runtime-Fehler
+   - `page.requests()` fuer schnelle Hinweise auf asset- oder datenbezogene Fehlschlaege ohne sofortigen Voll-Trace
    - ARIA-Snapshot-Assertions oder direkte `ariaSnapshot()`-Artefakte fuer Semantik
    - Screenshot-Baselines fuer visuelle Regressionen
    - Trace-Dateien fuer Fehlerpfade, bei flaky Tests mit `retain-on-failure-and-retries`
    - HTML-Report `Speedboard` und Timeline fuer ploetzliche Laufzeitverschiebungen, worker-ungleiche Last oder Retry-Ausreisser
    - Screencasts nur fuer menschliche Review-Walkthroughs und Agenten-Receipts
    - gebundene Browser-Sessions und CLI-Debugging fuer agentische Diagnose oder gemeinsame Mensch-/Agent-Review
+   - offizielle Playwright Test Agents fuer Testplan-, Generierungs- oder Heiler-Loops, aber nur mit nachgelagerter Artefaktpruefung
    - Readiness ueber `webServer.url`, `webServer.port` oder `webServer.wait`, nicht ueber starre Sleeps
 7. Bei unklarer Laufzeitqualitaet vor dem Voll-Trace zuerst Rendering Tab, Performance Monitor oder Live Metrics zur schnellen Einordnung nutzen.
 8. Trace-Aufzeichnung fuer flaky oder schwer reproduzierbare Fehler standardmaessig mitdenken. Fuer Agenten-/Terminalarbeit zuerst pruefen, ob `npx playwright trace` schneller zum relevanten Schritt fuehrt als der GUI-Trace-Viewer.
@@ -56,8 +61,10 @@
    - Babylon Inspector fuer interaktive Szenenpruefung
    - SpectorJS fuer Frame-Capture
    - Browser DevTools Performance/Rendering
+   - Chrome Crash reports bei Browserabsturz, GPU-Reset oder tabweiten Haengern
    - Firefox Profiler als zweite CPU-/Thread-Sicht, wenn Chrome keine klare Zuordnung liefert
    - Memory Panel bei Asset-Churn, Scene-Switches oder schleichender Degradation
+   - `page.requestGC()` bei reproduzierbaren Freigabepunkten als Leak-Hinweis, nicht als alleiniger Beweis
    - optional DevTools AI assistance zur schnelleren Profil-Einordnung
    - optional Chrome DevTools MCP, wenn ein Coding-Agent den Browserlauf oder Performance-Trace selbst erzeugen soll
 10. Danach erst Code-Hypothesen festziehen.
@@ -82,12 +89,16 @@
 - Playwright 1.58 erweitert den praktischen Diagnosepfad vor dem Voll-Trace: `Speedboard` und die HTML-Report-Timeline machen langsame, worker-ungleiche oder retry-lastige 3D-Tests frueher sichtbar.
 - Playwright 1.56 liefert mit `page.consoleMessages()` und `page.pageErrors()` einen leichten Vorab-Check, der haeufig schon vor Trace/Spector zeigt, ob der Lauf an Runtime-Fehlern statt an Rendering selbst scheitert.
 - Playwright 1.59 erweitert den praktischen Testpfad: `page.screencast` liefert annotierte Review-Videos, `npx playwright trace` macht gespeicherte Traces terminal-/agententauglich, `retain-on-failure-and-retries` erleichtert flaky-Vergleiche, direkte ARIA-Snapshot-Methoden liefern schnelle Semantik-Artefakte, und `browser.bind()` plus `playwright-cli show`/`--debug=cli` machen gemeinsame Mensch-/Agent-Diagnose praktikabler.
+- Playwrights offizielle Test-Agents-Dokumentation macht AI-unterstuetzte Testplanung, -generierung und -reparatur inzwischen zu einem klar benannten Wartungspfad. Fuer diese Skill-Doku heisst das: Agenten duerfen beschleunigen, aber nicht den manuellen Artefakt-Review ersetzen.
+- `page.requests()` und `page.requestGC()` sind fuer diese Repo-Teststrategie inzwischen relevant genug, um sie als leichte Vorab-Probes vor HAR, Voll-Trace oder tiefer Memory-Forensik zu fuehren.
 - Kontext-Restore sollte nicht als simples "Event kam zurueck, also okay" bewertet werden. Nach offiziellem MDN-Hinweis sind alte WebGL-Ressourcen nach Restore ungueltig und muessen neu erstellt werden.
 - MDN betont staerker als frueher, dass VRAM-Budgets, gezieltes Flush-Verhalten und das Vermeiden blockierender WebGL-Calls Teil der Stabilitaetsdiagnose sind, nicht nur Engine-Optimierung.
 - Chrome DevTools deckt den schnellen Vorfilter inzwischen besser ab: Rendering-Overlays, Live Metrics, Performance Monitor und Memory-Workflows sollten vor tiefen Einzelwerkzeugen eingesetzt werden.
 - Chrome DevTools hat inzwischen eine offizielle AI-Assistenz als allgemeines Chat-Panel mit Performance-, DOM-, Netzwerk- und Sources-Kontext. Das ist nuetzlich fuer Triage, ersetzt aber keine Rohdaten und kein manuelles Profil-Review.
 - Seit dem Chrome-147-Update vom 7. April 2026 kann DevTools AI assistance den Kontext haeufig selbst waehlen und bei offenen Performance-Fragen direkt einen Trace starten. Das beschleunigt Triage, aendert aber nicht die Belegpflicht.
+- Seit dem Chrome-148-Update vom 5. Mai 2026 gibt es zusaetzlich einen Crash-reports-Kontext in DevTools. Das ist fuer browserbasierte 3D-Diagnostik relevant, wenn Tab- oder GPU-Abstuerze sonst faelschlich nur im App-Code gesucht wuerden.
 - Chrome DevTools MCP ist als offizieller Preview-Pfad fuer agentengetriebene Browser-Verifikation und Performance-Traces relevant, aber nur als Werkzeug zur Artefakt-Erzeugung. Die Bewertung bleibt an Rohdaten und Review gebunden.
+- Chrome 148 dokumentiert zudem Reliability-Fixes fuer den DevTools-MCP-/CLI-Pfad, etwa automatisch abgefangene Browser-Dialoge. Das senkt Stoerquellen in agentischen Browserlaeufen, aendert aber nicht die Anforderung an Belegartefakte.
 - Firefox Profiler ist als kostenfreie Gegenprobe weiter aufgewertet worden: Er bleibt kein WebGL-Spezialwerkzeug, ist aber fuer CPU-Stacks, Marker und browseruebergreifende Thread-Jank-Abgrenzung jetzt klarer als empfohlene Zweitmeinung einzuordnen.
 - `WEBGL_debug_renderer_info` sollte wegen eingeschraenkter Verfuegbarkeit und Datenschutz-Fingerprinting-Risiken nur noch als Edge-Case-Diagnose dienen.
 - Sleep-basierte Server-Warteketten sollten fuer Browser-QA umgerahmt werden: aktuelle Playwright-Versionen bieten bessere Readiness-Signale direkt im Test-Setup.
