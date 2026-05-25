@@ -27,20 +27,22 @@ Nutze dieses Skill fuer alle Babylon-/WebGL-lastigen Prototypen in diesem Repo, 
    - fuer Server-Readiness keine Sleeps verdrahten; stattdessen `webServer.url`, `webServer.port` oder `webServer.wait` mit echtem Readiness-Signal nutzen
    - vor tiefen Traces zuerst leichte Fehlerartefakte sichern: `page.pageErrors()` und `page.consoleMessages()` fuer die juengsten Laufzeitfehler/Konsolenhinweise abfragen, wenn die installierte Playwright-Version das unterstuetzt
    - bei Asset- oder Ladeverdacht zuerst `page.requests()` fuer den juengsten Anfrage-Satz pruefen, bevor ein voller Trace oder HAR noetig wird
+   - wenn `page.requests()` nicht reicht, HAR gezielt mit `context.tracing.startHar()` oder `tracing.stopHar()` auf den fraglichen Ablauf begrenzen, statt pauschal jeden Lauf mit Voll-Trace und separatem HAR aufzublaehen
    - `toHaveScreenshot()` nur in stabiler Umgebung und mit bewusstem Baseline-Review
    - fuer Screenshot-Stabilisierung zuerst `stylePath`, dann `mask`/`maskColor`, bei Bedarf `animations: 'disabled'`
    - `stylePath` zum Ausblenden volatiler UI-Anteile
-   - `toMatchAriaSnapshot()` fuer Struktur-/Label-Regressionen statt nur Pixelbild
-   - `page.ariaSnapshot()` oder `locator.ariaSnapshot({ depth, mode })` fuer schnelle Semantik-Artefakte ohne Snapshot-Datei, wenn die installierte Playwright-Version das unterstuetzt
+   - `toMatchAriaSnapshot()` fuer Struktur-/Label-Regressionen statt nur Pixelbild; seit Playwright 1.60 bei Bedarf direkt auf `page` statt nur auf `locator`
+   - `page.ariaSnapshot()` oder `locator.ariaSnapshot({ depth, mode, boxes })` fuer schnelle Semantik-Artefakte ohne Snapshot-Datei; `boxes` nur dann zuschalten, wenn Bounding-Boxes fuer agentische oder visuelle Layout-Pruefung wirklich gebraucht werden
    - Trace-Aufzeichnung mindestens `on-first-retry`, bei flaky 3D-Laeufen bevorzugt `retain-on-failure-and-retries`, damit erfolgreiche und fehlgeschlagene Versuche vergleichbar bleiben
    - `npx playwright trace ...` fuer agenten- oder terminaltaugliche Trace-Sichtung nutzen, wenn kein GUI-Trace-Viewer sinnvoll ist
    - HTML-Report `Speedboard` und Timeline nutzen, wenn 3D-Tests ploetzlich langsamer oder nur unter Last flaky werden; das ist der schnelle Weg vor tiefen Performance-Profilen
    - `page.screencast` nur als Review-/Walkthrough-Artefakt mit klaren Kapiteln/Aktionsmarkern einsetzen; es ersetzt keine Assertions, Screenshots, Traces oder Testlab-Reports
    - fuer agentische Review-Loops sind `browser.bind()`, `playwright-cli show`, `npx playwright test --debug=cli` und gebundene Browser-Sessions sinnvoll, wenn ein Agent und ein Mensch denselben Lauf untersuchen muessen
    - fuer agentische Testgenerierung oder Reparatur nur die offiziellen Playwright Test Agents (`planner`, `generator`, `healer`) und frisch erzeugte Agent-Definitionen verwenden; generierte Tests immer gegen DOM-Report, Screenshot-Baseline oder Trace verifizieren
+   - bei Testumgebungs-Missbrauch oder verbotenen Seiteneffekten frueh `test.abort()` einsetzen, statt den Lauf mit irrefuehrenden Folgefehlern weiterlaufen zu lassen
    - bei Visual-Baselines Browseridentitaet bewusst festhalten: Seit Playwright 1.57 laufen Default-Builds auf Chrome for Testing statt auf frueheren Chromium-Binaries
 6. Erst wenn Rendering-/Frame-Probleme danach unklar bleiben:
-   - Babylon Inspector / Debug Layer fuer Szene-, Material-, Kamera- und State-Inspektion
+   - Babylon Inspector / Debug Layer für Szene-, Material-, Kamera- und State-Inspektion; bei Modul-Builds den Inspector lokal importieren statt still auf CDN-Fallbacks zu vertrauen
    - SpectorJS fuer WebGL-Frame-Capture, Draw-Calls, Ressourcen und Pipeline-Zustaende
    - Browser-Performance-Tools zuerst fuer Live-Metriken, Rendering-Overlays, CPU-, Main-Thread- und Long-Task-Analyse
    - bei Browserabsturz, GPU-Reset oder tabweiten Haengern zusaetzlich Chrome DevTools Crash reports sichten, bevor das Problem nur der Szene oder Babylon selbst zugeschrieben wird
@@ -56,6 +58,7 @@ Nutze dieses Skill fuer alle Babylon-/WebGL-lastigen Prototypen in diesem Repo, 
 - `webglcontextlost`, `webglcontextrestored`, `webglcontextcreationerror`
 - bei Restore-Faellen nicht nur Event protokollieren, sondern Ressourcen und State explizit neu aufbauen
 - `gl.isContextLost()` und `gl.getContextAttributes()` bei unklaren GPU-/Fallback-Faellen mitprotokollieren
+- wenn Diagnose- oder Capture-Pfade bewusst ausserhalb von `requestAnimationFrame` rendern, gezielt `gl.flush()` als Hilfsprobe einplanen; im normalen RAF-Pfad nicht pauschal erzwingen
 - bei lang laufenden Szenen oder Asset-Churn frueh Memory-Panel, Heap-Snapshots und Detached-DOM-Pruefung einplanen
 - fuer Leak-Verdacht in browserautomatisierten Laeufen nach reproduzierbaren Freigabepunkten `page.requestGC()` als Hilfsprobe einplanen; Freigabe immer ueber WeakRef-/Objektbeobachtung oder Heap-Artefakt absichern
 - H1/H2/H3-Anzahlen und Sichtbarkeit im Testlab-Report
@@ -70,12 +73,15 @@ Nutze dieses Skill fuer alle Babylon-/WebGL-lastigen Prototypen in diesem Repo, 
 - Playwright sollte vor tiefen Traces zuerst die leichten Artefakte liefern: juengste `pageErrors`, Konsolenmeldungen, ARIA-Snapshots und nur dann den schweren Trace.
 - Playwright ist seit den aktuellen Releases auch fuer agentengetriebene Reviews brauchbarer geworden: gebundene Browser-Sessions, CLI-Debugging und CLI-Traceanalyse verkuerzen den Weg zwischen Fehler, Artefakt und Review.
 - Playwrights juengste leichte Diagnosepfade sind fuer 3D-QA wertvoll: `page.requests()` deckt fehlende Asset-, Shader- oder Datenanfragen frueh auf, und `page.requestGC()` hilft bei kontrollierten Leak-Proben in langen Szenen.
+- Playwright 1.60 staerkt zwei bereits sinnvolle Pfade: page-weite ARIA-Snapshots vereinfachen semantische Whole-Page-Checks, und HAR direkt im Tracing-Pfad macht gezielte Netz-Artefakte leichter wartbar als ad-hoc Doppelerfassung.
 - Offizielle Playwright Test Agents sind nuetzlich fuer AI-gestuetzte Testplanung, -erzeugung und -reparatur, aber nur als beschleunigender Pfad. Die repo-lokale Wahrheit bleibt im DOM-Report, in Traces, Baselines und manueller Review.
 - Playwright-Screencasts sind hilfreich fuer menschliche Review-Nachweise von komplexen 3D-Flows, aber nur zusaetzlich zu maschinenlesbaren Checks.
 - Speedboard und Timeline im HTML-Report sind der schnellste kostenfreie Vorfilter, wenn 3D-Tests ploetzlich langsam, worker-unausgewogen oder nur unter Retry flaky werden.
 - Fuer repo-lokale Serverstarts sind explizite Readiness-Signale belastbarer als Sleeps oder "Port wird schon offen sein"-Annahmen.
 - Playwright-CLI-Traceanalyse ist sinnvoll, wenn ein Agent oder Terminal-Workflow schnell herausfinden muss, welcher Schritt in einem gespeicherten Trace kippt.
+- `test.abort()` ist fuer Reliability-Workflows nuetzlich, wenn eine Testumgebung erkennbar ungueltig geworden ist oder ein Lauf verbotene Side-Effects ausloesen wuerde; das spart Folge-Rauschen.
 - Babylon Inspector ist interaktiv stark, aber kein belastbarer Ersatz fuer automatisierte Regressionen.
+- Fuer Babylon-Inspector-Laeufe in Modulprojekten ist der lokale ES-Modul-Import belastbarer als ein impliziter CDN-Nachladepfad; das reduziert falsch-negative Debug-Sitzungen durch Offline-/Policy-Probleme.
 - SpectorJS ist die richtige Wahl fuer Draw-Call-, FBO-, Shader-, Texture- oder Clear-Order-Fragen.
 - Chrome/Firefox DevTools sind fuer Performance, Memory-Druck, Event-Timing und GPU-nahe Laufzeitbilder gedacht, nicht fuer semantische UI-Regressionen.
 - Chrome DevTools Crash reports sind ein eigener Diagnosepfad fuer Browserinstabilitaet unter GPU-, Treiber- oder Tabdruck und sollten vor reiner App-Schuldzuweisung geprueft werden.
@@ -93,6 +99,7 @@ Nutze dieses Skill fuer alle Babylon-/WebGL-lastigen Prototypen in diesem Repo, 
 - Sleep-basierte Warteketten vor Browserstarts sind als Standardmethode deprecated; nutze stattdessen echte Server-Readiness ueber Playwright oder den Sandbox-Report.
 - `WEBGL_debug_renderer_info` nur fuer gezielte GPU-Diagnose nutzen. Nicht als allgemeine Testentscheidung oder Fingerprinting-Abkuerzung einplanen.
 - Dauerhafte `gl.getError()`-/`getParameter()`-Polls im Renderpfad sind als Standardprobe deprecated, weil sie Stalls und Jank verstecken oder sogar erzeugen koennen.
+- Kontextverlust-Dauerschleifen als allgemeiner Smoke-Test sind umzurahmen: `WEBGL_lose_context` gezielt fuer Teardown-, Restore- oder Chaos-Proben nutzen, nicht als permanenten Standardlauf.
 - Babylon Inspector nicht dauerhaft im Produktworkflow verdrahten. Er ist Diagnosewerkzeug, kein Standardbestandteil des reproduzierbaren Testpfads.
 
 ## Artefakte
