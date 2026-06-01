@@ -26,6 +26,7 @@
 - Chrome DevTools AI assistance / Chat als optionale Auswertungsschicht auf vorhandenen Profilen, DOM- oder Netzwerk-Kontexten: <https://developer.chrome.com/docs/devtools/ai-assistance/chat#ai-assistance-for-performance>
 - Chrome DevTools MCP fuer agentengetriebene Browser-Verifikation und Performance-Traces: <https://developer.chrome.com/blog/chrome-devtools-mcp>
 - Chrome 147 DevTools-Update zu AI assistance mit automatischer Kontextwahl und Trace-Start: <https://developer.chrome.com/blog/new-in-devtools-147?hl=en>
+- Chrome 147 DevTools-Update zu integrierten Lighthouse-Audits, Memory-Leak-Detection-Skill und `pageId`-Routing fuer Agenten: <https://developer.chrome.com/blog/new-in-devtools-147?hl=en>
 - Chrome 148 DevTools-Update zu Crash reports, vollem Accessibility-Tree und MCP-0.24-Reliability-Verbesserungen: <https://developer.chrome.com/blog/new-in-devtools-148?hl=en>
 - Firefox Profiler als offizielle zweite CPU-/Thread-Sicht fuer browseruebergreifende Performanceanalyse: <https://firefox-source-docs.mozilla.org/tools/profiler/index.html>
 - MDN `webglcontextlost`: <https://developer.mozilla.org/en-US/docs/Web/API/HTMLCanvasElement/webglcontextlost_event>
@@ -69,6 +70,7 @@
    - SpectorJS fuer Frame-Capture
    - Browser DevTools Performance/Rendering
    - Chrome Crash reports bei Browserabsturz, GPU-Reset oder tabweiten Haengern
+   - optional Lighthouse im DevTools-Panel oder ueber DevTools MCP als fruehes Qualitaets-, Accessibility- oder Performance-Gate
    - Firefox Profiler als zweite CPU-/Thread-Sicht, wenn Chrome keine klare Zuordnung liefert
    - Memory Panel bei Asset-Churn, Scene-Switches oder schleichender Degradation
    - `page.requestGC()` bei reproduzierbaren Freigabepunkten als Leak-Hinweis, nicht als alleiniger Beweis
@@ -106,7 +108,9 @@
 - Chrome DevTools deckt den schnellen Vorfilter inzwischen besser ab: Rendering-Overlays, Live Metrics, Performance Monitor und Memory-Workflows sollten vor tiefen Einzelwerkzeugen eingesetzt werden.
 - Chrome DevTools hat inzwischen eine offizielle AI-Assistenz als allgemeines Chat-Panel mit Performance-, DOM-, Netzwerk- und Sources-Kontext. Das ist nuetzlich fuer Triage, ersetzt aber keine Rohdaten und kein manuelles Profil-Review.
 - Seit dem Chrome-147-Update vom 7. April 2026 kann DevTools AI assistance den Kontext haeufig selbst waehlen und bei offenen Performance-Fragen direkt einen Trace starten. Das beschleunigt Triage, aendert aber nicht die Belegpflicht.
+- Das Chrome-147-Update vom 7. April 2026 erweitert den agentischen DevTools-Pfad praktisch: integrierte Lighthouse-Audits, ein offizieller Memory-Leak-Detection-Skill ueber `take_memory_snapshot` und `pageId`-Routing fuer parallele Agenten machen fruehe Qualitaets- und Leak-Triage billiger, bevor tiefe Handarbeit startet.
 - Seit dem Chrome-148-Update vom 5. Mai 2026 gibt es zusaetzlich einen Crash-reports-Kontext in DevTools. Das ist fuer browserbasierte 3D-Diagnostik relevant, wenn Tab- oder GPU-Abstuerze sonst faelschlich nur im App-Code gesucht wuerden.
+- Das Chrome-148-Update vom 5. Mai 2026 verbessert ausserdem den manuellen Review-Pfad: der Full-Page-Accessibility-Tree ist jetzt Standard, die Network-Ansicht zeigt auf Wunsch die absolute Request-Reihenfolge, und empfohlene Throttling-Presets orientieren sich an Felddaten. Das hilft bei Asset-Order-, Accessibility- und Realnetz-Triage ohne Sonderwerkzeuge.
 - Chrome DevTools MCP ist als offizieller Preview-Pfad fuer agentengetriebene Browser-Verifikation und Performance-Traces relevant, aber nur als Werkzeug zur Artefakt-Erzeugung. Die Bewertung bleibt an Rohdaten und Review gebunden.
 - Chrome 148 dokumentiert zudem Reliability-Fixes fuer den DevTools-MCP-/CLI-Pfad, etwa automatisch abgefangene Browser-Dialoge. Das senkt Stoerquellen in agentischen Browserlaeufen, aendert aber nicht die Anforderung an Belegartefakte.
 - Chrome 148 erweitert den DevTools-fuer-Agenten-Pfad ausserdem um Extension-Debugging, experimentelles WebMCP-Tool-Calling und eine Lighthouse-Kategorie fuer agentisches Browsing. Fuer dieses Repo ist das vorerst kein Standardpfad, aber relevant, falls Browser- oder Tooling-Oberflaechen spaeter agentisch mitgeprueft werden.

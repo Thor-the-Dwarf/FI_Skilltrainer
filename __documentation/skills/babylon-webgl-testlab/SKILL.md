@@ -45,10 +45,11 @@ Nutze dieses Skill fuer alle Babylon-/WebGL-lastigen Prototypen in diesem Repo, 
    - Babylon Inspector / Debug Layer für Szene-, Material-, Kamera- und State-Inspektion; bei Modul-Builds den Inspector lokal importieren statt still auf CDN-Fallbacks zu vertrauen
    - SpectorJS fuer WebGL-Frame-Capture, Draw-Calls, Ressourcen und Pipeline-Zustaende
    - Browser-Performance-Tools zuerst fuer Live-Metriken, Rendering-Overlays, CPU-, Main-Thread- und Long-Task-Analyse
+   - fuer schnelle Qualitäts-, Accessibility- oder Performance-Triage optional zuerst Lighthouse im DevTools-Panel oder ueber den DevTools-MCP-Pfad laufen lassen; tiefe 3D-Befunde danach immer mit Trace, Report oder manueller Inspektion absichern
    - bei Browserabsturz, GPU-Reset oder tabweiten Haengern zusaetzlich Chrome DevTools Crash reports sichten, bevor das Problem nur der Szene oder Babylon selbst zugeschrieben wird
    - Firefox Profiler als zweite CPU-/Main-Thread-Sicht hinzuziehen, wenn Chrome-Traces zu vage bleiben oder ein browseruebergreifender Jank-Verdacht besteht
    - Chrome DevTools AI assistance nur als Erklaerungs-/Priorisierungshilfe auf bereits aufgezeichneten Profilen
-   - Chrome DevTools MCP nur fuer agentengetriebene Browserverifikation oder Performance-Traces nutzen; Ergebnisse immer mit Rohtrace, Screenshot, DOM-Report oder manuellem Review belegen
+   - Chrome DevTools MCP fuer agentengetriebene Browserverifikation, Lighthouse-Audits, Memory-Snapshot-Leak-Triage oder Performance-Traces nutzen; Ergebnisse immer mit Rohtrace, Heap-Artefakt, Screenshot, DOM-Report oder manuellem Review belegen
 7. Fuehre am Ende jedes Auftrags das Schlussprotokoll aus:
    `references/closeout-protocol.md`
 
@@ -86,10 +87,10 @@ Nutze dieses Skill fuer alle Babylon-/WebGL-lastigen Prototypen in diesem Repo, 
 - Chrome/Firefox DevTools sind fuer Performance, Memory-Druck, Event-Timing und GPU-nahe Laufzeitbilder gedacht, nicht fuer semantische UI-Regressionen.
 - Chrome DevTools Crash reports sind ein eigener Diagnosepfad fuer Browserinstabilitaet unter GPU-, Treiber- oder Tabdruck und sollten vor reiner App-Schuldzuweisung geprueft werden.
 - Firefox Profiler ist die passende Zweitmeinung fuer CPU- und Thread-Jank, wenn ein Problem nicht klar Babylon-, App- oder Chrome-spezifisch ist.
-- Chrome Rendering Tab und Performance Monitor sind der schnelle Vorfilter, bevor du schwere Traces oder Spector-Captures sammelst.
+- Chrome Rendering Tab, Performance Monitor, der Default-Full-Page-Accessibility-Tree und die empfohlenen Throttling-Presets sind der schnelle Vorfilter, bevor du schwere Traces oder Spector-Captures sammelst.
 - Das Memory Panel ist Pflicht, wenn Babylon-Szenen, DOM-Overlays oder Asset-Wechsel ueber Zeit langsamer oder instabiler werden.
 - AI-Assistance in DevTools darf Hypothesen verdichten, aber nie die primaeren Artefakte ersetzen. Behalte immer Trace, Overlay-Report oder Spector-Capture als Beleg.
-- Chrome DevTools MCP kann einen Coding-Agenten in echte Chrome-Laufzeit bringen. Nutze es als Verifikations- und Trace-Erzeuger, nicht als alleinige Bewertungsinstanz.
+- Chrome DevTools MCP kann einen Coding-Agenten in echte Chrome-Laufzeit bringen. Nutze es fuer Verifikation, Lighthouse-Audits, Memory-Snapshot-Triage und Trace-Erzeugung, nicht als alleinige Bewertungsinstanz.
 
 ## Veraltete oder umzurahmende Methoden
 
