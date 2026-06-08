@@ -34,7 +34,7 @@ Nutze dieses Skill fuer alle Babylon-/WebGL-lastigen Prototypen in diesem Repo, 
    - `toMatchAriaSnapshot()` fuer Struktur-/Label-Regressionen statt nur Pixelbild; seit Playwright 1.60 bei Bedarf direkt auf `page` statt nur auf `locator`
    - `page.ariaSnapshot()` oder `locator.ariaSnapshot({ depth, mode, boxes })` fuer schnelle Semantik-Artefakte ohne Snapshot-Datei; `boxes` nur dann zuschalten, wenn Bounding-Boxes fuer agentische oder visuelle Layout-Pruefung wirklich gebraucht werden
    - Trace-Aufzeichnung mindestens `on-first-retry`, bei flaky 3D-Laeufen bevorzugt `retain-on-failure-and-retries`, damit erfolgreiche und fehlgeschlagene Versuche vergleichbar bleiben
-   - `npx playwright trace ...` fuer agenten- oder terminaltaugliche Trace-Sichtung nutzen, wenn kein GUI-Trace-Viewer sinnvoll ist
+   - `npx playwright show-trace trace.zip` oder `npx playwright show-trace trace/` für agenten- oder terminaltaugliche Trace-Sichtung nutzen, wenn kein GUI-Trace-Viewer sinnvoll ist
    - HTML-Report `Speedboard` und Timeline nutzen, wenn 3D-Tests ploetzlich langsamer oder nur unter Last flaky werden; das ist der schnelle Weg vor tiefen Performance-Profilen
    - `page.screencast` nur als Review-/Walkthrough-Artefakt mit klaren Kapiteln/Aktionsmarkern einsetzen; es ersetzt keine Assertions, Screenshots, Traces oder Testlab-Reports
    - fuer agentische Review-Loops sind `browser.bind()`, `playwright-cli show`, `npx playwright test --debug=cli` und gebundene Browser-Sessions sinnvoll, wenn ein Agent und ein Mensch denselben Lauf untersuchen muessen
@@ -45,11 +45,11 @@ Nutze dieses Skill fuer alle Babylon-/WebGL-lastigen Prototypen in diesem Repo, 
    - Babylon Inspector / Debug Layer für Szene-, Material-, Kamera- und State-Inspektion; bei Modul-Builds den Inspector lokal importieren statt still auf CDN-Fallbacks zu vertrauen
    - SpectorJS fuer WebGL-Frame-Capture, Draw-Calls, Ressourcen und Pipeline-Zustaende
    - Browser-Performance-Tools zuerst fuer Live-Metriken, Rendering-Overlays, CPU-, Main-Thread- und Long-Task-Analyse
-   - fuer schnelle Qualitäts-, Accessibility- oder Performance-Triage optional zuerst Lighthouse im DevTools-Panel oder ueber den DevTools-MCP-Pfad laufen lassen; tiefe 3D-Befunde danach immer mit Trace, Report oder manueller Inspektion absichern
+   - für schnelle Qualitäts-, Accessibility- oder Performance-Triage optional zuerst Lighthouse im DevTools-Panel oder über Chrome DevTools for agents laufen lassen; tiefe 3D-Befunde danach immer mit Trace, Report oder manueller Inspektion absichern
    - bei Browserabsturz, GPU-Reset oder tabweiten Haengern zusaetzlich Chrome DevTools Crash reports sichten, bevor das Problem nur der Szene oder Babylon selbst zugeschrieben wird
    - Firefox Profiler als zweite CPU-/Main-Thread-Sicht hinzuziehen, wenn Chrome-Traces zu vage bleiben oder ein browseruebergreifender Jank-Verdacht besteht
    - Chrome DevTools AI assistance nur als Erklaerungs-/Priorisierungshilfe auf bereits aufgezeichneten Profilen
-   - Chrome DevTools MCP fuer agentengetriebene Browserverifikation, Lighthouse-Audits, Memory-Snapshot-Leak-Triage oder Performance-Traces nutzen; Ergebnisse immer mit Rohtrace, Heap-Artefakt, Screenshot, DOM-Report oder manuellem Review belegen
+   - Chrome DevTools for agents als offiziellen stabilen Agentenpfad für Browserverifikation, Lighthouse-Audits, Memory-Snapshot-Leak-Triage oder Performance-Traces nutzen; experimentelle WebMCP- oder page-exposed-tools-Pfade nur bewusst zuschalten und Ergebnisse immer mit Rohtrace, Heap-Artefakt, Screenshot, DOM-Report oder manuellem Review belegen
 7. Fuehre am Ende jedes Auftrags das Schlussprotokoll aus:
    `references/closeout-protocol.md`
 
@@ -90,7 +90,8 @@ Nutze dieses Skill fuer alle Babylon-/WebGL-lastigen Prototypen in diesem Repo, 
 - Chrome Rendering Tab, Performance Monitor, der Default-Full-Page-Accessibility-Tree und die empfohlenen Throttling-Presets sind der schnelle Vorfilter, bevor du schwere Traces oder Spector-Captures sammelst.
 - Das Memory Panel ist Pflicht, wenn Babylon-Szenen, DOM-Overlays oder Asset-Wechsel ueber Zeit langsamer oder instabiler werden.
 - AI-Assistance in DevTools darf Hypothesen verdichten, aber nie die primaeren Artefakte ersetzen. Behalte immer Trace, Overlay-Report oder Spector-Capture als Beleg.
-- Chrome DevTools MCP kann einen Coding-Agenten in echte Chrome-Laufzeit bringen. Nutze es fuer Verifikation, Lighthouse-Audits, Memory-Snapshot-Triage und Trace-Erzeugung, nicht als alleinige Bewertungsinstanz.
+- Chrome DevTools for agents kann einen Coding-Agenten in echte Chrome-Laufzeit bringen. Nutze den seit 19. Mai 2026 stabilen Pfad für Verifikation, Lighthouse-Audits, Memory-Snapshot-Triage und Trace-Erzeugung, nicht als alleinige Bewertungsinstanz.
+- Chrome-149-Erweiterungen wie experimentelles WebMCP-Debugging, page-exposed tools und Header-Emulation sind interessant für spezialisierte Agentenläufe, aber noch kein Standardpfad für dieses Repo.
 
 ## Veraltete oder umzurahmende Methoden
 

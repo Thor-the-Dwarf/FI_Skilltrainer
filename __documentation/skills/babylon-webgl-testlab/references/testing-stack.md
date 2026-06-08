@@ -24,7 +24,10 @@
 - Chrome DevTools Rendering Tab fuer Paint-/Layout-/Layer-Overlays und Rendering-Statistiken: <https://developer.chrome.com/docs/devtools/rendering>
 - Chrome DevTools Memory-Analyse fuer Heap-Snapshots, Detached DOM Trees und Allocation Timelines: <https://developer.chrome.com/docs/devtools/memory-problems>
 - Chrome DevTools AI assistance / Chat als optionale Auswertungsschicht auf vorhandenen Profilen, DOM- oder Netzwerk-Kontexten: <https://developer.chrome.com/docs/devtools/ai-assistance/chat#ai-assistance-for-performance>
-- Chrome DevTools MCP fuer agentengetriebene Browser-Verifikation und Performance-Traces: <https://developer.chrome.com/blog/chrome-devtools-mcp>
+- Chrome DevTools for agents als offizielle Produktdoku fuer agentengetriebene Browser-Verifikation, Lighthouse und Performance-Traces: <https://developer.chrome.com/docs/devtools/agents>
+- Chrome DevTools for agents 1.0 als stabiler Release-Stand seit 19. Mai 2026: <https://developer.chrome.com/blog/devtools-for-agents-v1>
+- Chrome 149 DevTools-Update zu stabiler Agents-CLI/MCP, experimentellem WebMCP-Debugging und Header-Emulation: <https://developer.chrome.com/blog/new-in-devtools-149?hl=en>
+- WebMCP-vs-MCP-Einordnung fuer tabgebundene Frontend-Tools versus persistente Backends: <https://developer.chrome.com/docs/ai/webmcp/compare-mcp>
 - Chrome 147 DevTools-Update zu AI assistance mit automatischer Kontextwahl und Trace-Start: <https://developer.chrome.com/blog/new-in-devtools-147?hl=en>
 - Chrome 147 DevTools-Update zu integrierten Lighthouse-Audits, Memory-Leak-Detection-Skill und `pageId`-Routing fuer Agenten: <https://developer.chrome.com/blog/new-in-devtools-147?hl=en>
 - Chrome 148 DevTools-Update zu Crash reports, vollem Accessibility-Tree und MCP-0.24-Reliability-Verbesserungen: <https://developer.chrome.com/blog/new-in-devtools-148?hl=en>
@@ -64,20 +67,20 @@
    - `test.abort()` fuer fruehen Abbruch bei ungueltiger Testumgebung oder verbotenen Seiteneffekten
    - Readiness ueber `webServer.url`, `webServer.port` oder `webServer.wait`, nicht ueber starre Sleeps
 7. Bei unklarer Laufzeitqualitaet vor dem Voll-Trace zuerst Rendering Tab, Performance Monitor oder Live Metrics zur schnellen Einordnung nutzen.
-8. Trace-Aufzeichnung fuer flaky oder schwer reproduzierbare Fehler standardmaessig mitdenken. Fuer Agenten-/Terminalarbeit zuerst pruefen, ob `npx playwright trace` schneller zum relevanten Schritt fuehrt als der GUI-Trace-Viewer.
+8. Trace-Aufzeichnung fuer flaky oder schwer reproduzierbare Fehler standardmaessig mitdenken. Fuer Agenten-/Terminalarbeit zuerst pruefen, ob `npx playwright show-trace trace.zip` oder `npx playwright show-trace trace/` schneller zum relevanten Schritt fuehrt als der GUI-Trace-Viewer.
 9. Wenn ein Problem visuell, GPU-nah oder im Tiefenpuffer steckt:
    - Babylon Inspector fuer interaktive Szenenpruefung; in Modulprojekten lokal importieren statt auf verdeckte CDN-Nachladung zu bauen
    - SpectorJS fuer Frame-Capture
    - Browser DevTools Performance/Rendering
    - Chrome Crash reports bei Browserabsturz, GPU-Reset oder tabweiten Haengern
-   - optional Lighthouse im DevTools-Panel oder ueber DevTools MCP als fruehes Qualitaets-, Accessibility- oder Performance-Gate
+   - optional Lighthouse im DevTools-Panel oder ueber Chrome DevTools for agents als fruehes Qualitaets-, Accessibility- oder Performance-Gate
    - Firefox Profiler als zweite CPU-/Thread-Sicht, wenn Chrome keine klare Zuordnung liefert
    - Memory Panel bei Asset-Churn, Scene-Switches oder schleichender Degradation
    - `page.requestGC()` bei reproduzierbaren Freigabepunkten als Leak-Hinweis, nicht als alleiniger Beweis
    - bei Nicht-RAF-Diagnosepfaden `gl.flush()` gezielt als Hilfsprobe erwägen; im normalen RAF-Pfad nicht reflexhaft einschalten
    - `WEBGL_lose_context.loseContext()` als gezielten Teardown-/Chaos-Test nutzen, wenn Kontexte aktiv beendet oder Restore-Pfade bewusst geprüft werden sollen
    - optional DevTools AI assistance zur schnelleren Profil-Einordnung
-   - optional Chrome DevTools MCP, wenn ein Coding-Agent den Browserlauf oder Performance-Trace selbst erzeugen soll
+   - optional Chrome DevTools for agents, wenn ein Coding-Agent den Browserlauf oder Performance-Trace selbst erzeugen soll
 10. Danach erst Code-Hypothesen festziehen.
 
 ## Mindestanforderungen fuer einen stabilen Testlauf
@@ -99,7 +102,7 @@
 - Playwrights Screenshot-API ist inzwischen relevant genug fuer den Testpfad selbst, weil `animations`, `mask` und `maskColor` volatile Bereiche sauberer stabilisieren als ad-hoc CSS allein.
 - Playwright 1.58 erweitert den praktischen Diagnosepfad vor dem Voll-Trace: `Speedboard` und die HTML-Report-Timeline machen langsame, worker-ungleiche oder retry-lastige 3D-Tests frueher sichtbar.
 - Playwright 1.56 liefert mit `page.consoleMessages()` und `page.pageErrors()` einen leichten Vorab-Check, der haeufig schon vor Trace/Spector zeigt, ob der Lauf an Runtime-Fehlern statt an Rendering selbst scheitert.
-- Playwright 1.59 erweitert den praktischen Testpfad: `page.screencast` liefert annotierte Review-Videos, `npx playwright trace` macht gespeicherte Traces terminal-/agententauglich, `retain-on-failure-and-retries` erleichtert flaky-Vergleiche, direkte ARIA-Snapshot-Methoden liefern schnelle Semantik-Artefakte, und `browser.bind()` plus `playwright-cli show`/`--debug=cli` machen gemeinsame Mensch-/Agent-Diagnose praktikabler.
+- Playwright 1.59 erweitert den praktischen Testpfad: `page.screencast` liefert annotierte Review-Videos, `npx playwright show-trace` macht gespeicherte Traces terminal-/agententauglich, `retain-on-failure-and-retries` erleichtert flaky-Vergleiche, direkte ARIA-Snapshot-Methoden liefern schnelle Semantik-Artefakte, und `browser.bind()` plus `playwright-cli show`/`--debug=cli` machen gemeinsame Mensch-/Agent-Diagnose praktikabler.
 - Playwright 1.60 ist fuer diese Skill-Doku relevant, obwohl es kein kompletter Methodenwechsel ist: `expect(page).toMatchAriaSnapshot()` vereinfacht Whole-Page-Semantikpruefungen, `boxes` ergaenzt ARIA-Artefakte um Bounding-Box-Kontext fuer agentische oder layoutnahe Reviews, `tracing.startHar()`/`stopHar()` machen gezieltes Netz-Artefakt-Scoping praktikabler, und `test.abort()` reduziert irrelevante Folgefehler in ungueltigen Laeufen.
 - Playwrights offizielle Test-Agents-Dokumentation macht AI-unterstuetzte Testplanung, -generierung und -reparatur inzwischen zu einem klar benannten Wartungspfad. Fuer diese Skill-Doku heisst das: Agenten duerfen beschleunigen, aber nicht den manuellen Artefakt-Review ersetzen.
 - `page.requests()` und `page.requestGC()` sind fuer diese Repo-Teststrategie inzwischen relevant genug, um sie als leichte Vorab-Probes vor HAR, Voll-Trace oder tiefer Memory-Forensik zu fuehren.
@@ -111,9 +114,9 @@
 - Das Chrome-147-Update vom 7. April 2026 erweitert den agentischen DevTools-Pfad praktisch: integrierte Lighthouse-Audits, ein offizieller Memory-Leak-Detection-Skill ueber `take_memory_snapshot` und `pageId`-Routing fuer parallele Agenten machen fruehe Qualitaets- und Leak-Triage billiger, bevor tiefe Handarbeit startet.
 - Seit dem Chrome-148-Update vom 5. Mai 2026 gibt es zusaetzlich einen Crash-reports-Kontext in DevTools. Das ist fuer browserbasierte 3D-Diagnostik relevant, wenn Tab- oder GPU-Abstuerze sonst faelschlich nur im App-Code gesucht wuerden.
 - Das Chrome-148-Update vom 5. Mai 2026 verbessert ausserdem den manuellen Review-Pfad: der Full-Page-Accessibility-Tree ist jetzt Standard, die Network-Ansicht zeigt auf Wunsch die absolute Request-Reihenfolge, und empfohlene Throttling-Presets orientieren sich an Felddaten. Das hilft bei Asset-Order-, Accessibility- und Realnetz-Triage ohne Sonderwerkzeuge.
-- Chrome DevTools MCP ist als offizieller Preview-Pfad fuer agentengetriebene Browser-Verifikation und Performance-Traces relevant, aber nur als Werkzeug zur Artefakt-Erzeugung. Die Bewertung bleibt an Rohdaten und Review gebunden.
-- Chrome 148 dokumentiert zudem Reliability-Fixes fuer den DevTools-MCP-/CLI-Pfad, etwa automatisch abgefangene Browser-Dialoge. Das senkt Stoerquellen in agentischen Browserlaeufen, aendert aber nicht die Anforderung an Belegartefakte.
-- Chrome 148 erweitert den DevTools-fuer-Agenten-Pfad ausserdem um Extension-Debugging, experimentelles WebMCP-Tool-Calling und eine Lighthouse-Kategorie fuer agentisches Browsing. Fuer dieses Repo ist das vorerst kein Standardpfad, aber relevant, falls Browser- oder Tooling-Oberflaechen spaeter agentisch mitgeprueft werden.
+- Seit dem stabilen Chrome-DevTools-for-agents-Release vom 19. Mai 2026 ist der Agentenpfad nicht mehr nur Preview: MCP-Server, CLI und Skills sind jetzt ein offizieller Standardweg fuer Browserverifikation, Lighthouse und Trace-Erzeugung. Die Bewertung bleibt trotzdem an Rohdaten und Review gebunden.
+- Chrome 148 dokumentiert Reliability-Fixes fuer den DevTools-for-agents-/CLI-Pfad, etwa automatisch abgefangene Browser-Dialoge. Das senkt Stoerquellen in agentischen Browserlaeufen, aendert aber nicht die Anforderung an Belegartefakte.
+- Chrome 149 erweitert den stabilen Agentenpfad praktisch weiter: page-exposed custom tools, experimentelles WebMCP-Debugging und Header-Emulation sind nuetzlich fuer Spezialfaelle, bleiben fuer dieses Repo aber zusaetzliche Opt-in-Werkzeuge statt Standardpfad.
 - Firefox Profiler ist als kostenfreie Gegenprobe weiter aufgewertet worden: Er bleibt kein WebGL-Spezialwerkzeug, ist aber fuer CPU-Stacks, Marker und browseruebergreifende Thread-Jank-Abgrenzung jetzt klarer als empfohlene Zweitmeinung einzuordnen.
 - Die offizielle Babylon-ES6-Doku macht fuer Test- und Debug-Laeufe einen stillen Fallstrick expliziter: In Modulprojekten sollte der Inspector lokal eingebunden werden, damit Offline-, CSP- oder Firmenproxy-Probleme nicht wie App-Fehler aussehen.
 - MDN hebt fuer WebGL-Best-Practice-Diagnostik weiterhin zwei fuer Tests relevante Regeln hervor: `flush()` nur in Nicht-RAF-/Wartepfaden gezielt verwenden und Kontexte nach echter Fertigstellung bewusst verlieren lassen statt auf implizite Freigabe zu hoffen.
