@@ -11,9 +11,11 @@
 - Playwright Test Agents fuer offizielle agentische Testplanung, -erzeugung und -reparatur: <https://playwright.dev/docs/test-agents>
 - Playwright Trace Viewer fuer reproduzierbare Fehlersuche mit DOM-, Netzwerk- und Konsolen-Kontext: <https://playwright.dev/docs/trace-viewer-intro>
 - Playwright Tracing API fuer gezieltes HAR-Scoping mit `tracing.startHar()` / `tracing.stopHar()`: <https://playwright.dev/docs/api/class-tracing>
+- Playwright Release Notes fuer Playwright 1.61 mit WebSocket-Verkehr in HAR-/Trace-Artefakten und verfeinerten Retry-Video-Modi: <https://playwright.dev/docs/release-notes>
 - Playwright Release Notes fuer `page.screencast`, CLI-Traceanalyse, `retain-on-failure-and-retries`, `page.ariaSnapshot()`, `browser.bind()` und `--debug=cli`: <https://playwright.dev/docs/release-notes>
 - Playwright Release Notes fuer Playwright 1.60 mit Page-`toMatchAriaSnapshot()`, `boxes` in ARIA-Snapshots, HAR-on-tracing und `test.abort()`: <https://playwright.dev/docs/release-notes>
 - Playwright Release Notes fuer `Speedboard`, Timeline sowie `page.consoleMessages()` und `page.pageErrors()`: <https://playwright.dev/docs/release-notes>
+- Playwright Release Notes fuer `--only-changed` als schneller lokaler Retest-Pfad nach Repo-Aenderungen: <https://playwright.dev/docs/release-notes>
 - Playwright Page API fuer `page.requests()` und `page.requestGC()` als leichte Netz- und Leak-Probes: <https://playwright.dev/docs/api/class-page>
 - Playwright Browser API fuer gebundene Browser-Sessions: <https://playwright.dev/docs/api/class-browser#browser-bind>
 - Playwright TestConfig `webServer` fuer belastbare Server-Readiness statt Sleeps: <https://playwright.dev/docs/api/class-testconfig>
@@ -28,6 +30,7 @@
 - Chrome DevTools for agents 1.0 als stabiler Release-Stand seit 19. Mai 2026: <https://developer.chrome.com/blog/devtools-for-agents-v1>
 - Chrome 149 DevTools-Update zu stabiler Agents-CLI/MCP, experimentellem WebMCP-Debugging und Header-Emulation: <https://developer.chrome.com/blog/new-in-devtools-149?hl=en>
 - WebMCP-vs-MCP-Einordnung fuer tabgebundene Frontend-Tools versus persistente Backends: <https://developer.chrome.com/docs/ai/webmcp/compare-mcp>
+- WebMCP als offizieller, noch lokaler Chrome-Flag-Pfad fuer browserseitige Agenten-Interaktion: <https://developer.chrome.com/docs/ai/webmcp>
 - Chrome 147 DevTools-Update zu AI assistance mit automatischer Kontextwahl und Trace-Start: <https://developer.chrome.com/blog/new-in-devtools-147?hl=en>
 - Chrome 147 DevTools-Update zu integrierten Lighthouse-Audits, Memory-Leak-Detection-Skill und `pageId`-Routing fuer Agenten: <https://developer.chrome.com/blog/new-in-devtools-147?hl=en>
 - Chrome 148 DevTools-Update zu Crash reports, vollem Accessibility-Tree und MCP-0.24-Reliability-Verbesserungen: <https://developer.chrome.com/blog/new-in-devtools-148?hl=en>
@@ -53,8 +56,10 @@
    - ARIA-Snapshots
 5. Screenshot-Diffs nur in stabiler Umgebung und zuerst mit `stylePath`, danach bei Bedarf mit `mask`/`maskColor` und deaktivierten Animationen stabilisieren.
 6. Wenn Playwright verfuegbar ist, neue Artefaktarten bewusst trennen:
+   - `npx playwright test --only-changed` oder `--only-changed=<ref>` als erster Retest nach lokalen Babylon-/UI-Aenderungen, bevor volle Suites oder breite Retries starten
    - `page.pageErrors()` und `page.consoleMessages()` fuer billige Vorab-Hinweise auf Runtime-Fehler
    - `page.requests()` fuer schnelle Hinweise auf asset- oder datenbezogene Fehlschlaege ohne sofortigen Voll-Trace
+   - wenn `page.requests()` fuer Live-Datenpfade nicht reicht, gescoptes HAR/Tracing bevorzugen; seit Playwright 1.61 landet dort auch WebSocket-Verkehr
    - ARIA-Snapshot-Assertions oder direkte `ariaSnapshot()`-Artefakte fuer Semantik; bei Whole-Page-Checks seit 1.60 auch direkt auf `page`
    - `boxes` in ARIA-Snapshots nur zuschalten, wenn Layout-/Bounding-Box-Kontext fuer Agenten oder visuelle Strukturpruefung wirklich gebraucht wird
    - Screenshot-Baselines fuer visuelle Regressionen
@@ -80,7 +85,10 @@
    - bei Nicht-RAF-Diagnosepfaden `gl.flush()` gezielt als Hilfsprobe erwägen; im normalen RAF-Pfad nicht reflexhaft einschalten
    - `WEBGL_lose_context.loseContext()` als gezielten Teardown-/Chaos-Test nutzen, wenn Kontexte aktiv beendet oder Restore-Pfade bewusst geprüft werden sollen
    - optional DevTools AI assistance zur schnelleren Profil-Einordnung
-   - optional Chrome DevTools for agents, wenn ein Coding-Agent den Browserlauf oder Performance-Trace selbst erzeugen soll
+   - optional Chrome DevTools for agents, wenn ein Coding-Agent den Browserlauf, Lighthouse oder einen Performance-Trace selbst erzeugen soll
+   - bei geschuetzten Staging-/Auth-Repros ggf. gezielte Header-Emulation ueber Chrome DevTools for agents statt ad-hoc Browsermanipulation
+   - WebMCP oder page-exposed tools nur bewusst aktivieren; sie ergaenzen den Browser-Agenten im Tab, ersetzen aber nicht den repo-weiten MCP-/CLI-Testpfad
+   - bei manuellen Mobile-Repros die Default-UA im Responsive Device Mode nicht als feste Alt-Baseline behandeln; seit Chrome 149 ist sie dynamisch, daher fuer UA-sensitive Tests explizite Emulation notieren
 10. Danach erst Code-Hypothesen festziehen.
 
 ## Mindestanforderungen fuer einen stabilen Testlauf
@@ -104,6 +112,8 @@
 - Playwright 1.56 liefert mit `page.consoleMessages()` und `page.pageErrors()` einen leichten Vorab-Check, der haeufig schon vor Trace/Spector zeigt, ob der Lauf an Runtime-Fehlern statt an Rendering selbst scheitert.
 - Playwright 1.59 erweitert den praktischen Testpfad: `page.screencast` liefert annotierte Review-Videos, `npx playwright show-trace` macht gespeicherte Traces terminal-/agententauglich, `retain-on-failure-and-retries` erleichtert flaky-Vergleiche, direkte ARIA-Snapshot-Methoden liefern schnelle Semantik-Artefakte, und `browser.bind()` plus `playwright-cli show`/`--debug=cli` machen gemeinsame Mensch-/Agent-Diagnose praktikabler.
 - Playwright 1.60 ist fuer diese Skill-Doku relevant, obwohl es kein kompletter Methodenwechsel ist: `expect(page).toMatchAriaSnapshot()` vereinfacht Whole-Page-Semantikpruefungen, `boxes` ergaenzt ARIA-Artefakte um Bounding-Box-Kontext fuer agentische oder layoutnahe Reviews, `tracing.startHar()`/`stopHar()` machen gezieltes Netz-Artefakt-Scoping praktikabler, und `test.abort()` reduziert irrelevante Folgefehler in ungueltigen Laeufen.
+- Playwright 1.61 veraendert keinen ganzen Teststack, aber einen wichtigen Netz-Diagnose-Tradeoff: HAR- und Trace-Artefakte enthalten jetzt auch WebSocket-Requests. Fuer browserbasierte 3D- oder Spiel-Workflows mit Live-Events, Streams oder Kollaborationsdaten ist der offizielle Artefaktpfad damit haeufig besser als zusaetzliche Einweg-Logging-Hooks.
+- Playwrights `--only-changed` ist fuer diese Repo-Doku jetzt explizit wichtig genug, um ihn als ersten Retest-Schritt zu fuehren: nach kleinen Babylon-/UI-Aenderungen spart er unnoetige Vollsuite-Laeufe und signalisiert frueh, ob der Fehler lokal oder breit ist.
 - Playwrights offizielle Test-Agents-Dokumentation macht AI-unterstuetzte Testplanung, -generierung und -reparatur inzwischen zu einem klar benannten Wartungspfad. Fuer diese Skill-Doku heisst das: Agenten duerfen beschleunigen, aber nicht den manuellen Artefakt-Review ersetzen.
 - `page.requests()` und `page.requestGC()` sind fuer diese Repo-Teststrategie inzwischen relevant genug, um sie als leichte Vorab-Probes vor HAR, Voll-Trace oder tiefer Memory-Forensik zu fuehren.
 - Kontext-Restore sollte nicht als simples "Event kam zurueck, also okay" bewertet werden. Nach offiziellem MDN-Hinweis sind alte WebGL-Ressourcen nach Restore ungueltig und muessen neu erstellt werden.
@@ -116,7 +126,9 @@
 - Das Chrome-148-Update vom 5. Mai 2026 verbessert ausserdem den manuellen Review-Pfad: der Full-Page-Accessibility-Tree ist jetzt Standard, die Network-Ansicht zeigt auf Wunsch die absolute Request-Reihenfolge, und empfohlene Throttling-Presets orientieren sich an Felddaten. Das hilft bei Asset-Order-, Accessibility- und Realnetz-Triage ohne Sonderwerkzeuge.
 - Seit dem stabilen Chrome-DevTools-for-agents-Release vom 19. Mai 2026 ist der Agentenpfad nicht mehr nur Preview: MCP-Server, CLI und Skills sind jetzt ein offizieller Standardweg fuer Browserverifikation, Lighthouse und Trace-Erzeugung. Die Bewertung bleibt trotzdem an Rohdaten und Review gebunden.
 - Chrome 148 dokumentiert Reliability-Fixes fuer den DevTools-for-agents-/CLI-Pfad, etwa automatisch abgefangene Browser-Dialoge. Das senkt Stoerquellen in agentischen Browserlaeufen, aendert aber nicht die Anforderung an Belegartefakte.
-- Chrome 149 erweitert den stabilen Agentenpfad praktisch weiter: page-exposed custom tools, experimentelles WebMCP-Debugging und Header-Emulation sind nuetzlich fuer Spezialfaelle, bleiben fuer dieses Repo aber zusaetzliche Opt-in-Werkzeuge statt Standardpfad.
+- Chrome 149 erweitert den stabilen Agentenpfad praktisch weiter: Header-Emulation ist fuer geschuetzte Staging- oder Auth-Repros nuetzlich, waehrend page-exposed custom tools und experimentelles WebMCP-Debugging fuer dieses Repo zusaetzliche Opt-in-Werkzeuge statt Standardpfad bleiben.
+- Die offizielle WebMCP-Doku vom 5. Juni 2026 bestaetigt die bisherige Einordnung: WebMCP ist ein lokaler, browsergebundener Interaktionspfad fuer Agenten und kein Ersatz fuer repo-weites MCP/CLI-Testing.
+- Chrome 149 aendert einen stillen manuellen Testannahmefehler: Responsive Device Mode nutzt nicht mehr die fruehere fest verdrahtete Android-6-/Nexus-5-UA, sondern eine dynamische Heuristik. Fuer UA-sensitive Bugs oder Baselines muessen DevTools-Emulationen deshalb explizit dokumentiert werden.
 - Firefox Profiler ist als kostenfreie Gegenprobe weiter aufgewertet worden: Er bleibt kein WebGL-Spezialwerkzeug, ist aber fuer CPU-Stacks, Marker und browseruebergreifende Thread-Jank-Abgrenzung jetzt klarer als empfohlene Zweitmeinung einzuordnen.
 - Die offizielle Babylon-ES6-Doku macht fuer Test- und Debug-Laeufe einen stillen Fallstrick expliziter: In Modulprojekten sollte der Inspector lokal eingebunden werden, damit Offline-, CSP- oder Firmenproxy-Probleme nicht wie App-Fehler aussehen.
 - MDN hebt fuer WebGL-Best-Practice-Diagnostik weiterhin zwei fuer Tests relevante Regeln hervor: `flush()` nur in Nicht-RAF-/Wartepfaden gezielt verwenden und Kontexte nach echter Fertigstellung bewusst verlieren lassen statt auf implizite Freigabe zu hoffen.
@@ -140,6 +152,7 @@
 - Reine Video-Receipts ohne Assertion, DOM-Report, Trace oder Profil: umrahmen als Review-Material, nicht als Regressionstest.
 - Feste Sleep-Wartezeiten vor Sandbox- oder Browserstarts: deprecated, wenn ein Readiness-Signal verfuegbar ist.
 - Renderer-/Vendor-Auslese als Standardtestpfad: deprecated, nur Edge-Case-Diagnose.
+- Implizite Annahmen ueber die Default-UA im Chrome-Responsive-Device-Mode: deprecated als Repro-Basis fuer UA-sensitive Fehler; nutze stattdessen explizite Emulation oder Playwright-Device-Konfiguration.
 - Dauerhafte `getError()`-/`getParameter()`-Abfragen im Renderpfad: deprecated als allgemeine Testprobe, nur gezielt ausserhalb heisser Pfade einsetzen.
 - Dauerhaft geoeffneter Babylon Inspector im Standardworkflow: umrahmen als ad-hoc Debugpfad statt Regressionstool.
 - Implizite CDN-Nachladung des Babylon-Inspectors in Modulprojekten: umrahmen als Komfort-Fallback, nicht als verlassliche Standardmethode fuer reproduzierbare Repo-Diagnostik.
