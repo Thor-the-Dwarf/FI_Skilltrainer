@@ -91,9 +91,9 @@ ORDERING_LAST_PROMPTS = (
 )
 
 NUMBER_INTERPRETATION_PROMPTS = (
-    "Welche Aussage beschreibt das Ergebnis von {title} richtig?",
-    "Welche Formulierung passt bei {title} zum berechneten Wert?",
-    "Welche Aussage deutet das Ergebnis von {title} fachlich korrekt?",
+    "Welche Aussage ordnet den berechneten Wert fachlich richtig ein?",
+    "Welche Formulierung passt zum Ergebnis dieser Rechenaufgabe?",
+    "Welche Aussage beschreibt die Bedeutung des Ergebnisses am besten?",
 )
 
 SHORT_TEXT_DISTRACTORS: tuple[tuple[str, str], ...] = (
@@ -874,7 +874,7 @@ def build_number_interpretation_companion(
         source_ref=f"{source_key}::aussage_v1",
         concept_key=concept_key,
         variant_key=f"{concept_key}::aussage_v1",
-        title=f"{title}: Ergebnis deuten",
+        title=f"{title}: berechneten Wert einordnen",
         prompt=pick_template(f"{source_key}::zahl_prompt", NUMBER_INTERPRETATION_PROMPTS).format(title=title),
         interaction_type="single",
         question_kind="vergleich_treffen",
