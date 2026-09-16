@@ -124,9 +124,9 @@ NUMBER_FORMULA_PROMPTS = (
 )
 
 NUMBER_INTERPRETATION_PROMPTS = (
-    "Welche Aussage deutet das Ergebnis von „{title}“ fachlich richtig?",
-    "Welche Formulierung beschreibt bei „{title}“ den berechneten Wert korrekt?",
-    "Welche Aussage fasst bei „{title}“ die Bedeutung des Ergebnisses am besten zusammen?",
+    "Welche Aussage ordnet den berechneten Wert fachlich richtig ein?",
+    "Welche Formulierung passt zum Ergebnis dieser Rechenaufgabe?",
+    "Welche Aussage beschreibt die Bedeutung des Ergebnisses am besten?",
 )
 
 STAGE2_SINGLE_PROMPTS = (
@@ -2436,7 +2436,7 @@ def build_number_interpretation_companion(
         source_ref=f"{source_key}::aussage_v1",
         concept_key=concept_key,
         variant_key=f"{concept_key}::aussage_v1",
-        title=f"{base_title}: Ergebnis deuten",
+        title=f"{base_title}: berechneten Wert einordnen",
         prompt=pick_template(f"{source_key}::aussage_prompt", NUMBER_INTERPRETATION_PROMPTS).format(
             title=base_title
         ),
