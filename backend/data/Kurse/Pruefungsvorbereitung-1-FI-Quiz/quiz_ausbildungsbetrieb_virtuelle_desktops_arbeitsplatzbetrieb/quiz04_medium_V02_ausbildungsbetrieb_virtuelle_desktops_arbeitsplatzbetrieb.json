@@ -1,0 +1,1037 @@
+{
+  "scenarioFolder": "Pruefungsvorbereitung-1-FI-Scenarien",
+  "quizFolder": "Pruefungsvorbereitung-1-FI-Quiz",
+  "scenarioFile": "ticket_ausbildungsbetrieb_virtuelle_desktops_arbeitsplatzbetrieb/04_medium_ausbildungsbetrieb_virtuelle_desktops_arbeitsplatzbetrieb.json",
+  "quizFile": "quiz04_medium_V02_ausbildungsbetrieb_virtuelle_desktops_arbeitsplatzbetrieb.json",
+  "ticketId": "04_medium_ausbildungsbetrieb_virtuelle_desktops_arbeitsplatzbetrieb.json",
+  "versionId": "V02",
+  "title": "Ticket 04 Medium - Virtuelle Desktops und Arbeitsplatzbetrieb",
+  "description": "Manuell verfasstes AP1-Training im mittleren Schwierigkeitsgrad zu virtuellen Desktops, Hybridmodellen, Pilotierung und sicheren Betriebsentscheidungen.",
+  "topics": [
+    "Virtuelle Desktops in gemischten Raumkonzepten fachlich bewerten",
+    "Hybridmodelle, Pilotierung und Betriebsgrenzen sauber entscheiden"
+  ],
+  "defaultInteractionType": "single",
+  "defaultQuestionKind": "eine_richtige_antwort_waehlen",
+  "defaultBadgeLabel": "Welche Antwort trifft am besten zu?",
+  "questions": [
+    {
+      "id": "pv1fi_medium_vd_q01",
+      "conceptId": "pv1fi_medium_vd_hybridentscheidung",
+      "variantId": "pv1fi_medium_vd_hybridentscheidung_v02",
+      "interactionType": "best",
+      "questionKind": "beste_option_im_mini_szenario",
+      "badgeLabel": "Was ist hier am sinnvollsten?",
+      "isNew": true,
+      "prompt": "Für einen Campus mit Standardpool, personalisierten Büros und Speziallabor soll ein Desktop-Modell festgelegt werden. Welche Lösung ist fachlich am saubersten?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Ein Hybridmodell: Standard-VDI für den Pool, gezielte Entscheidung für Büros und Speziallabor nach Bedarf",
+          "correct": true,
+          "explanation": "Unterschiedliche Nutzungsmuster sprechen hier gegen eine pauschale Einheitslösung."
+        },
+        {
+          "id": "b",
+          "text": "Alle Räume ohne weitere Prüfung auf identische nicht persistente VDI umstellen",
+          "correct": false,
+          "explanation": "Damit würden persönliche Zustände und Spezialperipherie unsauber übergangen."
+        },
+        {
+          "id": "c",
+          "text": "Virtuelle Desktops vollständig verwerfen und alle Räume lokal betreiben",
+          "correct": false,
+          "explanation": "Damit würden die Vorteile für den standardisierten Schulungspool verschenkt."
+        },
+        {
+          "id": "d",
+          "text": "Nur Fernzugriff bereitstellen und die Raumlogik offenlassen",
+          "correct": false,
+          "explanation": "Der Fernzugriff ersetzt keine Betriebsentscheidung für die Räume."
+        }
+      ]
+    },
+    {
+      "id": "pv1fi_medium_vd_q02",
+      "conceptId": "pv1fi_medium_vd_persistent_mix",
+      "variantId": "pv1fi_medium_vd_persistent_mix_v02",
+      "interactionType": "single",
+      "questionKind": "beispiel_erkennen",
+      "badgeLabel": "Welcher Fall passt am besten?",
+      "isNew": true,
+      "prompt": "Wo ist in diesem Campus eine persistente virtuelle Umgebung am ehesten nachvollziehbar?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Ein Dozentenbüro mit persönlichen Einstellungen, dauerhaftem Arbeitsstand und wiederkehrenden Spezialwerkzeugen",
+          "correct": true,
+          "explanation": "Hier ist ein wiedererkennbarer persönlicher Zustand wichtiger als tägliche Rücksetzung."
+        },
+        {
+          "id": "b",
+          "text": "Ein täglich wechselnder Schulungspool mit identischer Standardumgebung",
+          "correct": false,
+          "explanation": "Das spricht eher für nicht persistente Desktops."
+        },
+        {
+          "id": "c",
+          "text": "Ein Raum, der regelmäßig längere Zeit ohne Netz arbeiten muss",
+          "correct": false,
+          "explanation": "Das ist eher eine Grenze für reine VDI."
+        },
+        {
+          "id": "d",
+          "text": "Ein Labor mit ungetesteter Spezialperipherie im Erstbetrieb",
+          "correct": false,
+          "explanation": "Dort steht zuerst die technische Prüfung im Vordergrund."
+        }
+      ]
+    },
+    {
+      "id": "pv1fi_medium_vd_q03",
+      "conceptId": "pv1fi_medium_vd_nicht_persistent_pool",
+      "variantId": "pv1fi_medium_vd_nicht_persistent_pool_v02",
+      "interactionType": "single",
+      "questionKind": "beispiel_erkennen",
+      "badgeLabel": "Welcher Fall passt am besten?",
+      "isNew": true,
+      "prompt": "Welcher Bereich profitiert besonders von täglich sauber zurückgesetzten Standard-Sitzungen?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Ein Schulungspool mit häufig wechselnden Gruppen und identischem Ausgangszustand",
+          "correct": true,
+          "explanation": "Genau dort ist die Rückkehr zum sauberen Standardzustand besonders hilfreich."
+        },
+        {
+          "id": "b",
+          "text": "Ein Büroarbeitsplatz mit stark personalisiertem Dauerzustand",
+          "correct": false,
+          "explanation": "Das spricht eher für Persistenz."
+        },
+        {
+          "id": "c",
+          "text": "Ein Außendienstgerät mit langen Offline-Phasen",
+          "correct": false,
+          "explanation": "Das passt nicht gut zu einem rein virtuellen Desktop."
+        },
+        {
+          "id": "d",
+          "text": "Ein Speziallabor mit Signaturpads und lokalen Scannern ohne Vorprüfung",
+          "correct": false,
+          "explanation": "Hier steht zunächst die technische Eignung im Fokus."
+        }
+      ]
+    },
+    {
+      "id": "pv1fi_medium_vd_q04",
+      "conceptId": "pv1fi_medium_vd_masterimage_aenderung",
+      "variantId": "pv1fi_medium_vd_masterimage_aenderung_v02",
+      "interactionType": "best",
+      "questionKind": "passende_massnahme_auswaehlen",
+      "badgeLabel": "Was ist hier am sinnvollsten?",
+      "isNew": true,
+      "prompt": "Eine neue Standardsoftware soll im Schulungspool breit eingeführt werden. Wie gehen Sie in einer zentralen Desktop-Umgebung fachlich sauber vor?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Änderung am zentralen Standardabbild erst testen und dann kontrolliert ausrollen",
+          "correct": true,
+          "explanation": "So bleibt die Standardisierung erhalten und das Risiko des Flächenrollouts sinkt."
+        },
+        {
+          "id": "b",
+          "text": "Das Programm auf jedem einzelnen Endgerät separat nach Gefühl nachinstallieren",
+          "correct": false,
+          "explanation": "Das widerspricht dem Ziel zentraler Verwaltung."
+        },
+        {
+          "id": "c",
+          "text": "Die Änderung direkt für alle produktiven Sitzungen ohne Test aktivieren",
+          "correct": false,
+          "explanation": "Gerade zentrale Änderungen sollten vorher geprüft werden."
+        },
+        {
+          "id": "d",
+          "text": "Das Problem durch lokale Administratorrechte für alle Nutzenden lösen",
+          "correct": false,
+          "explanation": "Das würde die kontrollierte Betriebsführung aufweichen."
+        }
+      ]
+    },
+    {
+      "id": "pv1fi_medium_vd_q05",
+      "conceptId": "pv1fi_medium_vd_kapazitaet_gleichzeitig",
+      "variantId": "pv1fi_medium_vd_kapazitaet_gleichzeitig_v02",
+      "interactionType": "single",
+      "questionKind": "prioritaet_setzen",
+      "badgeLabel": "Was sollte zuerst geprüft werden?",
+      "isNew": true,
+      "prompt": "Bevor viele Schulungssitzungen parallel starten: Welche Ressource oder Größe muss zuerst realistisch geprüft werden?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Ob Plattform, Lizenzen und Netz die geplante Zahl gleichzeitiger Sitzungen tragen",
+          "correct": true,
+          "explanation": "Bei vielen parallelen Sessions ist die Kapazitätsplanung der kritische Punkt."
+        },
+        {
+          "id": "b",
+          "text": "Ob die Mausfarbe an allen Plätzen identisch eingestellt ist",
+          "correct": false,
+          "explanation": "Das ist nicht der zentrale Rollout-Faktor."
+        },
+        {
+          "id": "c",
+          "text": "Ob jeder Nutzer lokale Adminrechte erhält",
+          "correct": false,
+          "explanation": "Das ist keine sinnvolle Kapazitätsmaßnahme."
+        },
+        {
+          "id": "d",
+          "text": "Ob der Schulungsraum neue Wandpaneele bekommt",
+          "correct": false,
+          "explanation": "Das ist fachlich unerheblich."
+        }
+      ]
+    },
+    {
+      "id": "pv1fi_medium_vd_q06",
+      "conceptId": "pv1fi_medium_vd_wan_abhaengigkeit",
+      "variantId": "pv1fi_medium_vd_wan_abhaengigkeit_v02",
+      "interactionType": "single",
+      "questionKind": "ursache_folge_erkennen",
+      "badgeLabel": "Welche Folge ist am ehesten zu erwarten?",
+      "isNew": true,
+      "prompt": "Die Verbindung einer Außenstelle zur zentralen Plattform ist instabil. Welche Auswirkung ist für virtuelle Desktops am naheliegendsten?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Verzögerte Eingaben oder Sitzungsabbrüche bei der Arbeit mit virtuellen Desktops",
+          "correct": true,
+          "explanation": "VDI ist auf eine verlässliche Verbindung angewiesen."
+        },
+        {
+          "id": "b",
+          "text": "Automatisch bessere Peripherieunterstützung im Labor",
+          "correct": false,
+          "explanation": "Das hat mit der WAN-Verbindung nichts zu tun."
+        },
+        {
+          "id": "c",
+          "text": "Weniger Bedarf an Authentifizierung beim Fernzugang",
+          "correct": false,
+          "explanation": "Sicherheitsanforderungen bleiben bestehen."
+        },
+        {
+          "id": "d",
+          "text": "Mehr lokale Datenspeicherung im Thin Client von selbst",
+          "correct": false,
+          "explanation": "Das ist keine direkte Folge."
+        }
+      ]
+    },
+    {
+      "id": "pv1fi_medium_vd_q07",
+      "conceptId": "pv1fi_medium_vd_peripherie_vortest",
+      "variantId": "pv1fi_medium_vd_peripherie_vortest_v02",
+      "interactionType": "single",
+      "questionKind": "was_fehlt",
+      "badgeLabel": "Was fehlt hier am dringendsten?",
+      "isNew": true,
+      "prompt": "Konten, Netz und Standardsoftware sind geprüft, doch Scanner und Signaturpads wurden noch nicht betrachtet. Was fehlt fachlich am dringendsten?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Ein Praxistest der lokalen Spezialperipherie in der geplanten Zielumgebung",
+          "correct": true,
+          "explanation": "Spezialgeräte müssen vor der Freigabe real getestet werden."
+        },
+        {
+          "id": "b",
+          "text": "Ein gemeinsames Sammelkonto für alle Laborplätze",
+          "correct": false,
+          "explanation": "Das löst das Peripherieproblem nicht."
+        },
+        {
+          "id": "c",
+          "text": "Eine komplette Abschaltung der Protokollierung",
+          "correct": false,
+          "explanation": "Das ist keine sinnvolle Rollout-Maßnahme."
+        },
+        {
+          "id": "d",
+          "text": "Ein Verzicht auf jede Pilotphase",
+          "correct": false,
+          "explanation": "Das würde das Risiko eher erhöhen."
+        }
+      ]
+    },
+    {
+      "id": "pv1fi_medium_vd_q08",
+      "conceptId": "pv1fi_medium_vd_usb_sondergeraete",
+      "variantId": "pv1fi_medium_vd_usb_sondergeraete_v02",
+      "interactionType": "multi",
+      "questionKind": "mehrere_richtige_antworten_waehlen",
+      "badgeLabel": "Welche Aussagen sind korrekt?",
+      "isNew": true,
+      "prompt": "Welche Vorkehrungen sind bei Spezialgeräten in virtuellen Desktop-Umgebungen besonders wichtig?",
+      "maxSelections": 4,
+      "options": [
+        {
+          "id": "a",
+          "text": "Prüfen, ob die Geräte in der geplanten Desktop-Umgebung überhaupt unterstützt werden",
+          "correct": true,
+          "explanation": "Ohne Kompatibilitätsprüfung bleibt der Einsatz ungesichert."
+        },
+        {
+          "id": "b",
+          "text": "Die Umleitung oder Anbindung im Pilot praktisch testen",
+          "correct": true,
+          "explanation": "Theorie allein reicht bei Spezialperipherie nicht aus."
+        },
+        {
+          "id": "c",
+          "text": "Einen Fallback vorsehen, falls der Standard-VDI-Pfad nicht trägt",
+          "correct": true,
+          "explanation": "Gerade Spezialräume brauchen eine belastbare Rückfalloption."
+        },
+        {
+          "id": "d",
+          "text": "Peripherie grundsätzlich ignorieren, wenn das Basisimage sauber läuft",
+          "correct": false,
+          "explanation": "Das würde das Hauptrisiko ausblenden."
+        },
+        {
+          "id": "e",
+          "text": "Die Anwender erst im Live-Betrieb ausprobieren lassen, ob es funktioniert",
+          "correct": false,
+          "explanation": "Das wäre keine saubere Rollout-Strategie."
+        }
+      ]
+    },
+    {
+      "id": "pv1fi_medium_vd_q09",
+      "conceptId": "pv1fi_medium_vd_sicherer_externzugang",
+      "variantId": "pv1fi_medium_vd_sicherer_externzugang_v02",
+      "interactionType": "best",
+      "questionKind": "passende_massnahme_auswaehlen",
+      "badgeLabel": "Welche Maßnahme passt am besten?",
+      "isNew": true,
+      "prompt": "Externe Lehrkräfte sollen auf ihre virtuelle Arbeitsumgebung zugreifen. Welche Zugriffslösung ist fachlich sauber?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Ein abgesicherter Fernzugang mit Authentifizierung und kontrolliertem Einstiegspunkt",
+          "correct": true,
+          "explanation": "So bleibt der externe Zugriff nachvollziehbar und geschützt."
+        },
+        {
+          "id": "b",
+          "text": "Ein frei erreichbarer Direktzugriff ohne zusätzliche Absicherung",
+          "correct": false,
+          "explanation": "Das wäre sicherheitstechnisch nicht tragbar."
+        },
+        {
+          "id": "c",
+          "text": "Ein gemeinsames Konto für alle externen Lehrkräfte",
+          "correct": false,
+          "explanation": "Gemeinsame Konten sind keine saubere Zugriffslösung."
+        },
+        {
+          "id": "d",
+          "text": "Ein Verzicht auf Zugriffsprotokolle zur Performance-Steigerung",
+          "correct": false,
+          "explanation": "Nachvollziehbarkeit darf nicht geopfert werden."
+        }
+      ]
+    },
+    {
+      "id": "pv1fi_medium_vd_q10",
+      "conceptId": "pv1fi_medium_vd_datenverlust_endgeraet",
+      "variantId": "pv1fi_medium_vd_datenverlust_endgeraet_v02",
+      "interactionType": "single",
+      "questionKind": "ursache_folge_erkennen",
+      "badgeLabel": "Welche Folge ist am ehesten zu erwarten?",
+      "isNew": true,
+      "prompt": "Ein Endgerät im Pool verschwindet, die eigentlichen Arbeitsdaten liegen jedoch zentral. Welche Folge ist am naheliegendsten?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Das Risiko eines lokalen Datenverlusts am Endgerät ist geringer, weil die Arbeitsdaten nicht primär dort liegen",
+          "correct": true,
+          "explanation": "Zentrale Datenhaltung mindert das Risiko durch Geräteverlust."
+        },
+        {
+          "id": "b",
+          "text": "Die zentrale Plattform verliert dadurch automatisch ihre Netzverbindung",
+          "correct": false,
+          "explanation": "Der Geräteverlust verursacht das nicht."
+        },
+        {
+          "id": "c",
+          "text": "Alle Lizenzen verfallen sofort",
+          "correct": false,
+          "explanation": "Das ist fachlich falsch."
+        },
+        {
+          "id": "d",
+          "text": "Spezialperipherie im Labor funktioniert anschließend besser",
+          "correct": false,
+          "explanation": "Das hat keinen Zusammenhang."
+        }
+      ]
+    },
+    {
+      "id": "pv1fi_medium_vd_q11",
+      "conceptId": "pv1fi_medium_vd_plattformausfall_fallback",
+      "variantId": "pv1fi_medium_vd_plattformausfall_fallback_v02",
+      "interactionType": "best",
+      "questionKind": "beste_option_im_mini_szenario",
+      "badgeLabel": "Was ist im Mini-Szenario am sinnvollsten?",
+      "isNew": true,
+      "prompt": "Die zentrale Plattform ist gestört. Welcher vorbereitete Baustein wäre jetzt besonders wertvoll?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Ein Fallback-Konzept für kritische Räume oder Arbeitsplätze",
+          "correct": true,
+          "explanation": "Zentrale Ausfälle können viele Plätze betreffen und brauchen daher eine Rückfallplanung."
+        },
+        {
+          "id": "b",
+          "text": "Nur ein neues Wanddesign für den Schulungspool",
+          "correct": false,
+          "explanation": "Das hilft im Störungsfall nicht."
+        },
+        {
+          "id": "c",
+          "text": "Der Verzicht auf Benutzerprofile",
+          "correct": false,
+          "explanation": "Das löst keine Plattformstörung."
+        },
+        {
+          "id": "d",
+          "text": "Die sofortige Vergabe lokaler Adminrechte an alle Nutzenden",
+          "correct": false,
+          "explanation": "Das ist keine saubere Fallback-Strategie."
+        }
+      ]
+    },
+    {
+      "id": "pv1fi_medium_vd_q12",
+      "conceptId": "pv1fi_medium_vd_pilot_representativ",
+      "variantId": "pv1fi_medium_vd_pilot_representativ_v02",
+      "interactionType": "multi",
+      "questionKind": "mehrere_richtige_antworten_waehlen",
+      "badgeLabel": "Welche Auswahl ist sinnvoll?",
+      "isNew": true,
+      "prompt": "Wen oder was sollte eine wirklich repräsentative Pilotgruppe für den Campus möglichst enthalten?",
+      "maxSelections": 4,
+      "options": [
+        {
+          "id": "a",
+          "text": "einen Schulungsraum mit häufig wechselnden Gruppen",
+          "correct": true,
+          "explanation": "So wird der Standardfall des Pools real getestet."
+        },
+        {
+          "id": "b",
+          "text": "mindestens einen personalisierten Büroarbeitsplatz",
+          "correct": true,
+          "explanation": "Auch individuelle Nutzung gehört in die Bewertung."
+        },
+        {
+          "id": "c",
+          "text": "das Speziallabor mit realer Peripherie",
+          "correct": true,
+          "explanation": "Gerade dort zeigen sich technische Grenzen."
+        },
+        {
+          "id": "d",
+          "text": "ausschließlich Testpersonen ohne echten Arbeitsbezug",
+          "correct": false,
+          "explanation": "Eine reine Laborsimulation ersetzt keine betriebsnahe Pilotierung."
+        },
+        {
+          "id": "e",
+          "text": "Support oder Betrieb zur Beobachtung wiederkehrender Fehlerbilder",
+          "correct": true,
+          "explanation": "Der spätere Betriebsblick sollte früh eingebunden werden."
+        }
+      ]
+    },
+    {
+      "id": "pv1fi_medium_vd_q13",
+      "conceptId": "pv1fi_medium_vd_sitzungsreset",
+      "variantId": "pv1fi_medium_vd_sitzungsreset_v02",
+      "interactionType": "binary",
+      "questionKind": "aussage_bewerten",
+      "badgeLabel": "Stimmt diese Aussage?",
+      "isNew": true,
+      "prompt": "Prüfe diese Aussage: Nicht persistente Sitzungen helfen an geteilten Arbeitsplätzen dabei, nach der Abmeldung wieder mit einem definierten Standard zu starten.",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Ja",
+          "correct": true,
+          "explanation": "Genau das ist ein typischer Vorteil nicht persistenter Umgebungen."
+        },
+        {
+          "id": "b",
+          "text": "Nein",
+          "correct": false,
+          "explanation": "Gerade der definierte Rücksetzpunkt ist hier fachlich wichtig."
+        }
+      ]
+    },
+    {
+      "id": "pv1fi_medium_vd_q14",
+      "conceptId": "pv1fi_medium_vd_profile_management",
+      "variantId": "pv1fi_medium_vd_profile_management_v02",
+      "interactionType": "single",
+      "questionKind": "definition_zu_begriff",
+      "badgeLabel": "Welche Antwort passt am besten?",
+      "isNew": true,
+      "prompt": "Welcher technische Baustein hilft am meisten, persönliche Einstellungen trotz zentraler Bereitstellung wieder verfügbar zu machen?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Eine zentral verwaltete Profil- oder Benutzereinstellungslösung",
+          "correct": true,
+          "explanation": "So bleiben persönliche Einstellungen auch in einer zentralen Desktop-Umgebung verfügbar."
+        },
+        {
+          "id": "b",
+          "text": "Ein gemeinsames Sammelkonto für den ganzen Raum",
+          "correct": false,
+          "explanation": "Damit würden persönliche Zustände gerade verloren gehen."
+        },
+        {
+          "id": "c",
+          "text": "Der Verzicht auf jede Authentifizierung",
+          "correct": false,
+          "explanation": "Das ist fachlich und sicherheitstechnisch falsch."
+        },
+        {
+          "id": "d",
+          "text": "Ausschließlich lokale Einzelinstallation auf jedem Thin Client",
+          "correct": false,
+          "explanation": "Das widerspricht dem zentralen Modell."
+        }
+      ]
+    },
+    {
+      "id": "pv1fi_medium_vd_q15",
+      "conceptId": "pv1fi_medium_vd_grafiklast_grenze",
+      "variantId": "pv1fi_medium_vd_grafiklast_grenze_v02",
+      "interactionType": "single",
+      "questionKind": "gegenbeispiel_erkennen",
+      "badgeLabel": "Welcher Fall passt eher nicht?",
+      "isNew": true,
+      "prompt": "Welcher Arbeitsplatz ist am ehesten ein Gegenbeispiel zu einem stark standardisierten virtuellen Desktop-Pool?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Ein grafikintensiver Spezialarbeitsplatz mit hohen Leistungsanforderungen",
+          "correct": true,
+          "explanation": "Solche Sonderfälle brauchen oft eine eigene Bewertung statt Standardpool-Logik."
+        },
+        {
+          "id": "b",
+          "text": "Ein standardisierter Schulungsraum mit identischem Tagesablauf",
+          "correct": false,
+          "explanation": "Das ist eher ein passender VDI-Fall."
+        },
+        {
+          "id": "c",
+          "text": "Ein Pool für häufig wechselnde Kursgruppen",
+          "correct": false,
+          "explanation": "Auch das passt gut zum Standardmodell."
+        },
+        {
+          "id": "d",
+          "text": "Ein Raum mit definiertem Rücksetzbedarf nach jeder Gruppe",
+          "correct": false,
+          "explanation": "Das ist ein klassischer Anwendungsfall nicht persistenter VDI."
+        }
+      ]
+    },
+    {
+      "id": "pv1fi_medium_vd_q16",
+      "conceptId": "pv1fi_medium_vd_offline_arbeitsbedarf",
+      "variantId": "pv1fi_medium_vd_offline_arbeitsbedarf_v02",
+      "interactionType": "single",
+      "questionKind": "gegenbeispiel_erkennen",
+      "badgeLabel": "Welcher Fall passt eher nicht?",
+      "isNew": true,
+      "prompt": "Welcher Nutzungskontext spricht besonders gegen einen rein virtuellen Desktop?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Längeres Arbeiten ohne verlässliche Netzverbindung",
+          "correct": true,
+          "explanation": "Ein rein virtueller Desktop bleibt stark von der Verbindung abhängig."
+        },
+        {
+          "id": "b",
+          "text": "Zentral verwaltete Standardplätze im Campus",
+          "correct": false,
+          "explanation": "Das ist eher ein passender VDI-Fall."
+        },
+        {
+          "id": "c",
+          "text": "Gemeinsam genutzte Schulungsplätze mit einheitlicher Umgebung",
+          "correct": false,
+          "explanation": "Auch das passt gut zum Modell."
+        },
+        {
+          "id": "d",
+          "text": "Büroarbeitsplätze mit sicherem Fernzugriff",
+          "correct": false,
+          "explanation": "Das kann ein sinnvoller Anwendungsfall sein."
+        }
+      ]
+    },
+    {
+      "id": "pv1fi_medium_vd_q17",
+      "conceptId": "pv1fi_medium_vd_latenz_symptomkette",
+      "variantId": "pv1fi_medium_vd_latenz_symptomkette_v02",
+      "interactionType": "best",
+      "questionKind": "passende_massnahme_auswaehlen",
+      "badgeLabel": "Was sollte zuerst geprüft werden?",
+      "isNew": true,
+      "prompt": "Mehrere Nutzende klagen über stockende Eingaben in ihren Sitzungen. Welcher Prüfpunkt liegt fachlich zuerst nahe?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Netzqualität und Latenz im betroffenen Nutzungspfad",
+          "correct": true,
+          "explanation": "Diese Symptome sprechen zuerst für ein Verbindungs- oder Übertragungsproblem."
+        },
+        {
+          "id": "b",
+          "text": "eine optische Eigenschaft statt eines Sicherheitsmerkmals",
+          "correct": false,
+          "explanation": "Das hat mit dem Problem nichts zu tun."
+        },
+        {
+          "id": "c",
+          "text": "Die Raumbeleuchtung im Schulungspool",
+          "correct": false,
+          "explanation": "Auch das ist fachlich kein erster Prüfpunkt."
+        },
+        {
+          "id": "d",
+          "text": "Eine automatische Vergabe lokaler Adminrechte",
+          "correct": false,
+          "explanation": "Das löst kein Latenzproblem."
+        }
+      ]
+    },
+    {
+      "id": "pv1fi_medium_vd_q18",
+      "conceptId": "pv1fi_medium_vd_geraetetausch_support",
+      "variantId": "pv1fi_medium_vd_geraetetausch_support_v02",
+      "interactionType": "single",
+      "questionKind": "ursache_folge_erkennen",
+      "badgeLabel": "Welche Folge ergibt sich daraus?",
+      "isNew": true,
+      "prompt": "Ein vorbereitetes Ersatzgerät wird anstelle eines defekten Thin Clients angeschlossen. Welcher Vorteil zeigt sich dadurch besonders gut?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Die Arbeitsumgebung kann nach der Anmeldung schnell wieder bereitstehen, weil der Desktop zentral liegt",
+          "correct": true,
+          "explanation": "Der Gerätetausch ist einfacher, wenn die eigentliche Arbeitsumgebung nicht lokal gebunden ist."
+        },
+        {
+          "id": "b",
+          "text": "Spezialperipherie wird dadurch automatisch kompatibel",
+          "correct": false,
+          "explanation": "Das ist nicht die Folge des Gerätetauschs."
+        },
+        {
+          "id": "c",
+          "text": "Alle Sitzungen im Campus werden automatisch schneller",
+          "correct": false,
+          "explanation": "Das lässt sich daraus nicht ableiten."
+        },
+        {
+          "id": "d",
+          "text": "Der Netzbedarf entfällt vollständig",
+          "correct": false,
+          "explanation": "Die Netzabhängigkeit bleibt bestehen."
+        }
+      ]
+    },
+    {
+      "id": "pv1fi_medium_vd_q19",
+      "conceptId": "pv1fi_medium_vd_update_staging",
+      "variantId": "pv1fi_medium_vd_update_staging_v02",
+      "interactionType": "best",
+      "questionKind": "passende_massnahme_auswaehlen",
+      "badgeLabel": "Was ist der beste nächste Schritt?",
+      "isNew": true,
+      "prompt": "Ein neues Desktop-Image soll bald produktiv werden. Was ist der fachlich beste nächste Schritt davor?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Die Änderung zuerst in einer kleinen Pilot- oder Testgruppe prüfen",
+          "correct": true,
+          "explanation": "Zentrale Änderungen können viele Plätze gleichzeitig treffen und sollten vorher getestet werden."
+        },
+        {
+          "id": "b",
+          "text": "Die Änderung ungeprüft sofort für alle aktivieren",
+          "correct": false,
+          "explanation": "Das erhöht das Risiko unnötig."
+        },
+        {
+          "id": "c",
+          "text": "Alle Nutzenden die Änderungen lokal selbst installieren lassen",
+          "correct": false,
+          "explanation": "Das widerspricht der zentralen Betriebslogik."
+        },
+        {
+          "id": "d",
+          "text": "Auf jede Dokumentation des neuen Stands verzichten",
+          "correct": false,
+          "explanation": "Auch das wäre fachlich schwach."
+        }
+      ]
+    },
+    {
+      "id": "pv1fi_medium_vd_q20",
+      "conceptId": "pv1fi_medium_vd_adminrechte",
+      "variantId": "pv1fi_medium_vd_adminrechte_v02",
+      "interactionType": "binary",
+      "questionKind": "aussage_bewerten",
+      "badgeLabel": "Stimmt diese Aussage?",
+      "isNew": true,
+      "prompt": "Prüfe diese Aussage: Damit in einer VDI-Umgebung alles schnell geht, sollten lokale Adminrechte pauschal breit vergeben werden.",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Nein",
+          "correct": true,
+          "explanation": "Zentrale Standardisierung und Rechtebegrenzung gehören gerade zu den betrieblichen Vorteilen."
+        },
+        {
+          "id": "b",
+          "text": "Ja",
+          "correct": false,
+          "explanation": "Pauschale Adminrechte würden das kontrollierte Modell unnötig aufweichen."
+        }
+      ]
+    },
+    {
+      "id": "pv1fi_medium_vd_q21",
+      "conceptId": "pv1fi_medium_vd_individuelle_anmeldung",
+      "variantId": "pv1fi_medium_vd_individuelle_anmeldung_v02",
+      "interactionType": "single",
+      "questionKind": "fehler_finden",
+      "badgeLabel": "Wo steckt der Denkfehler?",
+      "isNew": true,
+      "prompt": "Welche Aussage über Anmeldelogik an gemeinsam genutzten VDI-Plätzen enthält den Denkfehler?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Personenbezogene Zugänge erleichtern Nachvollziehbarkeit und Rechtezuordnung.",
+          "correct": false,
+          "explanation": "Das ist fachlich sinnvoll."
+        },
+        {
+          "id": "b",
+          "text": "Gemeinsame Sammelkonten für alle Nutzenden sind die sauberste Standardlösung.",
+          "correct": true,
+          "explanation": "Damit würden Nachvollziehbarkeit und saubere Rechtezuordnung verloren gehen."
+        },
+        {
+          "id": "c",
+          "text": "Im Pilot sollten Anmeldeabläufe unter realen Bedingungen mitgetestet werden.",
+          "correct": false,
+          "explanation": "Das ist fachlich plausibel."
+        },
+        {
+          "id": "d",
+          "text": "Rechte sollten zum Nutzungskontext passen.",
+          "correct": false,
+          "explanation": "Auch das ist fachlich richtig."
+        }
+      ]
+    },
+    {
+      "id": "pv1fi_medium_vd_q22",
+      "conceptId": "pv1fi_medium_vd_raummix_modellwahl",
+      "variantId": "pv1fi_medium_vd_raummix_modellwahl_v02",
+      "interactionType": "single",
+      "questionKind": "vergleich_treffen",
+      "badgeLabel": "Welche Zuordnung passt am besten?",
+      "isNew": true,
+      "prompt": "Welche Raumzuordnung folgt der Situation am sinnvollsten?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Schulungspool standardisiert, Büroarbeitsplätze personalisiert, Speziallabor nur nach gesonderter Eignungsprüfung",
+          "correct": true,
+          "explanation": "Diese Zuordnung berücksichtigt Standardisierung, persönliche Nutzung und Spezialbedarf."
+        },
+        {
+          "id": "b",
+          "text": "Alle Räume identisch nicht persistent, unabhängig von Peripherie und Nutzung",
+          "correct": false,
+          "explanation": "Das wäre zu grob."
+        },
+        {
+          "id": "c",
+          "text": "Nur das Labor virtualisieren, alle Standardräume lokal lassen",
+          "correct": false,
+          "explanation": "Damit würden die Vorteile der Standardräume verschenkt."
+        },
+        {
+          "id": "d",
+          "text": "Nur nach Wandfarben und Möblierung entscheiden",
+          "correct": false,
+          "explanation": "Das trägt nichts zur fachlichen Bewertung bei."
+        }
+      ]
+    },
+    {
+      "id": "pv1fi_medium_vd_q23",
+      "conceptId": "pv1fi_medium_vd_konkurrierende_sitzungen",
+      "variantId": "pv1fi_medium_vd_konkurrierende_sitzungen_v02",
+      "interactionType": "single",
+      "questionKind": "ziel_mittel_zuordnung",
+      "badgeLabel": "Welches Mittel passt am besten zum Ziel?",
+      "isNew": true,
+      "prompt": "Ziel ist ein stabiler Betrieb vieler gleichzeitiger Sitzungen. Welches Mittel passt am besten zu diesem Ziel?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Kapazitäten von Plattform, Lizenzen und Netz auf die erwartete Gleichzeitigkeit auslegen",
+          "correct": true,
+          "explanation": "Stabilität entsteht hier durch passende Kapazitätsplanung."
+        },
+        {
+          "id": "b",
+          "text": "Nur die Namen der Räume ändern",
+          "correct": false,
+          "explanation": "Das hat keinen technischen Effekt."
+        },
+        {
+          "id": "c",
+          "text": "Sammelkonten für alle Sitzungen einführen",
+          "correct": false,
+          "explanation": "Das ist keine Kapazitätsmaßnahme."
+        },
+        {
+          "id": "d",
+          "text": "Jede Sitzung auf Wunsch länger offenlassen, ohne Ressourcen zu betrachten",
+          "correct": false,
+          "explanation": "Das ignoriert gerade die Belastungsfrage."
+        }
+      ]
+    },
+    {
+      "id": "pv1fi_medium_vd_q24",
+      "conceptId": "pv1fi_medium_vd_druckerzuordnung",
+      "variantId": "pv1fi_medium_vd_druckerzuordnung_v02",
+      "interactionType": "single",
+      "questionKind": "was_fehlt",
+      "badgeLabel": "Was fehlt hier am dringendsten?",
+      "isNew": true,
+      "prompt": "Nach dem Start einer Sitzung fehlen die korrekten Raumdrucker. Was ist im Rollout wahrscheinlich noch nicht sauber geregelt?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Eine saubere Zuordnung und Prüfung der Drucker in der Zielumgebung",
+          "correct": true,
+          "explanation": "Gerade gemeinsame Räume brauchen eine passende Druckerlogik."
+        },
+        {
+          "id": "b",
+          "text": "Ein neues Firmenlogo auf dem Anmeldebildschirm",
+          "correct": false,
+          "explanation": "Das hilft fachlich nicht weiter."
+        },
+        {
+          "id": "c",
+          "text": "Ein Verzicht auf Authentifizierung",
+          "correct": false,
+          "explanation": "Das würde das Problem nicht lösen."
+        },
+        {
+          "id": "d",
+          "text": "Mehr lokale Adminrechte für alle",
+          "correct": false,
+          "explanation": "Auch das ist hier nicht der Punkt."
+        }
+      ]
+    },
+    {
+      "id": "pv1fi_medium_vd_q25",
+      "conceptId": "pv1fi_medium_vd_standardisierung_support",
+      "variantId": "pv1fi_medium_vd_standardisierung_support_v02",
+      "interactionType": "single",
+      "questionKind": "ursache_folge_erkennen",
+      "badgeLabel": "Welche Folge ergibt sich daraus?",
+      "isNew": true,
+      "prompt": "Viele Arbeitsplätze nutzen dieselbe Standardbasis. Welche Folge liegt für den Support besonders nahe?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Wiederkehrende Fehler lassen sich oft einheitlicher analysieren und beheben",
+          "correct": true,
+          "explanation": "Standardisierung erleichtert den Support und reduziert Variantenchaos."
+        },
+        {
+          "id": "b",
+          "text": "Peripherie wird dadurch automatisch irrelevant",
+          "correct": false,
+          "explanation": "Peripherie muss weiterhin bedacht werden."
+        },
+        {
+          "id": "c",
+          "text": "Netzprobleme verschwinden von selbst",
+          "correct": false,
+          "explanation": "Die Netzabhängigkeit bleibt bestehen."
+        },
+        {
+          "id": "d",
+          "text": "Jede Pilotphase wird überflüssig",
+          "correct": false,
+          "explanation": "Gerade zentrale Änderungen sollten getestet werden."
+        }
+      ]
+    },
+    {
+      "id": "pv1fi_medium_vd_q26",
+      "conceptId": "pv1fi_medium_vd_image_aenderung_breite_wirkung",
+      "variantId": "pv1fi_medium_vd_image_aenderung_breite_wirkung_v02",
+      "interactionType": "binary",
+      "questionKind": "aussage_bewerten",
+      "badgeLabel": "Stimmt diese Aussage?",
+      "isNew": true,
+      "prompt": "Prüfe diese Aussage: Eine Änderung an der zentralen Standardumgebung kann viele Arbeitsplätze gleichzeitig treffen und sollte deshalb nicht unkontrolliert ausgerollt werden.",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Ja",
+          "correct": true,
+          "explanation": "Genau deshalb sind Testgruppe und kontrollierter Rollout sinnvoll."
+        },
+        {
+          "id": "b",
+          "text": "Nein",
+          "correct": false,
+          "explanation": "Gerade die breite Wirkung ist hier der kritische Punkt."
+        }
+      ]
+    },
+    {
+      "id": "pv1fi_medium_vd_q27",
+      "conceptId": "pv1fi_medium_vd_bandbreitentest_vor_rollout",
+      "variantId": "pv1fi_medium_vd_bandbreitentest_vor_rollout_v02",
+      "interactionType": "multi",
+      "questionKind": "mehrere_richtige_antworten_waehlen",
+      "badgeLabel": "Welche Punkte gehören dazu?",
+      "isNew": true,
+      "prompt": "Welche Aspekte gehören in einen belastbaren Netz- und Lasttest vor einem größeren VDI-Rollout?",
+      "maxSelections": 4,
+      "options": [
+        {
+          "id": "a",
+          "text": "Die erwartete Zahl gleichzeitiger Sitzungen berücksichtigen",
+          "correct": true,
+          "explanation": "Ohne Gleichzeitigkeit fehlt der realistische Lastblick."
+        },
+        {
+          "id": "b",
+          "text": "Relevante Raum- und Nutzungstypen im Pilot nachbilden",
+          "correct": true,
+          "explanation": "So werden Engpässe unter realen Bedingungen sichtbar."
+        },
+        {
+          "id": "c",
+          "text": "Latenz und Verbindungsqualität beobachten",
+          "correct": true,
+          "explanation": "Diese Werte sind für virtuelle Desktops zentral."
+        },
+        {
+          "id": "d",
+          "text": "ohne Messwerte, Schwellenwerte oder konkrete Zielgrößen entscheiden",
+          "correct": false,
+          "explanation": "Das wäre keine belastbare Einführungsvorbereitung."
+        },
+        {
+          "id": "e",
+          "text": "Auch Spezialräume oder Sonderfälle gezielt einbeziehen",
+          "correct": true,
+          "explanation": "Sonst bleibt ein kritischer Teil des Betriebs ungetestet."
+        }
+      ]
+    },
+    {
+      "id": "pv1fi_medium_vd_q28",
+      "conceptId": "pv1fi_medium_vd_fallback_hybridarbeitsplatz",
+      "variantId": "pv1fi_medium_vd_fallback_hybridarbeitsplatz_v02",
+      "interactionType": "best",
+      "questionKind": "beste_option_im_mini_szenario",
+      "badgeLabel": "Was ist im Mini-Szenario am sinnvollsten?",
+      "isNew": true,
+      "prompt": "Der Spezialraum bleibt trotz Pilot in der Standard-VDI instabil. Was ist nun die fachlich sinnvollste Entscheidung?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Für diesen Raum ein passenderes eigenes Betriebsmodell vorsehen und den Rest nicht unnötig blockieren",
+          "correct": true,
+          "explanation": "Ein Hybridansatz erlaubt es, Spezialfälle sauber abzufangen."
+        },
+        {
+          "id": "b",
+          "text": "Den gesamten Campus-Rollout endgültig abbrechen",
+          "correct": false,
+          "explanation": "Ein Sonderfall muss nicht die gesamte Entscheidung entwerten."
+        },
+        {
+          "id": "c",
+          "text": "Die Probleme ignorieren und produktiv starten",
+          "correct": false,
+          "explanation": "Das wäre fachlich unverantwortlich."
+        },
+        {
+          "id": "d",
+          "text": "Alle Räume lokal betreiben, auch wenn der Standardpool gut zu VDI passt",
+          "correct": false,
+          "explanation": "Damit würde ein passender Standardfall unnötig aufgegeben."
+        }
+      ]
+    }
+  ]
+}

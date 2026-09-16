@@ -1,0 +1,1048 @@
+{
+  "scenarioFolder": "Pruefungsvorbereitung-1-FI-Scenarien",
+  "quizFolder": "Pruefungsvorbereitung-1-FI-Quiz",
+  "scenarioFile": "ticket_ausbildungsbetrieb_uml_modelle_aktivitaetsdiagramme/07_hard_ausbildungsbetrieb_uml_modelle_aktivitaetsdiagramme.json",
+  "quizFile": "quiz07_hard_V02_ausbildungsbetrieb_uml_modelle_aktivitaetsdiagramme.json",
+  "ticketId": "07_hard_ausbildungsbetrieb_uml_modelle_aktivitaetsdiagramme.json",
+  "versionId": "V02",
+  "title": "Ticket 07 Hard - UML-Modelle und Aktivitätsdiagramme",
+  "description": "Manuell verfasstes AP1-Training im hohen Schwierigkeitsgrad zu Use Cases, Klassenmodellen und Aktivitätsdiagrammen in einem verzweigten Portal- und Freigabeprojekt.",
+  "topics": [
+    "Funktionssicht, Struktursicht und Ablaufsicht in einem verzweigten Portalprozess fachlich belastbar trennen",
+    "Akteure, Klassen, Guards, Parallelität, Rückläufe und Synchronisation in einem Freigabeprozess nachvollziehbar modellieren"
+  ],
+  "defaultInteractionType": "single",
+  "defaultQuestionKind": "eine_richtige_antwort_waehlen",
+  "defaultBadgeLabel": "Welche Antwort trifft am besten zu?",
+  "questions": [
+    {
+      "id": "pv1fi_hard_uml_q01",
+      "conceptId": "pv1fi_hard_uml_modellwahl_funktionssicht",
+      "variantId": "pv1fi_hard_uml_modellwahl_funktionssicht_v02",
+      "interactionType": "single",
+      "questionKind": "passende_massnahme_auswaehlen",
+      "badgeLabel": "Welche Lösung passt am besten?",
+      "isNew": true,
+      "prompt": "Im Review soll sichtbar werden, welche Rollen welche Portal-Funktionen nutzen. Welches Modell gehört dafür an die erste Stelle?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Ein Use-Case-Diagramm",
+          "correct": true,
+          "explanation": "Diese Sicht ordnet Akteure und nutzbare Funktionen zueinander."
+        },
+        {
+          "id": "b",
+          "text": "Ein Klassendiagramm",
+          "correct": false,
+          "explanation": "Das beschreibt eher Fachobjekte und Beziehungen."
+        },
+        {
+          "id": "c",
+          "text": "Ein Aktivitätsdiagramm",
+          "correct": false,
+          "explanation": "Damit wird eher der Ablauf modelliert."
+        },
+        {
+          "id": "d",
+          "text": "Eine Geräteinventarliste",
+          "correct": false,
+          "explanation": "Das ist keine UML-Sicht."
+        }
+      ]
+    },
+    {
+      "id": "pv1fi_hard_uml_q02",
+      "conceptId": "pv1fi_hard_uml_akteur_portalinteressent",
+      "variantId": "pv1fi_hard_uml_akteur_portalinteressent_v02",
+      "interactionType": "single",
+      "questionKind": "beispiel_erkennen",
+      "badgeLabel": "Welches Beispiel passt am besten?",
+      "isNew": true,
+      "prompt": "Wer wäre in dieser Sicht ein echter Akteur des Systems?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Ein Interessent, der selbst eine Beratungsanfrage anlegt",
+          "correct": true,
+          "explanation": "Eine solche Rolle nutzt das System aus fachlicher Sicht."
+        },
+        {
+          "id": "b",
+          "text": "ein Darstellungsdetail ohne Rolle im Modell",
+          "correct": false,
+          "explanation": "Ein Akteur ist eine Rolle oder ein externes System, kein Darstellungsdetail."
+        },
+        {
+          "id": "c",
+          "text": "Die Dateiendung eines Exports",
+          "correct": false,
+          "explanation": "Auch das ist keine Nutzersicht."
+        },
+        {
+          "id": "d",
+          "text": "Der Name einer CSS-Klasse",
+          "correct": false,
+          "explanation": "Das verfehlt den geprüften IT-Zusammenhang."
+        }
+      ]
+    },
+    {
+      "id": "pv1fi_hard_uml_q03",
+      "conceptId": "pv1fi_hard_uml_systemgrenze_portal",
+      "variantId": "pv1fi_hard_uml_systemgrenze_portal_v02",
+      "interactionType": "single",
+      "questionKind": "vergleich_treffen",
+      "badgeLabel": "Welche Aussage passt am besten?",
+      "isNew": true,
+      "prompt": "Warum ist die Systemgrenze im Use-Case-Diagramm hier wichtig?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Sie zeigt, welche Funktionen zum betrachteten System gehören und was außerhalb liegt.",
+          "correct": true,
+          "explanation": "Genau dafür ist die Systemgrenze wichtig."
+        },
+        {
+          "id": "b",
+          "text": "Sie ersetzt jede Benennung von Akteuren.",
+          "correct": false,
+          "explanation": "Akteure werden dadurch nicht überflüssig."
+        },
+        {
+          "id": "c",
+          "text": "Sie beschreibt den zeitlichen Ablauf eines Prozesses.",
+          "correct": false,
+          "explanation": "Das ist eher Aufgabe eines Aktivitätsdiagramms."
+        },
+        {
+          "id": "d",
+          "text": "Sie legt die Datenbanktabellen technisch fest.",
+          "correct": false,
+          "explanation": "Das ist nicht ihr Zweck."
+        }
+      ]
+    },
+    {
+      "id": "pv1fi_hard_uml_q04",
+      "conceptId": "pv1fi_hard_uml_usecase_benennung_nutzerziel",
+      "variantId": "pv1fi_hard_uml_usecase_benennung_nutzerziel_v02",
+      "interactionType": "single",
+      "questionKind": "prioritaet_setzen",
+      "badgeLabel": "Was ist hier am wichtigsten?",
+      "isNew": true,
+      "prompt": "Wie benennt man einen Use Case im Portal fachlich sinnvoll?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Als fachliches Nutzerziel wie „Beratungsanfrage anlegen“",
+          "correct": true,
+          "explanation": "Use Cases werden typischerweise aus Nutzersicht als Ziel oder Funktion benannt."
+        },
+        {
+          "id": "b",
+          "text": "Als Farbname der Schaltfläche",
+          "correct": false,
+          "explanation": "Das beschreibt kein fachliches Ziel."
+        },
+        {
+          "id": "c",
+          "text": "Als Dateipfad zum Formular",
+          "correct": false,
+          "explanation": "Das ist keine Use-Case-Benennung."
+        },
+        {
+          "id": "d",
+          "text": "Als beliebige interne Ticketnummer",
+          "correct": false,
+          "explanation": "Auch das macht den fachlichen Zweck nicht sichtbar."
+        }
+      ]
+    },
+    {
+      "id": "pv1fi_hard_uml_q05",
+      "conceptId": "pv1fi_hard_uml_usecase_vs_aktivitaetsdiagramm",
+      "variantId": "pv1fi_hard_uml_usecase_vs_aktivitaetsdiagramm_v02",
+      "interactionType": "single",
+      "questionKind": "vergleich_treffen",
+      "badgeLabel": "Worin liegt der wichtigste Unterschied?",
+      "isNew": true,
+      "prompt": "Welches Missverständnis trennt Use-Case-Diagramm und Aktivitätsdiagramm am klarsten?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Use Cases zeigen Funktionen und Rollen, Aktivitätsdiagramme zeigen den Ablauf dieser Arbeitsschritte.",
+          "correct": true,
+          "explanation": "Genau diese Sichttrennung ist fachlich zentral."
+        },
+        {
+          "id": "b",
+          "text": "Beide Modelle dienen ausschließlich zur Darstellung von Klassen.",
+          "correct": false,
+          "explanation": "Das ist falsch."
+        },
+        {
+          "id": "c",
+          "text": "Aktivitätsdiagramme ersetzen immer die Use-Case-Sicht vollständig.",
+          "correct": false,
+          "explanation": "Jede Sicht hat ihren eigenen Zweck."
+        },
+        {
+          "id": "d",
+          "text": "Use Cases sind nur für Hardwareprojekte gedacht.",
+          "correct": false,
+          "explanation": "Auch das stimmt nicht."
+        }
+      ]
+    },
+    {
+      "id": "pv1fi_hard_uml_q06",
+      "conceptId": "pv1fi_hard_uml_klasse_beratungsanfrage",
+      "variantId": "pv1fi_hard_uml_klasse_beratungsanfrage_v02",
+      "interactionType": "single",
+      "questionKind": "definition_zu_begriff",
+      "badgeLabel": "Welche Aussage trifft am besten zu?",
+      "isNew": true,
+      "prompt": "Was ist im Portalmodell ein Fachobjekt und nicht bloß eine Eigenschaft?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Beratungsanfrage",
+          "correct": true,
+          "explanation": "Eine Anfrage ist ein eigenständiges Fachobjekt mit Beziehungen und Eigenschaften."
+        },
+        {
+          "id": "b",
+          "text": "E-Mail-Adresse",
+          "correct": false,
+          "explanation": "Das ist eher ein Attribut."
+        },
+        {
+          "id": "c",
+          "text": "Priorität = hoch",
+          "correct": false,
+          "explanation": "Das ist eher ein Attributwert."
+        },
+        {
+          "id": "d",
+          "text": "Status = offen",
+          "correct": false,
+          "explanation": "Auch das ist keine Klasse."
+        }
+      ]
+    },
+    {
+      "id": "pv1fi_hard_uml_q07",
+      "conceptId": "pv1fi_hard_uml_attribut_kundendaten",
+      "variantId": "pv1fi_hard_uml_attribut_kundendaten_v02",
+      "interactionType": "single",
+      "questionKind": "beispiel_erkennen",
+      "badgeLabel": "Welches Beispiel passt am besten?",
+      "isNew": true,
+      "prompt": "Was wäre an der Klasse „Kunde“ am ehesten ein Attribut?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "E-Mail-Adresse",
+          "correct": true,
+          "explanation": "Das ist eine Eigenschaft des Kundenobjekts."
+        },
+        {
+          "id": "b",
+          "text": "Beratungsanfrage",
+          "correct": false,
+          "explanation": "Das wäre eher eine eigene Klasse."
+        },
+        {
+          "id": "c",
+          "text": "Freigabeprozess",
+          "correct": false,
+          "explanation": "Das ist eher ein Ablauf als ein Attribut."
+        },
+        {
+          "id": "d",
+          "text": "Swimlane",
+          "correct": false,
+          "explanation": "Das ist ein Diagrammelement, kein Attribut."
+        }
+      ]
+    },
+    {
+      "id": "pv1fi_hard_uml_q08",
+      "conceptId": "pv1fi_hard_uml_operation_statusaendern",
+      "variantId": "pv1fi_hard_uml_operation_statusaendern_v02",
+      "interactionType": "single",
+      "questionKind": "beispiel_erkennen",
+      "badgeLabel": "Welches Beispiel passt am besten?",
+      "isNew": true,
+      "prompt": "Welche Modellangabe wäre bei „Beratungsanfrage“ am ehesten eine Operation?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Status ändern",
+          "correct": true,
+          "explanation": "Das beschreibt eine fachliche Operation am Objekt."
+        },
+        {
+          "id": "b",
+          "text": "Kundenname",
+          "correct": false,
+          "explanation": "Das wäre eher ein Attribut."
+        },
+        {
+          "id": "c",
+          "text": "Akteur",
+          "correct": false,
+          "explanation": "Das ist keine Operation der Klasse."
+        },
+        {
+          "id": "d",
+          "text": "Systemgrenze",
+          "correct": false,
+          "explanation": "Auch das ist keine Klassenoperation."
+        }
+      ]
+    },
+    {
+      "id": "pv1fi_hard_uml_q09",
+      "conceptId": "pv1fi_hard_uml_beziehung_kunde_anfrage",
+      "variantId": "pv1fi_hard_uml_beziehung_kunde_anfrage_v02",
+      "interactionType": "single",
+      "questionKind": "beispiel_erkennen",
+      "badgeLabel": "Welches Beispiel passt am besten?",
+      "isNew": true,
+      "prompt": "Welcher Sachverhalt beschreibt zwischen zwei Portal-Klassen am ehesten eine Beziehung?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Ein Kunde kann eine oder mehrere Beratungsanfragen besitzen.",
+          "correct": true,
+          "explanation": "Das ist eine typische fachliche Beziehung zwischen Klassen."
+        },
+        {
+          "id": "b",
+          "text": "Ein Bildschirm ist blau.",
+          "correct": false,
+          "explanation": "Das ist keine Klassenbeziehung."
+        },
+        {
+          "id": "c",
+          "text": "Eine Schriftart ist lesbar.",
+          "correct": false,
+          "explanation": "Auch das ist keine Beziehung im Modell."
+        },
+        {
+          "id": "d",
+          "text": "Eine Taste ist groß.",
+          "correct": false,
+          "explanation": "Das verfehlt den geprüften IT-Zusammenhang."
+        }
+      ]
+    },
+    {
+      "id": "pv1fi_hard_uml_q10",
+      "conceptId": "pv1fi_hard_uml_multiplizitaet_kunde_anfragen",
+      "variantId": "pv1fi_hard_uml_multiplizitaet_kunde_anfragen_v02",
+      "interactionType": "single",
+      "questionKind": "vergleich_treffen",
+      "badgeLabel": "Welche Aussage passt am besten?",
+      "isNew": true,
+      "prompt": "Wie ist eine 1:n-Beziehung zwischen Kunde und Beratungsanfrage fachlich zu lesen?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Ein Kunde kann mehreren Anfragen zugeordnet sein, jede Anfrage gehört dabei zu genau einem Kunden.",
+          "correct": true,
+          "explanation": "So wird diese fachliche Zuordnung typischerweise gelesen."
+        },
+        {
+          "id": "b",
+          "text": "Beide Klassen verschwinden aus dem Diagramm.",
+          "correct": false,
+          "explanation": "Das ist fachlich falsch."
+        },
+        {
+          "id": "c",
+          "text": "Klassen werden nach Optik statt nach fachlicher Verantwortung getrennt.",
+          "correct": false,
+          "explanation": "Darum geht es nicht."
+        },
+        {
+          "id": "d",
+          "text": "Es gibt keinen Unterschied zwischen Klasse und Attribut mehr.",
+          "correct": false,
+          "explanation": "Auch das stimmt nicht."
+        }
+      ]
+    },
+    {
+      "id": "pv1fi_hard_uml_q11",
+      "conceptId": "pv1fi_hard_uml_modellwahl_struktursicht",
+      "variantId": "pv1fi_hard_uml_modellwahl_struktursicht_v02",
+      "interactionType": "best",
+      "questionKind": "passende_massnahme_auswaehlen",
+      "badgeLabel": "Was ist hier am sinnvollsten?",
+      "isNew": true,
+      "prompt": "Sie bauen die Struktursicht des Portals auf. Welches Modell brauchen Sie dafür?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Ein Klassendiagramm",
+          "correct": true,
+          "explanation": "Genau diese Elemente gehören in die Struktursicht."
+        },
+        {
+          "id": "b",
+          "text": "Ein Aktivitätsdiagramm",
+          "correct": false,
+          "explanation": "Das ist eher für Abläufe gedacht."
+        },
+        {
+          "id": "c",
+          "text": "Ein Use-Case-Diagramm",
+          "correct": false,
+          "explanation": "Das beschreibt Rollen und Funktionen, nicht die innere Fachstruktur."
+        },
+        {
+          "id": "d",
+          "text": "Eine Kostenübersicht",
+          "correct": false,
+          "explanation": "Das ist keine UML-Struktursicht."
+        }
+      ]
+    },
+    {
+      "id": "pv1fi_hard_uml_q12",
+      "conceptId": "pv1fi_hard_uml_aktivitaetsdiagramm_prozesszweck",
+      "variantId": "pv1fi_hard_uml_aktivitaetsdiagramm_prozesszweck_v02",
+      "interactionType": "single",
+      "questionKind": "definition_zu_begriff",
+      "badgeLabel": "Welche Aussage trifft am besten zu?",
+      "isNew": true,
+      "prompt": "Welchen Mehrwert hat das Aktivitätsdiagramm im Freigabeprozess dieses Portals?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Es macht die Reihenfolge von Schritten, Entscheidungen und Zuständigkeiten im Ablauf sichtbar.",
+          "correct": true,
+          "explanation": "Genau dafür ist diese Sicht passend."
+        },
+        {
+          "id": "b",
+          "text": "Es ersetzt Modellinhalte durch reine Darstellung.",
+          "correct": false,
+          "explanation": "Das ist fachlich falsch."
+        },
+        {
+          "id": "c",
+          "text": "Es dient nur zur Darstellung von Hardwarekomponenten.",
+          "correct": false,
+          "explanation": "Auch das stimmt nicht."
+        },
+        {
+          "id": "d",
+          "text": "Es benennt ausschließlich externe Akteure.",
+          "correct": false,
+          "explanation": "Das wäre eher näher an der Use-Case-Sicht."
+        }
+      ]
+    },
+    {
+      "id": "pv1fi_hard_uml_q13",
+      "conceptId": "pv1fi_hard_uml_start_ende_portalprozess",
+      "variantId": "pv1fi_hard_uml_start_ende_portalprozess_v02",
+      "interactionType": "multi",
+      "questionKind": "mehrere_richtige_antworten_waehlen",
+      "badgeLabel": "Welche Aussagen sind korrekt?",
+      "isNew": true,
+      "prompt": "Welche Aussagen zu Start- und Endknoten tragen diesen Prozess fachlich?",
+      "maxSelections": 3,
+      "options": [
+        {
+          "id": "a",
+          "text": "Ein Ablauf braucht einen nachvollziehbaren Startpunkt.",
+          "correct": true,
+          "explanation": "Gerade dadurch wird der Prozess lesbar."
+        },
+        {
+          "id": "b",
+          "text": "Ein Endpunkt markiert, wo der Ablauf abgeschlossen ist.",
+          "correct": true,
+          "explanation": "So wird das Prozessende sichtbar."
+        },
+        {
+          "id": "c",
+          "text": "Es kann fachlich sinnvoll sein, unterschiedliche Abläufe an verschiedene Endpunkte zu führen.",
+          "correct": true,
+          "explanation": "Auch unterschiedliche Prozessausgänge lassen sich so darstellen."
+        },
+        {
+          "id": "d",
+          "text": "Start- und Endknoten werden durch Dateiendungen ersetzt.",
+          "correct": false,
+          "explanation": "Das ist fachlich falsch."
+        },
+        {
+          "id": "e",
+          "text": "Ein Aktivitätsdiagramm braucht grundsätzlich weder Anfang noch Ende.",
+          "correct": false,
+          "explanation": "Das wäre für die Lesbarkeit problematisch."
+        }
+      ]
+    },
+    {
+      "id": "pv1fi_hard_uml_q14",
+      "conceptId": "pv1fi_hard_uml_aktion_vollstaendigkeit_pruefen",
+      "variantId": "pv1fi_hard_uml_aktion_vollstaendigkeit_pruefen_v02",
+      "interactionType": "single",
+      "questionKind": "beispiel_erkennen",
+      "badgeLabel": "Welches Beispiel passt am besten?",
+      "isNew": true,
+      "prompt": "Welcher Schritt taugt im Aktivitätsdiagramm am ehesten als Aktion?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Vollständigkeit der Anfrage prüfen",
+          "correct": true,
+          "explanation": "Das ist ein klar benennbarer Prozessschritt."
+        },
+        {
+          "id": "b",
+          "text": "Klassendiagramm",
+          "correct": false,
+          "explanation": "Das ist ein Diagrammtyp, keine Aktion."
+        },
+        {
+          "id": "c",
+          "text": "Systemgrenze",
+          "correct": false,
+          "explanation": "Auch das ist kein Prozessschritt."
+        },
+        {
+          "id": "d",
+          "text": "Multiplizität",
+          "correct": false,
+          "explanation": "Das ist ein Strukturelement, keine Aktion."
+        }
+      ]
+    },
+    {
+      "id": "pv1fi_hard_uml_q15",
+      "conceptId": "pv1fi_hard_uml_entscheidung_vollstaendig",
+      "variantId": "pv1fi_hard_uml_entscheidung_vollstaendig_v02",
+      "interactionType": "single",
+      "questionKind": "ziel_mittel_zuordnung",
+      "badgeLabel": "Welche Lösung passt am besten?",
+      "isNew": true,
+      "prompt": "Womit modellieren Sie im Ablauf die Verzweigung nach Vollständigkeit, Dublette oder Rücklauf am sinnvollsten?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Einen Entscheidungsknoten",
+          "correct": true,
+          "explanation": "Damit wird die bedingte Verzweigung dargestellt."
+        },
+        {
+          "id": "b",
+          "text": "eine rein optische Variante ohne fachliche Wirkung",
+          "correct": false,
+          "explanation": "Das ersetzt keinen Entscheidungsknoten."
+        },
+        {
+          "id": "c",
+          "text": "Eine Klassenbeziehung",
+          "correct": false,
+          "explanation": "Das gehört in eine andere Sicht."
+        },
+        {
+          "id": "d",
+          "text": "Eine Inventarnummer",
+          "correct": false,
+          "explanation": "Das hilft hier fachlich nicht."
+        }
+      ]
+    },
+    {
+      "id": "pv1fi_hard_uml_q16",
+      "conceptId": "pv1fi_hard_uml_guard_freigabebedingung",
+      "variantId": "pv1fi_hard_uml_guard_freigabebedingung_v02",
+      "interactionType": "single",
+      "questionKind": "ziel_mittel_zuordnung",
+      "badgeLabel": "Welche Option hilft am ehesten, dieses Ziel zu erreichen?",
+      "isNew": true,
+      "prompt": "Wodurch wird im Aktivitätsdiagramm sichtbar, wann ein Zweig gelten soll?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Durch eine Guard-Bedingung am Verzweigungspfad",
+          "correct": true,
+          "explanation": "Genau dadurch wird die Bedingung an einem Zweig kenntlich."
+        },
+        {
+          "id": "b",
+          "text": "Durch einen längeren Dateinamen",
+          "correct": false,
+          "explanation": "Das trägt nichts zur fachlichen Bewertung bei."
+        },
+        {
+          "id": "c",
+          "text": "Durch ein zusätzliches Attribut im Klassendiagramm",
+          "correct": false,
+          "explanation": "Das ist nicht dasselbe."
+        },
+        {
+          "id": "d",
+          "text": "Durch eine neue Bildschirmauflösung",
+          "correct": false,
+          "explanation": "Auch das hilft hier nicht."
+        }
+      ]
+    },
+    {
+      "id": "pv1fi_hard_uml_q17",
+      "conceptId": "pv1fi_hard_uml_swimlane_rollenzustand",
+      "variantId": "pv1fi_hard_uml_swimlane_rollenzustand_v02",
+      "interactionType": "single",
+      "questionKind": "definition_zu_begriff",
+      "badgeLabel": "Welche Aussage trifft am besten zu?",
+      "isNew": true,
+      "prompt": "Wozu helfen Swimlanes in diesem Freigabeablauf konkret?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Sie ordnen Schritte Rollen oder Organisationseinheiten zu.",
+          "correct": true,
+          "explanation": "So werden Zuständigkeiten im Ablauf sichtbar."
+        },
+        {
+          "id": "b",
+          "text": "Sie ersetzen alle Entscheidungsregeln.",
+          "correct": false,
+          "explanation": "Das tun sie nicht."
+        },
+        {
+          "id": "c",
+          "text": "Sie legen automatisch alle Klassen fest.",
+          "correct": false,
+          "explanation": "Auch das ist nicht ihre Aufgabe."
+        },
+        {
+          "id": "d",
+          "text": "Sie sind nur ein grafischer Schmuck ohne fachliche Bedeutung.",
+          "correct": false,
+          "explanation": "Sie haben gerade eine klare fachliche Funktion."
+        }
+      ]
+    },
+    {
+      "id": "pv1fi_hard_uml_q18",
+      "conceptId": "pv1fi_hard_uml_parallelitaet_fachbereich_it",
+      "variantId": "pv1fi_hard_uml_parallelitaet_fachbereich_it_v02",
+      "interactionType": "single",
+      "questionKind": "beispiel_erkennen",
+      "badgeLabel": "Welches Beispiel passt am besten?",
+      "isNew": true,
+      "prompt": "Wo liegt in diesem Ablauf tatsächlich Parallelität vor?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Fachbereich und IT prüfen nach der Vollständigkeitskontrolle gleichzeitig unterschiedliche Aspekte der Anfrage.",
+          "correct": true,
+          "explanation": "Das ist ein typischer Fall paralleler Arbeitsschritte."
+        },
+        {
+          "id": "b",
+          "text": "Die Anfrage wird nacheinander in genau einer Zeile gelesen.",
+          "correct": false,
+          "explanation": "Das ist gerade keine Parallelität."
+        },
+        {
+          "id": "c",
+          "text": "nur eine optische Änderung ohne Anforderungsbezug",
+          "correct": false,
+          "explanation": "Das verfehlt den geprüften IT-Zusammenhang."
+        },
+        {
+          "id": "d",
+          "text": "Ein Attribut bekommt einen neuen Namen.",
+          "correct": false,
+          "explanation": "Auch das beschreibt keine parallelen Prozessschritte."
+        }
+      ]
+    },
+    {
+      "id": "pv1fi_hard_uml_q19",
+      "conceptId": "pv1fi_hard_uml_synchronisation_vor_bestaetigung",
+      "variantId": "pv1fi_hard_uml_synchronisation_vor_bestaetigung_v02",
+      "interactionType": "single",
+      "questionKind": "passende_massnahme_auswaehlen",
+      "badgeLabel": "Welche Maßnahme passt am besten zur Situation?",
+      "isNew": true,
+      "prompt": "Fachbereich und IT prüfen parallel, danach geht es erst zur Bestätigung. Was braucht das Diagramm an der Zusammenführung?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Eine Synchronisation, an der beide Prüfpfade wieder zusammengeführt werden",
+          "correct": true,
+          "explanation": "Erst danach kann der gemeinsame Folgeschritt starten."
+        },
+        {
+          "id": "b",
+          "text": "Eine neue Systemgrenze",
+          "correct": false,
+          "explanation": "Das ist hier nicht das passende Element."
+        },
+        {
+          "id": "c",
+          "text": "Eine zweite Klassensicht",
+          "correct": false,
+          "explanation": "Auch das löst den Ablauf nicht."
+        },
+        {
+          "id": "d",
+          "text": "Nur einen größeren Diagrammtitel",
+          "correct": false,
+          "explanation": "Das ist fachlich bedeutungslos."
+        }
+      ]
+    },
+    {
+      "id": "pv1fi_hard_uml_q20",
+      "conceptId": "pv1fi_hard_uml_ruecklauf_unvollstaendig",
+      "variantId": "pv1fi_hard_uml_ruecklauf_unvollstaendig_v02",
+      "interactionType": "single",
+      "questionKind": "ursache_folge_erkennen",
+      "badgeLabel": "Welche Folge ergibt sich daraus am ehesten?",
+      "isNew": true,
+      "prompt": "Eine Anfrage läuft bei Unvollständigkeit zurück zum Interessenten und später wieder in die Prüfung. Wie wirkt sich das aufs Aktivitätsdiagramm aus?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Der Ablauf enthält einen Rücklauf oder einen erneuten Einstieg in einen früheren Prüfschritt.",
+          "correct": true,
+          "explanation": "Genau so wird dieser fachliche Rückweg sichtbar."
+        },
+        {
+          "id": "b",
+          "text": "Das Klassendiagramm verschwindet automatisch.",
+          "correct": false,
+          "explanation": "Das ist fachlich falsch."
+        },
+        {
+          "id": "c",
+          "text": "Alle Akteure werden zu Attributen.",
+          "correct": false,
+          "explanation": "Auch das stimmt nicht."
+        },
+        {
+          "id": "d",
+          "text": "Multiplizitäten werden dadurch überflüssig.",
+          "correct": false,
+          "explanation": "Das hat nichts damit zu tun."
+        }
+      ]
+    },
+    {
+      "id": "pv1fi_hard_uml_q21",
+      "conceptId": "pv1fi_hard_uml_entscheidung_vs_parallelisierung",
+      "variantId": "pv1fi_hard_uml_entscheidung_vs_parallelisierung_v02",
+      "interactionType": "single",
+      "questionKind": "vergleich_treffen",
+      "badgeLabel": "Worin liegt der wichtigste Unterschied?",
+      "isNew": true,
+      "prompt": "Wie unterscheidet sich eine Entscheidung im Aktivitätsdiagramm fachlich von einer Parallelisierung?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Bei einer Entscheidung wird genau einer der Pfade gewählt, bei Parallelisierung laufen mehrere Pfade gleichzeitig weiter.",
+          "correct": true,
+          "explanation": "Genau das ist der fachliche Kernunterschied."
+        },
+        {
+          "id": "b",
+          "text": "Beides meint immer dasselbe.",
+          "correct": false,
+          "explanation": "Das ist falsch."
+        },
+        {
+          "id": "c",
+          "text": "Parallelisierung gibt es nur in Klassendiagrammen.",
+          "correct": false,
+          "explanation": "Auch das stimmt nicht."
+        },
+        {
+          "id": "d",
+          "text": "Eine Entscheidung beschreibt immer eine Multiplizität.",
+          "correct": false,
+          "explanation": "Das gehört in eine andere Sicht."
+        }
+      ]
+    },
+    {
+      "id": "pv1fi_hard_uml_q22",
+      "conceptId": "pv1fi_hard_uml_usecase_vs_klassendiagramm",
+      "variantId": "pv1fi_hard_uml_usecase_vs_klassendiagramm_v02",
+      "interactionType": "single",
+      "questionKind": "vergleich_treffen",
+      "badgeLabel": "Worin liegt der wichtigste Unterschied?",
+      "isNew": true,
+      "prompt": "Was trennt Use-Case-Diagramm und Klassendiagramm in diesem Projekt am deutlichsten?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Use Cases zeigen Funktionen aus Nutzersicht, Klassendiagramme zeigen fachliche Objekte und Beziehungen.",
+          "correct": true,
+          "explanation": "Genau so ergänzen sich beide Sichten."
+        },
+        {
+          "id": "b",
+          "text": "Beide Diagramme sind nur unterschiedliche Namen für dieselbe Sache.",
+          "correct": false,
+          "explanation": "Das wäre fachlich falsch."
+        },
+        {
+          "id": "c",
+          "text": "Klassendiagramme zeigen nur zeitliche Reihenfolgen.",
+          "correct": false,
+          "explanation": "Auch das stimmt nicht."
+        },
+        {
+          "id": "d",
+          "text": "Use Cases enthalten grundsätzlich keine Akteure.",
+          "correct": false,
+          "explanation": "Akteure gehören gerade dazu."
+        }
+      ]
+    },
+    {
+      "id": "pv1fi_hard_uml_q23",
+      "conceptId": "pv1fi_hard_uml_klassendiagramm_vs_aktivitaet",
+      "variantId": "pv1fi_hard_uml_klassendiagramm_vs_aktivitaet_v02",
+      "interactionType": "single",
+      "questionKind": "vergleich_treffen",
+      "badgeLabel": "Welche Aussage passt am besten?",
+      "isNew": true,
+      "prompt": "Was trennt Klassendiagramm und Aktivitätsdiagramm in diesem Projekt am deutlichsten?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Das Klassendiagramm zeigt Struktur, das Aktivitätsdiagramm zeigt Ablauf und Zuständigkeiten.",
+          "correct": true,
+          "explanation": "Diese Trennung ist fachlich zentral."
+        },
+        {
+          "id": "b",
+          "text": "Beide Modelle zeigen ausschließlich Bildschirmmasken.",
+          "correct": false,
+          "explanation": "Das ist falsch."
+        },
+        {
+          "id": "c",
+          "text": "Das Aktivitätsdiagramm ersetzt automatisch jede Struktursicht.",
+          "correct": false,
+          "explanation": "Auch das stimmt nicht."
+        },
+        {
+          "id": "d",
+          "text": "Klassendiagramme eignen sich nur für Hardwarebestände.",
+          "correct": false,
+          "explanation": "Das ist fachlich viel zu eng."
+        }
+      ]
+    },
+    {
+      "id": "pv1fi_hard_uml_q24",
+      "conceptId": "pv1fi_hard_uml_prozessklarheit_aussage",
+      "variantId": "pv1fi_hard_uml_prozessklarheit_aussage_v02",
+      "interactionType": "binary",
+      "questionKind": "aussage_bewerten",
+      "badgeLabel": "Stimmt diese Aussage?",
+      "isNew": true,
+      "prompt": "Aussage: Ein Aktivitätsdiagramm hilft, Freigaben, Rückläufe und Zuständigkeiten strukturiert sichtbar zu machen.",
+      "options": [
+        {
+          "id": "a",
+          "text": "Stimmt",
+          "correct": true,
+          "explanation": "Genau darin liegt sein fachlicher Nutzen."
+        },
+        {
+          "id": "b",
+          "text": "Stimmt nicht",
+          "correct": false,
+          "explanation": "Gerade für solche Abläufe ist es gut geeignet."
+        }
+      ]
+    },
+    {
+      "id": "pv1fi_hard_uml_q25",
+      "conceptId": "pv1fi_hard_uml_rollenzuordnung_koordination_it",
+      "variantId": "pv1fi_hard_uml_rollenzuordnung_koordination_it_v02",
+      "interactionType": "best",
+      "questionKind": "passende_massnahme_auswaehlen",
+      "badgeLabel": "Was ist hier am sinnvollsten?",
+      "isNew": true,
+      "prompt": "Sie wollen Zuständigkeiten von Koordination, Fachbereich, IT und Serviceleitung direkt im Ablauf zeigen. Was ist dafür am sinnvollsten?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Die Schritte in Swimlanes der beteiligten Rollen anordnen",
+          "correct": true,
+          "explanation": "So bleibt die Zuständigkeit direkt im Ablauf sichtbar."
+        },
+        {
+          "id": "b",
+          "text": "Nur einen Kommentar unter das Diagramm schreiben",
+          "correct": false,
+          "explanation": "Das macht die Zuordnung im Modell nicht so klar."
+        },
+        {
+          "id": "c",
+          "text": "Die Klassen im Klassendiagramm größer zeichnen",
+          "correct": false,
+          "explanation": "Das hilft für die Ablaufsicht nicht."
+        },
+        {
+          "id": "d",
+          "text": "Die Hintergrundgrafik austauschen",
+          "correct": false,
+          "explanation": "Das trägt nichts zur fachlichen Bewertung bei."
+        }
+      ]
+    },
+    {
+      "id": "pv1fi_hard_uml_q26",
+      "conceptId": "pv1fi_hard_uml_modellfehler_falsche_sicht",
+      "variantId": "pv1fi_hard_uml_modellfehler_falsche_sicht_v02",
+      "interactionType": "single",
+      "questionKind": "fehler_finden",
+      "badgeLabel": "Welche Option enthält den Denkfehler?",
+      "isNew": true,
+      "prompt": "Welche Aussage zur Diagrammwahl ist hier fachlich falsch?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Für Rollen und Funktionen ist die Use-Case-Sicht hilfreich.",
+          "correct": false,
+          "explanation": "Das ist fachlich richtig."
+        },
+        {
+          "id": "b",
+          "text": "Für Fachobjekte und Beziehungen ist die Klassensicht passend.",
+          "correct": false,
+          "explanation": "Auch das ist richtig."
+        },
+        {
+          "id": "c",
+          "text": "Für den Freigabeablauf mit Entscheidungen und Parallelität reicht ein Klassendiagramm vollkommen aus.",
+          "correct": true,
+          "explanation": "Genau darin liegt der Denkfehler."
+        },
+        {
+          "id": "d",
+          "text": "Verschiedene Sichten können sich im selben Projekt sinnvoll ergänzen.",
+          "correct": false,
+          "explanation": "Das stimmt."
+        }
+      ]
+    },
+    {
+      "id": "pv1fi_hard_uml_q27",
+      "conceptId": "pv1fi_hard_uml_mini_szenario_portalfreigabe",
+      "variantId": "pv1fi_hard_uml_mini_szenario_portalfreigabe_v02",
+      "interactionType": "best",
+      "questionKind": "beste_option_im_mini_szenario",
+      "badgeLabel": "Welche Lösung passt insgesamt am besten?",
+      "isNew": true,
+      "prompt": "Für Rollen, Fachobjekte und den verzweigten Freigabeprozess soll eine saubere Modellmenge erstellt werden. Welche Kombination passt?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Use-Case-Diagramm für Rollen und Funktionen, Klassendiagramm für Fachobjekte, Aktivitätsdiagramm für den Freigabeablauf",
+          "correct": true,
+          "explanation": "Diese Kombination trennt die Sichten fachlich sauber und vollständig."
+        },
+        {
+          "id": "b",
+          "text": "Nur ein Klassendiagramm für alles",
+          "correct": false,
+          "explanation": "Damit fehlen Rollen- und Ablaufsicht."
+        },
+        {
+          "id": "c",
+          "text": "Nur ein Aktivitätsdiagramm für alles",
+          "correct": false,
+          "explanation": "Damit bleibt die Struktursicht zu dünn."
+        },
+        {
+          "id": "d",
+          "text": "Nur eine Textliste ohne Modellierung",
+          "correct": false,
+          "explanation": "Das erfüllt den Modellierungszweck nicht angemessen."
+        }
+      ]
+    },
+    {
+      "id": "pv1fi_hard_uml_q28",
+      "conceptId": "pv1fi_hard_uml_gesamtentscheidung_portalmodell",
+      "variantId": "pv1fi_hard_uml_gesamtentscheidung_portalmodell_v02",
+      "interactionType": "best",
+      "questionKind": "prioritaet_setzen",
+      "badgeLabel": "Welche Empfehlung ist am stärksten?",
+      "isNew": true,
+      "prompt": "Welche Modellierungsempfehlung ist für dieses Portalprojekt insgesamt am tragfähigsten?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Die drei UML-Sichten bewusst kombinieren und jede nur für ihren fachlichen Zweck einsetzen.",
+          "correct": true,
+          "explanation": "So bleibt das Projektmodell klar, lesbar und fachlich sauber getrennt."
+        },
+        {
+          "id": "b",
+          "text": "Nur die grafisch hübscheste Sicht auswählen und alle Fragen dort unterbringen.",
+          "correct": false,
+          "explanation": "Das würde die Modellierung fachlich verwässern."
+        },
+        {
+          "id": "c",
+          "text": "Abläufe ausschließlich als Fließtext dokumentieren und auf Diagramme verzichten.",
+          "correct": false,
+          "explanation": "Das hilft gerade nicht bei komplexeren Freigaben."
+        },
+        {
+          "id": "d",
+          "text": "Rollen, Klassen und Prozesslogik bewusst vermischen, damit weniger Dateien entstehen.",
+          "correct": false,
+          "explanation": "Genau das sollte vermieden werden."
+        }
+      ]
+    }
+  ]
+}
