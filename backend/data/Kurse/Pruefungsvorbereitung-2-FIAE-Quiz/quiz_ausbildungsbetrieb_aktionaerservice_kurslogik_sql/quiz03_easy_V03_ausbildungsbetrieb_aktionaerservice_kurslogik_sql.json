@@ -1,0 +1,904 @@
+{
+  "scenarioFolder": "Pruefungsvorbereitung-2-FIAE-Scenarien",
+  "quizFolder": "Pruefungsvorbereitung-2-FIAE-Quiz",
+  "scenarioFile": "ticket_ausbildungsbetrieb_aktionaerservice_kurslogik_sql/03_easy_ausbildungsbetrieb_aktionaerservice_kurslogik_sql.json",
+  "quizFile": "quiz_ausbildungsbetrieb_aktionaerservice_kurslogik_sql/quiz03_easy_V03_ausbildungsbetrieb_aktionaerservice_kurslogik_sql.json",
+  "ticketId": "03_easy_ausbildungsbetrieb_aktionaerservice_kurslogik_sql.json",
+  "versionId": "V03",
+  "title": "Ticket 03 Easy - Aktionärservice, Kurslogik und SQL-Berichte",
+  "description": "Manuell verfasstes AP2-FIAE-Training im Einstiegsniveau zu Investor-Portal, Kursvergleich, Whitebox-Tests und SQL-Berichten.",
+  "topics": [
+    "Investor-Portal, Aktivitätslogik und sichere Reset-Prozesse fachlich sicher einordnen",
+    "Kursvergleich, Whitebox-Tests und SQL-Berichte für die Hauptversammlung nachvollziehbar verbinden"
+  ],
+  "questions": [
+    {
+      "id": "pv2fiae_easy_t03_swimlane_aktionaer",
+      "conceptId": "pv2fiae_easy_t03_swimlane_aktionaer",
+      "variantId": "pv2fiae_easy_t03_swimlane_aktionaer_v03",
+      "interactionType": "single",
+      "questionKind": "beste_option_im_mini_szenario",
+      "badgeLabel": "Eine Antwort ist richtig.",
+      "isNew": true,
+      "prompt": "Welche Swimlane passt für eine Aktionärin, die sich im Portal anmeldet?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Aktionärin oder Anteilseigner.",
+          "correct": true,
+          "explanation": "Die Anmeldung wird fachlich von der externen Nutzerrolle ausgelöst."
+        },
+        {
+          "id": "b",
+          "text": "Datenbankadministrator.",
+          "correct": false,
+          "explanation": "Diese Rolle verwaltet nicht die Anmeldung der Aktionärin."
+        },
+        {
+          "id": "c",
+          "text": "Kursvergleichsfunktion.",
+          "correct": false,
+          "explanation": "Das ist eine technische Funktion, keine Rolle im Prozess."
+        },
+        {
+          "id": "d",
+          "text": "Archiv-Tabelle.",
+          "correct": false,
+          "explanation": "Eine Tabelle ist keine Swimlane."
+        }
+      ]
+    },
+    {
+      "id": "pv2fiae_easy_t03_swimlane_system",
+      "conceptId": "pv2fiae_easy_t03_swimlane_system",
+      "variantId": "pv2fiae_easy_t03_swimlane_system_v03",
+      "interactionType": "single",
+      "questionKind": "beste_option_im_mini_szenario",
+      "badgeLabel": "Eine Antwort ist richtig.",
+      "isNew": true,
+      "prompt": "Welche Aktivität gehört im Aktivitätsdiagramm typischerweise in die System-Swimlane?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Zugangsdaten prüfen.",
+          "correct": true,
+          "explanation": "Die Prüfung wird vom Portal beziehungsweise System ausgeführt."
+        },
+        {
+          "id": "b",
+          "text": "Einladung postalisch öffnen.",
+          "correct": false,
+          "explanation": "Das macht die empfangende Person."
+        },
+        {
+          "id": "c",
+          "text": "Vorstandsbeschluss fassen.",
+          "correct": false,
+          "explanation": "Das ist nicht die Portallogik."
+        },
+        {
+          "id": "d",
+          "text": "Kursdaten manuell vorlesen.",
+          "correct": false,
+          "explanation": "Das ist keine Systemaktivität."
+        }
+      ]
+    },
+    {
+      "id": "pv2fiae_easy_t03_login_ablauf",
+      "conceptId": "pv2fiae_easy_t03_login_ablauf",
+      "variantId": "pv2fiae_easy_t03_login_ablauf_v03",
+      "interactionType": "single",
+      "questionKind": "beste_option_im_mini_szenario",
+      "badgeLabel": "Eine Antwort ist richtig.",
+      "isNew": true,
+      "prompt": "Welche Beschreibung passt zum Login-Ablauf?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Eingaben erfassen, Zugangsdaten prüfen und je nach Ergebnis Zugriff erlauben oder ablehnen.",
+          "correct": true,
+          "explanation": "Das ist die grundlegende fachliche Ablaufstruktur."
+        },
+        {
+          "id": "b",
+          "text": "Zugriff immer ohne Prüfung erlauben.",
+          "correct": false,
+          "explanation": "Das wäre unsicher."
+        },
+        {
+          "id": "c",
+          "text": "Jede Anmeldung direkt archivieren und löschen.",
+          "correct": false,
+          "explanation": "Das hat nichts mit Authentisierung zu tun."
+        },
+        {
+          "id": "d",
+          "text": "Nach jeder Eingabe eine Aktie löschen.",
+          "correct": false,
+          "explanation": "Das ist sachfremd."
+        }
+      ]
+    },
+    {
+      "id": "pv2fiae_easy_t03_office_anhang_risiko",
+      "conceptId": "pv2fiae_easy_t03_office_anhang_risiko",
+      "variantId": "pv2fiae_easy_t03_office_anhang_risiko_v03",
+      "interactionType": "single",
+      "questionKind": "beste_option_im_mini_szenario",
+      "badgeLabel": "Eine Antwort ist richtig.",
+      "isNew": true,
+      "prompt": "Welches Risiko entsteht durch bearbeitbare Office-Dateien als Mailanhang?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Makros, manipulierte Inhalte oder unsichere Anhänge können Schadcode und Verwechslungen begünstigen.",
+          "correct": true,
+          "explanation": "Bearbeitbare Anhänge sind ein typisches Sicherheitsrisiko."
+        },
+        {
+          "id": "b",
+          "text": "Die Datei wird automatisch zur Datenbanktabelle.",
+          "correct": false,
+          "explanation": "Das passiert nicht."
+        },
+        {
+          "id": "c",
+          "text": "Aktienkurse werden dadurch korrekt sortiert.",
+          "correct": false,
+          "explanation": "Das hat keinen Bezug."
+        },
+        {
+          "id": "d",
+          "text": "Whitebox-Tests werden dadurch vollständig.",
+          "correct": false,
+          "explanation": "Anhänge erzeugen keine Testabdeckung."
+        }
+      ]
+    },
+    {
+      "id": "pv2fiae_easy_t03_sichere_einladung",
+      "conceptId": "pv2fiae_easy_t03_sichere_einladung",
+      "variantId": "pv2fiae_easy_t03_sichere_einladung_v03",
+      "interactionType": "single",
+      "questionKind": "beste_option_im_mini_szenario",
+      "badgeLabel": "Eine Antwort ist richtig.",
+      "isNew": true,
+      "prompt": "Welche Alternative ist sicherer als ein Word-Anhang?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Ein geschütztes Portal mit Download nach Anmeldung und unveränderbarer PDF-Datei.",
+          "correct": true,
+          "explanation": "Das reduziert Manipulations- und Verteilrisiken."
+        },
+        {
+          "id": "b",
+          "text": "Ein ungeschützter öffentlicher Link ohne Anmeldung.",
+          "correct": false,
+          "explanation": "Das wäre nicht sicherer."
+        },
+        {
+          "id": "c",
+          "text": "Ein Passwort im Betreff der E-Mail.",
+          "correct": false,
+          "explanation": "Das ist unsicher."
+        },
+        {
+          "id": "d",
+          "text": "Ein editierbares Makrodokument.",
+          "correct": false,
+          "explanation": "Das erhöht das Risiko."
+        }
+      ]
+    },
+    {
+      "id": "pv2fiae_easy_t03_passwort_reset_risiko",
+      "conceptId": "pv2fiae_easy_t03_passwort_reset_risiko",
+      "variantId": "pv2fiae_easy_t03_passwort_reset_risiko_v03",
+      "interactionType": "single",
+      "questionKind": "beste_option_im_mini_szenario",
+      "badgeLabel": "Eine Antwort ist richtig.",
+      "isNew": true,
+      "prompt": "Warum ist ein reiner Rücksetz-Link per E-Mail riskant?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Wer Zugriff auf das Postfach hat, kann möglicherweise das Passwort übernehmen.",
+          "correct": true,
+          "explanation": "Der Besitz des Postfachs wird zum alleinigen Faktor."
+        },
+        {
+          "id": "b",
+          "text": "E-Mail kann keine Links enthalten.",
+          "correct": false,
+          "explanation": "Das ist falsch."
+        },
+        {
+          "id": "c",
+          "text": "Der Link verbessert automatisch jede Mehrfaktorprüfung.",
+          "correct": false,
+          "explanation": "Ein reiner Link ist gerade kein zweiter Faktor."
+        },
+        {
+          "id": "d",
+          "text": "SQL-Berichte werden dadurch schneller.",
+          "correct": false,
+          "explanation": "Das ist unabhängig."
+        }
+      ]
+    },
+    {
+      "id": "pv2fiae_easy_t03_passwort_reset_absicherung",
+      "conceptId": "pv2fiae_easy_t03_passwort_reset_absicherung",
+      "variantId": "pv2fiae_easy_t03_passwort_reset_absicherung_v03",
+      "interactionType": "single",
+      "questionKind": "beste_option_im_mini_szenario",
+      "badgeLabel": "Eine Antwort ist richtig.",
+      "isNew": true,
+      "prompt": "Was erhöht die Sicherheit beim Passwort-Reset?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Ein zeitlich begrenzter Token plus zusätzlicher Prüf- oder Bestätigungsschritt.",
+          "correct": true,
+          "explanation": "Begrenzung und zusätzliche Prüfung reduzieren Missbrauch."
+        },
+        {
+          "id": "b",
+          "text": "Ein dauerhaft gültiger Link.",
+          "correct": false,
+          "explanation": "Das erhöht das Risiko."
+        },
+        {
+          "id": "c",
+          "text": "Ein Passwort im Klartext zurücksenden.",
+          "correct": false,
+          "explanation": "Das ist unsicher."
+        },
+        {
+          "id": "d",
+          "text": "Jede Prüfung entfernen.",
+          "correct": false,
+          "explanation": "Das senkt die Sicherheit."
+        }
+      ]
+    },
+    {
+      "id": "pv2fiae_easy_t03_compare_fn_zweck",
+      "conceptId": "pv2fiae_easy_t03_compare_fn_zweck",
+      "variantId": "pv2fiae_easy_t03_compare_fn_zweck_v03",
+      "interactionType": "single",
+      "questionKind": "beste_option_im_mini_szenario",
+      "badgeLabel": "Eine Antwort ist richtig.",
+      "isNew": true,
+      "prompt": "Wozu dient `compare_fn` in der Sortierlogik?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Sie entscheidet, in welcher Reihenfolge zwei Kursobjekte stehen sollen.",
+          "correct": true,
+          "explanation": "Die Vergleichsfunktion steuert die Sortierung."
+        },
+        {
+          "id": "b",
+          "text": "Sie löscht archivierte Kursdaten.",
+          "correct": false,
+          "explanation": "Das ist SQL-Archivierung."
+        },
+        {
+          "id": "c",
+          "text": "Sie meldet Aktionäre zur Versammlung an.",
+          "correct": false,
+          "explanation": "Das ist Portallogik."
+        },
+        {
+          "id": "d",
+          "text": "Sie erzeugt automatisch Testpfade.",
+          "correct": false,
+          "explanation": "Sie ist keine Testmetrik."
+        }
+      ]
+    },
+    {
+      "id": "pv2fiae_easy_t03_compare_positive",
+      "conceptId": "pv2fiae_easy_t03_compare_positive",
+      "variantId": "pv2fiae_easy_t03_compare_positive_v03",
+      "interactionType": "single",
+      "questionKind": "beste_option_im_mini_szenario",
+      "badgeLabel": "Eine Antwort ist richtig.",
+      "isNew": true,
+      "prompt": "Was bedeutet laut Vorgabe ein Rückgabewert größer 0?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Das zweite Element soll vor dem ersten stehen.",
+          "correct": true,
+          "explanation": "Diese Vorgabe steuert den Tausch in der Sortierung."
+        },
+        {
+          "id": "b",
+          "text": "Beide Elemente werden gelöscht.",
+          "correct": false,
+          "explanation": "Vergleichsfunktionen löschen nicht."
+        },
+        {
+          "id": "c",
+          "text": "Das erste Element ist immer ungültig.",
+          "correct": false,
+          "explanation": "Die Vorgabe beschreibt Reihenfolge, nicht Gültigkeit."
+        },
+        {
+          "id": "d",
+          "text": "Der Test ist automatisch bestanden.",
+          "correct": false,
+          "explanation": "Das ist kein Testergebnis."
+        }
+      ]
+    },
+    {
+      "id": "pv2fiae_easy_t03_sortieralgorithmus",
+      "conceptId": "pv2fiae_easy_t03_sortieralgorithmus",
+      "variantId": "pv2fiae_easy_t03_sortieralgorithmus_v03",
+      "interactionType": "single",
+      "questionKind": "beste_option_im_mini_szenario",
+      "badgeLabel": "Eine Antwort ist richtig.",
+      "isNew": true,
+      "prompt": "Welche Grundidee hat eine Sortierung mit Vergleichsfunktion?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Elemente werden paarweise verglichen und bei falscher Reihenfolge getauscht oder passend eingeordnet.",
+          "correct": true,
+          "explanation": "So kann die Funktion flexibel sortieren."
+        },
+        {
+          "id": "b",
+          "text": "Alle Elemente bleiben immer unsortiert.",
+          "correct": false,
+          "explanation": "Dann wäre es keine Sortierung."
+        },
+        {
+          "id": "c",
+          "text": "Alle Kursdaten werden archiviert.",
+          "correct": false,
+          "explanation": "Archivierung ist ein anderes Arbeitspaket."
+        },
+        {
+          "id": "d",
+          "text": "Die Vergleichsfunktion wird nie aufgerufen.",
+          "correct": false,
+          "explanation": "Dann steuert sie nichts."
+        }
+      ]
+    },
+    {
+      "id": "pv2fiae_easy_t03_bessere_notierung",
+      "conceptId": "pv2fiae_easy_t03_bessere_notierung",
+      "variantId": "pv2fiae_easy_t03_bessere_notierung_v03",
+      "interactionType": "single",
+      "questionKind": "beste_option_im_mini_szenario",
+      "badgeLabel": "Eine Antwort ist richtig.",
+      "isNew": true,
+      "prompt": "Was wird bei „Tage mit besserer Notierung als der Index“ gezählt?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Tage, an denen die prozentuale Änderung der Aktie größer ist als die des Index.",
+          "correct": true,
+          "explanation": "Die Aufgabe vergleicht relative Tagesänderungen."
+        },
+        {
+          "id": "b",
+          "text": "Alle Tage mit gleichem Datum.",
+          "correct": false,
+          "explanation": "Das reicht nicht."
+        },
+        {
+          "id": "c",
+          "text": "Alle Aktien ohne Kurswert.",
+          "correct": false,
+          "explanation": "Fehlende Werte sind keine bessere Notierung."
+        },
+        {
+          "id": "d",
+          "text": "Alle archivierten SQL-Zeilen.",
+          "correct": false,
+          "explanation": "Das ist ein Datenbankbestand, kein Kursvergleich."
+        }
+      ]
+    },
+    {
+      "id": "pv2fiae_easy_t03_prozentuale_aenderung",
+      "conceptId": "pv2fiae_easy_t03_prozentuale_aenderung",
+      "variantId": "pv2fiae_easy_t03_prozentuale_aenderung_v03",
+      "interactionType": "single",
+      "questionKind": "beste_option_im_mini_szenario",
+      "badgeLabel": "Eine Antwort ist richtig.",
+      "isNew": true,
+      "prompt": "Warum wird prozentuale Änderung statt absoluter Kursdifferenz verglichen?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Sie macht Werte mit unterschiedlicher Ausgangshöhe besser vergleichbar.",
+          "correct": true,
+          "explanation": "Relative Änderung ist für Aktien- und Indexvergleich sinnvoll."
+        },
+        {
+          "id": "b",
+          "text": "Sie verhindert jede Sortierung.",
+          "correct": false,
+          "explanation": "Das stimmt nicht."
+        },
+        {
+          "id": "c",
+          "text": "Sie löscht alte Daten.",
+          "correct": false,
+          "explanation": "Das ist Archivierung."
+        },
+        {
+          "id": "d",
+          "text": "Sie ersetzt Login-Sicherheit.",
+          "correct": false,
+          "explanation": "Nein."
+        }
+      ]
+    },
+    {
+      "id": "pv2fiae_easy_t03_whitebox_vorteile",
+      "conceptId": "pv2fiae_easy_t03_whitebox_vorteile",
+      "variantId": "pv2fiae_easy_t03_whitebox_vorteile_v03",
+      "interactionType": "multi",
+      "questionKind": "mehrere_richtige_antworten_waehlen",
+      "badgeLabel": "Mehrere Antworten sind richtig.",
+      "isNew": true,
+      "prompt": "Welche Vorteile haben Whitebox-Tests?",
+      "maxSelections": 2,
+      "options": [
+        {
+          "id": "a",
+          "text": "Innere Kontrollstrukturen können gezielt geprüft werden.",
+          "correct": true,
+          "explanation": "Whitebox nutzt Kenntnis des Codes."
+        },
+        {
+          "id": "b",
+          "text": "Bestimmte Pfade und Bedingungen lassen sich bewusst abdecken.",
+          "correct": true,
+          "explanation": "Die Struktur des Codes steuert die Testauswahl."
+        },
+        {
+          "id": "c",
+          "text": "Sie benötigen nie Quellcodekenntnis.",
+          "correct": false,
+          "explanation": "Das beschreibt eher Blackbox."
+        },
+        {
+          "id": "d",
+          "text": "Sie garantieren vollständige Fehlerfreiheit.",
+          "correct": false,
+          "explanation": "Auch Whitebox-Tests können Fehler übersehen."
+        }
+      ]
+    },
+    {
+      "id": "pv2fiae_easy_t03_regressionstest",
+      "conceptId": "pv2fiae_easy_t03_regressionstest",
+      "variantId": "pv2fiae_easy_t03_regressionstest_v03",
+      "interactionType": "single",
+      "questionKind": "beste_option_im_mini_szenario",
+      "badgeLabel": "Eine Antwort ist richtig.",
+      "isNew": true,
+      "prompt": "Wozu dienen Regressionstests?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Sie prüfen, ob bereits funktionierende Logik nach Änderungen weiterhin funktioniert.",
+          "correct": true,
+          "explanation": "Regressionstests schützen vor Rückfällen."
+        },
+        {
+          "id": "b",
+          "text": "Sie ersetzen jede Erstimplementierung.",
+          "correct": false,
+          "explanation": "Sie prüfen Änderungen, schreiben aber keinen Code."
+        },
+        {
+          "id": "c",
+          "text": "Sie löschen alte Kursdaten.",
+          "correct": false,
+          "explanation": "Das ist SQL."
+        },
+        {
+          "id": "d",
+          "text": "Sie melden Aktionäre an.",
+          "correct": false,
+          "explanation": "Das ist Portallogik."
+        }
+      ]
+    },
+    {
+      "id": "pv2fiae_easy_t03_anweisungsueberdeckung",
+      "conceptId": "pv2fiae_easy_t03_anweisungsueberdeckung",
+      "variantId": "pv2fiae_easy_t03_anweisungsueberdeckung_v03",
+      "interactionType": "single",
+      "questionKind": "beste_option_im_mini_szenario",
+      "badgeLabel": "Eine Antwort ist richtig.",
+      "isNew": true,
+      "prompt": "Was verlangt Anweisungsüberdeckung?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Jede Anweisung soll mindestens einmal ausgeführt werden.",
+          "correct": true,
+          "explanation": "Das ist die einfachste der genannten Strukturabdeckungen."
+        },
+        {
+          "id": "b",
+          "text": "Jede mögliche Datenkombination muss auftreten.",
+          "correct": false,
+          "explanation": "Das geht deutlich weiter."
+        },
+        {
+          "id": "c",
+          "text": "Jede Aktie muss gelöscht werden.",
+          "correct": false,
+          "explanation": "Das ist kein Testkriterium."
+        },
+        {
+          "id": "d",
+          "text": "Jeder Aktionär muss abstimmen.",
+          "correct": false,
+          "explanation": "Das ist fachlich anders."
+        }
+      ]
+    },
+    {
+      "id": "pv2fiae_easy_t03_zweigabdeckung",
+      "conceptId": "pv2fiae_easy_t03_zweigabdeckung",
+      "variantId": "pv2fiae_easy_t03_zweigabdeckung_v03",
+      "interactionType": "single",
+      "questionKind": "beste_option_im_mini_szenario",
+      "badgeLabel": "Eine Antwort ist richtig.",
+      "isNew": true,
+      "prompt": "Was verlangt Zweigüberdeckung?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Jeder Entscheidungszweig soll mindestens einmal durchlaufen werden.",
+          "correct": true,
+          "explanation": "Zweigabdeckung prüft Alternativen."
+        },
+        {
+          "id": "b",
+          "text": "Nur die erste Anweisung wird geprüft.",
+          "correct": false,
+          "explanation": "Das reicht nicht."
+        },
+        {
+          "id": "c",
+          "text": "Nur SQL-Benutzer werden angelegt.",
+          "correct": false,
+          "explanation": "Das ist keine Testmetrik."
+        },
+        {
+          "id": "d",
+          "text": "Nur der PDF-Download wird geprüft.",
+          "correct": false,
+          "explanation": "Das ist ein einzelner Funktionsfall."
+        }
+      ]
+    },
+    {
+      "id": "pv2fiae_easy_t03_pfadabdeckung",
+      "conceptId": "pv2fiae_easy_t03_pfadabdeckung",
+      "variantId": "pv2fiae_easy_t03_pfadabdeckung_v03",
+      "interactionType": "single",
+      "questionKind": "beste_option_im_mini_szenario",
+      "badgeLabel": "Eine Antwort ist richtig.",
+      "isNew": true,
+      "prompt": "Was ist bei Pfadabdeckung das Ziel?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Mögliche Ablaufpfade durch den Code werden abgedeckt.",
+          "correct": true,
+          "explanation": "Pfadabdeckung betrachtet Kombinationen von Zweigen."
+        },
+        {
+          "id": "b",
+          "text": "Nur eine beliebige Zeile wird ausgeführt.",
+          "correct": false,
+          "explanation": "Das ist zu wenig."
+        },
+        {
+          "id": "c",
+          "text": "Alle Tabellen werden zusammengeführt.",
+          "correct": false,
+          "explanation": "Das ist SQL."
+        },
+        {
+          "id": "d",
+          "text": "Alle Office-Dateien werden erlaubt.",
+          "correct": false,
+          "explanation": "Das wäre kein Testziel."
+        }
+      ]
+    },
+    {
+      "id": "pv2fiae_easy_t03_login_pfade",
+      "conceptId": "pv2fiae_easy_t03_login_pfade",
+      "variantId": "pv2fiae_easy_t03_login_pfade_v03",
+      "interactionType": "multi",
+      "questionKind": "mehrere_richtige_antworten_waehlen",
+      "badgeLabel": "Mehrere Antworten sind richtig.",
+      "isNew": true,
+      "prompt": "Welche Login-Pfade sind plausibel?",
+      "maxSelections": 2,
+      "options": [
+        {
+          "id": "a",
+          "text": "Gültige Zugangsdaten führen zum Portalzugriff.",
+          "correct": true,
+          "explanation": "Das ist der Erfolgsfall."
+        },
+        {
+          "id": "b",
+          "text": "Ungültige Zugangsdaten führen zur Ablehnung oder Fehlermeldung.",
+          "correct": true,
+          "explanation": "Das ist ein typischer Fehlerpfad."
+        },
+        {
+          "id": "c",
+          "text": "Ungültige Zugangsdaten löschen automatisch alle Kursdaten.",
+          "correct": false,
+          "explanation": "Das ist kein plausibler Loginpfad."
+        },
+        {
+          "id": "d",
+          "text": "Jeder Login erstellt ohne Prüfung ein Archiv.",
+          "correct": false,
+          "explanation": "Das ist fachlich falsch."
+        }
+      ]
+    },
+    {
+      "id": "pv2fiae_easy_t03_sql_delete_aktie",
+      "conceptId": "pv2fiae_easy_t03_sql_delete_aktie",
+      "variantId": "pv2fiae_easy_t03_sql_delete_aktie_v03",
+      "interactionType": "single",
+      "questionKind": "beste_option_im_mini_szenario",
+      "badgeLabel": "Eine Antwort ist richtig.",
+      "isNew": true,
+      "prompt": "Welche SQL-Anweisung löscht Kursdatensätze einer Aktie?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "DELETE FROM AktienKurs WHERE AK_AktieID = 4;",
+          "correct": true,
+          "explanation": "DELETE mit WHERE entfernt die betroffenen Datensätze."
+        },
+        {
+          "id": "b",
+          "text": "SELECT * FROM AktienKurs;",
+          "correct": false,
+          "explanation": "SELECT liest nur."
+        },
+        {
+          "id": "c",
+          "text": "ORDER BY AK_AktieID;",
+          "correct": false,
+          "explanation": "ORDER BY sortiert."
+        },
+        {
+          "id": "d",
+          "text": "GRANT DELETE TO Aktie;",
+          "correct": false,
+          "explanation": "Das ist keine Löschabfrage."
+        }
+      ]
+    },
+    {
+      "id": "pv2fiae_easy_t03_sql_min_max_avg_count",
+      "conceptId": "pv2fiae_easy_t03_sql_min_max_avg_count",
+      "variantId": "pv2fiae_easy_t03_sql_min_max_avg_count_v03",
+      "interactionType": "single",
+      "questionKind": "beste_option_im_mini_szenario",
+      "badgeLabel": "Eine Antwort ist richtig.",
+      "isNew": true,
+      "prompt": "Welche Aggregatfunktionen passen zur Kursstatistik je Börse?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "MIN, MAX, AVG und COUNT.",
+          "correct": true,
+          "explanation": "Diese Funktionen liefern Minimalwert, Maximalwert, Durchschnitt und Anzahl."
+        },
+        {
+          "id": "b",
+          "text": "LOWER, UPPER, TRIM und CONCAT.",
+          "correct": false,
+          "explanation": "Das sind Textfunktionen."
+        },
+        {
+          "id": "c",
+          "text": "CREATE, DROP, GRANT und REVOKE.",
+          "correct": false,
+          "explanation": "Das sind Struktur- oder Rechtebefehle."
+        },
+        {
+          "id": "d",
+          "text": "INSERT, UPDATE, DELETE und SELECT als Kennzahlen.",
+          "correct": false,
+          "explanation": "Das sind Anweisungsarten, keine Aggregatwerte."
+        }
+      ]
+    },
+    {
+      "id": "pv2fiae_easy_t03_sql_group_boerse",
+      "conceptId": "pv2fiae_easy_t03_sql_group_boerse",
+      "variantId": "pv2fiae_easy_t03_sql_group_boerse_v03",
+      "interactionType": "single",
+      "questionKind": "beste_option_im_mini_szenario",
+      "badgeLabel": "Eine Antwort ist richtig.",
+      "isNew": true,
+      "prompt": "Warum braucht die Kursstatistik je Börse `GROUP BY`?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Damit die Aggregatwerte pro Börse getrennt berechnet werden.",
+          "correct": true,
+          "explanation": "Die Börse ist die Gruppierungsdimension."
+        },
+        {
+          "id": "b",
+          "text": "Damit alle Börsen gelöscht werden.",
+          "correct": false,
+          "explanation": "GROUP BY löscht nichts."
+        },
+        {
+          "id": "c",
+          "text": "Damit ein Passwort gesetzt wird.",
+          "correct": false,
+          "explanation": "Das ist kein Gruppierungszweck."
+        },
+        {
+          "id": "d",
+          "text": "Damit das Portal sicherer wird.",
+          "correct": false,
+          "explanation": "Das ist unabhängig."
+        }
+      ]
+    },
+    {
+      "id": "pv2fiae_easy_t03_sql_archiv_insert",
+      "conceptId": "pv2fiae_easy_t03_sql_archiv_insert",
+      "variantId": "pv2fiae_easy_t03_sql_archiv_insert_v03",
+      "interactionType": "single",
+      "questionKind": "beste_option_im_mini_szenario",
+      "badgeLabel": "Eine Antwort ist richtig.",
+      "isNew": true,
+      "prompt": "Wie werden Vorjahresdaten typischerweise zuerst archiviert?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Mit `INSERT INTO Archiv ... SELECT ...` aus dem aktuellen Bestand.",
+          "correct": true,
+          "explanation": "So werden Daten ins Archiv übernommen."
+        },
+        {
+          "id": "b",
+          "text": "Mit `ORDER BY Archiv`.",
+          "correct": false,
+          "explanation": "Sortieren archiviert nicht."
+        },
+        {
+          "id": "c",
+          "text": "Mit `AVG(Archiv)`.",
+          "correct": false,
+          "explanation": "Ein Durchschnitt verschiebt keine Daten."
+        },
+        {
+          "id": "d",
+          "text": "Mit `compare_fn`.",
+          "correct": false,
+          "explanation": "Das ist Python-Logik."
+        }
+      ]
+    },
+    {
+      "id": "pv2fiae_easy_t03_sql_archiv_delete",
+      "conceptId": "pv2fiae_easy_t03_sql_archiv_delete",
+      "variantId": "pv2fiae_easy_t03_sql_archiv_delete_v03",
+      "interactionType": "single",
+      "questionKind": "beste_option_im_mini_szenario",
+      "badgeLabel": "Eine Antwort ist richtig.",
+      "isNew": true,
+      "prompt": "Was muss nach erfolgreicher Archivierung aus der Originaltabelle passieren?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Die archivierten Alt-Datensätze werden dort gelöscht.",
+          "correct": true,
+          "explanation": "Sonst liegen sie doppelt im aktuellen Bestand."
+        },
+        {
+          "id": "b",
+          "text": "Alle aktuellen Daten werden ohne Filter gelöscht.",
+          "correct": false,
+          "explanation": "Das wäre gefährlich."
+        },
+        {
+          "id": "c",
+          "text": "Der Login wird deaktiviert.",
+          "correct": false,
+          "explanation": "Das hat keinen Bezug."
+        },
+        {
+          "id": "d",
+          "text": "Die PDF wird bearbeitbar gemacht.",
+          "correct": false,
+          "explanation": "Das ist kein Archivschritt."
+        }
+      ]
+    },
+    {
+      "id": "pv2fiae_easy_t03_sql_union",
+      "conceptId": "pv2fiae_easy_t03_sql_union",
+      "variantId": "pv2fiae_easy_t03_sql_union_v03",
+      "interactionType": "single",
+      "questionKind": "beste_option_im_mini_szenario",
+      "badgeLabel": "Eine Antwort ist richtig.",
+      "isNew": true,
+      "prompt": "Welche SQL-Technik verbindet aktuelle und archivierte Kursdaten für eine Jahresübersicht?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "UNION ALL oder UNION über gleich strukturierte SELECT-Ergebnisse.",
+          "correct": true,
+          "explanation": "So können beide Bestände gemeinsam ausgewertet werden."
+        },
+        {
+          "id": "b",
+          "text": "CREATE USER mit Passwort.",
+          "correct": false,
+          "explanation": "Das verbindet keine Datenbestände."
+        },
+        {
+          "id": "c",
+          "text": "ORDER BY ohne SELECT.",
+          "correct": false,
+          "explanation": "Das ist keine Datenvereinigung."
+        },
+        {
+          "id": "d",
+          "text": "Eine Swimlane.",
+          "correct": false,
+          "explanation": "Das ist UML, nicht SQL."
+        }
+      ]
+    }
+  ]
+}

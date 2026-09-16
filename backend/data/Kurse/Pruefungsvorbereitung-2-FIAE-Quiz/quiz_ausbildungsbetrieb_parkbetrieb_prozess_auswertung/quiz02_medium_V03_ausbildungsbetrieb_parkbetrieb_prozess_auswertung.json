@@ -1,0 +1,904 @@
+{
+  "scenarioFolder": "Pruefungsvorbereitung-2-FIAE-Scenarien",
+  "quizFolder": "Pruefungsvorbereitung-2-FIAE-Quiz",
+  "scenarioFile": "ticket_ausbildungsbetrieb_parkbetrieb_prozess_auswertung/02_medium_ausbildungsbetrieb_parkbetrieb_prozess_auswertung.json",
+  "quizFile": "quiz_ausbildungsbetrieb_parkbetrieb_prozess_auswertung/quiz02_medium_V03_ausbildungsbetrieb_parkbetrieb_prozess_auswertung.json",
+  "ticketId": "02_medium_ausbildungsbetrieb_parkbetrieb_prozess_auswertung.json",
+  "versionId": "V03",
+  "title": "Ticket 02 Medium - Parkbetrieb, Prozessauswertung und SQL",
+  "description": "Manuell verfasstes AP2-FIAE-Training im mittleren Anspruchsniveau zu Aktivitätsdiagramm, Besucherzählung, Testabdeckung und SQL im Parkbetrieb.",
+  "topics": [
+    "Bepflanzungsprozess, Rollen und Aktivitätslogik in betrieblichen Fällen belastbar einordnen",
+    "Besucherzählung, Testabdeckung und SQL-Abfragen für den Parkbetrieb mit Transfer sicher abwägen"
+  ],
+  "questions": [
+    {
+      "id": "pv2fiae_medium_t02_aktivitaetsablauf_freigabe",
+      "conceptId": "pv2fiae_medium_t02_aktivitaetsablauf_freigabe",
+      "variantId": "pv2fiae_medium_t02_aktivitaetsablauf_freigabe_v03",
+      "interactionType": "single",
+      "questionKind": "beste_option_im_mini_szenario",
+      "badgeLabel": "Eine Antwort ist richtig.",
+      "isNew": true,
+      "prompt": "Warum muss die Freigabeentscheidung im Bepflanzungsprozess vor der Pflanzung liegen?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Weil nur geprüfte und freigegebene Pflanzen in den Regelprozess übernommen werden dürfen.",
+          "correct": true,
+          "explanation": "Die Entscheidung steuert den weiteren Ablauf."
+        },
+        {
+          "id": "b",
+          "text": "Weil Aktivitätsdiagramme keine Entscheidungen kennen.",
+          "correct": false,
+          "explanation": "Sie können Entscheidungen darstellen."
+        },
+        {
+          "id": "c",
+          "text": "Weil SQL sonst keine Benutzer anlegt.",
+          "correct": false,
+          "explanation": "Das ist unabhängig."
+        },
+        {
+          "id": "d",
+          "text": "Weil Besucherzahlen sonst steigen.",
+          "correct": false,
+          "explanation": "Das ist sachfremd."
+        }
+      ]
+    },
+    {
+      "id": "pv2fiae_medium_t02_entscheidungsknoten_guard",
+      "conceptId": "pv2fiae_medium_t02_entscheidungsknoten_guard",
+      "variantId": "pv2fiae_medium_t02_entscheidungsknoten_guard_v03",
+      "interactionType": "single",
+      "questionKind": "beste_option_im_mini_szenario",
+      "badgeLabel": "Eine Antwort ist richtig.",
+      "isNew": true,
+      "prompt": "Was gehört an die ausgehenden Kanten eines Entscheidungsknotens?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Bedingungen wie „auffällig“ und „unauffällig“.",
+          "correct": true,
+          "explanation": "Guards machen klar, welcher Pfad gewählt wird."
+        },
+        {
+          "id": "b",
+          "text": "Primärschlüsselwerte ohne Prozessbezug.",
+          "correct": false,
+          "explanation": "Das gehört nicht an Ablaufkanten."
+        },
+        {
+          "id": "c",
+          "text": "Passwörter im Klartext.",
+          "correct": false,
+          "explanation": "Das wäre sicherheitskritisch."
+        },
+        {
+          "id": "d",
+          "text": "Durchschnittswerte ohne Entscheidung.",
+          "correct": false,
+          "explanation": "Das steuert keinen Pfad."
+        }
+      ]
+    },
+    {
+      "id": "pv2fiae_medium_t02_swimlane_abgrenzung",
+      "conceptId": "pv2fiae_medium_t02_swimlane_abgrenzung",
+      "variantId": "pv2fiae_medium_t02_swimlane_abgrenzung_v03",
+      "interactionType": "single",
+      "questionKind": "beste_option_im_mini_szenario",
+      "badgeLabel": "Eine Antwort ist richtig.",
+      "isNew": true,
+      "prompt": "Warum sollten Rollen im Prozess nicht vermischt werden?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Damit Verantwortlichkeiten wie Warenprüfung, Freigabe und Ausführung nachvollziehbar bleiben.",
+          "correct": true,
+          "explanation": "Swimlanes vermeiden Zuständigkeitsunklarheit."
+        },
+        {
+          "id": "b",
+          "text": "Damit alle Rollen denselben Namen haben.",
+          "correct": false,
+          "explanation": "Das würde die Zuordnung verschlechtern."
+        },
+        {
+          "id": "c",
+          "text": "Damit keine Kanten nötig sind.",
+          "correct": false,
+          "explanation": "Kanten bleiben notwendig."
+        },
+        {
+          "id": "d",
+          "text": "Damit SQL-Filter wegfallen.",
+          "correct": false,
+          "explanation": "Das ist ein anderes Thema."
+        }
+      ]
+    },
+    {
+      "id": "pv2fiae_medium_t02_quarantaene_rueckpfad",
+      "conceptId": "pv2fiae_medium_t02_quarantaene_rueckpfad",
+      "variantId": "pv2fiae_medium_t02_quarantaene_rueckpfad_v03",
+      "interactionType": "single",
+      "questionKind": "beste_option_im_mini_szenario",
+      "badgeLabel": "Eine Antwort ist richtig.",
+      "isNew": true,
+      "prompt": "Was muss nach einer Quarantäne fachlich entschieden werden?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Ob die Lieferung nach Klärung freigegeben, zurückgewiesen oder weiter geprüft wird.",
+          "correct": true,
+          "explanation": "Quarantäne ist ein Zwischenzustand, kein automatischer Abschluss."
+        },
+        {
+          "id": "b",
+          "text": "Ob alle Besucher den Park verlassen müssen.",
+          "correct": false,
+          "explanation": "Das betrifft nicht die Lieferung."
+        },
+        {
+          "id": "c",
+          "text": "Ob `COUNT(*)` genutzt wird.",
+          "correct": false,
+          "explanation": "Das ist SQL."
+        },
+        {
+          "id": "d",
+          "text": "Ob der Monatsdurchschnitt steigt.",
+          "correct": false,
+          "explanation": "Das ist Statistik."
+        }
+      ]
+    },
+    {
+      "id": "pv2fiae_medium_t02_besucher_zeitintervall",
+      "conceptId": "pv2fiae_medium_t02_besucher_zeitintervall",
+      "variantId": "pv2fiae_medium_t02_besucher_zeitintervall_v03",
+      "interactionType": "single",
+      "questionKind": "beste_option_im_mini_szenario",
+      "badgeLabel": "Eine Antwort ist richtig.",
+      "isNew": true,
+      "prompt": "Ein Besucher ist von 10:15 bis 12:40 im Park. Welche Stundenabschnitte sind fachlich betroffen?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Die Stundenabschnitte, in denen die Person tatsächlich anwesend war.",
+          "correct": true,
+          "explanation": "Ein Zeitintervall kann mehrere Rasterspalten betreffen."
+        },
+        {
+          "id": "b",
+          "text": "Nur 09 Uhr.",
+          "correct": false,
+          "explanation": "Das passt nicht zum Intervall."
+        },
+        {
+          "id": "c",
+          "text": "Nur die letzte Matrixzeile.",
+          "correct": false,
+          "explanation": "Der Tag und die Stunden müssen stimmen."
+        },
+        {
+          "id": "d",
+          "text": "Alle Tage des Jahres.",
+          "correct": false,
+          "explanation": "Der Besuch betrifft einen konkreten Zeitraum."
+        }
+      ]
+    },
+    {
+      "id": "pv2fiae_medium_t02_stundenindex_formel",
+      "conceptId": "pv2fiae_medium_t02_stundenindex_formel",
+      "variantId": "pv2fiae_medium_t02_stundenindex_formel_v03",
+      "interactionType": "single",
+      "questionKind": "beste_option_im_mini_szenario",
+      "badgeLabel": "Eine Antwort ist richtig.",
+      "isNew": true,
+      "prompt": "Welche Formel passt für Stunden 09 bis 18 Uhr am ehesten?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "`stundenIndex = stunde - 9`.",
+          "correct": true,
+          "explanation": "So wird 09 Uhr zu Spalte 0."
+        },
+        {
+          "id": "b",
+          "text": "`stundenIndex = stunde + 9`.",
+          "correct": false,
+          "explanation": "Das verschiebt aus dem Bereich hinaus."
+        },
+        {
+          "id": "c",
+          "text": "`stundenIndex = tag - 9`.",
+          "correct": false,
+          "explanation": "Der Tag ist nicht die Stunde."
+        },
+        {
+          "id": "d",
+          "text": "`stundenIndex = monat * stunde`.",
+          "correct": false,
+          "explanation": "Das passt nicht zum Raster."
+        }
+      ]
+    },
+    {
+      "id": "pv2fiae_medium_t02_tagesindex_datum",
+      "conceptId": "pv2fiae_medium_t02_tagesindex_datum",
+      "variantId": "pv2fiae_medium_t02_tagesindex_datum_v03",
+      "interactionType": "single",
+      "questionKind": "beste_option_im_mini_szenario",
+      "badgeLabel": "Eine Antwort ist richtig.",
+      "isNew": true,
+      "prompt": "Wie wird ein Tagesindex für einen Zeitraum ab 22.05.2026 fachlich bestimmt?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Als Abstand des aktuellen Datums zum Startdatum.",
+          "correct": true,
+          "explanation": "So wird jeder Tag einer Zeile zugeordnet."
+        },
+        {
+          "id": "b",
+          "text": "Als Anzahl der SQL-Benutzer.",
+          "correct": false,
+          "explanation": "Das hat keinen Datumsbezug."
+        },
+        {
+          "id": "c",
+          "text": "Als Länge des Parknamens.",
+          "correct": false,
+          "explanation": "Das ist sachfremd."
+        },
+        {
+          "id": "d",
+          "text": "Als feste 0 für jeden Tag.",
+          "correct": false,
+          "explanation": "Dann würden alle Tage überschrieben."
+        }
+      ]
+    },
+    {
+      "id": "pv2fiae_medium_t02_eintritt_austritt_halboffen",
+      "conceptId": "pv2fiae_medium_t02_eintritt_austritt_halboffen",
+      "variantId": "pv2fiae_medium_t02_eintritt_austritt_halboffen_v03",
+      "interactionType": "single",
+      "questionKind": "beste_option_im_mini_szenario",
+      "badgeLabel": "Eine Antwort ist richtig.",
+      "isNew": true,
+      "prompt": "Warum ist eine halb offene Intervalllogik oft sinnvoll?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Damit der Austrittszeitpunkt nicht doppelt als Anwesenheit gezählt wird.",
+          "correct": true,
+          "explanation": "Intervalle wie [Eintritt, Austritt) vermeiden Doppelzählungen."
+        },
+        {
+          "id": "b",
+          "text": "Damit alle Besucher unendlich lange gezählt werden.",
+          "correct": false,
+          "explanation": "Das wäre falsch."
+        },
+        {
+          "id": "c",
+          "text": "Damit Eintritt und Austritt identisch sein müssen.",
+          "correct": false,
+          "explanation": "Das ist nicht erforderlich."
+        },
+        {
+          "id": "d",
+          "text": "Damit SQL-Rechte vergeben werden.",
+          "correct": false,
+          "explanation": "Das ist unabhängig."
+        }
+      ]
+    },
+    {
+      "id": "pv2fiae_medium_t02_matrix_bounds",
+      "conceptId": "pv2fiae_medium_t02_matrix_bounds",
+      "variantId": "pv2fiae_medium_t02_matrix_bounds_v03",
+      "interactionType": "single",
+      "questionKind": "beste_option_im_mini_szenario",
+      "badgeLabel": "Eine Antwort ist richtig.",
+      "isNew": true,
+      "prompt": "Welches Risiko entsteht ohne Grenzenprüfung beim Stundenindex?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Ein Zugriff außerhalb der Matrixspalten.",
+          "correct": true,
+          "explanation": "Falsche Zeiten können zu Indexfehlern führen."
+        },
+        {
+          "id": "b",
+          "text": "Eine automatisch bessere Abdeckung.",
+          "correct": false,
+          "explanation": "Fehlerhafte Indizes verbessern Tests nicht."
+        },
+        {
+          "id": "c",
+          "text": "Eine sichere Quarantäne.",
+          "correct": false,
+          "explanation": "Das ist Prozesslogik."
+        },
+        {
+          "id": "d",
+          "text": "Ein korrekter Durchschnitt ohne Daten.",
+          "correct": false,
+          "explanation": "Das stimmt nicht."
+        }
+      ]
+    },
+    {
+      "id": "pv2fiae_medium_t02_countvisitors_seiteneffekt",
+      "conceptId": "pv2fiae_medium_t02_countvisitors_seiteneffekt",
+      "variantId": "pv2fiae_medium_t02_countvisitors_seiteneffekt_v03",
+      "interactionType": "single",
+      "questionKind": "beste_option_im_mini_szenario",
+      "badgeLabel": "Eine Antwort ist richtig.",
+      "isNew": true,
+      "prompt": "Welcher Seiteneffekt von `countVisitors(entry)` muss gewollt und dokumentiert sein?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Die Aktualisierung der Ergebnis-matrix.",
+          "correct": true,
+          "explanation": "Wenn die Funktion Daten verändert, muss das bekannt sein."
+        },
+        {
+          "id": "b",
+          "text": "Das Löschen der Benutzertabelle.",
+          "correct": false,
+          "explanation": "Das wäre nicht fachlich gewollt."
+        },
+        {
+          "id": "c",
+          "text": "Das Verändern der Pflanzenlieferung.",
+          "correct": false,
+          "explanation": "Besucherzählung betrifft keine Lieferdaten."
+        },
+        {
+          "id": "d",
+          "text": "Das automatische Zeichnen von UML.",
+          "correct": false,
+          "explanation": "Das tut die Funktion nicht."
+        }
+      ]
+    },
+    {
+      "id": "pv2fiae_medium_t02_statement_coverage_grenze",
+      "conceptId": "pv2fiae_medium_t02_statement_coverage_grenze",
+      "variantId": "pv2fiae_medium_t02_statement_coverage_grenze_v03",
+      "interactionType": "single",
+      "questionKind": "beste_option_im_mini_szenario",
+      "badgeLabel": "Eine Antwort ist richtig.",
+      "isNew": true,
+      "prompt": "Welche Aussage beschreibt eine Grenze der Anweisungsüberdeckung?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Sie zeigt ausgeführte Anweisungen, beweist aber nicht alle fachlichen Kombinationen.",
+          "correct": true,
+          "explanation": "Coverage ist hilfreich, aber nicht vollständig."
+        },
+        {
+          "id": "b",
+          "text": "Sie beweist automatisch Fehlerfreiheit.",
+          "correct": false,
+          "explanation": "Das kann sie nicht."
+        },
+        {
+          "id": "c",
+          "text": "Sie ist identisch mit Benutzerrechten.",
+          "correct": false,
+          "explanation": "Das ist falsch."
+        },
+        {
+          "id": "d",
+          "text": "Sie ersetzt erwartete Ergebnisse.",
+          "correct": false,
+          "explanation": "Assertions bleiben nötig."
+        }
+      ]
+    },
+    {
+      "id": "pv2fiae_medium_t02_pseudocode_minimum",
+      "conceptId": "pv2fiae_medium_t02_pseudocode_minimum",
+      "variantId": "pv2fiae_medium_t02_pseudocode_minimum_v03",
+      "interactionType": "multi",
+      "questionKind": "mehrere_richtige_antworten_waehlen",
+      "badgeLabel": "Mehrere Antworten sind richtig.",
+      "isNew": true,
+      "prompt": "Welche Pseudocode-Probleme betreffen Minimumwerte besonders?",
+      "maxSelections": 2,
+      "options": [
+        {
+          "id": "a",
+          "text": "Minimum wird mit 0 initialisiert, obwohl alle Werte positiv sind.",
+          "correct": true,
+          "explanation": "Dann wird kein positiver Wert kleiner."
+        },
+        {
+          "id": "b",
+          "text": "Minimumzweig wird durch vorhandene Testdaten nie erreicht.",
+          "correct": true,
+          "explanation": "Dann bleibt ein wichtiger Pfad ungeprüft."
+        },
+        {
+          "id": "c",
+          "text": "Die Variable heißt verständlich.",
+          "correct": false,
+          "explanation": "Sprechende Namen sind kein Fehler."
+        },
+        {
+          "id": "d",
+          "text": "Kommentare erklären die Fachlogik.",
+          "correct": false,
+          "explanation": "Das kann hilfreich sein."
+        }
+      ]
+    },
+    {
+      "id": "pv2fiae_medium_t02_durchschnitt_divisor",
+      "conceptId": "pv2fiae_medium_t02_durchschnitt_divisor",
+      "variantId": "pv2fiae_medium_t02_durchschnitt_divisor_v03",
+      "interactionType": "single",
+      "questionKind": "beste_option_im_mini_szenario",
+      "badgeLabel": "Eine Antwort ist richtig.",
+      "isNew": true,
+      "prompt": "Warum ist der richtige Divisor beim Jahresdurchschnitt wichtig?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Weil sonst aus einer richtigen Summe ein falscher Mittelwert wird.",
+          "correct": true,
+          "explanation": "Der Divisor muss zur Anzahl der berücksichtigten Monate passen."
+        },
+        {
+          "id": "b",
+          "text": "Weil der Divisor die SQL-Rechte festlegt.",
+          "correct": false,
+          "explanation": "Das ist falsch."
+        },
+        {
+          "id": "c",
+          "text": "Weil Durchschnitt ohne Division entsteht.",
+          "correct": false,
+          "explanation": "Ein Durchschnitt braucht Division."
+        },
+        {
+          "id": "d",
+          "text": "Weil immer durch 365 geteilt wird.",
+          "correct": false,
+          "explanation": "Bei Monatswerten ist das nicht richtig."
+        }
+      ]
+    },
+    {
+      "id": "pv2fiae_medium_t02_minimum_test_erwartung",
+      "conceptId": "pv2fiae_medium_t02_minimum_test_erwartung",
+      "variantId": "pv2fiae_medium_t02_minimum_test_erwartung_v03",
+      "interactionType": "single",
+      "questionKind": "beste_option_im_mini_szenario",
+      "badgeLabel": "Eine Antwort ist richtig.",
+      "isNew": true,
+      "prompt": "Was muss ein Testfall für einen neuen Minimumzweig zusätzlich enthalten?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Einen erwarteten Ausgabewert, der das neue Minimum bestätigt.",
+          "correct": true,
+          "explanation": "Ohne Sollwert ist der Test nicht auswertbar."
+        },
+        {
+          "id": "b",
+          "text": "Nur einen zufälligen Monat.",
+          "correct": false,
+          "explanation": "Zufall ist kein Sollwert."
+        },
+        {
+          "id": "c",
+          "text": "Ein Passwort für `parklese`.",
+          "correct": false,
+          "explanation": "Das ist Rechteverwaltung."
+        },
+        {
+          "id": "d",
+          "text": "Eine leere Pflanzenrolle.",
+          "correct": false,
+          "explanation": "Das prüft kein Minimum."
+        }
+      ]
+    },
+    {
+      "id": "pv2fiae_medium_t02_testdaten_monatsfolge",
+      "conceptId": "pv2fiae_medium_t02_testdaten_monatsfolge",
+      "variantId": "pv2fiae_medium_t02_testdaten_monatsfolge_v03",
+      "interactionType": "single",
+      "questionKind": "beste_option_im_mini_szenario",
+      "badgeLabel": "Eine Antwort ist richtig.",
+      "isNew": true,
+      "prompt": "Warum ist eine Sortierung nach Monat bei Testdaten mehr als Kosmetik?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Sie erleichtert die Prüfung, ob Monatswechsel und Minimumzweige nachvollziehbar erreicht werden.",
+          "correct": true,
+          "explanation": "Die Reihenfolge unterstützt Review und Fehleranalyse."
+        },
+        {
+          "id": "b",
+          "text": "Sie ersetzt alle Assertions.",
+          "correct": false,
+          "explanation": "Assertions bleiben nötig."
+        },
+        {
+          "id": "c",
+          "text": "Sie verhindert SQL-Fehler automatisch.",
+          "correct": false,
+          "explanation": "Das ist unabhängig."
+        },
+        {
+          "id": "d",
+          "text": "Sie macht falsche Werte richtig.",
+          "correct": false,
+          "explanation": "Sortierung korrigiert keine Werte."
+        }
+      ]
+    },
+    {
+      "id": "pv2fiae_medium_t02_sql_offene_pflege_count",
+      "conceptId": "pv2fiae_medium_t02_sql_offene_pflege_count",
+      "variantId": "pv2fiae_medium_t02_sql_offene_pflege_count_v03",
+      "interactionType": "single",
+      "questionKind": "beste_option_im_mini_szenario",
+      "badgeLabel": "Eine Antwort ist richtig.",
+      "isNew": true,
+      "prompt": "Welche Kombination beschreibt offene Pflegearbeiten im Jahr 2023 am besten?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Datumsfilter für 2023 plus Bedingung auf fehlenden Abschluss oder offenen Status.",
+          "correct": true,
+          "explanation": "Beides bildet die Fachfrage ab."
+        },
+        {
+          "id": "b",
+          "text": "Nur `ORDER BY Tätigkeit`.",
+          "correct": false,
+          "explanation": "Sortierung zählt und filtert nicht."
+        },
+        {
+          "id": "c",
+          "text": "Nur `CREATE USER parklese`.",
+          "correct": false,
+          "explanation": "Benutzeranlage zählt keine Arbeiten."
+        },
+        {
+          "id": "d",
+          "text": "Nur `AVG(Monat)`.",
+          "correct": false,
+          "explanation": "Das ist keine offene Arbeit."
+        }
+      ]
+    },
+    {
+      "id": "pv2fiae_medium_t02_sql_null_abschluss",
+      "conceptId": "pv2fiae_medium_t02_sql_null_abschluss",
+      "variantId": "pv2fiae_medium_t02_sql_null_abschluss_v03",
+      "interactionType": "single",
+      "questionKind": "beste_option_im_mini_szenario",
+      "badgeLabel": "Eine Antwort ist richtig.",
+      "isNew": true,
+      "prompt": "Warum kann `IS NULL` bei offenen Pflegearbeiten passen?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Ein fehlendes Abschlussdatum kann fachlich bedeuten, dass die Arbeit noch offen ist.",
+          "correct": true,
+          "explanation": "NULL kann fehlende Erledigung ausdrücken."
+        },
+        {
+          "id": "b",
+          "text": "NULL bedeutet immer abgeschlossen.",
+          "correct": false,
+          "explanation": "Das wäre die falsche Interpretation."
+        },
+        {
+          "id": "c",
+          "text": "NULL sortiert automatisch nach Datum.",
+          "correct": false,
+          "explanation": "Das ist keine Sortierregel."
+        },
+        {
+          "id": "d",
+          "text": "NULL legt einen Benutzer an.",
+          "correct": false,
+          "explanation": "Nein."
+        }
+      ]
+    },
+    {
+      "id": "pv2fiae_medium_t02_sql_bereich_filter",
+      "conceptId": "pv2fiae_medium_t02_sql_bereich_filter",
+      "variantId": "pv2fiae_medium_t02_sql_bereich_filter_v03",
+      "interactionType": "single",
+      "questionKind": "beste_option_im_mini_szenario",
+      "badgeLabel": "Eine Antwort ist richtig.",
+      "isNew": true,
+      "prompt": "Welche Bedingungen braucht die Zeitraumliste für `Auenanlage Nord`?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Bereichsname und Datum zwischen Start- und Enddatum.",
+          "correct": true,
+          "explanation": "Die Liste ist nach Bereich und Zeitraum eingeschränkt."
+        },
+        {
+          "id": "b",
+          "text": "Nur eine Gruppierung nach Passwort.",
+          "correct": false,
+          "explanation": "Das passt nicht."
+        },
+        {
+          "id": "c",
+          "text": "Nur eine Durchschnittsfunktion.",
+          "correct": false,
+          "explanation": "Das erzeugt keine Liste."
+        },
+        {
+          "id": "d",
+          "text": "Nur ein Trigger auf INSERT.",
+          "correct": false,
+          "explanation": "Das ist keine Abfrage der Liste."
+        }
+      ]
+    },
+    {
+      "id": "pv2fiae_medium_t02_sql_wochentag",
+      "conceptId": "pv2fiae_medium_t02_sql_wochentag",
+      "variantId": "pv2fiae_medium_t02_sql_wochentag_v03",
+      "interactionType": "single",
+      "questionKind": "beste_option_im_mini_szenario",
+      "badgeLabel": "Eine Antwort ist richtig.",
+      "isNew": true,
+      "prompt": "Warum kann der Wochentag in der Ausgabe fachlich gefordert sein?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Er unterstützt die Einsatzplanung und Lesbarkeit der Terminliste.",
+          "correct": true,
+          "explanation": "Der Bericht soll Datum und Wochentag zeigen."
+        },
+        {
+          "id": "b",
+          "text": "Er ersetzt das Datum vollständig.",
+          "correct": false,
+          "explanation": "Das Datum bleibt nötig."
+        },
+        {
+          "id": "c",
+          "text": "Er vergibt Leserechte.",
+          "correct": false,
+          "explanation": "Das ist GRANT."
+        },
+        {
+          "id": "d",
+          "text": "Er zählt automatisch Tätigkeiten.",
+          "correct": false,
+          "explanation": "Das ist COUNT."
+        }
+      ]
+    },
+    {
+      "id": "pv2fiae_medium_t02_sql_avg_group",
+      "conceptId": "pv2fiae_medium_t02_sql_avg_group",
+      "variantId": "pv2fiae_medium_t02_sql_avg_group_v03",
+      "interactionType": "single",
+      "questionKind": "beste_option_im_mini_szenario",
+      "badgeLabel": "Eine Antwort ist richtig.",
+      "isNew": true,
+      "prompt": "Warum braucht der Monatsdurchschnitt pro Mitarbeitenden eine Gruppierung nach Mitarbeitendem und Monat?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Sonst werden Tätigkeiten verschiedener Personen oder Monate vermischt.",
+          "correct": true,
+          "explanation": "Die Kennzahl hat zwei fachliche Dimensionen."
+        },
+        {
+          "id": "b",
+          "text": "Damit jeder Datensatz gelöscht wird.",
+          "correct": false,
+          "explanation": "Gruppierung löscht nichts."
+        },
+        {
+          "id": "c",
+          "text": "Damit Benutzer angelegt werden.",
+          "correct": false,
+          "explanation": "Das ist CREATE USER."
+        },
+        {
+          "id": "d",
+          "text": "Damit die Zeitraumbedingung entfällt.",
+          "correct": false,
+          "explanation": "Der Zeitraum bleibt relevant."
+        }
+      ]
+    },
+    {
+      "id": "pv2fiae_medium_t02_sql_count_avg",
+      "conceptId": "pv2fiae_medium_t02_sql_count_avg",
+      "variantId": "pv2fiae_medium_t02_sql_count_avg_v03",
+      "interactionType": "single",
+      "questionKind": "beste_option_im_mini_szenario",
+      "badgeLabel": "Eine Antwort ist richtig.",
+      "isNew": true,
+      "prompt": "Was ist der typische Zwischenschritt für durchschnittliche Tätigkeiten pro Monat?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Tätigkeiten zählen und daraus je Gruppe den Durchschnitt bilden.",
+          "correct": true,
+          "explanation": "Die Kennzahl basiert auf Zählwerten."
+        },
+        {
+          "id": "b",
+          "text": "Passwörter alphabetisch sortieren.",
+          "correct": false,
+          "explanation": "Das hat keinen Kennzahlbezug."
+        },
+        {
+          "id": "c",
+          "text": "Pflanzen ohne Prüfung freigeben.",
+          "correct": false,
+          "explanation": "Das ist Prozesslogik."
+        },
+        {
+          "id": "d",
+          "text": "Stundenindizes addieren.",
+          "correct": false,
+          "explanation": "Das gehört zur Besucherzählung."
+        }
+      ]
+    },
+    {
+      "id": "pv2fiae_medium_t02_create_user_sicherheit",
+      "conceptId": "pv2fiae_medium_t02_create_user_sicherheit",
+      "variantId": "pv2fiae_medium_t02_create_user_sicherheit_v03",
+      "interactionType": "single",
+      "questionKind": "beste_option_im_mini_szenario",
+      "badgeLabel": "Eine Antwort ist richtig.",
+      "isNew": true,
+      "prompt": "Warum sollte das Passwort im Skript bewusst behandelt werden?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Weil Zugangsdaten sicher verwaltet und nicht unnötig offengelegt werden sollen.",
+          "correct": true,
+          "explanation": "Benutzeranlage berührt Sicherheit."
+        },
+        {
+          "id": "b",
+          "text": "Weil Passwörter immer als Tabellenname dienen.",
+          "correct": false,
+          "explanation": "Das ist falsch."
+        },
+        {
+          "id": "c",
+          "text": "Weil SQL ohne Passwort keine SELECT-Abfrage kennt.",
+          "correct": false,
+          "explanation": "SELECT kann unabhängig von Benutzeranlage formuliert werden."
+        },
+        {
+          "id": "d",
+          "text": "Weil Passwörter Durchschnittswerte berechnen.",
+          "correct": false,
+          "explanation": "Nein."
+        }
+      ]
+    },
+    {
+      "id": "pv2fiae_medium_t02_grant_minimalrecht",
+      "conceptId": "pv2fiae_medium_t02_grant_minimalrecht",
+      "variantId": "pv2fiae_medium_t02_grant_minimalrecht_v03",
+      "interactionType": "single",
+      "questionKind": "beste_option_im_mini_szenario",
+      "badgeLabel": "Eine Antwort ist richtig.",
+      "isNew": true,
+      "prompt": "Warum ist `GRANT SELECT ON Objekt` ein Minimalrecht?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Es erlaubt Lesen der Tabelle, aber keine Änderungen.",
+          "correct": true,
+          "explanation": "Leserechte sind enger als Schreibrechte."
+        },
+        {
+          "id": "b",
+          "text": "Es erlaubt automatisch DROP TABLE.",
+          "correct": false,
+          "explanation": "SELECT ist kein Löschrecht."
+        },
+        {
+          "id": "c",
+          "text": "Es erlaubt alle Datenbanken zu administrieren.",
+          "correct": false,
+          "explanation": "Das wäre deutlich mehr als SELECT."
+        },
+        {
+          "id": "d",
+          "text": "Es verhindert jede Abfrage.",
+          "correct": false,
+          "explanation": "SELECT erlaubt gerade Abfragen."
+        }
+      ]
+    },
+    {
+      "id": "pv2fiae_medium_t02_rechte_ziel",
+      "conceptId": "pv2fiae_medium_t02_rechte_ziel",
+      "variantId": "pv2fiae_medium_t02_rechte_ziel_v03",
+      "interactionType": "single",
+      "questionKind": "beste_option_im_mini_szenario",
+      "badgeLabel": "Eine Antwort ist richtig.",
+      "isNew": true,
+      "prompt": "Welches Ziel verfolgt die Rechtevergabe an `parklese`?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Der Benutzer soll Objekt-Daten lesen können, ohne unnötige Zusatzrechte zu erhalten.",
+          "correct": true,
+          "explanation": "Das folgt dem Prinzip minimaler Rechte."
+        },
+        {
+          "id": "b",
+          "text": "Der Benutzer soll alle Tabellen löschen.",
+          "correct": false,
+          "explanation": "Das wäre riskant und nicht gefordert."
+        },
+        {
+          "id": "c",
+          "text": "Der Benutzer soll Besucherzahlen berechnen.",
+          "correct": false,
+          "explanation": "Das ist nicht die SQL-Rechteaufgabe."
+        },
+        {
+          "id": "d",
+          "text": "Der Benutzer soll Aktivitätsdiagramme zeichnen.",
+          "correct": false,
+          "explanation": "Das ist nicht Rechtevergabe."
+        }
+      ]
+    }
+  ]
+}

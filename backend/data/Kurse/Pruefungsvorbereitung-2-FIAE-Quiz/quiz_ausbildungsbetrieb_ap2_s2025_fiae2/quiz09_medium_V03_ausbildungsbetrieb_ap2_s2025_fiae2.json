@@ -1,0 +1,904 @@
+{
+  "scenarioFolder": "Pruefungsvorbereitung-2-FIAE-Scenarien",
+  "quizFolder": "Pruefungsvorbereitung-2-FIAE-Quiz",
+  "scenarioFile": "ticket_ausbildungsbetrieb_ap2_s2025_fiae2/09_medium_ausbildungsbetrieb_ap2_s2025_fiae2.json",
+  "quizFile": "quiz_ausbildungsbetrieb_ap2_s2025_fiae2/quiz09_medium_V03_ausbildungsbetrieb_ap2_s2025_fiae2.json",
+  "ticketId": "09_medium_ausbildungsbetrieb_ap2_s2025_fiae2.json",
+  "versionId": "V03",
+  "title": "Ticket 09 Medium - Bettenauslastung, Medikationsplan, OP-Modell und SQL",
+  "description": "Transferfragen zu Bettenauslastung, Medikationsplan-Sequenz, OP-Datenmodell, Whitebox-Tests und SQL.",
+  "topics": [
+    "Bettenauslastung, Medikationsplan-Sequenz und OP-Datenmodell in betrieblichen Fällen belastbar einordnen",
+    "Whitebox-Tests und SQL für Notaufnahme-Management mit Transfer sicher abwägen"
+  ],
+  "questions": [
+    {
+      "id": "pv2fiae_medium_t09_occupancy_interval_edges",
+      "conceptId": "pv2fiae_medium_t09_occupancy_interval_edges",
+      "variantId": "pv2fiae_medium_t09_occupancy_interval_edges_v03",
+      "interactionType": "single",
+      "questionKind": "beste_option_im_mini_szenario",
+      "badgeLabel": "Eine Antwort ist richtig.",
+      "isNew": true,
+      "prompt": "Welche fachliche Regel braucht die Zeitraumsauswertung an den Datumsgrenzen?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Ob Start- und Enddatum inklusiv oder exklusiv gezählt werden.",
+          "correct": true,
+          "explanation": "Die Grenzregel beeinflusst die belegten Tage."
+        },
+        {
+          "id": "b",
+          "text": "Ob GRANT vor REVOKE steht.",
+          "correct": false,
+          "explanation": "Das ist SQL-Rechteverwaltung."
+        },
+        {
+          "id": "c",
+          "text": "Ob das Medikament einen Namen hat.",
+          "correct": false,
+          "explanation": "Das betrifft das OP-Modell."
+        },
+        {
+          "id": "d",
+          "text": "Ob der Whitebox-Test schwarz ist.",
+          "correct": false,
+          "explanation": "Das ist kein fachlicher Begriff."
+        }
+      ]
+    },
+    {
+      "id": "pv2fiae_medium_t09_occupancy_station_grouping",
+      "conceptId": "pv2fiae_medium_t09_occupancy_station_grouping",
+      "variantId": "pv2fiae_medium_t09_occupancy_station_grouping_v03",
+      "interactionType": "single",
+      "questionKind": "beste_option_im_mini_szenario",
+      "badgeLabel": "Eine Antwort ist richtig.",
+      "isNew": true,
+      "prompt": "Was verhindert eine Vermischung der Bettenkapazitäten mehrerer Stationen?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Gruppierung beziehungsweise getrennte Verarbeitung je Station.",
+          "correct": true,
+          "explanation": "Jede Station hat eigene Betten und Belegungen."
+        },
+        {
+          "id": "b",
+          "text": "Alle Betten aller Kliniken zusammenwerfen.",
+          "correct": false,
+          "explanation": "Das würde Stationseffekte verdecken."
+        },
+        {
+          "id": "c",
+          "text": "Nur nach Arztname gruppieren.",
+          "correct": false,
+          "explanation": "Ärzte bestimmen nicht die Stationskapazität."
+        },
+        {
+          "id": "d",
+          "text": "Nach SQL-Recht gruppieren.",
+          "correct": false,
+          "explanation": "Rechte sind kein Stationsmerkmal."
+        }
+      ]
+    },
+    {
+      "id": "pv2fiae_medium_t09_occupancy_test_cases",
+      "conceptId": "pv2fiae_medium_t09_occupancy_test_cases",
+      "variantId": "pv2fiae_medium_t09_occupancy_test_cases_v03",
+      "interactionType": "multi",
+      "questionKind": "mehrere_richtige_antworten_waehlen",
+      "badgeLabel": "Mehrere Antworten sind richtig.",
+      "isNew": true,
+      "prompt": "Welche Fälle gehören in Tests der Stationenauslastung?",
+      "maxSelections": 3,
+      "options": [
+        {
+          "id": "a",
+          "text": "Genau 80 Prozent Auslastung.",
+          "correct": true,
+          "explanation": "Die strikte Schwelle muss geprüft werden."
+        },
+        {
+          "id": "b",
+          "text": "Mehr als 80 Prozent Auslastung.",
+          "correct": true,
+          "explanation": "Der Trefferfall muss erkannt werden."
+        },
+        {
+          "id": "c",
+          "text": "Belegung, die den Prüftag nur am Rand berührt.",
+          "correct": true,
+          "explanation": "Datumsgrenzen sind fehleranfällig."
+        },
+        {
+          "id": "d",
+          "text": "Nur SQL-Rechte ohne Belegungsdaten.",
+          "correct": false,
+          "explanation": "Das prüft die Auslastung nicht."
+        }
+      ]
+    },
+    {
+      "id": "pv2fiae_medium_t09_occupancy_missing_capacity",
+      "conceptId": "pv2fiae_medium_t09_occupancy_missing_capacity",
+      "variantId": "pv2fiae_medium_t09_occupancy_missing_capacity_v03",
+      "interactionType": "single",
+      "questionKind": "beste_option_im_mini_szenario",
+      "badgeLabel": "Eine Antwort ist richtig.",
+      "isNew": true,
+      "prompt": "Welche Behandlung braucht eine Station mit Kapazität 0?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Den Fall kontrolliert ausschließen oder als Datenfehler melden.",
+          "correct": true,
+          "explanation": "Eine Division durch null darf nicht unkontrolliert passieren."
+        },
+        {
+          "id": "b",
+          "text": "Auslastung automatisch auf 100 Prozent setzen.",
+          "correct": false,
+          "explanation": "Das wäre fachlich irreführend."
+        },
+        {
+          "id": "c",
+          "text": "Schreibrechte vergeben.",
+          "correct": false,
+          "explanation": "Das löst keine Kapazitätslücke."
+        },
+        {
+          "id": "d",
+          "text": "Den Medikationsplan als Bett zählen.",
+          "correct": false,
+          "explanation": "Das ist fachlich falsch."
+        }
+      ]
+    },
+    {
+      "id": "pv2fiae_medium_t09_sequence_lifelines",
+      "conceptId": "pv2fiae_medium_t09_sequence_lifelines",
+      "variantId": "pv2fiae_medium_t09_sequence_lifelines_v03",
+      "interactionType": "single",
+      "questionKind": "beste_option_im_mini_szenario",
+      "badgeLabel": "Eine Antwort ist richtig.",
+      "isNew": true,
+      "prompt": "Welche Objekte sollten in der Nachrichtenfolge des Medikationsplans sichtbar sein?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Oberfläche, Medikationsplan-Service und Datenzugriff.",
+          "correct": true,
+          "explanation": "Diese Beteiligten tragen Abruf, Verarbeitung und Datenlieferung."
+        },
+        {
+          "id": "b",
+          "text": "Nur die OP-Zwischentabelle.",
+          "correct": false,
+          "explanation": "Eine Tabelle allein beschreibt keine Sequenz."
+        },
+        {
+          "id": "c",
+          "text": "Nur SQL-Rechte GRANT und REVOKE.",
+          "correct": false,
+          "explanation": "Das sind Anweisungen, keine Lifelines."
+        },
+        {
+          "id": "d",
+          "text": "Nur Stationsbetten ohne Systemkomponente.",
+          "correct": false,
+          "explanation": "Das reicht nicht für die Plan-Ausgabe."
+        }
+      ]
+    },
+    {
+      "id": "pv2fiae_medium_t09_sequence_empty_medication",
+      "conceptId": "pv2fiae_medium_t09_sequence_empty_medication",
+      "variantId": "pv2fiae_medium_t09_sequence_empty_medication_v03",
+      "interactionType": "single",
+      "questionKind": "beste_option_im_mini_szenario",
+      "badgeLabel": "Eine Antwort ist richtig.",
+      "isNew": true,
+      "prompt": "Was ist besser als eine leere oder irreführende Ausgabe ohne Hinweis?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Eine klare Meldung, dass keine Medikation hinterlegt ist.",
+          "correct": true,
+          "explanation": "Der Nutzer versteht dann den leeren Zustand."
+        },
+        {
+          "id": "b",
+          "text": "Zufällige Medikamente ausgeben.",
+          "correct": false,
+          "explanation": "Das wäre gefährlich."
+        },
+        {
+          "id": "c",
+          "text": "Schreibrechte entziehen.",
+          "correct": false,
+          "explanation": "Das ist Rechteverwaltung."
+        },
+        {
+          "id": "d",
+          "text": "Eine Operation anlegen.",
+          "correct": false,
+          "explanation": "Das löst die Anzeige nicht."
+        }
+      ]
+    },
+    {
+      "id": "pv2fiae_medium_t09_whitebox_branch_tests",
+      "conceptId": "pv2fiae_medium_t09_whitebox_branch_tests",
+      "variantId": "pv2fiae_medium_t09_whitebox_branch_tests_v03",
+      "interactionType": "multi",
+      "questionKind": "mehrere_richtige_antworten_waehlen",
+      "badgeLabel": "Mehrere Antworten sind richtig.",
+      "isNew": true,
+      "prompt": "Welche Tests decken Verzweigungen in der Ausgabe besser ab?",
+      "maxSelections": 3,
+      "options": [
+        {
+          "id": "a",
+          "text": "Patient mit mehreren Verschreibungen.",
+          "correct": true,
+          "explanation": "Der Normalpfad mit Daten wird geprüft."
+        },
+        {
+          "id": "b",
+          "text": "Patient ohne Verschreibungen.",
+          "correct": true,
+          "explanation": "Der Leerpfad wird geprüft."
+        },
+        {
+          "id": "c",
+          "text": "Eingabe mit nur Leerzeichen.",
+          "correct": true,
+          "explanation": "Die Trim-Logik wird geprüft."
+        },
+        {
+          "id": "d",
+          "text": "GRANT-Recht als Medikationswert.",
+          "correct": false,
+          "explanation": "Das ist kein sinnvoller Planinhalt."
+        }
+      ]
+    },
+    {
+      "id": "pv2fiae_medium_t09_trim_validation",
+      "conceptId": "pv2fiae_medium_t09_trim_validation",
+      "variantId": "pv2fiae_medium_t09_trim_validation_v03",
+      "interactionType": "single",
+      "questionKind": "beste_option_im_mini_szenario",
+      "badgeLabel": "Eine Antwort ist richtig.",
+      "isNew": true,
+      "prompt": "Wie erkennt die Validierung besser, ob eine Einnahmeangabe wirklich leer ist?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Leerzeichen allein werden nicht mehr als Inhalt gewertet.",
+          "correct": true,
+          "explanation": "So entstehen keine scheinbar gültigen leeren Angaben."
+        },
+        {
+          "id": "b",
+          "text": "Alle Medikamente werden gelöscht.",
+          "correct": false,
+          "explanation": "Trimmen löscht keine Datensätze."
+        },
+        {
+          "id": "c",
+          "text": "SQL-Rechte werden automatisch vergeben.",
+          "correct": false,
+          "explanation": "Das ist unabhängig."
+        },
+        {
+          "id": "d",
+          "text": "Die OP-Zuordnung wird m:n.",
+          "correct": false,
+          "explanation": "Das ist Datenmodellierung."
+        }
+      ]
+    },
+    {
+      "id": "pv2fiae_medium_t09_op_bridge_role",
+      "conceptId": "pv2fiae_medium_t09_op_bridge_role",
+      "variantId": "pv2fiae_medium_t09_op_bridge_role_v03",
+      "interactionType": "single",
+      "questionKind": "beste_option_im_mini_szenario",
+      "badgeLabel": "Eine Antwort ist richtig.",
+      "isNew": true,
+      "prompt": "Welche Angabe gehört eher zur Beteiligung an einer Operation als zum Arzt-Stammdatensatz?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Die Rolle im Eingriff, zum Beispiel Operateur oder Assistenz.",
+          "correct": true,
+          "explanation": "Die Rolle hängt von der konkreten Operation ab."
+        },
+        {
+          "id": "b",
+          "text": "Die Email-Pflicht der Patiententabelle.",
+          "correct": false,
+          "explanation": "Das ist DDL."
+        },
+        {
+          "id": "c",
+          "text": "Die Stationsauslastung.",
+          "correct": false,
+          "explanation": "Das gehört nicht zur Arzt-Operation-Beziehung."
+        },
+        {
+          "id": "d",
+          "text": "Die Anzahl aller Verschreibungen im System.",
+          "correct": false,
+          "explanation": "Das ist eine Auswertung."
+        }
+      ]
+    },
+    {
+      "id": "pv2fiae_medium_t09_op_3nf_reasons",
+      "conceptId": "pv2fiae_medium_t09_op_3nf_reasons",
+      "variantId": "pv2fiae_medium_t09_op_3nf_reasons_v03",
+      "interactionType": "multi",
+      "questionKind": "mehrere_richtige_antworten_waehlen",
+      "badgeLabel": "Mehrere Antworten sind richtig.",
+      "isNew": true,
+      "prompt": "Was spricht für normalisierte OP-Daten?",
+      "maxSelections": 3,
+      "options": [
+        {
+          "id": "a",
+          "text": "Weniger Wiederholung von Arztdaten.",
+          "correct": true,
+          "explanation": "Stammdaten werden zentral gepflegt."
+        },
+        {
+          "id": "b",
+          "text": "Klare Fremdschlüssel zwischen Operation und Beteiligten.",
+          "correct": true,
+          "explanation": "Beziehungen bleiben prüfbar."
+        },
+        {
+          "id": "c",
+          "text": "Medikamente können konsistent referenziert werden.",
+          "correct": true,
+          "explanation": "Das reduziert Schreibvarianten."
+        },
+        {
+          "id": "d",
+          "text": "Alle Daten werden in einem Freitextfeld gespeichert.",
+          "correct": false,
+          "explanation": "Das wäre nicht normalisiert."
+        }
+      ]
+    },
+    {
+      "id": "pv2fiae_medium_t09_op_anesthesia_cardinality",
+      "conceptId": "pv2fiae_medium_t09_op_anesthesia_cardinality",
+      "variantId": "pv2fiae_medium_t09_op_anesthesia_cardinality_v03",
+      "interactionType": "single",
+      "questionKind": "beste_option_im_mini_szenario",
+      "badgeLabel": "Eine Antwort ist richtig.",
+      "isNew": true,
+      "prompt": "Wie werden bei einer Anästhesie mehrere eingesetzte Medikamente sauber abgebildet?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Anästhesie mit Zuordnung zu Medikamenten.",
+          "correct": true,
+          "explanation": "So bleiben mehrere Medikamente flexibel referenzierbar."
+        },
+        {
+          "id": "b",
+          "text": "Alle Medikamente als kommagetrennter Text in Operation.",
+          "correct": false,
+          "explanation": "Das schwächt Auswertbarkeit und Integrität."
+        },
+        {
+          "id": "c",
+          "text": "Medikamente als SQL-Rechte.",
+          "correct": false,
+          "explanation": "Das ist fachlich falsch."
+        },
+        {
+          "id": "d",
+          "text": "Anästhesie als Stationsbett.",
+          "correct": false,
+          "explanation": "Das vermischt Fachbereiche."
+        }
+      ]
+    },
+    {
+      "id": "pv2fiae_medium_t09_sql_grant_scope",
+      "conceptId": "pv2fiae_medium_t09_sql_grant_scope",
+      "variantId": "pv2fiae_medium_t09_sql_grant_scope_v03",
+      "interactionType": "single",
+      "questionKind": "beste_option_im_mini_szenario",
+      "badgeLabel": "Eine Antwort ist richtig.",
+      "isNew": true,
+      "prompt": "Was ist bei GRANT auf medizinische Tabellen wichtig?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Nur benötigte Rechte an die passende Rolle vergeben.",
+          "correct": true,
+          "explanation": "Das folgt dem Prinzip minimaler Rechte."
+        },
+        {
+          "id": "b",
+          "text": "Allen Nutzern alle Rechte geben.",
+          "correct": false,
+          "explanation": "Das ist unnötig breit und riskant."
+        },
+        {
+          "id": "c",
+          "text": "Rechte als Patientennamen speichern.",
+          "correct": false,
+          "explanation": "Das ist fachlich falsch."
+        },
+        {
+          "id": "d",
+          "text": "GRANT durch GROUP BY ersetzen.",
+          "correct": false,
+          "explanation": "GROUP BY vergibt keine Rechte."
+        }
+      ]
+    },
+    {
+      "id": "pv2fiae_medium_t09_sql_revoke_reason",
+      "conceptId": "pv2fiae_medium_t09_sql_revoke_reason",
+      "variantId": "pv2fiae_medium_t09_sql_revoke_reason_v03",
+      "interactionType": "single",
+      "questionKind": "beste_option_im_mini_szenario",
+      "badgeLabel": "Eine Antwort ist richtig.",
+      "isNew": true,
+      "prompt": "Welche Situation passt zum Entziehen von SQL-Rechten?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Wenn eine Rolle die Schreibberechtigung nicht mehr benötigt.",
+          "correct": true,
+          "explanation": "Nicht benötigte Rechte sollten entfernt werden."
+        },
+        {
+          "id": "b",
+          "text": "Wenn ein neuer Arzt eingefügt wird.",
+          "correct": false,
+          "explanation": "Das ist DML, kein Grund allein für REVOKE."
+        },
+        {
+          "id": "c",
+          "text": "Wenn eine Station über 80 Prozent liegt.",
+          "correct": false,
+          "explanation": "Das ist kein Rechteereignis."
+        },
+        {
+          "id": "d",
+          "text": "Wenn Leerzeichen getrimmt werden.",
+          "correct": false,
+          "explanation": "Das hat keinen Rechtebezug."
+        }
+      ]
+    },
+    {
+      "id": "pv2fiae_medium_t09_sql_email_migration_steps",
+      "conceptId": "pv2fiae_medium_t09_sql_email_migration_steps",
+      "variantId": "pv2fiae_medium_t09_sql_email_migration_steps_v03",
+      "interactionType": "multi",
+      "questionKind": "mehrere_richtige_antworten_waehlen",
+      "badgeLabel": "Mehrere Antworten sind richtig.",
+      "isNew": true,
+      "prompt": "Welche Migrationsschritte passen zur Pflichtfeld-Einführung?",
+      "maxSelections": 3,
+      "options": [
+        {
+          "id": "a",
+          "text": "Bestehende NULL-Werte finden.",
+          "correct": true,
+          "explanation": "Problematische Datensätze müssen sichtbar werden."
+        },
+        {
+          "id": "b",
+          "text": "Fehlende Emails fachlich ergänzen oder Datensätze klären.",
+          "correct": true,
+          "explanation": "Die Pflicht darf nicht gegen vorhandene Daten laufen."
+        },
+        {
+          "id": "c",
+          "text": "Danach die Spalte auf NOT NULL setzen.",
+          "correct": true,
+          "explanation": "Erst nach Bereinigung ist die Strukturänderung sicher."
+        },
+        {
+          "id": "d",
+          "text": "Ohne Prüfung alle Patienten löschen.",
+          "correct": false,
+          "explanation": "Das wäre keine sichere Migration."
+        }
+      ]
+    },
+    {
+      "id": "pv2fiae_medium_t09_sql_having_prescriptions",
+      "conceptId": "pv2fiae_medium_t09_sql_having_prescriptions",
+      "variantId": "pv2fiae_medium_t09_sql_having_prescriptions_v03",
+      "interactionType": "single",
+      "questionKind": "beste_option_im_mini_szenario",
+      "badgeLabel": "Eine Antwort ist richtig.",
+      "isNew": true,
+      "prompt": "Wann wird `HAVING COUNT(*) >= 3` benötigt?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Die Anzahl entsteht erst nach Gruppierung pro Patient.",
+          "correct": true,
+          "explanation": "HAVING filtert Gruppen nach Aggregaten."
+        },
+        {
+          "id": "b",
+          "text": "WHERE kann keine einzelnen Zeilen filtern.",
+          "correct": false,
+          "explanation": "WHERE filtert Zeilen vor der Gruppierung."
+        },
+        {
+          "id": "c",
+          "text": "HAVING fügt neue Ärzte ein.",
+          "correct": false,
+          "explanation": "Das ist INSERT."
+        },
+        {
+          "id": "d",
+          "text": "HAVING entzieht Schreibrechte.",
+          "correct": false,
+          "explanation": "Das ist REVOKE."
+        }
+      ]
+    },
+    {
+      "id": "pv2fiae_medium_t09_sql_avg_subquery",
+      "conceptId": "pv2fiae_medium_t09_sql_avg_subquery",
+      "variantId": "pv2fiae_medium_t09_sql_avg_subquery_v03",
+      "interactionType": "single",
+      "questionKind": "beste_option_im_mini_szenario",
+      "badgeLabel": "Eine Antwort ist richtig.",
+      "isNew": true,
+      "prompt": "Wie bildet man einen Durchschnitt über Patientenzählwerte sauber ab?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Eine innere Abfrage zählt je Patient, die äußere berechnet den Durchschnitt.",
+          "correct": true,
+          "explanation": "Der Durchschnitt bezieht sich auf bereits gruppierte Werte."
+        },
+        {
+          "id": "b",
+          "text": "Eine einzelne WHERE-Bedingung ohne Gruppierung reicht immer.",
+          "correct": false,
+          "explanation": "Dann fehlt die Zählung je Patient."
+        },
+        {
+          "id": "c",
+          "text": "GRANT berechnet den Durchschnitt.",
+          "correct": false,
+          "explanation": "GRANT vergibt Rechte."
+        },
+        {
+          "id": "d",
+          "text": "ALTER TABLE liefert automatisch AVG.",
+          "correct": false,
+          "explanation": "DDL berechnet keine Auswertung."
+        }
+      ]
+    },
+    {
+      "id": "pv2fiae_medium_t09_dml_vs_ddl_dcl",
+      "conceptId": "pv2fiae_medium_t09_dml_vs_ddl_dcl",
+      "variantId": "pv2fiae_medium_t09_dml_vs_ddl_dcl_v03",
+      "interactionType": "single",
+      "questionKind": "beste_option_im_mini_szenario",
+      "badgeLabel": "Eine Antwort ist richtig.",
+      "isNew": true,
+      "prompt": "Welche Aussage trennt DML, DDL und DCL richtig?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "INSERT ist DML, ALTER TABLE ist DDL, GRANT/REVOKE sind DCL.",
+          "correct": true,
+          "explanation": "Die Anweisungen gehören zu unterschiedlichen SQL-Kategorien."
+        },
+        {
+          "id": "b",
+          "text": "Alle drei sind ausschließlich SELECT-Abfragen.",
+          "correct": false,
+          "explanation": "Sie haben verschiedene Aufgaben."
+        },
+        {
+          "id": "c",
+          "text": "GRANT ist ein Unit-Test.",
+          "correct": false,
+          "explanation": "GRANT ist Rechteverwaltung."
+        },
+        {
+          "id": "d",
+          "text": "ALTER TABLE ist ein Sequenzdiagramm.",
+          "correct": false,
+          "explanation": "ALTER TABLE ändert Struktur."
+        }
+      ]
+    },
+    {
+      "id": "pv2fiae_medium_t09_sequence_error_path",
+      "conceptId": "pv2fiae_medium_t09_sequence_error_path",
+      "variantId": "pv2fiae_medium_t09_sequence_error_path_v03",
+      "interactionType": "single",
+      "questionKind": "beste_option_im_mini_szenario",
+      "badgeLabel": "Eine Antwort ist richtig.",
+      "isNew": true,
+      "prompt": "Wie wird ein ungültiger Abruf in der Medikationsplan-Ausgabe fachlich behandelt?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Eine kontrollierte Fehlermeldung ausgeben und keine zufälligen Daten anzeigen.",
+          "correct": true,
+          "explanation": "Ohne gültigen Bezug darf kein falscher Plan entstehen."
+        },
+        {
+          "id": "b",
+          "text": "Den ersten Patienten ungeprüft nehmen.",
+          "correct": false,
+          "explanation": "Das wäre gefährlich."
+        },
+        {
+          "id": "c",
+          "text": "Schreibrechte vergeben.",
+          "correct": false,
+          "explanation": "Das löst keinen Abruffehler."
+        },
+        {
+          "id": "d",
+          "text": "Eine OP anlegen.",
+          "correct": false,
+          "explanation": "Das ist fachlich falsch."
+        }
+      ]
+    },
+    {
+      "id": "pv2fiae_medium_t09_occupancy_performance",
+      "conceptId": "pv2fiae_medium_t09_occupancy_performance",
+      "variantId": "pv2fiae_medium_t09_occupancy_performance_v03",
+      "interactionType": "single",
+      "questionKind": "beste_option_im_mini_szenario",
+      "badgeLabel": "Eine Antwort ist richtig.",
+      "isNew": true,
+      "prompt": "Welche Ursache kann die Laufzeit der Belegungsauswertung erhöhen?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Viele Tage, Stationen und Belegungszeiträume müssen miteinander verglichen werden.",
+          "correct": true,
+          "explanation": "Zeitbereichsprüfungen können viele Kombinationen erzeugen."
+        },
+        {
+          "id": "b",
+          "text": "GRANT ist immer langsam.",
+          "correct": false,
+          "explanation": "Das ist nicht die Hauptursache."
+        },
+        {
+          "id": "c",
+          "text": "Leerzeichen sind schwer zu trimmen.",
+          "correct": false,
+          "explanation": "Das ist kein Massendatenvergleich."
+        },
+        {
+          "id": "d",
+          "text": "OP-Arzt-Zuordnungen sind immer zufällig.",
+          "correct": false,
+          "explanation": "Das ist kein Performancegrund."
+        }
+      ]
+    },
+    {
+      "id": "pv2fiae_medium_t09_op_delete_policy",
+      "conceptId": "pv2fiae_medium_t09_op_delete_policy",
+      "variantId": "pv2fiae_medium_t09_op_delete_policy_v03",
+      "interactionType": "single",
+      "questionKind": "beste_option_im_mini_szenario",
+      "badgeLabel": "Eine Antwort ist richtig.",
+      "isNew": true,
+      "prompt": "Was schützt Operation_Arzt vor verwaisten Verweisen?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Fremdschlüsselregeln oder fachliche Sperren verhindern verwaiste OP-Zuordnungen.",
+          "correct": true,
+          "explanation": "Beteiligungen müssen gültige Ärzte referenzieren."
+        },
+        {
+          "id": "b",
+          "text": "GRANT löscht automatisch alle Operationen.",
+          "correct": false,
+          "explanation": "Das ist keine Wirkung von GRANT."
+        },
+        {
+          "id": "c",
+          "text": "Whitebox-Tests ersetzen Fremdschlüssel.",
+          "correct": false,
+          "explanation": "Tests sichern keine Datenbankbeziehung zur Laufzeit."
+        },
+        {
+          "id": "d",
+          "text": "Email wird dadurch automatisch Pflichtfeld.",
+          "correct": false,
+          "explanation": "Das ist ein anderes DDL-Thema."
+        }
+      ]
+    },
+    {
+      "id": "pv2fiae_medium_t09_sql_patient_without_prescriptions",
+      "conceptId": "pv2fiae_medium_t09_sql_patient_without_prescriptions",
+      "variantId": "pv2fiae_medium_t09_sql_patient_without_prescriptions_v03",
+      "interactionType": "single",
+      "questionKind": "beste_option_im_mini_szenario",
+      "badgeLabel": "Eine Antwort ist richtig.",
+      "isNew": true,
+      "prompt": "Welche Abfrageidee erhält Patienten mit Zählwert 0?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "LEFT JOIN von Patient auf Verschreibungen.",
+          "correct": true,
+          "explanation": "So bleiben Patientenzeilen ohne passende Verschreibung erhalten."
+        },
+        {
+          "id": "b",
+          "text": "INNER JOIN zwingend.",
+          "correct": false,
+          "explanation": "Ein INNER JOIN blendet Patienten ohne Verschreibung aus."
+        },
+        {
+          "id": "c",
+          "text": "REVOKE JOIN.",
+          "correct": false,
+          "explanation": "Das ist keine SQL-Join-Art."
+        },
+        {
+          "id": "d",
+          "text": "ALTER JOIN Email.",
+          "correct": false,
+          "explanation": "Das ist keine sinnvolle Syntax."
+        }
+      ]
+    },
+    {
+      "id": "pv2fiae_medium_t09_sql_grant_role_not_user",
+      "conceptId": "pv2fiae_medium_t09_sql_grant_role_not_user",
+      "variantId": "pv2fiae_medium_t09_sql_grant_role_not_user_v03",
+      "interactionType": "single",
+      "questionKind": "beste_option_im_mini_szenario",
+      "badgeLabel": "Eine Antwort ist richtig.",
+      "isNew": true,
+      "prompt": "Was spricht dafür, Schreibrechte auf `Verschreibungen` rollenbasiert zu vergeben?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Rollen bündeln Berechtigungen und lassen sich bei Personalwechseln besser pflegen.",
+          "correct": true,
+          "explanation": "Rollen reduzieren Einzelpflege und Fehlerquellen."
+        },
+        {
+          "id": "b",
+          "text": "Einzelbenutzerrechte sind immer sicherer und wartungsfrei.",
+          "correct": false,
+          "explanation": "Viele Einzelrechte werden schnell unübersichtlich."
+        },
+        {
+          "id": "c",
+          "text": "Rollen ersetzen jede Datenvalidierung.",
+          "correct": false,
+          "explanation": "Validierung bleibt nötig."
+        },
+        {
+          "id": "d",
+          "text": "Rollen berechnen automatisch den AVG-Wert.",
+          "correct": false,
+          "explanation": "Das ist keine Rechtefunktion."
+        }
+      ]
+    },
+    {
+      "id": "pv2fiae_medium_t09_sequence_loop_medications",
+      "conceptId": "pv2fiae_medium_t09_sequence_loop_medications",
+      "variantId": "pv2fiae_medium_t09_sequence_loop_medications_v03",
+      "interactionType": "single",
+      "questionKind": "beste_option_im_mini_szenario",
+      "badgeLabel": "Eine Antwort ist richtig.",
+      "isNew": true,
+      "prompt": "Wie modelliert man den wiederholten Abruf von Einnahmeangaben je Medikament?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Mit einem Schleifenfragment für jedes Medikament.",
+          "correct": true,
+          "explanation": "Die gleiche Nachrichtenfolge wird pro Listeneintrag wiederholt."
+        },
+        {
+          "id": "b",
+          "text": "Mit einem einmaligen Endzustand `Halt`.",
+          "correct": false,
+          "explanation": "Das ist Zustandsdiagramm, nicht Sequenzwiederholung."
+        },
+        {
+          "id": "c",
+          "text": "Mit `REVOKE`.",
+          "correct": false,
+          "explanation": "REVOKE ist Rechteverwaltung."
+        },
+        {
+          "id": "d",
+          "text": "Mit einer OP-Arzt-Zuordnung.",
+          "correct": false,
+          "explanation": "Das ist ER-Modellierung."
+        }
+      ]
+    },
+    {
+      "id": "pv2fiae_medium_t09_occupancy_output_days",
+      "conceptId": "pv2fiae_medium_t09_occupancy_output_days",
+      "variantId": "pv2fiae_medium_t09_occupancy_output_days_v03",
+      "interactionType": "single",
+      "questionKind": "beste_option_im_mini_szenario",
+      "badgeLabel": "Eine Antwort ist richtig.",
+      "isNew": true,
+      "prompt": "Welche Information macht Auslastungstage für die Klinik steuerbar?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Station, Datum und Auslastungswert.",
+          "correct": true,
+          "explanation": "So ist klar, wann und wo die Schwelle überschritten wurde."
+        },
+        {
+          "id": "b",
+          "text": "Nur die Anzahl aller Ärzte ohne Datum.",
+          "correct": false,
+          "explanation": "Das erklärt die Auslastungstage nicht."
+        },
+        {
+          "id": "c",
+          "text": "Nur GRANT-Statements.",
+          "correct": false,
+          "explanation": "Das ist Rechteverwaltung."
+        },
+        {
+          "id": "d",
+          "text": "Nur Leerzeichen als Medikation.",
+          "correct": false,
+          "explanation": "Das ist keine Auslastungsausgabe."
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,904 @@
+{
+  "scenarioFolder": "Pruefungsvorbereitung-2-FIAE-Scenarien",
+  "quizFolder": "Pruefungsvorbereitung-2-FIAE-Quiz",
+  "scenarioFile": "ticket_ausbildungsbetrieb_ap2_w2022_fiae2/05_hard_ausbildungsbetrieb_ap2_w2022_fiae2.json",
+  "quizFile": "quiz_ausbildungsbetrieb_ap2_w2022_fiae2/quiz05_hard_V02_ausbildungsbetrieb_ap2_w2022_fiae2.json",
+  "ticketId": "05_hard_ausbildungsbetrieb_ap2_w2022_fiae2.json",
+  "versionId": "V02",
+  "title": "Ticket 05 Hard - Raumplanung, Binärlogik, Buchungsmodell und SQL",
+  "description": "Vernetzte Prüfungsfragen zu Sortierlogik, Binärumrechnung, Buchungsmodell und Fehlzeit-SQL.",
+  "topics": [
+    "Sortierlogik, Vergleichsfunktionen und Binärumrechnung in vernetzten Fällen sicher abwägen",
+    "Buchungsmodell, Datentypen und Fehlzeit-SQL in Projektkonflikten belastbar verbinden"
+  ],
+  "questions": [
+    {
+      "id": "pv2fiae_hard_t05_sort_strategy_choice",
+      "conceptId": "pv2fiae_hard_t05_sort_strategy_choice",
+      "variantId": "pv2fiae_hard_t05_sort_strategy_choice_v02",
+      "interactionType": "single",
+      "questionKind": "beste_option_im_mini_szenario",
+      "badgeLabel": "Eine Antwort ist richtig.",
+      "isNew": true,
+      "prompt": "Welche Projektentscheidung ist sinnvoll, wenn Raum- und Mitarbeitendenlisten stark wachsen?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Wenn Laufzeit und Anzahl der Vergleiche im Betrieb zu hoch werden.",
+          "correct": true,
+          "explanation": "Dann wird die algorithmische Komplexität relevant."
+        },
+        {
+          "id": "b",
+          "text": "Sobald ein einzelner Raum sortiert wird.",
+          "correct": false,
+          "explanation": "Bei sehr kleinen Listen reicht einfache Logik oft aus."
+        },
+        {
+          "id": "c",
+          "text": "Wenn `compare_fn` den Wert `0` liefert.",
+          "correct": false,
+          "explanation": "Gleichheit allein erzwingt keinen Algorithmuswechsel."
+        },
+        {
+          "id": "d",
+          "text": "Wenn eine PLZ vier Stellen hat.",
+          "correct": false,
+          "explanation": "Das ist kein Sortierkriterium."
+        }
+      ]
+    },
+    {
+      "id": "pv2fiae_hard_t05_sort_contract_tests",
+      "conceptId": "pv2fiae_hard_t05_sort_contract_tests",
+      "variantId": "pv2fiae_hard_t05_sort_contract_tests_v02",
+      "interactionType": "multi",
+      "questionKind": "mehrere_richtige_antworten_waehlen",
+      "badgeLabel": "Mehrere Antworten sind richtig.",
+      "isNew": true,
+      "prompt": "Welche Prüfungen zeigen, ob `compare_fn` für den generischen Sortierer geeignet ist?",
+      "maxSelections": 3,
+      "options": [
+        {
+          "id": "a",
+          "text": "Gleichwertige Objekte liefern `0`.",
+          "correct": true,
+          "explanation": "Gleichheit muss eindeutig abgebildet sein."
+        },
+        {
+          "id": "b",
+          "text": "Ein größeres Objekt links liefert einen positiven Wert.",
+          "correct": true,
+          "explanation": "Das ist die vereinbarte Richtung."
+        },
+        {
+          "id": "c",
+          "text": "Ein kleineres Objekt links liefert einen negativen Wert.",
+          "correct": true,
+          "explanation": "Der verbleibende Fall muss konsistent sein."
+        },
+        {
+          "id": "d",
+          "text": "Die Funktion verändert die Liste während des Vergleichs.",
+          "correct": false,
+          "explanation": "Ein Vergleich soll bewerten, nicht Seiteneffekte erzeugen."
+        }
+      ]
+    },
+    {
+      "id": "pv2fiae_hard_t05_sort_side_effect_risk",
+      "conceptId": "pv2fiae_hard_t05_sort_side_effect_risk",
+      "variantId": "pv2fiae_hard_t05_sort_side_effect_risk_v02",
+      "interactionType": "single",
+      "questionKind": "beste_option_im_mini_szenario",
+      "badgeLabel": "Eine Antwort ist richtig.",
+      "isNew": true,
+      "prompt": "Was ist problematisch, wenn `compare_fn` beim Vergleichen Daten verändert?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Der Sortieralgorithmus kann unvorhersehbare Ergebnisse liefern.",
+          "correct": true,
+          "explanation": "Vergleiche sollten stabil und wiederholbar sein."
+        },
+        {
+          "id": "b",
+          "text": "Die Binärzahl wird dadurch immer korrekt.",
+          "correct": false,
+          "explanation": "Das hat keinen Bezug zur Zahlensystemumrechnung."
+        },
+        {
+          "id": "c",
+          "text": "SQL-Abfragen werden automatisch transaktional.",
+          "correct": false,
+          "explanation": "Das ist keine Wirkung einer Vergleichsfunktion."
+        },
+        {
+          "id": "d",
+          "text": "Buchungen erhalten dadurch Fremdschlüssel.",
+          "correct": false,
+          "explanation": "Das ist Datenmodellierung, kein Vergleichsvertrag."
+        }
+      ]
+    },
+    {
+      "id": "pv2fiae_hard_t05_sort_null_values",
+      "conceptId": "pv2fiae_hard_t05_sort_null_values",
+      "variantId": "pv2fiae_hard_t05_sort_null_values_v02",
+      "interactionType": "single",
+      "questionKind": "beste_option_im_mini_szenario",
+      "badgeLabel": "Eine Antwort ist richtig.",
+      "isNew": true,
+      "prompt": "Was ist wichtig, wenn einzelne Räume keine Belegungszahl besitzen?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Eine klare fachliche Regel, ob fehlende Werte vorne, hinten oder als Fehler behandelt werden.",
+          "correct": true,
+          "explanation": "Ohne Regel sind Sortierergebnisse schwer nachvollziehbar."
+        },
+        {
+          "id": "b",
+          "text": "Fehlende Werte beliebig tauschen.",
+          "correct": false,
+          "explanation": "Das macht die Ausgabe instabil."
+        },
+        {
+          "id": "c",
+          "text": "Die Buchungstabelle löschen.",
+          "correct": false,
+          "explanation": "Das löst keine Sortierregel."
+        },
+        {
+          "id": "d",
+          "text": "Immer `0` zurückgeben.",
+          "correct": false,
+          "explanation": "Dann würden fehlende Werte alle Gleichheit vortäuschen."
+        }
+      ]
+    },
+    {
+      "id": "pv2fiae_hard_t05_binary_large_input",
+      "conceptId": "pv2fiae_hard_t05_binary_large_input",
+      "variantId": "pv2fiae_hard_t05_binary_large_input_v02",
+      "interactionType": "single",
+      "questionKind": "beste_option_im_mini_szenario",
+      "badgeLabel": "Eine Antwort ist richtig.",
+      "isNew": true,
+      "prompt": "Wie sollte die Umrechnung arbeiten, wenn sehr große Zahlen ohne tiefe Rekursion verarbeitet werden sollen?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Eine Schleife mit Restbildung, ganzzahliger Division und geordneter Ausgabe.",
+          "correct": true,
+          "explanation": "Das bildet den Algorithmus ohne Rekursionsstapel ab."
+        },
+        {
+          "id": "b",
+          "text": "Eine Rekursion ohne Basisfall.",
+          "correct": false,
+          "explanation": "Das endet nicht zuverlässig."
+        },
+        {
+          "id": "c",
+          "text": "Eine SQL-Löschung pro Binärstelle.",
+          "correct": false,
+          "explanation": "Das ist fachlich unsinnig."
+        },
+        {
+          "id": "d",
+          "text": "Eine Sortierung nach Raumbelegung.",
+          "correct": false,
+          "explanation": "Das löst keine Binärumrechnung."
+        }
+      ]
+    },
+    {
+      "id": "pv2fiae_hard_t05_binary_review_criteria",
+      "conceptId": "pv2fiae_hard_t05_binary_review_criteria",
+      "variantId": "pv2fiae_hard_t05_binary_review_criteria_v02",
+      "interactionType": "multi",
+      "questionKind": "mehrere_richtige_antworten_waehlen",
+      "badgeLabel": "Mehrere Antworten sind richtig.",
+      "isNew": true,
+      "prompt": "Woran wird eine robuste Umrechnung von Dezimal nach Binär geprüft?",
+      "maxSelections": 3,
+      "options": [
+        {
+          "id": "a",
+          "text": "Korrekte Basisfälle für 0 und 1.",
+          "correct": true,
+          "explanation": "Sie verhindern falsche oder endlose Abläufe."
+        },
+        {
+          "id": "b",
+          "text": "Korrekte Reihenfolge der Binärstellen.",
+          "correct": true,
+          "explanation": "Umgekehrte Restfolge ist ein typischer Fehler."
+        },
+        {
+          "id": "c",
+          "text": "Tests für mehrere Eingabeklassen.",
+          "correct": true,
+          "explanation": "Grenzwerte und rekursive beziehungsweise iterative Pfade müssen abgedeckt sein."
+        },
+        {
+          "id": "d",
+          "text": "Archivierung aller Fehlzeiten im Lernmodul.",
+          "correct": false,
+          "explanation": "Das gehört nicht zur Binärumrechnung."
+        }
+      ]
+    },
+    {
+      "id": "pv2fiae_hard_t05_binary_negative_policy",
+      "conceptId": "pv2fiae_hard_t05_binary_negative_policy",
+      "variantId": "pv2fiae_hard_t05_binary_negative_policy_v02",
+      "interactionType": "single",
+      "questionKind": "beste_option_im_mini_szenario",
+      "badgeLabel": "Eine Antwort ist richtig.",
+      "isNew": true,
+      "prompt": "Welche Projektentscheidung ist für negative Zahlen in der Umrechnung nötig?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Sie sollten klar abgelehnt oder fachlich definiert behandelt werden.",
+          "correct": true,
+          "explanation": "Nicht vorgesehene Eingaben brauchen eine explizite Regel."
+        },
+        {
+          "id": "b",
+          "text": "Sie sollten endlos rekursiv verarbeitet werden.",
+          "correct": false,
+          "explanation": "Das wäre ein schwerer Fehler."
+        },
+        {
+          "id": "c",
+          "text": "Sie sollten als Raum-ID gespeichert werden.",
+          "correct": false,
+          "explanation": "Das ist fachlich falsch."
+        },
+        {
+          "id": "d",
+          "text": "Sie sollten alle SQL-Filter entfernen.",
+          "correct": false,
+          "explanation": "Das hat keinen Bezug zur Eingabevalidierung."
+        }
+      ]
+    },
+    {
+      "id": "pv2fiae_hard_t05_coverage_minimal_suite",
+      "conceptId": "pv2fiae_hard_t05_coverage_minimal_suite",
+      "variantId": "pv2fiae_hard_t05_coverage_minimal_suite_v02",
+      "interactionType": "single",
+      "questionKind": "beste_option_im_mini_szenario",
+      "badgeLabel": "Eine Antwort ist richtig.",
+      "isNew": true,
+      "prompt": "Welche Eingaben decken Basisfall, einfachen rekursiven Fall und mehrstellige Ausgabe gut ab?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "`0`, `1`, `2` und ein mehrstelliger Wert wie `13`.",
+          "correct": true,
+          "explanation": "Damit werden Basisfälle und zusammengesetzte Ausgaben geprüft."
+        },
+        {
+          "id": "b",
+          "text": "Nur `1` dreimal.",
+          "correct": false,
+          "explanation": "Das deckt keine Rekursion oder mehrstellige Ausgabe ab."
+        },
+        {
+          "id": "c",
+          "text": "Nur ein Raumname.",
+          "correct": false,
+          "explanation": "Das ist keine Zahl für die Umrechnung."
+        },
+        {
+          "id": "d",
+          "text": "Nur ein PLZ-Filter.",
+          "correct": false,
+          "explanation": "Das ist SQL, nicht die Binärfunktion."
+        }
+      ]
+    },
+    {
+      "id": "pv2fiae_hard_t05_booking_temporal_conflict",
+      "conceptId": "pv2fiae_hard_t05_booking_temporal_conflict",
+      "variantId": "pv2fiae_hard_t05_booking_temporal_conflict_v02",
+      "interactionType": "single",
+      "questionKind": "beste_option_im_mini_szenario",
+      "badgeLabel": "Eine Antwort ist richtig.",
+      "isNew": true,
+      "prompt": "Wie schützt das Buchungsmodell vor zwei Reservierungen desselben Raums zur selben Zeit?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Eine Prüfung auf überlappende Buchungszeiträume je Raum.",
+          "correct": true,
+          "explanation": "Der gleiche Raum darf nicht parallel mehrfach vergeben werden."
+        },
+        {
+          "id": "b",
+          "text": "Eine Vergleichsfunktion für Gehälter.",
+          "correct": false,
+          "explanation": "Das löst keine Raumkonflikte."
+        },
+        {
+          "id": "c",
+          "text": "Ein Freitextfeld für alle Buchungen.",
+          "correct": false,
+          "explanation": "Freitext verhindert keine Überschneidungen."
+        },
+        {
+          "id": "d",
+          "text": "Eine PLZ-Teilzeichenfunktion.",
+          "correct": false,
+          "explanation": "PLZ-Filter haben keinen Bezug zur Raumverfügbarkeit."
+        }
+      ]
+    },
+    {
+      "id": "pv2fiae_hard_t05_booking_release_checks",
+      "conceptId": "pv2fiae_hard_t05_booking_release_checks",
+      "variantId": "pv2fiae_hard_t05_booking_release_checks_v02",
+      "interactionType": "multi",
+      "questionKind": "mehrere_richtige_antworten_waehlen",
+      "badgeLabel": "Mehrere Antworten sind richtig.",
+      "isNew": true,
+      "prompt": "Welche Abnahmepunkte sichern das Modell für Raum- und Zusatzleistungsbuchungen ab?",
+      "maxSelections": 3,
+      "options": [
+        {
+          "id": "a",
+          "text": "Keine Buchung ohne vorhandene Kundschaft und vorhandenen Raum.",
+          "correct": true,
+          "explanation": "Diese Pflichtbezüge sichern Kernintegrität."
+        },
+        {
+          "id": "b",
+          "text": "Zusatzressourcen über Zuordnung statt feste Wiederholungsspalten.",
+          "correct": true,
+          "explanation": "Das hält das Modell flexibel."
+        },
+        {
+          "id": "c",
+          "text": "Plausible Datentypen für Zeitraum, Beträge und Status.",
+          "correct": true,
+          "explanation": "Datentypen beeinflussen Auswertung und Validierung."
+        },
+        {
+          "id": "d",
+          "text": "Alle Buchungen ausschließlich als PDF-Text speichern.",
+          "correct": false,
+          "explanation": "Das wäre kaum strukturiert auswertbar."
+        }
+      ]
+    },
+    {
+      "id": "pv2fiae_hard_t05_booking_price_snapshot",
+      "conceptId": "pv2fiae_hard_t05_booking_price_snapshot",
+      "variantId": "pv2fiae_hard_t05_booking_price_snapshot_v02",
+      "interactionType": "single",
+      "questionKind": "beste_option_im_mini_szenario",
+      "badgeLabel": "Eine Antwort ist richtig.",
+      "isNew": true,
+      "prompt": "Weshalb sollte der bei Buchung gültige Leistungspreis zusätzlich zur Serviceleistung gespeichert werden?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Spätere Preisänderungen sollen alte Buchungen nicht verfälschen.",
+          "correct": true,
+          "explanation": "Der gebuchte Preis ist ein historischer Fakt."
+        },
+        {
+          "id": "b",
+          "text": "Damit keine Kundschaft mehr gespeichert wird.",
+          "correct": false,
+          "explanation": "Der Kundenbezug bleibt nötig."
+        },
+        {
+          "id": "c",
+          "text": "Damit Binärzahlen schneller werden.",
+          "correct": false,
+          "explanation": "Das ist algorithmisch unverbunden."
+        },
+        {
+          "id": "d",
+          "text": "Damit SQL-Berichte keine Summen bilden können.",
+          "correct": false,
+          "explanation": "Ein Preis-Snapshot unterstützt Auswertungen eher."
+        }
+      ]
+    },
+    {
+      "id": "pv2fiae_hard_t05_booking_delete_policy",
+      "conceptId": "pv2fiae_hard_t05_booking_delete_policy",
+      "variantId": "pv2fiae_hard_t05_booking_delete_policy_v02",
+      "interactionType": "single",
+      "questionKind": "beste_option_im_mini_szenario",
+      "badgeLabel": "Eine Antwort ist richtig.",
+      "isNew": true,
+      "prompt": "Welche Datenpflege ist bei historisch relevanten Buchungen häufig besser als Löschen?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Durch Storno- oder Statuskennzeichen statt unkontrollierter Löschung.",
+          "correct": true,
+          "explanation": "Historische Nachvollziehbarkeit bleibt erhalten."
+        },
+        {
+          "id": "b",
+          "text": "Durch Überschreiben mit einem Sortierwert.",
+          "correct": false,
+          "explanation": "Das zerstört Fachinformationen."
+        },
+        {
+          "id": "c",
+          "text": "Durch Ablegen im Passwortfeld.",
+          "correct": false,
+          "explanation": "Das ist fachlich falsch."
+        },
+        {
+          "id": "d",
+          "text": "Durch Entfernen aller Fremdschlüssel.",
+          "correct": false,
+          "explanation": "Das schwächt Integrität."
+        }
+      ]
+    },
+    {
+      "id": "pv2fiae_hard_t05_sql_archive_atomicity",
+      "conceptId": "pv2fiae_hard_t05_sql_archive_atomicity",
+      "variantId": "pv2fiae_hard_t05_sql_archive_atomicity_v02",
+      "interactionType": "single",
+      "questionKind": "beste_option_im_mini_szenario",
+      "badgeLabel": "Eine Antwort ist richtig.",
+      "isNew": true,
+      "prompt": "Welche Absicherung braucht ein Verschieben von Fehlzeiten zwischen aktiver und Archiv-Tabelle?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Eine Transaktion mit Prüfung vor `COMMIT`.",
+          "correct": true,
+          "explanation": "So kann bei Fehlern zurückgerollt werden."
+        },
+        {
+          "id": "b",
+          "text": "Ein `DELETE` ohne `WHERE`.",
+          "correct": false,
+          "explanation": "Das erhöht das Risiko massiv."
+        },
+        {
+          "id": "c",
+          "text": "Eine Sortierung nach Raumbelegung.",
+          "correct": false,
+          "explanation": "Das hat keinen Bezug zur Archivkonsistenz."
+        },
+        {
+          "id": "d",
+          "text": "Eine Rekursion ohne Basisfall.",
+          "correct": false,
+          "explanation": "Das löst keine Datenkonsistenz."
+        }
+      ]
+    },
+    {
+      "id": "pv2fiae_hard_t05_sql_audit_archive",
+      "conceptId": "pv2fiae_hard_t05_sql_audit_archive",
+      "variantId": "pv2fiae_hard_t05_sql_audit_archive_v02",
+      "interactionType": "multi",
+      "questionKind": "mehrere_richtige_antworten_waehlen",
+      "badgeLabel": "Mehrere Antworten sind richtig.",
+      "isNew": true,
+      "prompt": "Welche Informationen helfen, archivierte Fehlzeitdaten später nachzuvollziehen?",
+      "maxSelections": 3,
+      "options": [
+        {
+          "id": "a",
+          "text": "Archivdatum oder Archivlauf-ID speichern.",
+          "correct": true,
+          "explanation": "So ist nachvollziehbar, wann verschoben wurde."
+        },
+        {
+          "id": "b",
+          "text": "Ursprüngliche Fehlzeit-ID oder Referenz übernehmen.",
+          "correct": true,
+          "explanation": "Das erleichtert Nachverfolgung."
+        },
+        {
+          "id": "c",
+          "text": "Betroffene Zeilenzahl prüfen.",
+          "correct": true,
+          "explanation": "So fällt auf, wenn Kopie und Löschung nicht zusammenpassen."
+        },
+        {
+          "id": "d",
+          "text": "Archivdaten ohne Filter zufällig löschen.",
+          "correct": false,
+          "explanation": "Das wäre nicht auditfähig."
+        }
+      ]
+    },
+    {
+      "id": "pv2fiae_hard_t05_sql_date_range_index",
+      "conceptId": "pv2fiae_hard_t05_sql_date_range_index",
+      "variantId": "pv2fiae_hard_t05_sql_date_range_index_v02",
+      "interactionType": "single",
+      "questionKind": "beste_option_im_mini_szenario",
+      "badgeLabel": "Eine Antwort ist richtig.",
+      "isNew": true,
+      "prompt": "Welche Filterform kann bei Datumsindizes für die Jahresauswertung günstiger sein?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "`Datum >= 2022-01-01 AND Datum < 2023-01-01`.",
+          "correct": true,
+          "explanation": "Ein Bereich kann vorhandene Datumsindizes besser nutzbar halten."
+        },
+        {
+          "id": "b",
+          "text": "`ORDER BY YEAR(Datum)` als Filter.",
+          "correct": false,
+          "explanation": "Sortieren filtert nicht."
+        },
+        {
+          "id": "c",
+          "text": "`DELETE WHERE YEAR(Datum)`.",
+          "correct": false,
+          "explanation": "Das ist keine Berichtsauswertung."
+        },
+        {
+          "id": "d",
+          "text": "`SUBSTRING(Name, 4, 1)`.",
+          "correct": false,
+          "explanation": "Das filtert keinen Datumsbereich."
+        }
+      ]
+    },
+    {
+      "id": "pv2fiae_hard_t05_sql_left_join_zero_absence",
+      "conceptId": "pv2fiae_hard_t05_sql_left_join_zero_absence",
+      "variantId": "pv2fiae_hard_t05_sql_left_join_zero_absence_v02",
+      "interactionType": "single",
+      "questionKind": "beste_option_im_mini_szenario",
+      "badgeLabel": "Eine Antwort ist richtig.",
+      "isNew": true,
+      "prompt": "Welche JOIN- und Aggregationsidee erhält Mitarbeitende ohne passende Fehlzeit?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "LEFT JOIN auf Fehlzeiten und passende Behandlung leerer Summen.",
+          "correct": true,
+          "explanation": "So bleiben Mitarbeitende ohne Treffer erhalten."
+        },
+        {
+          "id": "b",
+          "text": "INNER JOIN zwingend verwenden.",
+          "correct": false,
+          "explanation": "Ein INNER JOIN entfernt Personen ohne Fehlzeit."
+        },
+        {
+          "id": "c",
+          "text": "Vorher alle Mitarbeitenden löschen.",
+          "correct": false,
+          "explanation": "Das ist Datenverlust."
+        },
+        {
+          "id": "d",
+          "text": "Nur nach PLZ sortieren.",
+          "correct": false,
+          "explanation": "Das erzeugt keine Urlaubssumme."
+        }
+      ]
+    },
+    {
+      "id": "pv2fiae_hard_t05_sql_plz_collation",
+      "conceptId": "pv2fiae_hard_t05_sql_plz_collation",
+      "variantId": "pv2fiae_hard_t05_sql_plz_collation_v02",
+      "interactionType": "single",
+      "questionKind": "beste_option_im_mini_szenario",
+      "badgeLabel": "Eine Antwort ist richtig.",
+      "isNew": true,
+      "prompt": "Was kann einen Filter auf die vierte PLZ-Stelle verfälschen?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Alle PLZ müssen im gleichen Format mit führenden Nullen gespeichert sein.",
+          "correct": true,
+          "explanation": "Unterschiedliche Formate verschieben Zeichenpositionen."
+        },
+        {
+          "id": "b",
+          "text": "PLZ müssen als Dezimalpreis gespeichert werden.",
+          "correct": false,
+          "explanation": "Das wäre fachlich falsch."
+        },
+        {
+          "id": "c",
+          "text": "PLZ dürfen beliebig lang und ungeprüft sein.",
+          "correct": false,
+          "explanation": "Dann wird ein Positionsfilter unzuverlässig."
+        },
+        {
+          "id": "d",
+          "text": "PLZ müssen rekursiv sortiert werden.",
+          "correct": false,
+          "explanation": "Das löst kein Formatproblem."
+        }
+      ]
+    },
+    {
+      "id": "pv2fiae_hard_t05_sql_report_privacy",
+      "conceptId": "pv2fiae_hard_t05_sql_report_privacy",
+      "variantId": "pv2fiae_hard_t05_sql_report_privacy_v02",
+      "interactionType": "single",
+      "questionKind": "beste_option_im_mini_szenario",
+      "badgeLabel": "Eine Antwort ist richtig.",
+      "isNew": true,
+      "prompt": "Welche Datenschutzüberlegung gilt bei Auswertungen zu Urlaub und Fehlzeiten?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Datenminimierung und rollenbezogener Zugriff.",
+          "correct": true,
+          "explanation": "Fehlzeiten sind personenbezogene und sensible Personaldaten."
+        },
+        {
+          "id": "b",
+          "text": "Alle Daten öffentlich im Portal anzeigen.",
+          "correct": false,
+          "explanation": "Das verletzt Vertraulichkeit."
+        },
+        {
+          "id": "c",
+          "text": "Passwörter in der Urlaubsauswertung ausgeben.",
+          "correct": false,
+          "explanation": "Das ist unnötig und riskant."
+        },
+        {
+          "id": "d",
+          "text": "Sortiervergleiche als Personaldaten speichern.",
+          "correct": false,
+          "explanation": "Das ist kein Datenschutzkonzept."
+        }
+      ]
+    },
+    {
+      "id": "pv2fiae_hard_t05_sql_delete_safety_preview",
+      "conceptId": "pv2fiae_hard_t05_sql_delete_safety_preview",
+      "variantId": "pv2fiae_hard_t05_sql_delete_safety_preview_v02",
+      "interactionType": "single",
+      "questionKind": "beste_option_im_mini_szenario",
+      "badgeLabel": "Eine Antwort ist richtig.",
+      "isNew": true,
+      "prompt": "Wie reduziert man das Risiko, beim Archivbereinigen falsche Zeilen zu löschen?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Den Filter zuerst per `SELECT` prüfen und die erwartete Zeilenzahl kontrollieren.",
+          "correct": true,
+          "explanation": "So wird sichtbar, welche Daten betroffen wären."
+        },
+        {
+          "id": "b",
+          "text": "Sofort ohne WHERE löschen.",
+          "correct": false,
+          "explanation": "Das ist die riskanteste Variante."
+        },
+        {
+          "id": "c",
+          "text": "Den Sortieralgorithmus ausführen.",
+          "correct": false,
+          "explanation": "Das prüft keine Löschmenge."
+        },
+        {
+          "id": "d",
+          "text": "Die Binärfunktion mit `13` testen.",
+          "correct": false,
+          "explanation": "Das betrifft nicht die SQL-Löschung."
+        }
+      ]
+    },
+    {
+      "id": "pv2fiae_hard_t05_sql_grouping_correctness",
+      "conceptId": "pv2fiae_hard_t05_sql_grouping_correctness",
+      "variantId": "pv2fiae_hard_t05_sql_grouping_correctness_v02",
+      "interactionType": "single",
+      "questionKind": "beste_option_im_mini_szenario",
+      "badgeLabel": "Eine Antwort ist richtig.",
+      "isNew": true,
+      "prompt": "Welche Gefahr entsteht, wenn Name und ID unsauber gruppiert werden?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Die Ausgabe soll eindeutig zu genau der gruppierten Person gehören.",
+          "correct": true,
+          "explanation": "Nicht aggregierte Spalten müssen zur Gruppierung passen."
+        },
+        {
+          "id": "b",
+          "text": "Gruppierung ersetzt jeden JOIN.",
+          "correct": false,
+          "explanation": "JOINs können weiterhin nötig sein."
+        },
+        {
+          "id": "c",
+          "text": "Alle Spalten dürfen beliebig gemischt werden.",
+          "correct": false,
+          "explanation": "Das kann mehrdeutige oder fehlerhafte Ergebnisse liefern."
+        },
+        {
+          "id": "d",
+          "text": "GROUP BY löscht doppelte Buchungen automatisch.",
+          "correct": false,
+          "explanation": "Gruppierung ist keine Datenbereinigung."
+        }
+      ]
+    },
+    {
+      "id": "pv2fiae_hard_t05_release_cross_topic",
+      "conceptId": "pv2fiae_hard_t05_release_cross_topic",
+      "variantId": "pv2fiae_hard_t05_release_cross_topic_v02",
+      "interactionType": "single",
+      "questionKind": "beste_option_im_mini_szenario",
+      "badgeLabel": "Eine Antwort ist richtig.",
+      "isNew": true,
+      "prompt": "Wie sollte das Team die Teilaufträge vor Freigabe zusammenführen?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Algorithmuslogik testen, Datenmodellintegrität prüfen und SQL-Berichte gegen Testdaten abnehmen.",
+          "correct": true,
+          "explanation": "So werden Code, Modell und Auswertung gemeinsam belastbar."
+        },
+        {
+          "id": "b",
+          "text": "Nur die Dateinamen ändern und ohne Tests ausliefern.",
+          "correct": false,
+          "explanation": "Das wäre keine fachliche Abnahme."
+        },
+        {
+          "id": "c",
+          "text": "Erst alle Daten löschen, dann Berichte schreiben.",
+          "correct": false,
+          "explanation": "Das zerstört die Prüfgrundlage."
+        },
+        {
+          "id": "d",
+          "text": "Nur die Präsentation der Sortierfunktion prüfen.",
+          "correct": false,
+          "explanation": "Die anderen Arbeitspakete müssen ebenfalls abgenommen werden."
+        }
+      ]
+    },
+    {
+      "id": "pv2fiae_hard_t05_release_regression_suite",
+      "conceptId": "pv2fiae_hard_t05_release_regression_suite",
+      "variantId": "pv2fiae_hard_t05_release_regression_suite_v02",
+      "interactionType": "multi",
+      "questionKind": "mehrere_richtige_antworten_waehlen",
+      "badgeLabel": "Mehrere Antworten sind richtig.",
+      "isNew": true,
+      "prompt": "Welche Tests sichern die Kernbereiche des Bildungsbetrieb-Releases ab?",
+      "maxSelections": 3,
+      "options": [
+        {
+          "id": "a",
+          "text": "Sortierung mit vertauschter, gleicher und bereits sortierter Liste.",
+          "correct": true,
+          "explanation": "Damit werden zentrale Sortierfälle geprüft."
+        },
+        {
+          "id": "b",
+          "text": "Binärumrechnung für 0, 1 und mehrstellige Ergebnisse.",
+          "correct": true,
+          "explanation": "Das deckt Basisfälle und Schleifen beziehungsweise Rekursion ab."
+        },
+        {
+          "id": "c",
+          "text": "Buchungsmodell mit Raum, Kundschaft und Zusatzressourcen.",
+          "correct": true,
+          "explanation": "Die wichtigsten Beziehungen müssen funktionieren."
+        },
+        {
+          "id": "d",
+          "text": "SQL-Löschung ohne Filter als Standardtest.",
+          "correct": false,
+          "explanation": "Das wäre gefährlich und kein sinnvoller Regressionstest."
+        }
+      ]
+    },
+    {
+      "id": "pv2fiae_hard_t05_release_data_migration",
+      "conceptId": "pv2fiae_hard_t05_release_data_migration",
+      "variantId": "pv2fiae_hard_t05_release_data_migration_v02",
+      "interactionType": "single",
+      "questionKind": "beste_option_im_mini_szenario",
+      "badgeLabel": "Eine Antwort ist richtig.",
+      "isNew": true,
+      "prompt": "Welche Maßnahme braucht das Team, wenn vorhandene Buchungsdaten in neue Tabellen überführt werden?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Eine getestete Migration mit Sicherung und Plausibilitätskontrolle.",
+          "correct": true,
+          "explanation": "Bestehende Daten müssen kontrolliert in die neue Struktur überführt werden."
+        },
+        {
+          "id": "b",
+          "text": "Ungeprüftes Überschreiben aller Buchungen.",
+          "correct": false,
+          "explanation": "Das riskiert Datenverlust."
+        },
+        {
+          "id": "c",
+          "text": "Nur die Vergleichsfunktion umbenennen.",
+          "correct": false,
+          "explanation": "Das migriert keine Daten."
+        },
+        {
+          "id": "d",
+          "text": "Alle Fehlzeiten als Raumressourcen speichern.",
+          "correct": false,
+          "explanation": "Das vermischt Fachbereiche."
+        }
+      ]
+    },
+    {
+      "id": "pv2fiae_hard_t05_release_documentation",
+      "conceptId": "pv2fiae_hard_t05_release_documentation",
+      "variantId": "pv2fiae_hard_t05_release_documentation_v02",
+      "interactionType": "single",
+      "questionKind": "beste_option_im_mini_szenario",
+      "badgeLabel": "Eine Antwort ist richtig.",
+      "isNew": true,
+      "prompt": "Was sollte nach Umsetzung der vier Teilbereiche nachvollziehbar beschrieben sein?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Vergleichsvertrag, Binäralgorithmus, ERM-Änderungen und SQL-Berichte mit Zweck und Grenzen.",
+          "correct": true,
+          "explanation": "Diese Dokumentation verbindet die entscheidenden technischen und fachlichen Regeln."
+        },
+        {
+          "id": "b",
+          "text": "Nur ein Screenshot ohne fachliche Erklärung.",
+          "correct": false,
+          "explanation": "Das reicht für Wartung und Prüfung nicht aus."
+        },
+        {
+          "id": "c",
+          "text": "Eine Liste aller Passwörter.",
+          "correct": false,
+          "explanation": "Das wäre sicherheitskritisch und unnötig."
+        },
+        {
+          "id": "d",
+          "text": "Eine zufällige Sortierreihenfolge.",
+          "correct": false,
+          "explanation": "Das dokumentiert keinen belastbaren Stand."
+        }
+      ]
+    }
+  ]
+}

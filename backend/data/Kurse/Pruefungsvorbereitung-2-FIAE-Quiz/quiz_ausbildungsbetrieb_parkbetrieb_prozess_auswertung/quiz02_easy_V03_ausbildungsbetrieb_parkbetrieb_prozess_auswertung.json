@@ -1,0 +1,904 @@
+{
+  "scenarioFolder": "Pruefungsvorbereitung-2-FIAE-Scenarien",
+  "quizFolder": "Pruefungsvorbereitung-2-FIAE-Quiz",
+  "scenarioFile": "ticket_ausbildungsbetrieb_parkbetrieb_prozess_auswertung/02_easy_ausbildungsbetrieb_parkbetrieb_prozess_auswertung.json",
+  "quizFile": "quiz_ausbildungsbetrieb_parkbetrieb_prozess_auswertung/quiz02_easy_V03_ausbildungsbetrieb_parkbetrieb_prozess_auswertung.json",
+  "ticketId": "02_easy_ausbildungsbetrieb_parkbetrieb_prozess_auswertung.json",
+  "versionId": "V03",
+  "title": "Ticket 02 Easy - Parkbetrieb, Prozessauswertung und SQL",
+  "description": "Manuell verfasstes AP2-FIAE-Training im Einstiegsniveau zu Aktivitätsdiagramm, Besucherzählung, Testabdeckung und SQL im Parkbetrieb.",
+  "topics": [
+    "Bepflanzungsprozess, Rollen und Aktivitätslogik fachlich sicher einordnen",
+    "Besucherzählung, Testabdeckung und SQL-Grundabfragen für den Parkbetrieb nachvollziehbar verbinden"
+  ],
+  "questions": [
+    {
+      "id": "pv2fiae_easy_t02_aktivitaetsablauf_start",
+      "conceptId": "pv2fiae_easy_t02_aktivitaetsablauf_start",
+      "variantId": "pv2fiae_easy_t02_aktivitaetsablauf_start_v03",
+      "interactionType": "single",
+      "questionKind": "beste_option_im_mini_szenario",
+      "badgeLabel": "Eine Antwort ist richtig.",
+      "isNew": true,
+      "prompt": "Womit beginnt ein fachlich stimmiger Bepflanzungsprozess?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Mit der Prüfung der Lieferung und der Zuordnung zum Auftrag.",
+          "correct": true,
+          "explanation": "Vor Arbeitsschritten im Beet muss klar sein, was geliefert wurde und wofür es bestimmt ist."
+        },
+        {
+          "id": "b",
+          "text": "Mit der Abrechnung vor jeder Prüfung.",
+          "correct": false,
+          "explanation": "Ohne Prüfung ist die Abrechnung fachlich zu früh."
+        },
+        {
+          "id": "c",
+          "text": "Mit dem Löschen aller Pflanzendaten.",
+          "correct": false,
+          "explanation": "Das zerstört die Arbeitsgrundlage."
+        },
+        {
+          "id": "d",
+          "text": "Mit dem direkten Abschluss des Vorgangs.",
+          "correct": false,
+          "explanation": "Der Prozess wäre nicht bearbeitet."
+        }
+      ]
+    },
+    {
+      "id": "pv2fiae_easy_t02_aktivitaetsdiagramm_verzweigung",
+      "conceptId": "pv2fiae_easy_t02_aktivitaetsdiagramm_verzweigung",
+      "variantId": "pv2fiae_easy_t02_aktivitaetsdiagramm_verzweigung_v03",
+      "interactionType": "single",
+      "questionKind": "beste_option_im_mini_szenario",
+      "badgeLabel": "Eine Antwort ist richtig.",
+      "isNew": true,
+      "prompt": "Wie wird eine fachliche Entscheidung in einem UML-Aktivitätsdiagramm dargestellt?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Als Entscheidungsknoten mit ausgehenden Alternativen.",
+          "correct": true,
+          "explanation": "Verzweigungen bilden unterschiedliche Ablaufpfade ab."
+        },
+        {
+          "id": "b",
+          "text": "Als Datenbankindex.",
+          "correct": false,
+          "explanation": "Ein Index ist kein Ablaufknoten."
+        },
+        {
+          "id": "c",
+          "text": "Als Primärschlüssel.",
+          "correct": false,
+          "explanation": "Das gehört zur Datenmodellierung."
+        },
+        {
+          "id": "d",
+          "text": "Als Kommentar ohne Kanten.",
+          "correct": false,
+          "explanation": "Dann entsteht kein steuernder Ablauf."
+        }
+      ]
+    },
+    {
+      "id": "pv2fiae_easy_t02_swimlane_rolle",
+      "conceptId": "pv2fiae_easy_t02_swimlane_rolle",
+      "variantId": "pv2fiae_easy_t02_swimlane_rolle_v03",
+      "interactionType": "single",
+      "questionKind": "beste_option_im_mini_szenario",
+      "badgeLabel": "Eine Antwort ist richtig.",
+      "isNew": true,
+      "prompt": "Wozu dienen Swimlanes in einem Aktivitätsdiagramm?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Sie ordnen Aktivitäten Rollen oder Verantwortungsbereichen zu.",
+          "correct": true,
+          "explanation": "Swimlanes zeigen Zuständigkeiten im Ablauf."
+        },
+        {
+          "id": "b",
+          "text": "Sie zählen Besucher pro Stunde.",
+          "correct": false,
+          "explanation": "Das ist Algorithmik."
+        },
+        {
+          "id": "c",
+          "text": "Sie speichern SQL-Benutzer.",
+          "correct": false,
+          "explanation": "Das ist Datenbankadministration."
+        },
+        {
+          "id": "d",
+          "text": "Sie ersetzen jede Prozessentscheidung.",
+          "correct": false,
+          "explanation": "Entscheidungen bleiben nötig."
+        }
+      ]
+    },
+    {
+      "id": "pv2fiae_easy_t02_quarantaene_pflanzen",
+      "conceptId": "pv2fiae_easy_t02_quarantaene_pflanzen",
+      "variantId": "pv2fiae_easy_t02_quarantaene_pflanzen_v03",
+      "interactionType": "single",
+      "questionKind": "beste_option_im_mini_szenario",
+      "badgeLabel": "Eine Antwort ist richtig.",
+      "isNew": true,
+      "prompt": "Wann ist Quarantäne bei einer Pflanzenlieferung fachlich plausibel?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Wenn die Lieferung auffällig oder risikobehaftet ist und nicht sofort freigegeben werden darf.",
+          "correct": true,
+          "explanation": "Quarantäne trennt ungeklärte Ware vom normalen Prozess."
+        },
+        {
+          "id": "b",
+          "text": "Wenn die Lieferung vollständig geprüft und freigegeben ist.",
+          "correct": false,
+          "explanation": "Dann ist Quarantäne nicht der passende nächste Schritt."
+        },
+        {
+          "id": "c",
+          "text": "Immer nach Abschluss der Pflanzung.",
+          "correct": false,
+          "explanation": "Dann kommt die Prüfung zu spät."
+        },
+        {
+          "id": "d",
+          "text": "Nur wenn kein Auftrag existiert, aber trotzdem gepflanzt wird.",
+          "correct": false,
+          "explanation": "Ohne Auftrag muss zuerst geklärt werden."
+        }
+      ]
+    },
+    {
+      "id": "pv2fiae_easy_t02_besucher_ereignisse",
+      "conceptId": "pv2fiae_easy_t02_besucher_ereignisse",
+      "variantId": "pv2fiae_easy_t02_besucher_ereignisse_v03",
+      "interactionType": "single",
+      "questionKind": "beste_option_im_mini_szenario",
+      "badgeLabel": "Eine Antwort ist richtig.",
+      "isNew": true,
+      "prompt": "Welche Ereignisse verändern die stundenweise Besucherzahl?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Eintritt und Austritt von Personen.",
+          "correct": true,
+          "explanation": "Diese Ereignisse erhöhen oder senken die Belegung."
+        },
+        {
+          "id": "b",
+          "text": "ein Darstellungsmerkmal ohne Aussage zur Fallanzahl",
+          "correct": false,
+          "explanation": "Für Auswertungen zählen Datenfelder, Filter und Aggregation, nicht die Darstellung."
+        },
+        {
+          "id": "c",
+          "text": "Der Tabellenname.",
+          "correct": false,
+          "explanation": "Der Name ist kein Bewegungsereignis."
+        },
+        {
+          "id": "d",
+          "text": "Die Anzahl der SQL-Indizes.",
+          "correct": false,
+          "explanation": "Indizes verändern Besucherzahlen nicht."
+        }
+      ]
+    },
+    {
+      "id": "pv2fiae_easy_t02_stundenraster",
+      "conceptId": "pv2fiae_easy_t02_stundenraster",
+      "variantId": "pv2fiae_easy_t02_stundenraster_v03",
+      "interactionType": "single",
+      "questionKind": "beste_option_im_mini_szenario",
+      "badgeLabel": "Eine Antwort ist richtig.",
+      "isNew": true,
+      "prompt": "Wenn die Matrix Spalten für 09 bis 18 Uhr hat, welche Stunde gehört zu Spalte 0?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "09 Uhr.",
+          "correct": true,
+          "explanation": "Die erste Spalte bildet den ersten Stundenabschnitt ab."
+        },
+        {
+          "id": "b",
+          "text": "00 Uhr.",
+          "correct": false,
+          "explanation": "Das Raster beginnt laut Vorgabe bei 09 Uhr."
+        },
+        {
+          "id": "c",
+          "text": "18 Uhr.",
+          "correct": false,
+          "explanation": "Das ist der letzte Abschnitt."
+        },
+        {
+          "id": "d",
+          "text": "Die Besucher-ID.",
+          "correct": false,
+          "explanation": "Das ist kein Stundenabschnitt."
+        }
+      ]
+    },
+    {
+      "id": "pv2fiae_easy_t02_tagesindex",
+      "conceptId": "pv2fiae_easy_t02_tagesindex",
+      "variantId": "pv2fiae_easy_t02_tagesindex_v03",
+      "interactionType": "single",
+      "questionKind": "beste_option_im_mini_szenario",
+      "badgeLabel": "Eine Antwort ist richtig.",
+      "isNew": true,
+      "prompt": "Wofür wird ein Tagesindex in der Besuchermatrix benötigt?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Um den richtigen Tag als Zeile der Ergebnis-matrix anzusprechen.",
+          "correct": true,
+          "explanation": "Eine Zeile steht für einen Tag."
+        },
+        {
+          "id": "b",
+          "text": "Um SQL-Benutzer anzulegen.",
+          "correct": false,
+          "explanation": "Das ist ein anderes Thema."
+        },
+        {
+          "id": "c",
+          "text": "Um die Pflanzenart zu löschen.",
+          "correct": false,
+          "explanation": "Das hat mit Besucherzählung nichts zu tun."
+        },
+        {
+          "id": "d",
+          "text": "Um den Monatsdurchschnitt zu formatieren.",
+          "correct": false,
+          "explanation": "Das ist Aggregation, nicht Matrixzugriff."
+        }
+      ]
+    },
+    {
+      "id": "pv2fiae_easy_t02_eintritt_zaehlung",
+      "conceptId": "pv2fiae_easy_t02_eintritt_zaehlung",
+      "variantId": "pv2fiae_easy_t02_eintritt_zaehlung_v03",
+      "interactionType": "single",
+      "questionKind": "beste_option_im_mini_szenario",
+      "badgeLabel": "Eine Antwort ist richtig.",
+      "isNew": true,
+      "prompt": "Wie wirkt ein Eintritt auf die Belegung?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Die Anzahl anwesender Personen steigt ab dem Eintrittszeitpunkt.",
+          "correct": true,
+          "explanation": "Ein Eintritt erhöht die Belegung."
+        },
+        {
+          "id": "b",
+          "text": "Die Anzahl sinkt sofort.",
+          "correct": false,
+          "explanation": "Das wäre ein Austritt."
+        },
+        {
+          "id": "c",
+          "text": "Die Matrix wird komplett gelöscht.",
+          "correct": false,
+          "explanation": "Das ist keine Zählregel."
+        },
+        {
+          "id": "d",
+          "text": "Nur der SQL-Benutzer wird geändert.",
+          "correct": false,
+          "explanation": "Das ist sachfremd."
+        }
+      ]
+    },
+    {
+      "id": "pv2fiae_easy_t02_austritt_zaehlung",
+      "conceptId": "pv2fiae_easy_t02_austritt_zaehlung",
+      "variantId": "pv2fiae_easy_t02_austritt_zaehlung_v03",
+      "interactionType": "single",
+      "questionKind": "beste_option_im_mini_szenario",
+      "badgeLabel": "Eine Antwort ist richtig.",
+      "isNew": true,
+      "prompt": "Wie wirkt ein Austritt auf die Belegung?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Die Anzahl anwesender Personen sinkt ab dem Austrittszeitpunkt.",
+          "correct": true,
+          "explanation": "Ein Austritt reduziert die Belegung."
+        },
+        {
+          "id": "b",
+          "text": "Die Anzahl steigt.",
+          "correct": false,
+          "explanation": "Das wäre ein Eintritt."
+        },
+        {
+          "id": "c",
+          "text": "Der Tag wird auf Januar gesetzt.",
+          "correct": false,
+          "explanation": "Das ist fachlich falsch."
+        },
+        {
+          "id": "d",
+          "text": "Die Aktivität wird in eine Swimlane verschoben.",
+          "correct": false,
+          "explanation": "Das verändert keine Besucherzahl."
+        }
+      ]
+    },
+    {
+      "id": "pv2fiae_easy_t02_countvisitors_rueckgabe",
+      "conceptId": "pv2fiae_easy_t02_countvisitors_rueckgabe",
+      "variantId": "pv2fiae_easy_t02_countvisitors_rueckgabe_v03",
+      "interactionType": "single",
+      "questionKind": "beste_option_im_mini_szenario",
+      "badgeLabel": "Eine Antwort ist richtig.",
+      "isNew": true,
+      "prompt": "Was sollte `countVisitors(entry)` fachlich aktualisieren?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Die Tages- und Stundenmatrix für die betroffenen Zeitabschnitte.",
+          "correct": true,
+          "explanation": "Die Funktion wertet Besuchsbewegungen im Zeitraster aus."
+        },
+        {
+          "id": "b",
+          "text": "Die Passwörter aller Datenbanknutzer.",
+          "correct": false,
+          "explanation": "Das gehört nicht zur Besucherzählung."
+        },
+        {
+          "id": "c",
+          "text": "Nur die Prozessbeschreibung.",
+          "correct": false,
+          "explanation": "Die Funktion soll Zähldaten ändern."
+        },
+        {
+          "id": "d",
+          "text": "Den Namen des Parks.",
+          "correct": false,
+          "explanation": "Das ist kein Rechenergebnis."
+        }
+      ]
+    },
+    {
+      "id": "pv2fiae_easy_t02_testabdeckung",
+      "conceptId": "pv2fiae_easy_t02_testabdeckung",
+      "variantId": "pv2fiae_easy_t02_testabdeckung_v03",
+      "interactionType": "single",
+      "questionKind": "beste_option_im_mini_szenario",
+      "badgeLabel": "Eine Antwort ist richtig.",
+      "isNew": true,
+      "prompt": "Was bedeutet Anweisungsüberdeckung?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Jede relevante Anweisung wurde durch Tests mindestens einmal ausgeführt.",
+          "correct": true,
+          "explanation": "Das beschreibt Statement Coverage."
+        },
+        {
+          "id": "b",
+          "text": "Jeder mögliche Datenbanknutzer wurde angelegt.",
+          "correct": false,
+          "explanation": "Das ist Rechteverwaltung."
+        },
+        {
+          "id": "c",
+          "text": "Jede Pflanze wurde fotografiert.",
+          "correct": false,
+          "explanation": "Das ist keine Testabdeckung."
+        },
+        {
+          "id": "d",
+          "text": "Jede SQL-Abfrage wurde alphabetisch sortiert.",
+          "correct": false,
+          "explanation": "Sortierung ist nicht Abdeckung."
+        }
+      ]
+    },
+    {
+      "id": "pv2fiae_easy_t02_pseudocode_fehler",
+      "conceptId": "pv2fiae_easy_t02_pseudocode_fehler",
+      "variantId": "pv2fiae_easy_t02_pseudocode_fehler_v03",
+      "interactionType": "multi",
+      "questionKind": "mehrere_richtige_antworten_waehlen",
+      "badgeLabel": "Mehrere Antworten sind richtig.",
+      "isNew": true,
+      "prompt": "Welche Fehler können eine Jahresauswertung im Pseudocode verfälschen?",
+      "maxSelections": 2,
+      "options": [
+        {
+          "id": "a",
+          "text": "Ein Minimum wird nicht korrekt aktualisiert.",
+          "correct": true,
+          "explanation": "Dann bleibt der kleinste Wert falsch."
+        },
+        {
+          "id": "b",
+          "text": "Eine Summe wird durch die falsche Anzahl geteilt.",
+          "correct": true,
+          "explanation": "Dann stimmt der Durchschnitt nicht."
+        },
+        {
+          "id": "c",
+          "text": "Ein Kommentar enthält einen Umlaut.",
+          "correct": false,
+          "explanation": "Das verfälscht keine Berechnung."
+        },
+        {
+          "id": "d",
+          "text": "Eine Variable hat einen sprechenden Namen.",
+          "correct": false,
+          "explanation": "Das ist eher hilfreich."
+        }
+      ]
+    },
+    {
+      "id": "pv2fiae_easy_t02_jahresdurchschnitt",
+      "conceptId": "pv2fiae_easy_t02_jahresdurchschnitt",
+      "variantId": "pv2fiae_easy_t02_jahresdurchschnitt_v03",
+      "interactionType": "single",
+      "questionKind": "beste_option_im_mini_szenario",
+      "badgeLabel": "Eine Antwort ist richtig.",
+      "isNew": true,
+      "prompt": "Wie wird ein Jahresdurchschnitt über zwölf Monatswerte berechnet?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Summe der zwölf Monatswerte geteilt durch 12.",
+          "correct": true,
+          "explanation": "Der Durchschnitt bezieht sich auf alle Monate."
+        },
+        {
+          "id": "b",
+          "text": "Größter Monatswert geteilt durch 2.",
+          "correct": false,
+          "explanation": "Das ist kein Durchschnitt."
+        },
+        {
+          "id": "c",
+          "text": "Kleinster Monatswert plus Benutzername.",
+          "correct": false,
+          "explanation": "Das ist fachlich unsinnig."
+        },
+        {
+          "id": "d",
+          "text": "COUNT ohne Monatswerte.",
+          "correct": false,
+          "explanation": "Ohne Werte entsteht kein Durchschnitt."
+        }
+      ]
+    },
+    {
+      "id": "pv2fiae_easy_t02_minimum_zweig",
+      "conceptId": "pv2fiae_easy_t02_minimum_zweig",
+      "variantId": "pv2fiae_easy_t02_minimum_zweig_v03",
+      "interactionType": "single",
+      "questionKind": "beste_option_im_mini_szenario",
+      "badgeLabel": "Eine Antwort ist richtig.",
+      "isNew": true,
+      "prompt": "Warum braucht ein Testfall einen neuen kleinsten Wert?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Damit der Zweig zur Aktualisierung des Minimums ausgeführt wird.",
+          "correct": true,
+          "explanation": "Nur so wird diese Anweisung abgedeckt."
+        },
+        {
+          "id": "b",
+          "text": "Damit die Datenbank gelöscht wird.",
+          "correct": false,
+          "explanation": "Das ist nicht Ziel des Tests."
+        },
+        {
+          "id": "c",
+          "text": "Damit die Swimlane verschwindet.",
+          "correct": false,
+          "explanation": "Das hat mit Tests nichts zu tun."
+        },
+        {
+          "id": "d",
+          "text": "Damit alle Monate gleich sind.",
+          "correct": false,
+          "explanation": "Dann entsteht kein neuer Minimumfall."
+        }
+      ]
+    },
+    {
+      "id": "pv2fiae_easy_t02_testdaten_sortierung",
+      "conceptId": "pv2fiae_easy_t02_testdaten_sortierung",
+      "variantId": "pv2fiae_easy_t02_testdaten_sortierung_v03",
+      "interactionType": "single",
+      "questionKind": "beste_option_im_mini_szenario",
+      "badgeLabel": "Eine Antwort ist richtig.",
+      "isNew": true,
+      "prompt": "Warum sollen neue Testdaten zur bestehenden Sortierung nach Monat passen?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Damit Testauswertung und Lesbarkeit der Monatsfolge nachvollziehbar bleiben.",
+          "correct": true,
+          "explanation": "Geordnete Testdaten vermeiden Missverständnisse."
+        },
+        {
+          "id": "b",
+          "text": "Damit SQL-Rechte automatisch vergeben werden.",
+          "correct": false,
+          "explanation": "Das hat keinen Bezug."
+        },
+        {
+          "id": "c",
+          "text": "Damit Quarantäne nie vorkommt.",
+          "correct": false,
+          "explanation": "Das ist ein Prozessfall."
+        },
+        {
+          "id": "d",
+          "text": "Damit keine erwarteten Werte nötig sind.",
+          "correct": false,
+          "explanation": "Auch sortierte Testdaten brauchen Sollwerte."
+        }
+      ]
+    },
+    {
+      "id": "pv2fiae_easy_t02_sql_count_offen",
+      "conceptId": "pv2fiae_easy_t02_sql_count_offen",
+      "variantId": "pv2fiae_easy_t02_sql_count_offen_v03",
+      "interactionType": "single",
+      "questionKind": "beste_option_im_mini_szenario",
+      "badgeLabel": "Eine Antwort ist richtig.",
+      "isNew": true,
+      "prompt": "Welche SQL-Funktion zählt offene Pflegearbeiten?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "COUNT",
+          "correct": true,
+          "explanation": "COUNT zählt passende Datensätze."
+        },
+        {
+          "id": "b",
+          "text": "AVG",
+          "correct": false,
+          "explanation": "AVG bildet Durchschnittswerte."
+        },
+        {
+          "id": "c",
+          "text": "ORDER BY",
+          "correct": false,
+          "explanation": "ORDER BY sortiert nur."
+        },
+        {
+          "id": "d",
+          "text": "CREATE USER",
+          "correct": false,
+          "explanation": "Das legt einen Benutzer an."
+        }
+      ]
+    },
+    {
+      "id": "pv2fiae_easy_t02_sql_where_jahr",
+      "conceptId": "pv2fiae_easy_t02_sql_where_jahr",
+      "variantId": "pv2fiae_easy_t02_sql_where_jahr_v03",
+      "interactionType": "single",
+      "questionKind": "beste_option_im_mini_szenario",
+      "badgeLabel": "Eine Antwort ist richtig.",
+      "isNew": true,
+      "prompt": "Welche Bedingung passt, um Pflegearbeiten für 2023 einzugrenzen?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Ein Datumsfilter auf den Zeitraum des Jahres 2023.",
+          "correct": true,
+          "explanation": "Die fachliche Frage bezieht sich auf ein Jahr."
+        },
+        {
+          "id": "b",
+          "text": "ein Filter auf sicherheitsrelevante Zufallswerte ohne fachlichen Pflegebezug",
+          "correct": false,
+          "explanation": "Passwörter haben mit Pflegearbeiten nichts zu tun."
+        },
+        {
+          "id": "c",
+          "text": "Nur eine Sortierung nach Tätigkeit.",
+          "correct": false,
+          "explanation": "Sortierung grenzt kein Jahr ein."
+        },
+        {
+          "id": "d",
+          "text": "Ein Löschen der Tabelle.",
+          "correct": false,
+          "explanation": "Das wäre keine Auswertung."
+        }
+      ]
+    },
+    {
+      "id": "pv2fiae_easy_t02_sql_offen_status",
+      "conceptId": "pv2fiae_easy_t02_sql_offen_status",
+      "variantId": "pv2fiae_easy_t02_sql_offen_status_v03",
+      "interactionType": "single",
+      "questionKind": "beste_option_im_mini_szenario",
+      "badgeLabel": "Eine Antwort ist richtig.",
+      "isNew": true,
+      "prompt": "Wie erkennt eine Abfrage nicht abgeschlossene Pflegearbeiten?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Über ein offenes Statusfeld oder ein fehlendes Abschlussdatum.",
+          "correct": true,
+          "explanation": "Offenheit muss fachlich im Datensatz erkennbar sein."
+        },
+        {
+          "id": "b",
+          "text": "Über den Namen des SQL-Benutzers.",
+          "correct": false,
+          "explanation": "Der Benutzername beschreibt nicht den Arbeitsstatus."
+        },
+        {
+          "id": "c",
+          "text": "Über die Parkadresse.",
+          "correct": false,
+          "explanation": "Adresse allein sagt nichts über Abschluss aus."
+        },
+        {
+          "id": "d",
+          "text": "Über die Anzahl der Swimlanes.",
+          "correct": false,
+          "explanation": "Das ist Prozessmodellierung."
+        }
+      ]
+    },
+    {
+      "id": "pv2fiae_easy_t02_sql_zeitraumliste",
+      "conceptId": "pv2fiae_easy_t02_sql_zeitraumliste",
+      "variantId": "pv2fiae_easy_t02_sql_zeitraumliste_v03",
+      "interactionType": "single",
+      "questionKind": "beste_option_im_mini_szenario",
+      "badgeLabel": "Eine Antwort ist richtig.",
+      "isNew": true,
+      "prompt": "Welche Klausel grenzt eine Zeitraumliste fachlich ein?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "WHERE mit Start- und Enddatum.",
+          "correct": true,
+          "explanation": "WHERE filtert die gewünschten Datensätze."
+        },
+        {
+          "id": "b",
+          "text": "CREATE USER ohne Tabelle.",
+          "correct": false,
+          "explanation": "Das legt Benutzer an."
+        },
+        {
+          "id": "c",
+          "text": "GRANT SELECT als Datumsfilter.",
+          "correct": false,
+          "explanation": "GRANT vergibt Rechte."
+        },
+        {
+          "id": "d",
+          "text": "ORDER BY ohne WHERE.",
+          "correct": false,
+          "explanation": "Sortierung allein filtert keinen Zeitraum."
+        }
+      ]
+    },
+    {
+      "id": "pv2fiae_easy_t02_sql_order_datum",
+      "conceptId": "pv2fiae_easy_t02_sql_order_datum",
+      "variantId": "pv2fiae_easy_t02_sql_order_datum_v03",
+      "interactionType": "single",
+      "questionKind": "beste_option_im_mini_szenario",
+      "badgeLabel": "Eine Antwort ist richtig.",
+      "isNew": true,
+      "prompt": "Wie wird eine Ergebnisliste aufsteigend nach Datum sortiert?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "ORDER BY Datum ASC",
+          "correct": true,
+          "explanation": "ASC steht für aufsteigende Sortierung."
+        },
+        {
+          "id": "b",
+          "text": "WHERE Datum ASC",
+          "correct": false,
+          "explanation": "WHERE filtert, sortiert aber nicht."
+        },
+        {
+          "id": "c",
+          "text": "COUNT Datum ASC",
+          "correct": false,
+          "explanation": "COUNT zählt."
+        },
+        {
+          "id": "d",
+          "text": "GRANT Datum ASC",
+          "correct": false,
+          "explanation": "GRANT vergibt Rechte."
+        }
+      ]
+    },
+    {
+      "id": "pv2fiae_easy_t02_sql_avg_monat",
+      "conceptId": "pv2fiae_easy_t02_sql_avg_monat",
+      "variantId": "pv2fiae_easy_t02_sql_avg_monat_v03",
+      "interactionType": "single",
+      "questionKind": "beste_option_im_mini_szenario",
+      "badgeLabel": "Eine Antwort ist richtig.",
+      "isNew": true,
+      "prompt": "Welche Funktion bildet einen Durchschnitt?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "AVG",
+          "correct": true,
+          "explanation": "AVG berechnet den Mittelwert."
+        },
+        {
+          "id": "b",
+          "text": "COUNT",
+          "correct": false,
+          "explanation": "COUNT zählt Datensätze."
+        },
+        {
+          "id": "c",
+          "text": "SUM ohne Division",
+          "correct": false,
+          "explanation": "SUM addiert nur."
+        },
+        {
+          "id": "d",
+          "text": "CREATE",
+          "correct": false,
+          "explanation": "CREATE erstellt Objekte."
+        }
+      ]
+    },
+    {
+      "id": "pv2fiae_easy_t02_sql_group_month",
+      "conceptId": "pv2fiae_easy_t02_sql_group_month",
+      "variantId": "pv2fiae_easy_t02_sql_group_month_v03",
+      "interactionType": "single",
+      "questionKind": "beste_option_im_mini_szenario",
+      "badgeLabel": "Eine Antwort ist richtig.",
+      "isNew": true,
+      "prompt": "Warum wird bei Monatsdurchschnitt pro Monat gruppiert?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Damit alle Tätigkeiten eines Monats gemeinsam ausgewertet werden.",
+          "correct": true,
+          "explanation": "GROUP BY bildet Monatsgruppen."
+        },
+        {
+          "id": "b",
+          "text": "Damit alle Daten gelöscht werden.",
+          "correct": false,
+          "explanation": "GROUP BY löscht nichts."
+        },
+        {
+          "id": "c",
+          "text": "Damit Passwörter sichtbar werden.",
+          "correct": false,
+          "explanation": "Das ist kein Gruppierungsziel."
+        },
+        {
+          "id": "d",
+          "text": "Damit Aktivitätsdiagramme entstehen.",
+          "correct": false,
+          "explanation": "SQL-Gruppierung erzeugt keine UML-Diagramme."
+        }
+      ]
+    },
+    {
+      "id": "pv2fiae_easy_t02_create_user",
+      "conceptId": "pv2fiae_easy_t02_create_user",
+      "variantId": "pv2fiae_easy_t02_create_user_v03",
+      "interactionType": "single",
+      "questionKind": "beste_option_im_mini_szenario",
+      "badgeLabel": "Eine Antwort ist richtig.",
+      "isNew": true,
+      "prompt": "Welche SQL-Anweisung legt typischerweise einen Benutzer an?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "CREATE USER ...",
+          "correct": true,
+          "explanation": "CREATE USER ist die passende Grundanweisung."
+        },
+        {
+          "id": "b",
+          "text": "ORDER BY USER",
+          "correct": false,
+          "explanation": "Das sortiert nicht sinnvoll und legt keinen Benutzer an."
+        },
+        {
+          "id": "c",
+          "text": "COUNT USER",
+          "correct": false,
+          "explanation": "Das zählt nur, wenn überhaupt."
+        },
+        {
+          "id": "d",
+          "text": "DELETE SELECT USER",
+          "correct": false,
+          "explanation": "Das ist keine Benutzeranlage."
+        }
+      ]
+    },
+    {
+      "id": "pv2fiae_easy_t02_grant_select",
+      "conceptId": "pv2fiae_easy_t02_grant_select",
+      "variantId": "pv2fiae_easy_t02_grant_select_v03",
+      "interactionType": "single",
+      "questionKind": "beste_option_im_mini_szenario",
+      "badgeLabel": "Eine Antwort ist richtig.",
+      "isNew": true,
+      "prompt": "Welche Anweisung vergibt Leserechte auf eine Tabelle?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "GRANT SELECT ON Objekt TO parklese;",
+          "correct": true,
+          "explanation": "SELECT steht für Leserechte."
+        },
+        {
+          "id": "b",
+          "text": "DROP TABLE Objekt;",
+          "correct": false,
+          "explanation": "Das löscht die Tabelle."
+        },
+        {
+          "id": "c",
+          "text": "INSERT INTO Objekt;",
+          "correct": false,
+          "explanation": "Das fügt Daten ein."
+        },
+        {
+          "id": "d",
+          "text": "AVG(Objekt);",
+          "correct": false,
+          "explanation": "Das ist keine Rechtevergabe."
+        }
+      ]
+    }
+  ]
+}

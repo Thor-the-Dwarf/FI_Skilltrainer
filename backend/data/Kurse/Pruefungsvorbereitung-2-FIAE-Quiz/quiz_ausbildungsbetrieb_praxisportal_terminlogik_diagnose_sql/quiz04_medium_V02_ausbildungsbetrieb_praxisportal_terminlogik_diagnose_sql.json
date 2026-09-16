@@ -1,0 +1,904 @@
+{
+  "scenarioFolder": "Pruefungsvorbereitung-2-FIAE-Scenarien",
+  "quizFolder": "Pruefungsvorbereitung-2-FIAE-Quiz",
+  "scenarioFile": "ticket_ausbildungsbetrieb_praxisportal_terminlogik_diagnose_sql/04_medium_ausbildungsbetrieb_praxisportal_terminlogik_diagnose_sql.json",
+  "quizFile": "quiz_ausbildungsbetrieb_praxisportal_terminlogik_diagnose_sql/quiz04_medium_V02_ausbildungsbetrieb_praxisportal_terminlogik_diagnose_sql.json",
+  "ticketId": "04_medium_ausbildungsbetrieb_praxisportal_terminlogik_diagnose_sql.json",
+  "versionId": "V02",
+  "title": "Ticket 04 Medium - Praxisportal, Terminlogik, Diagnose und SQL",
+  "description": "Transferfragen zu Terminprozess, Passwortlogik, Belegungsplan, ERM und SQL im Praxisportal.",
+  "topics": [
+    "Praxisportal, Terminvergabe und Passwortprüfung in betrieblichen Fällen belastbar einordnen",
+    "Belegungsplan, Datenmodell und Medikamenten-SQL mit Transfer sicher abwägen"
+  ],
+  "questions": [
+    {
+      "id": "pv2fiae_medium_t04_termin_swimlane_serviceentscheidung",
+      "conceptId": "pv2fiae_medium_t04_termin_swimlane_serviceentscheidung",
+      "variantId": "pv2fiae_medium_t04_termin_swimlane_serviceentscheidung_v02",
+      "interactionType": "single",
+      "questionKind": "beste_option_im_mini_szenario",
+      "badgeLabel": "Eine Antwort ist richtig.",
+      "isNew": true,
+      "prompt": "Welche Rolle bewertet im Aktivitätsdiagramm, ob der gewählte Termin weiterhin frei ist?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Terminservice.",
+          "correct": true,
+          "explanation": "Die Prüfung basiert auf Systemzustand und Reservierungslogik."
+        },
+        {
+          "id": "b",
+          "text": "Patientin oder Patient.",
+          "correct": false,
+          "explanation": "Die Patientin wählt aus, prüft aber nicht den konkurrierenden Buchungszustand."
+        },
+        {
+          "id": "c",
+          "text": "Diagnose-Stammdaten.",
+          "correct": false,
+          "explanation": "Stammdaten sind keine ausführende Rolle im Terminprozess."
+        },
+        {
+          "id": "d",
+          "text": "Anbieter des Medikaments.",
+          "correct": false,
+          "explanation": "Der Anbieter hat mit der Terminentscheidung nichts zu tun."
+        }
+      ]
+    },
+    {
+      "id": "pv2fiae_medium_t04_termin_transaktion_reservierung",
+      "conceptId": "pv2fiae_medium_t04_termin_transaktion_reservierung",
+      "variantId": "pv2fiae_medium_t04_termin_transaktion_reservierung_v02",
+      "interactionType": "single",
+      "questionKind": "beste_option_im_mini_szenario",
+      "badgeLabel": "Eine Antwort ist richtig.",
+      "isNew": true,
+      "prompt": "Welcher Grund spricht für eine klare Reservierungslogik statt lose nacheinander ausgeführter Einzelschritte?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Doppelbuchungen sollen vermieden und Konflikte nachvollziehbar behandelt werden.",
+          "correct": true,
+          "explanation": "Parallelität ist der zentrale Grund für eine saubere Reservierungslogik."
+        },
+        {
+          "id": "b",
+          "text": "Alle Termine eines Jahres sollen dauerhaft gesperrt werden.",
+          "correct": false,
+          "explanation": "Das würde die Nutzung des Portals blockieren."
+        },
+        {
+          "id": "c",
+          "text": "Die Passwortregeln sollen abgeschaltet werden.",
+          "correct": false,
+          "explanation": "Authentifizierung ist ein anderes Thema und darf nicht abgeschaltet werden."
+        },
+        {
+          "id": "d",
+          "text": "Die Medikamententabelle soll ohne Grund geleert werden.",
+          "correct": false,
+          "explanation": "Das hat keinen Bezug zur Terminreservierung."
+        }
+      ]
+    },
+    {
+      "id": "pv2fiae_medium_t04_termin_prozess_review",
+      "conceptId": "pv2fiae_medium_t04_termin_prozess_review",
+      "variantId": "pv2fiae_medium_t04_termin_prozess_review_v02",
+      "interactionType": "multi",
+      "questionKind": "mehrere_richtige_antworten_waehlen",
+      "badgeLabel": "Mehrere Antworten sind richtig.",
+      "isNew": true,
+      "prompt": "Welche Kritikpunkte sollten gegen eine globale Monatsblockierung festgehalten werden?",
+      "maxSelections": 3,
+      "options": [
+        {
+          "id": "a",
+          "text": "Sie sperrt mehr Ressourcen als der konkrete Buchungswunsch benötigt.",
+          "correct": true,
+          "explanation": "Die Sperre ist fachlich zu breit."
+        },
+        {
+          "id": "b",
+          "text": "Sie kann andere Patientinnen und Patienten unnötig behindern.",
+          "correct": true,
+          "explanation": "Freie Termine wirken vorübergehend nicht verfügbar."
+        },
+        {
+          "id": "c",
+          "text": "Sie braucht trotzdem eine nachvollziehbare Konfliktbehandlung.",
+          "correct": true,
+          "explanation": "Auch blockierte Zeiträume ersetzen keine saubere Fehlerlogik."
+        },
+        {
+          "id": "d",
+          "text": "Sie ist automatisch schneller, weil weniger geprüft werden muss.",
+          "correct": false,
+          "explanation": "Weniger differenzierte Prüfung ist nicht automatisch fachlich besser."
+        }
+      ]
+    },
+    {
+      "id": "pv2fiae_medium_t04_termin_uml_abbruchpfad",
+      "conceptId": "pv2fiae_medium_t04_termin_uml_abbruchpfad",
+      "variantId": "pv2fiae_medium_t04_termin_uml_abbruchpfad_v02",
+      "interactionType": "single",
+      "questionKind": "beste_option_im_mini_szenario",
+      "badgeLabel": "Eine Antwort ist richtig.",
+      "isNew": true,
+      "prompt": "Wie sollte der Ablauf nach „Termin inzwischen belegt“ im Aktivitätsdiagramm dargestellt werden?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Eine Entscheidung mit Rückführung zur Suche nach freien Terminen.",
+          "correct": true,
+          "explanation": "So wird der fachliche Wiederholpfad sichtbar."
+        },
+        {
+          "id": "b",
+          "text": "Ein Endknoten ohne Meldung.",
+          "correct": false,
+          "explanation": "Das erklärt der Nutzerin den Konflikt nicht und bietet keinen Fortgang."
+        },
+        {
+          "id": "c",
+          "text": "Eine Vererbung zwischen Patientin und Terminservice.",
+          "correct": false,
+          "explanation": "Vererbung gehört nicht in das Aktivitätsdiagramm."
+        },
+        {
+          "id": "d",
+          "text": "Eine SQL-Unterabfrage als Swimlane.",
+          "correct": false,
+          "explanation": "Eine Unterabfrage ist keine fachliche Zuständigkeit."
+        }
+      ]
+    },
+    {
+      "id": "pv2fiae_medium_t04_passwort_else_if_bug",
+      "conceptId": "pv2fiae_medium_t04_passwort_else_if_bug",
+      "variantId": "pv2fiae_medium_t04_passwort_else_if_bug_v02",
+      "interactionType": "single",
+      "questionKind": "beste_option_im_mini_szenario",
+      "badgeLabel": "Eine Antwort ist richtig.",
+      "isNew": true,
+      "prompt": "Welches Problem entsteht, wenn Ziffern-, Buchstaben- und Sonderzeichenprüfung nicht unabhängig laufen?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Ein Zeichen kann die Bewertung anderer bereits gefundener Merkmale verfälschen.",
+          "correct": true,
+          "explanation": "Pflichtmerkmale sollten unabhängig gesammelt und nicht gegenseitig zurückgesetzt werden."
+        },
+        {
+          "id": "b",
+          "text": "Jede Zeichenprüfung wird dadurch automatisch verschlüsselt.",
+          "correct": false,
+          "explanation": "Verschlüsselung entsteht nicht durch `else`-Zweige."
+        },
+        {
+          "id": "c",
+          "text": "Die Passwortlänge wird dadurch immer exakt 10.",
+          "correct": false,
+          "explanation": "Die Struktur der Zweige ändert die Eingabelänge nicht."
+        },
+        {
+          "id": "d",
+          "text": "SQL-Abfragen werden dadurch schneller.",
+          "correct": false,
+          "explanation": "Das betrifft nicht die Datenbankausführung."
+        }
+      ]
+    },
+    {
+      "id": "pv2fiae_medium_t04_passwort_testset",
+      "conceptId": "pv2fiae_medium_t04_passwort_testset",
+      "variantId": "pv2fiae_medium_t04_passwort_testset_v02",
+      "interactionType": "multi",
+      "questionKind": "mehrere_richtige_antworten_waehlen",
+      "badgeLabel": "Mehrere Antworten sind richtig.",
+      "isNew": true,
+      "prompt": "Welche Fälle decken die Passwortlogik sinnvoll ab?",
+      "maxSelections": 3,
+      "options": [
+        {
+          "id": "a",
+          "text": "Genau 10 Zeichen mit Buchstabe, Ziffer und Sonderzeichen.",
+          "correct": true,
+          "explanation": "Das prüft den gültigen Grenzfall."
+        },
+        {
+          "id": "b",
+          "text": "9 Zeichen mit ansonsten erfüllten Zeichentypen.",
+          "correct": true,
+          "explanation": "Das prüft die ungültige Seite der Längengrenze."
+        },
+        {
+          "id": "c",
+          "text": "Ausreichend lang, aber ohne Sonderzeichen.",
+          "correct": true,
+          "explanation": "Das prüft eine einzelne fehlende Pflichtbedingung."
+        },
+        {
+          "id": "d",
+          "text": "ein Testfall ohne fachlich begründete Eingaben und erwartetes Ergebnis",
+          "correct": false,
+          "explanation": "Medikamentendaten prüfen keine Passwortregel."
+        }
+      ]
+    },
+    {
+      "id": "pv2fiae_medium_t04_passwort_index_exception",
+      "conceptId": "pv2fiae_medium_t04_passwort_index_exception",
+      "variantId": "pv2fiae_medium_t04_passwort_index_exception_v02",
+      "interactionType": "single",
+      "questionKind": "beste_option_im_mini_szenario",
+      "badgeLabel": "Eine Antwort ist richtig.",
+      "isNew": true,
+      "prompt": "Was passiert, wenn eine Schleife den Index `len(password)` noch verwendet?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Der Code greift auf einen nicht vorhandenen Stringindex zu.",
+          "correct": true,
+          "explanation": "Der Indexbereich endet bei `len(password) - 1`."
+        },
+        {
+          "id": "b",
+          "text": "Der erste Buchstabe wird immer übersprungen.",
+          "correct": false,
+          "explanation": "Das hängt vom Startwert ab; der konkrete Fehler liegt am oberen Index."
+        },
+        {
+          "id": "c",
+          "text": "Das Passwort wird automatisch akzeptiert.",
+          "correct": false,
+          "explanation": "Ein Indexfehler bricht die Prüfung eher ab."
+        },
+        {
+          "id": "d",
+          "text": "Die Medikamententabelle wird gesperrt.",
+          "correct": false,
+          "explanation": "Das hat keinen Bezug zum Stringzugriff."
+        }
+      ]
+    },
+    {
+      "id": "pv2fiae_medium_t04_passwort_sichere_rueckgabe",
+      "conceptId": "pv2fiae_medium_t04_passwort_sichere_rueckgabe",
+      "variantId": "pv2fiae_medium_t04_passwort_sichere_rueckgabe_v02",
+      "interactionType": "single",
+      "questionKind": "beste_option_im_mini_szenario",
+      "badgeLabel": "Eine Antwort ist richtig.",
+      "isNew": true,
+      "prompt": "Welche Abschlussbedingung ist für die Passwortprüfung fachlich belastbar?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Nur wenn Länge, Buchstabe, Ziffer und Sonderzeichen erfüllt sind.",
+          "correct": true,
+          "explanation": "Alle Regelbestandteile müssen gleichzeitig erfüllt sein."
+        },
+        {
+          "id": "b",
+          "text": "Sobald das Passwort irgendeine Ziffer enthält.",
+          "correct": false,
+          "explanation": "Eine Ziffer allein reicht nicht."
+        },
+        {
+          "id": "c",
+          "text": "Immer, wenn keine SQL-Fehlermeldung entsteht.",
+          "correct": false,
+          "explanation": "SQL-Fehler sind nicht die Passwortregel."
+        },
+        {
+          "id": "d",
+          "text": "Wenn die Patientin einen Termin auswählt.",
+          "correct": false,
+          "explanation": "Terminwahl ersetzt keine Authentifizierungsprüfung."
+        }
+      ]
+    },
+    {
+      "id": "pv2fiae_medium_t04_belegungsplan_spaltenversatz_transfer",
+      "conceptId": "pv2fiae_medium_t04_belegungsplan_spaltenversatz_transfer",
+      "variantId": "pv2fiae_medium_t04_belegungsplan_spaltenversatz_transfer_v02",
+      "interactionType": "single",
+      "questionKind": "beste_option_im_mini_szenario",
+      "badgeLabel": "Eine Antwort ist richtig.",
+      "isNew": true,
+      "prompt": "Welche Spaltenberechnung passt zur Vorgabe mit Monat und Tag in den ersten zwei Spalten?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "`spalte = s + 2`.",
+          "correct": true,
+          "explanation": "Die ersten beiden Spalten sind Monat und Tag; die Slots beginnen danach."
+        },
+        {
+          "id": "b",
+          "text": "`spalte = s`.",
+          "correct": false,
+          "explanation": "Damit würden Monat oder Tag als Slot gelesen."
+        },
+        {
+          "id": "c",
+          "text": "`spalte = s - 2`.",
+          "correct": false,
+          "explanation": "Das verschiebt in die falsche Richtung."
+        },
+        {
+          "id": "d",
+          "text": "`spalte = doctor_id + s`.",
+          "correct": false,
+          "explanation": "Die Arzt-ID bestimmt den geladenen Plan, nicht den Spaltenversatz."
+        }
+      ]
+    },
+    {
+      "id": "pv2fiae_medium_t04_belegungsplan_minus_eins_loop",
+      "conceptId": "pv2fiae_medium_t04_belegungsplan_minus_eins_loop",
+      "variantId": "pv2fiae_medium_t04_belegungsplan_minus_eins_loop_v02",
+      "interactionType": "multi",
+      "questionKind": "mehrere_richtige_antworten_waehlen",
+      "badgeLabel": "Mehrere Antworten sind richtig.",
+      "isNew": true,
+      "prompt": "Wie sollte die Funktion vorgehen, wenn ein beliebiger freier Slot reicht?",
+      "maxSelections": 3,
+      "options": [
+        {
+          "id": "a",
+          "text": "Die passende Tageszeile suchen.",
+          "correct": true,
+          "explanation": "Nur der angefragte Tag darf geprüft werden."
+        },
+        {
+          "id": "b",
+          "text": "Die Slotspalten 2 bis 9 auf einen Wert `0` prüfen.",
+          "correct": true,
+          "explanation": "Ein freier Slot genügt."
+        },
+        {
+          "id": "c",
+          "text": "Bei erstem freien Slot `True` zurückgeben.",
+          "correct": true,
+          "explanation": "Weitere Prüfung ist dann nicht nötig."
+        },
+        {
+          "id": "d",
+          "text": "Den Wert `-1` direkt als Arrayspalte verwenden.",
+          "correct": false,
+          "explanation": "Das wäre ein falscher Indexzugriff."
+        }
+      ]
+    },
+    {
+      "id": "pv2fiae_medium_t04_belegungsplan_arztbezug",
+      "conceptId": "pv2fiae_medium_t04_belegungsplan_arztbezug",
+      "variantId": "pv2fiae_medium_t04_belegungsplan_arztbezug_v02",
+      "interactionType": "single",
+      "questionKind": "beste_option_im_mini_szenario",
+      "badgeLabel": "Eine Antwort ist richtig.",
+      "isNew": true,
+      "prompt": "Was ist der Zweck von `load_time_table(doctor_id)` in der Terminprüfung?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Verfügbarkeiten sind arztspezifisch und unterscheiden sich je Behandlungsplan.",
+          "correct": true,
+          "explanation": "Nur der Plan der gewünschten Ärztin oder des gewünschten Arztes ist relevant."
+        },
+        {
+          "id": "b",
+          "text": "Die Arzt-ID ist der Primärschlüssel der Medikamententabelle.",
+          "correct": false,
+          "explanation": "Hier geht es um Terminpläne, nicht Medikamente."
+        },
+        {
+          "id": "c",
+          "text": "Ohne Arzt-ID ist jedes Passwort ungültig.",
+          "correct": false,
+          "explanation": "Die Passwortprüfung ist unabhängig vom Belegungsplan."
+        },
+        {
+          "id": "d",
+          "text": "Die Arzt-ID ersetzt Monat und Tag.",
+          "correct": false,
+          "explanation": "Monat und Tag müssen weiterhin geprüft werden."
+        }
+      ]
+    },
+    {
+      "id": "pv2fiae_medium_t04_belegungsplan_false_fall",
+      "conceptId": "pv2fiae_medium_t04_belegungsplan_false_fall",
+      "variantId": "pv2fiae_medium_t04_belegungsplan_false_fall_v02",
+      "interactionType": "single",
+      "questionKind": "beste_option_im_mini_szenario",
+      "badgeLabel": "Eine Antwort ist richtig.",
+      "isNew": true,
+      "prompt": "Welcher Fall führt zu einer negativen Terminprüfung?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Wenn für den passenden Tag kein angefragter freier Slot gefunden wird.",
+          "correct": true,
+          "explanation": "Dann erfüllt der Plan den Buchungswunsch nicht."
+        },
+        {
+          "id": "b",
+          "text": "Wenn eine andere Ärztin irgendwann frei ist.",
+          "correct": false,
+          "explanation": "Das sagt nichts über den angefragten Arzt aus."
+        },
+        {
+          "id": "c",
+          "text": "Wenn der Medikamentenkatalog leer ist.",
+          "correct": false,
+          "explanation": "Das betrifft nicht die Terminprüfung."
+        },
+        {
+          "id": "d",
+          "text": "Sobald Monat und Tag überhaupt vorkommen.",
+          "correct": false,
+          "explanation": "Das Vorkommen des Tages reicht ohne freien Slot nicht aus."
+        }
+      ]
+    },
+    {
+      "id": "pv2fiae_medium_t04_erm_termin_diagnose_kardinalitaet",
+      "conceptId": "pv2fiae_medium_t04_erm_termin_diagnose_kardinalitaet",
+      "variantId": "pv2fiae_medium_t04_erm_termin_diagnose_kardinalitaet_v02",
+      "interactionType": "single",
+      "questionKind": "beste_option_im_mini_szenario",
+      "badgeLabel": "Eine Antwort ist richtig.",
+      "isNew": true,
+      "prompt": "Wie ist die Beziehung zwischen Untersuchung und Diagnose zu bewerten, wenn Diagnosen wiederverwendbar sind?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "m:n.",
+          "correct": true,
+          "explanation": "Mehrere Untersuchungen können dieselbe Diagnose nutzen und eine Untersuchung kann mehrere Diagnosen haben."
+        },
+        {
+          "id": "b",
+          "text": "1:1 zwingend.",
+          "correct": false,
+          "explanation": "Das wäre für wiederverwendbare Diagnosen und mehrere Befunde zu eng."
+        },
+        {
+          "id": "c",
+          "text": "Keine Beziehung möglich.",
+          "correct": false,
+          "explanation": "Diagnosen müssen fachlich einer Untersuchung zugeordnet werden können."
+        },
+        {
+          "id": "d",
+          "text": "n:0 als einzige erlaubte Form.",
+          "correct": false,
+          "explanation": "Das ist keine sinnvolle Standardkardinalität."
+        }
+      ]
+    },
+    {
+      "id": "pv2fiae_medium_t04_erm_3nf_begruendung",
+      "conceptId": "pv2fiae_medium_t04_erm_3nf_begruendung",
+      "variantId": "pv2fiae_medium_t04_erm_3nf_begruendung_v02",
+      "interactionType": "multi",
+      "questionKind": "mehrere_richtige_antworten_waehlen",
+      "badgeLabel": "Mehrere Antworten sind richtig.",
+      "isNew": true,
+      "prompt": "Warum sollen Diagnose-Stammdaten nicht in jedem Termin vollständig wiederholt werden?",
+      "maxSelections": 3,
+      "options": [
+        {
+          "id": "a",
+          "text": "Weniger Redundanz bei Diagnosebezeichnungen.",
+          "correct": true,
+          "explanation": "Stammdaten werden zentral gepflegt."
+        },
+        {
+          "id": "b",
+          "text": "Bessere referenzielle Integrität über Schlüssel.",
+          "correct": true,
+          "explanation": "Fremdschlüssel sichern gültige Beziehungen."
+        },
+        {
+          "id": "c",
+          "text": "Einfachere Auswertungen über eindeutige Diagnoseschlüssel.",
+          "correct": true,
+          "explanation": "Auswertungen müssen nicht Freitexte zusammenführen."
+        },
+        {
+          "id": "d",
+          "text": "Mehr Kopien derselben Diagnose in jedem Termin.",
+          "correct": false,
+          "explanation": "Genau das soll Normalisierung vermeiden."
+        }
+      ]
+    },
+    {
+      "id": "pv2fiae_medium_t04_erm_patient_termin",
+      "conceptId": "pv2fiae_medium_t04_erm_patient_termin",
+      "variantId": "pv2fiae_medium_t04_erm_patient_termin_v02",
+      "interactionType": "single",
+      "questionKind": "beste_option_im_mini_szenario",
+      "badgeLabel": "Eine Antwort ist richtig.",
+      "isNew": true,
+      "prompt": "Welche Modellierung verbindet einen konkreten Untersuchungstermin mit der betroffenen Person?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Der Untersuchungstermin enthält einen Fremdschlüssel auf Patientin oder Patient.",
+          "correct": true,
+          "explanation": "Der Termin ist ein konkretes Ereignis für eine Person."
+        },
+        {
+          "id": "b",
+          "text": "Die Diagnose-Stammdatentabelle speichert alle Patientendaten.",
+          "correct": false,
+          "explanation": "Das würde Stammdaten und personenbezogene Ereignisse vermischen."
+        },
+        {
+          "id": "c",
+          "text": "Der Anbieter des Medikaments wird als Patient gespeichert.",
+          "correct": false,
+          "explanation": "Das sind unterschiedliche Fachobjekte."
+        },
+        {
+          "id": "d",
+          "text": "Der Bezug wird nur im Dateinamen abgelegt.",
+          "correct": false,
+          "explanation": "Dateinamen sichern keine Datenbankbeziehung."
+        }
+      ]
+    },
+    {
+      "id": "pv2fiae_medium_t04_erm_zuordnung_attribut",
+      "conceptId": "pv2fiae_medium_t04_erm_zuordnung_attribut",
+      "variantId": "pv2fiae_medium_t04_erm_zuordnung_attribut_v02",
+      "interactionType": "single",
+      "questionKind": "beste_option_im_mini_szenario",
+      "badgeLabel": "Eine Antwort ist richtig.",
+      "isNew": true,
+      "prompt": "Welche Information gehört eher auf die Diagnosezuordnung als in die Stammdatentabelle?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Eine Bemerkung oder Einstufung zur Diagnose im konkreten Termin.",
+          "correct": true,
+          "explanation": "Solche Angaben hängen von der konkreten Zuordnung ab."
+        },
+        {
+          "id": "b",
+          "text": "Der allgemeine Diagnoseschlüssel als Freitextkopie.",
+          "correct": false,
+          "explanation": "Der Schlüssel gehört referenziert, nicht wiederholt."
+        },
+        {
+          "id": "c",
+          "text": "Der gesamte Medikamentenkatalog.",
+          "correct": false,
+          "explanation": "Das ist ein anderes Datengebiet."
+        },
+        {
+          "id": "d",
+          "text": "Die komplette Passwortprüflogik.",
+          "correct": false,
+          "explanation": "Das ist Anwendungslogik, kein Diagnoseattribut."
+        }
+      ]
+    },
+    {
+      "id": "pv2fiae_medium_t04_sql_insert_vs_update",
+      "conceptId": "pv2fiae_medium_t04_sql_insert_vs_update",
+      "variantId": "pv2fiae_medium_t04_sql_insert_vs_update_v02",
+      "interactionType": "single",
+      "questionKind": "beste_option_im_mini_szenario",
+      "badgeLabel": "Eine Antwort ist richtig.",
+      "isNew": true,
+      "prompt": "Welche SQL-Operation ist angemessen, wenn ein vorhandener Medikamentendatensatz geändert wird?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "`UPDATE ... WHERE ...`.",
+          "correct": true,
+          "explanation": "Gezielte Änderungen an vorhandenen Datensätzen erfolgen mit `UPDATE`."
+        },
+        {
+          "id": "b",
+          "text": "`INSERT ...` mit denselben Schlüsselwerten.",
+          "correct": false,
+          "explanation": "Das erzeugt eher Dubletten oder Schlüsselkonflikte."
+        },
+        {
+          "id": "c",
+          "text": "`DROP TABLE Medikament`.",
+          "correct": false,
+          "explanation": "Das löscht die Tabellenstruktur."
+        },
+        {
+          "id": "d",
+          "text": "`SELECT COUNT(*)`.",
+          "correct": false,
+          "explanation": "Das zählt Daten, ändert aber keinen Preis."
+        }
+      ]
+    },
+    {
+      "id": "pv2fiae_medium_t04_sql_where_sicherheit",
+      "conceptId": "pv2fiae_medium_t04_sql_where_sicherheit",
+      "variantId": "pv2fiae_medium_t04_sql_where_sicherheit_v02",
+      "interactionType": "single",
+      "questionKind": "beste_option_im_mini_szenario",
+      "badgeLabel": "Eine Antwort ist richtig.",
+      "isNew": true,
+      "prompt": "Welches Risiko entsteht, wenn eine Änderungsanweisung ohne Filter ausgeführt wird?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Sonst können unbeabsichtigt alle Datensätze geändert oder gelöscht werden.",
+          "correct": true,
+          "explanation": "Ohne Filter wirkt die Operation auf die gesamte Tabelle."
+        },
+        {
+          "id": "b",
+          "text": "Ohne `WHERE` werden automatisch nur Testdaten geändert.",
+          "correct": false,
+          "explanation": "SQL nimmt diese Einschränkung nicht automatisch vor."
+        },
+        {
+          "id": "c",
+          "text": "Ohne `WHERE` wird ein Aktivitätsdiagramm erzeugt.",
+          "correct": false,
+          "explanation": "Das ist keine Wirkung einer SQL-Anweisung."
+        },
+        {
+          "id": "d",
+          "text": "Ohne `WHERE` wird der JOIN schneller und sicherer.",
+          "correct": false,
+          "explanation": "Sicherheit entsteht hier durch gezielte Einschränkung, nicht durch Weglassen."
+        }
+      ]
+    },
+    {
+      "id": "pv2fiae_medium_t04_sql_join_group_filter",
+      "conceptId": "pv2fiae_medium_t04_sql_join_group_filter",
+      "variantId": "pv2fiae_medium_t04_sql_join_group_filter_v02",
+      "interactionType": "multi",
+      "questionKind": "mehrere_richtige_antworten_waehlen",
+      "badgeLabel": "Mehrere Antworten sind richtig.",
+      "isNew": true,
+      "prompt": "Welche Bestandteile braucht eine Medikamentenauswertung, die Anbietername und Anzahl je Anbieter zeigt?",
+      "maxSelections": 3,
+      "options": [
+        {
+          "id": "a",
+          "text": "JOIN zwischen Medikament und Anbieter.",
+          "correct": true,
+          "explanation": "So kommt der Anbietername zur Medikamentenzeile."
+        },
+        {
+          "id": "b",
+          "text": "COUNT(*) für die Anzahl.",
+          "correct": true,
+          "explanation": "Die Aggregatfunktion zählt die Einträge."
+        },
+        {
+          "id": "c",
+          "text": "GROUP BY auf Anbieterkennung und Anbietername.",
+          "correct": true,
+          "explanation": "Die Ausgabe wird je Anbieter gebündelt."
+        },
+        {
+          "id": "d",
+          "text": "DELETE vor der Auswertung.",
+          "correct": false,
+          "explanation": "Löschen ist für eine Übersicht nicht erforderlich."
+        }
+      ]
+    },
+    {
+      "id": "pv2fiae_medium_t04_sql_like_wirkstoffsuche",
+      "conceptId": "pv2fiae_medium_t04_sql_like_wirkstoffsuche",
+      "variantId": "pv2fiae_medium_t04_sql_like_wirkstoffsuche_v02",
+      "interactionType": "single",
+      "questionKind": "beste_option_im_mini_szenario",
+      "badgeLabel": "Eine Antwort ist richtig.",
+      "isNew": true,
+      "prompt": "Welche Suche passt, wenn Wirkstoffnamen mit gleicher Zeichenfolge in Varianten vorkommen können?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Bei einer Teilzeichenfolgensuche, etwa `WHERE Wirkstoff LIKE ...`.",
+          "correct": true,
+          "explanation": "`LIKE` unterstützt Muster- und Teiltreffersuchen."
+        },
+        {
+          "id": "b",
+          "text": "Wenn ein neuer Datensatz eingefügt werden soll.",
+          "correct": false,
+          "explanation": "Einfügen erfolgt mit `INSERT`."
+        },
+        {
+          "id": "c",
+          "text": "Wenn die Tabelle gelöscht werden soll.",
+          "correct": false,
+          "explanation": "Löschen erfolgt mit `DELETE` oder `DROP`, nicht mit `LIKE`."
+        },
+        {
+          "id": "d",
+          "text": "Wenn die Passwortlänge geprüft wird.",
+          "correct": false,
+          "explanation": "Das ist keine SQL-Wirkstoffsuche."
+        }
+      ]
+    },
+    {
+      "id": "pv2fiae_medium_t04_sql_order_by",
+      "conceptId": "pv2fiae_medium_t04_sql_order_by",
+      "variantId": "pv2fiae_medium_t04_sql_order_by_v02",
+      "interactionType": "single",
+      "questionKind": "beste_option_im_mini_szenario",
+      "badgeLabel": "Eine Antwort ist richtig.",
+      "isNew": true,
+      "prompt": "Wie wird eine Ergebnisliste alphabetisch nach Medikamentenname ausgegeben?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "`ORDER BY Name`.",
+          "correct": true,
+          "explanation": "`ORDER BY` sortiert das Ergebnis nach der angegebenen Spalte."
+        },
+        {
+          "id": "b",
+          "text": "`WHERE Name`.",
+          "correct": false,
+          "explanation": "`WHERE` filtert, sortiert aber nicht."
+        },
+        {
+          "id": "c",
+          "text": "`INSERT BY Name`.",
+          "correct": false,
+          "explanation": "Das ist keine gültige Sortierklausel."
+        },
+        {
+          "id": "d",
+          "text": "`GROUP BY` ohne Aggregationsziel.",
+          "correct": false,
+          "explanation": "Gruppierung ersetzt keine Sortierung."
+        }
+      ]
+    },
+    {
+      "id": "pv2fiae_medium_t04_sql_having_anbieteranzahl",
+      "conceptId": "pv2fiae_medium_t04_sql_having_anbieteranzahl",
+      "variantId": "pv2fiae_medium_t04_sql_having_anbieteranzahl_v02",
+      "interactionType": "single",
+      "questionKind": "beste_option_im_mini_szenario",
+      "badgeLabel": "Eine Antwort ist richtig.",
+      "isNew": true,
+      "prompt": "Wie werden Gruppen nach `COUNT(*)` eingeschränkt, nachdem pro Anbieter gruppiert wurde?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "`HAVING COUNT(*) > 5`.",
+          "correct": true,
+          "explanation": "`HAVING` filtert nach Aggregatwerten gebildeter Gruppen."
+        },
+        {
+          "id": "b",
+          "text": "`WHERE COUNT(*) > 5`.",
+          "correct": false,
+          "explanation": "`WHERE` filtert Zeilen vor der Gruppierung und kann Aggregatbedingungen so nicht ersetzen."
+        },
+        {
+          "id": "c",
+          "text": "`ORDER BY COUNT(*) > 5`.",
+          "correct": false,
+          "explanation": "`ORDER BY` sortiert, filtert aber keine Gruppen."
+        },
+        {
+          "id": "d",
+          "text": "`INSERT COUNT(*) > 5`.",
+          "correct": false,
+          "explanation": "Das ist keine Auswertungsklausel."
+        }
+      ]
+    },
+    {
+      "id": "pv2fiae_medium_t04_sql_select_join_alias",
+      "conceptId": "pv2fiae_medium_t04_sql_select_join_alias",
+      "variantId": "pv2fiae_medium_t04_sql_select_join_alias_v02",
+      "interactionType": "multi",
+      "questionKind": "mehrere_richtige_antworten_waehlen",
+      "badgeLabel": "Mehrere Antworten sind richtig.",
+      "isNew": true,
+      "prompt": "Welche Maßnahmen helfen bei einer SQL-Ausgabe, wenn mehrere Tabellen ähnliche Spaltennamen besitzen?",
+      "maxSelections": 3,
+      "options": [
+        {
+          "id": "a",
+          "text": "Tabellenalias wie `m` und `a` verwenden.",
+          "correct": true,
+          "explanation": "Aliasse verkürzen und klären Spaltenbezüge."
+        },
+        {
+          "id": "b",
+          "text": "Spalten qualifizieren, etwa `m.Name` und `a.Name`.",
+          "correct": true,
+          "explanation": "So wird eindeutig, aus welcher Tabelle der Name stammt."
+        },
+        {
+          "id": "c",
+          "text": "Ausgabespalten mit sprechenden Aliasnamen versehen.",
+          "correct": true,
+          "explanation": "Das macht Ergebnislisten verständlicher."
+        },
+        {
+          "id": "d",
+          "text": "Alle Spalten unbenannt mit `SELECT *` ausgeben.",
+          "correct": false,
+          "explanation": "Das kann unübersichtlich und bei gleichen Spaltennamen mehrdeutig werden."
+        }
+      ]
+    },
+    {
+      "id": "pv2fiae_medium_t04_erm_loeschregel_diagnose",
+      "conceptId": "pv2fiae_medium_t04_erm_loeschregel_diagnose",
+      "variantId": "pv2fiae_medium_t04_erm_loeschregel_diagnose_v02",
+      "interactionType": "single",
+      "questionKind": "beste_option_im_mini_szenario",
+      "badgeLabel": "Eine Antwort ist richtig.",
+      "isNew": true,
+      "prompt": "Welche Datenbankregel schützt davor, dass Diagnosezuordnungen auf nicht mehr vorhandene Diagnosen zeigen?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Verwaiste Zuordnungen ohne gültige Diagnose.",
+          "correct": true,
+          "explanation": "Referenzielle Integrität verlangt, dass jede Zuordnung auf vorhandene Stammdaten zeigt."
+        },
+        {
+          "id": "b",
+          "text": "Dass Passwörter genau 10 Zeichen lang sind.",
+          "correct": false,
+          "explanation": "Das ist keine Datenbankbeziehung."
+        },
+        {
+          "id": "c",
+          "text": "Dass Termine überhaupt angezeigt werden können.",
+          "correct": false,
+          "explanation": "Terminanzeige ist Anwendungslogik, nicht die Löschregel der Diagnose."
+        },
+        {
+          "id": "d",
+          "text": "Dass Anbieter alphabetisch sortiert werden.",
+          "correct": false,
+          "explanation": "Sortierung wird nicht durch Fremdschlüssel gesichert."
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,904 @@
+{
+  "scenarioFolder": "Pruefungsvorbereitung-2-FIAE-Scenarien",
+  "quizFolder": "Pruefungsvorbereitung-2-FIAE-Quiz",
+  "scenarioFile": "ticket_ausbildungsbetrieb_ap2_s2025_fiae2/09_easy_ausbildungsbetrieb_ap2_s2025_fiae2.json",
+  "quizFile": "quiz_ausbildungsbetrieb_ap2_s2025_fiae2/quiz09_easy_V03_ausbildungsbetrieb_ap2_s2025_fiae2.json",
+  "ticketId": "09_easy_ausbildungsbetrieb_ap2_s2025_fiae2.json",
+  "versionId": "V03",
+  "title": "Ticket 09 Easy - Bettenauslastung, Medikationsplan, OP-Modell und SQL",
+  "description": "Trainingsfragen zu Bettenauslastung, Medikationsplan-Sequenz, OP-Datenmodell, Whitebox-Tests und SQL.",
+  "topics": [
+    "Bettenauslastung, Medikationsplan-Sequenz und OP-Datenmodell fachlich sicher einordnen",
+    "Whitebox-Tests und SQL für Notaufnahme-Management nachvollziehbar verbinden"
+  ],
+  "questions": [
+    {
+      "id": "pv2fiae_easy_t09_occupancy_day_overlap",
+      "conceptId": "pv2fiae_easy_t09_occupancy_day_overlap",
+      "variantId": "pv2fiae_easy_t09_occupancy_day_overlap_v03",
+      "interactionType": "single",
+      "questionKind": "beste_option_im_mini_szenario",
+      "badgeLabel": "Eine Antwort ist richtig.",
+      "isNew": true,
+      "prompt": "Wie erkennt die Auswertung, dass ein Bett am Prüftag belegt ist?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Wenn der Belegungszeitraum den Prüftag überlappt.",
+          "correct": true,
+          "explanation": "Der Tag liegt dann innerhalb der Aufnahme- und Entlasslogik."
+        },
+        {
+          "id": "b",
+          "text": "Nur wenn Aufnahme- und Entlasstag exakt gleich sind.",
+          "correct": false,
+          "explanation": "Belegungen können mehrere Tage umfassen."
+        },
+        {
+          "id": "c",
+          "text": "Wenn der Patient mindestens drei Verschreibungen hat.",
+          "correct": false,
+          "explanation": "Das ist SQL-Auswertung, keine Bettbelegung."
+        },
+        {
+          "id": "d",
+          "text": "Wenn ein Medikament in der Anästhesie verwendet wird.",
+          "correct": false,
+          "explanation": "Das gehört zum OP-Modell."
+        }
+      ]
+    },
+    {
+      "id": "pv2fiae_easy_t09_occupancy_threshold",
+      "conceptId": "pv2fiae_easy_t09_occupancy_threshold",
+      "variantId": "pv2fiae_easy_t09_occupancy_threshold_v03",
+      "interactionType": "single",
+      "questionKind": "beste_option_im_mini_szenario",
+      "badgeLabel": "Eine Antwort ist richtig.",
+      "isNew": true,
+      "prompt": "Welche Bedingung passt zur Schwelle „mehr als 80 Prozent“?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Der Anteil belegter Betten ist strikt größer als 0,8.",
+          "correct": true,
+          "explanation": "„Mehr als“ bedeutet nicht gleich 80 Prozent, sondern darüber."
+        },
+        {
+          "id": "b",
+          "text": "Der Anteil ist genau 0,8 oder kleiner.",
+          "correct": false,
+          "explanation": "Das überschreitet die Schwelle nicht."
+        },
+        {
+          "id": "c",
+          "text": "Mindestens ein SQL-INSERT wurde ausgeführt.",
+          "correct": false,
+          "explanation": "Das hat keinen Bezug zur Auslastung."
+        },
+        {
+          "id": "d",
+          "text": "Jeder Medikationsplan enthält Leerzeichen.",
+          "correct": false,
+          "explanation": "Das ist ein anderes Thema."
+        }
+      ]
+    },
+    {
+      "id": "pv2fiae_easy_t09_occupancy_percentage",
+      "conceptId": "pv2fiae_easy_t09_occupancy_percentage",
+      "variantId": "pv2fiae_easy_t09_occupancy_percentage_v03",
+      "interactionType": "single",
+      "questionKind": "beste_option_im_mini_szenario",
+      "badgeLabel": "Eine Antwort ist richtig.",
+      "isNew": true,
+      "prompt": "Wie entsteht der Prozentwert der belegten Betten?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Belegte Betten geteilt durch verfügbare Betten.",
+          "correct": true,
+          "explanation": "Der Anteil zeigt, wie viele Kapazitäten genutzt sind."
+        },
+        {
+          "id": "b",
+          "text": "Verfügbare Betten minus Arztanzahl.",
+          "correct": false,
+          "explanation": "Das ergibt keine Auslastung."
+        },
+        {
+          "id": "c",
+          "text": "Verschreibungen geteilt durch Medikamente.",
+          "correct": false,
+          "explanation": "Das ist keine Stationskapazität."
+        },
+        {
+          "id": "d",
+          "text": "Sequenznachrichten plus SQL-Rechte.",
+          "correct": false,
+          "explanation": "Das ist fachlich unsinnig."
+        }
+      ]
+    },
+    {
+      "id": "pv2fiae_easy_t09_occupancy_algorithm_steps",
+      "conceptId": "pv2fiae_easy_t09_occupancy_algorithm_steps",
+      "variantId": "pv2fiae_easy_t09_occupancy_algorithm_steps_v03",
+      "interactionType": "multi",
+      "questionKind": "mehrere_richtige_antworten_waehlen",
+      "badgeLabel": "Mehrere Antworten sind richtig.",
+      "isNew": true,
+      "prompt": "Welche Bestandteile braucht die Stationen-Auswertung?",
+      "maxSelections": 3,
+      "options": [
+        {
+          "id": "a",
+          "text": "Für jeden Tag die belegten Betten zählen.",
+          "correct": true,
+          "explanation": "Die Schwelle wird tagesbezogen geprüft."
+        },
+        {
+          "id": "b",
+          "text": "Die Gesamtzahl der Betten der Station berücksichtigen.",
+          "correct": true,
+          "explanation": "Ohne Kapazität gibt es keinen Prozentwert."
+        },
+        {
+          "id": "c",
+          "text": "Tage mit Auslastung über 80 Prozent festhalten.",
+          "correct": true,
+          "explanation": "Das ist das gesuchte Ergebnis."
+        },
+        {
+          "id": "d",
+          "text": "Schreibrechte auf SQL-Tabellen vergeben.",
+          "correct": false,
+          "explanation": "Das gehört zum SQL-Block."
+        }
+      ]
+    },
+    {
+      "id": "pv2fiae_easy_t09_occupancy_boundary_80",
+      "conceptId": "pv2fiae_easy_t09_occupancy_boundary_80",
+      "variantId": "pv2fiae_easy_t09_occupancy_boundary_80_v03",
+      "interactionType": "single",
+      "questionKind": "beste_option_im_mini_szenario",
+      "badgeLabel": "Eine Antwort ist richtig.",
+      "isNew": true,
+      "prompt": "Welche Bewertung gilt für eine Auslastung von exakt 0,8?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Nein, exakt 80 Prozent überschreitet die Schwelle nicht.",
+          "correct": true,
+          "explanation": "Die Formulierung verlangt einen Wert größer als 80 Prozent."
+        },
+        {
+          "id": "b",
+          "text": "Ja, exakt 80 Prozent ist automatisch zu hoch.",
+          "correct": false,
+          "explanation": "Das wäre „mindestens 80 Prozent“."
+        },
+        {
+          "id": "c",
+          "text": "Exakt 80 Prozent erzeugt immer einen SQL-Fehler.",
+          "correct": false,
+          "explanation": "Das ist keine SQL-Bedingung."
+        },
+        {
+          "id": "d",
+          "text": "Exakt 80 Prozent ist eine Anästhesieform.",
+          "correct": false,
+          "explanation": "Das ist fachlich falsch."
+        }
+      ]
+    },
+    {
+      "id": "pv2fiae_easy_t09_occupancy_date_range",
+      "conceptId": "pv2fiae_easy_t09_occupancy_date_range",
+      "variantId": "pv2fiae_easy_t09_occupancy_date_range_v03",
+      "interactionType": "single",
+      "questionKind": "beste_option_im_mini_szenario",
+      "badgeLabel": "Eine Antwort ist richtig.",
+      "isNew": true,
+      "prompt": "Warum reicht es nicht, nur das Aufnahmedatum zu prüfen?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Eine Belegung kann mehrere Tage betreffen.",
+          "correct": true,
+          "explanation": "Der Prüftag kann auch zwischen Aufnahme und Entlassung liegen."
+        },
+        {
+          "id": "b",
+          "text": "Das Entlassdatum ist immer identisch mit der Arzt-ID.",
+          "correct": false,
+          "explanation": "Das sind unterschiedliche Daten."
+        },
+        {
+          "id": "c",
+          "text": "Nur das Aufnahmedatum bestimmt SQL-Rechte.",
+          "correct": false,
+          "explanation": "SQL-Rechte sind unabhängig."
+        },
+        {
+          "id": "d",
+          "text": "Der Medikationsplan hat kein Datum.",
+          "correct": false,
+          "explanation": "Das beantwortet die Belegungslogik nicht."
+        }
+      ]
+    },
+    {
+      "id": "pv2fiae_easy_t09_sequence_patient_request",
+      "conceptId": "pv2fiae_easy_t09_sequence_patient_request",
+      "variantId": "pv2fiae_easy_t09_sequence_patient_request_v03",
+      "interactionType": "single",
+      "questionKind": "beste_option_im_mini_szenario",
+      "badgeLabel": "Eine Antwort ist richtig.",
+      "isNew": true,
+      "prompt": "Welche Beteiligung startet die Sequenz zur Medikationsplananzeige?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Eine Anfrage der Oberfläche oder des Nutzers an das System.",
+          "correct": true,
+          "explanation": "Die Ausgabe beginnt mit einem fachlichen Abruf."
+        },
+        {
+          "id": "b",
+          "text": "Ein REVOKE auf Verschreibungen.",
+          "correct": false,
+          "explanation": "REVOKE ist eine SQL-Rechteanweisung."
+        },
+        {
+          "id": "c",
+          "text": "Eine OP-Arzt-Zuordnung.",
+          "correct": false,
+          "explanation": "Das gehört zum Datenmodell."
+        },
+        {
+          "id": "d",
+          "text": "Eine Auslastung über 80 Prozent.",
+          "correct": false,
+          "explanation": "Das ist der Algorithmusblock."
+        }
+      ]
+    },
+    {
+      "id": "pv2fiae_easy_t09_sequence_fetch_medication",
+      "conceptId": "pv2fiae_easy_t09_sequence_fetch_medication",
+      "variantId": "pv2fiae_easy_t09_sequence_fetch_medication_v03",
+      "interactionType": "single",
+      "questionKind": "beste_option_im_mini_szenario",
+      "badgeLabel": "Eine Antwort ist richtig.",
+      "isNew": true,
+      "prompt": "Welche Information gehört zur fachlichen Grundlage eines Medikationsplans?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Verschreibungen und zugehörige Medikamente des Patienten.",
+          "correct": true,
+          "explanation": "Der Plan entsteht aus Patient, Verschreibung und Medikamentendaten."
+        },
+        {
+          "id": "b",
+          "text": "Nur die Anzahl der OP-Säle.",
+          "correct": false,
+          "explanation": "Das reicht nicht für einen Medikationsplan."
+        },
+        {
+          "id": "c",
+          "text": "Nur SQL-Rechte des Datenbanknutzers.",
+          "correct": false,
+          "explanation": "Rechte steuern Zugriff, nicht den Planinhalt."
+        },
+        {
+          "id": "d",
+          "text": "Nur Bettenkapazität der Station.",
+          "correct": false,
+          "explanation": "Das gehört zur Auslastung."
+        }
+      ]
+    },
+    {
+      "id": "pv2fiae_easy_t09_sequence_output_plan",
+      "conceptId": "pv2fiae_easy_t09_sequence_output_plan",
+      "variantId": "pv2fiae_easy_t09_sequence_output_plan_v03",
+      "interactionType": "single",
+      "questionKind": "beste_option_im_mini_szenario",
+      "badgeLabel": "Eine Antwort ist richtig.",
+      "isNew": true,
+      "prompt": "Was liefert das System nach erfolgreicher Datenbeschaffung?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Einen strukturierten Medikationsplan.",
+          "correct": true,
+          "explanation": "Die Sequenz beschreibt die Ausgabe dieses Plans."
+        },
+        {
+          "id": "b",
+          "text": "Eine neue Email-Spalte als Pflichtfeld.",
+          "correct": false,
+          "explanation": "Das ist DDL."
+        },
+        {
+          "id": "c",
+          "text": "Eine OP-Zwischentabelle.",
+          "correct": false,
+          "explanation": "Das ist ER-Modellierung."
+        },
+        {
+          "id": "d",
+          "text": "Eine Stationsauslastungsliste.",
+          "correct": false,
+          "explanation": "Das ist ein anderer Block."
+        }
+      ]
+    },
+    {
+      "id": "pv2fiae_easy_t09_coverage_for_branches",
+      "conceptId": "pv2fiae_easy_t09_coverage_for_branches",
+      "variantId": "pv2fiae_easy_t09_coverage_for_branches_v03",
+      "interactionType": "single",
+      "questionKind": "beste_option_im_mini_szenario",
+      "badgeLabel": "Eine Antwort ist richtig.",
+      "isNew": true,
+      "prompt": "Welche Coverage betrachtet, ob beide Seiten einer Bedingung durchlaufen wurden?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Branch Coverage beziehungsweise Zweigüberdeckung.",
+          "correct": true,
+          "explanation": "Sie prüft die Ausführung der Entscheidungszweige."
+        },
+        {
+          "id": "b",
+          "text": "Nur Speicherplatzberechnung.",
+          "correct": false,
+          "explanation": "Das ist keine Testabdeckung."
+        },
+        {
+          "id": "c",
+          "text": "SQL-GRANT-Coverage.",
+          "correct": false,
+          "explanation": "Das ist kein üblicher Coverage-Begriff."
+        },
+        {
+          "id": "d",
+          "text": "Kardinalitätscoverage im ERM.",
+          "correct": false,
+          "explanation": "Das ist kein Testabdeckungsmaß."
+        }
+      ]
+    },
+    {
+      "id": "pv2fiae_easy_t09_whitebox_definition",
+      "conceptId": "pv2fiae_easy_t09_whitebox_definition",
+      "variantId": "pv2fiae_easy_t09_whitebox_definition_v03",
+      "interactionType": "single",
+      "questionKind": "beste_option_im_mini_szenario",
+      "badgeLabel": "Eine Antwort ist richtig.",
+      "isNew": true,
+      "prompt": "Wie ist ein Whitebox-Test im Kliniksystem-Kontext einzuordnen?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Der Test nutzt Wissen über die innere Struktur des Codes.",
+          "correct": true,
+          "explanation": "Whitebox-Tests orientieren sich an Codepfaden und Bedingungen."
+        },
+        {
+          "id": "b",
+          "text": "Der Test prüft nur Darstellung, aber keine fachliche Funktion.",
+          "correct": false,
+          "explanation": "Ein Test braucht Eingabe, erwartetes Ergebnis und prüfbare Bedingung."
+        },
+        {
+          "id": "c",
+          "text": "Der Test ist eine SQL-Rechtevergabe.",
+          "correct": false,
+          "explanation": "GRANT ist kein Test."
+        },
+        {
+          "id": "d",
+          "text": "Der Test modelliert automatisch OP-Entitäten.",
+          "correct": false,
+          "explanation": "Das ist Datenmodellierung."
+        }
+      ]
+    },
+    {
+      "id": "pv2fiae_easy_t09_spaces_as_empty",
+      "conceptId": "pv2fiae_easy_t09_spaces_as_empty",
+      "variantId": "pv2fiae_easy_t09_spaces_as_empty_v03",
+      "interactionType": "single",
+      "questionKind": "beste_option_im_mini_szenario",
+      "badgeLabel": "Eine Antwort ist richtig.",
+      "isNew": true,
+      "prompt": "Was sollte eine Validierung mit einem Text aus nur Leerzeichen tun?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Nach Trimmen als leer behandeln.",
+          "correct": true,
+          "explanation": "Leerzeichen allein sind kein fachlicher Inhalt."
+        },
+        {
+          "id": "b",
+          "text": "Immer als gültige Einnahme ausgeben.",
+          "correct": false,
+          "explanation": "Das wäre inhaltlich leer."
+        },
+        {
+          "id": "c",
+          "text": "Als SQL-Username speichern.",
+          "correct": false,
+          "explanation": "Das ist fachlich falsch."
+        },
+        {
+          "id": "d",
+          "text": "Als OP-Medikament übernehmen.",
+          "correct": false,
+          "explanation": "Leerzeichen sind kein Medikament."
+        }
+      ]
+    },
+    {
+      "id": "pv2fiae_easy_t09_op_entity_operation",
+      "conceptId": "pv2fiae_easy_t09_op_entity_operation",
+      "variantId": "pv2fiae_easy_t09_op_entity_operation_v03",
+      "interactionType": "single",
+      "questionKind": "beste_option_im_mini_szenario",
+      "badgeLabel": "Eine Antwort ist richtig.",
+      "isNew": true,
+      "prompt": "Welche Tabelle bildet eine Operation fachlich ab?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Operation.",
+          "correct": true,
+          "explanation": "Die Operation ist der konkrete Eingriff."
+        },
+        {
+          "id": "b",
+          "text": "Branch Coverage.",
+          "correct": false,
+          "explanation": "Das ist ein Testbegriff."
+        },
+        {
+          "id": "c",
+          "text": "GRANT.",
+          "correct": false,
+          "explanation": "Das ist eine SQL-Anweisung."
+        },
+        {
+          "id": "d",
+          "text": "Auslastungstag.",
+          "correct": false,
+          "explanation": "Das gehört zur Bettenauswertung."
+        }
+      ]
+    },
+    {
+      "id": "pv2fiae_easy_t09_op_doctor_bridge",
+      "conceptId": "pv2fiae_easy_t09_op_doctor_bridge",
+      "variantId": "pv2fiae_easy_t09_op_doctor_bridge_v03",
+      "interactionType": "single",
+      "questionKind": "beste_option_im_mini_szenario",
+      "badgeLabel": "Eine Antwort ist richtig.",
+      "isNew": true,
+      "prompt": "Wie modelliert man mehrere Ärzte pro Operation und mehrere Operationen pro Arzt?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Sie bildet eine m:n-Beziehung zwischen Operation und Arzt ab.",
+          "correct": true,
+          "explanation": "Beide Seiten können mehrfach beteiligt sein."
+        },
+        {
+          "id": "b",
+          "text": "Sie ersetzt alle Medikamente.",
+          "correct": false,
+          "explanation": "Medikamente bleiben eigene Daten."
+        },
+        {
+          "id": "c",
+          "text": "Sie vergibt SQL-Rechte.",
+          "correct": false,
+          "explanation": "Rechte werden mit GRANT/REVOKE verwaltet."
+        },
+        {
+          "id": "d",
+          "text": "Sie berechnet Bettenauslastung.",
+          "correct": false,
+          "explanation": "Das ist ein anderer Fachbereich."
+        }
+      ]
+    },
+    {
+      "id": "pv2fiae_easy_t09_anesthesia_medication_relation",
+      "conceptId": "pv2fiae_easy_t09_anesthesia_medication_relation",
+      "variantId": "pv2fiae_easy_t09_anesthesia_medication_relation_v03",
+      "interactionType": "single",
+      "questionKind": "beste_option_im_mini_szenario",
+      "badgeLabel": "Eine Antwort ist richtig.",
+      "isNew": true,
+      "prompt": "Welche Beziehung passt zwischen Anästhesie und Medikament?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Als Beziehung oder Zuordnung zwischen Anästhesie und Medikament.",
+          "correct": true,
+          "explanation": "Der Medikamenteneinsatz gehört zur konkreten Anästhesie."
+        },
+        {
+          "id": "b",
+          "text": "Als Leerzeichen im Medikationsplan.",
+          "correct": false,
+          "explanation": "Das ist kein Datenmodell."
+        },
+        {
+          "id": "c",
+          "text": "Als SQL-Recht auf Email.",
+          "correct": false,
+          "explanation": "Das ist DDL/Rechteverwaltung."
+        },
+        {
+          "id": "d",
+          "text": "Als Station ohne Betten.",
+          "correct": false,
+          "explanation": "Das passt nicht zum OP-Modell."
+        }
+      ]
+    },
+    {
+      "id": "pv2fiae_easy_t09_op_model_entities",
+      "conceptId": "pv2fiae_easy_t09_op_model_entities",
+      "variantId": "pv2fiae_easy_t09_op_model_entities_v03",
+      "interactionType": "multi",
+      "questionKind": "mehrere_richtige_antworten_waehlen",
+      "badgeLabel": "Mehrere Antworten sind richtig.",
+      "isNew": true,
+      "prompt": "Welche Strukturen braucht das OP-Datenmodell?",
+      "maxSelections": 3,
+      "options": [
+        {
+          "id": "a",
+          "text": "Operation.",
+          "correct": true,
+          "explanation": "Der Eingriff ist ein zentrales Fachobjekt."
+        },
+        {
+          "id": "b",
+          "text": "Arzt.",
+          "correct": true,
+          "explanation": "Ärztinnen und Ärzte sind am Eingriff beteiligt."
+        },
+        {
+          "id": "c",
+          "text": "Anästhesie und Medikament.",
+          "correct": true,
+          "explanation": "Anästhesie und eingesetzte Medikamente müssen abgebildet werden."
+        },
+        {
+          "id": "d",
+          "text": "SQL-Statement als einzige Entität.",
+          "correct": false,
+          "explanation": "SQL-Anweisungen sind keine Fachobjekte des OP-Modells."
+        }
+      ]
+    },
+    {
+      "id": "pv2fiae_easy_t09_sql_insert_doctor",
+      "conceptId": "pv2fiae_easy_t09_sql_insert_doctor",
+      "variantId": "pv2fiae_easy_t09_sql_insert_doctor_v03",
+      "interactionType": "single",
+      "questionKind": "beste_option_im_mini_szenario",
+      "badgeLabel": "Eine Antwort ist richtig.",
+      "isNew": true,
+      "prompt": "Welche DML-Operation passt zum Einfügen eines Arztes?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "`INSERT INTO Arzt (...) VALUES (...);`.",
+          "correct": true,
+          "explanation": "Neue Datensätze werden mit INSERT eingefügt."
+        },
+        {
+          "id": "b",
+          "text": "`GRANT Arzt TO INSERT`.",
+          "correct": false,
+          "explanation": "GRANT vergibt Rechte, legt aber keinen Arzt an."
+        },
+        {
+          "id": "c",
+          "text": "`REVOKE FROM Arzt`.",
+          "correct": false,
+          "explanation": "REVOKE entzieht Rechte."
+        },
+        {
+          "id": "d",
+          "text": "`ALTER TABLE Arzt DROP` ohne Spaltenziel.",
+          "correct": false,
+          "explanation": "Das ist keine Einfügeoperation."
+        }
+      ]
+    },
+    {
+      "id": "pv2fiae_easy_t09_sql_grant_write",
+      "conceptId": "pv2fiae_easy_t09_sql_grant_write",
+      "variantId": "pv2fiae_easy_t09_sql_grant_write_v03",
+      "interactionType": "single",
+      "questionKind": "beste_option_im_mini_szenario",
+      "badgeLabel": "Eine Antwort ist richtig.",
+      "isNew": true,
+      "prompt": "Welche Rechteanweisung passt zum Erlauben von Änderungen an `Verschreibungen`?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "`GRANT INSERT, UPDATE, DELETE ON Verschreibungen TO ...`.",
+          "correct": true,
+          "explanation": "Schreibrechte werden mit GRANT vergeben."
+        },
+        {
+          "id": "b",
+          "text": "`REVOKE INSERT ON Verschreibungen FROM ...`.",
+          "correct": false,
+          "explanation": "REVOKE entzieht Rechte."
+        },
+        {
+          "id": "c",
+          "text": "`SELECT AVG(*) FROM Verschreibungen`.",
+          "correct": false,
+          "explanation": "Das ist eine Auswertung."
+        },
+        {
+          "id": "d",
+          "text": "`ALTER TABLE Verschreibungen ADD Email`.",
+          "correct": false,
+          "explanation": "Das ändert die Tabellenstruktur, vergibt aber keine Rechte."
+        }
+      ]
+    },
+    {
+      "id": "pv2fiae_easy_t09_sql_revoke_write",
+      "conceptId": "pv2fiae_easy_t09_sql_revoke_write",
+      "variantId": "pv2fiae_easy_t09_sql_revoke_write_v03",
+      "interactionType": "single",
+      "questionKind": "beste_option_im_mini_szenario",
+      "badgeLabel": "Eine Antwort ist richtig.",
+      "isNew": true,
+      "prompt": "Welche Rechteanweisung passt zum Entfernen von Schreibrechten?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "`REVOKE INSERT, UPDATE, DELETE ON Verschreibungen FROM ...`.",
+          "correct": true,
+          "explanation": "REVOKE nimmt Rechte zurück."
+        },
+        {
+          "id": "b",
+          "text": "`GRANT DELETE ON Verschreibungen TO ...`.",
+          "correct": false,
+          "explanation": "Das würde ein Schreibrecht vergeben."
+        },
+        {
+          "id": "c",
+          "text": "`INSERT INTO Verschreibungen`.",
+          "correct": false,
+          "explanation": "Das fügt Daten ein."
+        },
+        {
+          "id": "d",
+          "text": "`GROUP BY Patient`.",
+          "correct": false,
+          "explanation": "Das ist keine Rechteverwaltung."
+        }
+      ]
+    },
+    {
+      "id": "pv2fiae_easy_t09_sql_email_not_null",
+      "conceptId": "pv2fiae_easy_t09_sql_email_not_null",
+      "variantId": "pv2fiae_easy_t09_sql_email_not_null_v03",
+      "interactionType": "single",
+      "questionKind": "beste_option_im_mini_szenario",
+      "badgeLabel": "Eine Antwort ist richtig.",
+      "isNew": true,
+      "prompt": "Wie wird eine Spalte `Email` fachlich sicher zum Pflichtfeld gemacht?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Vorhandene NULL-Werte bereinigen und dann die Spalte auf NOT NULL ändern.",
+          "correct": true,
+          "explanation": "Sonst kann die Strukturänderung scheitern oder Daten verletzen."
+        },
+        {
+          "id": "b",
+          "text": "Sofort alle Patientendaten löschen.",
+          "correct": false,
+          "explanation": "Das wäre keine sichere Migration."
+        },
+        {
+          "id": "c",
+          "text": "GRANT auf Email ausführen.",
+          "correct": false,
+          "explanation": "GRANT ändert keine Pflichtfelddefinition."
+        },
+        {
+          "id": "d",
+          "text": "Branch Coverage auf Email anwenden.",
+          "correct": false,
+          "explanation": "Das ist ein Testbegriff."
+        }
+      ]
+    },
+    {
+      "id": "pv2fiae_easy_t09_sql_patients_three_prescriptions",
+      "conceptId": "pv2fiae_easy_t09_sql_patients_three_prescriptions",
+      "variantId": "pv2fiae_easy_t09_sql_patients_three_prescriptions_v03",
+      "interactionType": "single",
+      "questionKind": "beste_option_im_mini_szenario",
+      "badgeLabel": "Eine Antwort ist richtig.",
+      "isNew": true,
+      "prompt": "Welche Abfrageidee passt zu „mindestens drei Verschreibungen pro Patient“?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "`GROUP BY Patient` mit `HAVING COUNT(*) >= 3`.",
+          "correct": true,
+          "explanation": "Die Anzahl entsteht pro Patient nach der Gruppierung."
+        },
+        {
+          "id": "b",
+          "text": "`WHERE COUNT(*) >= 3` ohne Gruppierung.",
+          "correct": false,
+          "explanation": "Aggregatfilter gehören hier in HAVING."
+        },
+        {
+          "id": "c",
+          "text": "`REVOKE COUNT ON Patient`.",
+          "correct": false,
+          "explanation": "Das ist keine Auswertung."
+        },
+        {
+          "id": "d",
+          "text": "`ALTER TABLE Patient SET COUNT`.",
+          "correct": false,
+          "explanation": "Das ist keine sinnvolle Abfrage."
+        }
+      ]
+    },
+    {
+      "id": "pv2fiae_easy_t09_sql_avg_prescriptions",
+      "conceptId": "pv2fiae_easy_t09_sql_avg_prescriptions",
+      "variantId": "pv2fiae_easy_t09_sql_avg_prescriptions_v03",
+      "interactionType": "single",
+      "questionKind": "beste_option_im_mini_szenario",
+      "badgeLabel": "Eine Antwort ist richtig.",
+      "isNew": true,
+      "prompt": "Wie entsteht ein Durchschnitt über patientenbezogene Verschreibungszahlen?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Erst je Patient zählen, dann über diese Zählwerte den Durchschnitt bilden.",
+          "correct": true,
+          "explanation": "Der Durchschnitt bezieht sich auf Patientengruppen."
+        },
+        {
+          "id": "b",
+          "text": "Nur `COUNT(*)` über alle Verschreibungen ohne Patientenbezug.",
+          "correct": false,
+          "explanation": "Das liefert keinen Durchschnitt pro Patient."
+        },
+        {
+          "id": "c",
+          "text": "Schreibrechte entziehen.",
+          "correct": false,
+          "explanation": "Das ist Rechteverwaltung."
+        },
+        {
+          "id": "d",
+          "text": "Nur die Email-Spalte ändern.",
+          "correct": false,
+          "explanation": "Das berechnet keinen Durchschnitt."
+        }
+      ]
+    },
+    {
+      "id": "pv2fiae_easy_t09_sequence_standard_medication_fallback",
+      "conceptId": "pv2fiae_easy_t09_sequence_standard_medication_fallback",
+      "variantId": "pv2fiae_easy_t09_sequence_standard_medication_fallback_v03",
+      "interactionType": "single",
+      "questionKind": "beste_option_im_mini_szenario",
+      "badgeLabel": "Eine Antwort ist richtig.",
+      "isNew": true,
+      "prompt": "Welche Bedingung führt zum Abruf der Standardmedikation?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Wenn keine individuelle Einnahme hinterlegt ist.",
+          "correct": true,
+          "explanation": "Der Standardwert ist der Fallback für fehlende individuelle Angaben."
+        },
+        {
+          "id": "b",
+          "text": "Immer vor jeder Verordnung.",
+          "correct": false,
+          "explanation": "Der Abruf ist nur der Ersatzpfad."
+        },
+        {
+          "id": "c",
+          "text": "Nur beim GRANT auf Verschreibungen.",
+          "correct": false,
+          "explanation": "Das ist Rechteverwaltung."
+        },
+        {
+          "id": "d",
+          "text": "Wenn die Station über 80 Prozent liegt.",
+          "correct": false,
+          "explanation": "Das gehört zur Auslastung."
+        }
+      ]
+    },
+    {
+      "id": "pv2fiae_easy_t09_sql_select_vs_dml",
+      "conceptId": "pv2fiae_easy_t09_sql_select_vs_dml",
+      "variantId": "pv2fiae_easy_t09_sql_select_vs_dml_v03",
+      "interactionType": "single",
+      "questionKind": "beste_option_im_mini_szenario",
+      "badgeLabel": "Eine Antwort ist richtig.",
+      "isNew": true,
+      "prompt": "Welche Anweisung schreibt aktiv einen neuen Arzt in die Tabelle?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "`INSERT`.",
+          "correct": true,
+          "explanation": "INSERT fügt Daten ein und verändert den Tabelleninhalt."
+        },
+        {
+          "id": "b",
+          "text": "`SELECT`.",
+          "correct": false,
+          "explanation": "SELECT liest Daten."
+        },
+        {
+          "id": "c",
+          "text": "`GROUP BY`.",
+          "correct": false,
+          "explanation": "GROUP BY gruppiert eine Abfrage."
+        },
+        {
+          "id": "d",
+          "text": "`HAVING`.",
+          "correct": false,
+          "explanation": "HAVING filtert Gruppen."
+        }
+      ]
+    }
+  ]
+}

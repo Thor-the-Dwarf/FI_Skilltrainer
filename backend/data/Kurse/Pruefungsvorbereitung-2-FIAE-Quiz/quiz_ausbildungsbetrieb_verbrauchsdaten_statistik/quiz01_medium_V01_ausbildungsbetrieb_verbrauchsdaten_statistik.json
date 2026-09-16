@@ -1,0 +1,916 @@
+{
+  "scenarioFolder": "Pruefungsvorbereitung-2-FIAE-Scenarien",
+  "quizFolder": "Pruefungsvorbereitung-2-FIAE-Quiz",
+  "scenarioFile": "ticket_ausbildungsbetrieb_verbrauchsdaten_statistik/01_medium_ausbildungsbetrieb_verbrauchsdaten_statistik.json",
+  "quizFile": "quiz_ausbildungsbetrieb_verbrauchsdaten_statistik/quiz01_medium_V01_ausbildungsbetrieb_verbrauchsdaten_statistik.json",
+  "ticketId": "01_medium_ausbildungsbetrieb_verbrauchsdaten_statistik.json",
+  "versionId": "V01",
+  "title": "Ticket 01 Medium - Verbrauchsdatenstatistik, Tests und SQL",
+  "description": "Manuell verfasstes AP2-FIAE-Training im mittleren Anspruchsniveau zu Verbrauchsdaten, Unit-Tests, Normalisierung, Triggern, Indizes und SQL-Abfragen.",
+  "topics": [
+    "Verbrauchsdaten, Min/Max-Logik und Limitüberschreitungen in betrieblichen Fällen belastbar einordnen",
+    "Unit-Tests, 3NF, Stored Procedures, Trigger, Indizes und SQL-Abfragen mit Transfer sicher abwägen"
+  ],
+  "questions": [
+    {
+      "id": "pv2fiae_medium_t01_monatsverbrauch_kumuliert",
+      "conceptId": "pv2fiae_medium_t01_monatsverbrauch_kumuliert",
+      "variantId": "pv2fiae_medium_t01_monatsverbrauch_kumuliert_v01",
+      "interactionType": "single",
+      "questionKind": "beste_option_im_mini_szenario",
+      "badgeLabel": "Eine Antwort ist richtig.",
+      "isNew": true,
+      "prompt": "Ein Entwickler verwendet für März `verbrauch[zeile][4] - verbrauch[zeile][1]`. Was ist daran fachlich falsch?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Er berechnet den Verbrauch seit Vorjahr bis März, nicht den Märzverbrauch.",
+          "correct": true,
+          "explanation": "Für März muss Märzstand minus Februarstand gerechnet werden."
+        },
+        {
+          "id": "b",
+          "text": "Er greift nie auf kumulierte Werte zu.",
+          "correct": false,
+          "explanation": "Er nutzt kumulierte Werte, aber falsch."
+        },
+        {
+          "id": "c",
+          "text": "Er berechnet nur die VerbraucherNr.",
+          "correct": false,
+          "explanation": "Die Spalten 4 und 1 sind keine VerbraucherNr."
+        },
+        {
+          "id": "d",
+          "text": "Die Formel ist für jeden Monatsverbrauch korrekt.",
+          "correct": false,
+          "explanation": "Sie ist nur für einen Zeitraum seit Vorjahr geeignet."
+        }
+      ]
+    },
+    {
+      "id": "pv2fiae_medium_t01_schleifengrenzen",
+      "conceptId": "pv2fiae_medium_t01_schleifengrenzen",
+      "variantId": "pv2fiae_medium_t01_schleifengrenzen_v01",
+      "interactionType": "single",
+      "questionKind": "beste_option_im_mini_szenario",
+      "badgeLabel": "Eine Antwort ist richtig.",
+      "isNew": true,
+      "prompt": "Welche Schleifengrenze ist für zwölf Monatsverbräuche bei Spalten 2 bis 13 plausibel?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Eine Schleife über `spalte = 2` bis einschließlich `13`.",
+          "correct": true,
+          "explanation": "So wird jeder Monatsstand mit dem vorherigen Stand verglichen."
+        },
+        {
+          "id": "b",
+          "text": "Eine Schleife nur über `spalte = 0`.",
+          "correct": false,
+          "explanation": "Dort steht nur die VerbraucherNr."
+        },
+        {
+          "id": "c",
+          "text": "Eine Schleife ab `spalte = 14`.",
+          "correct": false,
+          "explanation": "Diese Spalte liegt außerhalb der beschriebenen Monatswerte."
+        },
+        {
+          "id": "d",
+          "text": "Gar keine Schleife, weil nur ein Monat existiert.",
+          "correct": false,
+          "explanation": "Es gibt zwölf Monatswerte."
+        }
+      ]
+    },
+    {
+      "id": "pv2fiae_medium_t01_minmax_update",
+      "conceptId": "pv2fiae_medium_t01_minmax_update",
+      "variantId": "pv2fiae_medium_t01_minmax_update_v01",
+      "interactionType": "single",
+      "questionKind": "beste_option_im_mini_szenario",
+      "badgeLabel": "Eine Antwort ist richtig.",
+      "isNew": true,
+      "prompt": "Wann müssen Minimum und Maximum aktualisiert werden?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Nach jeder berechneten Monatsdifferenz, wenn der neue Wert kleiner beziehungsweise größer ist.",
+          "correct": true,
+          "explanation": "Min/Max beziehen sich auf alle Monatsverbräuche."
+        },
+        {
+          "id": "b",
+          "text": "Nur nach der letzten Zeile.",
+          "correct": false,
+          "explanation": "Dann fehlen vorherige Vergleiche."
+        },
+        {
+          "id": "c",
+          "text": "Nur wenn die VerbraucherNr gerade ist.",
+          "correct": false,
+          "explanation": "Das ist keine fachliche Bedingung."
+        },
+        {
+          "id": "d",
+          "text": "Vor jeder Berechnung mit einem Textwert.",
+          "correct": false,
+          "explanation": "Textwerte sind für Min/Max ungeeignet."
+        }
+      ]
+    },
+    {
+      "id": "pv2fiae_medium_t01_limit_liste",
+      "conceptId": "pv2fiae_medium_t01_limit_liste",
+      "variantId": "pv2fiae_medium_t01_limit_liste_v01",
+      "interactionType": "single",
+      "questionKind": "beste_option_im_mini_szenario",
+      "badgeLabel": "Eine Antwort ist richtig.",
+      "isNew": true,
+      "prompt": "Warum muss die Liste `limitVerbraucher` innerhalb der Auswertung gepflegt werden?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Sie sammelt alle Verbraucher-Monats-Kombinationen, die den Schwellenwert überschreiten.",
+          "correct": true,
+          "explanation": "So bleibt die Ergebnisliste vollständig."
+        },
+        {
+          "id": "b",
+          "text": "Sie ersetzt die Eingabematrix.",
+          "correct": false,
+          "explanation": "Die Eingabedaten bleiben separate Quelle."
+        },
+        {
+          "id": "c",
+          "text": "Sie enthält nur den kleinsten Monatsverbrauch.",
+          "correct": false,
+          "explanation": "Dafür ist ein separater Min-Wert zuständig."
+        },
+        {
+          "id": "d",
+          "text": "Sie speichert ausschließlich SQL-Anweisungen.",
+          "correct": false,
+          "explanation": "Die Liste gehört zur Algorithmik."
+        }
+      ]
+    },
+    {
+      "id": "pv2fiae_medium_t01_monatsnummer",
+      "conceptId": "pv2fiae_medium_t01_monatsnummer",
+      "variantId": "pv2fiae_medium_t01_monatsnummer_v01",
+      "interactionType": "single",
+      "questionKind": "beste_option_im_mini_szenario",
+      "badgeLabel": "Eine Antwort ist richtig.",
+      "isNew": true,
+      "prompt": "Welche Monatsangabe sollte bei Spalte 2 gespeichert werden, wenn Spalte 2 für Januar steht?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Januar beziehungsweise Monatsnummer 1.",
+          "correct": true,
+          "explanation": "Die Array-Spalte muss auf den fachlichen Monat abgebildet werden."
+        },
+        {
+          "id": "b",
+          "text": "Monatsnummer 2, weil die Array-Spalte 2 heißt.",
+          "correct": false,
+          "explanation": "Die Spaltenverschiebung durch VerbraucherNr und Vorjahr muss berücksichtigt werden."
+        },
+        {
+          "id": "c",
+          "text": "Vorjahr",
+          "correct": false,
+          "explanation": "Vorjahr steht in Spalte 1."
+        },
+        {
+          "id": "d",
+          "text": "VerbraucherNr",
+          "correct": false,
+          "explanation": "Die VerbraucherNr steht in Spalte 0."
+        }
+      ]
+    },
+    {
+      "id": "pv2fiae_medium_t01_ergebnisobjekt_qualitaet",
+      "conceptId": "pv2fiae_medium_t01_ergebnisobjekt_qualitaet",
+      "variantId": "pv2fiae_medium_t01_ergebnisobjekt_qualitaet_v01",
+      "interactionType": "multi",
+      "questionKind": "mehrere_richtige_antworten_waehlen",
+      "badgeLabel": "Mehrere Antworten sind richtig.",
+      "isNew": true,
+      "prompt": "Welche Punkte machen die Ergebnisobjekte für Limitüberschreitungen auswertbar?",
+      "maxSelections": 3,
+      "options": [
+        {
+          "id": "a",
+          "text": "Eindeutige VerbraucherNr",
+          "correct": true,
+          "explanation": "Der Anschluss muss identifizierbar sein."
+        },
+        {
+          "id": "b",
+          "text": "Fachlich korrekter Monat",
+          "correct": true,
+          "explanation": "Der Zeitpunkt der Überschreitung muss stimmen."
+        },
+        {
+          "id": "c",
+          "text": "Berechneter Monatsverbrauch",
+          "correct": true,
+          "explanation": "Ohne Wert ist die Überschreitung nicht nachvollziehbar."
+        },
+        {
+          "id": "d",
+          "text": "Sortierung nach einem irrelevanten persönlichen Merkmal",
+          "correct": false,
+          "explanation": "Das trägt nichts zur fachlichen Auswertung bei."
+        },
+        {
+          "id": "e",
+          "text": "Zufällige Monatsnamen",
+          "correct": false,
+          "explanation": "Zufall würde die Auswertung verfälschen."
+        }
+      ]
+    },
+    {
+      "id": "pv2fiae_medium_t01_unit_test_isolation",
+      "conceptId": "pv2fiae_medium_t01_unit_test_isolation",
+      "variantId": "pv2fiae_medium_t01_unit_test_isolation_v01",
+      "interactionType": "single",
+      "questionKind": "beste_option_im_mini_szenario",
+      "badgeLabel": "Eine Antwort ist richtig.",
+      "isNew": true,
+      "prompt": "Warum sollte ein Unit-Test für `berechneDifferenz` möglichst isoliert sein?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Damit Fehler der Methode sichtbar werden und nicht von Datenbank, UI oder Netzwerk abhängen.",
+          "correct": true,
+          "explanation": "Unit-Tests prüfen kleine Einheiten unabhängig."
+        },
+        {
+          "id": "b",
+          "text": "Damit er nur im Produktivsystem läuft.",
+          "correct": false,
+          "explanation": "Unit-Tests sollen gerade sicher und wiederholbar laufen."
+        },
+        {
+          "id": "c",
+          "text": "Damit keine erwarteten Ergebnisse definiert werden müssen.",
+          "correct": false,
+          "explanation": "Ohne Erwartung ist der Test wertlos."
+        },
+        {
+          "id": "d",
+          "text": "Damit er ausschließlich manuell bewertet wird.",
+          "correct": false,
+          "explanation": "Automatisierbarkeit ist ein Ziel."
+        }
+      ]
+    },
+    {
+      "id": "pv2fiae_medium_t01_testfaelle",
+      "conceptId": "pv2fiae_medium_t01_testfaelle",
+      "variantId": "pv2fiae_medium_t01_testfaelle_v01",
+      "interactionType": "multi",
+      "questionKind": "mehrere_richtige_antworten_waehlen",
+      "badgeLabel": "Mehrere Antworten sind richtig.",
+      "isNew": true,
+      "prompt": "Welche Testfälle sind für eine Differenzmethode sinnvoll?",
+      "maxSelections": 3,
+      "options": [
+        {
+          "id": "a",
+          "text": "Gültiger Normalfall mit erwartetem positiven Ergebnis",
+          "correct": true,
+          "explanation": "Der Standardpfad muss geprüft werden."
+        },
+        {
+          "id": "b",
+          "text": "Grenzfall am unteren erlaubten Wert",
+          "correct": true,
+          "explanation": "Randbedingungen decken typische Fehler auf."
+        },
+        {
+          "id": "c",
+          "text": "Ungültiger negativer Eingabewert mit erwarteter Fehlerreaktion",
+          "correct": true,
+          "explanation": "Fehlerbehandlung muss geprüft werden."
+        },
+        {
+          "id": "d",
+          "text": "Nur ein Test mit zufälligem Sollwert",
+          "correct": false,
+          "explanation": "Zufall macht das Ergebnis nicht belastbar."
+        },
+        {
+          "id": "e",
+          "text": "Ausschließlich Tests ohne Assertion",
+          "correct": false,
+          "explanation": "Ohne Prüfung gibt es kein Testergebnis."
+        }
+      ]
+    },
+    {
+      "id": "pv2fiae_medium_t01_aequivalenzklasse_auswahl",
+      "conceptId": "pv2fiae_medium_t01_aequivalenzklasse_auswahl",
+      "variantId": "pv2fiae_medium_t01_aequivalenzklasse_auswahl_v01",
+      "interactionType": "single",
+      "questionKind": "beste_option_im_mini_szenario",
+      "badgeLabel": "Eine Antwort ist richtig.",
+      "isNew": true,
+      "prompt": "Warum wählt man pro Äquivalenzklasse oft nur wenige repräsentative Werte?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Weil gleichartig behandelte Eingaben nicht alle einzeln getestet werden müssen.",
+          "correct": true,
+          "explanation": "Äquivalenzklassen reduzieren Testaufwand begründet."
+        },
+        {
+          "id": "b",
+          "text": "Weil nur ein einziger Test im Projekt erlaubt ist.",
+          "correct": false,
+          "explanation": "Das stimmt nicht."
+        },
+        {
+          "id": "c",
+          "text": "Weil ungültige Werte nie geprüft werden.",
+          "correct": false,
+          "explanation": "Ungültige Klassen sind wichtig."
+        },
+        {
+          "id": "d",
+          "text": "Weil Äquivalenzklassen Datenbankindizes sind.",
+          "correct": false,
+          "explanation": "Das ist fachlich falsch."
+        }
+      ]
+    },
+    {
+      "id": "pv2fiae_medium_t01_grenzwertfehler",
+      "conceptId": "pv2fiae_medium_t01_grenzwertfehler",
+      "variantId": "pv2fiae_medium_t01_grenzwertfehler_v01",
+      "interactionType": "single",
+      "questionKind": "beste_option_im_mini_szenario",
+      "badgeLabel": "Eine Antwort ist richtig.",
+      "isNew": true,
+      "prompt": "Eine Bedingung verwendet `>` statt `>=`. Welche Testart findet solche Fehler besonders gut?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Grenzwerttests direkt am Schwellenwert.",
+          "correct": true,
+          "explanation": "Der Unterschied zeigt sich am Rand."
+        },
+        {
+          "id": "b",
+          "text": "Nur ein Test weit oberhalb des Grenzwerts.",
+          "correct": false,
+          "explanation": "Der würde beide Bedingungen bestehen."
+        },
+        {
+          "id": "c",
+          "text": "Nur ein Test mit leerem Methodennamen.",
+          "correct": false,
+          "explanation": "Das prüft nicht die Logik."
+        },
+        {
+          "id": "d",
+          "text": "Eine reine Sortierprüfung.",
+          "correct": false,
+          "explanation": "Sortierung findet den Vergleichsfehler nicht."
+        }
+      ]
+    },
+    {
+      "id": "pv2fiae_medium_t01_fehlerwert_minus1",
+      "conceptId": "pv2fiae_medium_t01_fehlerwert_minus1",
+      "variantId": "pv2fiae_medium_t01_fehlerwert_minus1_v01",
+      "interactionType": "single",
+      "questionKind": "beste_option_im_mini_szenario",
+      "badgeLabel": "Eine Antwort ist richtig.",
+      "isNew": true,
+      "prompt": "Warum sollte der Rückgabewert `-1` für ungültige Eingaben dokumentiert sein?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Damit Tests und aufrufender Code die Fehlerkonvention eindeutig verstehen.",
+          "correct": true,
+          "explanation": "Fehlerwerte brauchen klare Bedeutung."
+        },
+        {
+          "id": "b",
+          "text": "Damit gültige Differenzen nie berechnet werden.",
+          "correct": false,
+          "explanation": "Das wäre falsch."
+        },
+        {
+          "id": "c",
+          "text": "Damit SQL-Abfragen schneller laufen.",
+          "correct": false,
+          "explanation": "Das hat damit nichts zu tun."
+        },
+        {
+          "id": "d",
+          "text": "Damit alle Ergebnisse negativ werden.",
+          "correct": false,
+          "explanation": "Nur ungültige Fälle sollen so markiert werden."
+        }
+      ]
+    },
+    {
+      "id": "pv2fiae_medium_t01_3nf_transitiv",
+      "conceptId": "pv2fiae_medium_t01_3nf_transitiv",
+      "variantId": "pv2fiae_medium_t01_3nf_transitiv_v01",
+      "interactionType": "single",
+      "questionKind": "beste_option_im_mini_szenario",
+      "badgeLabel": "Eine Antwort ist richtig.",
+      "isNew": true,
+      "prompt": "Ein Tarif speichert zusätzlich den Namen des Ansprechpartners, obwohl eine Ansprechpartner-ID vorhanden ist. Welches Problem entsteht?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Eine transitive beziehungsweise redundante Abhängigkeit kann Änderungsanomalien erzeugen.",
+          "correct": true,
+          "explanation": "Der Name hängt fachlich am Ansprechpartner, nicht am Tarifdatensatz."
+        },
+        {
+          "id": "b",
+          "text": "Die Tabelle hat dadurch automatisch keinen Primärschlüssel mehr.",
+          "correct": false,
+          "explanation": "Das folgt daraus nicht zwingend."
+        },
+        {
+          "id": "c",
+          "text": "SQL kann keine Namen vergleichen.",
+          "correct": false,
+          "explanation": "Das ist falsch."
+        },
+        {
+          "id": "d",
+          "text": "Jede Abfrage wird dadurch verboten.",
+          "correct": false,
+          "explanation": "Abfragen bleiben möglich, aber das Modell ist schlechter."
+        }
+      ]
+    },
+    {
+      "id": "pv2fiae_medium_t01_erm_zeitraum",
+      "conceptId": "pv2fiae_medium_t01_erm_zeitraum",
+      "variantId": "pv2fiae_medium_t01_erm_zeitraum_v01",
+      "interactionType": "single",
+      "questionKind": "beste_option_im_mini_szenario",
+      "badgeLabel": "Eine Antwort ist richtig.",
+      "isNew": true,
+      "prompt": "Warum sollten Tarifzeiträume modelliert werden, statt nur einen aktuellen Preis zu speichern?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Damit historische und zukünftige Gültigkeiten nachvollziehbar bleiben.",
+          "correct": true,
+          "explanation": "Tarife sind zeitabhängige Fachobjekte."
+        },
+        {
+          "id": "b",
+          "text": "Damit keine Preise mehr gespeichert werden.",
+          "correct": false,
+          "explanation": "Preise bleiben relevant."
+        },
+        {
+          "id": "c",
+          "text": "Damit jeder Ansprechpartner gelöscht wird.",
+          "correct": false,
+          "explanation": "Das ist kein Modellierungsziel."
+        },
+        {
+          "id": "d",
+          "text": "Damit Monatsverbräuche nicht mehr berechnet werden.",
+          "correct": false,
+          "explanation": "Das betrifft eine andere Aufgabe."
+        }
+      ]
+    },
+    {
+      "id": "pv2fiae_medium_t01_referenzielle_integritaet",
+      "conceptId": "pv2fiae_medium_t01_referenzielle_integritaet",
+      "variantId": "pv2fiae_medium_t01_referenzielle_integritaet_v01",
+      "interactionType": "single",
+      "questionKind": "beste_option_im_mini_szenario",
+      "badgeLabel": "Eine Antwort ist richtig.",
+      "isNew": true,
+      "prompt": "Was sichert referenzielle Integrität im Tarifmodell?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Ein Fremdschlüssel verweist nur auf vorhandene Ansprechpartner oder Tarife.",
+          "correct": true,
+          "explanation": "So werden ungültige Beziehungen verhindert."
+        },
+        {
+          "id": "b",
+          "text": "Jeder Text wird automatisch großgeschrieben.",
+          "correct": false,
+          "explanation": "Das ist keine referenzielle Integrität."
+        },
+        {
+          "id": "c",
+          "text": "Alle Tabellen werden zusammen gelöscht.",
+          "correct": false,
+          "explanation": "Das ist nicht das Ziel."
+        },
+        {
+          "id": "d",
+          "text": "Alle Preise werden auf 0 gesetzt.",
+          "correct": false,
+          "explanation": "Das wäre fachlich falsch."
+        }
+      ]
+    },
+    {
+      "id": "pv2fiae_medium_t01_stored_procedure_einsatz",
+      "conceptId": "pv2fiae_medium_t01_stored_procedure_einsatz",
+      "variantId": "pv2fiae_medium_t01_stored_procedure_einsatz_v01",
+      "interactionType": "single",
+      "questionKind": "beste_option_im_mini_szenario",
+      "badgeLabel": "Eine Antwort ist richtig.",
+      "isNew": true,
+      "prompt": "Wann ist eine Stored Procedure im Datenbankkontext sinnvoll?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Wenn wiederkehrende Datenbanklogik kontrolliert und zentral ausgeführt werden soll.",
+          "correct": true,
+          "explanation": "Prozeduren können wiederverwendbare Logik bündeln."
+        },
+        {
+          "id": "b",
+          "text": "Wenn jede Fachregel in der Oberfläche versteckt werden soll.",
+          "correct": false,
+          "explanation": "Das wäre keine saubere Begründung."
+        },
+        {
+          "id": "c",
+          "text": "Wenn niemals Parameter benötigt werden.",
+          "correct": false,
+          "explanation": "Prozeduren können Parameter nutzen."
+        },
+        {
+          "id": "d",
+          "text": "Wenn Tabellen durch Bilder ersetzt werden.",
+          "correct": false,
+          "explanation": "Das ist sachfremd."
+        }
+      ]
+    },
+    {
+      "id": "pv2fiae_medium_t01_trigger_risiko",
+      "conceptId": "pv2fiae_medium_t01_trigger_risiko",
+      "variantId": "pv2fiae_medium_t01_trigger_risiko_v01",
+      "interactionType": "single",
+      "questionKind": "beste_option_im_mini_szenario",
+      "badgeLabel": "Eine Antwort ist richtig.",
+      "isNew": true,
+      "prompt": "Welches Risiko haben Trigger?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Automatisch ausgeführte Logik kann versteckte Nebenwirkungen erzeugen.",
+          "correct": true,
+          "explanation": "Trigger müssen deshalb dokumentiert und gezielt eingesetzt werden."
+        },
+        {
+          "id": "b",
+          "text": "Sie können niemals Daten verändern.",
+          "correct": false,
+          "explanation": "Viele Trigger reagieren gerade auf Datenänderungen."
+        },
+        {
+          "id": "c",
+          "text": "Sie sind immer schneller als jeder Index.",
+          "correct": false,
+          "explanation": "Das ist nicht ihre Aufgabe."
+        },
+        {
+          "id": "d",
+          "text": "Sie ersetzen jedes Datenmodell.",
+          "correct": false,
+          "explanation": "Nein."
+        }
+      ]
+    },
+    {
+      "id": "pv2fiae_medium_t01_index_abwaegung",
+      "conceptId": "pv2fiae_medium_t01_index_abwaegung",
+      "variantId": "pv2fiae_medium_t01_index_abwaegung_v01",
+      "interactionType": "multi",
+      "questionKind": "mehrere_richtige_antworten_waehlen",
+      "badgeLabel": "Mehrere Antworten sind richtig.",
+      "isNew": true,
+      "prompt": "Welche Aussagen zu Indizes sind fachlich ausgewogen?",
+      "maxSelections": 2,
+      "options": [
+        {
+          "id": "a",
+          "text": "Ein Index kann Filter auf Datumsspalten beschleunigen.",
+          "correct": true,
+          "explanation": "Suchstrukturen helfen bei passenden WHERE- und ORDER-BY-Fällen."
+        },
+        {
+          "id": "b",
+          "text": "Zu viele Indizes können Schreiboperationen verlangsamen.",
+          "correct": true,
+          "explanation": "Indizes müssen bei Änderungen gepflegt werden."
+        },
+        {
+          "id": "c",
+          "text": "Ein Index macht falsche JOIN-Bedingungen korrekt.",
+          "correct": false,
+          "explanation": "Logische Fehler bleiben falsch."
+        },
+        {
+          "id": "d",
+          "text": "Ein Index speichert automatisch Monatsverbräuche.",
+          "correct": false,
+          "explanation": "Das ist keine Indexaufgabe."
+        }
+      ]
+    },
+    {
+      "id": "pv2fiae_medium_t01_index_datum",
+      "conceptId": "pv2fiae_medium_t01_index_datum",
+      "variantId": "pv2fiae_medium_t01_index_datum_v01",
+      "interactionType": "single",
+      "questionKind": "beste_option_im_mini_szenario",
+      "badgeLabel": "Eine Antwort ist richtig.",
+      "isNew": true,
+      "prompt": "Warum ist ein Index auf `ZS_Datum` plausibel?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Weil Abfragen nach Ablesezeitraum oder Jahr schneller gefiltert werden können.",
+          "correct": true,
+          "explanation": "Datumsspalten werden oft in Zeitraumberichten genutzt."
+        },
+        {
+          "id": "b",
+          "text": "Weil dadurch alle Haushalte automatisch einen Zähler erhalten.",
+          "correct": false,
+          "explanation": "Das löst kein Zuordnungsproblem."
+        },
+        {
+          "id": "c",
+          "text": "Weil Primärschlüssel dann unnötig sind.",
+          "correct": false,
+          "explanation": "Das stimmt nicht."
+        },
+        {
+          "id": "d",
+          "text": "Weil SQL dadurch ohne WHERE funktioniert.",
+          "correct": false,
+          "explanation": "WHERE bleibt fachlich nötig."
+        }
+      ]
+    },
+    {
+      "id": "pv2fiae_medium_t01_delete_not_exists",
+      "conceptId": "pv2fiae_medium_t01_delete_not_exists",
+      "variantId": "pv2fiae_medium_t01_delete_not_exists_v01",
+      "interactionType": "single",
+      "questionKind": "beste_option_im_mini_szenario",
+      "badgeLabel": "Eine Antwort ist richtig.",
+      "isNew": true,
+      "prompt": "Welche SQL-Logik ist für Haushalte ohne Zähler fachlich robust?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Eine Prüfung mit `NOT EXISTS` oder einem LEFT JOIN auf fehlende Zähler.",
+          "correct": true,
+          "explanation": "Beide Varianten suchen fehlende Beziehungen."
+        },
+        {
+          "id": "b",
+          "text": "Ein blindes `DELETE FROM Haushalt` ohne Bedingung.",
+          "correct": false,
+          "explanation": "Das würde alle Haushalte löschen."
+        },
+        {
+          "id": "c",
+          "text": "Ein `ORDER BY` ohne Filter.",
+          "correct": false,
+          "explanation": "Sortieren findet keine fehlenden Zähler."
+        },
+        {
+          "id": "d",
+          "text": "Ein `COUNT(*)` ohne Bezug zum Haushalt.",
+          "correct": false,
+          "explanation": "Dann fehlt die Zuordnung."
+        }
+      ]
+    },
+    {
+      "id": "pv2fiae_medium_t01_join_zaehlung",
+      "conceptId": "pv2fiae_medium_t01_join_zaehlung",
+      "variantId": "pv2fiae_medium_t01_join_zaehlung_v01",
+      "interactionType": "single",
+      "questionKind": "beste_option_im_mini_szenario",
+      "badgeLabel": "Eine Antwort ist richtig.",
+      "isNew": true,
+      "prompt": "Warum braucht die Zählerzählung eine Beziehung zwischen Haushalt und Zähler?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Nur so wird gezählt, welche Zähler zu welchem Haushalt gehören.",
+          "correct": true,
+          "explanation": "Die Aggregation muss fachlich gruppiert sein."
+        },
+        {
+          "id": "b",
+          "text": "Damit alle Nachnamen gelöscht werden.",
+          "correct": false,
+          "explanation": "Das ist nicht Ziel der Zählung."
+        },
+        {
+          "id": "c",
+          "text": "Damit jede Tabelle dieselbe Spaltenzahl hat.",
+          "correct": false,
+          "explanation": "Das ist keine fachliche Notwendigkeit."
+        },
+        {
+          "id": "d",
+          "text": "Damit Trigger deaktiviert werden.",
+          "correct": false,
+          "explanation": "Das ist nicht der Kern."
+        }
+      ]
+    },
+    {
+      "id": "pv2fiae_medium_t01_having_vs_where",
+      "conceptId": "pv2fiae_medium_t01_having_vs_where",
+      "variantId": "pv2fiae_medium_t01_having_vs_where_v01",
+      "interactionType": "single",
+      "questionKind": "beste_option_im_mini_szenario",
+      "badgeLabel": "Eine Antwort ist richtig.",
+      "isNew": true,
+      "prompt": "Wann wird `HAVING` statt `WHERE` benötigt?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Wenn nach einem Aggregatergebnis wie `COUNT(...)` gefiltert wird.",
+          "correct": true,
+          "explanation": "HAVING filtert Gruppen nach Aggregation."
+        },
+        {
+          "id": "b",
+          "text": "Wenn einzelne Rohdatensätze vor der Gruppierung gefiltert werden.",
+          "correct": false,
+          "explanation": "Das ist typischerweise WHERE."
+        },
+        {
+          "id": "c",
+          "text": "Wenn eine Tabelle erstellt wird.",
+          "correct": false,
+          "explanation": "Das ist CREATE."
+        },
+        {
+          "id": "d",
+          "text": "Wenn ein Index gelöscht wird.",
+          "correct": false,
+          "explanation": "Das ist keine HAVING-Aufgabe."
+        }
+      ]
+    },
+    {
+      "id": "pv2fiae_medium_t01_verbrauch_sql_differenz",
+      "conceptId": "pv2fiae_medium_t01_verbrauch_sql_differenz",
+      "variantId": "pv2fiae_medium_t01_verbrauch_sql_differenz_v01",
+      "interactionType": "single",
+      "questionKind": "beste_option_im_mini_szenario",
+      "badgeLabel": "Eine Antwort ist richtig.",
+      "isNew": true,
+      "prompt": "Eine Verbrauchsabfrage verbindet Zählerstände 2021 und 2022. Welche Berechnung gehört in die Ausgabe?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Zählerstand 2022 minus Zählerstand 2021.",
+          "correct": true,
+          "explanation": "So entsteht der Verbrauch zwischen den Ablesungen."
+        },
+        {
+          "id": "b",
+          "text": "Zählerstand 2021 minus Zählerstand 2022.",
+          "correct": false,
+          "explanation": "Das Vorzeichen wäre bei steigendem Zähler falsch."
+        },
+        {
+          "id": "c",
+          "text": "COUNT der Haushaltsnamen.",
+          "correct": false,
+          "explanation": "Das zählt Namen, berechnet aber keinen Verbrauch."
+        },
+        {
+          "id": "d",
+          "text": "Der Indexname minus Datum.",
+          "correct": false,
+          "explanation": "Das ist keine fachliche Rechnung."
+        }
+      ]
+    },
+    {
+      "id": "pv2fiae_medium_t01_sortierung_nachname",
+      "conceptId": "pv2fiae_medium_t01_sortierung_nachname",
+      "variantId": "pv2fiae_medium_t01_sortierung_nachname_v01",
+      "interactionType": "single",
+      "questionKind": "beste_option_im_mini_szenario",
+      "badgeLabel": "Eine Antwort ist richtig.",
+      "isNew": true,
+      "prompt": "Warum gehört die Sortierung nach Nachnamen ans Ende der SQL-Abfrage?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Die Ergebnisliste wird nach Auswahl, JOIN und Berechnung geordnet ausgegeben.",
+          "correct": true,
+          "explanation": "ORDER BY sortiert das finale Ergebnis."
+        },
+        {
+          "id": "b",
+          "text": "Weil ORDER BY Tabellenbeziehungen ersetzt.",
+          "correct": false,
+          "explanation": "JOINs bleiben erforderlich."
+        },
+        {
+          "id": "c",
+          "text": "Weil ORDER BY Datensätze löscht.",
+          "correct": false,
+          "explanation": "ORDER BY löscht nicht."
+        },
+        {
+          "id": "d",
+          "text": "Weil ORDER BY einen Trigger anlegt.",
+          "correct": false,
+          "explanation": "Das ist falsch."
+        }
+      ]
+    },
+    {
+      "id": "pv2fiae_medium_t01_sql_alias",
+      "conceptId": "pv2fiae_medium_t01_sql_alias",
+      "variantId": "pv2fiae_medium_t01_sql_alias_v01",
+      "interactionType": "single",
+      "questionKind": "beste_option_im_mini_szenario",
+      "badgeLabel": "Eine Antwort ist richtig.",
+      "isNew": true,
+      "prompt": "Warum sind Aliase bei zwei Zählerstand-Tabellenbezügen sinnvoll?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Sie unterscheiden den alten und den neuen Ablesestand eindeutig.",
+          "correct": true,
+          "explanation": "Ohne Aliase werden Selbstvergleiche unübersichtlich."
+        },
+        {
+          "id": "b",
+          "text": "Sie verschlüsseln automatisch alle Daten.",
+          "correct": false,
+          "explanation": "Aliase sind keine Verschlüsselung."
+        },
+        {
+          "id": "c",
+          "text": "Sie löschen doppelte Haushalte ohne Logik.",
+          "correct": false,
+          "explanation": "Das tun sie nicht automatisch."
+        },
+        {
+          "id": "d",
+          "text": "Sie machen die Abfrage unabhängig von Tabellen.",
+          "correct": false,
+          "explanation": "Tabellen bleiben notwendig."
+        }
+      ]
+    }
+  ]
+}
