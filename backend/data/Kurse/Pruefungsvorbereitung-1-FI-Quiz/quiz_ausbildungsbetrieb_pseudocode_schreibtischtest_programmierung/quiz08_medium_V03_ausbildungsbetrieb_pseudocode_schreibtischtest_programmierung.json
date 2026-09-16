@@ -1,0 +1,1035 @@
+{
+  "scenarioFolder": "Pruefungsvorbereitung-1-FI-Scenarien",
+  "quizFolder": "Pruefungsvorbereitung-1-FI-Quiz",
+  "scenarioFile": "ticket_ausbildungsbetrieb_pseudocode_schreibtischtest_programmierung/08_medium_ausbildungsbetrieb_pseudocode_schreibtischtest_programmierung.json",
+  "quizFile": "quiz08_medium_V03_ausbildungsbetrieb_pseudocode_schreibtischtest_programmierung.json",
+  "ticketId": "08_medium_ausbildungsbetrieb_pseudocode_schreibtischtest_programmierung.json",
+  "versionId": "V03",
+  "title": "Ticket 08 Medium - Programmlogik, Pseudocode und Schreibtischtest",
+  "description": "Manuell verfasstes AP1-Training im mittleren Schwierigkeitsgrad zu Variablen, Bedingungen, Schleifen, Funktionen und nachvollziehbarer Logikprüfung in einem Anfrage-Modul.",
+  "topics": [
+    "Programmlogik für Anfrageprüfung, Validierung und Listenverarbeitung fachlich sauber strukturieren",
+    "Pseudocode, Schreibtischtest, Zwischenwerte und Kontrollstrukturen in einem Freigabemodul nachvollziehbar bewerten"
+  ],
+  "defaultInteractionType": "single",
+  "defaultQuestionKind": "eine_richtige_antwort_waehlen",
+  "defaultBadgeLabel": "Welche Antwort trifft am besten zu?",
+  "questions": [
+    {
+      "id": "pv1fi_medium_code_q01",
+      "conceptId": "pv1fi_medium_code_variable_rollierender_wert",
+      "variantId": "pv1fi_medium_code_variable_rollierender_wert_v03",
+      "interactionType": "single",
+      "questionKind": "definition_zu_begriff",
+      "badgeLabel": "Welche Aussage trifft am besten zu?",
+      "isNew": true,
+      "prompt": "Wofür braucht dieses Anfrage-Modul eine Variable am ehesten?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Sie speichert Werte, die sich im Ablauf merken oder verändern lassen.",
+          "correct": true,
+          "explanation": "Genau dafür werden Variablen in der Programmlogik gebraucht."
+        },
+        {
+          "id": "b",
+          "text": "Sie ersetzt jede Bedingung im gesamten Modul.",
+          "correct": false,
+          "explanation": "Variablen ersetzen keine Bedingungen."
+        },
+        {
+          "id": "c",
+          "text": "Sie beschreibt nur Optik, aber keine Struktur oder Beziehung.",
+          "correct": false,
+          "explanation": "Das verfehlt den geprüften IT-Zusammenhang."
+        },
+        {
+          "id": "d",
+          "text": "Sie sorgt automatisch für fehlerfreie Logik.",
+          "correct": false,
+          "explanation": "Auch Variablen müssen korrekt verwendet werden."
+        }
+      ]
+    },
+    {
+      "id": "pv1fi_medium_code_q02",
+      "conceptId": "pv1fi_medium_code_boolean_gueltig",
+      "variantId": "pv1fi_medium_code_boolean_gueltig_v03",
+      "interactionType": "single",
+      "questionKind": "beispiel_erkennen",
+      "badgeLabel": "Welches Beispiel passt am besten?",
+      "isNew": true,
+      "prompt": "Welcher Wert wäre in diesem Modul am ehesten ein boolescher Status?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Die Angabe, ob eine Anfrage gültig oder ungültig ist",
+          "correct": true,
+          "explanation": "Ein boolescher Wert bildet typischerweise genau solche Ja-Nein-Zustände ab."
+        },
+        {
+          "id": "b",
+          "text": "Die Anzahl aller angeforderten Plätze",
+          "correct": false,
+          "explanation": "Das ist eher ein Zähl- oder Summenwert."
+        },
+        {
+          "id": "c",
+          "text": "Der Name des Kunden",
+          "correct": false,
+          "explanation": "Das ist kein boolescher Zustand."
+        },
+        {
+          "id": "d",
+          "text": "Die Uhrzeit des Diagramm-Reviews",
+          "correct": false,
+          "explanation": "Auch das ist kein Ja-Nein-Wert."
+        }
+      ]
+    },
+    {
+      "id": "pv1fi_medium_code_q03",
+      "conceptId": "pv1fi_medium_code_zaehler_initialisierung",
+      "variantId": "pv1fi_medium_code_zaehler_initialisierung_v03",
+      "interactionType": "best",
+      "questionKind": "prioritaet_setzen",
+      "badgeLabel": "Was ist hier am wichtigsten?",
+      "isNew": true,
+      "prompt": "Was muss vor dem Zählen gültiger Anfragen zuerst feststehen?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Die Zählvariable vor dem ersten Durchlauf sinnvoll initialisieren",
+          "correct": true,
+          "explanation": "Ohne Startwert bleibt die Zähllogik nicht sauber nachvollziehbar."
+        },
+        {
+          "id": "b",
+          "text": "Die Schleife ohne Anfangswert starten und später hoffen",
+          "correct": false,
+          "explanation": "Das ist fachlich unsauber."
+        },
+        {
+          "id": "c",
+          "text": "Die Validierung überspringen, damit der Zähler schneller steigt",
+          "correct": false,
+          "explanation": "Das würde den fachlichen Zweck verfehlen."
+        },
+        {
+          "id": "d",
+          "text": "Nur die Ausgabefarbe der Zählung festlegen",
+          "correct": false,
+          "explanation": "Das hat nichts mit der Logik zu tun."
+        }
+      ]
+    },
+    {
+      "id": "pv1fi_medium_code_q04",
+      "conceptId": "pv1fi_medium_code_akkumulator_plaetze",
+      "variantId": "pv1fi_medium_code_akkumulator_plaetze_v03",
+      "interactionType": "single",
+      "questionKind": "beispiel_erkennen",
+      "badgeLabel": "Welches Beispiel passt am besten?",
+      "isNew": true,
+      "prompt": "Welcher Fall beschreibt im Anfrage-Modul am ehesten einen Akkumulator?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Eine Variable, die die insgesamt angeforderten Plätze laufend aufsummiert",
+          "correct": true,
+          "explanation": "Genau dafür wird ein Akkumulator typischerweise genutzt."
+        },
+        {
+          "id": "b",
+          "text": "Eine Rolle im Use-Case-Diagramm",
+          "correct": false,
+          "explanation": "Das gehört in eine andere Sicht."
+        },
+        {
+          "id": "c",
+          "text": "Die Hintergrundgrafik des Portals",
+          "correct": false,
+          "explanation": "Das ist kein Programmierbegriff."
+        },
+        {
+          "id": "d",
+          "text": "Eine einmalige Notiz im Review",
+          "correct": false,
+          "explanation": "Auch das ist kein Akkumulator."
+        }
+      ]
+    },
+    {
+      "id": "pv1fi_medium_code_q05",
+      "conceptId": "pv1fi_medium_code_if_pflichtfelder",
+      "variantId": "pv1fi_medium_code_if_pflichtfelder_v03",
+      "interactionType": "single",
+      "questionKind": "ziel_mittel_zuordnung",
+      "badgeLabel": "Welche Lösung passt am besten?",
+      "isNew": true,
+      "prompt": "Welche Lösung passt am besten, wenn Pflichtfelder geprüft werden sollen?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Eine Bedingung oder If-Abfrage",
+          "correct": true,
+          "explanation": "Genau dafür sind Bedingungen in der Programmlogik da."
+        },
+        {
+          "id": "b",
+          "text": "Eine zufällige Farbauswahl",
+          "correct": false,
+          "explanation": "Das löst keine fachliche Prüfung."
+        },
+        {
+          "id": "c",
+          "text": "Ein Klassendiagramm",
+          "correct": false,
+          "explanation": "Das ist hier nicht das passende Programmelement."
+        },
+        {
+          "id": "d",
+          "text": "Eine Inventarnummer",
+          "correct": false,
+          "explanation": "Auch das hilft bei der Prüfung nicht."
+        }
+      ]
+    },
+    {
+      "id": "pv1fi_medium_code_q06",
+      "conceptId": "pv1fi_medium_code_assignment_vs_compare",
+      "variantId": "pv1fi_medium_code_assignment_vs_compare_v03",
+      "interactionType": "single",
+      "questionKind": "vergleich_treffen",
+      "badgeLabel": "Worin liegt der wichtigste Unterschied?",
+      "isNew": true,
+      "prompt": "Welcher Unterschied zwischen Zuweisung und Vergleich ist hier entscheidend?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Eine Zuweisung setzt einen Wert, ein Vergleich prüft eine Beziehung zwischen Werten.",
+          "correct": true,
+          "explanation": "Genau diese Trennung ist fachlich zentral."
+        },
+        {
+          "id": "b",
+          "text": "Beides bedeutet in der Logik immer exakt dasselbe.",
+          "correct": false,
+          "explanation": "Das ist falsch."
+        },
+        {
+          "id": "c",
+          "text": "Vergleiche gibt es nur in Diagrammen, nicht in Programmen.",
+          "correct": false,
+          "explanation": "Auch das stimmt nicht."
+        },
+        {
+          "id": "d",
+          "text": "Zuweisungen machen Variablen grundsätzlich überflüssig.",
+          "correct": false,
+          "explanation": "Das ist fachlich unsinnig."
+        }
+      ]
+    },
+    {
+      "id": "pv1fi_medium_code_q07",
+      "conceptId": "pv1fi_medium_code_parameter_slotcheck",
+      "variantId": "pv1fi_medium_code_parameter_slotcheck_v03",
+      "interactionType": "single",
+      "questionKind": "definition_zu_begriff",
+      "badgeLabel": "Welche Aussage trifft am besten zu?",
+      "isNew": true,
+      "prompt": "Wozu werden Parameter bei einer Hilfsfunktion wie `pruefeSlot(termin, teilnehmerzahl)` gebraucht?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Sie übergeben die Werte, mit denen die Funktion arbeiten soll.",
+          "correct": true,
+          "explanation": "Genau dafür werden Parameter genutzt."
+        },
+        {
+          "id": "b",
+          "text": "Sie ersetzen jede Rückgabe der Funktion.",
+          "correct": false,
+          "explanation": "Parameter und Rückgabewerte sind unterschiedliche Dinge."
+        },
+        {
+          "id": "c",
+          "text": "Sie dienen nur dekorativen Kommentaren.",
+          "correct": false,
+          "explanation": "Das verfehlt den geprüften IT-Zusammenhang."
+        },
+        {
+          "id": "d",
+          "text": "Sie verhindern automatisch alle Logikfehler.",
+          "correct": false,
+          "explanation": "Auch Funktionen mit Parametern müssen korrekt gebaut werden."
+        }
+      ]
+    },
+    {
+      "id": "pv1fi_medium_code_q08",
+      "conceptId": "pv1fi_medium_code_rueckgabewert_slotfrei",
+      "variantId": "pv1fi_medium_code_rueckgabewert_slotfrei_v03",
+      "interactionType": "single",
+      "questionKind": "beispiel_erkennen",
+      "badgeLabel": "Welches Beispiel passt am besten?",
+      "isNew": true,
+      "prompt": "Welcher Fall zeigt am ehesten einen Rückgabewert einer Prüf-Funktion?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Die Funktion liefert zurück, ob ein Slot frei ist.",
+          "correct": true,
+          "explanation": "Das ist ein typischer Rückgabewert einer Prüf-Funktion."
+        },
+        {
+          "id": "b",
+          "text": "Die Funktion malt das Portal neu an.",
+          "correct": false,
+          "explanation": "Das ist kein passendes Beispiel."
+        },
+        {
+          "id": "c",
+          "text": "Die Funktion ist nur eine Tabelle im Wiki.",
+          "correct": false,
+          "explanation": "Auch das ist kein Rückgabewert."
+        },
+        {
+          "id": "d",
+          "text": "Die Funktion wird gar nicht mehr aufgerufen.",
+          "correct": false,
+          "explanation": "Das beschreibt keinen Rückgabewert."
+        }
+      ]
+    },
+    {
+      "id": "pv1fi_medium_code_q09",
+      "conceptId": "pv1fi_medium_code_modularisierung_hilfsfunktion",
+      "variantId": "pv1fi_medium_code_modularisierung_hilfsfunktion_v03",
+      "interactionType": "best",
+      "questionKind": "passende_massnahme_auswaehlen",
+      "badgeLabel": "Was ist hier am sinnvollsten?",
+      "isNew": true,
+      "prompt": "Was ist am hilfreichsten, wenn der Pseudocode lesbarer und wiederverwendbar werden soll?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Sinnvolle Hilfsfunktionen für Teilaufgaben bilden",
+          "correct": true,
+          "explanation": "Das verbessert Lesbarkeit und Wiederverwendung."
+        },
+        {
+          "id": "b",
+          "text": "Alle Bedingungen entfernen",
+          "correct": false,
+          "explanation": "Dann würde wichtige Logik fehlen."
+        },
+        {
+          "id": "c",
+          "text": "Alle Variablen in eine einzige Variable umbenennen",
+          "correct": false,
+          "explanation": "Das macht die Logik eher unklarer."
+        },
+        {
+          "id": "d",
+          "text": "Nur das Layout der Dokumentation ändern",
+          "correct": false,
+          "explanation": "Das löst die Logikstruktur nicht."
+        }
+      ]
+    },
+    {
+      "id": "pv1fi_medium_code_q10",
+      "conceptId": "pv1fi_medium_code_algo_reihenfolge_validierung",
+      "variantId": "pv1fi_medium_code_algo_reihenfolge_validierung_v03",
+      "interactionType": "single",
+      "questionKind": "was_fehlt",
+      "badgeLabel": "Was fehlt hier am ehesten?",
+      "isNew": true,
+      "prompt": "Welche Reihenfolge wirkt für das Anfrage-Modul fachlich am schlüssigsten?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Eingabe lesen, prüfen, Zustände setzen, Ergebnis weiterverarbeiten",
+          "correct": true,
+          "explanation": "Diese Reihenfolge passt fachlich gut zum Modul."
+        },
+        {
+          "id": "b",
+          "text": "Zufällig bestätigen, danach irgendwann prüfen",
+          "correct": false,
+          "explanation": "Das wäre fachlich falsch."
+        },
+        {
+          "id": "c",
+          "text": "Nur bestätigen, nie prüfen, nie zählen",
+          "correct": false,
+          "explanation": "Das ignoriert zentrale Logikschritte."
+        },
+        {
+          "id": "d",
+          "text": "Zuerst exportieren, dann vielleicht Daten einlesen",
+          "correct": false,
+          "explanation": "Auch das passt nicht."
+        }
+      ]
+    },
+    {
+      "id": "pv1fi_medium_code_q11",
+      "conceptId": "pv1fi_medium_code_schleife_liste_anfragen",
+      "variantId": "pv1fi_medium_code_schleife_liste_anfragen_v03",
+      "interactionType": "single",
+      "questionKind": "definition_zu_begriff",
+      "badgeLabel": "Welche Aussage trifft am besten zu?",
+      "isNew": true,
+      "prompt": "Welchen Zweck erfüllt die Schleife hier besonders?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Mehrere Anfragen nach demselben Grundschema nacheinander zu verarbeiten",
+          "correct": true,
+          "explanation": "Genau dafür sind Schleifen in solchen Fällen geeignet."
+        },
+        {
+          "id": "b",
+          "text": "Jede Bedingung im Modul dauerhaft zu ersetzen",
+          "correct": false,
+          "explanation": "Schleifen ersetzen keine Bedingungen."
+        },
+        {
+          "id": "c",
+          "text": "Nur einen einzelnen Datensatz optisch hervorzuheben",
+          "correct": false,
+          "explanation": "Das ist kein fachlicher Schleifenzweck."
+        },
+        {
+          "id": "d",
+          "text": "Die Programmlogik in ein Bild umzuwandeln",
+          "correct": false,
+          "explanation": "Auch das gehört nicht hierhin."
+        }
+      ]
+    },
+    {
+      "id": "pv1fi_medium_code_q12",
+      "conceptId": "pv1fi_medium_code_for_vs_while_anfragen",
+      "variantId": "pv1fi_medium_code_for_vs_while_anfragen_v03",
+      "interactionType": "single",
+      "questionKind": "vergleich_treffen",
+      "badgeLabel": "Worin liegt der wichtigste Unterschied?",
+      "isNew": true,
+      "prompt": "Was ist der wichtigste Unterschied zwischen zählender und bedingungsgesteuerter Schleife?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Eine zählende Schleife hat meist eine bekannte Durchlaufzahl, eine bedingungsgesteuerte orientiert sich am Zustand oder einer Bedingung.",
+          "correct": true,
+          "explanation": "Genau das ist der fachliche Kernunterschied."
+        },
+        {
+          "id": "b",
+          "text": "Beide sind immer vollkommen identisch.",
+          "correct": false,
+          "explanation": "Das stimmt nicht."
+        },
+        {
+          "id": "c",
+          "text": "Zählende Schleifen gibt es nur in Diagrammen.",
+          "correct": false,
+          "explanation": "Auch das ist falsch."
+        },
+        {
+          "id": "d",
+          "text": "Bedingungsgesteuerte Schleifen brauchen nie eine Abbruchlogik.",
+          "correct": false,
+          "explanation": "Gerade die ist dort besonders wichtig."
+        }
+      ]
+    },
+    {
+      "id": "pv1fi_medium_code_q13",
+      "conceptId": "pv1fi_medium_code_endlosschleife_fortschritt",
+      "variantId": "pv1fi_medium_code_endlosschleife_fortschritt_v03",
+      "interactionType": "single",
+      "questionKind": "fehler_finden",
+      "badgeLabel": "Welche Option enthält den Denkfehler?",
+      "isNew": true,
+      "prompt": "Welche Aussage zur Schleifenlogik enthält den eigentlichen Denkfehler?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Eine Schleife braucht nachvollziehbaren Fortschritt und eine Abbruchbedingung.",
+          "correct": false,
+          "explanation": "Das ist fachlich richtig."
+        },
+        {
+          "id": "b",
+          "text": "Wenn sich die Schleifenbedingung nie verändert, kann eine Endlosschleife entstehen.",
+          "correct": false,
+          "explanation": "Auch das ist richtig."
+        },
+        {
+          "id": "c",
+          "text": "Eine Schleife ohne erkennbaren Fortschritt ist unproblematisch, solange der Name gut klingt.",
+          "correct": true,
+          "explanation": "Genau darin liegt der Denkfehler."
+        },
+        {
+          "id": "d",
+          "text": "Auch im Schreibtischtest sollte geprüft werden, ob die Schleife sicher endet.",
+          "correct": false,
+          "explanation": "Das ist fachlich sinnvoll."
+        }
+      ]
+    },
+    {
+      "id": "pv1fi_medium_code_q14",
+      "conceptId": "pv1fi_medium_code_trace_tabelle_nutzen",
+      "variantId": "pv1fi_medium_code_trace_tabelle_nutzen_v03",
+      "interactionType": "single",
+      "questionKind": "ziel_mittel_zuordnung",
+      "badgeLabel": "Welche Option hilft am ehesten, dieses Ziel zu erreichen?",
+      "isNew": true,
+      "prompt": "Welchen Nutzen hat eine Trace-Tabelle oder ein sauber notierter Schreibtischtest besonders?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Zwischenwerte, Zustände und Schleifendurchläufe nachvollziehbar zu machen",
+          "correct": true,
+          "explanation": "Genau das ist ihr fachlicher Nutzen."
+        },
+        {
+          "id": "b",
+          "text": "Alle Funktionen automatisch zu implementieren",
+          "correct": false,
+          "explanation": "Das leistet eine Trace-Tabelle nicht."
+        },
+        {
+          "id": "c",
+          "text": "Bedingungen vollständig zu ersetzen",
+          "correct": false,
+          "explanation": "Auch das ist falsch."
+        },
+        {
+          "id": "d",
+          "text": "Nur die Optik des Portals festzulegen",
+          "correct": false,
+          "explanation": "Das verfehlt den geprüften IT-Zusammenhang."
+        }
+      ]
+    },
+    {
+      "id": "pv1fi_medium_code_q15",
+      "conceptId": "pv1fi_medium_code_zwischenwerte_fehlend_folge",
+      "variantId": "pv1fi_medium_code_zwischenwerte_fehlend_folge_v03",
+      "interactionType": "single",
+      "questionKind": "ursache_folge_erkennen",
+      "badgeLabel": "Welche Folge ergibt sich daraus am ehesten?",
+      "isNew": true,
+      "prompt": "Welche Folge hat es am ehesten, wenn Zwischenstände von Zähler und Summe fehlen?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Logikfehler bleiben leichter unbemerkt, weil der Ablauf schlechter nachvollziehbar ist.",
+          "correct": true,
+          "explanation": "Gerade Zwischenstände machen Fehler im Ablauf sichtbar."
+        },
+        {
+          "id": "b",
+          "text": "Die Programmlogik wird automatisch korrekt.",
+          "correct": false,
+          "explanation": "Das Gegenteil ist eher der Fall."
+        },
+        {
+          "id": "c",
+          "text": "Bedingungen werden dadurch überflüssig.",
+          "correct": false,
+          "explanation": "Auch das stimmt nicht."
+        },
+        {
+          "id": "d",
+          "text": "Die Funktion erhält dadurch automatisch mehr Parameter.",
+          "correct": false,
+          "explanation": "Das folgt daraus nicht."
+        }
+      ]
+    },
+    {
+      "id": "pv1fi_medium_code_q16",
+      "conceptId": "pv1fi_medium_code_schreibtischtest_vor_implementierung",
+      "variantId": "pv1fi_medium_code_schreibtischtest_vor_implementierung_v03",
+      "interactionType": "binary",
+      "questionKind": "aussage_bewerten",
+      "badgeLabel": "Stimmt diese Aussage?",
+      "isNew": true,
+      "prompt": "Ein Schreibtischtest kann Logikfehler bereits vor der eigentlichen Ausführung sichtbar machen.",
+      "options": [
+        {
+          "id": "a",
+          "text": "Stimmt",
+          "correct": true,
+          "explanation": "Genau das ist ein wesentlicher Nutzen des Schreibtischtests."
+        },
+        {
+          "id": "b",
+          "text": "Stimmt nicht",
+          "correct": false,
+          "explanation": "Gerade dafür wird er eingesetzt."
+        }
+      ]
+    },
+    {
+      "id": "pv1fi_medium_code_q17",
+      "conceptId": "pv1fi_medium_code_validierung_mehrere_felder",
+      "variantId": "pv1fi_medium_code_validierung_mehrere_felder_v03",
+      "interactionType": "multi",
+      "questionKind": "mehrere_richtige_antworten_waehlen",
+      "badgeLabel": "Welche Aussagen sind korrekt?",
+      "isNew": true,
+      "prompt": "Welche Punkte gehören fachlich in eine saubere Eingabeprüfung des Anfrage-Moduls? Mehrere Antworten sind richtig.",
+      "maxSelections": 3,
+      "options": [
+        {
+          "id": "a",
+          "text": "Pflichtfelder auf Vorhandensein prüfen",
+          "correct": true,
+          "explanation": "Das ist ein zentraler Teil der Validierung."
+        },
+        {
+          "id": "b",
+          "text": "Ungültige Eingaben in einen passenden Fehlerpfad führen",
+          "correct": true,
+          "explanation": "Auch Fehlerpfade gehören zur Fachlogik."
+        },
+        {
+          "id": "c",
+          "text": "Nur gültige Datensätze in Zählung oder Bestätigung übernehmen",
+          "correct": true,
+          "explanation": "Sonst würde die Folgeauswertung verfälscht."
+        },
+        {
+          "id": "d",
+          "text": "Prüfungen nur bei schönem Layout durchführen",
+          "correct": false,
+          "explanation": "Das wäre fachlich unsinnig."
+        },
+        {
+          "id": "e",
+          "text": "Ungültige Eingaben grundsätzlich wie gültige behandeln",
+          "correct": false,
+          "explanation": "Das widerspricht dem Prüfziel."
+        }
+      ]
+    },
+    {
+      "id": "pv1fi_medium_code_q18",
+      "conceptId": "pv1fi_medium_code_and_bedingung_bestaetigung",
+      "variantId": "pv1fi_medium_code_and_bedingung_bestaetigung_v03",
+      "interactionType": "single",
+      "questionKind": "vergleich_treffen",
+      "badgeLabel": "Welche Aussage passt am besten?",
+      "isNew": true,
+      "prompt": "Was bedeutet in diesem Kontext eine UND-Verknüpfung wie „vollständig UND Slot frei“ am ehesten?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Beide Bedingungen müssen erfüllt sein, damit der Erfolgszweig betreten wird.",
+          "correct": true,
+          "explanation": "Genau das bedeutet die UND-Verknüpfung."
+        },
+        {
+          "id": "b",
+          "text": "Es reicht, wenn irgendeine der beiden Bedingungen zufällig passt.",
+          "correct": false,
+          "explanation": "Das wäre eher eine ODER-Logik."
+        },
+        {
+          "id": "c",
+          "text": "Die Reihenfolge spielt nie eine Rolle.",
+          "correct": false,
+          "explanation": "Zumindest fachlich bleibt wichtig, welche Bedingungen erfüllt sein müssen."
+        },
+        {
+          "id": "d",
+          "text": "Bedingungen sind dann generell unnötig.",
+          "correct": false,
+          "explanation": "Das ist falsch."
+        }
+      ]
+    },
+    {
+      "id": "pv1fi_medium_code_q19",
+      "conceptId": "pv1fi_medium_code_or_fehlerfall",
+      "variantId": "pv1fi_medium_code_or_fehlerfall_v03",
+      "interactionType": "single",
+      "questionKind": "vergleich_treffen",
+      "badgeLabel": "Worin liegt der wichtigste Unterschied?",
+      "isNew": true,
+      "prompt": "Wie wird eine ODER-Verknüpfung fachlich am treffendsten verstanden?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Es genügt, wenn mindestens eine der verknüpften Bedingungen erfüllt ist.",
+          "correct": true,
+          "explanation": "Das ist der fachliche Kern der ODER-Logik."
+        },
+        {
+          "id": "b",
+          "text": "Beide Bedingungen müssen immer gleichzeitig wahr sein.",
+          "correct": false,
+          "explanation": "Das wäre eine UND-Verknüpfung."
+        },
+        {
+          "id": "c",
+          "text": "ODER kann nur in Diagrammen, nicht in Programmlogik auftauchen.",
+          "correct": false,
+          "explanation": "Das ist falsch."
+        },
+        {
+          "id": "d",
+          "text": "ODER entfernt automatisch alle Fehlerpfade.",
+          "correct": false,
+          "explanation": "Auch das stimmt nicht."
+        }
+      ]
+    },
+    {
+      "id": "pv1fi_medium_code_q20",
+      "conceptId": "pv1fi_medium_code_invalid_skip_branch",
+      "variantId": "pv1fi_medium_code_invalid_skip_branch_v03",
+      "interactionType": "single",
+      "questionKind": "passende_massnahme_auswaehlen",
+      "badgeLabel": "Welche Maßnahme passt am besten zur Situation?",
+      "isNew": true,
+      "prompt": "Welche Reaktion ist im Ablauf für eine unvollständige Anfrage am passendsten?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Sie geht in einen Fehler- oder Rückmeldepfad und wird nicht als erfolgreich gezählt.",
+          "correct": true,
+          "explanation": "Genau so bleibt die Logik fachlich sauber."
+        },
+        {
+          "id": "b",
+          "text": "Sie wird trotzdem bestätigt, damit die Statistik besser aussieht.",
+          "correct": false,
+          "explanation": "Das wäre fachlich falsch."
+        },
+        {
+          "id": "c",
+          "text": "Sie wird kommentarlos mit einer erfolgreichen Anfrage vermischt.",
+          "correct": false,
+          "explanation": "Dann wäre der Ablauf nicht mehr nachvollziehbar."
+        },
+        {
+          "id": "d",
+          "text": "Alle Anfragen werden danach pauschal gelöscht.",
+          "correct": false,
+          "explanation": "Das ist keine angemessene Logikreaktion."
+        }
+      ]
+    },
+    {
+      "id": "pv1fi_medium_code_q21",
+      "conceptId": "pv1fi_medium_code_counter_increment_missing",
+      "variantId": "pv1fi_medium_code_counter_increment_missing_v03",
+      "interactionType": "single",
+      "questionKind": "fehler_finden",
+      "badgeLabel": "Welche Option enthält den Denkfehler?",
+      "isNew": true,
+      "prompt": "Welche Aussage über den Zähler gültiger Anfragen ist fachlich falsch?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Ein Zähler muss bei passenden Fällen aktualisiert werden, sonst bleibt sein Wert falsch.",
+          "correct": false,
+          "explanation": "Das ist fachlich richtig."
+        },
+        {
+          "id": "b",
+          "text": "Wenn die Variable nie erhöht wird, kann das Ergebnis nicht stimmen.",
+          "correct": false,
+          "explanation": "Auch das stimmt."
+        },
+        {
+          "id": "c",
+          "text": "Ein Zähler funktioniert auch dann korrekt, wenn er zwar existiert, aber nie verändert wird.",
+          "correct": true,
+          "explanation": "Genau darin liegt der Denkfehler."
+        },
+        {
+          "id": "d",
+          "text": "Der Schreibtischtest sollte prüfen, wann der Zähler erhöht wird.",
+          "correct": false,
+          "explanation": "Das ist fachlich sinnvoll."
+        }
+      ]
+    },
+    {
+      "id": "pv1fi_medium_code_q22",
+      "conceptId": "pv1fi_medium_code_pseudocode_sprachneutral_nutzen",
+      "variantId": "pv1fi_medium_code_pseudocode_sprachneutral_nutzen_v03",
+      "interactionType": "binary",
+      "questionKind": "aussage_bewerten",
+      "badgeLabel": "Stimmt diese Aussage?",
+      "isNew": true,
+      "prompt": "Pseudocode hilft in frühen Entwurfsphasen, weil die Logik besprochen werden kann, ohne schon auf eine konkrete Programmiersprache festgelegt zu sein.",
+      "options": [
+        {
+          "id": "a",
+          "text": "Stimmt",
+          "correct": true,
+          "explanation": "Genau darin liegt ein zentraler Vorteil von Pseudocode."
+        },
+        {
+          "id": "b",
+          "text": "Stimmt nicht",
+          "correct": false,
+          "explanation": "Die Sprachneutralität ist gerade ein Nutzen des Pseudocodes."
+        }
+      ]
+    },
+    {
+      "id": "pv1fi_medium_code_q23",
+      "conceptId": "pv1fi_medium_code_while_queue_empty",
+      "variantId": "pv1fi_medium_code_while_queue_empty_v03",
+      "interactionType": "single",
+      "questionKind": "beispiel_erkennen",
+      "badgeLabel": "Welches Beispiel passt am besten?",
+      "isNew": true,
+      "prompt": "Welcher Fall steht am ehesten für eine bedingungsgesteuerte Schleife?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Anfragen werden verarbeitet, solange die Eingangsliste noch nicht leer ist.",
+          "correct": true,
+          "explanation": "Das ist ein typisches Beispiel für eine bedingungsgesteuerte Schleife."
+        },
+        {
+          "id": "b",
+          "text": "Eine Anfrage wird genau fünfmal dargestellt, weil eine feste Zahl vorgegeben ist.",
+          "correct": false,
+          "explanation": "Das passt eher zu einer zählenden Schleife."
+        },
+        {
+          "id": "c",
+          "text": "Die Schriftart wird einmal gewählt.",
+          "correct": false,
+          "explanation": "Das ist kein Schleifenbeispiel."
+        },
+        {
+          "id": "d",
+          "text": "Ein Akteur wird im Diagramm gezeichnet.",
+          "correct": false,
+          "explanation": "Auch diese Option trägt fachlich nicht zur Lösung bei."
+        }
+      ]
+    },
+    {
+      "id": "pv1fi_medium_code_q24",
+      "conceptId": "pv1fi_medium_code_trace_missing_values",
+      "variantId": "pv1fi_medium_code_trace_missing_values_v03",
+      "interactionType": "single",
+      "questionKind": "was_fehlt",
+      "badgeLabel": "Was fehlt hier am ehesten?",
+      "isNew": true,
+      "prompt": "Im Schreibtischtest fehlen Zwischenstände von `gueltigZaehler` und `platzSumme`. Was fehlt damit fachlich am ehesten?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Die eigentliche Nachvollziehbarkeit der Zwischenschritte",
+          "correct": true,
+          "explanation": "Ohne Zwischenstände bleibt der Ablauf zu grob."
+        },
+        {
+          "id": "b",
+          "text": "Nur eine andere Schriftfarbe",
+          "correct": false,
+          "explanation": "Das ist nicht das Problem."
+        },
+        {
+          "id": "c",
+          "text": "Eine neue Systemgrenze",
+          "correct": false,
+          "explanation": "Das gehört in eine andere Sicht."
+        },
+        {
+          "id": "d",
+          "text": "Ein größerer Bildschirm",
+          "correct": false,
+          "explanation": "Auch das hilft nicht."
+        }
+      ]
+    },
+    {
+      "id": "pv1fi_medium_code_q25",
+      "conceptId": "pv1fi_medium_code_funktionsaufruf_wiederverwendbar",
+      "variantId": "pv1fi_medium_code_funktionsaufruf_wiederverwendbar_v03",
+      "interactionType": "best",
+      "questionKind": "beste_option_im_mini_szenario",
+      "badgeLabel": "Welche Lösung passt insgesamt am besten?",
+      "isNew": true,
+      "prompt": "Welche Lösung passt am besten, wenn Pflichtfeldprüfung, Slotprüfung und Bestätigung in getrennten Bausteinen stehen sollen?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Klar benannte Hilfsfunktionen mit passenden Parametern und eindeutigen Rückgaben verwenden",
+          "correct": true,
+          "explanation": "So bleibt die Logik lesbar und wiederverwendbar."
+        },
+        {
+          "id": "b",
+          "text": "Alle Prüfungen ungeordnet in einen einzigen Block werfen",
+          "correct": false,
+          "explanation": "Das erschwert die Nachvollziehbarkeit."
+        },
+        {
+          "id": "c",
+          "text": "Nur noch Kommentare schreiben, aber keine Logikschritte mehr notieren",
+          "correct": false,
+          "explanation": "Kommentare ersetzen keine Programmlogik."
+        },
+        {
+          "id": "d",
+          "text": "Nur die Oberfläche entwerfen und Prüfungen weglassen",
+          "correct": false,
+          "explanation": "Das verfehlt den Zweck."
+        }
+      ]
+    },
+    {
+      "id": "pv1fi_medium_code_q26",
+      "conceptId": "pv1fi_medium_code_input_validation_reason",
+      "variantId": "pv1fi_medium_code_input_validation_reason_v03",
+      "interactionType": "single",
+      "questionKind": "ziel_mittel_zuordnung",
+      "badgeLabel": "Welche Option hilft am ehesten, dieses Ziel zu erreichen?",
+      "isNew": true,
+      "prompt": "Warum ist eine Eingabeprüfung vor der Weiterverarbeitung nötig?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Damit ungültige Daten nicht unbemerkt in Zählung, Bestätigung oder Folgelogik einfließen",
+          "correct": true,
+          "explanation": "Genau das ist der fachliche Sinn der Validierung."
+        },
+        {
+          "id": "b",
+          "text": "Damit alle Bedingungen entfallen können",
+          "correct": false,
+          "explanation": "Das stimmt nicht."
+        },
+        {
+          "id": "c",
+          "text": "Damit Variablen grundsätzlich unnötig werden",
+          "correct": false,
+          "explanation": "Auch das ist falsch."
+        },
+        {
+          "id": "d",
+          "text": "Nur um längere Dateinamen zu erzeugen",
+          "correct": false,
+          "explanation": "Das verfehlt den geprüften IT-Zusammenhang."
+        }
+      ]
+    },
+    {
+      "id": "pv1fi_medium_code_q27",
+      "conceptId": "pv1fi_medium_code_eva_prinzip_modul",
+      "variantId": "pv1fi_medium_code_eva_prinzip_modul_v03",
+      "interactionType": "single",
+      "questionKind": "vergleich_treffen",
+      "badgeLabel": "Welche Aussage passt am besten?",
+      "isNew": true,
+      "prompt": "Woran zeigt sich das EVA-Prinzip in diesem Anfrage-Modul am besten?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Eingaben werden erfasst, logisch verarbeitet und als Ergebnis gezählt, markiert oder bestätigt ausgegeben.",
+          "correct": true,
+          "explanation": "So lässt sich das EVA-Prinzip hier fachlich gut wiederfinden."
+        },
+        {
+          "id": "b",
+          "text": "Es verwechselt Modellsemantik mit Darstellung.",
+          "correct": false,
+          "explanation": "Das wäre fachlich falsch."
+        },
+        {
+          "id": "c",
+          "text": "Es ersetzt jede Schleife im Modul.",
+          "correct": false,
+          "explanation": "Auch das stimmt nicht."
+        },
+        {
+          "id": "d",
+          "text": "Es bezeichnet nur die Zahl der Akteure im Diagramm.",
+          "correct": false,
+          "explanation": "Das ist ein anderes Thema."
+        }
+      ]
+    },
+    {
+      "id": "pv1fi_medium_code_q28",
+      "conceptId": "pv1fi_medium_code_gesamtlogik_empfehlung",
+      "variantId": "pv1fi_medium_code_gesamtlogik_empfehlung_v03",
+      "interactionType": "best",
+      "questionKind": "prioritaet_setzen",
+      "badgeLabel": "Welche Empfehlung ist am stärksten?",
+      "isNew": true,
+      "prompt": "Welche Gesamt-Empfehlung für die Programmlogik des Anfrage-Moduls ist am stärksten?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Mit klaren Startwerten, sauberer Validierung, nachvollziehbaren Schleifen, sinnvollen Hilfsfunktionen und einem vollständigen Schreibtischtest arbeiten",
+          "correct": true,
+          "explanation": "Diese Kombination trägt die fachliche Qualität des Moduls am besten."
+        },
+        {
+          "id": "b",
+          "text": "Nur die Erfolgsfälle betrachten und Fehlerpfade später nachtragen",
+          "correct": false,
+          "explanation": "Das wäre als Empfehlung zu schwach."
+        },
+        {
+          "id": "c",
+          "text": "Zähler, Bedingungen und Zwischenschritte weitgehend ignorieren",
+          "correct": false,
+          "explanation": "Dann würde die Logik gerade nicht belastbar."
+        },
+        {
+          "id": "d",
+          "text": "Auf Pseudocode und Schreibtischtest verzichten und sofort implementieren",
+          "correct": false,
+          "explanation": "Das würde die frühe Logikprüfung verschenken."
+        }
+      ]
+    }
+  ]
+}

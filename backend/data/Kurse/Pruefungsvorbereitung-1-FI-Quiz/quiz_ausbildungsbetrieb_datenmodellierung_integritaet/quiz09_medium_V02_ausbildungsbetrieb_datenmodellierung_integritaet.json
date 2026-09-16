@@ -1,0 +1,1054 @@
+{
+  "scenarioFolder": "Pruefungsvorbereitung-1-FI-Scenarien",
+  "quizFolder": "Pruefungsvorbereitung-1-FI-Quiz",
+  "scenarioFile": "ticket_ausbildungsbetrieb_datenmodellierung_integritaet/09_medium_ausbildungsbetrieb_datenmodellierung_integritaet.json",
+  "quizFile": "quiz09_medium_V02_ausbildungsbetrieb_datenmodellierung_integritaet.json",
+  "ticketId": "09_medium_ausbildungsbetrieb_datenmodellierung_integritaet.json",
+  "versionId": "V02",
+  "title": "Ticket 09 Medium - Datenmodellierung, ER-Modell und Integrität",
+  "description": "Manuell verfasstes AP1-Training im mittleren Schwierigkeitsgrad zu Entitäten, Beziehungen, Schlüsseln, Redundanz und Integrität in einem fortlaufenden Portalprojekt.",
+  "topics": [
+    "Fachobjekte, Kardinalitäten und Schlüssel im Portalmodell fachlich sauber strukturieren",
+    "Redundanz, Dubletten und Integritätsregeln für Anfrage-, Slot- und Freigabedaten nachvollziehbar bewerten"
+  ],
+  "defaultInteractionType": "single",
+  "defaultQuestionKind": "eine_richtige_antwort_waehlen",
+  "defaultBadgeLabel": "Welche Antwort trifft am besten zu?",
+  "questions": [
+    {
+      "id": "pv1fi_medium_data_q01",
+      "conceptId": "pv1fi_medium_data_entitaet_beratungsanfrage",
+      "variantId": "pv1fi_medium_data_entitaet_beratungsanfrage_v02",
+      "interactionType": "single",
+      "questionKind": "definition_zu_begriff",
+      "badgeLabel": "Welche Aussage trifft am besten zu?",
+      "isNew": true,
+      "prompt": "Welcher Begriff ist im Portalmodell am ehesten eine eigene Entität?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Beratungsanfrage",
+          "correct": true,
+          "explanation": "Eine Anfrage ist ein eigenständiges Fachobjekt mit Beziehungen und Eigenschaften."
+        },
+        {
+          "id": "b",
+          "text": "E-Mail-Adresse als einzelner Wert",
+          "correct": false,
+          "explanation": "Das ist eher ein Attribut."
+        },
+        {
+          "id": "c",
+          "text": "eine reine Darstellungsangabe ohne UML-Bedeutung",
+          "correct": false,
+          "explanation": "Das ist kein Fachobjekt des Modells."
+        },
+        {
+          "id": "d",
+          "text": "ein einzelnes Layoutmerkmal der Oberfläche",
+          "correct": false,
+          "explanation": "Das beschreibt keine belastbare Datenmodellierungsentscheidung."
+        }
+      ]
+    },
+    {
+      "id": "pv1fi_medium_data_q02",
+      "conceptId": "pv1fi_medium_data_attribut_kunde_email",
+      "variantId": "pv1fi_medium_data_attribut_kunde_email_v02",
+      "interactionType": "single",
+      "questionKind": "beispiel_erkennen",
+      "badgeLabel": "Welches Beispiel passt am besten?",
+      "isNew": true,
+      "prompt": "Welche Angabe wäre bei der Entität „Kunde“ am ehesten ein Attribut?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "E-Mail-Adresse",
+          "correct": true,
+          "explanation": "Das ist eine Eigenschaft des Kundenobjekts."
+        },
+        {
+          "id": "b",
+          "text": "Freigabe",
+          "correct": false,
+          "explanation": "Das wäre eher ein eigenes Fachobjekt."
+        },
+        {
+          "id": "c",
+          "text": "Slotbuchung",
+          "correct": false,
+          "explanation": "Auch das ist eher ein eigenes Objekt oder eine Beziehung."
+        },
+        {
+          "id": "d",
+          "text": "Integritätsregel",
+          "correct": false,
+          "explanation": "Das ist kein Attribut."
+        }
+      ]
+    },
+    {
+      "id": "pv1fi_medium_data_q03",
+      "conceptId": "pv1fi_medium_data_primarschluessel_stabil",
+      "variantId": "pv1fi_medium_data_primarschluessel_stabil_v02",
+      "interactionType": "best",
+      "questionKind": "passende_massnahme_auswaehlen",
+      "badgeLabel": "Was ist hier am sinnvollsten?",
+      "isNew": true,
+      "prompt": "Was ist bei der Wahl eines Primärschlüssels fachlich am wichtigsten?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Der Schlüssel soll Datensätze eindeutig und möglichst stabil identifizieren.",
+          "correct": true,
+          "explanation": "Genau das ist fachlich entscheidend."
+        },
+        {
+          "id": "b",
+          "text": "Er sollte möglichst dekorativ klingen.",
+          "correct": false,
+          "explanation": "Das trägt nichts zur fachlichen Bewertung bei."
+        },
+        {
+          "id": "c",
+          "text": "Er sollte vor allem häufig geändert werden können.",
+          "correct": false,
+          "explanation": "Das wäre eher problematisch."
+        },
+        {
+          "id": "d",
+          "text": "Er ersetzt danach alle übrigen Beziehungen im Modell.",
+          "correct": false,
+          "explanation": "Das verfehlt die Bedeutung der Kardinalität."
+        }
+      ]
+    },
+    {
+      "id": "pv1fi_medium_data_q04",
+      "conceptId": "pv1fi_medium_data_technischer_schluessel_vorteil",
+      "variantId": "pv1fi_medium_data_technischer_schluessel_vorteil_v02",
+      "interactionType": "single",
+      "questionKind": "vergleich_treffen",
+      "badgeLabel": "Worin liegt der wichtigste Unterschied?",
+      "isNew": true,
+      "prompt": "Welcher Vorteil eines technischen Schlüssels ist gegenüber einer änderbaren E-Mail-Adresse besonders wichtig?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Ein technischer Schlüssel bleibt in der Regel stabil, auch wenn sich fachliche Angaben ändern.",
+          "correct": true,
+          "explanation": "Das macht ihn oft robuster für die Identifikation."
+        },
+        {
+          "id": "b",
+          "text": "Er macht Beziehungen grundsätzlich überflüssig.",
+          "correct": false,
+          "explanation": "Beziehungen bleiben trotzdem nötig."
+        },
+        {
+          "id": "c",
+          "text": "Er verhindert automatisch jede Dublette.",
+          "correct": false,
+          "explanation": "Auch das ist zu pauschal."
+        },
+        {
+          "id": "d",
+          "text": "Er ersetzt danach alle Pflichtattribute.",
+          "correct": false,
+          "explanation": "Das stimmt ebenfalls nicht."
+        }
+      ]
+    },
+    {
+      "id": "pv1fi_medium_data_q05",
+      "conceptId": "pv1fi_medium_data_fremdschluessel_freigabe_anfrage",
+      "variantId": "pv1fi_medium_data_fremdschluessel_freigabe_anfrage_v02",
+      "interactionType": "single",
+      "questionKind": "ziel_mittel_zuordnung",
+      "badgeLabel": "Welche Lösung passt am besten?",
+      "isNew": true,
+      "prompt": "Womit lässt sich im Modell am klarsten ausdrücken, zu welcher Anfrage eine Freigabe gehört?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Mit einer Referenz auf die zugehörige Anfrage",
+          "correct": true,
+          "explanation": "Genau damit wird die Verbindung fachlich sauber ausgedrückt."
+        },
+        {
+          "id": "b",
+          "text": "durch ein Element ohne definierte UML-Semantik",
+          "correct": false,
+          "explanation": "Damit wird kein Datensatz zuverlässig identifiziert."
+        },
+        {
+          "id": "c",
+          "text": "Mit einem frei formulierten Kommentar ohne Bezug",
+          "correct": false,
+          "explanation": "Damit bleibt die Zuordnung unsauber."
+        },
+        {
+          "id": "d",
+          "text": "Mit einer größeren Schrift in der Oberfläche",
+          "correct": false,
+          "explanation": "Auch das bildet keine Beziehung ab."
+        }
+      ]
+    },
+    {
+      "id": "pv1fi_medium_data_q06",
+      "conceptId": "pv1fi_medium_data_kardinalitaet_kunde_anfrage",
+      "variantId": "pv1fi_medium_data_kardinalitaet_kunde_anfrage_v02",
+      "interactionType": "single",
+      "questionKind": "vergleich_treffen",
+      "badgeLabel": "Welche Aussage passt am besten?",
+      "isNew": true,
+      "prompt": "Wie ist die Beziehung zwischen Kunde und Beratungsanfrage fachlich am ehesten zu lesen?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Ein Kunde kann mehrere Anfragen stellen, jede Anfrage gehört dabei genau zu einem Kunden.",
+          "correct": true,
+          "explanation": "So wird diese 1:n-Sicht fachlich passend gelesen."
+        },
+        {
+          "id": "b",
+          "text": "Jede Anfrage gehört immer zu vielen Kunden gleichzeitig.",
+          "correct": false,
+          "explanation": "Das wäre ein anderer fachlicher Fall."
+        },
+        {
+          "id": "c",
+          "text": "Kunde und Anfrage sind deshalb dieselbe Entität.",
+          "correct": false,
+          "explanation": "Das verfehlt die Bedeutung der Kardinalität."
+        },
+        {
+          "id": "d",
+          "text": "Kardinalitäten sind im Portalmodell unwichtig.",
+          "correct": false,
+          "explanation": "Gerade sie sind wichtig."
+        }
+      ]
+    },
+    {
+      "id": "pv1fi_medium_data_q07",
+      "conceptId": "pv1fi_medium_data_kardinalitaet_anfrage_slot",
+      "variantId": "pv1fi_medium_data_kardinalitaet_anfrage_slot_v02",
+      "interactionType": "single",
+      "questionKind": "beispiel_erkennen",
+      "badgeLabel": "Welches Beispiel passt am besten?",
+      "isNew": true,
+      "prompt": "Welche Lesart passt am besten, wenn jede Anfrage genau einen Slot nennt, ein Slot aber in vielen Anfragen auftauchen kann?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Viele Anfragen können sich auf denselben Slot beziehen, jede Anfrage benennt dabei genau einen Slot.",
+          "correct": true,
+          "explanation": "Das bildet die fachliche Lesart passend ab."
+        },
+        {
+          "id": "b",
+          "text": "Ein Slot gehört grundsätzlich nur zu genau einer Anfrage im ganzen System.",
+          "correct": false,
+          "explanation": "Das wäre hier zu eng gelesen."
+        },
+        {
+          "id": "c",
+          "text": "Anfrage und Slot sind deshalb dasselbe Attribut.",
+          "correct": false,
+          "explanation": "Auch das ist fachlich falsch."
+        },
+        {
+          "id": "d",
+          "text": "Slots werden deshalb nicht als eigenes Objekt benötigt.",
+          "correct": false,
+          "explanation": "Das folgt daraus nicht."
+        }
+      ]
+    },
+    {
+      "id": "pv1fi_medium_data_q08",
+      "conceptId": "pv1fi_medium_data_nm_anfrage_ressource",
+      "variantId": "pv1fi_medium_data_nm_anfrage_ressource_v02",
+      "interactionType": "single",
+      "questionKind": "vergleich_treffen",
+      "badgeLabel": "Welche Aussage passt am besten?",
+      "isNew": true,
+      "prompt": "Warum spricht die Beziehung Anfrage zu Ressource hier besonders für eine n:m-Sicht?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Eine Anfrage kann mehrere Ressourcen benötigen und dieselbe Ressource kann in vielen Anfragen wieder auftauchen.",
+          "correct": true,
+          "explanation": "Genau das ist der Kern einer n:m-Situation."
+        },
+        {
+          "id": "b",
+          "text": "n:m bedeutet, dass keine Beziehung modelliert werden muss.",
+          "correct": false,
+          "explanation": "Gerade dann braucht es eine saubere Modellierung."
+        },
+        {
+          "id": "c",
+          "text": "Ressourcen dürfen dann keine Entitäten sein.",
+          "correct": false,
+          "explanation": "Das verfehlt die Bedeutung der Kardinalität."
+        },
+        {
+          "id": "d",
+          "text": "n:m und 1:n sind fachlich immer identisch.",
+          "correct": false,
+          "explanation": "Das ist falsch."
+        }
+      ]
+    },
+    {
+      "id": "pv1fi_medium_data_q09",
+      "conceptId": "pv1fi_medium_data_zwischentabelle_zuordnungsentitaet",
+      "variantId": "pv1fi_medium_data_zwischentabelle_zuordnungsentitaet_v02",
+      "interactionType": "best",
+      "questionKind": "passende_massnahme_auswaehlen",
+      "badgeLabel": "Was ist hier am sinnvollsten?",
+      "isNew": true,
+      "prompt": "Welche Modellierungsentscheidung ist am sinnvollsten, wenn Anfragen und Ressourcen mehrfach verbunden sind?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Eine saubere Zuordnungsentität oder Zwischentabelle vorsehen",
+          "correct": true,
+          "explanation": "So wird die n:m-Beziehung fachlich sauber modelliert."
+        },
+        {
+          "id": "b",
+          "text": "Alle Ressourcen in ein einziges Freitextfeld schreiben",
+          "correct": false,
+          "explanation": "Das erschwert Pflege und Auswertung."
+        },
+        {
+          "id": "c",
+          "text": "Ressourcen überhaupt nicht mehr als Objekt führen",
+          "correct": false,
+          "explanation": "Das wäre fachlich zu grob."
+        },
+        {
+          "id": "d",
+          "text": "die Mehrfachzuordnung als Freitext in einem Feld speichern",
+          "correct": false,
+          "explanation": "Für die Umsetzung braucht es eine echte Beziehung oder Zuordnungsentität."
+        }
+      ]
+    },
+    {
+      "id": "pv1fi_medium_data_q10",
+      "conceptId": "pv1fi_medium_data_optionale_freigabe",
+      "variantId": "pv1fi_medium_data_optionale_freigabe_v02",
+      "interactionType": "single",
+      "questionKind": "beispiel_erkennen",
+      "badgeLabel": "Welches Beispiel passt am besten?",
+      "isNew": true,
+      "prompt": "Welches Beispiel beschreibt im Portalmodell am ehesten eine optionale Beziehung?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Eine Anfrage kann bereits existieren, obwohl noch keine Freigabe zu ihr erfasst wurde.",
+          "correct": true,
+          "explanation": "Genau das ist eine typische optionale Beziehung."
+        },
+        {
+          "id": "b",
+          "text": "Ein Kunde hat immer gleichzeitig genau drei Anfragen.",
+          "correct": false,
+          "explanation": "Das beschreibt keine optionale Beziehung."
+        },
+        {
+          "id": "c",
+          "text": "Eine E-Mail-Adresse ist immer eine Entität.",
+          "correct": false,
+          "explanation": "Auch das ist fachlich falsch."
+        },
+        {
+          "id": "d",
+          "text": "Jede Anfrage muss automatisch alle möglichen Freigaben besitzen.",
+          "correct": false,
+          "explanation": "Das ist kein fachliches Modellierungskriterium."
+        }
+      ]
+    },
+    {
+      "id": "pv1fi_medium_data_q11",
+      "conceptId": "pv1fi_medium_data_referentielle_integritaet_freigabe",
+      "variantId": "pv1fi_medium_data_referentielle_integritaet_freigabe_v02",
+      "interactionType": "single",
+      "questionKind": "definition_zu_begriff",
+      "badgeLabel": "Welche Aussage trifft am besten zu?",
+      "isNew": true,
+      "prompt": "Wie lässt sich referentielle Integrität zwischen Anfrage und Freigabe am besten beschreiben?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Eine Freigabe darf nicht auf eine Anfrage verweisen, die fachlich gar nicht vorhanden ist.",
+          "correct": true,
+          "explanation": "Genau das ist der Kern referenzieller Integrität."
+        },
+        {
+          "id": "b",
+          "text": "Eine Freigabe darf unabhängig von jeder Anfrage existieren.",
+          "correct": false,
+          "explanation": "Das trägt nichts zur fachlichen Bewertung bei."
+        },
+        {
+          "id": "c",
+          "text": "Referentielle Integrität ersetzt jede Schlüsselwahl.",
+          "correct": false,
+          "explanation": "Das verfehlt die Bedeutung der Kardinalität."
+        },
+        {
+          "id": "d",
+          "text": "Sie gilt nur für Oberflächenmasken, nicht für Datenbeziehungen.",
+          "correct": false,
+          "explanation": "Gerade Datenbeziehungen sind hier betroffen."
+        }
+      ]
+    },
+    {
+      "id": "pv1fi_medium_data_q12",
+      "conceptId": "pv1fi_medium_data_redundanz_kundendaten_folge",
+      "variantId": "pv1fi_medium_data_redundanz_kundendaten_folge_v02",
+      "interactionType": "single",
+      "questionKind": "ursache_folge_erkennen",
+      "badgeLabel": "Welche Folge ergibt sich daraus am ehesten?",
+      "isNew": true,
+      "prompt": "Welche Folge ist zu erwarten, wenn dieselben Kundendaten in mehreren Anfragezeilen separat gepflegt werden?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Widersprüche und unterschiedliche Datenstände können leichter entstehen.",
+          "correct": true,
+          "explanation": "Genau das ist die typische Folge von Redundanz."
+        },
+        {
+          "id": "b",
+          "text": "Die Daten werden dadurch automatisch konsistenter.",
+          "correct": false,
+          "explanation": "Das ist eher das Gegenteil."
+        },
+        {
+          "id": "c",
+          "text": "Schlüssel und Beziehungen spielen danach keine Rolle mehr.",
+          "correct": false,
+          "explanation": "Das verfehlt die Bedeutung der Kardinalität."
+        },
+        {
+          "id": "d",
+          "text": "Das Modell braucht dann keine Pflege mehr.",
+          "correct": false,
+          "explanation": "Redundanz erhöht eher den Pflegeaufwand."
+        }
+      ]
+    },
+    {
+      "id": "pv1fi_medium_data_q13",
+      "conceptId": "pv1fi_medium_data_dubletten_kunde_problem",
+      "variantId": "pv1fi_medium_data_dubletten_kunde_problem_v02",
+      "interactionType": "single",
+      "questionKind": "ursache_folge_erkennen",
+      "badgeLabel": "Welche Folge ergibt sich daraus am ehesten?",
+      "isNew": true,
+      "prompt": "Welche Folge droht am ehesten, wenn ein Kunde mehrfach als eigener Datensatz vorkommt?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Anfragen und Kontaktdaten verteilen sich uneinheitlich auf mehrere scheinbar verschiedene Kunden.",
+          "correct": true,
+          "explanation": "So entstehen Dublettenprobleme im Fachmodell."
+        },
+        {
+          "id": "b",
+          "text": "Dadurch wird der Kunde automatisch besser identifizierbar.",
+          "correct": false,
+          "explanation": "Das ist fachlich falsch."
+        },
+        {
+          "id": "c",
+          "text": "Das beseitigt alle Redundanzen im System.",
+          "correct": false,
+          "explanation": "Auch das Gegenteil ist eher richtig."
+        },
+        {
+          "id": "d",
+          "text": "Dubletten haben nur optische Auswirkungen.",
+          "correct": false,
+          "explanation": "Sie betreffen gerade die fachliche Datenqualität."
+        }
+      ]
+    },
+    {
+      "id": "pv1fi_medium_data_q14",
+      "conceptId": "pv1fi_medium_data_aenderungsanomalie_kontakt",
+      "variantId": "pv1fi_medium_data_aenderungsanomalie_kontakt_v02",
+      "interactionType": "single",
+      "questionKind": "ursache_folge_erkennen",
+      "badgeLabel": "Welche Folge ergibt sich daraus am ehesten?",
+      "isNew": true,
+      "prompt": "Welche typische Folge entsteht, wenn eine mehrfach gespeicherte Telefonnummer nur teilweise aktualisiert wird?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Es entstehen widersprüchliche Datenstände zur selben fachlichen Information.",
+          "correct": true,
+          "explanation": "Genau das ist eine typische Änderungsanomalie."
+        },
+        {
+          "id": "b",
+          "text": "Das Modell wird dadurch automatisch normalisiert.",
+          "correct": false,
+          "explanation": "Das ist falsch."
+        },
+        {
+          "id": "c",
+          "text": "Der Primärschlüssel verschwindet dadurch.",
+          "correct": false,
+          "explanation": "Das verfehlt die Bedeutung der Kardinalität."
+        },
+        {
+          "id": "d",
+          "text": "Die Slot-Beziehung wird dadurch eindeutiger.",
+          "correct": false,
+          "explanation": "Das hat damit nichts zu tun."
+        }
+      ]
+    },
+    {
+      "id": "pv1fi_medium_data_q15",
+      "conceptId": "pv1fi_medium_data_loeschanomalie_anfrageverlust",
+      "variantId": "pv1fi_medium_data_loeschanomalie_anfrageverlust_v02",
+      "interactionType": "single",
+      "questionKind": "ursache_folge_erkennen",
+      "badgeLabel": "Welche Folge ergibt sich daraus am ehesten?",
+      "isNew": true,
+      "prompt": "Welches Problem zeigt sich, wenn mit einer alten Anfrage versehentlich auch die einzige gepflegte Kundenadresse verloren geht?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Eine Löschanomalie durch unsaubere Trennung von Stammdaten und Vorgangsdaten",
+          "correct": true,
+          "explanation": "Genau das ist eine typische Löschanomalie."
+        },
+        {
+          "id": "b",
+          "text": "Eine automatisch bessere Datenqualität",
+          "correct": false,
+          "explanation": "Das ist fachlich falsch."
+        },
+        {
+          "id": "c",
+          "text": "Eine erfolgreiche Normalisierung",
+          "correct": false,
+          "explanation": "Das verfehlt die Bedeutung der Kardinalität."
+        },
+        {
+          "id": "d",
+          "text": "Eine reine Oberflächenfrage ohne Datenbezug",
+          "correct": false,
+          "explanation": "Das Problem liegt klar im Datenmodell."
+        }
+      ]
+    },
+    {
+      "id": "pv1fi_medium_data_q16",
+      "conceptId": "pv1fi_medium_data_normalisierung_grundidee_portal",
+      "variantId": "pv1fi_medium_data_normalisierung_grundidee_portal_v02",
+      "interactionType": "single",
+      "questionKind": "definition_zu_begriff",
+      "badgeLabel": "Welche Aussage trifft am besten zu?",
+      "isNew": true,
+      "prompt": "Wie lässt sich die Grundidee der Normalisierung in diesem Portalmodell am besten fassen?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Informationen so zu strukturieren, dass Redundanz und Anomalien reduziert werden.",
+          "correct": true,
+          "explanation": "Genau das ist der fachliche Kern der Normalisierung."
+        },
+        {
+          "id": "b",
+          "text": "Möglichst viele Daten bewusst doppelt abzulegen.",
+          "correct": false,
+          "explanation": "Das wäre eher das Gegenteil."
+        },
+        {
+          "id": "c",
+          "text": "Nur noch technische Schlüssel zu zeichnen.",
+          "correct": false,
+          "explanation": "Das greift viel zu kurz."
+        },
+        {
+          "id": "d",
+          "text": "Jede Beziehung im Modell aufzulösen und zu vermeiden.",
+          "correct": false,
+          "explanation": "Auch das ist nicht das Ziel."
+        }
+      ]
+    },
+    {
+      "id": "pv1fi_medium_data_q17",
+      "conceptId": "pv1fi_medium_data_pflichtattribut_anfrage",
+      "variantId": "pv1fi_medium_data_pflichtattribut_anfrage_v02",
+      "interactionType": "single",
+      "questionKind": "begriff_zu_definition",
+      "badgeLabel": "Welcher Begriff passt am besten?",
+      "isNew": true,
+      "prompt": "Wie nennt man ein Attribut, das bei jeder Anfrage zwingend vorhanden sein muss?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Pflichtattribut",
+          "correct": true,
+          "explanation": "Genau so wird ein solches Attribut fachlich bezeichnet."
+        },
+        {
+          "id": "b",
+          "text": "Schleifenknoten",
+          "correct": false,
+          "explanation": "Das gehört in einen anderen Themenbereich."
+        },
+        {
+          "id": "c",
+          "text": "Akteur",
+          "correct": false,
+          "explanation": "Auch das ist hier nicht passend."
+        },
+        {
+          "id": "d",
+          "text": "Swimlane",
+          "correct": false,
+          "explanation": "Das ist ein Diagrammbegriff aus UML."
+        }
+      ]
+    },
+    {
+      "id": "pv1fi_medium_data_q18",
+      "conceptId": "pv1fi_medium_data_mehrwertiges_attribut_telefon",
+      "variantId": "pv1fi_medium_data_mehrwertiges_attribut_telefon_v02",
+      "interactionType": "single",
+      "questionKind": "passende_massnahme_auswaehlen",
+      "badgeLabel": "Welche Maßnahme passt am besten zur Situation?",
+      "isNew": true,
+      "prompt": "Welche Modellierungsentscheidung ist besonders sauber, wenn ein Kunde mehrere Telefonnummern haben kann?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Die Mehrfachwerte fachlich sauber modellieren statt sie ungeordnet in ein einzelnes Feld zu pressen.",
+          "correct": true,
+          "explanation": "So bleibt die Struktur sauber und auswertbar."
+        },
+        {
+          "id": "b",
+          "text": "Alle Nummern kommentarlos an eine Textkette anhängen und hoffen.",
+          "correct": false,
+          "explanation": "Das wäre fachlich unsauber."
+        },
+        {
+          "id": "c",
+          "text": "Telefonnummern deshalb ganz weglassen.",
+          "correct": false,
+          "explanation": "Das löst das Modellierungsproblem nicht sinnvoll."
+        },
+        {
+          "id": "d",
+          "text": "Die Nummern im Diagramm farbig unterscheiden.",
+          "correct": false,
+          "explanation": "Auch das ersetzt keine saubere Struktur."
+        }
+      ]
+    },
+    {
+      "id": "pv1fi_medium_data_q19",
+      "conceptId": "pv1fi_medium_data_zusammengesetzter_schluessel_zuordnung",
+      "variantId": "pv1fi_medium_data_zusammengesetzter_schluessel_zuordnung_v02",
+      "interactionType": "single",
+      "questionKind": "definition_zu_begriff",
+      "badgeLabel": "Welche Aussage trifft am besten zu?",
+      "isNew": true,
+      "prompt": "Was ist in einer Zuordnungsentität am ehesten ein zusammengesetzter Schlüssel?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Ein Schlüssel, der aus mehreren Attributen gemeinsam gebildet wird",
+          "correct": true,
+          "explanation": "Genau das ist die Grundidee eines zusammengesetzten Schlüssels."
+        },
+        {
+          "id": "b",
+          "text": "eine laufende Nummer, die bei jedem Export neu vergeben wird",
+          "correct": false,
+          "explanation": "Das ist kein fachliches Modellierungskriterium."
+        },
+        {
+          "id": "c",
+          "text": "Eine Beziehung ohne Identifikation",
+          "correct": false,
+          "explanation": "Auch das ist falsch."
+        },
+        {
+          "id": "d",
+          "text": "Ein Pflichtattribut ohne Bezug zu anderen Attributen",
+          "correct": false,
+          "explanation": "Das beschreibt keinen zusammengesetzten Schlüssel."
+        }
+      ]
+    },
+    {
+      "id": "pv1fi_medium_data_q20",
+      "conceptId": "pv1fi_medium_data_fachobjekte_portalset",
+      "variantId": "pv1fi_medium_data_fachobjekte_portalset_v02",
+      "interactionType": "multi",
+      "questionKind": "mehrere_richtige_antworten_waehlen",
+      "badgeLabel": "Welche Aussagen sind korrekt?",
+      "isNew": true,
+      "prompt": "Welche Fachobjekte eignen sich in diesem Portal fachlich als Entitäten? Mehrere Antworten sind richtig.",
+      "maxSelections": 4,
+      "options": [
+        {
+          "id": "a",
+          "text": "Kunde",
+          "correct": true,
+          "explanation": "Das ist ein eigenständiges Fachobjekt."
+        },
+        {
+          "id": "b",
+          "text": "Beratungsanfrage",
+          "correct": true,
+          "explanation": "Auch die Anfrage ist ein zentrales Fachobjekt."
+        },
+        {
+          "id": "c",
+          "text": "Slot oder Zeitfenster",
+          "correct": true,
+          "explanation": "Auch Zeitfenster können fachlich eigenständige Objekte sein."
+        },
+        {
+          "id": "d",
+          "text": "Ressource",
+          "correct": true,
+          "explanation": "Ressourcen gehören ebenfalls in die Fachsicht."
+        },
+        {
+          "id": "e",
+          "text": "Fensterfarbe des Portals",
+          "correct": false,
+          "explanation": "Das ist kein Fachobjekt."
+        }
+      ]
+    },
+    {
+      "id": "pv1fi_medium_data_q21",
+      "conceptId": "pv1fi_medium_data_konsistenz_kundendaten",
+      "variantId": "pv1fi_medium_data_konsistenz_kundendaten_v02",
+      "interactionType": "single",
+      "questionKind": "vergleich_treffen",
+      "badgeLabel": "Welche Aussage passt am besten?",
+      "isNew": true,
+      "prompt": "Woran lässt sich Datenkonsistenz in diesem Portal am ehesten erkennen?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Dieselbe fachliche Information liegt an allen relevanten Stellen widerspruchsfrei vor.",
+          "correct": true,
+          "explanation": "Genau daran erkennt man Konsistenz."
+        },
+        {
+          "id": "b",
+          "text": "Daten stehen absichtlich mehrfach mit unterschiedlichen Varianten im System.",
+          "correct": false,
+          "explanation": "Das wäre eher inkonsistent."
+        },
+        {
+          "id": "c",
+          "text": "Darstellung und Modellregeln werden miteinander verwechselt",
+          "correct": false,
+          "explanation": "Das trägt nichts zur fachlichen Bewertung bei."
+        },
+        {
+          "id": "d",
+          "text": "Jeder Datensatz hat einen besonders langen Namen.",
+          "correct": false,
+          "explanation": "Auch das ist nicht gemeint."
+        }
+      ]
+    },
+    {
+      "id": "pv1fi_medium_data_q22",
+      "conceptId": "pv1fi_medium_data_integritaetsfehler_textfeldressource",
+      "variantId": "pv1fi_medium_data_integritaetsfehler_textfeldressource_v02",
+      "interactionType": "single",
+      "questionKind": "fehler_finden",
+      "badgeLabel": "Welche Option enthält den Denkfehler?",
+      "isNew": true,
+      "prompt": "Welche Aussage über die Ressourcenmodellierung ist der Denkfehler?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Ressourcen sollten als eigene Objekte oder saubere Zuordnungen statt als Freitext geführt werden.",
+          "correct": false,
+          "explanation": "Das ist fachlich richtig."
+        },
+        {
+          "id": "b",
+          "text": "Freitextlisten erschweren Auswertung und Integrität.",
+          "correct": false,
+          "explanation": "Auch das ist richtig."
+        },
+        {
+          "id": "c",
+          "text": "Eine Komma-Liste mit Ressourcen ist völlig ausreichend, weil Beziehungen im Datenmodell ohnehin keine Rolle spielen.",
+          "correct": true,
+          "explanation": "Genau darin liegt der Denkfehler."
+        },
+        {
+          "id": "d",
+          "text": "Saubere Beziehungen helfen später bei Konsistenz und Pflege.",
+          "correct": false,
+          "explanation": "Das ist fachlich sinnvoll."
+        }
+      ]
+    },
+    {
+      "id": "pv1fi_medium_data_q23",
+      "conceptId": "pv1fi_medium_data_modellierung_vor_umsetzung_portal",
+      "variantId": "pv1fi_medium_data_modellierung_vor_umsetzung_portal_v02",
+      "interactionType": "binary",
+      "questionKind": "aussage_bewerten",
+      "badgeLabel": "Stimmt diese Aussage?",
+      "isNew": true,
+      "prompt": "Ein fachlich sauberes Datenmodell hilft, Beziehungen, Schlüssel und Integritätsregeln zu klären, bevor technische Umsetzung und Pflegefehler teuer werden.",
+      "options": [
+        {
+          "id": "a",
+          "text": "Stimmt",
+          "correct": true,
+          "explanation": "Genau darin liegt der Nutzen der fachlichen Modellierung."
+        },
+        {
+          "id": "b",
+          "text": "Stimmt nicht",
+          "correct": false,
+          "explanation": "Die frühe Modellklärung ist gerade wichtig."
+        }
+      ]
+    },
+    {
+      "id": "pv1fi_medium_data_q24",
+      "conceptId": "pv1fi_medium_data_11_anfrage_freigabeprotokoll",
+      "variantId": "pv1fi_medium_data_11_anfrage_freigabeprotokoll_v02",
+      "interactionType": "single",
+      "questionKind": "definition_zu_begriff",
+      "badgeLabel": "Welche Aussage trifft am besten zu?",
+      "isNew": true,
+      "prompt": "Wie lässt sich eine 1:1-Beziehung im Datenmodell am besten erklären?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Jedem Datensatz der einen Seite ist höchstens ein passender Datensatz der anderen Seite zugeordnet und umgekehrt.",
+          "correct": true,
+          "explanation": "Genau das beschreibt eine 1:1-Beziehung."
+        },
+        {
+          "id": "b",
+          "text": "ein Datensatz wird auf beiden Seiten beliebig oft dupliziert",
+          "correct": false,
+          "explanation": "Das beschreibt gerade keine eindeutige Paarbeziehung."
+        },
+        {
+          "id": "c",
+          "text": "Es handelt sich immer um eine n:m-Beziehung.",
+          "correct": false,
+          "explanation": "Auch das ist falsch."
+        },
+        {
+          "id": "d",
+          "text": "Schlüssel sind dort automatisch unnötig.",
+          "correct": false,
+          "explanation": "Schlüssel bleiben wichtig."
+        }
+      ]
+    },
+    {
+      "id": "pv1fi_medium_data_q25",
+      "conceptId": "pv1fi_medium_data_identifikation_dublettenvermeidung",
+      "variantId": "pv1fi_medium_data_identifikation_dublettenvermeidung_v02",
+      "interactionType": "best",
+      "questionKind": "prioritaet_setzen",
+      "badgeLabel": "Was ist hier am wichtigsten?",
+      "isNew": true,
+      "prompt": "Welche Maßnahme hilft besonders dabei, Datensätze im Portal eindeutig zu unterscheiden und Dubletten zu vermeiden?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Ein sauberes Identifikationskonzept mit eindeutigen Schlüsseln und klarer Pflege der Stammdaten",
+          "correct": true,
+          "explanation": "So werden Identifikation und Dublettenvermeidung gemeinsam gestützt."
+        },
+        {
+          "id": "b",
+          "text": "Daten möglichst oft an verschiedenen Stellen doppelt ablegen",
+          "correct": false,
+          "explanation": "Das erhöht eher das Problem."
+        },
+        {
+          "id": "c",
+          "text": "Schlüssel ganz vermeiden, damit das Modell einfacher aussieht",
+          "correct": false,
+          "explanation": "Auch das wäre fachlich schwach."
+        },
+        {
+          "id": "d",
+          "text": "Nur die Oberfläche schöner gestalten",
+          "correct": false,
+          "explanation": "Das löst das Datenproblem nicht."
+        }
+      ]
+    },
+    {
+      "id": "pv1fi_medium_data_q26",
+      "conceptId": "pv1fi_medium_data_integritaetsregeln_portal",
+      "variantId": "pv1fi_medium_data_integritaetsregeln_portal_v02",
+      "interactionType": "multi",
+      "questionKind": "mehrere_richtige_antworten_waehlen",
+      "badgeLabel": "Welche Aussagen sind korrekt?",
+      "isNew": true,
+      "prompt": "Welche Regeln tragen in diesem Portal besonders zu Integrität und Konsistenz bei? Mehrere Antworten sind richtig.",
+      "maxSelections": 3,
+      "options": [
+        {
+          "id": "a",
+          "text": "Freigaben dürfen nicht ohne zugehörige Anfrage bestehen.",
+          "correct": true,
+          "explanation": "Das schützt die referenzielle Integrität."
+        },
+        {
+          "id": "b",
+          "text": "Zentrale Kundendaten sollten nicht unkontrolliert mehrfach gepflegt werden.",
+          "correct": true,
+          "explanation": "So werden Widersprüche reduziert."
+        },
+        {
+          "id": "c",
+          "text": "Ressourcenzuordnungen sollten sauber nachvollziehbar modelliert sein.",
+          "correct": true,
+          "explanation": "Auch das trägt zur Integrität bei."
+        },
+        {
+          "id": "d",
+          "text": "Widersprüche sind fachlich egal, solange Termine sichtbar bleiben.",
+          "correct": false,
+          "explanation": "Das wäre falsch."
+        },
+        {
+          "id": "e",
+          "text": "nur längere Namen für Tabellen und Dateien vergeben",
+          "correct": false,
+          "explanation": "Das beschreibt keine belastbare Datenmodellierungsentscheidung."
+        }
+      ]
+    },
+    {
+      "id": "pv1fi_medium_data_q27",
+      "conceptId": "pv1fi_medium_data_miniszenario_portalmodell",
+      "variantId": "pv1fi_medium_data_miniszenario_portalmodell_v02",
+      "interactionType": "best",
+      "questionKind": "beste_option_im_mini_szenario",
+      "badgeLabel": "Welche Lösung passt insgesamt am besten?",
+      "isNew": true,
+      "prompt": "Welche Entscheidung passt insgesamt am besten, wenn Kunde, Anfrage, Slot, Ressource und Freigabe sauber modelliert werden sollen?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Fachobjekte sauber trennen, eindeutige Schlüssel wählen, Beziehungen klar modellieren und Redundanz bewusst reduzieren",
+          "correct": true,
+          "explanation": "Diese Kombination trägt das Datenmodell fachlich am besten."
+        },
+        {
+          "id": "b",
+          "text": "Möglichst viele Angaben in Freitextfeldern belassen, damit Änderungen spontan bleiben",
+          "correct": false,
+          "explanation": "Das würde Struktur und Integrität schwächen."
+        },
+        {
+          "id": "c",
+          "text": "Kunde und Anfrage in einem einzigen Sammelobjekt verschmelzen",
+          "correct": false,
+          "explanation": "Das würde das Modell eher unklarer machen."
+        },
+        {
+          "id": "d",
+          "text": "Beziehungen erst später bedenken und zunächst nur Oberflächen entwerfen",
+          "correct": false,
+          "explanation": "Das wäre fachlich zu schwach."
+        }
+      ]
+    },
+    {
+      "id": "pv1fi_medium_data_q28",
+      "conceptId": "pv1fi_medium_data_gesamtentscheidung_portaldaten",
+      "variantId": "pv1fi_medium_data_gesamtentscheidung_portaldaten_v02",
+      "interactionType": "best",
+      "questionKind": "prioritaet_setzen",
+      "badgeLabel": "Welche Empfehlung ist am stärksten?",
+      "isNew": true,
+      "prompt": "Welche Empfehlung für das Datenmodell des Portalprojekts ist insgesamt am überzeugendsten?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Ein fachlich sauberes ER-Modell mit klaren Entitäten, stabilen Schlüsseln, passenden Kardinalitäten und nachvollziehbaren Integritätsregeln aufbauen",
+          "correct": true,
+          "explanation": "Damit wird das Modell fachlich belastbar und pflegbar."
+        },
+        {
+          "id": "b",
+          "text": "Nur die Erfolgsfälle modellieren und Redundanz erst später betrachten",
+          "correct": false,
+          "explanation": "Das wäre zu kurz gedacht."
+        },
+        {
+          "id": "c",
+          "text": "Mehrfach gepflegte Daten bewusst akzeptieren, solange die Oberfläche funktioniert",
+          "correct": false,
+          "explanation": "Das würde die Fachqualität schwächen."
+        },
+        {
+          "id": "d",
+          "text": "Schlüssel, Beziehungen und Integrität möglichst spät klären",
+          "correct": false,
+          "explanation": "Gerade diese Punkte sollten früh geklärt sein."
+        }
+      ]
+    }
+  ]
+}

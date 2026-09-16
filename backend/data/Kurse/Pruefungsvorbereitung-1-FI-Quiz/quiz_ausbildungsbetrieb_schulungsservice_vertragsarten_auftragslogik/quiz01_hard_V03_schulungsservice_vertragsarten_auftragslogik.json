@@ -1,0 +1,936 @@
+{
+  "scenarioFolder": "Pruefungsvorbereitung-1-FI-Scenarien",
+  "quizFolder": "Pruefungsvorbereitung-1-FI-Quiz",
+  "scenarioFile": "ticket_ausbildungsbetrieb_schulungsservice_vertragsarten_auftragslogik/01_hard_schulungsservice_vertragsarten_auftragslogik.json",
+  "quizFile": "quiz01_hard_V03_schulungsservice_vertragsarten_auftragslogik.json",
+  "ticketId": "01_hard_schulungsservice_vertragsarten_auftragslogik.json",
+  "versionId": "V03",
+  "title": "Ticket 01 Hard - Schulungsservice, Vertragsarten und Auftragslogik",
+  "description": "Manuell verfasstes AP1-Training im hohen Schwierigkeitsgrad zu Mischaufträgen, Teilabnahmen, Nachträgen, Annahmen und wirtschaftlichen Risiken im IT-Schulungsservice.",
+  "topics": [
+    "Mischaufträge mit Werk-, Dienst-, Miet- und Lizenzanteilen fachlich belastbar strukturieren",
+    "Annahmen, Mitwirkung, Teilabnahmen und Zusatzwünsche wirtschaftlich und terminlich sauber abgrenzen"
+  ],
+  "defaultInteractionType": "single",
+  "defaultQuestionKind": "eine_richtige_antwort_waehlen",
+  "defaultBadgeLabel": "Welche Antwort trifft am besten zu?",
+  "questions": [
+    {
+      "id": "pv1fi_hard_auftrag_q01",
+      "conceptId": "pv1fi_hard_auftrag_mischauftrag_trennen",
+      "variantId": "pv1fi_hard_auftrag_mischauftrag_trennen_v03",
+      "interactionType": "multi",
+      "questionKind": "mehrere_richtige_antworten_waehlen",
+      "badgeLabel": "Welche Aussagen sind fachlich richtig?",
+      "isNew": true,
+      "prompt": "Welche Entscheidungen ordnen diesen Mischauftrag fachlich am belastbarsten? Mehrere Antworten sind richtig.",
+      "maxSelections": 3,
+      "options": [
+        {
+          "id": "a",
+          "text": "Das Portalupdate als eigenständigen Werkbaustein mit klaren Abnahmekriterien formulieren.",
+          "correct": true,
+          "explanation": "So bleibt der werkbezogene Teil fachlich prüfbar."
+        },
+        {
+          "id": "b",
+          "text": "Hotline, Miete und Lizenzen pauschal in denselben Werkbaustein übernehmen.",
+          "correct": false,
+          "explanation": "Damit würden unterschiedliche Leistungslogiken unsauber vermischt."
+        },
+        {
+          "id": "c",
+          "text": "Geräteüberlassung und Lizenznutzung mit eigenem Zeitbezug beschreiben.",
+          "correct": true,
+          "explanation": "Beide Leistungen brauchen eine eigene zeitliche und inhaltliche Abgrenzung."
+        },
+        {
+          "id": "d",
+          "text": "Spätere Zusatzwünsche nur nach Prüfung von Umfang, Termin und Preis in den Auftrag aufnehmen.",
+          "correct": true,
+          "explanation": "Genau so bleibt der Grundauftrag nachvollziehbar."
+        },
+        {
+          "id": "e",
+          "text": "Offene Punkte lieber unkommentiert lassen, damit der Auftrag schneller freigegeben wird.",
+          "correct": false,
+          "explanation": "Das erzeugt fachlich und wirtschaftlich unnötige Risiken."
+        }
+      ]
+    },
+    {
+      "id": "pv1fi_hard_auftrag_q02",
+      "conceptId": "pv1fi_hard_auftrag_teilabnahme_werkteil",
+      "variantId": "pv1fi_hard_auftrag_teilabnahme_werkteil_v03",
+      "interactionType": "single",
+      "questionKind": "vergleich_treffen",
+      "badgeLabel": "Welche Aussage passt am besten?",
+      "isNew": true,
+      "prompt": "Warum ist in diesem Fall eine eigenständige Teilabnahme des Portalupdates fachlich sinnvoller als ein Sammeltermin für alles?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Weil der Werkteil nur so mit klaren Kriterien bewertet werden kann, ohne Hotline, Miete und Lizenzen künstlich mitzuschleifen.",
+          "correct": true,
+          "explanation": "Genau darin liegt der fachliche Vorteil der Teilabnahme."
+        },
+        {
+          "id": "b",
+          "text": "Weil Teilabnahmen automatisch alle späteren Zusatzwünsche einschließen.",
+          "correct": false,
+          "explanation": "Das folgt daraus gerade nicht."
+        },
+        {
+          "id": "c",
+          "text": "Weil eine Teilabnahme jede Dokumentation überflüssig macht.",
+          "correct": false,
+          "explanation": "Auch eine Teilabnahme muss sauber dokumentiert werden."
+        },
+        {
+          "id": "d",
+          "text": "Weil laufende Serviceleistungen grundsätzlich nie beschrieben werden dürfen.",
+          "correct": false,
+          "explanation": "Sie dürfen beschrieben werden, nur eben anders als der Werkteil."
+        }
+      ]
+    },
+    {
+      "id": "pv1fi_hard_auftrag_q03",
+      "conceptId": "pv1fi_hard_auftrag_hotline_servicelevel_vs_werk",
+      "variantId": "pv1fi_hard_auftrag_hotline_servicelevel_vs_werk_v03",
+      "interactionType": "single",
+      "questionKind": "fehler_finden",
+      "badgeLabel": "Wo liegt der Denkfehler?",
+      "isNew": true,
+      "prompt": "In welcher Hotline-Formulierung steckt der fachliche Denkfehler?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Jede Meldung gilt automatisch als Werkmangel und muss immer binnen 30 Minuten vollständig gelöst sein.",
+          "correct": true,
+          "explanation": "Das vermischt eine laufende Serviceleistung mit einem pauschalen Werkversprechen."
+        },
+        {
+          "id": "b",
+          "text": "Anfragen werden im vereinbarten Zeitraum entgegengenommen, priorisiert und dokumentiert bearbeitet.",
+          "correct": false,
+          "explanation": "Das beschreibt eine Serviceleistung fachlich sauber."
+        },
+        {
+          "id": "c",
+          "text": "Reaktionszeiten und Servicefenster werden nachvollziehbar festgelegt.",
+          "correct": false,
+          "explanation": "Auch das ist fachlich sinnvoll."
+        },
+        {
+          "id": "d",
+          "text": "Der Leistungsrahmen der Hotline wird vom Werkteil getrennt beschrieben.",
+          "correct": false,
+          "explanation": "Genau das ist fachlich richtig."
+        }
+      ]
+    },
+    {
+      "id": "pv1fi_hard_auftrag_q04",
+      "conceptId": "pv1fi_hard_auftrag_mitwirkung_kundendaten",
+      "variantId": "pv1fi_hard_auftrag_mitwirkung_kundendaten_v03",
+      "interactionType": "multi",
+      "questionKind": "mehrere_richtige_antworten_waehlen",
+      "badgeLabel": "Welche Punkte zählen hier besonders?",
+      "isNew": true,
+      "prompt": "Welche Punkte müssen als Mitwirkung oder Annahme ausdrücklich im Angebot dokumentiert werden? Mehrere Antworten sind richtig.",
+      "maxSelections": 3,
+      "options": [
+        {
+          "id": "a",
+          "text": "Der Termin, bis zu dem Teilnehmer- und Rollendaten vollständig geliefert werden müssen.",
+          "correct": true,
+          "explanation": "Das beeinflusst Meilensteine und Prüfbarkeit direkt."
+        },
+        {
+          "id": "b",
+          "text": "Die fachliche Freigabe von Inhalten vor Pilot und Abnahme.",
+          "correct": true,
+          "explanation": "Auch das ist eine wesentliche Mitwirkung."
+        },
+        {
+          "id": "c",
+          "text": "Die Wirkung verspäteter Zulieferungen auf Terminplan oder Umfang.",
+          "correct": true,
+          "explanation": "Genau solche Folgen müssen transparent sein."
+        },
+        {
+          "id": "d",
+          "text": "Dass alle Verzögerungen unabhängig von Kundenzulieferungen pauschal beim Anbieter liegen.",
+          "correct": false,
+          "explanation": "So pauschal wäre das unsauber."
+        },
+        {
+          "id": "e",
+          "text": "Dass offene Inhalte später spontan ohne Dokumentation ergänzt werden.",
+          "correct": false,
+          "explanation": "Das wäre fachlich riskant."
+        }
+      ]
+    },
+    {
+      "id": "pv1fi_hard_auftrag_q05",
+      "conceptId": "pv1fi_hard_auftrag_annahme_formulierung",
+      "variantId": "pv1fi_hard_auftrag_annahme_formulierung_v03",
+      "interactionType": "single",
+      "questionKind": "beispiel_erkennen",
+      "badgeLabel": "Welches Beispiel passt am besten?",
+      "isNew": true,
+      "prompt": "Welche Formulierung bildet eine dokumentierte Annahme besonders sauber ab?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Die Pilotwoche basiert auf der Annahme, dass vollständige Teilnehmerdaten bis zum 10. Juni vorliegen; spätere Lieferungen erfordern eine neue Terminbewertung.",
+          "correct": true,
+          "explanation": "Hier werden Voraussetzung und Folge sauber benannt."
+        },
+        {
+          "id": "b",
+          "text": "Alle Termine gelten ohne Einschränkung, egal wann Inhalte geliefert werden.",
+          "correct": false,
+          "explanation": "Das wäre eine pauschale Zusage, keine Annahme."
+        },
+        {
+          "id": "c",
+          "text": "Irgendwelche Daten werden sicher rechtzeitig kommen.",
+          "correct": false,
+          "explanation": "Das ist zu unbestimmt."
+        },
+        {
+          "id": "d",
+          "text": "Über Terminfolgen reden wir erst nach Projektstart.",
+          "correct": false,
+          "explanation": "Auch das ist keine saubere Annahme."
+        }
+      ]
+    },
+    {
+      "id": "pv1fi_hard_auftrag_q06",
+      "conceptId": "pv1fi_hard_auftrag_festpreis_risiko",
+      "variantId": "pv1fi_hard_auftrag_festpreis_risiko_v03",
+      "interactionType": "best",
+      "questionKind": "prioritaet_setzen",
+      "badgeLabel": "Was ist hier am wichtigsten?",
+      "isNew": true,
+      "prompt": "Ein Festpreis wird verlangt, obwohl der Umfang noch nicht sauber feststeht. Welche Reaktion ist fachlich am stärksten?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Den abgegrenzten Grundumfang sauber fixieren und offene Themen nur mit klarer Änderungslogik oder Nachtrag behandeln.",
+          "correct": true,
+          "explanation": "So bleibt der Festpreis an einen nachvollziehbaren Stand gebunden."
+        },
+        {
+          "id": "b",
+          "text": "Alle offenen Punkte stillschweigend mit in denselben Preis ziehen.",
+          "correct": false,
+          "explanation": "Das wäre wirtschaftlich und fachlich riskant."
+        },
+        {
+          "id": "c",
+          "text": "Mitwirkung und Annahmen aus dem Dokument entfernen, damit der Auftrag glatter wirkt.",
+          "correct": false,
+          "explanation": "Das würde Unsicherheiten nur verstecken."
+        },
+        {
+          "id": "d",
+          "text": "Nur noch die Hotline beschreiben und alles andere offenlassen.",
+          "correct": false,
+          "explanation": "Auch das wäre fachlich unzureichend."
+        }
+      ]
+    },
+    {
+      "id": "pv1fi_hard_auftrag_q07",
+      "conceptId": "pv1fi_hard_auftrag_dashboard_nachtrag",
+      "variantId": "pv1fi_hard_auftrag_dashboard_nachtrag_v03",
+      "interactionType": "single",
+      "questionKind": "bester_naechster_schritt",
+      "badgeLabel": "Was ist der beste nächste Schritt?",
+      "isNew": true,
+      "prompt": "Der Kunde möchte nach Freigabe noch Dashboard und Exportfunktion ergänzen. Wie wird das fachlich am saubersten behandelt?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Die Zusatzwünsche als gesonderten Änderungs- oder Nachtragsbaustein mit Termin-, Umfangs- und Preiswirkung prüfen.",
+          "correct": true,
+          "explanation": "So bleibt die Änderung nachvollziehbar und steuerbar."
+        },
+        {
+          "id": "b",
+          "text": "Die Punkte still in den Grundauftrag einbauen, um Diskussionen zu vermeiden.",
+          "correct": false,
+          "explanation": "Damit würden Kalkulation und Leistungsgrenze unsauber."
+        },
+        {
+          "id": "c",
+          "text": "Die bisherigen Abnahmekriterien vollständig verwerfen.",
+          "correct": false,
+          "explanation": "Das wäre keine saubere Lösung."
+        },
+        {
+          "id": "d",
+          "text": "Nur mündlich zusagen und die Umsetzung später offenlassen.",
+          "correct": false,
+          "explanation": "Auch das wäre riskant."
+        }
+      ]
+    },
+    {
+      "id": "pv1fi_hard_auftrag_q08",
+      "conceptId": "pv1fi_hard_auftrag_teilabnahme_restpunkte",
+      "variantId": "pv1fi_hard_auftrag_teilabnahme_restpunkte_v03",
+      "interactionType": "multi",
+      "questionKind": "mehrere_richtige_antworten_waehlen",
+      "badgeLabel": "Welche Punkte gehören zusammen?",
+      "isNew": true,
+      "prompt": "Welche Angaben sollte ein sauberes Teilabnahmeprotokoll für das Portalupdate unbedingt enthalten? Mehrere Antworten sind richtig.",
+      "maxSelections": 3,
+      "options": [
+        {
+          "id": "a",
+          "text": "Der konkret freigegebene Versionsstand und der abgegrenzte Leistungsumfang.",
+          "correct": true,
+          "explanation": "Nur so bleibt klar, worauf sich die Abnahme bezieht."
+        },
+        {
+          "id": "b",
+          "text": "Das Ergebnis der vereinbarten Prüf- und Abnahmekriterien.",
+          "correct": true,
+          "explanation": "Auch das ist zwingend relevant."
+        },
+        {
+          "id": "c",
+          "text": "Dokumentierte Restpunkte oder Abweichungen mitsamt Umgang damit.",
+          "correct": true,
+          "explanation": "So bleiben offene Punkte nachvollziehbar."
+        },
+        {
+          "id": "d",
+          "text": "Die automatische kostenlose Aufnahme späterer Zusatzfunktionen.",
+          "correct": false,
+          "explanation": "Das gehört gerade nicht in ein Abnahmeprotokoll."
+        },
+        {
+          "id": "e",
+          "text": "Beliebige Hotline-Versprechen ohne Bezug zum Werkstand.",
+          "correct": false,
+          "explanation": "Das vermischt unterschiedliche Leistungsarten."
+        }
+      ]
+    },
+    {
+      "id": "pv1fi_hard_auftrag_q09",
+      "conceptId": "pv1fi_hard_auftrag_abnahme_versionstand",
+      "variantId": "pv1fi_hard_auftrag_abnahme_versionstand_v03",
+      "interactionType": "single",
+      "questionKind": "ziel_mittel_zuordnung",
+      "badgeLabel": "Welche Lösung passt am besten?",
+      "isNew": true,
+      "prompt": "Welchen fachlichen Zweck erfüllt die ausdrückliche Nennung des Versionsstands bei einer Teilabnahme?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Damit klar bleibt, welcher konkrete Stand mit welchem Umfang freigegeben wurde.",
+          "correct": true,
+          "explanation": "So wird die Abnahme belastbar und abgrenzbar."
+        },
+        {
+          "id": "b",
+          "text": "Damit spätere Zusatzwünsche automatisch mit derselben Freigabe abgedeckt sind.",
+          "correct": false,
+          "explanation": "Das folgt daraus nicht."
+        },
+        {
+          "id": "c",
+          "text": "Weil damit Prüf- und Abnahmekriterien überflüssig werden.",
+          "correct": false,
+          "explanation": "Auch Kriterien bleiben weiterhin nötig."
+        },
+        {
+          "id": "d",
+          "text": "Damit die Hotline keine Servicezeiten mehr braucht.",
+          "correct": false,
+          "explanation": "Das hat damit nichts zu tun."
+        }
+      ]
+    },
+    {
+      "id": "pv1fi_hard_auftrag_q10",
+      "conceptId": "pv1fi_hard_auftrag_servicecredit_vs_nacherfuellung",
+      "variantId": "pv1fi_hard_auftrag_servicecredit_vs_nacherfuellung_v03",
+      "interactionType": "single",
+      "questionKind": "vergleich_treffen",
+      "badgeLabel": "Worin liegt der wichtigste Unterschied?",
+      "isNew": true,
+      "prompt": "Worin liegt der entscheidende Unterschied zwischen Hotline-Service-Level und werkbezogenem Abnahmekriterium?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Ein Service-Level beschreibt den Rahmen laufender Leistung, ein Abnahmekriterium prüft den vereinbarten Werkstand.",
+          "correct": true,
+          "explanation": "Genau diese Trennung ist fachlich zentral."
+        },
+        {
+          "id": "b",
+          "text": "Beides ist inhaltlich immer dasselbe, nur anders benannt.",
+          "correct": false,
+          "explanation": "Das stimmt fachlich nicht."
+        },
+        {
+          "id": "c",
+          "text": "Service-Level braucht man nur bei Mietgeräten.",
+          "correct": false,
+          "explanation": "Auch das wäre zu eng gedacht."
+        },
+        {
+          "id": "d",
+          "text": "Abnahmekriterien spielen nur bei mündlichen Zusagen eine Rolle.",
+          "correct": false,
+          "explanation": "Gerade bei Werkteilen sind sie wichtig."
+        }
+      ]
+    },
+    {
+      "id": "pv1fi_hard_auftrag_q11",
+      "conceptId": "pv1fi_hard_auftrag_mietgeraete_baustein",
+      "variantId": "pv1fi_hard_auftrag_mietgeraete_baustein_v03",
+      "interactionType": "multi",
+      "questionKind": "mehrere_richtige_antworten_waehlen",
+      "badgeLabel": "Was gehört hier unbedingt dazu?",
+      "isNew": true,
+      "prompt": "Welche Angaben sind für einen belastbaren Baustein zu den Leih-Tablets besonders wichtig? Mehrere Antworten sind richtig.",
+      "maxSelections": 3,
+      "options": [
+        {
+          "id": "a",
+          "text": "Anzahl, Zeitraum und Übergabe- oder Rückgaberegeln.",
+          "correct": true,
+          "explanation": "Genau das macht die zeitweise Überlassung greifbar."
+        },
+        {
+          "id": "b",
+          "text": "Der vereinbarte Nutzungsrahmen oder Zustand der Geräte.",
+          "correct": true,
+          "explanation": "Auch das gehört fachlich dazu."
+        },
+        {
+          "id": "c",
+          "text": "Eine klare Abgrenzung dazu, welche Zusatzleistungen gerade nicht eingeschlossen sind.",
+          "correct": true,
+          "explanation": "So wird der Baustein sauberer."
+        },
+        {
+          "id": "d",
+          "text": "Dass damit automatisch alle Portalfunktionen abgenommen sind.",
+          "correct": false,
+          "explanation": "Das wäre keine tragfähige fachliche Begründung."
+        },
+        {
+          "id": "e",
+          "text": "Dass die Hotline dadurch überflüssig wird.",
+          "correct": false,
+          "explanation": "Auch das folgt daraus nicht."
+        }
+      ]
+    },
+    {
+      "id": "pv1fi_hard_auftrag_q12",
+      "conceptId": "pv1fi_hard_auftrag_lizenzbaustein",
+      "variantId": "pv1fi_hard_auftrag_lizenzbaustein_v03",
+      "interactionType": "multi",
+      "questionKind": "mehrere_richtige_antworten_waehlen",
+      "badgeLabel": "Welche Punkte passen dazu?",
+      "isNew": true,
+      "prompt": "Worauf sollte beim Lizenzbaustein in diesem Projekt besonders geachtet werden? Mehrere Antworten sind richtig.",
+      "maxSelections": 3,
+      "options": [
+        {
+          "id": "a",
+          "text": "Laufzeit und Anzahl der Nutzungsrechte.",
+          "correct": true,
+          "explanation": "Genau das ist fachlich zentral."
+        },
+        {
+          "id": "b",
+          "text": "Der Nutzungsrahmen oder die erlaubte Verwendung.",
+          "correct": true,
+          "explanation": "Auch dieser Rahmen muss sauber benannt sein."
+        },
+        {
+          "id": "c",
+          "text": "Die Abgrenzung zu weiteren Leistungen wie Einrichtung oder Support.",
+          "correct": true,
+          "explanation": "So werden Leistungsgrenzen klar."
+        },
+        {
+          "id": "d",
+          "text": "Dass alle späteren Funktionswünsche ohne weitere Prüfung Teil der Lizenz sind.",
+          "correct": false,
+          "explanation": "Das wäre eine unsaubere Überdehnung."
+        },
+        {
+          "id": "e",
+          "text": "Dass damit automatisch jede Mangelbeseitigung des Portals erledigt ist.",
+          "correct": false,
+          "explanation": "Auch das vermischt unterschiedliche Leistungen."
+        }
+      ]
+    },
+    {
+      "id": "pv1fi_hard_auftrag_q13",
+      "conceptId": "pv1fi_hard_auftrag_nichtleistung_abgrenzung",
+      "variantId": "pv1fi_hard_auftrag_nichtleistung_abgrenzung_v03",
+      "interactionType": "single",
+      "questionKind": "fehler_finden",
+      "badgeLabel": "Wo liegt der Denkfehler?",
+      "isNew": true,
+      "prompt": "Welche Formulierung zieht die Leistungsgrenze des Portalbausteins fachlich gerade nicht sauber?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Weitere sinnvolle Optimierungen nach Bedarf sind grundsätzlich enthalten.",
+          "correct": true,
+          "explanation": "Diese Formulierung bleibt zu offen und erweitert den Umfang unsauber."
+        },
+        {
+          "id": "b",
+          "text": "Das optionale Dashboard ist nicht Teil des Grundumfangs und wird nur nach gesonderter Beauftragung umgesetzt.",
+          "correct": false,
+          "explanation": "Das ist eine saubere Abgrenzung."
+        },
+        {
+          "id": "c",
+          "text": "Import- und Exportfunktionen außerhalb des beschriebenen Leistungsumfangs werden separat bewertet.",
+          "correct": false,
+          "explanation": "Auch das grenzt sauber ab."
+        },
+        {
+          "id": "d",
+          "text": "Hotline-Leistungen werden im eigenen Baustein geregelt.",
+          "correct": false,
+          "explanation": "Das ist fachlich sinnvoll."
+        }
+      ]
+    },
+    {
+      "id": "pv1fi_hard_auftrag_q14",
+      "conceptId": "pv1fi_hard_auftrag_meilenstein_kundenzulieferung",
+      "variantId": "pv1fi_hard_auftrag_meilenstein_kundenzulieferung_v03",
+      "interactionType": "best",
+      "questionKind": "passende_massnahme_auswaehlen",
+      "badgeLabel": "Welche Maßnahme ist am sinnvollsten?",
+      "isNew": true,
+      "prompt": "Ein Meilenstein hängt sichtbar an noch ausstehenden Kundendaten. Welche Maßnahme passt fachlich am besten?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Die Abhängigkeit ausdrücklich dokumentieren und die Terminwirkung verspäteter Zulieferung transparent machen.",
+          "correct": true,
+          "explanation": "So wird der Plan belastbar und nicht nur optimistisch."
+        },
+        {
+          "id": "b",
+          "text": "Die Datenlieferung im Dokument gar nicht erwähnen, damit der Plan sicher wirkt.",
+          "correct": false,
+          "explanation": "Das würde nur Scheinsicherheit erzeugen."
+        },
+        {
+          "id": "c",
+          "text": "Alle Risiken pauschal intern übernehmen, ohne sie anzusprechen.",
+          "correct": false,
+          "explanation": "Das wäre fachlich und wirtschaftlich problematisch."
+        },
+        {
+          "id": "d",
+          "text": "Den Meilenstein sofort unabhängig von den Daten als garantiert freigeben.",
+          "correct": false,
+          "explanation": "Auch das wäre unsauber."
+        }
+      ]
+    },
+    {
+      "id": "pv1fi_hard_auftrag_q15",
+      "conceptId": "pv1fi_hard_auftrag_teilabnahmeprotokoll_inhalte",
+      "variantId": "pv1fi_hard_auftrag_teilabnahmeprotokoll_inhalte_v03",
+      "interactionType": "multi",
+      "questionKind": "mehrere_richtige_antworten_waehlen",
+      "badgeLabel": "Welche Inhalte sind hier wesentlich?",
+      "isNew": true,
+      "prompt": "Welche Inhalte stärken ein Teilabnahmeprotokoll für das Portalupdate besonders? Mehrere Antworten sind richtig.",
+      "maxSelections": 3,
+      "options": [
+        {
+          "id": "a",
+          "text": "Der freigegebene Versionsstand.",
+          "correct": true,
+          "explanation": "So bleibt der Bezug der Abnahme klar."
+        },
+        {
+          "id": "b",
+          "text": "Die konkret geprüften Kriterien und ihr Ergebnis.",
+          "correct": true,
+          "explanation": "Auch das macht die Abnahme nachvollziehbar."
+        },
+        {
+          "id": "c",
+          "text": "Dokumentierte Restpunkte und deren Umgang.",
+          "correct": true,
+          "explanation": "So bleiben offene Punkte sauber greifbar."
+        },
+        {
+          "id": "d",
+          "text": "Eine pauschale Zusage, dass alle künftigen Wünsche automatisch erfüllt werden.",
+          "correct": false,
+          "explanation": "Das gehört nicht in ein sauberes Protokoll."
+        },
+        {
+          "id": "e",
+          "text": "Beliebige Aussagen über Leihgeräte ohne Bezug zum Werkteil.",
+          "correct": false,
+          "explanation": "Das wäre keine tragfähige fachliche Begründung."
+        }
+      ]
+    },
+    {
+      "id": "pv1fi_hard_auftrag_q16",
+      "conceptId": "pv1fi_hard_auftrag_nachtrag_auswirkungen",
+      "variantId": "pv1fi_hard_auftrag_nachtrag_auswirkungen_v03",
+      "interactionType": "best",
+      "questionKind": "prioritaet_setzen",
+      "badgeLabel": "Welche Bewertung ist am stärksten?",
+      "isNew": true,
+      "prompt": "Welche Punkte muss ein Nachtrag für Dashboard und Exportfunktion unbedingt mitdenken?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Seine Wirkung auf Umfang, Termine, Prüfbarkeit und Vergütung.",
+          "correct": true,
+          "explanation": "Genau diese vier Blickrichtungen machen den Nachtrag belastbar."
+        },
+        {
+          "id": "b",
+          "text": "Nur die Optik des Dashboards.",
+          "correct": false,
+          "explanation": "Das wäre viel zu eng."
+        },
+        {
+          "id": "c",
+          "text": "Nur die Hoffnung, dass der Aufwand schon klein bleiben wird.",
+          "correct": false,
+          "explanation": "Das wäre fachlich zu vage."
+        },
+        {
+          "id": "d",
+          "text": "Nur ob der Kunde den Wunsch sympathisch formuliert hat.",
+          "correct": false,
+          "explanation": "Auch das ist kein tragfähiger Maßstab."
+        }
+      ]
+    },
+    {
+      "id": "pv1fi_hard_auftrag_q17",
+      "conceptId": "pv1fi_hard_auftrag_reaktionszeit_vs_loesung",
+      "variantId": "pv1fi_hard_auftrag_reaktionszeit_vs_loesung_v03",
+      "interactionType": "single",
+      "questionKind": "vergleich_treffen",
+      "badgeLabel": "Worin liegt der wichtigste Unterschied?",
+      "isNew": true,
+      "prompt": "Worin besteht der zentrale Unterschied zwischen einer Hotline-Reaktionszeit und einer zugesagten vollständigen Problemlösung?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Die Reaktionszeit beschreibt, wann auf eine Meldung reagiert wird; eine vollständige Lösung wäre ein weitergehendes Ergebnisversprechen.",
+          "correct": true,
+          "explanation": "Genau das muss fachlich sauber getrennt werden."
+        },
+        {
+          "id": "b",
+          "text": "Beide Begriffe sind fachlich identisch.",
+          "correct": false,
+          "explanation": "Das stimmt nicht."
+        },
+        {
+          "id": "c",
+          "text": "Reaktionszeiten gelten nur für Mietgeräte.",
+          "correct": false,
+          "explanation": "Auch das ist fachlich falsch."
+        },
+        {
+          "id": "d",
+          "text": "Eine Problemlösung spielt bei Support nie eine Rolle.",
+          "correct": false,
+          "explanation": "Das wäre ebenfalls falsch."
+        }
+      ]
+    },
+    {
+      "id": "pv1fi_hard_auftrag_q18",
+      "conceptId": "pv1fi_hard_auftrag_hotline_kein_werkversprechen",
+      "variantId": "pv1fi_hard_auftrag_hotline_kein_werkversprechen_v03",
+      "interactionType": "binary",
+      "questionKind": "aussage_bewerten",
+      "badgeLabel": "Stimmt die Aussage?",
+      "isNew": true,
+      "prompt": "Eine vereinbarte Reaktionszeit der Hotline bedeutet automatisch, dass jeder gemeldete Fall als Werkmangel mit garantierter Komplettbehebung gilt.",
+      "options": [
+        {
+          "id": "a",
+          "text": "Stimmt",
+          "correct": false,
+          "explanation": "Reaktionszeit und garantierte Komplettbehebung sind fachlich nicht dasselbe."
+        },
+        {
+          "id": "b",
+          "text": "Stimmt nicht",
+          "correct": true,
+          "explanation": "Genau diese Trennung ist im Angebot wichtig."
+        }
+      ]
+    },
+    {
+      "id": "pv1fi_hard_auftrag_q19",
+      "conceptId": "pv1fi_hard_auftrag_miete_fehlende_angabe",
+      "variantId": "pv1fi_hard_auftrag_miete_fehlende_angabe_v03",
+      "interactionType": "single",
+      "questionKind": "was_fehlt",
+      "badgeLabel": "Was fehlt hier am ehesten?",
+      "isNew": true,
+      "prompt": "Im Gerätebaustein steht nur: „zwölf Tablets für Prüfungstage“. Was fehlt für eine belastbare zeitweise Überlassung am ehesten?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Zeitraum, Übergabe- und Rückgaberegeln sowie Nutzungsrahmen.",
+          "correct": true,
+          "explanation": "Erst dadurch wird der Baustein belastbar."
+        },
+        {
+          "id": "b",
+          "text": "Eine pauschale Aussage, dass damit alle Portalfunktionen erledigt sind.",
+          "correct": false,
+          "explanation": "Das wäre keine tragfähige fachliche Begründung."
+        },
+        {
+          "id": "c",
+          "text": "Der Verzicht auf jede Dokumentation.",
+          "correct": false,
+          "explanation": "Auch das wäre falsch."
+        },
+        {
+          "id": "d",
+          "text": "Die automatische Abnahme des Werkteils.",
+          "correct": false,
+          "explanation": "Miete ersetzt keine Werkabnahme."
+        }
+      ]
+    },
+    {
+      "id": "pv1fi_hard_auftrag_q20",
+      "conceptId": "pv1fi_hard_auftrag_modulare_angebotsstruktur",
+      "variantId": "pv1fi_hard_auftrag_modulare_angebotsstruktur_v03",
+      "interactionType": "best",
+      "questionKind": "beste_option_im_mini_szenario",
+      "badgeLabel": "Welche Lösung passt insgesamt am besten?",
+      "isNew": true,
+      "prompt": "Welche Angebotsstruktur passt am stärksten, wenn Grundauftrag, Optionen und laufende Leistungen klar getrennt bleiben sollen?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Werkbaustein für das Portal, eigene Bausteine für Hotline, Geräte und Lizenzen sowie ein gesonderter Nachtragsweg für Dashboard und Export.",
+          "correct": true,
+          "explanation": "So werden Logiken, Zeitbezug und Zusatzwünsche sauber getrennt."
+        },
+        {
+          "id": "b",
+          "text": "Ein pauschaler Gesamtbaustein ohne weitere Trennung.",
+          "correct": false,
+          "explanation": "Das wäre fachlich zu unscharf."
+        },
+        {
+          "id": "c",
+          "text": "Nur das Dashboard genau beschreiben und alles andere zusammenfassen.",
+          "correct": false,
+          "explanation": "Auch das passt nicht."
+        },
+        {
+          "id": "d",
+          "text": "Hotline und Portal vollständig zusammenziehen, Geräte und Lizenzen offenlassen.",
+          "correct": false,
+          "explanation": "Das würde neue Unklarheiten schaffen."
+        }
+      ]
+    },
+    {
+      "id": "pv1fi_hard_auftrag_q21",
+      "conceptId": "pv1fi_hard_auftrag_mischauftrag_denkfehler",
+      "variantId": "pv1fi_hard_auftrag_mischauftrag_denkfehler_v03",
+      "interactionType": "single",
+      "questionKind": "fehler_finden",
+      "badgeLabel": "Wo steckt der Denkfehler?",
+      "isNew": true,
+      "prompt": "Welche Aussage zu Mischaufträgen ist fachlich am deutlichsten falsch?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Wenn alles für denselben Kunden erbracht wird, kann man unterschiedliche Leistungslogiken ohne Nachteil in einen einzigen Vertragstopf kippen.",
+          "correct": true,
+          "explanation": "Gerade das ist fachlich riskant und unsauber."
+        },
+        {
+          "id": "b",
+          "text": "Unterschiedliche Leistungsanteile können im selben Projekt vorkommen, müssen aber sauber beschrieben werden.",
+          "correct": false,
+          "explanation": "Das ist fachlich richtig."
+        },
+        {
+          "id": "c",
+          "text": "Werkteil, Service und Überlassung sollten nicht nur sprachlich, sondern auch logisch getrennt bleiben.",
+          "correct": false,
+          "explanation": "Auch das stimmt."
+        },
+        {
+          "id": "d",
+          "text": "Spätere Zusatzwünsche brauchen eine bewusste Entscheidung über ihren Umgang.",
+          "correct": false,
+          "explanation": "Das ist ebenfalls fachlich sinnvoll."
+        }
+      ]
+    },
+    {
+      "id": "pv1fi_hard_auftrag_q22",
+      "conceptId": "pv1fi_hard_auftrag_leistungsbeschreibung_modular",
+      "variantId": "pv1fi_hard_auftrag_leistungsbeschreibung_modular_v03",
+      "interactionType": "multi",
+      "questionKind": "mehrere_richtige_antworten_waehlen",
+      "badgeLabel": "Welche Merkmale passen dazu?",
+      "isNew": true,
+      "prompt": "Welche Merkmale sprechen in diesem Projekt für eine saubere modulare Leistungsbeschreibung? Mehrere Antworten sind richtig.",
+      "maxSelections": 3,
+      "options": [
+        {
+          "id": "a",
+          "text": "Jeder Baustein hat einen erkennbaren Leistungszweck und eine klare Abgrenzung.",
+          "correct": true,
+          "explanation": "Das ist ein Kernmerkmal modularer Beschreibung."
+        },
+        {
+          "id": "b",
+          "text": "Zeitbezug und Prüfbezug werden dort genannt, wo sie fachlich nötig sind.",
+          "correct": true,
+          "explanation": "So werden Bausteine belastbarer."
+        },
+        {
+          "id": "c",
+          "text": "Offene Zusatzthemen werden nicht versteckt, sondern gesondert geführt.",
+          "correct": true,
+          "explanation": "Genau das verhindert spätere Vermischung."
+        },
+        {
+          "id": "d",
+          "text": "Möglichst viele unbestimmte Sammelbegriffe ersetzen die Leistungsgrenze.",
+          "correct": false,
+          "explanation": "Das würde die Abgrenzung gerade verschlechtern."
+        },
+        {
+          "id": "e",
+          "text": "Service- und Werklogik werden absichtlich unklar gehalten, um Diskussionen zu sparen.",
+          "correct": false,
+          "explanation": "Auch das wäre fachlich falsch."
+        }
+      ]
+    },
+    {
+      "id": "pv1fi_hard_auftrag_q23",
+      "conceptId": "pv1fi_hard_auftrag_annahme_vs_zusage",
+      "variantId": "pv1fi_hard_auftrag_annahme_vs_zusage_v03",
+      "interactionType": "single",
+      "questionKind": "vergleich_treffen",
+      "badgeLabel": "Welche Aussage passt am besten?",
+      "isNew": true,
+      "prompt": "Welche Aussage trennt eine dokumentierte Annahme fachlich am deutlichsten von einer festen Zusage?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Eine Annahme benennt eine Voraussetzung und ihre Wirkung; eine feste Zusage verspricht Leistung unabhängig von dieser Voraussetzung.",
+          "correct": true,
+          "explanation": "Genau diese Trennlinie ist fachlich entscheidend."
+        },
+        {
+          "id": "b",
+          "text": "Beides ist dasselbe, nur in anderem Stil formuliert.",
+          "correct": false,
+          "explanation": "Das wäre fachlich falsch."
+        },
+        {
+          "id": "c",
+          "text": "Annahmen braucht man nur bei Mietgeräten.",
+          "correct": false,
+          "explanation": "Das stimmt nicht."
+        },
+        {
+          "id": "d",
+          "text": "Feste Zusagen sollten möglichst nie dokumentiert werden.",
+          "correct": false,
+          "explanation": "Auch das wäre falsch."
+        }
+      ]
+    },
+    {
+      "id": "pv1fi_hard_auftrag_q24",
+      "conceptId": "pv1fi_hard_auftrag_gesamtentscheidung",
+      "variantId": "pv1fi_hard_auftrag_gesamtentscheidung_v03",
+      "interactionType": "best",
+      "questionKind": "prioritaet_setzen",
+      "badgeLabel": "Welche Empfehlung ist insgesamt am stärksten?",
+      "isNew": true,
+      "prompt": "Welche übergreifende Empfehlung ist für diesen harten Mischauftrag am überzeugendsten?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Leistungsarten sauber trennen, Werkteil mit Teilabnahme und Versionsstand binden, Mitwirkung und Annahmen offen dokumentieren und Zusatzwünsche nur kontrolliert per Nachtrag einführen.",
+          "correct": true,
+          "explanation": "Diese Kombination hält Fachlogik, Prüfbarkeit und Wirtschaftlichkeit am besten zusammen."
+        },
+        {
+          "id": "b",
+          "text": "Alles in einen Gesamtbaustein ziehen und offene Punkte bewusst vage lassen.",
+          "correct": false,
+          "explanation": "Das wäre fachlich zu riskant."
+        },
+        {
+          "id": "c",
+          "text": "Den Festpreis unabhängig von offenen Punkten garantieren und spätere Wünsche still einarbeiten.",
+          "correct": false,
+          "explanation": "Auch das wäre unsauber."
+        },
+        {
+          "id": "d",
+          "text": "Hotline, Werkteil und Zusatzfunktionen erst nach Projektstart trennen.",
+          "correct": false,
+          "explanation": "Dann wäre die Angebotslogik zu spät geklärt."
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,1048 @@
+{
+  "scenarioFolder": "Pruefungsvorbereitung-1-FI-Scenarien",
+  "quizFolder": "Pruefungsvorbereitung-1-FI-Quiz",
+  "scenarioFile": "ticket_ausbildungsbetrieb_datenmodellierung_integritaet/09_easy_ausbildungsbetrieb_datenmodellierung_integritaet.json",
+  "quizFile": "quiz09_easy_V01_ausbildungsbetrieb_datenmodellierung_integritaet.json",
+  "ticketId": "09_easy_ausbildungsbetrieb_datenmodellierung_integritaet.json",
+  "versionId": "V01",
+  "title": "Ticket 09 Easy - Datenmodellierung, ER-Modell und Integrität",
+  "description": "Manuell verfasstes AP1-Training zu Entitäten, Attributen, Schlüsseln und Datenkonsistenz ohne SQL.",
+  "topics": [
+    "Datenmodellierung, ER-Modell und Integrität sicher einordnen",
+    "Entitäten, Schlüssel, Beziehungen und Konsistenz fachlich bewerten"
+  ],
+  "defaultInteractionType": "single",
+  "defaultQuestionKind": "eine_richtige_antwort_waehlen",
+  "defaultBadgeLabel": "Welche Antwort trifft am besten zu?",
+  "questions": [
+    {
+      "id": "pv1fi_data_q01",
+      "conceptId": "pv1fi_data_entitaet",
+      "variantId": "pv1fi_data_entitaet_v01",
+      "interactionType": "single",
+      "questionKind": "definition_zu_begriff",
+      "badgeLabel": "Was bedeutet dieser Begriff?",
+      "isNew": true,
+      "prompt": "Was ist in einem ER-Modell eine Entität am ehesten?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Ein fachlich relevantes Objekt wie Kunde, Kurs oder Termin",
+          "correct": true,
+          "explanation": "So werden Entitäten in der Datenmodellierung verstanden."
+        },
+        {
+          "id": "b",
+          "text": "ein einzelner Wert wie Nachname, Startdatum oder Status",
+          "correct": false,
+          "explanation": "Das ist kein fachliches Modellierungskriterium."
+        },
+        {
+          "id": "c",
+          "text": "Ein Druckeranschluss",
+          "correct": false,
+          "explanation": "Auch das ist keine Entität."
+        },
+        {
+          "id": "d",
+          "text": "Nur eine Tabellenüberschrift ohne Fachbezug",
+          "correct": false,
+          "explanation": "Das greift zu kurz."
+        }
+      ]
+    },
+    {
+      "id": "pv1fi_data_q02",
+      "conceptId": "pv1fi_data_attribut",
+      "variantId": "pv1fi_data_attribut_v01",
+      "interactionType": "single",
+      "questionKind": "definition_zu_begriff",
+      "badgeLabel": "Was bedeutet dieser Begriff?",
+      "isNew": true,
+      "prompt": "Was ist ein Attribut in der Datenmodellierung am ehesten?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Eine Eigenschaft einer Entität, zum Beispiel Name oder Datum",
+          "correct": true,
+          "explanation": "Attribute beschreiben Merkmale einer Entität."
+        },
+        {
+          "id": "b",
+          "text": "Immer eine ganze Entität",
+          "correct": false,
+          "explanation": "Das ist fachlich falsch."
+        },
+        {
+          "id": "c",
+          "text": "Nur eine Hintergrundgrafik",
+          "correct": false,
+          "explanation": "Das verfehlt die Bedeutung der Kardinalität."
+        },
+        {
+          "id": "d",
+          "text": "eine Verknüpfung zwischen zwei Tabellen ohne eigenen Wert",
+          "correct": false,
+          "explanation": "Das ist kein fachliches Modellierungskriterium."
+        }
+      ]
+    },
+    {
+      "id": "pv1fi_data_q03",
+      "conceptId": "pv1fi_data_primarschluessel",
+      "variantId": "pv1fi_data_primarschluessel_v01",
+      "interactionType": "single",
+      "questionKind": "definition_zu_begriff",
+      "badgeLabel": "Was bedeutet dieser Begriff?",
+      "isNew": true,
+      "prompt": "Wozu dient ein Primärschlüssel besonders?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Er beschreibt nur die fachliche Bedeutung einer Tabelle.",
+          "correct": true,
+          "explanation": "Genau das ist die Hauptaufgabe des Primärschlüssels."
+        },
+        {
+          "id": "b",
+          "text": "Er beschreibt nur die fachliche Bedeutung einer Tabelle.",
+          "correct": false,
+          "explanation": "Das ist kein fachliches Modellierungskriterium."
+        },
+        {
+          "id": "c",
+          "text": "Er ersetzt alle Attribute.",
+          "correct": false,
+          "explanation": "Auch das ist falsch."
+        },
+        {
+          "id": "d",
+          "text": "Er ist nur für Drucklayouts da.",
+          "correct": false,
+          "explanation": "Das stimmt nicht."
+        }
+      ]
+    },
+    {
+      "id": "pv1fi_data_q04",
+      "conceptId": "pv1fi_data_fremdschluessel",
+      "variantId": "pv1fi_data_fremdschluessel_v01",
+      "interactionType": "single",
+      "questionKind": "vergleich_treffen",
+      "badgeLabel": "Worin liegt der wichtigste Zweck?",
+      "isNew": true,
+      "prompt": "Wozu dient ein Fremdschlüssel am ehesten?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Er verbindet Datensätze verschiedener Entitäten über eine Beziehung.",
+          "correct": true,
+          "explanation": "So werden Beziehungen technisch bzw. logisch abgebildet."
+        },
+        {
+          "id": "b",
+          "text": "Er macht eine Tabelle automatisch normalisiert.",
+          "correct": false,
+          "explanation": "Das ist kein fachliches Modellierungskriterium."
+        },
+        {
+          "id": "c",
+          "text": "Er löscht automatisch Dubletten.",
+          "correct": false,
+          "explanation": "Das ist nicht seine Hauptaufgabe."
+        },
+        {
+          "id": "d",
+          "text": "Er ersetzt das ER-Modell.",
+          "correct": false,
+          "explanation": "Auch das ist falsch."
+        }
+      ]
+    },
+    {
+      "id": "pv1fi_data_q05",
+      "conceptId": "pv1fi_data_beziehung",
+      "variantId": "pv1fi_data_beziehung_v01",
+      "interactionType": "single",
+      "questionKind": "beispiel_erkennen",
+      "badgeLabel": "Welches Beispiel passt?",
+      "isNew": true,
+      "prompt": "Welcher Satz beschreibt am ehesten eine Beziehung zwischen zwei Entitäten?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Ein Kurs hat mehrere Termine.",
+          "correct": true,
+          "explanation": "Das ist eine typische Beziehung zwischen Fachobjekten."
+        },
+        {
+          "id": "b",
+          "text": "Ein Monitor ist schwarz.",
+          "correct": false,
+          "explanation": "Das ist keine Beziehung zwischen Entitäten."
+        },
+        {
+          "id": "c",
+          "text": "Eine Anfrage besitzt einen sprechenden Titel.",
+          "correct": false,
+          "explanation": "Das beschreibt keine belastbare Datenmodellierungsentscheidung."
+        },
+        {
+          "id": "d",
+          "text": "Ein Raum besitzt eine Nummer.",
+          "correct": false,
+          "explanation": "Das passt nicht zum Modellierungsbegriff."
+        }
+      ]
+    },
+    {
+      "id": "pv1fi_data_q06",
+      "conceptId": "pv1fi_data_kardinalitaet_1n",
+      "variantId": "pv1fi_data_kardinalitaet_1n_v01",
+      "interactionType": "single",
+      "questionKind": "vergleich_treffen",
+      "badgeLabel": "Welche Aussage trifft am besten zu?",
+      "isNew": true,
+      "prompt": "Was bedeutet eine 1:n-Beziehung am ehesten?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Ein Datensatz der einen Entität kann mit mehreren Datensätzen der anderen verbunden sein.",
+          "correct": true,
+          "explanation": "Genau das beschreibt eine 1:n-Beziehung."
+        },
+        {
+          "id": "b",
+          "text": "Es gibt grundsätzlich gar keine Beziehung.",
+          "correct": false,
+          "explanation": "Das ist falsch."
+        },
+        {
+          "id": "c",
+          "text": "Es darf immer nur ein einziges Attribut geben.",
+          "correct": false,
+          "explanation": "Das verfehlt die Bedeutung der Kardinalität."
+        },
+        {
+          "id": "d",
+          "text": "Alle Datensätze müssen doppelt gespeichert werden.",
+          "correct": false,
+          "explanation": "Das wäre fachlich falsch."
+        }
+      ]
+    },
+    {
+      "id": "pv1fi_data_q07",
+      "conceptId": "pv1fi_data_kardinalitaet_nm",
+      "variantId": "pv1fi_data_kardinalitaet_nm_v01",
+      "interactionType": "single",
+      "questionKind": "vergleich_treffen",
+      "badgeLabel": "Welche Aussage trifft am besten zu?",
+      "isNew": true,
+      "prompt": "Was drückt eine n:m-Beziehung am ehesten aus?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Mehrere Datensätze beider Seiten können jeweils miteinander verbunden sein.",
+          "correct": true,
+          "explanation": "Das ist die Grundidee einer n:m-Beziehung."
+        },
+        {
+          "id": "b",
+          "text": "Es gibt niemals mehr als einen Zusammenhang.",
+          "correct": false,
+          "explanation": "Das ist fachlich falsch."
+        },
+        {
+          "id": "c",
+          "text": "Nur Primärschlüssel sind erlaubt.",
+          "correct": false,
+          "explanation": "Das verfehlt die Bedeutung der Kardinalität."
+        },
+        {
+          "id": "d",
+          "text": "Jeder Teilnehmende darf genau einen Kurs besuchen.",
+          "correct": false,
+          "explanation": "Das ist kein fachliches Modellierungskriterium."
+        }
+      ]
+    },
+    {
+      "id": "pv1fi_data_q08",
+      "conceptId": "pv1fi_data_entitaet_vs_attribut",
+      "variantId": "pv1fi_data_entitaet_vs_attribut_v01",
+      "interactionType": "single",
+      "questionKind": "vergleich_treffen",
+      "badgeLabel": "Worin liegt der wichtigste Unterschied?",
+      "isNew": true,
+      "prompt": "Worin liegt der wichtigste Unterschied zwischen Entität und Attribut?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Die Entität ist das fachliche Objekt, das Attribut eine Eigenschaft davon.",
+          "correct": true,
+          "explanation": "Diese Trennung ist fachlich zentral."
+        },
+        {
+          "id": "b",
+          "text": "Attribute sind immer größer als Entitäten.",
+          "correct": false,
+          "explanation": "Das ist kein fachlicher Unterschied."
+        },
+        {
+          "id": "c",
+          "text": "Entitäten gibt es nur bei Netzwerken.",
+          "correct": false,
+          "explanation": "Das verfehlt die Bedeutung der Kardinalität."
+        },
+        {
+          "id": "d",
+          "text": "Attribute ersetzen Beziehungen vollständig.",
+          "correct": false,
+          "explanation": "Das ist falsch."
+        }
+      ]
+    },
+    {
+      "id": "pv1fi_data_q09",
+      "conceptId": "pv1fi_data_modellierung_vor_umsetzung",
+      "variantId": "pv1fi_data_modellierung_vor_umsetzung_v01",
+      "interactionType": "best",
+      "questionKind": "passende_massnahme_auswaehlen",
+      "badgeLabel": "Welche Maßnahme passt am besten zur Situation?",
+      "isNew": true,
+      "prompt": "Warum ist es sinnvoll, Datenstrukturen vor der technischen Umsetzung fachlich zu modellieren?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Weil Beziehungen, Schlüssel und Datenbedarf früh klarer werden.",
+          "correct": true,
+          "explanation": "Das erleichtert eine saubere Strukturierung der Daten."
+        },
+        {
+          "id": "b",
+          "text": "Weil dann keine Anforderungen mehr nötig sind.",
+          "correct": false,
+          "explanation": "Das ist fachlich falsch."
+        },
+        {
+          "id": "c",
+          "text": "Weil dadurch automatisch alle Fehler verschwinden.",
+          "correct": false,
+          "explanation": "Das verfehlt die Bedeutung der Kardinalität."
+        },
+        {
+          "id": "d",
+          "text": "Weil dadurch spätere Anforderungsänderungen ausgeschlossen sind.",
+          "correct": false,
+          "explanation": "Das ist kein fachliches Modellierungskriterium."
+        }
+      ]
+    },
+    {
+      "id": "pv1fi_data_q10",
+      "conceptId": "pv1fi_data_redundanz",
+      "variantId": "pv1fi_data_redundanz_v01",
+      "interactionType": "single",
+      "questionKind": "ursache_folge_erkennen",
+      "badgeLabel": "Welche Folge ergibt sich am ehesten daraus?",
+      "isNew": true,
+      "prompt": "Dieselben Informationen werden an mehreren Stellen doppelt gepflegt. Welche Folge ist am ehesten zu erwarten?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Das Risiko widersprüchlicher Daten steigt.",
+          "correct": true,
+          "explanation": "Genau das ist ein zentrales Problem von Redundanz."
+        },
+        {
+          "id": "b",
+          "text": "Die Daten werden automatisch konsistenter.",
+          "correct": false,
+          "explanation": "Das ist falsch."
+        },
+        {
+          "id": "c",
+          "text": "Schlüssel werden dadurch überflüssig.",
+          "correct": false,
+          "explanation": "Das verfehlt die Bedeutung der Kardinalität."
+        },
+        {
+          "id": "d",
+          "text": "Beziehungen verschwinden automatisch.",
+          "correct": false,
+          "explanation": "Das ist fachlich falsch."
+        }
+      ]
+    },
+    {
+      "id": "pv1fi_data_q11",
+      "conceptId": "pv1fi_data_normalisierung",
+      "variantId": "pv1fi_data_normalisierung_v01",
+      "interactionType": "single",
+      "questionKind": "definition_zu_begriff",
+      "badgeLabel": "Was bedeutet dieser Begriff?",
+      "isNew": true,
+      "prompt": "Was ist die Grundidee der Normalisierung am ehesten?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Daten sinnvoll zu strukturieren, um Redundanzen und Anomalien zu verringern.",
+          "correct": true,
+          "explanation": "Das beschreibt den Grundgedanken der Normalisierung gut."
+        },
+        {
+          "id": "b",
+          "text": "alle Daten in einer einzigen Tabelle sammeln, damit nichts verteilt ist",
+          "correct": false,
+          "explanation": "Das ist kein fachliches Modellierungskriterium."
+        },
+        {
+          "id": "c",
+          "text": "Jede Information mehrfach zu speichern.",
+          "correct": false,
+          "explanation": "Das wäre eher das Gegenteil."
+        },
+        {
+          "id": "d",
+          "text": "Auf eindeutige Schlüssel zu verzichten.",
+          "correct": false,
+          "explanation": "Das ist fachlich falsch."
+        }
+      ]
+    },
+    {
+      "id": "pv1fi_data_q12",
+      "conceptId": "pv1fi_data_referentielle_integritaet",
+      "variantId": "pv1fi_data_referentielle_integritaet_v01",
+      "interactionType": "single",
+      "questionKind": "definition_zu_begriff",
+      "badgeLabel": "Was bedeutet dieser Begriff?",
+      "isNew": true,
+      "prompt": "Was bedeutet referentielle Integrität am ehesten?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Beziehungen zwischen Datensätzen bleiben konsistent und verweisen nicht ins Leere.",
+          "correct": true,
+          "explanation": "Genau das ist der Kern der referenziellen Integrität."
+        },
+        {
+          "id": "b",
+          "text": "Alle Daten sind immer öffentlich sichtbar.",
+          "correct": false,
+          "explanation": "Das ist fachlich falsch."
+        },
+        {
+          "id": "c",
+          "text": "Es gibt keine Schlüssel mehr.",
+          "correct": false,
+          "explanation": "Das verfehlt die Bedeutung der Kardinalität."
+        },
+        {
+          "id": "d",
+          "text": "Tabellen dürfen unabhängig von ihren Verweisen gelöscht werden.",
+          "correct": false,
+          "explanation": "Das ist kein fachliches Modellierungskriterium."
+        }
+      ]
+    },
+    {
+      "id": "pv1fi_data_q13",
+      "conceptId": "pv1fi_data_eindeutige_identifikation",
+      "variantId": "pv1fi_data_eindeutige_identifikation_v01",
+      "interactionType": "single",
+      "questionKind": "ziel_mittel_zuordnung",
+      "badgeLabel": "Welche Option hilft am ehesten, dieses Ziel zu erreichen?",
+      "isNew": true,
+      "prompt": "Welche Maßnahme hilft besonders, Datensätze eindeutig zu unterscheiden?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Einen verlässlichen eindeutigen Schlüssel festlegen",
+          "correct": true,
+          "explanation": "So lassen sich Datensätze sauber identifizieren."
+        },
+        {
+          "id": "b",
+          "text": "Nur die Tabellenfarbe ändern",
+          "correct": false,
+          "explanation": "Damit wird kein Datensatz zuverlässig identifiziert."
+        },
+        {
+          "id": "c",
+          "text": "Alles ohne Struktur ablegen",
+          "correct": false,
+          "explanation": "Auch das ist falsch."
+        },
+        {
+          "id": "d",
+          "text": "Werte zufällig doppeln",
+          "correct": false,
+          "explanation": "Das verschlechtert die Datenlage."
+        }
+      ]
+    },
+    {
+      "id": "pv1fi_data_q14",
+      "conceptId": "pv1fi_data_konsistenz",
+      "variantId": "pv1fi_data_konsistenz_v01",
+      "interactionType": "single",
+      "questionKind": "vergleich_treffen",
+      "badgeLabel": "Welche Aussage trifft am besten zu?",
+      "isNew": true,
+      "prompt": "Woran erkennt man Datenkonsistenz am ehesten?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Zusammengehörige Daten widersprechen sich nicht.",
+          "correct": true,
+          "explanation": "Konsistenz bedeutet, dass Daten logisch zusammenpassen."
+        },
+        {
+          "id": "b",
+          "text": "Alle Daten sind möglichst alt.",
+          "correct": false,
+          "explanation": "Das ist kein Konsistenzkriterium."
+        },
+        {
+          "id": "c",
+          "text": "Datensätze haben nie Beziehungen.",
+          "correct": false,
+          "explanation": "Das verfehlt die Bedeutung der Kardinalität."
+        },
+        {
+          "id": "d",
+          "text": "alle Felder besitzen denselben technischen Datentyp.",
+          "correct": false,
+          "explanation": "Das ist kein fachliches Modellierungskriterium."
+        }
+      ]
+    },
+    {
+      "id": "pv1fi_data_q15",
+      "conceptId": "pv1fi_data_dublettenproblem",
+      "variantId": "pv1fi_data_dublettenproblem_v01",
+      "interactionType": "single",
+      "questionKind": "ursache_folge_erkennen",
+      "badgeLabel": "Welche Folge ergibt sich am ehesten daraus?",
+      "isNew": true,
+      "prompt": "Ein Kunde wurde versehentlich mehrfach als eigener Datensatz angelegt. Welche Folge ist am ehesten zu erwarten?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Auswertungen und Pflege können ungenau oder widersprüchlich werden.",
+          "correct": true,
+          "explanation": "Dubletten führen leicht zu fehlerhaften Ergebnissen."
+        },
+        {
+          "id": "b",
+          "text": "Beziehungen werden dadurch automatisch sauberer.",
+          "correct": false,
+          "explanation": "Das ist falsch."
+        },
+        {
+          "id": "c",
+          "text": "Primärschlüssel werden dann überflüssig.",
+          "correct": false,
+          "explanation": "Das verfehlt die Bedeutung der Kardinalität."
+        },
+        {
+          "id": "d",
+          "text": "Integrität verbessert sich von selbst.",
+          "correct": false,
+          "explanation": "Das ist fachlich falsch."
+        }
+      ]
+    },
+    {
+      "id": "pv1fi_data_q16",
+      "conceptId": "pv1fi_data_optionale_beziehung",
+      "variantId": "pv1fi_data_optionale_beziehung_v01",
+      "interactionType": "single",
+      "questionKind": "beispiel_erkennen",
+      "badgeLabel": "Welches Beispiel passt?",
+      "isNew": true,
+      "prompt": "Welcher Fall beschreibt am ehesten eine optionale Beziehung?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Nicht jeder Kunde hat bereits einen Vertrag, aber jeder Vertrag gehört zu einem Kunden.",
+          "correct": true,
+          "explanation": "Hier ist die Beziehung auf einer Seite optional."
+        },
+        {
+          "id": "b",
+          "text": "Jeder Datensatz muss immer genau drei Beziehungen besitzen.",
+          "correct": false,
+          "explanation": "Das beschreibt keine fachliche Beziehung zwischen Entitäten."
+        },
+        {
+          "id": "c",
+          "text": "Mehrere Attribute haben denselben fachlichen Inhalt.",
+          "correct": false,
+          "explanation": "Das beschreibt keine belastbare Datenmodellierungsentscheidung."
+        },
+        {
+          "id": "d",
+          "text": "Ein Monitor steht im Büro.",
+          "correct": false,
+          "explanation": "Das ist kein Beispiel für optionale Beziehungen."
+        }
+      ]
+    },
+    {
+      "id": "pv1fi_data_q17",
+      "conceptId": "pv1fi_data_schluesselwahl",
+      "variantId": "pv1fi_data_schluesselwahl_v01",
+      "interactionType": "best",
+      "questionKind": "passende_massnahme_auswaehlen",
+      "badgeLabel": "Welche Maßnahme passt am besten zur Situation?",
+      "isNew": true,
+      "prompt": "Sie müssen für eine Entität einen Primärschlüssel wählen. Worauf sollte besonders geachtet werden?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Der Schlüssel sollte Datensätze eindeutig und zuverlässig unterscheidbar machen.",
+          "correct": true,
+          "explanation": "Das ist das wichtigste Auswahlkriterium."
+        },
+        {
+          "id": "b",
+          "text": "Er sollte möglichst viele fachliche Informationen in einer Nummer codieren.",
+          "correct": false,
+          "explanation": "Das ist kein fachliches Modellierungskriterium."
+        },
+        {
+          "id": "c",
+          "text": "Er sollte bei jedem Datensatz gleich sein.",
+          "correct": false,
+          "explanation": "Dann wäre er nicht eindeutig."
+        },
+        {
+          "id": "d",
+          "text": "Er sollte Beziehungen unnötig machen.",
+          "correct": false,
+          "explanation": "Das ist fachlich falsch."
+        }
+      ]
+    },
+    {
+      "id": "pv1fi_data_q18",
+      "conceptId": "pv1fi_data_fachobjekt_zu_entitaet",
+      "variantId": "pv1fi_data_fachobjekt_zu_entitaet_v01",
+      "interactionType": "multi",
+      "questionKind": "mehrere_richtige_antworten_waehlen",
+      "badgeLabel": "Welche Aussagen sind korrekt?",
+      "isNew": true,
+      "prompt": "Welche Fachobjekte eignen sich in einem Schulungssystem typischerweise als Entitäten?",
+      "maxSelections": 3,
+      "options": [
+        {
+          "id": "a",
+          "text": "Kurs",
+          "correct": true,
+          "explanation": "Ein Kurs ist ein typisches Fachobjekt."
+        },
+        {
+          "id": "b",
+          "text": "Teilnehmender",
+          "correct": true,
+          "explanation": "Auch Teilnehmende sind typische Entitäten."
+        },
+        {
+          "id": "c",
+          "text": "Termin",
+          "correct": true,
+          "explanation": "Ein Termin kann ebenfalls als Entität modelliert werden."
+        },
+        {
+          "id": "d",
+          "text": "Formularfarben, Symbolgrößen und Buttonpositionen",
+          "correct": false,
+          "explanation": "Das wäre kein tragfähiges Fachobjekt für dieses Modell."
+        },
+        {
+          "id": "e",
+          "text": "ein kurzfristiger Zustand ohne fachlichen Datenbezug",
+          "correct": false,
+          "explanation": "Das beschreibt keine belastbare Datenmodellierungsentscheidung."
+        }
+      ]
+    },
+    {
+      "id": "pv1fi_data_q19",
+      "conceptId": "pv1fi_data_integritaetsfehler",
+      "variantId": "pv1fi_data_integritaetsfehler_v01",
+      "interactionType": "single",
+      "questionKind": "fehler_finden",
+      "badgeLabel": "Welche Option enthält den Denkfehler?",
+      "isNew": true,
+      "prompt": "Welche Aussage enthält den Denkfehler?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Fehlende Bezugswerte können Beziehungen beschädigen.",
+          "correct": false,
+          "explanation": "Das ist fachlich richtig."
+        },
+        {
+          "id": "b",
+          "text": "Uneinheitliche Pflege kann zu widersprüchlichen Daten führen.",
+          "correct": false,
+          "explanation": "Auch das stimmt."
+        },
+        {
+          "id": "c",
+          "text": "Eindeutige Schlüssel helfen bei sauberer Zuordnung.",
+          "correct": false,
+          "explanation": "Das ist ebenfalls richtig."
+        },
+        {
+          "id": "d",
+          "text": "Auch wenn ein Verweis ins Leere zeigt, bleibt die referentielle Integrität fachlich unproblematisch.",
+          "correct": true,
+          "explanation": "Das ist der Denkfehler. Genau solche Verweise verletzen die Integrität."
+        }
+      ]
+    },
+    {
+      "id": "pv1fi_data_q20",
+      "conceptId": "pv1fi_data_modell_nutzen",
+      "variantId": "pv1fi_data_modell_nutzen_v01",
+      "interactionType": "binary",
+      "questionKind": "aussage_bewerten",
+      "badgeLabel": "Stimmt diese Aussage?",
+      "isNew": true,
+      "prompt": "Prüfe diese Aussage: Ein ER-Modell hilft, Fachobjekte, Beziehungen und Schlüssel strukturiert zu durchdenken, bevor eine technische Umsetzung erfolgt.",
+      "options": [
+        {
+          "id": "a",
+          "text": "Stimmt",
+          "correct": true,
+          "explanation": "Genau das ist ein wichtiger Nutzen des ER-Modells."
+        },
+        {
+          "id": "b",
+          "text": "Stimmt nicht",
+          "correct": false,
+          "explanation": "Die Aussage ist fachlich richtig."
+        }
+      ]
+    },
+    {
+      "id": "pv1fi_data_q21",
+      "conceptId": "pv1fi_data_kardinalitaet_11",
+      "variantId": "pv1fi_data_kardinalitaet_11_v01",
+      "interactionType": "single",
+      "questionKind": "definition_zu_begriff",
+      "badgeLabel": "Was bedeutet diese Beziehung?",
+      "isNew": true,
+      "prompt": "Was bedeutet eine 1:1-Beziehung in einem Datenmodell am ehesten?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Einem Datensatz der einen Entität ist höchstens ein passender Datensatz der anderen Entität zugeordnet und umgekehrt.",
+          "correct": true,
+          "explanation": "Genau das drückt eine 1:1-Beziehung aus."
+        },
+        {
+          "id": "b",
+          "text": "Eine Entität darf keine Attribute besitzen.",
+          "correct": false,
+          "explanation": "Das beschreibt eher eine 1:n- oder n:m-Beziehung."
+        },
+        {
+          "id": "c",
+          "text": "Die Beziehung ist automatisch unwichtig.",
+          "correct": false,
+          "explanation": "Auch 1:1-Beziehungen können fachlich sehr wichtig sein."
+        },
+        {
+          "id": "d",
+          "text": "Sie beschreibt nur die Reihenfolge von Datensätzen.",
+          "correct": false,
+          "explanation": "Das ist fachlich falsch."
+        }
+      ]
+    },
+    {
+      "id": "pv1fi_data_q22",
+      "conceptId": "pv1fi_data_nm_aufloesen",
+      "variantId": "pv1fi_data_nm_aufloesen_v01",
+      "interactionType": "single",
+      "questionKind": "passende_massnahme_auswaehlen",
+      "badgeLabel": "Welche Maßnahme passt am besten zur Situation?",
+      "isNew": true,
+      "prompt": "Zwei Entitäten stehen in einer n:m-Beziehung. Welche Modellierungsmaßnahme ist dafür besonders passend?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Eine zusätzliche Zuordnungsentität für die Beziehung einführen",
+          "correct": true,
+          "explanation": "So wird die n:m-Beziehung fachlich sauber aufgelöst."
+        },
+        {
+          "id": "b",
+          "text": "Eine Entität vollständig löschen",
+          "correct": false,
+          "explanation": "Das löst die Beziehung nicht fachgerecht."
+        },
+        {
+          "id": "c",
+          "text": "nur die Darstellung des Modells ändern, ohne Entitäten oder Beziehungen zu prüfen",
+          "correct": false,
+          "explanation": "Das trägt nichts zur fachlichen Bewertung bei."
+        },
+        {
+          "id": "d",
+          "text": "Alle Attribute in ein einziges Feld schreiben",
+          "correct": false,
+          "explanation": "Das verschlechtert die Modellierung eher."
+        }
+      ]
+    },
+    {
+      "id": "pv1fi_data_q23",
+      "conceptId": "pv1fi_data_pflichtattribut",
+      "variantId": "pv1fi_data_pflichtattribut_v01",
+      "interactionType": "single",
+      "questionKind": "begriff_zu_definition",
+      "badgeLabel": "Welcher Begriff passt zu dieser Beschreibung?",
+      "isNew": true,
+      "prompt": "Wie nennt man ein Attribut, das für jeden Datensatz vorhanden sein muss?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Pflichtattribut",
+          "correct": true,
+          "explanation": "Ein Pflichtattribut darf fachlich nicht leer bleiben."
+        },
+        {
+          "id": "b",
+          "text": "Dekorationsfeld",
+          "correct": false,
+          "explanation": "Das ist kein fachlicher Begriff dafür."
+        },
+        {
+          "id": "c",
+          "text": "Beliebigkeitsmerkmal",
+          "correct": false,
+          "explanation": "Auch das ist fachlich falsch."
+        },
+        {
+          "id": "d",
+          "text": "Randnotiz",
+          "correct": false,
+          "explanation": "Das beschreibt keinen Attributtyp."
+        }
+      ]
+    },
+    {
+      "id": "pv1fi_data_q24",
+      "conceptId": "pv1fi_data_aenderungsanomalie",
+      "variantId": "pv1fi_data_aenderungsanomalie_v01",
+      "interactionType": "single",
+      "questionKind": "ursache_folge_erkennen",
+      "badgeLabel": "Welche Folge ergibt sich am ehesten daraus?",
+      "isNew": true,
+      "prompt": "Dieselbe Kundenanschrift steht mehrfach in verschiedenen Datensätzen. Wird nur ein Teil davon aktualisiert, welche Folge ist am ehesten zu erwarten?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Es entstehen widersprüchliche Datenstände zur gleichen Information.",
+          "correct": true,
+          "explanation": "Das ist typisch für eine Änderungsanomalie."
+        },
+        {
+          "id": "b",
+          "text": "Die referentielle Integrität verbessert sich automatisch.",
+          "correct": false,
+          "explanation": "Das folgt daraus nicht."
+        },
+        {
+          "id": "c",
+          "text": "Die Daten werden dadurch eindeutiger.",
+          "correct": false,
+          "explanation": "Eher das Gegenteil ist zu erwarten."
+        },
+        {
+          "id": "d",
+          "text": "Primärschlüssel werden überflüssig.",
+          "correct": false,
+          "explanation": "Auch das ist fachlich falsch."
+        }
+      ]
+    },
+    {
+      "id": "pv1fi_data_q25",
+      "conceptId": "pv1fi_data_loeschanomalie",
+      "variantId": "pv1fi_data_loeschanomalie_v01",
+      "interactionType": "single",
+      "questionKind": "ursache_folge_erkennen",
+      "badgeLabel": "Welche Folge ergibt sich am ehesten daraus?",
+      "isNew": true,
+      "prompt": "Durch das Löschen eines Datensatzes geht unbeabsichtigt auch eine andere fachlich relevante Information verloren. Wie nennt man dieses Problem am ehesten?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Löschanomalie",
+          "correct": true,
+          "explanation": "Genau so wird dieser unerwünschte Effekt bezeichnet."
+        },
+        {
+          "id": "b",
+          "text": "Netzwerklatenz",
+          "correct": false,
+          "explanation": "Das ist ein anderes Thema."
+        },
+        {
+          "id": "c",
+          "text": "Lizenzmodell",
+          "correct": false,
+          "explanation": "Auch das passt hier nicht."
+        },
+        {
+          "id": "d",
+          "text": "Mehrfaktor-Authentisierung",
+          "correct": false,
+          "explanation": "Das gehört nicht zur Datenmodellierung."
+        }
+      ]
+    },
+    {
+      "id": "pv1fi_data_q26",
+      "conceptId": "pv1fi_data_technischer_schluessel",
+      "variantId": "pv1fi_data_technischer_schluessel_v01",
+      "interactionType": "single",
+      "questionKind": "vergleich_treffen",
+      "badgeLabel": "Worin liegt der wichtigste Unterschied?",
+      "isNew": true,
+      "prompt": "Worin liegt der wichtigste Vorteil eines technischen Schlüssels gegenüber wechselanfälligen fachlichen Merkmalen?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Er bleibt stabil identifizierbar, auch wenn sich fachliche Inhalte ändern.",
+          "correct": true,
+          "explanation": "Genau das ist ein häufiger Grund für technische Schlüssel."
+        },
+        {
+          "id": "b",
+          "text": "Er macht Beziehungen zwischen Entitäten unmöglich.",
+          "correct": false,
+          "explanation": "Das wäre fachlich falsch."
+        },
+        {
+          "id": "c",
+          "text": "Er ersetzt jede fachliche Modellierung.",
+          "correct": false,
+          "explanation": "Auch mit technischem Schlüssel bleibt Modellierung nötig."
+        },
+        {
+          "id": "d",
+          "text": "Er sorgt automatisch dafür, dass es keine Dubletten mehr gibt, egal wie gepflegt wird.",
+          "correct": false,
+          "explanation": "Pflegefehler können trotzdem auftreten."
+        }
+      ]
+    },
+    {
+      "id": "pv1fi_data_q27",
+      "conceptId": "pv1fi_data_mehrwertiges_attribut",
+      "variantId": "pv1fi_data_mehrwertiges_attribut_v01",
+      "interactionType": "single",
+      "questionKind": "passende_massnahme_auswaehlen",
+      "badgeLabel": "Welche Maßnahme passt am besten zur Situation?",
+      "isNew": true,
+      "prompt": "Eine Person kann mehrere Telefonnummern haben. Welche Modellierungsentscheidung ist dafür besonders sauber?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Die Telefonnummern strukturiert als eigene zuordenbare Datensätze modellieren",
+          "correct": true,
+          "explanation": "Mehrwertige Angaben sollten sauber modelliert statt unsauber zusammengeworfen werden."
+        },
+        {
+          "id": "b",
+          "text": "Alle Nummern ungeordnet in ein einziges Freitextfeld schreiben",
+          "correct": false,
+          "explanation": "Das erschwert Pflege und Auswertung."
+        },
+        {
+          "id": "c",
+          "text": "Nur eine Nummer zufällig auswählen und die anderen verwerfen",
+          "correct": false,
+          "explanation": "Dabei gingen Informationen verloren."
+        },
+        {
+          "id": "d",
+          "text": "Die Person als Attribut der Telefonnummer modellieren",
+          "correct": false,
+          "explanation": "Das wäre fachlich unpassend."
+        }
+      ]
+    },
+    {
+      "id": "pv1fi_data_q28",
+      "conceptId": "pv1fi_data_zusammengesetzter_schluessel",
+      "variantId": "pv1fi_data_zusammengesetzter_schluessel_v01",
+      "interactionType": "single",
+      "questionKind": "definition_zu_begriff",
+      "badgeLabel": "Was bedeutet dieser Schlüsseltyp?",
+      "isNew": true,
+      "prompt": "Was ist ein zusammengesetzter Schlüssel am ehesten?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Ein Schlüssel, der aus mehreren Attributen gemeinsam gebildet wird",
+          "correct": true,
+          "explanation": "Genau das beschreibt einen zusammengesetzten Schlüssel."
+        },
+        {
+          "id": "b",
+          "text": "Ein besonders langes Textattribut ohne Identifikationsfunktion",
+          "correct": false,
+          "explanation": "Das ist kein Schlüsseltyp."
+        },
+        {
+          "id": "c",
+          "text": "Eine zufällige Sortierreihenfolge von Tabellenzeilen",
+          "correct": false,
+          "explanation": "Auch das ist fachlich falsch."
+        },
+        {
+          "id": "d",
+          "text": "Ein Attribut, das nie geprüft werden muss",
+          "correct": false,
+          "explanation": "Das beschreibt keinen Schlüssel."
+        }
+      ]
+    }
+  ]
+}
