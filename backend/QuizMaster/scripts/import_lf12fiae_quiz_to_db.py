@@ -1932,7 +1932,7 @@ def build_ordering_companions(
         source_ref=f"{source_key}::einstieg_v1",
         concept_key=concept_key,
         variant_key=f"{concept_key}::einstieg_v1",
-        title=f"{base_title}: Einstieg bestimmen",
+        title=f"{base_title}: ersten Schritt bestimmen",
         prompt=pick_template(f"{source_key}::einstieg_prompt", ORDERING_FIRST_PROMPTS).format(
             title=base_title
         ),
@@ -1947,7 +1947,7 @@ def build_ordering_companions(
         source_ref=f"{source_key}::abschluss_v1",
         concept_key=concept_key,
         variant_key=f"{concept_key}::abschluss_v1",
-        title=f"{base_title}: Abschluss bestimmen",
+        title=f"{base_title}: letzten Schritt bestimmen",
         prompt=pick_template(f"{source_key}::abschluss_prompt", ORDERING_LAST_PROMPTS).format(
             title=base_title
         ),
