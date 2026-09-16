@@ -1,0 +1,904 @@
+{
+  "scenarioFolder": "Pruefungsvorbereitung-2-FIAE-Scenarien",
+  "quizFolder": "Pruefungsvorbereitung-2-FIAE-Quiz",
+  "scenarioFile": "ticket_ausbildungsbetrieb_ap2_w2025_fiae2/08_hard_ausbildungsbetrieb_ap2_w2025_fiae2.json",
+  "quizFile": "quiz_ausbildungsbetrieb_ap2_w2025_fiae2/quiz08_hard_V01_ausbildungsbetrieb_ap2_w2025_fiae2.json",
+  "ticketId": "08_hard_ausbildungsbetrieb_ap2_w2025_fiae2.json",
+  "versionId": "V01",
+  "title": "Ticket 08 Hard - Reservierungslogik, Zustandsdiagramm, Tests und SQL",
+  "description": "Vernetzte Prüfungsfragen zu Tischreservierung, UML-Zustandsdiagramm, Unit-Tests, Fehleranalyse und SQL.",
+  "topics": [
+    "Reservierungslogik, Zustandsdiagramm und Unit-Tests in vernetzten Fällen sicher abwägen",
+    "Fehleranalyse und SQL-Berichte für Bestell- und Kategoriedaten in Projektkonflikten belastbar verbinden"
+  ],
+  "questions": [
+    {
+      "id": "pv2fiae_hard_t08_reservation_race_condition",
+      "conceptId": "pv2fiae_hard_t08_reservation_race_condition",
+      "variantId": "pv2fiae_hard_t08_reservation_race_condition_v01",
+      "interactionType": "single",
+      "questionKind": "beste_option_im_mini_szenario",
+      "badgeLabel": "Eine Antwort ist richtig.",
+      "isNew": true,
+      "prompt": "Welche Absicherung ist bei parallelen Online-Reservierungen am wichtigsten?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Eine atomare erneute Verfügbarkeitsprüfung beim Speichern der Reservierung.",
+          "correct": true,
+          "explanation": "Die finale Buchung muss den aktuellen Zustand prüfen."
+        },
+        {
+          "id": "b",
+          "text": "Eine dauerhafte Sperre aller Tische.",
+          "correct": false,
+          "explanation": "Das wäre betriebsfeindlich."
+        },
+        {
+          "id": "c",
+          "text": "Ein HAVING-Filter auf Kunden.",
+          "correct": false,
+          "explanation": "Das löst keine Parallelität."
+        },
+        {
+          "id": "d",
+          "text": "Ein Zustandswechsel des Roboters nach `Halt`.",
+          "correct": false,
+          "explanation": "Das reserviert keinen Tisch."
+        }
+      ]
+    },
+    {
+      "id": "pv2fiae_hard_t08_reservation_release_tests",
+      "conceptId": "pv2fiae_hard_t08_reservation_release_tests",
+      "variantId": "pv2fiae_hard_t08_reservation_release_tests_v01",
+      "interactionType": "multi",
+      "questionKind": "mehrere_richtige_antworten_waehlen",
+      "badgeLabel": "Mehrere Antworten sind richtig.",
+      "isNew": true,
+      "prompt": "Welche Tests gehören zur Abnahme der Reservierungslogik?",
+      "maxSelections": 3,
+      "options": [
+        {
+          "id": "a",
+          "text": "Passender freier Tisch mit Mindestbelegung.",
+          "correct": true,
+          "explanation": "Der Normalfall muss funktionieren."
+        },
+        {
+          "id": "b",
+          "text": "Tisch reserviert am selben Datum.",
+          "correct": true,
+          "explanation": "Belegte Tische müssen ausgeschlossen werden."
+        },
+        {
+          "id": "c",
+          "text": "Mehrere gleich passende Tische.",
+          "correct": true,
+          "explanation": "Der Tie-Break muss reproduzierbar sein."
+        },
+        {
+          "id": "d",
+          "text": "SQL-INSERT einer Kategorie als einziger Test.",
+          "correct": false,
+          "explanation": "Das prüft nicht die Reservierungslogik."
+        }
+      ]
+    },
+    {
+      "id": "pv2fiae_hard_t08_reservation_capacity_policy",
+      "conceptId": "pv2fiae_hard_t08_reservation_capacity_policy",
+      "variantId": "pv2fiae_hard_t08_reservation_capacity_policy_v01",
+      "interactionType": "single",
+      "questionKind": "beste_option_im_mini_szenario",
+      "badgeLabel": "Eine Antwort ist richtig.",
+      "isNew": true,
+      "prompt": "Warum kann die Halbbelegungsregel fachlich diskutiert werden?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Sie balanciert Auslastung gegen Kundenzufriedenheit und muss zum Restaurantbetrieb passen.",
+          "correct": true,
+          "explanation": "Die Regel ist eine Geschäftsentscheidung."
+        },
+        {
+          "id": "b",
+          "text": "Sie ist eine feste SQL-Syntaxregel.",
+          "correct": false,
+          "explanation": "Die Regel ist fachlich, nicht SQL-vorgegeben."
+        },
+        {
+          "id": "c",
+          "text": "Sie ersetzt jede Reservierungsprüfung.",
+          "correct": false,
+          "explanation": "Freiheit und Kapazität müssen trotzdem geprüft werden."
+        },
+        {
+          "id": "d",
+          "text": "Sie ist ein Roboterzustand.",
+          "correct": false,
+          "explanation": "Das ist Algorithmik der Reservierung."
+        }
+      ]
+    },
+    {
+      "id": "pv2fiae_hard_t08_reservation_data_integrity",
+      "conceptId": "pv2fiae_hard_t08_reservation_data_integrity",
+      "variantId": "pv2fiae_hard_t08_reservation_data_integrity_v01",
+      "interactionType": "single",
+      "questionKind": "beste_option_im_mini_szenario",
+      "badgeLabel": "Eine Antwort ist richtig.",
+      "isNew": true,
+      "prompt": "Welche Datenbankregel unterstützt die Reservierungslogik zusätzlich?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Eine Eindeutigkeitsregel auf Tisch und Datum beziehungsweise Zeitfenster.",
+          "correct": true,
+          "explanation": "So werden doppelte Buchungen auch datenbankseitig verhindert."
+        },
+        {
+          "id": "b",
+          "text": "Eine Pflicht, alle Tische als Freitext zu speichern.",
+          "correct": false,
+          "explanation": "Das schwächt Integrität."
+        },
+        {
+          "id": "c",
+          "text": "Ein Unit-Test ohne Datenbankbezug als einzige Sperre.",
+          "correct": false,
+          "explanation": "Tests ersetzen keine Laufzeitintegrität."
+        },
+        {
+          "id": "d",
+          "text": "Eine Kategorie mit gleichem Namen.",
+          "correct": false,
+          "explanation": "Das betrifft Gerichte, nicht Tischbelegung."
+        }
+      ]
+    },
+    {
+      "id": "pv2fiae_hard_t08_state_unexpected_event",
+      "conceptId": "pv2fiae_hard_t08_state_unexpected_event",
+      "variantId": "pv2fiae_hard_t08_state_unexpected_event_v01",
+      "interactionType": "single",
+      "questionKind": "beste_option_im_mini_szenario",
+      "badgeLabel": "Eine Antwort ist richtig.",
+      "isNew": true,
+      "prompt": "Wie sollte ein Zustandsautomat mit unerwarteten Ereignissen umgehen?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Definierte Fehlerbehandlung oder keine Transition mit Protokollierung.",
+          "correct": true,
+          "explanation": "Unerwartete Ereignisse müssen nachvollziehbar bleiben."
+        },
+        {
+          "id": "b",
+          "text": "Immer in einen zufälligen Zustand wechseln.",
+          "correct": false,
+          "explanation": "Das wäre unzuverlässig."
+        },
+        {
+          "id": "c",
+          "text": "Alle Bestellungen löschen.",
+          "correct": false,
+          "explanation": "Das ist kein Zustandsverhalten."
+        },
+        {
+          "id": "d",
+          "text": "Den Minimumwert auf 0 setzen.",
+          "correct": false,
+          "explanation": "Das gehört zur Fehlerfunktion."
+        }
+      ]
+    },
+    {
+      "id": "pv2fiae_hard_t08_state_release_checks",
+      "conceptId": "pv2fiae_hard_t08_state_release_checks",
+      "variantId": "pv2fiae_hard_t08_state_release_checks_v01",
+      "interactionType": "multi",
+      "questionKind": "mehrere_richtige_antworten_waehlen",
+      "badgeLabel": "Mehrere Antworten sind richtig.",
+      "isNew": true,
+      "prompt": "Welche Checks gehören zur Abnahme des Zustandsdiagramms?",
+      "maxSelections": 3,
+      "options": [
+        {
+          "id": "a",
+          "text": "Jeder Zustand ist erreichbar oder begründet nicht erreichbar.",
+          "correct": true,
+          "explanation": "Unerreichbare Zustände sind Modellrisiken."
+        },
+        {
+          "id": "b",
+          "text": "Jeder Trigger hat im passenden Zustand eine definierte Wirkung.",
+          "correct": true,
+          "explanation": "Das verhindert Lücken im Ablauf."
+        },
+        {
+          "id": "c",
+          "text": "Entry- und Do-Aktivitäten sind korrekt zugeordnet.",
+          "correct": true,
+          "explanation": "Aktionen müssen zum Zustandsverhalten passen."
+        },
+        {
+          "id": "d",
+          "text": "Jede SQL-Abfrage wird als Zustand modelliert.",
+          "correct": false,
+          "explanation": "SQL gehört nicht in den Zustandsautomaten."
+        }
+      ]
+    },
+    {
+      "id": "pv2fiae_hard_t08_state_return_loop",
+      "conceptId": "pv2fiae_hard_t08_state_return_loop",
+      "variantId": "pv2fiae_hard_t08_state_return_loop_v01",
+      "interactionType": "single",
+      "questionKind": "beste_option_im_mini_szenario",
+      "badgeLabel": "Eine Antwort ist richtig.",
+      "isNew": true,
+      "prompt": "Warum ist die Rückkehr zur Warteposition ein eigener fachlicher Ablauf?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Der Roboter braucht ein neues Ziel und kehrt kontrolliert in `Wartend` zurück.",
+          "correct": true,
+          "explanation": "Sonst bleibt unklar, wie der Auftrag endet."
+        },
+        {
+          "id": "b",
+          "text": "Der Roboter wird nach jeder Entladung gelöscht.",
+          "correct": false,
+          "explanation": "Das ist kein Betriebsablauf."
+        },
+        {
+          "id": "c",
+          "text": "Der Roboter führt eine SQL-Gruppierung aus.",
+          "correct": false,
+          "explanation": "Das ist eine Datenbankaufgabe."
+        },
+        {
+          "id": "d",
+          "text": "Der Roboter startet einen Unit-Test.",
+          "correct": false,
+          "explanation": "Tests sind keine Zustandsrückkehr."
+        }
+      ]
+    },
+    {
+      "id": "pv2fiae_hard_t08_state_safety_halt",
+      "conceptId": "pv2fiae_hard_t08_state_safety_halt",
+      "variantId": "pv2fiae_hard_t08_state_safety_halt_v01",
+      "interactionType": "single",
+      "questionKind": "beste_option_im_mini_szenario",
+      "badgeLabel": "Eine Antwort ist richtig.",
+      "isNew": true,
+      "prompt": "Warum ist der Zustand `Halt` sicherheitsrelevant?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Er stoppt die Bewegung kontrolliert, bevor weiter entschieden wird.",
+          "correct": true,
+          "explanation": "Bei Hindernissen ist kontrolliertes Anhalten zentral."
+        },
+        {
+          "id": "b",
+          "text": "Er berechnet Gesamtpreise.",
+          "correct": false,
+          "explanation": "Das ist SQL."
+        },
+        {
+          "id": "c",
+          "text": "Er teilt Kundennamen auf.",
+          "correct": false,
+          "explanation": "Das ist Datenmigration."
+        },
+        {
+          "id": "d",
+          "text": "Er sucht das Minimum einer Zahlenliste.",
+          "correct": false,
+          "explanation": "Das ist Java-Testlogik."
+        }
+      ]
+    },
+    {
+      "id": "pv2fiae_hard_t08_unit_semantic_vs_syntax",
+      "conceptId": "pv2fiae_hard_t08_unit_semantic_vs_syntax",
+      "variantId": "pv2fiae_hard_t08_unit_semantic_vs_syntax_v01",
+      "interactionType": "single",
+      "questionKind": "beste_option_im_mini_szenario",
+      "badgeLabel": "Eine Antwort ist richtig.",
+      "isNew": true,
+      "prompt": "Was ist ein semantischer Fehler in der Minimum-Funktion?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Der Code kann ausführbar sein, liefert aber fachlich falsche Ergebnisse.",
+          "correct": true,
+          "explanation": "Semantik betrifft die Bedeutung und Logik des Codes."
+        },
+        {
+          "id": "b",
+          "text": "Der Code kann nie kompiliert werden.",
+          "correct": false,
+          "explanation": "Das wäre eher Syntax oder Typfehler."
+        },
+        {
+          "id": "c",
+          "text": "Der Fehler liegt immer in SQL.",
+          "correct": false,
+          "explanation": "Die Minimum-Funktion ist Java-Logik."
+        },
+        {
+          "id": "d",
+          "text": "Der Fehler ist ein Roboterzustand.",
+          "correct": false,
+          "explanation": "Zustände sind kein Codefehler."
+        }
+      ]
+    },
+    {
+      "id": "pv2fiae_hard_t08_unit_regression_suite",
+      "conceptId": "pv2fiae_hard_t08_unit_regression_suite",
+      "variantId": "pv2fiae_hard_t08_unit_regression_suite_v01",
+      "interactionType": "multi",
+      "questionKind": "mehrere_richtige_antworten_waehlen",
+      "badgeLabel": "Mehrere Antworten sind richtig.",
+      "isNew": true,
+      "prompt": "Welche Regressionstests sichern die korrigierte Minimum-Funktion ab?",
+      "maxSelections": 3,
+      "options": [
+        {
+          "id": "a",
+          "text": "Liste mit ausschließlich positiven Werten.",
+          "correct": true,
+          "explanation": "Das prüft die Initialisierung."
+        },
+        {
+          "id": "b",
+          "text": "Liste mit kleinster Zahl am Ende.",
+          "correct": true,
+          "explanation": "Das prüft die Aktualisierung über die Schleife."
+        },
+        {
+          "id": "c",
+          "text": "Liste mit negativen Werten.",
+          "correct": true,
+          "explanation": "Das prüft gemischte Zahlenbereiche."
+        },
+        {
+          "id": "d",
+          "text": "SQL-Auswertung nach Kategorien.",
+          "correct": false,
+          "explanation": "Das prüft keine Java-Funktion."
+        }
+      ]
+    },
+    {
+      "id": "pv2fiae_hard_t08_unit_test_oracle",
+      "conceptId": "pv2fiae_hard_t08_unit_test_oracle",
+      "variantId": "pv2fiae_hard_t08_unit_test_oracle_v01",
+      "interactionType": "single",
+      "questionKind": "beste_option_im_mini_szenario",
+      "badgeLabel": "Eine Antwort ist richtig.",
+      "isNew": true,
+      "prompt": "Warum braucht ein Unit-Test einen klaren erwarteten Wert?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Der erwartete Rückgabewert muss fachlich feststehen.",
+          "correct": true,
+          "explanation": "Ohne Erwartung kann Actual nicht bewertet werden."
+        },
+        {
+          "id": "b",
+          "text": "Der Roboterzustand muss unbekannt sein.",
+          "correct": false,
+          "explanation": "Das ist kein Testorakel."
+        },
+        {
+          "id": "c",
+          "text": "Eine Kategorie muss eingefügt werden.",
+          "correct": false,
+          "explanation": "Das gehört zu SQL."
+        },
+        {
+          "id": "d",
+          "text": "Die Trefferliste muss zufällig sein.",
+          "correct": false,
+          "explanation": "Zufall erschwert Tests."
+        }
+      ]
+    },
+    {
+      "id": "pv2fiae_hard_t08_coverage_branch_gap",
+      "conceptId": "pv2fiae_hard_t08_coverage_branch_gap",
+      "variantId": "pv2fiae_hard_t08_coverage_branch_gap_v01",
+      "interactionType": "single",
+      "questionKind": "beste_option_im_mini_szenario",
+      "badgeLabel": "Eine Antwort ist richtig.",
+      "isNew": true,
+      "prompt": "Welche Abdeckung fehlt, wenn nur eine positive Liste getestet wird?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Wichtige Randfälle und alternative Datenbereiche bleiben ungeprüft.",
+          "correct": true,
+          "explanation": "Ein einzelner Test deckt nicht alle relevanten Situationen ab."
+        },
+        {
+          "id": "b",
+          "text": "SQL kann dann keine JOINs nutzen.",
+          "correct": false,
+          "explanation": "Das ist kein Coverage-Zusammenhang."
+        },
+        {
+          "id": "c",
+          "text": "Der Roboter fährt nicht mehr.",
+          "correct": false,
+          "explanation": "Das folgt nicht aus Tests."
+        },
+        {
+          "id": "d",
+          "text": "Alle Tische werden automatisch reserviert.",
+          "correct": false,
+          "explanation": "Das ist eine andere Logik."
+        }
+      ]
+    },
+    {
+      "id": "pv2fiae_hard_t08_sql_transaction_category",
+      "conceptId": "pv2fiae_hard_t08_sql_transaction_category",
+      "variantId": "pv2fiae_hard_t08_sql_transaction_category_v01",
+      "interactionType": "single",
+      "questionKind": "beste_option_im_mini_szenario",
+      "badgeLabel": "Eine Antwort ist richtig.",
+      "isNew": true,
+      "prompt": "Warum sollte das Einfügen einer Kategorie in produktiven Daten kontrolliert erfolgen?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Vorher prüfen, ob die Kategorie bereits existiert, und eindeutige Regeln nutzen.",
+          "correct": true,
+          "explanation": "Das verhindert doppelte Stammdaten."
+        },
+        {
+          "id": "b",
+          "text": "Alle alten Kategorien ohne Prüfung löschen.",
+          "correct": false,
+          "explanation": "Das wäre Datenverlust."
+        },
+        {
+          "id": "c",
+          "text": "Die Kategorie als Roboterzustand speichern.",
+          "correct": false,
+          "explanation": "Das ist fachlich falsch."
+        },
+        {
+          "id": "d",
+          "text": "Die Minimum-Funktion vorher auf 0 setzen.",
+          "correct": false,
+          "explanation": "Das schützt keine Kategorie."
+        }
+      ]
+    },
+    {
+      "id": "pv2fiae_hard_t08_sql_report_release_checks",
+      "conceptId": "pv2fiae_hard_t08_sql_report_release_checks",
+      "variantId": "pv2fiae_hard_t08_sql_report_release_checks_v01",
+      "interactionType": "multi",
+      "questionKind": "mehrere_richtige_antworten_waehlen",
+      "badgeLabel": "Mehrere Antworten sind richtig.",
+      "isNew": true,
+      "prompt": "Welche Prüfungen gehören zur Abnahme der SQL-Berichte?",
+      "maxSelections": 3,
+      "options": [
+        {
+          "id": "a",
+          "text": "Bestellung mit mehreren Positionen.",
+          "correct": true,
+          "explanation": "Die Summe pro Bestellung muss stimmen."
+        },
+        {
+          "id": "b",
+          "text": "Kunde mit mehr und weniger als dem Vielbesteller-Grenzwert.",
+          "correct": true,
+          "explanation": "HAVING muss richtig filtern."
+        },
+        {
+          "id": "c",
+          "text": "Gerichte aus mehreren Kategorien.",
+          "correct": true,
+          "explanation": "Die Kategorieauswertung braucht verschiedene Gruppen."
+        },
+        {
+          "id": "d",
+          "text": "Roboterhindernis als einzige SQL-Testzeile.",
+          "correct": false,
+          "explanation": "Das prüft keine Restaurantdatenbank."
+        }
+      ]
+    },
+    {
+      "id": "pv2fiae_hard_t08_sql_price_snapshot",
+      "conceptId": "pv2fiae_hard_t08_sql_price_snapshot",
+      "variantId": "pv2fiae_hard_t08_sql_price_snapshot_v01",
+      "interactionType": "single",
+      "questionKind": "beste_option_im_mini_szenario",
+      "badgeLabel": "Eine Antwort ist richtig.",
+      "isNew": true,
+      "prompt": "Warum kann ein Positionspreis in Bestellpositionen sinnvoll sein?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Der bei Bestellung gültige Preis wird in der Position gespeichert.",
+          "correct": true,
+          "explanation": "So verändern spätere Preisänderungen alte Bestellungen nicht."
+        },
+        {
+          "id": "b",
+          "text": "Bestellpositionen speichern nur den aktuellen Kategorienamen.",
+          "correct": false,
+          "explanation": "Das reicht für historische Preise nicht."
+        },
+        {
+          "id": "c",
+          "text": "Preise werden als Roboterzustände gespeichert.",
+          "correct": false,
+          "explanation": "Das ist fachlich falsch."
+        },
+        {
+          "id": "d",
+          "text": "Alle Preise werden vor Berichten gelöscht.",
+          "correct": false,
+          "explanation": "Das zerstört Auswertbarkeit."
+        }
+      ]
+    },
+    {
+      "id": "pv2fiae_hard_t08_sql_name_migration_audit",
+      "conceptId": "pv2fiae_hard_t08_sql_name_migration_audit",
+      "variantId": "pv2fiae_hard_t08_sql_name_migration_audit_v01",
+      "interactionType": "single",
+      "questionKind": "beste_option_im_mini_szenario",
+      "badgeLabel": "Eine Antwort ist richtig.",
+      "isNew": true,
+      "prompt": "Warum sollte eine Namensspalten-Migration protokolliert werden?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Originalwert und Migrationsregel sollten nachvollziehbar bleiben.",
+          "correct": true,
+          "explanation": "Namensmigrationen können Sonderfälle enthalten."
+        },
+        {
+          "id": "b",
+          "text": "Originalnamen müssen sofort ohne Sicherung gelöscht werden.",
+          "correct": false,
+          "explanation": "Das ist riskant."
+        },
+        {
+          "id": "c",
+          "text": "Migrationen brauchen nie Testdaten.",
+          "correct": false,
+          "explanation": "Gerade Sonderfälle brauchen Tests."
+        },
+        {
+          "id": "d",
+          "text": "Die Migration wird als Unit-Test-Ergebnis gespeichert.",
+          "correct": false,
+          "explanation": "Das ist kein sauberer Datenpfad."
+        }
+      ]
+    },
+    {
+      "id": "pv2fiae_hard_t08_sql_having_customer_semantics",
+      "conceptId": "pv2fiae_hard_t08_sql_having_customer_semantics",
+      "variantId": "pv2fiae_hard_t08_sql_having_customer_semantics_v01",
+      "interactionType": "single",
+      "questionKind": "beste_option_im_mini_szenario",
+      "badgeLabel": "Eine Antwort ist richtig.",
+      "isNew": true,
+      "prompt": "Was muss bei „Vielbesteller“ fachlich definiert werden?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Ab welcher Anzahl und in welchem Zeitraum ein Kunde als Vielbesteller gilt.",
+          "correct": true,
+          "explanation": "Ohne Zeitraum und Grenzwert ist die Auswertung mehrdeutig."
+        },
+        {
+          "id": "b",
+          "text": "Ob der Roboter in `Halt` steht.",
+          "correct": false,
+          "explanation": "Das hat keinen Kundenbezug."
+        },
+        {
+          "id": "c",
+          "text": "Ob ein Tisch halb belegt ist.",
+          "correct": false,
+          "explanation": "Das ist Reservierungslogik."
+        },
+        {
+          "id": "d",
+          "text": "Ob ein Unit-Test eine Liste enthält.",
+          "correct": false,
+          "explanation": "Das ist Testlogik."
+        }
+      ]
+    },
+    {
+      "id": "pv2fiae_hard_t08_sql_category_zero_sales",
+      "conceptId": "pv2fiae_hard_t08_sql_category_zero_sales",
+      "variantId": "pv2fiae_hard_t08_sql_category_zero_sales_v01",
+      "interactionType": "single",
+      "questionKind": "beste_option_im_mini_szenario",
+      "badgeLabel": "Eine Antwort ist richtig.",
+      "isNew": true,
+      "prompt": "Welche JOIN-Art kann Kategorien ohne Verkäufe in einer Auswertung sichtbar machen?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "LEFT JOIN von Kategorie auf Gerichte und Positionen.",
+          "correct": true,
+          "explanation": "So bleiben Kategorien ohne Treffer erhalten."
+        },
+        {
+          "id": "b",
+          "text": "INNER JOIN zwingend.",
+          "correct": false,
+          "explanation": "Ein INNER JOIN blendet Kategorien ohne Verkauf aus."
+        },
+        {
+          "id": "c",
+          "text": "DELETE JOIN.",
+          "correct": false,
+          "explanation": "Das ist keine Berichtsausgabe."
+        },
+        {
+          "id": "d",
+          "text": "ORDER BY allein.",
+          "correct": false,
+          "explanation": "Sortierung erzeugt keine Nullgruppen."
+        }
+      ]
+    },
+    {
+      "id": "pv2fiae_hard_t08_sql_parameterization",
+      "conceptId": "pv2fiae_hard_t08_sql_parameterization",
+      "variantId": "pv2fiae_hard_t08_sql_parameterization_v01",
+      "interactionType": "single",
+      "questionKind": "beste_option_im_mini_szenario",
+      "badgeLabel": "Eine Antwort ist richtig.",
+      "isNew": true,
+      "prompt": "Warum sollten Suchwerte in Restaurant-SQL aus Anwendungscode parametrisiert werden?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Durch parametrisierte Abfragen statt Stringverkettung.",
+          "correct": true,
+          "explanation": "Parameter trennen Daten von SQL-Code."
+        },
+        {
+          "id": "b",
+          "text": "Durch direkte Verkettung ungeprüfter Eingaben.",
+          "correct": false,
+          "explanation": "Das ist riskant."
+        },
+        {
+          "id": "c",
+          "text": "Durch Speichern jeder Eingabe als Roboterzustand.",
+          "correct": false,
+          "explanation": "Das ist fachlich falsch."
+        },
+        {
+          "id": "d",
+          "text": "Durch Ignorieren aller WHERE-Bedingungen.",
+          "correct": false,
+          "explanation": "Das erhöht Risiko und falsche Ergebnisse."
+        }
+      ]
+    },
+    {
+      "id": "pv2fiae_hard_t08_release_cross_topic",
+      "conceptId": "pv2fiae_hard_t08_release_cross_topic",
+      "variantId": "pv2fiae_hard_t08_release_cross_topic_v01",
+      "interactionType": "single",
+      "questionKind": "beste_option_im_mini_szenario",
+      "badgeLabel": "Eine Antwort ist richtig.",
+      "isNew": true,
+      "prompt": "Welche Abnahme verbindet Reservierung, Zustandsdiagramm, Tests und SQL sinnvoll?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Reservierungsfälle testen, Zustandsautomat prüfen, Minimum-Funktion korrigieren und SQL-Berichte gegen Testdaten abnehmen.",
+          "correct": true,
+          "explanation": "So werden alle vier Themenbereiche gemeinsam abgesichert."
+        },
+        {
+          "id": "b",
+          "text": "Nur eine Kategorie einfügen und alles andere ignorieren.",
+          "correct": false,
+          "explanation": "Das Ticket ist breiter."
+        },
+        {
+          "id": "c",
+          "text": "Alle Tische löschen und die Tests überspringen.",
+          "correct": false,
+          "explanation": "Das zerstört die Prüfgrundlage."
+        },
+        {
+          "id": "d",
+          "text": "Nur das Zustandsdiagramm zeichnen.",
+          "correct": false,
+          "explanation": "Reservierung, Tests und SQL bleiben ebenfalls relevant."
+        }
+      ]
+    },
+    {
+      "id": "pv2fiae_hard_t08_release_regression_suite",
+      "conceptId": "pv2fiae_hard_t08_release_regression_suite",
+      "variantId": "pv2fiae_hard_t08_release_regression_suite_v01",
+      "interactionType": "multi",
+      "questionKind": "mehrere_richtige_antworten_waehlen",
+      "badgeLabel": "Mehrere Antworten sind richtig.",
+      "isNew": true,
+      "prompt": "Welche Regressionstests gehören zu Ticket 08?",
+      "maxSelections": 3,
+      "options": [
+        {
+          "id": "a",
+          "text": "Reservierungen mit freien, belegten und gleich passenden Tischen.",
+          "correct": true,
+          "explanation": "Die Auswahl braucht typische und schwierige Fälle."
+        },
+        {
+          "id": "b",
+          "text": "Roboterpfade für Ziel, Hindernis, Ausweichen und Rückkehr.",
+          "correct": true,
+          "explanation": "Der Zustandsautomat muss vollständig laufen."
+        },
+        {
+          "id": "c",
+          "text": "Minimum-Funktion mit positiven, negativen und leeren Listen.",
+          "correct": true,
+          "explanation": "Die korrigierte Logik braucht Randfälle."
+        },
+        {
+          "id": "d",
+          "text": "SQL-Berichte ohne Testdaten freigeben.",
+          "correct": false,
+          "explanation": "Berichte brauchen prüfbare Daten."
+        }
+      ]
+    },
+    {
+      "id": "pv2fiae_hard_t08_release_documentation",
+      "conceptId": "pv2fiae_hard_t08_release_documentation",
+      "variantId": "pv2fiae_hard_t08_release_documentation_v01",
+      "interactionType": "single",
+      "questionKind": "beste_option_im_mini_szenario",
+      "badgeLabel": "Eine Antwort ist richtig.",
+      "isNew": true,
+      "prompt": "Welche Dokumentation ist für Betrieb und Fachbereich nach Ticket 08 besonders nützlich?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Reservierungsregeln, Zustandsübergänge, Testfälle, Korrekturen und SQL-Berichte mit Annahmen.",
+          "correct": true,
+          "explanation": "Diese Punkte machen die fachlichen Entscheidungen nachvollziehbar."
+        },
+        {
+          "id": "b",
+          "text": "Nur ein Screenshot des Roboters.",
+          "correct": false,
+          "explanation": "Das reicht für Wartung nicht aus."
+        },
+        {
+          "id": "c",
+          "text": "Eine Liste zufälliger Kundennamen ohne Regeln.",
+          "correct": false,
+          "explanation": "Das hilft nicht bei Prüfung oder Betrieb."
+        },
+        {
+          "id": "d",
+          "text": "Ein leerer Bericht ohne SQL.",
+          "correct": false,
+          "explanation": "Das dokumentiert keine Umsetzung."
+        }
+      ]
+    },
+    {
+      "id": "pv2fiae_hard_t08_operations_monitoring",
+      "conceptId": "pv2fiae_hard_t08_operations_monitoring",
+      "variantId": "pv2fiae_hard_t08_operations_monitoring_v01",
+      "interactionType": "single",
+      "questionKind": "beste_option_im_mini_szenario",
+      "badgeLabel": "Eine Antwort ist richtig.",
+      "isNew": true,
+      "prompt": "Welche Betriebsbeobachtung ist für die Online-Reservierung besonders nützlich?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Anteil abgelehnter Reservierungsanfragen trotz vorhandener freier Tische.",
+          "correct": true,
+          "explanation": "Das könnte auf zu strenge oder fehlerhafte Auswahlregeln hinweisen."
+        },
+        {
+          "id": "b",
+          "text": "Anzahl der SQL-Schlüsselwörter im Zustandsdiagramm.",
+          "correct": false,
+          "explanation": "Das ist keine Betriebskennzahl."
+        },
+        {
+          "id": "c",
+          "text": "ein optisches Merkmal ohne Bezug zur Reservierungslogik",
+          "correct": false,
+          "explanation": "Für Reservierungslogik zählen Zustände, Zeiten, Konflikte und Regeln."
+        },
+        {
+          "id": "d",
+          "text": "Länge der Java-Datei ohne Testergebnisse.",
+          "correct": false,
+          "explanation": "Das ist keine fachliche Betriebsqualität."
+        }
+      ]
+    },
+    {
+      "id": "pv2fiae_hard_t08_sql_report_access_control",
+      "conceptId": "pv2fiae_hard_t08_sql_report_access_control",
+      "variantId": "pv2fiae_hard_t08_sql_report_access_control_v01",
+      "interactionType": "single",
+      "questionKind": "beste_option_im_mini_szenario",
+      "badgeLabel": "Eine Antwort ist richtig.",
+      "isNew": true,
+      "prompt": "Welche Zugriffskontrolle ist bei Bestell- und Kundenberichten wichtig?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Nur berechtigte Rollen erhalten notwendige Kundendaten.",
+          "correct": true,
+          "explanation": "Kundendaten sind personenbezogen und sollten begrenzt sichtbar sein."
+        },
+        {
+          "id": "b",
+          "text": "Alle Mitarbeitenden sehen immer alle Kundendaten.",
+          "correct": false,
+          "explanation": "Das wäre nicht rollenbezogen."
+        },
+        {
+          "id": "c",
+          "text": "Kundendaten werden als Robotertrigger veröffentlicht.",
+          "correct": false,
+          "explanation": "Das ist fachlich falsch."
+        },
+        {
+          "id": "d",
+          "text": "Zugriffskontrolle wird durch HAVING ersetzt.",
+          "correct": false,
+          "explanation": "HAVING filtert Gruppen, keine Berechtigungen."
+        }
+      ]
+    }
+  ]
+}

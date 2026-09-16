@@ -1,0 +1,904 @@
+{
+  "scenarioFolder": "Pruefungsvorbereitung-2-FIAE-Scenarien",
+  "quizFolder": "Pruefungsvorbereitung-2-FIAE-Quiz",
+  "scenarioFile": "ticket_ausbildungsbetrieb_ap2_w2023_fiae2/06_easy_ausbildungsbetrieb_ap2_w2023_fiae2.json",
+  "quizFile": "quiz_ausbildungsbetrieb_ap2_w2023_fiae2/quiz06_easy_V01_ausbildungsbetrieb_ap2_w2023_fiae2.json",
+  "ticketId": "06_easy_ausbildungsbetrieb_ap2_w2023_fiae2.json",
+  "versionId": "V01",
+  "title": "Ticket 06 Easy - Reifegradlogik, Drohnenroute, Messdaten und SQL",
+  "description": "Trainingsfragen zu Sequenzdiagramm, Greedy-Route, Messdatenmodell, Speicherbedarf und SQL.",
+  "topics": [
+    "Reifegradsequenz, Greedy-Route und Messdatenmodell fachlich sicher einordnen",
+    "Speicherbedarf und SQL-Berichte für Weinvertriebsdaten nachvollziehbar verbinden"
+  ],
+  "questions": [
+    {
+      "id": "pv2fiae_easy_t06_sequence_acid_first",
+      "conceptId": "pv2fiae_easy_t06_sequence_acid_first",
+      "variantId": "pv2fiae_easy_t06_sequence_acid_first_v01",
+      "interactionType": "single",
+      "questionKind": "beste_option_im_mini_szenario",
+      "badgeLabel": "Eine Antwort ist richtig.",
+      "isNew": true,
+      "prompt": "Welche Nachricht steht am Anfang der Reifegradbewertung?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Die GUI liest den Säuregehalt ein.",
+          "correct": true,
+          "explanation": "Die Säureprüfung entscheidet, ob der weitere Ablauf überhaupt fortgesetzt wird."
+        },
+        {
+          "id": "b",
+          "text": "Die GUI ruft sofort den SQL-Bericht auf.",
+          "correct": false,
+          "explanation": "SQL gehört zum späteren Vertriebsblock, nicht zur ersten Sequenznachricht."
+        },
+        {
+          "id": "c",
+          "text": "Die Drohne wählt den nächsten Messpunkt.",
+          "correct": false,
+          "explanation": "Das ist der Routenalgorithmus, nicht die Reifegradsequenz."
+        },
+        {
+          "id": "d",
+          "text": "Das Messgerät wird aus der Datenbank gelöscht.",
+          "correct": false,
+          "explanation": "Eine Löschung ist hier nicht vorgesehen."
+        }
+      ]
+    },
+    {
+      "id": "pv2fiae_easy_t06_sequence_high_acid_branch",
+      "conceptId": "pv2fiae_easy_t06_sequence_high_acid_branch",
+      "variantId": "pv2fiae_easy_t06_sequence_high_acid_branch_v01",
+      "interactionType": "single",
+      "questionKind": "beste_option_im_mini_szenario",
+      "badgeLabel": "Eine Antwort ist richtig.",
+      "isNew": true,
+      "prompt": "Was passiert, wenn der Säurewert zu hoch ist?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Sie gibt eine Warnung aus und liest keinen Öchslegrad ein.",
+          "correct": true,
+          "explanation": "Der Öchsle-Aufruf gehört nur zum fachlich erlaubten Pfad."
+        },
+        {
+          "id": "b",
+          "text": "Sie ruft trotzdem immer `berechneReifegrad(...)` auf.",
+          "correct": false,
+          "explanation": "Der Serviceaufruf erfolgt nur nach bestandener Säureprüfung."
+        },
+        {
+          "id": "c",
+          "text": "Sie startet die Fehlzeitenarchivierung.",
+          "correct": false,
+          "explanation": "Das gehört nicht zur Weinreifebewertung."
+        },
+        {
+          "id": "d",
+          "text": "Sie gruppiert Artikelpreise nach Jahrgang.",
+          "correct": false,
+          "explanation": "Das ist eine spätere SQL-Auswertung."
+        }
+      ]
+    },
+    {
+      "id": "pv2fiae_easy_t06_sequence_service_call_condition",
+      "conceptId": "pv2fiae_easy_t06_sequence_service_call_condition",
+      "variantId": "pv2fiae_easy_t06_sequence_service_call_condition_v01",
+      "interactionType": "single",
+      "questionKind": "beste_option_im_mini_szenario",
+      "badgeLabel": "Eine Antwort ist richtig.",
+      "isNew": true,
+      "prompt": "Wann darf `berechneReifegrad(...)` aufgerufen werden?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Nachdem der Säurewert in Ordnung ist und der Öchslegrad eingelesen wurde.",
+          "correct": true,
+          "explanation": "Der Service braucht den fachlich zulässigen Messwert."
+        },
+        {
+          "id": "b",
+          "text": "Vor dem Einlesen des Säurewerts.",
+          "correct": false,
+          "explanation": "Die Säureprüfung steht am Anfang."
+        },
+        {
+          "id": "c",
+          "text": "Immer bei einem Rabatt-Update.",
+          "correct": false,
+          "explanation": "Rabattkorrekturen gehören zur Vertriebsdatenbank."
+        },
+        {
+          "id": "d",
+          "text": "Nur wenn kein Messgerät existiert.",
+          "correct": false,
+          "explanation": "Das Messgerätmodell entscheidet nicht über den Serviceaufruf."
+        }
+      ]
+    },
+    {
+      "id": "pv2fiae_easy_t06_sequence_return_mapping",
+      "conceptId": "pv2fiae_easy_t06_sequence_return_mapping",
+      "variantId": "pv2fiae_easy_t06_sequence_return_mapping_v01",
+      "interactionType": "single",
+      "questionKind": "beste_option_im_mini_szenario",
+      "badgeLabel": "Eine Antwort ist richtig.",
+      "isNew": true,
+      "prompt": "Was bestimmt die Ausgabe „hoher, mittlerer oder niedriger Reifegrad“?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Der Rückgabewert des Reife-Services.",
+          "correct": true,
+          "explanation": "Die GUI bildet den Rückgabewert auf eine passende Ausgabe ab."
+        },
+        {
+          "id": "b",
+          "text": "Die vierte Stelle der Kunden-PLZ.",
+          "correct": false,
+          "explanation": "PLZ-Filter gehören zur SQL-Aufgabe."
+        },
+        {
+          "id": "c",
+          "text": "Die Anzahl der Drohnenbilder pro Woche.",
+          "correct": false,
+          "explanation": "Das betrifft den Speicherbedarf."
+        },
+        {
+          "id": "d",
+          "text": "Der Name des Artikelherstellers.",
+          "correct": false,
+          "explanation": "Das ist kein Eingabewert der Reifegradlogik."
+        }
+      ]
+    },
+    {
+      "id": "pv2fiae_easy_t06_sequence_diagram_elements",
+      "conceptId": "pv2fiae_easy_t06_sequence_diagram_elements",
+      "variantId": "pv2fiae_easy_t06_sequence_diagram_elements_v01",
+      "interactionType": "multi",
+      "questionKind": "mehrere_richtige_antworten_waehlen",
+      "badgeLabel": "Mehrere Antworten sind richtig.",
+      "isNew": true,
+      "prompt": "Welche Elemente gehören in das Sequenzdiagramm der Reifegradbewertung?",
+      "maxSelections": 3,
+      "options": [
+        {
+          "id": "a",
+          "text": "GUI als Beteiligte.",
+          "correct": true,
+          "explanation": "Die Oberfläche löst die Verarbeitung und Ausgabe aus."
+        },
+        {
+          "id": "b",
+          "text": "Reife-Service als aufgerufene Komponente.",
+          "correct": true,
+          "explanation": "Der Service berechnet den Reifegrad nach gültigen Eingaben."
+        },
+        {
+          "id": "c",
+          "text": "Eine Verzweigung für zu hohen Säurewert.",
+          "correct": true,
+          "explanation": "Der Warnpfad muss sichtbar sein."
+        },
+        {
+          "id": "d",
+          "text": "Ein `DELETE` auf Rechnungsdaten als Sequenznachricht.",
+          "correct": false,
+          "explanation": "Das gehört nicht in die Reifegradsequenz."
+        }
+      ]
+    },
+    {
+      "id": "pv2fiae_easy_t06_sequence_alt_fragment",
+      "conceptId": "pv2fiae_easy_t06_sequence_alt_fragment",
+      "variantId": "pv2fiae_easy_t06_sequence_alt_fragment_v01",
+      "interactionType": "single",
+      "questionKind": "beste_option_im_mini_szenario",
+      "badgeLabel": "Eine Antwort ist richtig.",
+      "isNew": true,
+      "prompt": "Welches UML-Element passt zur Unterscheidung „Säure zu hoch“ oder „Säure in Ordnung“?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Ein alternatives Fragment mit Guard-Bedingungen.",
+          "correct": true,
+          "explanation": "Ein `alt`-Fragment trennt die beiden möglichen Abläufe."
+        },
+        {
+          "id": "b",
+          "text": "Eine m:n-Zuordnungstabelle.",
+          "correct": false,
+          "explanation": "Das ist Datenmodellierung, kein Sequenzdiagramm-Baustein."
+        },
+        {
+          "id": "c",
+          "text": "Ein GROUP BY.",
+          "correct": false,
+          "explanation": "Das ist SQL."
+        },
+        {
+          "id": "d",
+          "text": "Ein Bildarchiv.",
+          "correct": false,
+          "explanation": "Das hat keinen Sequenzdiagrammcharakter."
+        }
+      ]
+    },
+    {
+      "id": "pv2fiae_easy_t06_greedy_start_point",
+      "conceptId": "pv2fiae_easy_t06_greedy_start_point",
+      "variantId": "pv2fiae_easy_t06_greedy_start_point_v01",
+      "interactionType": "single",
+      "questionKind": "beste_option_im_mini_szenario",
+      "badgeLabel": "Eine Antwort ist richtig.",
+      "isNew": true,
+      "prompt": "Wo startet der Drohnenroutenalgorithmus laut Vorgabe?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Beim ersten Punkt aus der übergebenen Liste.",
+          "correct": true,
+          "explanation": "Die Startposition ist ausdrücklich die erste Listenposition."
+        },
+        {
+          "id": "b",
+          "text": "Beim alphabetisch ersten Weinberg.",
+          "correct": false,
+          "explanation": "Die Vorgabe nennt die erste Listenposition, nicht einen Namen."
+        },
+        {
+          "id": "c",
+          "text": "Beim teuersten Artikel.",
+          "correct": false,
+          "explanation": "Artikel gehören zur Vertriebsdatenbank."
+        },
+        {
+          "id": "d",
+          "text": "Bei einer zufälligen Rechnungsposition.",
+          "correct": false,
+          "explanation": "Das wäre keine nachvollziehbare Route."
+        }
+      ]
+    },
+    {
+      "id": "pv2fiae_easy_t06_greedy_next_nearest",
+      "conceptId": "pv2fiae_easy_t06_greedy_next_nearest",
+      "variantId": "pv2fiae_easy_t06_greedy_next_nearest_v01",
+      "interactionType": "single",
+      "questionKind": "beste_option_im_mini_szenario",
+      "badgeLabel": "Eine Antwort ist richtig.",
+      "isNew": true,
+      "prompt": "Welchen Messpunkt wählt der Greedy-Algorithmus als nächsten?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Den noch nicht angeflogenen Punkt mit dem geringsten Abstand.",
+          "correct": true,
+          "explanation": "Das ist die lokale Greedy-Entscheidung."
+        },
+        {
+          "id": "b",
+          "text": "Den Punkt mit dem höchsten Artikelpreis.",
+          "correct": false,
+          "explanation": "Artikelpreise gehören nicht zur Route."
+        },
+        {
+          "id": "c",
+          "text": "Immer den letzten Punkt der ursprünglichen Liste.",
+          "correct": false,
+          "explanation": "Die Vorgabe verlangt die minimale Entfernung."
+        },
+        {
+          "id": "d",
+          "text": "Einen bereits besuchten Punkt.",
+          "correct": false,
+          "explanation": "Bereits angeflogene Punkte werden nicht erneut gewählt."
+        }
+      ]
+    },
+    {
+      "id": "pv2fiae_easy_t06_greedy_unvisited_list",
+      "conceptId": "pv2fiae_easy_t06_greedy_unvisited_list",
+      "variantId": "pv2fiae_easy_t06_greedy_unvisited_list_v01",
+      "interactionType": "single",
+      "questionKind": "beste_option_im_mini_szenario",
+      "badgeLabel": "Eine Antwort ist richtig.",
+      "isNew": true,
+      "prompt": "Warum muss der gewählte Messpunkt aus der Restliste entfernt oder als besucht markiert werden?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Damit die Drohne denselben Messpunkt nicht mehrfach einplant.",
+          "correct": true,
+          "explanation": "Die Route soll jeden Punkt kontrolliert abarbeiten."
+        },
+        {
+          "id": "b",
+          "text": "Damit der SQL-Bericht schneller gruppiert.",
+          "correct": false,
+          "explanation": "Das betrifft die Flugroute nicht."
+        },
+        {
+          "id": "c",
+          "text": "Damit der Säurewert automatisch sinkt.",
+          "correct": false,
+          "explanation": "Der Besuchsstatus ändert keine Messwerte."
+        },
+        {
+          "id": "d",
+          "text": "Damit das Messgerät gelöscht wird.",
+          "correct": false,
+          "explanation": "Die Route löscht keine Gerätedaten."
+        }
+      ]
+    },
+    {
+      "id": "pv2fiae_easy_t06_greedy_local_not_global",
+      "conceptId": "pv2fiae_easy_t06_greedy_local_not_global",
+      "variantId": "pv2fiae_easy_t06_greedy_local_not_global_v01",
+      "interactionType": "single",
+      "questionKind": "beste_option_im_mini_szenario",
+      "badgeLabel": "Eine Antwort ist richtig.",
+      "isNew": true,
+      "prompt": "Welche Aussage über den Greedy-Routenalgorithmus ist korrekt?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Sie trifft lokale Entscheidungen und garantiert nicht automatisch die globale Optimalroute.",
+          "correct": true,
+          "explanation": "Der nächste beste Schritt muss nicht zur insgesamt besten Route führen."
+        },
+        {
+          "id": "b",
+          "text": "Sie garantiert immer die kürzeste mögliche Gesamtroute.",
+          "correct": false,
+          "explanation": "Das ist für einfache Greedy-Strategien nicht garantiert."
+        },
+        {
+          "id": "c",
+          "text": "Sie braucht keine Abstände.",
+          "correct": false,
+          "explanation": "Der Abstand ist das zentrale Auswahlkriterium."
+        },
+        {
+          "id": "d",
+          "text": "Sie sortiert Rechnungen nach Rabatt.",
+          "correct": false,
+          "explanation": "Das ist keine Routenplanung."
+        }
+      ]
+    },
+    {
+      "id": "pv2fiae_easy_t06_greedy_min_init",
+      "conceptId": "pv2fiae_easy_t06_greedy_min_init",
+      "variantId": "pv2fiae_easy_t06_greedy_min_init_v01",
+      "interactionType": "single",
+      "questionKind": "beste_option_im_mini_szenario",
+      "badgeLabel": "Eine Antwort ist richtig.",
+      "isNew": true,
+      "prompt": "Warum wird beim Suchen des nächsten Punkts oft mit einer sehr großen Anfangsdistanz gestartet?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Der erste geprüfte Kandidat kann die bisher beste Distanz sicher ersetzen.",
+          "correct": true,
+          "explanation": "So funktioniert die Minimumsuche sauber."
+        },
+        {
+          "id": "b",
+          "text": "Die Drohne soll immer möglichst weit fliegen.",
+          "correct": false,
+          "explanation": "Gesucht ist gerade der geringste Abstand."
+        },
+        {
+          "id": "c",
+          "text": "Die Artikelpreise sollen steigen.",
+          "correct": false,
+          "explanation": "Das hat keinen Bezug zur Route."
+        },
+        {
+          "id": "d",
+          "text": "Der Säurewert wird dadurch gültig.",
+          "correct": false,
+          "explanation": "Das ist kein Messwertfilter."
+        }
+      ]
+    },
+    {
+      "id": "pv2fiae_easy_t06_greedy_algorithm_steps",
+      "conceptId": "pv2fiae_easy_t06_greedy_algorithm_steps",
+      "variantId": "pv2fiae_easy_t06_greedy_algorithm_steps_v01",
+      "interactionType": "multi",
+      "questionKind": "mehrere_richtige_antworten_waehlen",
+      "badgeLabel": "Mehrere Antworten sind richtig.",
+      "isNew": true,
+      "prompt": "Welche Schritte gehören zur Greedy-Routenlogik?",
+      "maxSelections": 3,
+      "options": [
+        {
+          "id": "a",
+          "text": "Vom aktuellen Punkt aus alle noch nicht besuchten Punkte prüfen.",
+          "correct": true,
+          "explanation": "Nur Restpunkte sind Kandidaten."
+        },
+        {
+          "id": "b",
+          "text": "Den Kandidaten mit dem kleinsten Abstand wählen.",
+          "correct": true,
+          "explanation": "Das ist die Greedy-Auswahl."
+        },
+        {
+          "id": "c",
+          "text": "Den gewählten Punkt zur Route hinzufügen.",
+          "correct": true,
+          "explanation": "Die Reihenfolge muss gespeichert werden."
+        },
+        {
+          "id": "d",
+          "text": "Alle Kundendaten ohne Filter ändern.",
+          "correct": false,
+          "explanation": "Das gehört nicht zur Route."
+        }
+      ]
+    },
+    {
+      "id": "pv2fiae_easy_t06_ermodel_measure_station",
+      "conceptId": "pv2fiae_easy_t06_ermodel_measure_station",
+      "variantId": "pv2fiae_easy_t06_ermodel_measure_station_v01",
+      "interactionType": "single",
+      "questionKind": "beste_option_im_mini_szenario",
+      "badgeLabel": "Eine Antwort ist richtig.",
+      "isNew": true,
+      "prompt": "Welche Daten beschreiben eine Messstelle im Weinberg?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Längengrad, Breitengrad und Höhe.",
+          "correct": true,
+          "explanation": "Diese Werte beschreiben die Lage der Messstelle."
+        },
+        {
+          "id": "b",
+          "text": "Rechnungsrabatt und Artikelpreis.",
+          "correct": false,
+          "explanation": "Das sind Vertriebsdaten."
+        },
+        {
+          "id": "c",
+          "text": "Nur der Rückgabewert des Reife-Services.",
+          "correct": false,
+          "explanation": "Das ist kein Positionsattribut."
+        },
+        {
+          "id": "d",
+          "text": "Die Anzahl der SQL-Joins.",
+          "correct": false,
+          "explanation": "Das ist kein Messstellenattribut."
+        }
+      ]
+    },
+    {
+      "id": "pv2fiae_easy_t06_ermodel_measure_value_refs",
+      "conceptId": "pv2fiae_easy_t06_ermodel_measure_value_refs",
+      "variantId": "pv2fiae_easy_t06_ermodel_measure_value_refs_v01",
+      "interactionType": "single",
+      "questionKind": "beste_option_im_mini_szenario",
+      "badgeLabel": "Eine Antwort ist richtig.",
+      "isNew": true,
+      "prompt": "Worauf verweist ein Messwert im relationalen Modell?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Auf Messstelle und Messgröße.",
+          "correct": true,
+          "explanation": "So ist klar, wo und was gemessen wurde."
+        },
+        {
+          "id": "b",
+          "text": "Auf Rabatt und Rechnungsnummer als einzige Daten.",
+          "correct": false,
+          "explanation": "Das sind Vertriebsdaten, keine Messdatenbezüge."
+        },
+        {
+          "id": "c",
+          "text": "Auf die GUI-Nachricht als Primärschlüssel.",
+          "correct": false,
+          "explanation": "Sequenznachrichten sind keine Messwertbeziehungen."
+        },
+        {
+          "id": "d",
+          "text": "Auf einen zufälligen Routenindex ohne Messstelle.",
+          "correct": false,
+          "explanation": "Ohne Messstelle fehlt der Ortsbezug."
+        }
+      ]
+    },
+    {
+      "id": "pv2fiae_easy_t06_ermodel_measure_type_master",
+      "conceptId": "pv2fiae_easy_t06_ermodel_measure_type_master",
+      "variantId": "pv2fiae_easy_t06_ermodel_measure_type_master_v01",
+      "interactionType": "single",
+      "questionKind": "beste_option_im_mini_szenario",
+      "badgeLabel": "Eine Antwort ist richtig.",
+      "isNew": true,
+      "prompt": "Warum ist Messgröße eine eigene Stammdatentabelle?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Messgrößen werden mehrfach referenziert und sollen konsistent benannt bleiben.",
+          "correct": true,
+          "explanation": "Eine Stammdatentabelle vermeidet Redundanz und Schreibvarianten."
+        },
+        {
+          "id": "b",
+          "text": "Messgrößen dürfen nicht in Datenbanken gespeichert werden.",
+          "correct": false,
+          "explanation": "Sie gehören gerade in das Modell."
+        },
+        {
+          "id": "c",
+          "text": "Eine Messgröße ist immer eine SQL-Abfrage.",
+          "correct": false,
+          "explanation": "Sie ist ein fachlicher Messdatentyp."
+        },
+        {
+          "id": "d",
+          "text": "Messgrößen ersetzen alle Messstellen.",
+          "correct": false,
+          "explanation": "Messstelle und Messgröße sind verschiedene Fachobjekte."
+        }
+      ]
+    },
+    {
+      "id": "pv2fiae_easy_t06_ermodel_device_relation",
+      "conceptId": "pv2fiae_easy_t06_ermodel_device_relation",
+      "variantId": "pv2fiae_easy_t06_ermodel_device_relation_v01",
+      "interactionType": "single",
+      "questionKind": "beste_option_im_mini_szenario",
+      "badgeLabel": "Eine Antwort ist richtig.",
+      "isNew": true,
+      "prompt": "Welche Beziehung passt, wenn pro Messstelle genau ein Messgerät hinterlegt wird?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Eine Messstelle verweist auf ein Messgerät beziehungsweise einen Gerätedatensatz.",
+          "correct": true,
+          "explanation": "Der Gerätebezug gehört zur Messstelle."
+        },
+        {
+          "id": "b",
+          "text": "Jeder Messwert enthält alle Herstellerdaten als Freitext.",
+          "correct": false,
+          "explanation": "Das wäre redundant."
+        },
+        {
+          "id": "c",
+          "text": "Messgeräte werden nur in SQL-Berichten erwähnt.",
+          "correct": false,
+          "explanation": "Sie sind Teil des Messdatenmodells."
+        },
+        {
+          "id": "d",
+          "text": "Ein Messgerät ist ein Reifegrad.",
+          "correct": false,
+          "explanation": "Das sind unterschiedliche Begriffe."
+        }
+      ]
+    },
+    {
+      "id": "pv2fiae_easy_t06_ermodel_integrity",
+      "conceptId": "pv2fiae_easy_t06_ermodel_integrity",
+      "variantId": "pv2fiae_easy_t06_ermodel_integrity_v01",
+      "interactionType": "multi",
+      "questionKind": "mehrere_richtige_antworten_waehlen",
+      "badgeLabel": "Mehrere Antworten sind richtig.",
+      "isNew": true,
+      "prompt": "Welche Integritätsregeln sind für das Messdatenmodell sinnvoll?",
+      "maxSelections": 3,
+      "options": [
+        {
+          "id": "a",
+          "text": "Jeder Messwert verweist auf eine vorhandene Messstelle.",
+          "correct": true,
+          "explanation": "Sonst fehlt der Ort der Messung."
+        },
+        {
+          "id": "b",
+          "text": "Jeder Messwert verweist auf eine vorhandene Messgröße.",
+          "correct": true,
+          "explanation": "Sonst ist unklar, was gemessen wurde."
+        },
+        {
+          "id": "c",
+          "text": "Messstellen haben eindeutige Schlüssel.",
+          "correct": true,
+          "explanation": "Eindeutige Identifikation ist Grundlage für Fremdschlüssel."
+        },
+        {
+          "id": "d",
+          "text": "Messwerte werden als unstrukturierter Sammeltext gespeichert.",
+          "correct": false,
+          "explanation": "Das verhindert saubere Auswertung und Integrität."
+        }
+      ]
+    },
+    {
+      "id": "pv2fiae_easy_t06_storage_image_size",
+      "conceptId": "pv2fiae_easy_t06_storage_image_size",
+      "variantId": "pv2fiae_easy_t06_storage_image_size_v01",
+      "interactionType": "single",
+      "questionKind": "beste_option_im_mini_szenario",
+      "badgeLabel": "Eine Antwort ist richtig.",
+      "isNew": true,
+      "prompt": "Wie groß ist ein unkomprimiertes Bild mit 20 Megapixeln und drei Farbwerten zu je 8 Bit ungefähr?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Etwa 60 MB.",
+          "correct": true,
+          "explanation": "20 Millionen Pixel mal 3 Byte ergeben ungefähr 60 Millionen Byte."
+        },
+        {
+          "id": "b",
+          "text": "Etwa 20 Byte.",
+          "correct": false,
+          "explanation": "Das ignoriert die Pixelmenge."
+        },
+        {
+          "id": "c",
+          "text": "Etwa 3 Bit.",
+          "correct": false,
+          "explanation": "Pro Pixel fallen bereits 24 Bit an."
+        },
+        {
+          "id": "d",
+          "text": "Etwa 52 GB pro Bild.",
+          "correct": false,
+          "explanation": "52 ist hier die Anzahl der Wochen, nicht die Bildgröße."
+        }
+      ]
+    },
+    {
+      "id": "pv2fiae_easy_t06_storage_images_per_year",
+      "conceptId": "pv2fiae_easy_t06_storage_images_per_year",
+      "variantId": "pv2fiae_easy_t06_storage_images_per_year_v01",
+      "interactionType": "single",
+      "questionKind": "beste_option_im_mini_szenario",
+      "badgeLabel": "Eine Antwort ist richtig.",
+      "isNew": true,
+      "prompt": "Wie viele Drohnenbilder entstehen bei 200 Bildern pro Woche und 52 Wochen?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "10.400 Bilder.",
+          "correct": true,
+          "explanation": "200 mal 52 ergibt 10.400."
+        },
+        {
+          "id": "b",
+          "text": "252 Bilder.",
+          "correct": false,
+          "explanation": "Die Werte werden multipliziert, nicht addiert."
+        },
+        {
+          "id": "c",
+          "text": "5.200 Bilder.",
+          "correct": false,
+          "explanation": "Das wäre die Hälfte der tatsächlichen Menge."
+        },
+        {
+          "id": "d",
+          "text": "60 Bilder.",
+          "correct": false,
+          "explanation": "60 MB ist die ungefähre Größe eines einzelnen Bildes."
+        }
+      ]
+    },
+    {
+      "id": "pv2fiae_easy_t06_sql_plz_range",
+      "conceptId": "pv2fiae_easy_t06_sql_plz_range",
+      "variantId": "pv2fiae_easy_t06_sql_plz_range_v01",
+      "interactionType": "single",
+      "questionKind": "beste_option_im_mini_szenario",
+      "badgeLabel": "Eine Antwort ist richtig.",
+      "isNew": true,
+      "prompt": "Welche WHERE-Bedingung filtert Kunden im PLZ-Bereich 50800 bis 51999?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "`WHERE PLZ BETWEEN 50800 AND 51999` bei passend gespeicherten PLZ-Werten.",
+          "correct": true,
+          "explanation": "Der Bereich wird durch untere und obere Grenze beschrieben."
+        },
+        {
+          "id": "b",
+          "text": "`GROUP BY PLZ BETWEEN ...`.",
+          "correct": false,
+          "explanation": "GROUP BY filtert keine Bereiche."
+        },
+        {
+          "id": "c",
+          "text": "`ORDER BY PLZ` allein.",
+          "correct": false,
+          "explanation": "Sortieren schränkt den Bereich nicht ein."
+        },
+        {
+          "id": "d",
+          "text": "`DELETE FROM Kunde`.",
+          "correct": false,
+          "explanation": "Die Kundenliste soll abgefragt, nicht gelöscht werden."
+        }
+      ]
+    },
+    {
+      "id": "pv2fiae_easy_t06_sql_vintage_avg",
+      "conceptId": "pv2fiae_easy_t06_sql_vintage_avg",
+      "variantId": "pv2fiae_easy_t06_sql_vintage_avg_v01",
+      "interactionType": "single",
+      "questionKind": "beste_option_im_mini_szenario",
+      "badgeLabel": "Eine Antwort ist richtig.",
+      "isNew": true,
+      "prompt": "Welche SQL-Struktur berechnet durchschnittliche Artikelpreise je Jahrgang?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "`GROUP BY Jahrgang` zusammen mit `AVG(Preis)`.",
+          "correct": true,
+          "explanation": "Gruppierung und Durchschnittsfunktion liefern den Wert je Jahrgang."
+        },
+        {
+          "id": "b",
+          "text": "`ORDER BY Preis` ohne Aggregatfunktion.",
+          "correct": false,
+          "explanation": "Sortieren berechnet keinen Durchschnitt."
+        },
+        {
+          "id": "c",
+          "text": "`INSERT INTO Jahrgang AVG`.",
+          "correct": false,
+          "explanation": "Das ist keine Auswertung."
+        },
+        {
+          "id": "d",
+          "text": "`DELETE FROM Artikel WHERE Jahrgang`.",
+          "correct": false,
+          "explanation": "Das würde Daten entfernen."
+        }
+      ]
+    },
+    {
+      "id": "pv2fiae_easy_t06_sql_discount_update",
+      "conceptId": "pv2fiae_easy_t06_sql_discount_update",
+      "variantId": "pv2fiae_easy_t06_sql_discount_update_v01",
+      "interactionType": "single",
+      "questionKind": "beste_option_im_mini_szenario",
+      "badgeLabel": "Eine Antwort ist richtig.",
+      "isNew": true,
+      "prompt": "Welche SQL-Operation passt zur Rabattkorrektur für Rotweinpositionen im Mai 2023?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "`UPDATE` mit Filtern auf Rotweinpositionen und Rechnungsdatum im Mai 2023.",
+          "correct": true,
+          "explanation": "Bestehende Werte werden gezielt aktualisiert."
+        },
+        {
+          "id": "b",
+          "text": "`INSERT` ohne Bezug zur Rechnung.",
+          "correct": false,
+          "explanation": "Das würde neue Zeilen anlegen statt vorhandene zu korrigieren."
+        },
+        {
+          "id": "c",
+          "text": "`DROP TABLE Artikel`.",
+          "correct": false,
+          "explanation": "Das entfernt die Tabelle und ist keine Rabattkorrektur."
+        },
+        {
+          "id": "d",
+          "text": "`SELECT` ohne Änderung.",
+          "correct": false,
+          "explanation": "Eine reine Abfrage korrigiert keine Rabattwerte."
+        }
+      ]
+    },
+    {
+      "id": "pv2fiae_easy_t06_sql_customer_revenue_before_discount",
+      "conceptId": "pv2fiae_easy_t06_sql_customer_revenue_before_discount",
+      "variantId": "pv2fiae_easy_t06_sql_customer_revenue_before_discount_v01",
+      "interactionType": "single",
+      "questionKind": "beste_option_im_mini_szenario",
+      "badgeLabel": "Eine Antwort ist richtig.",
+      "isNew": true,
+      "prompt": "Welche Idee passt zum durchschnittlichen Umsatz je Kunde vor Rabatt?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Positionsmenge mal Einzelpreis ohne Rabattabzug aggregieren und je Kunde auswerten.",
+          "correct": true,
+          "explanation": "Vor Rabatt bedeutet, dass der Rabatt nicht vom Positionswert abgezogen wird."
+        },
+        {
+          "id": "b",
+          "text": "Nur den Rabattprozentsatz mitteln.",
+          "correct": false,
+          "explanation": "Das ist kein Umsatz."
+        },
+        {
+          "id": "c",
+          "text": "Die PLZ-Stelle als Umsatz verwenden.",
+          "correct": false,
+          "explanation": "PLZ ist kein Geldbetrag."
+        },
+        {
+          "id": "d",
+          "text": "Die Drohnendistanz summieren.",
+          "correct": false,
+          "explanation": "Drohnenrouten gehören nicht zur Vertriebsdatenbank."
+        }
+      ]
+    },
+    {
+      "id": "pv2fiae_easy_t06_sql_join_sales_report",
+      "conceptId": "pv2fiae_easy_t06_sql_join_sales_report",
+      "variantId": "pv2fiae_easy_t06_sql_join_sales_report_v01",
+      "interactionType": "single",
+      "questionKind": "beste_option_im_mini_szenario",
+      "badgeLabel": "Eine Antwort ist richtig.",
+      "isNew": true,
+      "prompt": "Warum braucht der Umsatzbericht je Kunde typischerweise JOINs?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Sie verbinden Kunden, Rechnungen und Rechnungspositionen zu auswertbaren Umsätzen.",
+          "correct": true,
+          "explanation": "Der Umsatz entsteht aus Daten, die über mehrere Tabellen verteilt sind."
+        },
+        {
+          "id": "b",
+          "text": "Sie löschen automatisch alle Rabatte.",
+          "correct": false,
+          "explanation": "JOINs verbinden Tabellen, sie löschen keine Werte."
+        },
+        {
+          "id": "c",
+          "text": "Sie berechnen die Drohnenroute.",
+          "correct": false,
+          "explanation": "Routenberechnung ist Algorithmik, keine Vertriebsabfrage."
+        },
+        {
+          "id": "d",
+          "text": "Sie ersetzen die Säureprüfung.",
+          "correct": false,
+          "explanation": "Die Reifegradlogik bleibt getrennt."
+        }
+      ]
+    }
+  ]
+}

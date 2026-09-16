@@ -1,0 +1,904 @@
+{
+  "scenarioFolder": "Pruefungsvorbereitung-2-FIAE-Scenarien",
+  "quizFolder": "Pruefungsvorbereitung-2-FIAE-Quiz",
+  "scenarioFile": "ticket_ausbildungsbetrieb_ap2_w2024_fiae2/07_easy_ausbildungsbetrieb_ap2_w2024_fiae2.json",
+  "quizFile": "quiz_ausbildungsbetrieb_ap2_w2024_fiae2/quiz07_easy_V02_ausbildungsbetrieb_ap2_w2024_fiae2.json",
+  "ticketId": "07_easy_ausbildungsbetrieb_ap2_w2024_fiae2.json",
+  "versionId": "V02",
+  "title": "Ticket 07 Easy - Fahrzeitdaten, Abfahrts-API, Kontrollen und SQL",
+  "description": "Trainingsfragen zu Fahrzeitmessungen, API-Endpunkt, Kontrolldatenmodell, Importbewertung und SQL.",
+  "topics": [
+    "Fahrzeit-Arraylogik, Abfahrts-API und Kontrolldatenmodell fachlich sicher einordnen",
+    "Importqualität und SQL-Berichte für Haltestellen und Verspätungen nachvollziehbar verbinden"
+  ],
+  "questions": [
+    {
+      "id": "pv2fiae_easy_t07_array_neighbor_pairs",
+      "conceptId": "pv2fiae_easy_t07_array_neighbor_pairs",
+      "variantId": "pv2fiae_easy_t07_array_neighbor_pairs_v02",
+      "interactionType": "single",
+      "questionKind": "beste_option_im_mini_szenario",
+      "badgeLabel": "Eine Antwort ist richtig.",
+      "isNew": true,
+      "prompt": "Wie werden Streckenabschnitte in einer geordneten Haltestellenliste gebildet?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Jeweils benachbarte Messpunkte beziehungsweise Haltestellen.",
+          "correct": true,
+          "explanation": "Ein Abschnitt liegt zwischen zwei direkt aufeinanderfolgenden Punkten."
+        },
+        {
+          "id": "b",
+          "text": "Immer der erste und der letzte Punkt der gesamten Linie.",
+          "correct": false,
+          "explanation": "Das wäre die Gesamtstrecke, nicht jeder Abschnitt."
+        },
+        {
+          "id": "c",
+          "text": "Alle Punkte mit allen Rechnungen.",
+          "correct": false,
+          "explanation": "Rechnungen gehören nicht zur Fahrzeitmessung."
+        },
+        {
+          "id": "d",
+          "text": "Nur Haltestellen mit gleicher Bezeichnung.",
+          "correct": false,
+          "explanation": "Ein Abschnitt braucht zwei verschiedene benachbarte Stationen."
+        }
+      ]
+    },
+    {
+      "id": "pv2fiae_easy_t07_delay_condition",
+      "conceptId": "pv2fiae_easy_t07_delay_condition",
+      "variantId": "pv2fiae_easy_t07_delay_condition_v02",
+      "interactionType": "single",
+      "questionKind": "beste_option_im_mini_szenario",
+      "badgeLabel": "Eine Antwort ist richtig.",
+      "isNew": true,
+      "prompt": "Wann gilt die gemessene Fahrzeit eines Abschnitts als verspätet?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Die Ist-Fahrzeit ist größer als die Plan-Fahrzeit.",
+          "correct": true,
+          "explanation": "Verspätung entsteht, wenn die tatsächliche Dauer den Plan überschreitet."
+        },
+        {
+          "id": "b",
+          "text": "Die Ist-Fahrzeit ist kleiner als die Plan-Fahrzeit.",
+          "correct": false,
+          "explanation": "Das wäre schneller als geplant."
+        },
+        {
+          "id": "c",
+          "text": "Plan- und Ist-Fahrzeit sind identisch.",
+          "correct": false,
+          "explanation": "Dann liegt keine Verspätung vor."
+        },
+        {
+          "id": "d",
+          "text": "Die Haltestelle ist alphabetisch später.",
+          "correct": false,
+          "explanation": "Alphabetische Reihenfolge sagt nichts über Verspätung aus."
+        }
+      ]
+    },
+    {
+      "id": "pv2fiae_easy_t07_delay_amount",
+      "conceptId": "pv2fiae_easy_t07_delay_amount",
+      "variantId": "pv2fiae_easy_t07_delay_amount_v02",
+      "interactionType": "single",
+      "questionKind": "beste_option_im_mini_szenario",
+      "badgeLabel": "Eine Antwort ist richtig.",
+      "isNew": true,
+      "prompt": "Welche Rechnung liefert die Minutenverspätung auf einem Abschnitt?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "`Ist-Fahrzeit - Plan-Fahrzeit`.",
+          "correct": true,
+          "explanation": "Die Differenz zeigt die Überschreitung des Plans."
+        },
+        {
+          "id": "b",
+          "text": "`Plan-Fahrzeit + Ist-Fahrzeit`.",
+          "correct": false,
+          "explanation": "Die Summe ist keine Verspätung."
+        },
+        {
+          "id": "c",
+          "text": "`Plan-Fahrzeit - Ist-Fahrzeit` bei verspäteten Abschnitten.",
+          "correct": false,
+          "explanation": "Das ergäbe bei Verspätung einen negativen Wert."
+        },
+        {
+          "id": "d",
+          "text": "Die Anzahl der Kontrollen.",
+          "correct": false,
+          "explanation": "Kontrollen sind ein anderer Datenbereich."
+        }
+      ]
+    },
+    {
+      "id": "pv2fiae_easy_t07_delay_loop_steps",
+      "conceptId": "pv2fiae_easy_t07_delay_loop_steps",
+      "variantId": "pv2fiae_easy_t07_delay_loop_steps_v02",
+      "interactionType": "multi",
+      "questionKind": "mehrere_richtige_antworten_waehlen",
+      "badgeLabel": "Mehrere Antworten sind richtig.",
+      "isNew": true,
+      "prompt": "Was muss der Algorithmus zur Verspätungsauswertung tun?",
+      "maxSelections": 3,
+      "options": [
+        {
+          "id": "a",
+          "text": "Benachbarte Haltestellen als Abschnitt betrachten.",
+          "correct": true,
+          "explanation": "Die Strecke wird abschnittsweise bewertet."
+        },
+        {
+          "id": "b",
+          "text": "Plan- und Ist-Fahrzeit vergleichen.",
+          "correct": true,
+          "explanation": "Der Vergleich entscheidet über Verspätung."
+        },
+        {
+          "id": "c",
+          "text": "Verspätete Abschnitte mit Differenz festhalten.",
+          "correct": true,
+          "explanation": "Die Auswertung soll Schwerpunkte sichtbar machen."
+        },
+        {
+          "id": "d",
+          "text": "Alle API-Antworten als Kontrollperson speichern.",
+          "correct": false,
+          "explanation": "Das vermischt Fachbereiche."
+        }
+      ]
+    },
+    {
+      "id": "pv2fiae_easy_t07_array_index_bound",
+      "conceptId": "pv2fiae_easy_t07_array_index_bound",
+      "variantId": "pv2fiae_easy_t07_array_index_bound_v02",
+      "interactionType": "single",
+      "questionKind": "beste_option_im_mini_szenario",
+      "badgeLabel": "Eine Antwort ist richtig.",
+      "isNew": true,
+      "prompt": "Wie weit darf eine Schleife laufen, wenn jeweils `i` und `i+1` gelesen werden?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "`i < laenge - 1`.",
+          "correct": true,
+          "explanation": "Dann ist `i+1` noch ein gültiger Index."
+        },
+        {
+          "id": "b",
+          "text": "`i <= laenge`.",
+          "correct": false,
+          "explanation": "Das greift hinter das Arrayende."
+        },
+        {
+          "id": "c",
+          "text": "`i == laenge` als Startbedingung.",
+          "correct": false,
+          "explanation": "So werden die Abschnitte nicht sinnvoll durchlaufen."
+        },
+        {
+          "id": "d",
+          "text": "`i` wird nie erhöht.",
+          "correct": false,
+          "explanation": "Dann kann die Schleife nicht korrekt enden."
+        }
+      ]
+    },
+    {
+      "id": "pv2fiae_easy_t07_max_delay_section",
+      "conceptId": "pv2fiae_easy_t07_max_delay_section",
+      "variantId": "pv2fiae_easy_t07_max_delay_section_v02",
+      "interactionType": "single",
+      "questionKind": "beste_option_im_mini_szenario",
+      "badgeLabel": "Eine Antwort ist richtig.",
+      "isNew": true,
+      "prompt": "Welche Logik findet den Abschnitt mit der höchsten Verspätung?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Er merkt sich die bisher größte positive Differenz und den zugehörigen Abschnitt.",
+          "correct": true,
+          "explanation": "So bleibt der größte erkannte Wert erhalten."
+        },
+        {
+          "id": "b",
+          "text": "Er sortiert Haltestellennamen alphabetisch.",
+          "correct": false,
+          "explanation": "Namen bestimmen nicht die Verspätung."
+        },
+        {
+          "id": "c",
+          "text": "Er nimmt immer den ersten Abschnitt.",
+          "correct": false,
+          "explanation": "Der erste Abschnitt muss nicht der stärkste sein."
+        },
+        {
+          "id": "d",
+          "text": "Er zählt HTTP-Fehlerantworten.",
+          "correct": false,
+          "explanation": "Das gehört zur API, nicht zur Abschnittsauswertung."
+        }
+      ]
+    },
+    {
+      "id": "pv2fiae_easy_t07_api_not_found_status",
+      "conceptId": "pv2fiae_easy_t07_api_not_found_status",
+      "variantId": "pv2fiae_easy_t07_api_not_found_status_v02",
+      "interactionType": "single",
+      "questionKind": "beste_option_im_mini_szenario",
+      "badgeLabel": "Eine Antwort ist richtig.",
+      "isNew": true,
+      "prompt": "Welche Fehlerantwort ist bei unbekannter Haltestellen-ID fachlich passend?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "`404 Not Found`.",
+          "correct": true,
+          "explanation": "Die angefragte Ressource wurde nicht gefunden."
+        },
+        {
+          "id": "b",
+          "text": "`200 OK` mit beliebigen Daten.",
+          "correct": false,
+          "explanation": "Das würde einen Fehlerzustand als Erfolg ausgeben."
+        },
+        {
+          "id": "c",
+          "text": "`201 Created`.",
+          "correct": false,
+          "explanation": "Es wurde keine neue Ressource angelegt."
+        },
+        {
+          "id": "d",
+          "text": "`500 Internal Server Error` als Standard für jede unbekannte Haltestelle.",
+          "correct": false,
+          "explanation": "Unbekannte Ressourcen sind kein interner Serverfehler."
+        }
+      ]
+    },
+    {
+      "id": "pv2fiae_easy_t07_api_future_departures",
+      "conceptId": "pv2fiae_easy_t07_api_future_departures",
+      "variantId": "pv2fiae_easy_t07_api_future_departures_v02",
+      "interactionType": "single",
+      "questionKind": "beste_option_im_mini_szenario",
+      "badgeLabel": "Eine Antwort ist richtig.",
+      "isNew": true,
+      "prompt": "Wie filtert der API-Endpunkt die relevanten Abfahrten?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Nur Abfahrten mit Zeitpunkt nach oder ab dem aktuellen Zeitpunkt.",
+          "correct": true,
+          "explanation": "Vergangene Abfahrten sollen nicht als nächste Abfahrten erscheinen."
+        },
+        {
+          "id": "b",
+          "text": "Nur Abfahrten aus der Vergangenheit.",
+          "correct": false,
+          "explanation": "Das wären keine kommenden Abfahrten."
+        },
+        {
+          "id": "c",
+          "text": "Alle Kontrolltermine unabhängig von der Haltestelle.",
+          "correct": false,
+          "explanation": "Kontrollen sind nicht die Abfahrtsliste."
+        },
+        {
+          "id": "d",
+          "text": "Alle Artikelpreise des Tages.",
+          "correct": false,
+          "explanation": "Artikelpreise gehören nicht zur API-Antwort."
+        }
+      ]
+    },
+    {
+      "id": "pv2fiae_easy_t07_api_sort_departures",
+      "conceptId": "pv2fiae_easy_t07_api_sort_departures",
+      "variantId": "pv2fiae_easy_t07_api_sort_departures_v02",
+      "interactionType": "single",
+      "questionKind": "beste_option_im_mini_szenario",
+      "badgeLabel": "Eine Antwort ist richtig.",
+      "isNew": true,
+      "prompt": "Welche Reihenfolge ist für eine Fahrgast-App bei kommenden Abfahrten sinnvoll?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Aufsteigend nach Abfahrtszeit.",
+          "correct": true,
+          "explanation": "Die früheste kommende Abfahrt soll zuerst erscheinen."
+        },
+        {
+          "id": "b",
+          "text": "Zufällig bei jedem Aufruf.",
+          "correct": false,
+          "explanation": "Das wäre für Fahrgäste unzuverlässig."
+        },
+        {
+          "id": "c",
+          "text": "Absteigend nach Haltestellenname.",
+          "correct": false,
+          "explanation": "Die Zeit ist für nächste Abfahrten entscheidend."
+        },
+        {
+          "id": "d",
+          "text": "Nach Kontrollperson.",
+          "correct": false,
+          "explanation": "Das ist ein anderes Datenmodell."
+        }
+      ]
+    },
+    {
+      "id": "pv2fiae_easy_t07_api_empty_result",
+      "conceptId": "pv2fiae_easy_t07_api_empty_result",
+      "variantId": "pv2fiae_easy_t07_api_empty_result_v02",
+      "interactionType": "single",
+      "questionKind": "beste_option_im_mini_szenario",
+      "badgeLabel": "Eine Antwort ist richtig.",
+      "isNew": true,
+      "prompt": "Wie unterscheidet sich „keine Abfahrten“ von „Haltestelle unbekannt“?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "`200 OK` mit leerer Liste.",
+          "correct": true,
+          "explanation": "Die Ressource existiert, nur die Ergebnisliste ist leer."
+        },
+        {
+          "id": "b",
+          "text": "`404 Not Found` zwingend.",
+          "correct": false,
+          "explanation": "Die Haltestelle ist bekannt, deshalb ist 404 nicht passend."
+        },
+        {
+          "id": "c",
+          "text": "`500 Internal Server Error`.",
+          "correct": false,
+          "explanation": "Eine leere Liste ist kein Serverfehler."
+        },
+        {
+          "id": "d",
+          "text": "`201 Created` mit neuer Haltestelle.",
+          "correct": false,
+          "explanation": "Es wird nichts angelegt."
+        }
+      ]
+    },
+    {
+      "id": "pv2fiae_easy_t07_api_response_fields",
+      "conceptId": "pv2fiae_easy_t07_api_response_fields",
+      "variantId": "pv2fiae_easy_t07_api_response_fields_v02",
+      "interactionType": "multi",
+      "questionKind": "mehrere_richtige_antworten_waehlen",
+      "badgeLabel": "Mehrere Antworten sind richtig.",
+      "isNew": true,
+      "prompt": "Welche Informationen braucht eine Fahrgast-App für kommende Abfahrten?",
+      "maxSelections": 3,
+      "options": [
+        {
+          "id": "a",
+          "text": "Linie.",
+          "correct": true,
+          "explanation": "Fahrgäste müssen die Linie erkennen."
+        },
+        {
+          "id": "b",
+          "text": "Ziel oder Richtung.",
+          "correct": true,
+          "explanation": "Die Richtung ist für die Auswahl wichtig."
+        },
+        {
+          "id": "c",
+          "text": "Abfahrtszeit.",
+          "correct": true,
+          "explanation": "Die Zeit ist Kern der Abfahrtsinformation."
+        },
+        {
+          "id": "d",
+          "text": "Primärschlüssel aller Kontrollpersonen als Freitext.",
+          "correct": false,
+          "explanation": "Das gehört nicht in eine normale Abfahrtsantwort."
+        }
+      ]
+    },
+    {
+      "id": "pv2fiae_easy_t07_api_compare_function",
+      "conceptId": "pv2fiae_easy_t07_api_compare_function",
+      "variantId": "pv2fiae_easy_t07_api_compare_function_v02",
+      "interactionType": "single",
+      "questionKind": "beste_option_im_mini_szenario",
+      "badgeLabel": "Eine Antwort ist richtig.",
+      "isNew": true,
+      "prompt": "Welche Aufgabe erfüllt ein Vergleich von Abfahrtszeit und aktuellem Zeitpunkt?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Sie entscheidet, ob eine Abfahrt in der Zukunft liegt.",
+          "correct": true,
+          "explanation": "Nur kommende Abfahrten gehören in die Antwort."
+        },
+        {
+          "id": "b",
+          "text": "Sie berechnet den Fahrpreis.",
+          "correct": false,
+          "explanation": "Fahrpreise sind hier nicht Thema."
+        },
+        {
+          "id": "c",
+          "text": "Sie legt Kontrolltabellen an.",
+          "correct": false,
+          "explanation": "Datenmodellierung ist ein anderer Block."
+        },
+        {
+          "id": "d",
+          "text": "Sie löscht verspätete Fahrten.",
+          "correct": false,
+          "explanation": "Vergleichen bedeutet nicht löschen."
+        }
+      ]
+    },
+    {
+      "id": "pv2fiae_easy_t07_model_control_event",
+      "conceptId": "pv2fiae_easy_t07_model_control_event",
+      "variantId": "pv2fiae_easy_t07_model_control_event_v02",
+      "interactionType": "single",
+      "questionKind": "beste_option_im_mini_szenario",
+      "badgeLabel": "Eine Antwort ist richtig.",
+      "isNew": true,
+      "prompt": "Welches Fachobjekt bildet eine durchgeführte Kontrolle im Fahrbetrieb ab?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Kontrolleinsatz oder Kontrolle.",
+          "correct": true,
+          "explanation": "Der Einsatz ist das zentrale Ereignis."
+        },
+        {
+          "id": "b",
+          "text": "HTTP-Status.",
+          "correct": false,
+          "explanation": "Ein Statuscode ist kein Kontrollereignis."
+        },
+        {
+          "id": "c",
+          "text": "Verspätungsdifferenz.",
+          "correct": false,
+          "explanation": "Das ist ein Auswertungswert."
+        },
+        {
+          "id": "d",
+          "text": "Arrayindex.",
+          "correct": false,
+          "explanation": "Ein Index ist kein Fachobjekt."
+        }
+      ]
+    },
+    {
+      "id": "pv2fiae_easy_t07_model_inspector_relation",
+      "conceptId": "pv2fiae_easy_t07_model_inspector_relation",
+      "variantId": "pv2fiae_easy_t07_model_inspector_relation_v02",
+      "interactionType": "single",
+      "questionKind": "beste_option_im_mini_szenario",
+      "badgeLabel": "Eine Antwort ist richtig.",
+      "isNew": true,
+      "prompt": "Welche Beziehung verbindet Kontrolleinsatz und Kontrollpersonal?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Über einen Fremdschlüssel oder eine Zuordnung zum Kontrollpersonal.",
+          "correct": true,
+          "explanation": "Der Einsatz braucht einen Bezug zur ausführenden Person."
+        },
+        {
+          "id": "b",
+          "text": "Durch Speichern im HTTP-Statuscode.",
+          "correct": false,
+          "explanation": "Statuscodes beschreiben API-Antworten."
+        },
+        {
+          "id": "c",
+          "text": "Durch Sortieren der Haltestellen.",
+          "correct": false,
+          "explanation": "Sortierung bildet keine Personenbeziehung ab."
+        },
+        {
+          "id": "d",
+          "text": "Durch Löschen der Abfahrt.",
+          "correct": false,
+          "explanation": "Das bildet keine Kontrolle ab."
+        }
+      ]
+    },
+    {
+      "id": "pv2fiae_easy_t07_model_passenger_ticket",
+      "conceptId": "pv2fiae_easy_t07_model_passenger_ticket",
+      "variantId": "pv2fiae_easy_t07_model_passenger_ticket_v02",
+      "interactionType": "single",
+      "questionKind": "beste_option_im_mini_szenario",
+      "badgeLabel": "Eine Antwort ist richtig.",
+      "isNew": true,
+      "prompt": "Was sollte das Kontrollmodell zu geprüften Tickets abbilden können?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Ob ein gültiger Fahrausweis vorlag oder ein Verstoß festgestellt wurde.",
+          "correct": true,
+          "explanation": "Das ist ein zentrales Ergebnis der Kontrolle."
+        },
+        {
+          "id": "b",
+          "text": "Die Bildgröße eines Drohnenfotos.",
+          "correct": false,
+          "explanation": "Das gehört nicht zum ÖPNV-Kontrollmodell."
+        },
+        {
+          "id": "c",
+          "text": "Den Rückgabewert eines Reife-Services.",
+          "correct": false,
+          "explanation": "Das ist ein anderes Ticket."
+        },
+        {
+          "id": "d",
+          "text": "Den Rabatt eines Weinartikels.",
+          "correct": false,
+          "explanation": "Das ist Vertriebslogik aus einem anderen Kontext."
+        }
+      ]
+    },
+    {
+      "id": "pv2fiae_easy_t07_model_control_tables",
+      "conceptId": "pv2fiae_easy_t07_model_control_tables",
+      "variantId": "pv2fiae_easy_t07_model_control_tables_v02",
+      "interactionType": "multi",
+      "questionKind": "mehrere_richtige_antworten_waehlen",
+      "badgeLabel": "Mehrere Antworten sind richtig.",
+      "isNew": true,
+      "prompt": "Welche Fachobjekte gehören in ein Kontrolldatenmodell?",
+      "maxSelections": 3,
+      "options": [
+        {
+          "id": "a",
+          "text": "Kontrolleinsatz.",
+          "correct": true,
+          "explanation": "Der Einsatz ist das Ereignis."
+        },
+        {
+          "id": "b",
+          "text": "Kontrollperson.",
+          "correct": true,
+          "explanation": "Das Personal muss referenziert werden können."
+        },
+        {
+          "id": "c",
+          "text": "Fahrt oder Linie beziehungsweise Haltestelle als Bezug.",
+          "correct": true,
+          "explanation": "Der Einsatz braucht einen betrieblichen Kontext."
+        },
+        {
+          "id": "d",
+          "text": "Eine einzige Freitexttabelle für alles.",
+          "correct": false,
+          "explanation": "Das wäre nicht normalisiert und schlecht auswertbar."
+        }
+      ]
+    },
+    {
+      "id": "pv2fiae_easy_t07_import_duplicate_issue",
+      "conceptId": "pv2fiae_easy_t07_import_duplicate_issue",
+      "variantId": "pv2fiae_easy_t07_import_duplicate_issue_v02",
+      "interactionType": "single",
+      "questionKind": "beste_option_im_mini_szenario",
+      "badgeLabel": "Eine Antwort ist richtig.",
+      "isNew": true,
+      "prompt": "Welche Schwäche ist bei importierten Kontrolldaten besonders typisch?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Dubletten, uneinheitliche Schreibweisen und fehlende Pflichtwerte.",
+          "correct": true,
+          "explanation": "Manuelle Daten enthalten häufig solche Qualitätsprobleme."
+        },
+        {
+          "id": "b",
+          "text": "Automatisch perfekte 3NF.",
+          "correct": false,
+          "explanation": "Altbestände sind selten ohne Bereinigung normalisiert."
+        },
+        {
+          "id": "c",
+          "text": "Garantiert passende Fremdschlüssel.",
+          "correct": false,
+          "explanation": "Fremdschlüssel müssen oft erst zugeordnet werden."
+        },
+        {
+          "id": "d",
+          "text": "Keine Datenqualitätsthemen.",
+          "correct": false,
+          "explanation": "Gerade Altbestände brauchen Prüfung."
+        }
+      ]
+    },
+    {
+      "id": "pv2fiae_easy_t07_import_mapping",
+      "conceptId": "pv2fiae_easy_t07_import_mapping",
+      "variantId": "pv2fiae_easy_t07_import_mapping_v02",
+      "interactionType": "single",
+      "questionKind": "beste_option_im_mini_szenario",
+      "badgeLabel": "Eine Antwort ist richtig.",
+      "isNew": true,
+      "prompt": "Welche Vorarbeit verbindet Altbestand und neues Datenmodell?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Ein Mapping von alten Feldern auf neue Tabellen und Schlüssel.",
+          "correct": true,
+          "explanation": "Ohne Zuordnung ist kein kontrollierter Import möglich."
+        },
+        {
+          "id": "b",
+          "text": "Ein ungeprüftes Kopieren in eine einzige Textspalte.",
+          "correct": false,
+          "explanation": "Das würde die Normalisierung umgehen."
+        },
+        {
+          "id": "c",
+          "text": "Ein HTTP-Fehlercode für jede Zeile.",
+          "correct": false,
+          "explanation": "Statuscodes sind keine Importabbildung."
+        },
+        {
+          "id": "d",
+          "text": "Eine Sortierung nach Verspätung allein.",
+          "correct": false,
+          "explanation": "Sortierung ersetzt keine Datenzuordnung."
+        }
+      ]
+    },
+    {
+      "id": "pv2fiae_easy_t07_sql_active_stops_line",
+      "conceptId": "pv2fiae_easy_t07_sql_active_stops_line",
+      "variantId": "pv2fiae_easy_t07_sql_active_stops_line_v02",
+      "interactionType": "single",
+      "questionKind": "beste_option_im_mini_szenario",
+      "badgeLabel": "Eine Antwort ist richtig.",
+      "isNew": true,
+      "prompt": "Wie werden nur aktive Haltestellen einer bestimmten Linie ausgegeben?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Filter auf Linie 250 und Aktiv-Kennzeichen.",
+          "correct": true,
+          "explanation": "Beide Kriterien sind fachlich erforderlich."
+        },
+        {
+          "id": "b",
+          "text": "Nur Sortierung nach Haltestellenname.",
+          "correct": false,
+          "explanation": "Sortierung filtert weder Linie noch Aktivität."
+        },
+        {
+          "id": "c",
+          "text": "Alle Haltestellen ohne WHERE.",
+          "correct": false,
+          "explanation": "Dann wären auch andere Linien oder inaktive Haltestellen enthalten."
+        },
+        {
+          "id": "d",
+          "text": "DELETE der inaktiven Haltestellen.",
+          "correct": false,
+          "explanation": "Eine Abfrage soll nicht löschen."
+        }
+      ]
+    },
+    {
+      "id": "pv2fiae_easy_t07_sql_departures_auenweg",
+      "conceptId": "pv2fiae_easy_t07_sql_departures_auenweg",
+      "variantId": "pv2fiae_easy_t07_sql_departures_auenweg_v02",
+      "interactionType": "single",
+      "questionKind": "beste_option_im_mini_szenario",
+      "badgeLabel": "Eine Antwort ist richtig.",
+      "isNew": true,
+      "prompt": "Welche Sortierung passt zu Planabfahrten einer Haltestelle?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Nach Abfahrtszeit aufsteigend sortiert.",
+          "correct": true,
+          "explanation": "Fahrgäste erwarten die zeitliche Reihenfolge."
+        },
+        {
+          "id": "b",
+          "text": "Zufällig sortiert.",
+          "correct": false,
+          "explanation": "Das wäre nicht nutzbar."
+        },
+        {
+          "id": "c",
+          "text": "Nach Kontrollpersonal sortiert.",
+          "correct": false,
+          "explanation": "Kontrollpersonal gehört nicht zur Planabfahrt."
+        },
+        {
+          "id": "d",
+          "text": "Als UPDATE ohne SELECT.",
+          "correct": false,
+          "explanation": "Es geht um eine Ausgabe, nicht um Änderung."
+        }
+      ]
+    },
+    {
+      "id": "pv2fiae_easy_t07_sql_delay_all",
+      "conceptId": "pv2fiae_easy_t07_sql_delay_all",
+      "variantId": "pv2fiae_easy_t07_sql_delay_all_v02",
+      "interactionType": "single",
+      "questionKind": "beste_option_im_mini_szenario",
+      "badgeLabel": "Eine Antwort ist richtig.",
+      "isNew": true,
+      "prompt": "Wie wird die Verspätung aus Plan- und Istzeit in SQL sichtbar gemacht?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Istzeit minus Planzeit beziehungsweise die positive Zeitdifferenz.",
+          "correct": true,
+          "explanation": "Verspätung ist die Überschreitung der Planzeit."
+        },
+        {
+          "id": "b",
+          "text": "Planzeit plus Haltestellenname.",
+          "correct": false,
+          "explanation": "Das ist keine sinnvolle Zeitdifferenz."
+        },
+        {
+          "id": "c",
+          "text": "Kontrollperson minus Linie.",
+          "correct": false,
+          "explanation": "Das ergibt keinen Verspätungswert."
+        },
+        {
+          "id": "d",
+          "text": "HTTP-Status minus Abfahrt.",
+          "correct": false,
+          "explanation": "Das ist fachlich unsinnig."
+        }
+      ]
+    },
+    {
+      "id": "pv2fiae_easy_t07_sql_join_plan_actual",
+      "conceptId": "pv2fiae_easy_t07_sql_join_plan_actual",
+      "variantId": "pv2fiae_easy_t07_sql_join_plan_actual_v02",
+      "interactionType": "single",
+      "questionKind": "beste_option_im_mini_szenario",
+      "badgeLabel": "Eine Antwort ist richtig.",
+      "isNew": true,
+      "prompt": "Welche Tabellen müssen für Plan-Ist-Vergleich fachlich zusammenkommen?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Nur gemeinsam lässt sich die Abweichung je Fahrt oder Abschnitt berechnen.",
+          "correct": true,
+          "explanation": "Plan- und Istwert liegen typischerweise getrennt vor."
+        },
+        {
+          "id": "b",
+          "text": "Er löscht automatisch alle pünktlichen Fahrten.",
+          "correct": false,
+          "explanation": "Ein JOIN verbindet Daten, löscht aber nicht."
+        },
+        {
+          "id": "c",
+          "text": "Er ersetzt den API-Endpunkt.",
+          "correct": false,
+          "explanation": "SQL-Auswertung und API bleiben getrennt."
+        },
+        {
+          "id": "d",
+          "text": "Er erzeugt Kontrollpersonen.",
+          "correct": false,
+          "explanation": "Personaldaten entstehen nicht durch einen JOIN."
+        }
+      ]
+    },
+    {
+      "id": "pv2fiae_easy_t07_sql_delay_filter_positive",
+      "conceptId": "pv2fiae_easy_t07_sql_delay_filter_positive",
+      "variantId": "pv2fiae_easy_t07_sql_delay_filter_positive_v02",
+      "interactionType": "single",
+      "questionKind": "beste_option_im_mini_szenario",
+      "badgeLabel": "Eine Antwort ist richtig.",
+      "isNew": true,
+      "prompt": "Wie beschränkt man eine SQL-Ausgabe auf tatsächlich verspätete Fahrten?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Eine Bedingung, dass die berechnete Ist-Plan-Differenz größer als 0 ist.",
+          "correct": true,
+          "explanation": "Nur positive Differenzen sind Verspätungen."
+        },
+        {
+          "id": "b",
+          "text": "Ein Filter auf alle Haltestellen ohne Planzeit.",
+          "correct": false,
+          "explanation": "Das erkennt nicht die Verspätung."
+        },
+        {
+          "id": "c",
+          "text": "Eine Sortierung nach Kontrollperson.",
+          "correct": false,
+          "explanation": "Sortierung filtert keine Verspätungen."
+        },
+        {
+          "id": "d",
+          "text": "Ein INSERT in die Linien-Tabelle.",
+          "correct": false,
+          "explanation": "Einfügen ist keine Berichtsauswertung."
+        }
+      ]
+    },
+    {
+      "id": "pv2fiae_easy_t07_import_no_direct_overwrite",
+      "conceptId": "pv2fiae_easy_t07_import_no_direct_overwrite",
+      "variantId": "pv2fiae_easy_t07_import_no_direct_overwrite_v02",
+      "interactionType": "single",
+      "questionKind": "beste_option_im_mini_szenario",
+      "badgeLabel": "Eine Antwort ist richtig.",
+      "isNew": true,
+      "prompt": "Welches Risiko entsteht, wenn alte Kontrolldaten direkt in Zieltabelle überschrieben werden?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Fehlerhafte oder doppelte Altwerte könnten saubere Zieldaten beschädigen.",
+          "correct": true,
+          "explanation": "Altbestände müssen validiert und zugeordnet werden."
+        },
+        {
+          "id": "b",
+          "text": "Direktes Überschreiben erzeugt automatisch bessere 3NF.",
+          "correct": false,
+          "explanation": "Normalisierung entsteht nicht automatisch."
+        },
+        {
+          "id": "c",
+          "text": "Dadurch werden API-Statuscodes verständlicher.",
+          "correct": false,
+          "explanation": "Das hat mit Importqualität nichts zu tun."
+        },
+        {
+          "id": "d",
+          "text": "Dadurch sortieren sich Abfahrten schneller.",
+          "correct": false,
+          "explanation": "Sortierung ist kein Importschutz."
+        }
+      ]
+    }
+  ]
+}

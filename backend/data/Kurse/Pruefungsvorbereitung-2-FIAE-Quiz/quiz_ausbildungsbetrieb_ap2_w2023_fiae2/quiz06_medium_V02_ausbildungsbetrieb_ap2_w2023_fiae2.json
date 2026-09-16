@@ -1,0 +1,904 @@
+{
+  "scenarioFolder": "Pruefungsvorbereitung-2-FIAE-Scenarien",
+  "quizFolder": "Pruefungsvorbereitung-2-FIAE-Quiz",
+  "scenarioFile": "ticket_ausbildungsbetrieb_ap2_w2023_fiae2/06_medium_ausbildungsbetrieb_ap2_w2023_fiae2.json",
+  "quizFile": "quiz_ausbildungsbetrieb_ap2_w2023_fiae2/quiz06_medium_V02_ausbildungsbetrieb_ap2_w2023_fiae2.json",
+  "ticketId": "06_medium_ausbildungsbetrieb_ap2_w2023_fiae2.json",
+  "versionId": "V02",
+  "title": "Ticket 06 Medium - Reifegradlogik, Drohnenroute, Messdaten und SQL",
+  "description": "Transferfragen zu Sequenzdiagramm, Greedy-Route, Messdatenmodell, Speicherbedarf und SQL.",
+  "topics": [
+    "Reifegradsequenz, Greedy-Route und Messdatenmodell in betrieblichen Fällen belastbar einordnen",
+    "Speicherbedarf und SQL-Berichte für Weinvertriebsdaten mit Transfer sicher abwägen"
+  ],
+  "questions": [
+    {
+      "id": "pv2fiae_medium_t06_sequence_guard_precision",
+      "conceptId": "pv2fiae_medium_t06_sequence_guard_precision",
+      "variantId": "pv2fiae_medium_t06_sequence_guard_precision_v02",
+      "interactionType": "single",
+      "questionKind": "beste_option_im_mini_szenario",
+      "badgeLabel": "Eine Antwort ist richtig.",
+      "isNew": true,
+      "prompt": "Wie sollte der erlaubte Pfad im Sequenzdiagramm fachlich bewacht werden?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Der Säurewert liegt im zulässigen Bereich.",
+          "correct": true,
+          "explanation": "Nur dann wird die Reifeberechnung fortgesetzt."
+        },
+        {
+          "id": "b",
+          "text": "Der Kunde wohnt im PLZ-Bereich 50800 bis 51999.",
+          "correct": false,
+          "explanation": "Das ist ein SQL-Filter, kein Sequenzguard."
+        },
+        {
+          "id": "c",
+          "text": "Die Drohne hat alle Punkte besucht.",
+          "correct": false,
+          "explanation": "Das gehört zum Routenalgorithmus."
+        },
+        {
+          "id": "d",
+          "text": "Der Rabatt ist größer als der Preis.",
+          "correct": false,
+          "explanation": "Das ist kein Guard der Reifegradbewertung."
+        }
+      ]
+    },
+    {
+      "id": "pv2fiae_medium_t06_sequence_no_service_warning_path",
+      "conceptId": "pv2fiae_medium_t06_sequence_no_service_warning_path",
+      "variantId": "pv2fiae_medium_t06_sequence_no_service_warning_path_v02",
+      "interactionType": "single",
+      "questionKind": "beste_option_im_mini_szenario",
+      "badgeLabel": "Eine Antwort ist richtig.",
+      "isNew": true,
+      "prompt": "Welches Problem entsteht, wenn bei zu hoher Säure trotzdem der Reifegrad berechnet wird?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Der Ablauf würde eine fachlich gesperrte Bewertung trotzdem fortsetzen.",
+          "correct": true,
+          "explanation": "Die Warnung soll den Reifegradpfad gerade abbrechen."
+        },
+        {
+          "id": "b",
+          "text": "Der SQL-Bericht würde dadurch automatisch gelöscht.",
+          "correct": false,
+          "explanation": "Das passiert nicht durch einen Serviceaufruf."
+        },
+        {
+          "id": "c",
+          "text": "Die Drohne würde keine Punkte mehr finden.",
+          "correct": false,
+          "explanation": "Die Route ist unabhängig vom Säurepfad."
+        },
+        {
+          "id": "d",
+          "text": "Messgrößen könnten nicht mehr als Stammdaten gespeichert werden.",
+          "correct": false,
+          "explanation": "Das Datenmodell bleibt davon unabhängig."
+        }
+      ]
+    },
+    {
+      "id": "pv2fiae_medium_t06_sequence_branch_tests",
+      "conceptId": "pv2fiae_medium_t06_sequence_branch_tests",
+      "variantId": "pv2fiae_medium_t06_sequence_branch_tests_v02",
+      "interactionType": "multi",
+      "questionKind": "mehrere_richtige_antworten_waehlen",
+      "badgeLabel": "Mehrere Antworten sind richtig.",
+      "isNew": true,
+      "prompt": "Welche Fälle sollten für die Sequenzlogik der Reifegrad-GUI geprüft werden?",
+      "maxSelections": 3,
+      "options": [
+        {
+          "id": "a",
+          "text": "Säurewert zu hoch führt zur Warnung.",
+          "correct": true,
+          "explanation": "Damit wird der Abbruchpfad geprüft."
+        },
+        {
+          "id": "b",
+          "text": "Zulässiger Säurewert mit niedrigem Rückgabewert.",
+          "correct": true,
+          "explanation": "Damit wird ein Servicepfad geprüft."
+        },
+        {
+          "id": "c",
+          "text": "Zulässiger Säurewert mit hohem Rückgabewert.",
+          "correct": true,
+          "explanation": "Damit wird eine weitere Ausgabeklasse geprüft."
+        },
+        {
+          "id": "d",
+          "text": "Rabatt-Update ohne Artikelbezug.",
+          "correct": false,
+          "explanation": "Das prüft nicht die Sequenzlogik."
+        }
+      ]
+    },
+    {
+      "id": "pv2fiae_medium_t06_sequence_responsibility_split",
+      "conceptId": "pv2fiae_medium_t06_sequence_responsibility_split",
+      "variantId": "pv2fiae_medium_t06_sequence_responsibility_split_v02",
+      "interactionType": "single",
+      "questionKind": "beste_option_im_mini_szenario",
+      "badgeLabel": "Eine Antwort ist richtig.",
+      "isNew": true,
+      "prompt": "Was sollte der Service in der Reifegradsequenz übernehmen?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Die Berechnung des Reifegrads aus den gültigen Messwerten.",
+          "correct": true,
+          "explanation": "Die GUI liefert Eingaben und zeigt Ergebnisse, der Service berechnet."
+        },
+        {
+          "id": "b",
+          "text": "Die Anzeige der Warnmeldung auf dem Bildschirm.",
+          "correct": false,
+          "explanation": "Das ist Aufgabe der GUI."
+        },
+        {
+          "id": "c",
+          "text": "Das Löschen von Rechnungspositionen.",
+          "correct": false,
+          "explanation": "Das gehört nicht zur Reifegradsequenz."
+        },
+        {
+          "id": "d",
+          "text": "Das Speichern der Drohnenroute als PLZ.",
+          "correct": false,
+          "explanation": "Das ist fachlich unsinnig."
+        }
+      ]
+    },
+    {
+      "id": "pv2fiae_medium_t06_sequence_return_codes",
+      "conceptId": "pv2fiae_medium_t06_sequence_return_codes",
+      "variantId": "pv2fiae_medium_t06_sequence_return_codes_v02",
+      "interactionType": "single",
+      "questionKind": "beste_option_im_mini_szenario",
+      "badgeLabel": "Eine Antwort ist richtig.",
+      "isNew": true,
+      "prompt": "Welche Verarbeitung passt, wenn der Service Kategorien wie hoch, mittel oder niedrig zurückgibt?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Sie ordnet jeden erwarteten Rückgabewert einer klaren Anzeige zu.",
+          "correct": true,
+          "explanation": "Die Ausgabe muss deterministisch aus dem Ergebnis entstehen."
+        },
+        {
+          "id": "b",
+          "text": "Sie ignoriert den Rückgabewert immer.",
+          "correct": false,
+          "explanation": "Dann könnte kein passender Reifegrad angezeigt werden."
+        },
+        {
+          "id": "c",
+          "text": "Sie nutzt den Rückgabewert als Fremdschlüssel auf Rechnungen.",
+          "correct": false,
+          "explanation": "Das ist kein Vertriebsdatensatz."
+        },
+        {
+          "id": "d",
+          "text": "Sie ersetzt den Rückgabewert durch die Bildgröße.",
+          "correct": false,
+          "explanation": "Speicherbedarf ist ein anderes Thema."
+        }
+      ]
+    },
+    {
+      "id": "pv2fiae_medium_t06_sequence_alt_labeling",
+      "conceptId": "pv2fiae_medium_t06_sequence_alt_labeling",
+      "variantId": "pv2fiae_medium_t06_sequence_alt_labeling_v02",
+      "interactionType": "single",
+      "questionKind": "beste_option_im_mini_szenario",
+      "badgeLabel": "Eine Antwort ist richtig.",
+      "isNew": true,
+      "prompt": "Welchen Nutzen haben klare Bedingungen an den alternativen Sequenzpfaden?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Sie machen nachvollziehbar, wann welcher Pfad ausgeführt wird.",
+          "correct": true,
+          "explanation": "Ohne Guards bleibt die fachliche Entscheidung unklar."
+        },
+        {
+          "id": "b",
+          "text": "Sie ersetzen alle Testfälle.",
+          "correct": false,
+          "explanation": "Modellierung ersetzt keine Tests."
+        },
+        {
+          "id": "c",
+          "text": "Sie berechnen automatisch den Artikelpreis.",
+          "correct": false,
+          "explanation": "Guards sind keine SQL-Aggregate."
+        },
+        {
+          "id": "d",
+          "text": "Sie speichern Messwerte in 3NF.",
+          "correct": false,
+          "explanation": "Das ist Datenmodellierung."
+        }
+      ]
+    },
+    {
+      "id": "pv2fiae_medium_t06_greedy_tie_rule",
+      "conceptId": "pv2fiae_medium_t06_greedy_tie_rule",
+      "variantId": "pv2fiae_medium_t06_greedy_tie_rule_v02",
+      "interactionType": "single",
+      "questionKind": "beste_option_im_mini_szenario",
+      "badgeLabel": "Eine Antwort ist richtig.",
+      "isNew": true,
+      "prompt": "Welche Ergänzung macht die Greedy-Route bei gleichen Abständen reproduzierbar?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Eine feste Tie-Break-Regel verwenden, zum Beispiel ursprüngliche Listenreihenfolge.",
+          "correct": true,
+          "explanation": "So bleibt das Ergebnis deterministisch."
+        },
+        {
+          "id": "b",
+          "text": "Beide Punkte gleichzeitig anfliegen.",
+          "correct": false,
+          "explanation": "Die Route braucht eine eindeutige Reihenfolge."
+        },
+        {
+          "id": "c",
+          "text": "Alle Rechnungen löschen.",
+          "correct": false,
+          "explanation": "Das hat keinen Bezug zur Route."
+        },
+        {
+          "id": "d",
+          "text": "Den Säurewert ignorieren und abbrechen.",
+          "correct": false,
+          "explanation": "Der Säurewert gehört zur Reifegradlogik."
+        }
+      ]
+    },
+    {
+      "id": "pv2fiae_medium_t06_greedy_empty_list",
+      "conceptId": "pv2fiae_medium_t06_greedy_empty_list",
+      "variantId": "pv2fiae_medium_t06_greedy_empty_list_v02",
+      "interactionType": "single",
+      "questionKind": "beste_option_im_mini_szenario",
+      "badgeLabel": "Eine Antwort ist richtig.",
+      "isNew": true,
+      "prompt": "Welche Behandlung ist für fehlende Messpunkte sinnvoll?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Sie gibt eine leere Route zurück oder meldet den ungültigen Auftrag klar.",
+          "correct": true,
+          "explanation": "Der Randfall muss definiert sein."
+        },
+        {
+          "id": "b",
+          "text": "Sie greift ungeprüft auf das erste Element zu.",
+          "correct": false,
+          "explanation": "Das kann zu einem Laufzeitfehler führen."
+        },
+        {
+          "id": "c",
+          "text": "Sie nimmt einen zufälligen Kunden als Messpunkt.",
+          "correct": false,
+          "explanation": "Das wäre fachlich falsch."
+        },
+        {
+          "id": "d",
+          "text": "Sie startet einen Rabattbericht.",
+          "correct": false,
+          "explanation": "Das löst keine Routenplanung."
+        }
+      ]
+    },
+    {
+      "id": "pv2fiae_medium_t06_greedy_validation",
+      "conceptId": "pv2fiae_medium_t06_greedy_validation",
+      "variantId": "pv2fiae_medium_t06_greedy_validation_v02",
+      "interactionType": "multi",
+      "questionKind": "mehrere_richtige_antworten_waehlen",
+      "badgeLabel": "Mehrere Antworten sind richtig.",
+      "isNew": true,
+      "prompt": "Was sollte vor oder während der Greedy-Routenberechnung geprüft werden?",
+      "maxSelections": 3,
+      "options": [
+        {
+          "id": "a",
+          "text": "Die Punktliste darf nicht unklar oder beschädigt sein.",
+          "correct": true,
+          "explanation": "Ohne verwertbare Koordinaten ist keine Route möglich."
+        },
+        {
+          "id": "b",
+          "text": "Jeder Punkt braucht berechenbare Koordinaten.",
+          "correct": true,
+          "explanation": "Abstände setzen Koordinaten voraus."
+        },
+        {
+          "id": "c",
+          "text": "Bereits besuchte Punkte dürfen nicht erneut Kandidaten sein.",
+          "correct": true,
+          "explanation": "Sonst entstehen Wiederholungen."
+        },
+        {
+          "id": "d",
+          "text": "Jede Kunden-PLZ muss als Drohnenhöhe dienen.",
+          "correct": false,
+          "explanation": "PLZ und Flugkoordinate sind verschiedene Daten."
+        }
+      ]
+    },
+    {
+      "id": "pv2fiae_medium_t06_greedy_complexity_basic",
+      "conceptId": "pv2fiae_medium_t06_greedy_complexity_basic",
+      "variantId": "pv2fiae_medium_t06_greedy_complexity_basic_v02",
+      "interactionType": "single",
+      "questionKind": "beste_option_im_mini_szenario",
+      "badgeLabel": "Eine Antwort ist richtig.",
+      "isNew": true,
+      "prompt": "Was passiert bei jedem Routenschritt mit den verbleibenden Punkten?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Für jeden Schritt werden mehrere noch nicht besuchte Kandidaten verglichen.",
+          "correct": true,
+          "explanation": "Die Restliste wird wiederholt durchsucht."
+        },
+        {
+          "id": "b",
+          "text": "Jede SQL-Rechnung wird dreimal gelöscht.",
+          "correct": false,
+          "explanation": "Das ist kein Teil der Route."
+        },
+        {
+          "id": "c",
+          "text": "Die GUI liest den Säurewert mehrfach aus.",
+          "correct": false,
+          "explanation": "Das ist die Sequenzlogik, nicht die Route."
+        },
+        {
+          "id": "d",
+          "text": "Messgrößen werden als Freitext gespeichert.",
+          "correct": false,
+          "explanation": "Das betrifft das Datenmodell."
+        }
+      ]
+    },
+    {
+      "id": "pv2fiae_medium_t06_greedy_current_position",
+      "conceptId": "pv2fiae_medium_t06_greedy_current_position",
+      "variantId": "pv2fiae_medium_t06_greedy_current_position_v02",
+      "interactionType": "single",
+      "questionKind": "beste_option_im_mini_szenario",
+      "badgeLabel": "Eine Antwort ist richtig.",
+      "isNew": true,
+      "prompt": "Welche Variable ist für den nächsten Greedy-Schritt entscheidend?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Der nächste Abstand wird vom zuletzt angeflogenen Punkt aus berechnet.",
+          "correct": true,
+          "explanation": "Die aktuelle Position bestimmt die nächste lokale Auswahl."
+        },
+        {
+          "id": "b",
+          "text": "Der Jahrgang des Weins wird dadurch geändert.",
+          "correct": false,
+          "explanation": "Jahrgang ist ein Artikeldatum, keine Routenposition."
+        },
+        {
+          "id": "c",
+          "text": "Die GUI-Warnung wird dadurch angezeigt.",
+          "correct": false,
+          "explanation": "Das ist ein anderer Ablauf."
+        },
+        {
+          "id": "d",
+          "text": "Der Messwert verliert seinen Fremdschlüssel.",
+          "correct": false,
+          "explanation": "Das Datenmodell bleibt unverändert."
+        }
+      ]
+    },
+    {
+      "id": "pv2fiae_medium_t06_greedy_not_backtracking",
+      "conceptId": "pv2fiae_medium_t06_greedy_not_backtracking",
+      "variantId": "pv2fiae_medium_t06_greedy_not_backtracking_v02",
+      "interactionType": "single",
+      "questionKind": "beste_option_im_mini_szenario",
+      "badgeLabel": "Eine Antwort ist richtig.",
+      "isNew": true,
+      "prompt": "Welche Einschränkung hat die beschriebene Drohnenstrategie gegenüber einer vollständigen Routensuche?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Sie prüft nicht alle möglichen Reihenfolgen, sondern wählt jeweils lokal.",
+          "correct": true,
+          "explanation": "Dadurch ist sie einfacher, aber nicht global beweisend optimal."
+        },
+        {
+          "id": "b",
+          "text": "Sie berechnet keine Abstände.",
+          "correct": false,
+          "explanation": "Abstände sind ihr Auswahlkriterium."
+        },
+        {
+          "id": "c",
+          "text": "Sie verwendet immer SQL-Joins.",
+          "correct": false,
+          "explanation": "Die Route ist Algorithmik, keine Abfrage."
+        },
+        {
+          "id": "d",
+          "text": "Sie modelliert Messgrößen in 3NF.",
+          "correct": false,
+          "explanation": "Das ist Datenmodellierung."
+        }
+      ]
+    },
+    {
+      "id": "pv2fiae_medium_t06_ermodel_cardinality_values",
+      "conceptId": "pv2fiae_medium_t06_ermodel_cardinality_values",
+      "variantId": "pv2fiae_medium_t06_ermodel_cardinality_values_v02",
+      "interactionType": "single",
+      "questionKind": "beste_option_im_mini_szenario",
+      "badgeLabel": "Eine Antwort ist richtig.",
+      "isNew": true,
+      "prompt": "Wie stehen Messstellen und Messwerte fachlich zueinander?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Eine Messstelle kann viele Messwerte liefern, jeder Messwert gehört zu einer Messstelle.",
+          "correct": true,
+          "explanation": "Das entspricht dem Messdatenszenario."
+        },
+        {
+          "id": "b",
+          "text": "Jeder Messwert enthält viele Messstellen.",
+          "correct": false,
+          "explanation": "Ein einzelner Messwert wird an einem Ort erfasst."
+        },
+        {
+          "id": "c",
+          "text": "Messstellen und Messwerte dürfen keine Beziehung haben.",
+          "correct": false,
+          "explanation": "Ohne Beziehung fehlt der Ortsbezug."
+        },
+        {
+          "id": "d",
+          "text": "Jede Messstelle ist genau ein Artikeljahrgang.",
+          "correct": false,
+          "explanation": "Das vermischt Mess- und Vertriebsdaten."
+        }
+      ]
+    },
+    {
+      "id": "pv2fiae_medium_t06_ermodel_3nf_reasons",
+      "conceptId": "pv2fiae_medium_t06_ermodel_3nf_reasons",
+      "variantId": "pv2fiae_medium_t06_ermodel_3nf_reasons_v02",
+      "interactionType": "multi",
+      "questionKind": "mehrere_richtige_antworten_waehlen",
+      "badgeLabel": "Mehrere Antworten sind richtig.",
+      "isNew": true,
+      "prompt": "Warum sollten Messstelle, Messwert, Messgerät und Messgröße getrennt modelliert werden?",
+      "maxSelections": 3,
+      "options": [
+        {
+          "id": "a",
+          "text": "Messgrößenbezeichnungen werden nicht in jedem Messwert wiederholt.",
+          "correct": true,
+          "explanation": "Das reduziert Redundanz."
+        },
+        {
+          "id": "b",
+          "text": "Messgeräteinformationen können zentral gepflegt werden.",
+          "correct": true,
+          "explanation": "Stammdaten bleiben konsistent."
+        },
+        {
+          "id": "c",
+          "text": "Messwerte bleiben über Fremdschlüssel auswertbar.",
+          "correct": true,
+          "explanation": "Beziehungen sind strukturiert und prüfbar."
+        },
+        {
+          "id": "d",
+          "text": "Alle Messwerte werden als ein einziger Freitext gespeichert.",
+          "correct": false,
+          "explanation": "Das ist gerade nicht 3NF-nah."
+        }
+      ]
+    },
+    {
+      "id": "pv2fiae_medium_t06_ermodel_measurement_timestamp",
+      "conceptId": "pv2fiae_medium_t06_ermodel_measurement_timestamp",
+      "variantId": "pv2fiae_medium_t06_ermodel_measurement_timestamp_v02",
+      "interactionType": "single",
+      "questionKind": "beste_option_im_mini_szenario",
+      "badgeLabel": "Eine Antwort ist richtig.",
+      "isNew": true,
+      "prompt": "Welche Bedeutung hat der Zeitbezug eines Messwerts?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Ohne Zeitpunkt ist der Verlauf der Messung nicht auswertbar.",
+          "correct": true,
+          "explanation": "Messdaten sind zeitabhängig."
+        },
+        {
+          "id": "b",
+          "text": "Datum und Uhrzeit ersetzen die Messstelle.",
+          "correct": false,
+          "explanation": "Der Ort bleibt zusätzlich wichtig."
+        },
+        {
+          "id": "c",
+          "text": "Der Zeitpunkt ist nur für Rabatte nötig.",
+          "correct": false,
+          "explanation": "Rabattdaten gehören zum Vertriebsblock."
+        },
+        {
+          "id": "d",
+          "text": "Ein Messwert darf keine Zeitinformation haben.",
+          "correct": false,
+          "explanation": "Zeitbezug ist fachlich erforderlich."
+        }
+      ]
+    },
+    {
+      "id": "pv2fiae_medium_t06_ermodel_device_masterdata",
+      "conceptId": "pv2fiae_medium_t06_ermodel_device_masterdata",
+      "variantId": "pv2fiae_medium_t06_ermodel_device_masterdata_v02",
+      "interactionType": "single",
+      "questionKind": "beste_option_im_mini_szenario",
+      "badgeLabel": "Eine Antwort ist richtig.",
+      "isNew": true,
+      "prompt": "Was spricht dafür, Gerätedaten getrennt von einzelnen Messwerten zu speichern?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Sie beschreiben das Gerät dauerhaft und würden sonst bei vielen Messwerten wiederholt.",
+          "correct": true,
+          "explanation": "Das ist typische Stammdatenlogik."
+        },
+        {
+          "id": "b",
+          "text": "Sie ändern sich bei jedem Messwert automatisch.",
+          "correct": false,
+          "explanation": "Hersteller und Bezeichnung sind stabilere Angaben."
+        },
+        {
+          "id": "c",
+          "text": "Sie sind SQL-Aggregate.",
+          "correct": false,
+          "explanation": "Es sind fachliche Gerätedaten."
+        },
+        {
+          "id": "d",
+          "text": "Sie ersetzen den Messwert.",
+          "correct": false,
+          "explanation": "Gerätedaten und Messwertdaten sind verschieden."
+        }
+      ]
+    },
+    {
+      "id": "pv2fiae_medium_t06_storage_total_volume",
+      "conceptId": "pv2fiae_medium_t06_storage_total_volume",
+      "variantId": "pv2fiae_medium_t06_storage_total_volume_v02",
+      "interactionType": "single",
+      "questionKind": "beste_option_im_mini_szenario",
+      "badgeLabel": "Eine Antwort ist richtig.",
+      "isNew": true,
+      "prompt": "Wie groß ist das Jahresarchiv ungefähr, wenn jedes Bild etwa 60 MB belegt?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Rund 624.000 MB, also etwa 624 GB.",
+          "correct": true,
+          "explanation": "10.400 mal 60 MB ergibt ungefähr 624.000 MB."
+        },
+        {
+          "id": "b",
+          "text": "Etwa 624 MB.",
+          "correct": false,
+          "explanation": "Das wäre um den Faktor 1000 zu klein."
+        },
+        {
+          "id": "c",
+          "text": "Etwa 10.400 Byte.",
+          "correct": false,
+          "explanation": "Das ignoriert die Bildgröße."
+        },
+        {
+          "id": "d",
+          "text": "Genau 52 Bit.",
+          "correct": false,
+          "explanation": "52 ist die Wochenzahl, nicht der Speicherbedarf."
+        }
+      ]
+    },
+    {
+      "id": "pv2fiae_medium_t06_storage_assumption",
+      "conceptId": "pv2fiae_medium_t06_storage_assumption",
+      "variantId": "pv2fiae_medium_t06_storage_assumption_v02",
+      "interactionType": "single",
+      "questionKind": "beste_option_im_mini_szenario",
+      "badgeLabel": "Eine Antwort ist richtig.",
+      "isNew": true,
+      "prompt": "Warum kann der reale Speicherbedarf von der Überschlagsrechnung abweichen?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Sie geht von unkomprimierten Bilddaten ohne Zusatzdaten aus.",
+          "correct": true,
+          "explanation": "Kompression, Metadaten und Dateiformate verändern den realen Wert."
+        },
+        {
+          "id": "b",
+          "text": "Sie berücksichtigt automatisch jede Kompression.",
+          "correct": false,
+          "explanation": "Kompression wird in der einfachen Rechnung nicht eingerechnet."
+        },
+        {
+          "id": "c",
+          "text": "Sie ersetzt das Datenmodell.",
+          "correct": false,
+          "explanation": "Speicherrechnung und ERM bleiben getrennt."
+        },
+        {
+          "id": "d",
+          "text": "Sie löscht alte Bilder automatisch.",
+          "correct": false,
+          "explanation": "Die Rechnung sagt nichts über Löschregeln."
+        }
+      ]
+    },
+    {
+      "id": "pv2fiae_medium_t06_sql_plz_string_range",
+      "conceptId": "pv2fiae_medium_t06_sql_plz_string_range",
+      "variantId": "pv2fiae_medium_t06_sql_plz_string_range_v02",
+      "interactionType": "single",
+      "questionKind": "beste_option_im_mini_szenario",
+      "badgeLabel": "Eine Antwort ist richtig.",
+      "isNew": true,
+      "prompt": "Wann funktioniert ein lexikografischer PLZ-Vergleich zuverlässig?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Die PLZ müssen einheitlich fünfstellig formatiert sein.",
+          "correct": true,
+          "explanation": "Dann entspricht die Textreihenfolge dem gewünschten Bereich."
+        },
+        {
+          "id": "b",
+          "text": "Die PLZ dürfen beliebig lang sein.",
+          "correct": false,
+          "explanation": "Uneinheitliche Länge kann den Vergleich verfälschen."
+        },
+        {
+          "id": "c",
+          "text": "Die PLZ müssen in Rabattwerte umgerechnet werden.",
+          "correct": false,
+          "explanation": "PLZ sind keine Rabatte."
+        },
+        {
+          "id": "d",
+          "text": "Der Filter muss als `GROUP BY` formuliert werden.",
+          "correct": false,
+          "explanation": "Gruppierung ersetzt keine Bereichsbedingung."
+        }
+      ]
+    },
+    {
+      "id": "pv2fiae_medium_t06_sql_discount_update_joins",
+      "conceptId": "pv2fiae_medium_t06_sql_discount_update_joins",
+      "variantId": "pv2fiae_medium_t06_sql_discount_update_joins_v02",
+      "interactionType": "multi",
+      "questionKind": "mehrere_richtige_antworten_waehlen",
+      "badgeLabel": "Mehrere Antworten sind richtig.",
+      "isNew": true,
+      "prompt": "Welche Informationen müssen für das Rabatt-Update zusammengeführt werden?",
+      "maxSelections": 3,
+      "options": [
+        {
+          "id": "a",
+          "text": "Rechnungspositionen mit Rabattwert.",
+          "correct": true,
+          "explanation": "Dort wird der Rabatt korrigiert."
+        },
+        {
+          "id": "b",
+          "text": "Rechnung mit Datum im Mai 2023.",
+          "correct": true,
+          "explanation": "Der Zeitraum kommt aus der Rechnung."
+        },
+        {
+          "id": "c",
+          "text": "Artikel mit Weinart Rotwein.",
+          "correct": true,
+          "explanation": "Die Artikelart begrenzt die betroffenen Positionen."
+        },
+        {
+          "id": "d",
+          "text": "Messstelle mit Längengrad.",
+          "correct": false,
+          "explanation": "Messstellen gehören nicht zur Vertriebsdatenbank."
+        }
+      ]
+    },
+    {
+      "id": "pv2fiae_medium_t06_sql_avg_before_discount_grouping",
+      "conceptId": "pv2fiae_medium_t06_sql_avg_before_discount_grouping",
+      "variantId": "pv2fiae_medium_t06_sql_avg_before_discount_grouping_v02",
+      "interactionType": "single",
+      "questionKind": "beste_option_im_mini_szenario",
+      "badgeLabel": "Eine Antwort ist richtig.",
+      "isNew": true,
+      "prompt": "Wie muss der Kundenumsatzbericht gruppiert werden?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Nach Kunde beziehungsweise Kunden-ID gruppieren.",
+          "correct": true,
+          "explanation": "Der Bericht soll je Kunde einen Durchschnittswert liefern."
+        },
+        {
+          "id": "b",
+          "text": "Nach Messgröße gruppieren.",
+          "correct": false,
+          "explanation": "Messgrößen gehören nicht zur Vertriebsdatenbank."
+        },
+        {
+          "id": "c",
+          "text": "Nach Drohnenroute gruppieren.",
+          "correct": false,
+          "explanation": "Routenpunkte sind keine Kundenumsätze."
+        },
+        {
+          "id": "d",
+          "text": "Gar nicht gruppieren, aber Kundennamen ausgeben.",
+          "correct": false,
+          "explanation": "Dann entsteht kein sauberer Wert je Kunde."
+        }
+      ]
+    },
+    {
+      "id": "pv2fiae_medium_t06_sql_update_safety",
+      "conceptId": "pv2fiae_medium_t06_sql_update_safety",
+      "variantId": "pv2fiae_medium_t06_sql_update_safety_v02",
+      "interactionType": "single",
+      "questionKind": "beste_option_im_mini_szenario",
+      "badgeLabel": "Eine Antwort ist richtig.",
+      "isNew": true,
+      "prompt": "Welches Risiko entsteht bei einem UPDATE ohne genaue Einschränkung?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Sonst könnten Rabatte auf falschen Positionen geändert werden.",
+          "correct": true,
+          "explanation": "UPDATE wirkt auf alle Zeilen, die der Filter zulässt."
+        },
+        {
+          "id": "b",
+          "text": "Sonst wird die Drohnenroute kürzer.",
+          "correct": false,
+          "explanation": "Das ist unabhängig."
+        },
+        {
+          "id": "c",
+          "text": "Sonst wird jede PLZ fünfstellig.",
+          "correct": false,
+          "explanation": "PLZ-Formatierung ist kein Update-Nebeneffekt."
+        },
+        {
+          "id": "d",
+          "text": "Sonst verschwinden die Sequenzdiagramm-Guards.",
+          "correct": false,
+          "explanation": "Das hat keinen Bezug zu SQL."
+        }
+      ]
+    },
+    {
+      "id": "pv2fiae_medium_t06_sql_aliases_report",
+      "conceptId": "pv2fiae_medium_t06_sql_aliases_report",
+      "variantId": "pv2fiae_medium_t06_sql_aliases_report_v02",
+      "interactionType": "single",
+      "questionKind": "beste_option_im_mini_szenario",
+      "badgeLabel": "Eine Antwort ist richtig.",
+      "isNew": true,
+      "prompt": "Was leisten Tabellenaliasse in Abfragen über Kunde, Rechnung, Position und Artikel?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Sie machen Spaltenbezüge kürzer und eindeutiger.",
+          "correct": true,
+          "explanation": "Das hilft besonders bei mehreren Tabellen mit ähnlichen Spaltennamen."
+        },
+        {
+          "id": "b",
+          "text": "Sie ersetzen alle JOIN-Bedingungen.",
+          "correct": false,
+          "explanation": "Aliasse benennen Tabellen nur abgekürzt."
+        },
+        {
+          "id": "c",
+          "text": "Sie verhindern jede falsche Aggregation automatisch.",
+          "correct": false,
+          "explanation": "Die Logik muss trotzdem stimmen."
+        },
+        {
+          "id": "d",
+          "text": "Sie speichern Drohnenbilder.",
+          "correct": false,
+          "explanation": "Aliasse sind keine Speichermethode."
+        }
+      ]
+    },
+    {
+      "id": "pv2fiae_medium_t06_storage_backup_capacity",
+      "conceptId": "pv2fiae_medium_t06_storage_backup_capacity",
+      "variantId": "pv2fiae_medium_t06_storage_backup_capacity_v02",
+      "interactionType": "single",
+      "questionKind": "beste_option_im_mini_szenario",
+      "badgeLabel": "Eine Antwort ist richtig.",
+      "isNew": true,
+      "prompt": "Welche zusätzliche Frage entsteht nach der Speicherrechnung für das Drohnenbildarchiv?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Backups, Wachstum, Wiederherstellung und Reservekapazität müssen zusätzlich geplant werden.",
+          "correct": true,
+          "explanation": "Betriebsplanung braucht mehr als die reine Primärdatenmenge."
+        },
+        {
+          "id": "b",
+          "text": "Die Reifegradanzeige kann dadurch entfallen.",
+          "correct": false,
+          "explanation": "Speicherplanung ersetzt keine GUI-Logik."
+        },
+        {
+          "id": "c",
+          "text": "Der PLZ-Filter wird dadurch automatisch korrekt.",
+          "correct": false,
+          "explanation": "PLZ-Filter sind SQL-Logik."
+        },
+        {
+          "id": "d",
+          "text": "Messgrößen dürfen dann als Freitext gespeichert werden.",
+          "correct": false,
+          "explanation": "Das wäre kein Vorteil der Speicherplanung."
+        }
+      ]
+    }
+  ]
+}

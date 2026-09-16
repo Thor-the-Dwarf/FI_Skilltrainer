@@ -1,0 +1,910 @@
+{
+  "scenarioFolder": "Pruefungsvorbereitung-2-FIAE-Scenarien",
+  "quizFolder": "Pruefungsvorbereitung-2-FIAE-Quiz",
+  "scenarioFile": "ticket_ausbildungsbetrieb_aktionaerservice_kurslogik_sql/03_medium_ausbildungsbetrieb_aktionaerservice_kurslogik_sql.json",
+  "quizFile": "quiz_ausbildungsbetrieb_aktionaerservice_kurslogik_sql/quiz03_medium_V01_ausbildungsbetrieb_aktionaerservice_kurslogik_sql.json",
+  "ticketId": "03_medium_ausbildungsbetrieb_aktionaerservice_kurslogik_sql.json",
+  "versionId": "V01",
+  "title": "Ticket 03 Medium - Aktionärservice, Kurslogik und SQL-Berichte",
+  "description": "Manuell verfasstes AP2-FIAE-Training im mittleren Anspruchsniveau zu Investor-Portal, Kursvergleich, Whitebox-Tests und SQL-Berichten.",
+  "topics": [
+    "Investor-Portal, Aktivitätslogik und sichere Reset-Prozesse in betrieblichen Fällen belastbar einordnen",
+    "Kursvergleich, Whitebox-Tests und SQL-Berichte für die Hauptversammlung mit Transfer sicher abwägen"
+  ],
+  "questions": [
+    {
+      "id": "pv2fiae_medium_t03_swimlane_extern_intern",
+      "conceptId": "pv2fiae_medium_t03_swimlane_extern_intern",
+      "variantId": "pv2fiae_medium_t03_swimlane_extern_intern_v01",
+      "interactionType": "single",
+      "questionKind": "beste_option_im_mini_szenario",
+      "badgeLabel": "Eine Antwort ist richtig.",
+      "isNew": true,
+      "prompt": "Warum sollten Aktionär, Portal und Mitarbeitende in unterschiedlichen Swimlanes liegen?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Weil externe Handlung, Systemprüfung und interne Bearbeitung unterschiedliche Verantwortungen haben.",
+          "correct": true,
+          "explanation": "Die Trennung macht den Ablauf prüfbar."
+        },
+        {
+          "id": "b",
+          "text": "Weil jede Swimlane dieselbe Rolle haben muss.",
+          "correct": false,
+          "explanation": "Dann wäre die Darstellung nutzlos."
+        },
+        {
+          "id": "c",
+          "text": "Weil SQL-Gruppierung Swimlanes erzwingt.",
+          "correct": false,
+          "explanation": "SQL hat damit nichts zu tun."
+        },
+        {
+          "id": "d",
+          "text": "Weil Whitebox-Tests keine Rollen kennen dürfen.",
+          "correct": false,
+          "explanation": "Das ist falsch."
+        }
+      ]
+    },
+    {
+      "id": "pv2fiae_medium_t03_systementscheidung_login",
+      "conceptId": "pv2fiae_medium_t03_systementscheidung_login",
+      "variantId": "pv2fiae_medium_t03_systementscheidung_login_v01",
+      "interactionType": "single",
+      "questionKind": "beste_option_im_mini_szenario",
+      "badgeLabel": "Eine Antwort ist richtig.",
+      "isNew": true,
+      "prompt": "Welche Entscheidung gehört im Loginprozess in die Systemlogik?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Ob die eingegebenen Zugangsdaten gültig sind.",
+          "correct": true,
+          "explanation": "Das System prüft Authentisierung."
+        },
+        {
+          "id": "b",
+          "text": "Ob eine Aktie archiviert wird.",
+          "correct": false,
+          "explanation": "Das ist ein SQL-Berichtsthema."
+        },
+        {
+          "id": "c",
+          "text": "Ob eine Pflanze freigegeben wird.",
+          "correct": false,
+          "explanation": "Das gehört zu einem anderen Ticket."
+        },
+        {
+          "id": "d",
+          "text": "Ob ein Aktionär manuell die Kurse sortiert.",
+          "correct": false,
+          "explanation": "Das ist nicht Loginentscheidung."
+        }
+      ]
+    },
+    {
+      "id": "pv2fiae_medium_t03_login_fehlerpfad",
+      "conceptId": "pv2fiae_medium_t03_login_fehlerpfad",
+      "variantId": "pv2fiae_medium_t03_login_fehlerpfad_v01",
+      "interactionType": "single",
+      "questionKind": "beste_option_im_mini_szenario",
+      "badgeLabel": "Eine Antwort ist richtig.",
+      "isNew": true,
+      "prompt": "Warum braucht der Login einen expliziten Fehlerpfad?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Damit ungültige Eingaben kontrolliert abgewiesen und protokolliert werden können.",
+          "correct": true,
+          "explanation": "Fehlerfälle gehören zum sicheren Ablauf."
+        },
+        {
+          "id": "b",
+          "text": "Damit jeder Fehler Zugriff erhält.",
+          "correct": false,
+          "explanation": "Das wäre unsicher."
+        },
+        {
+          "id": "c",
+          "text": "Damit die Datenbank alle Kurse löscht.",
+          "correct": false,
+          "explanation": "Das ist sachfremd."
+        },
+        {
+          "id": "d",
+          "text": "Damit `compare_fn` nie aufgerufen wird.",
+          "correct": false,
+          "explanation": "Das hat keinen Bezug."
+        }
+      ]
+    },
+    {
+      "id": "pv2fiae_medium_t03_office_anhang_integritaet",
+      "conceptId": "pv2fiae_medium_t03_office_anhang_integritaet",
+      "variantId": "pv2fiae_medium_t03_office_anhang_integritaet_v01",
+      "interactionType": "single",
+      "questionKind": "beste_option_im_mini_szenario",
+      "badgeLabel": "Eine Antwort ist richtig.",
+      "isNew": true,
+      "prompt": "Warum ist ein bearbeitbarer Office-Anhang auch ein Integritätsproblem?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Empfänger können schwer prüfen, ob Inhalt und Absender unverändert vertrauenswürdig sind.",
+          "correct": true,
+          "explanation": "Bearbeitbarkeit und Mailweg erschweren Integrität."
+        },
+        {
+          "id": "b",
+          "text": "Weil Office-Dateien nie Text enthalten.",
+          "correct": false,
+          "explanation": "Das ist falsch."
+        },
+        {
+          "id": "c",
+          "text": "Weil PDF-Dateien immer unsicherer sind.",
+          "correct": false,
+          "explanation": "Das ist nicht pauschal richtig."
+        },
+        {
+          "id": "d",
+          "text": "Weil Anweisungsüberdeckung dadurch steigt.",
+          "correct": false,
+          "explanation": "Das hat nichts mit Tests zu tun."
+        }
+      ]
+    },
+    {
+      "id": "pv2fiae_medium_t03_portal_download",
+      "conceptId": "pv2fiae_medium_t03_portal_download",
+      "variantId": "pv2fiae_medium_t03_portal_download_v01",
+      "interactionType": "single",
+      "questionKind": "beste_option_im_mini_szenario",
+      "badgeLabel": "Eine Antwort ist richtig.",
+      "isNew": true,
+      "prompt": "Was macht ein Portal-Download sicherer als ein offener Mailanhang?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Authentisierung, zentrale Bereitstellung und bessere Kontrolle über Version und Zugriff.",
+          "correct": true,
+          "explanation": "Das Portal kann Schutzmechanismen bündeln."
+        },
+        {
+          "id": "b",
+          "text": "Der Download braucht nie Berechtigungen.",
+          "correct": false,
+          "explanation": "Ohne Berechtigungen wäre er schwach."
+        },
+        {
+          "id": "c",
+          "text": "Das Dokument wird automatisch bearbeitbarer.",
+          "correct": false,
+          "explanation": "Das wäre kein Sicherheitsvorteil."
+        },
+        {
+          "id": "d",
+          "text": "Kursdaten werden dadurch sortiert.",
+          "correct": false,
+          "explanation": "Das ist unabhängig."
+        }
+      ]
+    },
+    {
+      "id": "pv2fiae_medium_t03_reset_token",
+      "conceptId": "pv2fiae_medium_t03_reset_token",
+      "variantId": "pv2fiae_medium_t03_reset_token_v01",
+      "interactionType": "single",
+      "questionKind": "beste_option_im_mini_szenario",
+      "badgeLabel": "Eine Antwort ist richtig.",
+      "isNew": true,
+      "prompt": "Welche Eigenschaft sollte ein Reset-Token haben?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Er sollte einmalig, zeitlich begrenzt und zufällig genug sein.",
+          "correct": true,
+          "explanation": "So wird Missbrauch erschwert."
+        },
+        {
+          "id": "b",
+          "text": "Er sollte dauerhaft und erratbar sein.",
+          "correct": false,
+          "explanation": "Das wäre unsicher."
+        },
+        {
+          "id": "c",
+          "text": "Er sollte dem Börsennamen entsprechen.",
+          "correct": false,
+          "explanation": "Das ist sachfremd."
+        },
+        {
+          "id": "d",
+          "text": "Er sollte in der Archiv-Tabelle als Kurswert stehen.",
+          "correct": false,
+          "explanation": "Das ist falsch."
+        }
+      ]
+    },
+    {
+      "id": "pv2fiae_medium_t03_reset_mehrfaktor",
+      "conceptId": "pv2fiae_medium_t03_reset_mehrfaktor",
+      "variantId": "pv2fiae_medium_t03_reset_mehrfaktor_v01",
+      "interactionType": "single",
+      "questionKind": "beste_option_im_mini_szenario",
+      "badgeLabel": "Eine Antwort ist richtig.",
+      "isNew": true,
+      "prompt": "Warum kann ein zusätzlicher Faktor beim Reset sinnvoll sein?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Ein kompromittiertes Postfach reicht dann nicht allein zur Kontoübernahme.",
+          "correct": true,
+          "explanation": "Der Angriff braucht mehr als E-Mail-Zugriff."
+        },
+        {
+          "id": "b",
+          "text": "Weil dadurch alle Passwörter im Klartext sichtbar werden.",
+          "correct": false,
+          "explanation": "Das wäre unsicher."
+        },
+        {
+          "id": "c",
+          "text": "Weil SQL dadurch ohne WHERE läuft.",
+          "correct": false,
+          "explanation": "Das ist unabhängig."
+        },
+        {
+          "id": "d",
+          "text": "Weil Vergleichsfunktionen dadurch schneller sind.",
+          "correct": false,
+          "explanation": "Das hat keinen Bezug."
+        }
+      ]
+    },
+    {
+      "id": "pv2fiae_medium_t03_compare_fn_contract",
+      "conceptId": "pv2fiae_medium_t03_compare_fn_contract",
+      "variantId": "pv2fiae_medium_t03_compare_fn_contract_v01",
+      "interactionType": "single",
+      "questionKind": "beste_option_im_mini_szenario",
+      "badgeLabel": "Eine Antwort ist richtig.",
+      "isNew": true,
+      "prompt": "Warum muss der Vertrag von `compare_fn` klar definiert sein?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Die Sortierfunktion muss wissen, was negative, null und positive Rückgaben bedeuten.",
+          "correct": true,
+          "explanation": "Ohne Vertrag wird die Reihenfolge unzuverlässig."
+        },
+        {
+          "id": "b",
+          "text": "Damit `compare_fn` SQL-Benutzer anlegt.",
+          "correct": false,
+          "explanation": "Das ist nicht ihre Aufgabe."
+        },
+        {
+          "id": "c",
+          "text": "Damit alle Pfade unmöglich werden.",
+          "correct": false,
+          "explanation": "Das ist nicht Ziel."
+        },
+        {
+          "id": "d",
+          "text": "Damit Office-Anhänge sicher sind.",
+          "correct": false,
+          "explanation": "Das ist ein anderes Thema."
+        }
+      ]
+    },
+    {
+      "id": "pv2fiae_medium_t03_compare_swap",
+      "conceptId": "pv2fiae_medium_t03_compare_swap",
+      "variantId": "pv2fiae_medium_t03_compare_swap_v01",
+      "interactionType": "single",
+      "questionKind": "beste_option_im_mini_szenario",
+      "badgeLabel": "Eine Antwort ist richtig.",
+      "isNew": true,
+      "prompt": "Wann wird bei der genannten Vorgabe getauscht?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Wenn `compare_fn(a,b) > 0` zurückgibt.",
+          "correct": true,
+          "explanation": "Dann soll b vor a stehen."
+        },
+        {
+          "id": "b",
+          "text": "Wenn `compare_fn(a,b) == 0` immer.",
+          "correct": false,
+          "explanation": "Gleichstand erfordert keinen zwingenden Tausch."
+        },
+        {
+          "id": "c",
+          "text": "Wenn keine zwei Elemente vorhanden sind.",
+          "correct": false,
+          "explanation": "Dann gibt es nichts zu vergleichen."
+        },
+        {
+          "id": "d",
+          "text": "Wenn die Aktie archiviert ist.",
+          "correct": false,
+          "explanation": "Archivstatus ist nicht die Sortierregel."
+        }
+      ]
+    },
+    {
+      "id": "pv2fiae_medium_t03_sort_stabilitaet",
+      "conceptId": "pv2fiae_medium_t03_sort_stabilitaet",
+      "variantId": "pv2fiae_medium_t03_sort_stabilitaet_v01",
+      "interactionType": "single",
+      "questionKind": "beste_option_im_mini_szenario",
+      "badgeLabel": "Eine Antwort ist richtig.",
+      "isNew": true,
+      "prompt": "Warum kann stabile Sortierung bei Kursdaten wichtig sein?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Bei gleichen Vergleichswerten bleibt die bisherige Reihenfolge nachvollziehbar.",
+          "correct": true,
+          "explanation": "Das verhindert unerwartete Umordnung bei Gleichstand."
+        },
+        {
+          "id": "b",
+          "text": "Weil stabile Sortierung Daten löscht.",
+          "correct": false,
+          "explanation": "Sortierung löscht nicht."
+        },
+        {
+          "id": "c",
+          "text": "Weil dadurch Reset-Links ablaufen.",
+          "correct": false,
+          "explanation": "Das ist Sicherheit, nicht Sortierung."
+        },
+        {
+          "id": "d",
+          "text": "Weil SQL-Gruppen verschwinden.",
+          "correct": false,
+          "explanation": "Nein."
+        }
+      ]
+    },
+    {
+      "id": "pv2fiae_medium_t03_outperformance_count",
+      "conceptId": "pv2fiae_medium_t03_outperformance_count",
+      "variantId": "pv2fiae_medium_t03_outperformance_count_v01",
+      "interactionType": "single",
+      "questionKind": "beste_option_im_mini_szenario",
+      "badgeLabel": "Eine Antwort ist richtig.",
+      "isNew": true,
+      "prompt": "Welche Bedingung zählt einen Outperformance-Tag?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Aktienänderung in Prozent ist größer als Indexänderung in Prozent.",
+          "correct": true,
+          "explanation": "Das ist der fachliche Vergleich."
+        },
+        {
+          "id": "b",
+          "text": "Aktienname ist länger als Indexname.",
+          "correct": false,
+          "explanation": "Das sagt nichts über Performance."
+        },
+        {
+          "id": "c",
+          "text": "Aktie hat mehr SQL-Zeilen als Index.",
+          "correct": false,
+          "explanation": "Zeilenanzahl ist nicht Tagesperformance."
+        },
+        {
+          "id": "d",
+          "text": "Aktie wurde per E-Mail versendet.",
+          "correct": false,
+          "explanation": "Das ist irrelevant."
+        }
+      ]
+    },
+    {
+      "id": "pv2fiae_medium_t03_prozent_basis",
+      "conceptId": "pv2fiae_medium_t03_prozent_basis",
+      "variantId": "pv2fiae_medium_t03_prozent_basis_v01",
+      "interactionType": "single",
+      "questionKind": "beste_option_im_mini_szenario",
+      "badgeLabel": "Eine Antwort ist richtig.",
+      "isNew": true,
+      "prompt": "Warum müssen Prozentänderungen auf denselben Zeitraum bezogen sein?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Sonst werden nicht vergleichbare Kursbewegungen gegenübergestellt.",
+          "correct": true,
+          "explanation": "Zeitraumbezug ist Teil der Kennzahl."
+        },
+        {
+          "id": "b",
+          "text": "Weil Prozentwerte nie verglichen werden dürfen.",
+          "correct": false,
+          "explanation": "Sie dürfen verglichen werden, wenn sie gleichartig sind."
+        },
+        {
+          "id": "c",
+          "text": "Weil SQL dann kein GROUP BY braucht.",
+          "correct": false,
+          "explanation": "Das ist unabhängig."
+        },
+        {
+          "id": "d",
+          "text": "Weil Login-Pfade dadurch verschwinden.",
+          "correct": false,
+          "explanation": "Nein."
+        }
+      ]
+    },
+    {
+      "id": "pv2fiae_medium_t03_whitebox_blackbox",
+      "conceptId": "pv2fiae_medium_t03_whitebox_blackbox",
+      "variantId": "pv2fiae_medium_t03_whitebox_blackbox_v01",
+      "interactionType": "multi",
+      "questionKind": "mehrere_richtige_antworten_waehlen",
+      "badgeLabel": "Mehrere Antworten sind richtig.",
+      "isNew": true,
+      "prompt": "Welche Aussagen grenzen Whitebox- von Blackbox-Tests ab?",
+      "maxSelections": 2,
+      "options": [
+        {
+          "id": "a",
+          "text": "Whitebox-Tests nutzen Kenntnis der inneren Struktur.",
+          "correct": true,
+          "explanation": "Quellcode und Pfade sind sichtbar."
+        },
+        {
+          "id": "b",
+          "text": "Blackbox-Tests orientieren sich stärker an Ein- und Ausgaben ohne Codekenntnis.",
+          "correct": true,
+          "explanation": "Das ist die typische Außensicht."
+        },
+        {
+          "id": "c",
+          "text": "Whitebox-Tests prüfen nie Bedingungen.",
+          "correct": false,
+          "explanation": "Gerade Bedingungen können geprüft werden."
+        },
+        {
+          "id": "d",
+          "text": "Blackbox-Tests löschen automatisch Datenbanken.",
+          "correct": false,
+          "explanation": "Das ist falsch."
+        }
+      ]
+    },
+    {
+      "id": "pv2fiae_medium_t03_regression_nach_fix",
+      "conceptId": "pv2fiae_medium_t03_regression_nach_fix",
+      "variantId": "pv2fiae_medium_t03_regression_nach_fix_v01",
+      "interactionType": "single",
+      "questionKind": "beste_option_im_mini_szenario",
+      "badgeLabel": "Eine Antwort ist richtig.",
+      "isNew": true,
+      "prompt": "Wann ist ein Regressionstest besonders wichtig?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Nach einer Fehlerkorrektur oder Erweiterung bestehender Logik.",
+          "correct": true,
+          "explanation": "Dann soll alter Funktionsumfang erhalten bleiben."
+        },
+        {
+          "id": "b",
+          "text": "Vor dem ersten Lesen der Anforderung ohne Code.",
+          "correct": false,
+          "explanation": "Das ist nicht der typische Einsatz."
+        },
+        {
+          "id": "c",
+          "text": "Nur beim Versand von Einladungen.",
+          "correct": false,
+          "explanation": "Regression ist allgemeiner."
+        },
+        {
+          "id": "d",
+          "text": "Nur beim Löschen einer Aktie.",
+          "correct": false,
+          "explanation": "Auch andere Änderungen brauchen Schutz."
+        }
+      ]
+    },
+    {
+      "id": "pv2fiae_medium_t03_statement_vs_branch",
+      "conceptId": "pv2fiae_medium_t03_statement_vs_branch",
+      "variantId": "pv2fiae_medium_t03_statement_vs_branch_v01",
+      "interactionType": "single",
+      "questionKind": "beste_option_im_mini_szenario",
+      "badgeLabel": "Eine Antwort ist richtig.",
+      "isNew": true,
+      "prompt": "Was ist der Unterschied zwischen Anweisungs- und Zweigüberdeckung?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Zweigüberdeckung verlangt beide Ausgänge von Entscheidungen, Anweisungsüberdeckung nur Ausführung von Anweisungen.",
+          "correct": true,
+          "explanation": "Zweigüberdeckung ist stärker."
+        },
+        {
+          "id": "b",
+          "text": "Beide Begriffe sind exakt identisch.",
+          "correct": false,
+          "explanation": "Sie messen unterschiedliche Tiefe."
+        },
+        {
+          "id": "c",
+          "text": "Anweisungsüberdeckung ist nur SQL.",
+          "correct": false,
+          "explanation": "Nein."
+        },
+        {
+          "id": "d",
+          "text": "Zweigüberdeckung archiviert Daten.",
+          "correct": false,
+          "explanation": "Das ist falsch."
+        }
+      ]
+    },
+    {
+      "id": "pv2fiae_medium_t03_path_coverage_login",
+      "conceptId": "pv2fiae_medium_t03_path_coverage_login",
+      "variantId": "pv2fiae_medium_t03_path_coverage_login_v01",
+      "interactionType": "single",
+      "questionKind": "beste_option_im_mini_szenario",
+      "badgeLabel": "Eine Antwort ist richtig.",
+      "isNew": true,
+      "prompt": "Warum kann Pfadabdeckung beim Login schnell aufwendig werden?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Mehrere Entscheidungen erzeugen viele mögliche Pfadkombinationen.",
+          "correct": true,
+          "explanation": "Pfade kombinieren Zweige."
+        },
+        {
+          "id": "b",
+          "text": "Weil es nie Entscheidungen gibt.",
+          "correct": false,
+          "explanation": "Login hat typischerweise Entscheidungen."
+        },
+        {
+          "id": "c",
+          "text": "Weil Pfade nur PDF-Dateien sind.",
+          "correct": false,
+          "explanation": "Das ist falsch."
+        },
+        {
+          "id": "d",
+          "text": "Weil `COUNT` keine Werte zählt.",
+          "correct": false,
+          "explanation": "Das hat keinen Bezug."
+        }
+      ]
+    },
+    {
+      "id": "pv2fiae_medium_t03_metrik_hierarchie",
+      "conceptId": "pv2fiae_medium_t03_metrik_hierarchie",
+      "variantId": "pv2fiae_medium_t03_metrik_hierarchie_v01",
+      "interactionType": "single",
+      "questionKind": "beste_option_im_mini_szenario",
+      "badgeLabel": "Eine Antwort ist richtig.",
+      "isNew": true,
+      "prompt": "Welche Reihenfolge ist fachlich plausibel?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Anweisungsüberdeckung ist schwächer als Zweigüberdeckung, Pfadabdeckung ist meist noch umfassender.",
+          "correct": true,
+          "explanation": "Die Metriken bauen in der Tiefe aufeinander auf."
+        },
+        {
+          "id": "b",
+          "text": "Pfadabdeckung ist immer die schwächste Metrik.",
+          "correct": false,
+          "explanation": "Das ist falsch."
+        },
+        {
+          "id": "c",
+          "text": "Zweigüberdeckung ersetzt Anforderungen vollständig.",
+          "correct": false,
+          "explanation": "Anforderungen bleiben nötig."
+        },
+        {
+          "id": "d",
+          "text": "Anweisungsüberdeckung löscht Pfade.",
+          "correct": false,
+          "explanation": "Nein."
+        }
+      ]
+    },
+    {
+      "id": "pv2fiae_medium_t03_login_pfadkombination",
+      "conceptId": "pv2fiae_medium_t03_login_pfadkombination",
+      "variantId": "pv2fiae_medium_t03_login_pfadkombination_v01",
+      "interactionType": "multi",
+      "questionKind": "mehrere_richtige_antworten_waehlen",
+      "badgeLabel": "Mehrere Antworten sind richtig.",
+      "isNew": true,
+      "prompt": "Welche Pfadkombinationen sollte ein Login-Testset mindestens abdecken?",
+      "maxSelections": 3,
+      "options": [
+        {
+          "id": "a",
+          "text": "Erfolgreicher Login mit gültigen Daten",
+          "correct": true,
+          "explanation": "Der Normalpfad muss funktionieren."
+        },
+        {
+          "id": "b",
+          "text": "Abgelehnter Login mit ungültigen Daten",
+          "correct": true,
+          "explanation": "Der Fehlerpfad muss funktionieren."
+        },
+        {
+          "id": "c",
+          "text": "Reset- oder Sperrpfad bei sicherheitsrelevantem Sonderfall",
+          "correct": true,
+          "explanation": "Sonderfälle können eigene Pfade bilden."
+        },
+        {
+          "id": "d",
+          "text": "Löschen aller Aktien nach jedem Login",
+          "correct": false,
+          "explanation": "Das ist kein Loginpfad."
+        },
+        {
+          "id": "e",
+          "text": "Archivieren aller Kurse ohne Jahresbezug",
+          "correct": false,
+          "explanation": "Das gehört nicht zum Login."
+        }
+      ]
+    },
+    {
+      "id": "pv2fiae_medium_t03_sql_delete_where",
+      "conceptId": "pv2fiae_medium_t03_sql_delete_where",
+      "variantId": "pv2fiae_medium_t03_sql_delete_where_v01",
+      "interactionType": "single",
+      "questionKind": "beste_option_im_mini_szenario",
+      "badgeLabel": "Eine Antwort ist richtig.",
+      "isNew": true,
+      "prompt": "Warum ist die WHERE-Klausel beim DELETE kritisch?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Ohne passenden Filter würden zu viele Kursdatensätze gelöscht.",
+          "correct": true,
+          "explanation": "DELETE ohne Begrenzung ist gefährlich."
+        },
+        {
+          "id": "b",
+          "text": "WHERE sortiert die Ergebnisse.",
+          "correct": false,
+          "explanation": "Sortierung ist ORDER BY."
+        },
+        {
+          "id": "c",
+          "text": "WHERE legt Benutzer an.",
+          "correct": false,
+          "explanation": "Das ist CREATE USER."
+        },
+        {
+          "id": "d",
+          "text": "WHERE ersetzt Archivierung.",
+          "correct": false,
+          "explanation": "Nein."
+        }
+      ]
+    },
+    {
+      "id": "pv2fiae_medium_t03_sql_boerse_aggregation",
+      "conceptId": "pv2fiae_medium_t03_sql_boerse_aggregation",
+      "variantId": "pv2fiae_medium_t03_sql_boerse_aggregation_v01",
+      "interactionType": "single",
+      "questionKind": "beste_option_im_mini_szenario",
+      "badgeLabel": "Eine Antwort ist richtig.",
+      "isNew": true,
+      "prompt": "Welche Spalte muss in der börsenweisen Kursstatistik gruppiert werden?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Die Börse beziehungsweise Börsen-ID.",
+          "correct": true,
+          "explanation": "Die Auswertung soll je Börse erfolgen."
+        },
+        {
+          "id": "b",
+          "text": "Das Passwort des Portalnutzers.",
+          "correct": false,
+          "explanation": "Das ist kein Kursattribut."
+        },
+        {
+          "id": "c",
+          "text": "Der Dateianhang.",
+          "correct": false,
+          "explanation": "Das ist kein Tabellenfeld der Kursstatistik."
+        },
+        {
+          "id": "d",
+          "text": "Die Swimlane.",
+          "correct": false,
+          "explanation": "UML gehört nicht in GROUP BY."
+        }
+      ]
+    },
+    {
+      "id": "pv2fiae_medium_t03_sql_archiv_transaktion",
+      "conceptId": "pv2fiae_medium_t03_sql_archiv_transaktion",
+      "variantId": "pv2fiae_medium_t03_sql_archiv_transaktion_v01",
+      "interactionType": "single",
+      "questionKind": "beste_option_im_mini_szenario",
+      "badgeLabel": "Eine Antwort ist richtig.",
+      "isNew": true,
+      "prompt": "Warum sollten Archiv-INSERT und anschließendes DELETE sorgfältig abgesichert werden?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Beide Schritte müssen zusammen konsistent bleiben, damit Daten nicht verloren gehen oder doppelt bleiben.",
+          "correct": true,
+          "explanation": "Archivierung braucht Transaktionsdenken."
+        },
+        {
+          "id": "b",
+          "text": "Damit aktuelle Daten immer gelöscht werden, auch ohne Archiv.",
+          "correct": false,
+          "explanation": "Das wäre riskant."
+        },
+        {
+          "id": "c",
+          "text": "Damit Tests nie fehlschlagen.",
+          "correct": false,
+          "explanation": "Das garantiert es nicht."
+        },
+        {
+          "id": "d",
+          "text": "Damit `compare_fn` schneller wird.",
+          "correct": false,
+          "explanation": "Das ist unabhängig."
+        }
+      ]
+    },
+    {
+      "id": "pv2fiae_medium_t03_sql_archiv_jahr_filter",
+      "conceptId": "pv2fiae_medium_t03_sql_archiv_jahr_filter",
+      "variantId": "pv2fiae_medium_t03_sql_archiv_jahr_filter_v01",
+      "interactionType": "single",
+      "questionKind": "beste_option_im_mini_szenario",
+      "badgeLabel": "Eine Antwort ist richtig.",
+      "isNew": true,
+      "prompt": "Welche Filterbedingung passt für Vorjahresdaten am Jahresanfang?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Datensätze mit Jahr kleiner als aktuelles Jahr.",
+          "correct": true,
+          "explanation": "So bleiben aktuelle Jahresdaten im Hauptbestand."
+        },
+        {
+          "id": "b",
+          "text": "Alle Daten der aktuellen Woche.",
+          "correct": false,
+          "explanation": "Das ist nicht Vorjahreslogik."
+        },
+        {
+          "id": "c",
+          "text": "Alle Datensätze ohne Börse unabhängig vom Jahr.",
+          "correct": false,
+          "explanation": "Das ist ein anderes Kriterium."
+        },
+        {
+          "id": "d",
+          "text": "Alle Aktionäre mit Reset-Link.",
+          "correct": false,
+          "explanation": "Das ist kein Kursdatum."
+        }
+      ]
+    },
+    {
+      "id": "pv2fiae_medium_t03_sql_union_all",
+      "conceptId": "pv2fiae_medium_t03_sql_union_all",
+      "variantId": "pv2fiae_medium_t03_sql_union_all_v01",
+      "interactionType": "single",
+      "questionKind": "beste_option_im_mini_szenario",
+      "badgeLabel": "Eine Antwort ist richtig.",
+      "isNew": true,
+      "prompt": "Warum kann `UNION ALL` für aktuelle und archivierte Kursdaten sinnvoll sein?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Es führt gleich strukturierte Datenbestände zusammen, ohne gleiche Zeilen unnötig zu entfernen.",
+          "correct": true,
+          "explanation": "Für vollständige Historie ist Duplikatbehandlung bewusst zu wählen."
+        },
+        {
+          "id": "b",
+          "text": "Es vergibt Schreibrechte.",
+          "correct": false,
+          "explanation": "Das ist GRANT."
+        },
+        {
+          "id": "c",
+          "text": "Es sortiert automatisch nach Börse.",
+          "correct": false,
+          "explanation": "Sortierung braucht ORDER BY."
+        },
+        {
+          "id": "d",
+          "text": "Es prüft Passwort-Reset.",
+          "correct": false,
+          "explanation": "Nein."
+        }
+      ]
+    },
+    {
+      "id": "pv2fiae_medium_t03_sql_gesamtstatistik",
+      "conceptId": "pv2fiae_medium_t03_sql_gesamtstatistik",
+      "variantId": "pv2fiae_medium_t03_sql_gesamtstatistik_v01",
+      "interactionType": "single",
+      "questionKind": "beste_option_im_mini_szenario",
+      "badgeLabel": "Eine Antwort ist richtig.",
+      "isNew": true,
+      "prompt": "Was braucht eine Jahresübersicht über aktuelle und archivierte Daten?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Eine gemeinsame Datenbasis aus beiden Tabellen und anschließende Aggregation nach Jahr oder Börse.",
+          "correct": true,
+          "explanation": "Erst zusammenführen, dann auswerten."
+        },
+        {
+          "id": "b",
+          "text": "Nur ein DELETE auf dem Archiv.",
+          "correct": false,
+          "explanation": "Das würde Daten entfernen."
+        },
+        {
+          "id": "c",
+          "text": "Nur eine Swimlane.",
+          "correct": false,
+          "explanation": "Das ist kein SQL-Bericht."
+        },
+        {
+          "id": "d",
+          "text": "Nur einen Office-Anhang.",
+          "correct": false,
+          "explanation": "Das ist kein Datenbestand."
+        }
+      ]
+    }
+  ]
+}

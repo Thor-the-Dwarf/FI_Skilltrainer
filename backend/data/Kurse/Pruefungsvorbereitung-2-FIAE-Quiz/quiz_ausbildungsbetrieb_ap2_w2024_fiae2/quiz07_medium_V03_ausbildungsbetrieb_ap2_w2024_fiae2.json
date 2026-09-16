@@ -1,0 +1,904 @@
+{
+  "scenarioFolder": "Pruefungsvorbereitung-2-FIAE-Scenarien",
+  "quizFolder": "Pruefungsvorbereitung-2-FIAE-Quiz",
+  "scenarioFile": "ticket_ausbildungsbetrieb_ap2_w2024_fiae2/07_medium_ausbildungsbetrieb_ap2_w2024_fiae2.json",
+  "quizFile": "quiz_ausbildungsbetrieb_ap2_w2024_fiae2/quiz07_medium_V03_ausbildungsbetrieb_ap2_w2024_fiae2.json",
+  "ticketId": "07_medium_ausbildungsbetrieb_ap2_w2024_fiae2.json",
+  "versionId": "V03",
+  "title": "Ticket 07 Medium - Fahrzeitdaten, Abfahrts-API, Kontrollen und SQL",
+  "description": "Transferfragen zu Fahrzeitmessungen, API-Endpunkt, Kontrolldatenmodell, Importbewertung und SQL.",
+  "topics": [
+    "Fahrzeit-Arraylogik, Abfahrts-API und Kontrolldatenmodell in betrieblichen Fällen belastbar einordnen",
+    "Importqualität und SQL-Berichte für Haltestellen und Verspätungen mit Transfer sicher abwägen"
+  ],
+  "questions": [
+    {
+      "id": "pv2fiae_medium_t07_array_segment_names",
+      "conceptId": "pv2fiae_medium_t07_array_segment_names",
+      "variantId": "pv2fiae_medium_t07_array_segment_names_v03",
+      "interactionType": "single",
+      "questionKind": "beste_option_im_mini_szenario",
+      "badgeLabel": "Eine Antwort ist richtig.",
+      "isNew": true,
+      "prompt": "Welche Information braucht der Bericht zusätzlich zur Verspätungsdauer?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Damit klar ist, zwischen welchen Haltestellen die Verspätung entstand.",
+          "correct": true,
+          "explanation": "Die reine Minutenzahl reicht für Schwerpunktanalyse nicht aus."
+        },
+        {
+          "id": "b",
+          "text": "Damit der HTTP-Status ersetzt wird.",
+          "correct": false,
+          "explanation": "Das hat mit API-Statuscodes nichts zu tun."
+        },
+        {
+          "id": "c",
+          "text": "Damit alle Kontrollen gelöscht werden können.",
+          "correct": false,
+          "explanation": "Das ist kein Ziel der Auswertung."
+        },
+        {
+          "id": "d",
+          "text": "Damit die Linie immer 250 heißt.",
+          "correct": false,
+          "explanation": "Die Linie ist ein eigenes Filterkriterium."
+        }
+      ]
+    },
+    {
+      "id": "pv2fiae_medium_t07_array_only_positive_delay",
+      "conceptId": "pv2fiae_medium_t07_array_only_positive_delay",
+      "variantId": "pv2fiae_medium_t07_array_only_positive_delay_v03",
+      "interactionType": "single",
+      "questionKind": "beste_option_im_mini_szenario",
+      "badgeLabel": "Eine Antwort ist richtig.",
+      "isNew": true,
+      "prompt": "Was muss die Auswertung tun, wenn die Ist-Fahrzeit kleiner als die Plan-Fahrzeit ist?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Sie darf den Abschnitt nicht als verspätet zählen.",
+          "correct": true,
+          "explanation": "Eine negative Differenz bedeutet schneller als geplant."
+        },
+        {
+          "id": "b",
+          "text": "Sie muss eine größere Verspätung daraus machen.",
+          "correct": false,
+          "explanation": "Das wäre fachlich falsch."
+        },
+        {
+          "id": "c",
+          "text": "Sie muss die Haltestelle löschen.",
+          "correct": false,
+          "explanation": "Das ist keine Auswertungsreaktion."
+        },
+        {
+          "id": "d",
+          "text": "Sie muss 404 zurückgeben.",
+          "correct": false,
+          "explanation": "HTTP-Statuscodes gehören zur API."
+        }
+      ]
+    },
+    {
+      "id": "pv2fiae_medium_t07_array_robustness",
+      "conceptId": "pv2fiae_medium_t07_array_robustness",
+      "variantId": "pv2fiae_medium_t07_array_robustness_v03",
+      "interactionType": "multi",
+      "questionKind": "mehrere_richtige_antworten_waehlen",
+      "badgeLabel": "Mehrere Antworten sind richtig.",
+      "isNew": true,
+      "prompt": "Welche Kontrollen schützen die Abschnittsauswertung vor Laufzeit- und Fachfehlern?",
+      "maxSelections": 3,
+      "options": [
+        {
+          "id": "a",
+          "text": "Die Liste enthält mindestens zwei Messpunkte.",
+          "correct": true,
+          "explanation": "Sonst gibt es keinen Abschnitt."
+        },
+        {
+          "id": "b",
+          "text": "Plan- und Istwerte sind numerisch verwertbar.",
+          "correct": true,
+          "explanation": "Der Vergleich braucht Zahlenwerte."
+        },
+        {
+          "id": "c",
+          "text": "Die Schleife greift nicht über das letzte Element hinaus.",
+          "correct": true,
+          "explanation": "Benachbarte Vergleiche brauchen korrekte Indexgrenzen."
+        },
+        {
+          "id": "d",
+          "text": "Alle Abfahrten werden als Kontrollpersonen gespeichert.",
+          "correct": false,
+          "explanation": "Das wäre fachlich falsch."
+        }
+      ]
+    },
+    {
+      "id": "pv2fiae_medium_t07_array_max_init",
+      "conceptId": "pv2fiae_medium_t07_array_max_init",
+      "variantId": "pv2fiae_medium_t07_array_max_init_v03",
+      "interactionType": "single",
+      "questionKind": "beste_option_im_mini_szenario",
+      "badgeLabel": "Eine Antwort ist richtig.",
+      "isNew": true,
+      "prompt": "Welche Initialisierung passt, wenn nur positive Differenzen als Verspätung zählen?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Mit `0` oder einem klaren „noch kein Treffer“-Zustand.",
+          "correct": true,
+          "explanation": "So kann jede positive Verspätung den Startwert übertreffen."
+        },
+        {
+          "id": "b",
+          "text": "Mit einem zufälligen sehr hohen Wert.",
+          "correct": false,
+          "explanation": "Dann würde keine reale Verspätung mehr größer sein."
+        },
+        {
+          "id": "c",
+          "text": "Mit dem Namen der ersten Haltestelle.",
+          "correct": false,
+          "explanation": "Ein Name ist kein Zahlenwert."
+        },
+        {
+          "id": "d",
+          "text": "Mit dem HTTP-Status 404.",
+          "correct": false,
+          "explanation": "Das ist kein Verspätungswert."
+        }
+      ]
+    },
+    {
+      "id": "pv2fiae_medium_t07_api_bad_request",
+      "conceptId": "pv2fiae_medium_t07_api_bad_request",
+      "variantId": "pv2fiae_medium_t07_api_bad_request_v03",
+      "interactionType": "single",
+      "questionKind": "beste_option_im_mini_szenario",
+      "badgeLabel": "Eine Antwort ist richtig.",
+      "isNew": true,
+      "prompt": "Welche Antwort passt bei fehlender Haltestellen-ID im Request?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "`400 Bad Request`.",
+          "correct": true,
+          "explanation": "Die Anfrage ist formal fehlerhaft."
+        },
+        {
+          "id": "b",
+          "text": "`404 Not Found`.",
+          "correct": false,
+          "explanation": "404 passt eher zu einer nicht gefundenen Ressource."
+        },
+        {
+          "id": "c",
+          "text": "`201 Created`.",
+          "correct": false,
+          "explanation": "Es wurde nichts angelegt."
+        },
+        {
+          "id": "d",
+          "text": "`204 No Content` als Erfolgsfall.",
+          "correct": false,
+          "explanation": "Ein fehlender Pflichtparameter ist kein Erfolg."
+        }
+      ]
+    },
+    {
+      "id": "pv2fiae_medium_t07_api_limit_next_departures",
+      "conceptId": "pv2fiae_medium_t07_api_limit_next_departures",
+      "variantId": "pv2fiae_medium_t07_api_limit_next_departures_v03",
+      "interactionType": "single",
+      "questionKind": "beste_option_im_mini_szenario",
+      "badgeLabel": "Eine Antwort ist richtig.",
+      "isNew": true,
+      "prompt": "Welche API-Entscheidung schützt Nutzbarkeit und Datenmenge bei Abfahrtslisten?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Die Antwort bleibt kompakt und für die App schnell nutzbar.",
+          "correct": true,
+          "explanation": "Fahrgäste brauchen die nächsten relevanten Abfahrten, nicht den gesamten Fahrplan."
+        },
+        {
+          "id": "b",
+          "text": "Damit alle alten Abfahrten bevorzugt werden.",
+          "correct": false,
+          "explanation": "Vergangene Abfahrten sind nicht Ziel der Antwort."
+        },
+        {
+          "id": "c",
+          "text": "Damit Kontrolltabellen automatisch entstehen.",
+          "correct": false,
+          "explanation": "Die API-Antwort modelliert keine Tabellen."
+        },
+        {
+          "id": "d",
+          "text": "Damit SQL nicht mehr nötig ist.",
+          "correct": false,
+          "explanation": "Datenabruf und SQL-Grundlage bleiben relevant."
+        }
+      ]
+    },
+    {
+      "id": "pv2fiae_medium_t07_api_error_body",
+      "conceptId": "pv2fiae_medium_t07_api_error_body",
+      "variantId": "pv2fiae_medium_t07_api_error_body_v03",
+      "interactionType": "multi",
+      "questionKind": "mehrere_richtige_antworten_waehlen",
+      "badgeLabel": "Mehrere Antworten sind richtig.",
+      "isNew": true,
+      "prompt": "Welche Angaben sind bei HTTP-Fehlern des Abfahrtsendpunkts sinnvoll?",
+      "maxSelections": 3,
+      "options": [
+        {
+          "id": "a",
+          "text": "HTTP-Statuscode.",
+          "correct": true,
+          "explanation": "Der Status ist für Clients maschinenlesbar."
+        },
+        {
+          "id": "b",
+          "text": "Kurze fachliche Fehlermeldung.",
+          "correct": true,
+          "explanation": "Menschen müssen den Grund erkennen können."
+        },
+        {
+          "id": "c",
+          "text": "Optional ein stabiler Fehlercode.",
+          "correct": true,
+          "explanation": "Das erleichtert Client-Logik und Support."
+        },
+        {
+          "id": "d",
+          "text": "Zufällige Abfahrtsdaten trotz Fehler.",
+          "correct": false,
+          "explanation": "Fehlerantworten sollen nicht täuschen."
+        }
+      ]
+    },
+    {
+      "id": "pv2fiae_medium_t07_api_timezone",
+      "conceptId": "pv2fiae_medium_t07_api_timezone",
+      "variantId": "pv2fiae_medium_t07_api_timezone_v03",
+      "interactionType": "single",
+      "questionKind": "beste_option_im_mini_szenario",
+      "badgeLabel": "Eine Antwort ist richtig.",
+      "isNew": true,
+      "prompt": "Welche Zeitangabe verhindert Missverständnisse bei kommenden Abfahrten?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Alle Zeiten müssen in einer definierten Zeitzone oder eindeutigem Format verglichen werden.",
+          "correct": true,
+          "explanation": "Sonst können vergangene und kommende Abfahrten falsch eingeordnet werden."
+        },
+        {
+          "id": "b",
+          "text": "Zeitzonen sind bei ÖPNV-Daten immer irrelevant.",
+          "correct": false,
+          "explanation": "Zeitvergleiche hängen von klarer Zeitbasis ab."
+        },
+        {
+          "id": "c",
+          "text": "Die Zeitzone ersetzt die Haltestellen-ID.",
+          "correct": false,
+          "explanation": "Beides sind unterschiedliche Angaben."
+        },
+        {
+          "id": "d",
+          "text": "Eine Zeitzone verhindert SQL-Joins.",
+          "correct": false,
+          "explanation": "Das ist kein Zusammenhang."
+        }
+      ]
+    },
+    {
+      "id": "pv2fiae_medium_t07_model_many_inspectors",
+      "conceptId": "pv2fiae_medium_t07_model_many_inspectors",
+      "variantId": "pv2fiae_medium_t07_model_many_inspectors_v03",
+      "interactionType": "single",
+      "questionKind": "beste_option_im_mini_szenario",
+      "badgeLabel": "Eine Antwort ist richtig.",
+      "isNew": true,
+      "prompt": "Welche Beziehung braucht das Modell bei Teams aus mehreren Prüferinnen und Prüfern?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Eine Zuordnungstabelle zwischen Kontrolleinsatz und Kontrollperson.",
+          "correct": true,
+          "explanation": "Das bildet die mögliche Mehrfachbeteiligung flexibel ab."
+        },
+        {
+          "id": "b",
+          "text": "Feste Spalten `Kontrollperson1` bis `Kontrollperson5`.",
+          "correct": false,
+          "explanation": "Das ist unflexibel und nicht normalisiert."
+        },
+        {
+          "id": "c",
+          "text": "Eine einzige Freitextspalte.",
+          "correct": false,
+          "explanation": "Das ist schlecht prüfbar und auswertbar."
+        },
+        {
+          "id": "d",
+          "text": "Ein HTTP-Status als Person.",
+          "correct": false,
+          "explanation": "Das vermischt API und Datenmodell."
+        }
+      ]
+    },
+    {
+      "id": "pv2fiae_medium_t07_model_trip_reference",
+      "conceptId": "pv2fiae_medium_t07_model_trip_reference",
+      "variantId": "pv2fiae_medium_t07_model_trip_reference_v03",
+      "interactionType": "single",
+      "questionKind": "beste_option_im_mini_szenario",
+      "badgeLabel": "Eine Antwort ist richtig.",
+      "isNew": true,
+      "prompt": "Wie bleibt nachvollziehbar, wo eine Kontrolle im ÖPNV-Kontext stattfand?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Der Einsatz wird mit Fahrt, Linie oder Haltestelle verknüpft.",
+          "correct": true,
+          "explanation": "So kann später nach Betriebsbezug ausgewertet werden."
+        },
+        {
+          "id": "b",
+          "text": "Der Einsatz speichert nur eine zufällige Notiz.",
+          "correct": false,
+          "explanation": "Das wäre kaum auswertbar."
+        },
+        {
+          "id": "c",
+          "text": "Der Einsatz wird als API-Fehlercode gespeichert.",
+          "correct": false,
+          "explanation": "Das ist keine Fachbeziehung."
+        },
+        {
+          "id": "d",
+          "text": "Der Einsatz ersetzt alle Haltestellen.",
+          "correct": false,
+          "explanation": "Haltestellen bleiben eigene Daten."
+        }
+      ]
+    },
+    {
+      "id": "pv2fiae_medium_t07_model_import_quality",
+      "conceptId": "pv2fiae_medium_t07_model_import_quality",
+      "variantId": "pv2fiae_medium_t07_model_import_quality_v03",
+      "interactionType": "multi",
+      "questionKind": "mehrere_richtige_antworten_waehlen",
+      "badgeLabel": "Mehrere Antworten sind richtig.",
+      "isNew": true,
+      "prompt": "Welche Punkte sprechen gegen einen ungeprüften Direktimport?",
+      "maxSelections": 3,
+      "options": [
+        {
+          "id": "a",
+          "text": "Uneinheitliche Schreibweisen für Haltestellen oder Personal.",
+          "correct": true,
+          "explanation": "Sie erschweren die Zuordnung zu Stammdaten."
+        },
+        {
+          "id": "b",
+          "text": "Fehlende Pflichtwerte wie Datum oder Linie.",
+          "correct": true,
+          "explanation": "Solche Lücken können Beziehungen unvollständig machen."
+        },
+        {
+          "id": "c",
+          "text": "Doppelte Erfassungen desselben Einsatzes.",
+          "correct": true,
+          "explanation": "Dubletten verfälschen Auswertungen."
+        },
+        {
+          "id": "d",
+          "text": "Vollständig geprüfte Fremdschlüssel in jeder Zeile.",
+          "correct": false,
+          "explanation": "Das wäre kein Problem, sondern ein Qualitätsmerkmal."
+        }
+      ]
+    },
+    {
+      "id": "pv2fiae_medium_t07_model_staging_table",
+      "conceptId": "pv2fiae_medium_t07_model_staging_table",
+      "variantId": "pv2fiae_medium_t07_model_staging_table_v03",
+      "interactionType": "single",
+      "questionKind": "beste_option_im_mini_szenario",
+      "badgeLabel": "Eine Antwort ist richtig.",
+      "isNew": true,
+      "prompt": "Wie kann der Altbestand geprüft werden, bevor er in Zieltables geschrieben wird?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Daten können dort validiert, bereinigt und auf neue Schlüssel gemappt werden.",
+          "correct": true,
+          "explanation": "Das reduziert Risiko beim Import in das Zielmodell."
+        },
+        {
+          "id": "b",
+          "text": "Sie ersetzt dauerhaft alle normalisierten Tabellen.",
+          "correct": false,
+          "explanation": "Staging ist ein Zwischenschritt, nicht das Zielmodell."
+        },
+        {
+          "id": "c",
+          "text": "Sie liefert automatisch HTTP-Status 200.",
+          "correct": false,
+          "explanation": "Staging ist keine API-Antwort."
+        },
+        {
+          "id": "d",
+          "text": "Sie sortiert Abfahrten nach Zeit.",
+          "correct": false,
+          "explanation": "Das ist eine andere Aufgabe."
+        }
+      ]
+    },
+    {
+      "id": "pv2fiae_medium_t07_sql_active_stop_join",
+      "conceptId": "pv2fiae_medium_t07_sql_active_stop_join",
+      "variantId": "pv2fiae_medium_t07_sql_active_stop_join_v03",
+      "interactionType": "single",
+      "questionKind": "beste_option_im_mini_szenario",
+      "badgeLabel": "Eine Antwort ist richtig.",
+      "isNew": true,
+      "prompt": "Wozu dient ein JOIN bei „aktive Haltestellen der Linie 250“?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Er verbindet Haltestellen mit der Linienzuordnung.",
+          "correct": true,
+          "explanation": "Die Linie steht oft in einer Beziehungstabelle."
+        },
+        {
+          "id": "b",
+          "text": "Er erzeugt neue Haltestellen.",
+          "correct": false,
+          "explanation": "Ein JOIN verbindet vorhandene Daten."
+        },
+        {
+          "id": "c",
+          "text": "Er löscht inaktive Haltestellen.",
+          "correct": false,
+          "explanation": "Eine Abfrage soll nicht löschen."
+        },
+        {
+          "id": "d",
+          "text": "Er ersetzt den API-Endpunkt vollständig.",
+          "correct": false,
+          "explanation": "Die API kann auf SQL aufbauen, wird aber nicht durch den JOIN allein ersetzt."
+        }
+      ]
+    },
+    {
+      "id": "pv2fiae_medium_t07_sql_departures_filter_stop",
+      "conceptId": "pv2fiae_medium_t07_sql_departures_filter_stop",
+      "variantId": "pv2fiae_medium_t07_sql_departures_filter_stop_v03",
+      "interactionType": "single",
+      "questionKind": "beste_option_im_mini_szenario",
+      "badgeLabel": "Eine Antwort ist richtig.",
+      "isNew": true,
+      "prompt": "Welche Einschränkung braucht der SQL-Bericht für geplante Abfahrten am `Auenweg`?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Filter auf die Haltestelle `Auenweg` beziehungsweise ihre ID.",
+          "correct": true,
+          "explanation": "Nur Abfahrten dieser Haltestelle sollen erscheinen."
+        },
+        {
+          "id": "b",
+          "text": "Filter auf alle aktiven Kontrollpersonen.",
+          "correct": false,
+          "explanation": "Das gehört nicht zur Planabfahrt."
+        },
+        {
+          "id": "c",
+          "text": "Filter auf HTTP-Status 404.",
+          "correct": false,
+          "explanation": "Das ist kein Fahrplandatum."
+        },
+        {
+          "id": "d",
+          "text": "Keine WHERE-Bedingung.",
+          "correct": false,
+          "explanation": "Dann würden Abfahrten anderer Haltestellen erscheinen."
+        }
+      ]
+    },
+    {
+      "id": "pv2fiae_medium_t07_sql_delay_report_parts",
+      "conceptId": "pv2fiae_medium_t07_sql_delay_report_parts",
+      "variantId": "pv2fiae_medium_t07_sql_delay_report_parts_v03",
+      "interactionType": "multi",
+      "questionKind": "mehrere_richtige_antworten_waehlen",
+      "badgeLabel": "Mehrere Antworten sind richtig.",
+      "isNew": true,
+      "prompt": "Wie wird ein Plan-Ist-Bericht für ÖPNV-Daten aufgebaut?",
+      "maxSelections": 3,
+      "options": [
+        {
+          "id": "a",
+          "text": "JOIN zwischen Plan- und Istzeiten.",
+          "correct": true,
+          "explanation": "Beide Werte müssen zusammengeführt werden."
+        },
+        {
+          "id": "b",
+          "text": "Berechnung der Zeitdifferenz.",
+          "correct": true,
+          "explanation": "Die Differenz ist die Verspätung."
+        },
+        {
+          "id": "c",
+          "text": "Filter auf positive Differenzen.",
+          "correct": true,
+          "explanation": "Nur positive Abweichungen sind Verspätungen."
+        },
+        {
+          "id": "d",
+          "text": "UPDATE aller Haltestellennamen.",
+          "correct": false,
+          "explanation": "Der Bericht soll nicht Stammdaten ändern."
+        }
+      ]
+    },
+    {
+      "id": "pv2fiae_medium_t07_sql_order_departures",
+      "conceptId": "pv2fiae_medium_t07_sql_order_departures",
+      "variantId": "pv2fiae_medium_t07_sql_order_departures_v03",
+      "interactionType": "single",
+      "questionKind": "beste_option_im_mini_szenario",
+      "badgeLabel": "Eine Antwort ist richtig.",
+      "isNew": true,
+      "prompt": "Welche Sortierung macht die Abfahrtsausgabe am `Auenweg` lesbar?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "`ORDER BY Abfahrtszeit ASC`.",
+          "correct": true,
+          "explanation": "Die früheste Abfahrt steht zuerst."
+        },
+        {
+          "id": "b",
+          "text": "`ORDER BY Kontrollperson DESC`.",
+          "correct": false,
+          "explanation": "Kontrollpersonen gehören nicht zur Abfahrtssortierung."
+        },
+        {
+          "id": "c",
+          "text": "`GROUP BY Abfahrtszeit` ohne Ausgabeziel.",
+          "correct": false,
+          "explanation": "Gruppierung ersetzt keine Sortierung."
+        },
+        {
+          "id": "d",
+          "text": "`DELETE ORDER BY Abfahrtszeit`.",
+          "correct": false,
+          "explanation": "Das ist keine Ausgabeabfrage."
+        }
+      ]
+    },
+    {
+      "id": "pv2fiae_medium_t07_sql_delay_alias",
+      "conceptId": "pv2fiae_medium_t07_sql_delay_alias",
+      "variantId": "pv2fiae_medium_t07_sql_delay_alias_v03",
+      "interactionType": "single",
+      "questionKind": "beste_option_im_mini_szenario",
+      "badgeLabel": "Eine Antwort ist richtig.",
+      "isNew": true,
+      "prompt": "Wie wird die berechnete Verspätungsspalte im Ergebnis verständlicher?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Die berechnete Spalte ist für Leserinnen und Leser sofort erkennbar.",
+          "correct": true,
+          "explanation": "Ein Alias benennt die Fachbedeutung des Ausdrucks."
+        },
+        {
+          "id": "b",
+          "text": "Der Alias verhindert jede falsche Berechnung automatisch.",
+          "correct": false,
+          "explanation": "Die Formel muss trotzdem korrekt sein."
+        },
+        {
+          "id": "c",
+          "text": "Der Alias löscht negative Differenzen.",
+          "correct": false,
+          "explanation": "Filtern ist eine eigene WHERE- oder HAVING-Logik."
+        },
+        {
+          "id": "d",
+          "text": "Der Alias ersetzt Fremdschlüssel.",
+          "correct": false,
+          "explanation": "Aliasse sind nur Ausgabenamen."
+        }
+      ]
+    },
+    {
+      "id": "pv2fiae_medium_t07_api_sql_boundary",
+      "conceptId": "pv2fiae_medium_t07_api_sql_boundary",
+      "variantId": "pv2fiae_medium_t07_api_sql_boundary_v03",
+      "interactionType": "single",
+      "questionKind": "beste_option_im_mini_szenario",
+      "badgeLabel": "Eine Antwort ist richtig.",
+      "isNew": true,
+      "prompt": "Was ist bei der Gestaltung einer API-Antwort gegenüber internen Tabellenstrukturen sinnvoll?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Die API sollte nur die für den Client nötigen Felder ausgeben.",
+          "correct": true,
+          "explanation": "Interne Schlüssel und technische Details gehören nicht automatisch in die Antwort."
+        },
+        {
+          "id": "b",
+          "text": "Die API muss jede Tabelle vollständig ausgeben.",
+          "correct": false,
+          "explanation": "Das wäre unnötig breit und riskant."
+        },
+        {
+          "id": "c",
+          "text": "Die API darf keine Abfahrtszeit enthalten.",
+          "correct": false,
+          "explanation": "Die Abfahrtszeit ist zentral."
+        },
+        {
+          "id": "d",
+          "text": "Die Datenbankstruktur ersetzt jede Fehlerantwort.",
+          "correct": false,
+          "explanation": "Fehlerbehandlung bleibt nötig."
+        }
+      ]
+    },
+    {
+      "id": "pv2fiae_medium_t07_import_reject_or_fix",
+      "conceptId": "pv2fiae_medium_t07_import_reject_or_fix",
+      "variantId": "pv2fiae_medium_t07_import_reject_or_fix_v03",
+      "interactionType": "single",
+      "questionKind": "beste_option_im_mini_szenario",
+      "badgeLabel": "Eine Antwort ist richtig.",
+      "isNew": true,
+      "prompt": "Welche Behandlung passt zu Importdatensätzen mit ungeklärter Haltestelle?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Sie werden in eine Klärliste gegeben oder abgewiesen, bis die Zuordnung gelöst ist.",
+          "correct": true,
+          "explanation": "Ungültige Fremdschlüssel sollten nicht still importiert werden."
+        },
+        {
+          "id": "b",
+          "text": "Sie werden einer zufälligen Haltestelle zugeordnet.",
+          "correct": false,
+          "explanation": "Das verfälscht Daten."
+        },
+        {
+          "id": "c",
+          "text": "Sie werden als HTTP-Status gespeichert.",
+          "correct": false,
+          "explanation": "Das löst die fachliche Zuordnung nicht."
+        },
+        {
+          "id": "d",
+          "text": "Sie werden automatisch zu Planzeiten.",
+          "correct": false,
+          "explanation": "Kontrolldaten sind keine Planzeiten."
+        }
+      ]
+    },
+    {
+      "id": "pv2fiae_medium_t07_delay_threshold",
+      "conceptId": "pv2fiae_medium_t07_delay_threshold",
+      "variantId": "pv2fiae_medium_t07_delay_threshold_v03",
+      "interactionType": "single",
+      "questionKind": "beste_option_im_mini_szenario",
+      "badgeLabel": "Eine Antwort ist richtig.",
+      "isNew": true,
+      "prompt": "Welche Wirkung hat ein fachlicher Mindestwert für Verspätungen?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Der Bericht konzentriert sich auf relevante Abweichungen.",
+          "correct": true,
+          "explanation": "Kleine Schwankungen können ausgeblendet werden, wenn der Fachbereich das will."
+        },
+        {
+          "id": "b",
+          "text": "Alle Verspätungen werden dadurch automatisch gelöscht.",
+          "correct": false,
+          "explanation": "Ein Bericht filtert nur die Ausgabe."
+        },
+        {
+          "id": "c",
+          "text": "Die API gibt dann keine Fehler mehr aus.",
+          "correct": false,
+          "explanation": "Das ist unabhängig."
+        },
+        {
+          "id": "d",
+          "text": "Kontrollpersonen werden dadurch normalisiert.",
+          "correct": false,
+          "explanation": "Das ist Datenmodellierung."
+        }
+      ]
+    },
+    {
+      "id": "pv2fiae_medium_t07_status_codes_distinction",
+      "conceptId": "pv2fiae_medium_t07_status_codes_distinction",
+      "variantId": "pv2fiae_medium_t07_status_codes_distinction_v03",
+      "interactionType": "single",
+      "questionKind": "beste_option_im_mini_szenario",
+      "badgeLabel": "Eine Antwort ist richtig.",
+      "isNew": true,
+      "prompt": "Welche Zuordnung von 400 und 404 ist im Abfahrtsendpunkt plausibel?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "400 für fehlerhafte Anfrage, 404 für nicht gefundene Haltestelle.",
+          "correct": true,
+          "explanation": "Die Ursachen sind unterschiedlich und sollten getrennt werden."
+        },
+        {
+          "id": "b",
+          "text": "Immer 200, auch bei Fehlern.",
+          "correct": false,
+          "explanation": "Das verschleiert Fehler."
+        },
+        {
+          "id": "c",
+          "text": "Immer 500 für jede Nutzeranfrage.",
+          "correct": false,
+          "explanation": "Nicht jeder Fehler ist ein Serverfehler."
+        },
+        {
+          "id": "d",
+          "text": "201 für leere Abfahrtslisten.",
+          "correct": false,
+          "explanation": "Es wird nichts erstellt."
+        }
+      ]
+    },
+    {
+      "id": "pv2fiae_medium_t07_api_rate_limiting",
+      "conceptId": "pv2fiae_medium_t07_api_rate_limiting",
+      "variantId": "pv2fiae_medium_t07_api_rate_limiting_v03",
+      "interactionType": "single",
+      "questionKind": "beste_option_im_mini_szenario",
+      "badgeLabel": "Eine Antwort ist richtig.",
+      "isNew": true,
+      "prompt": "Was hilft, wenn eine Fahrgast-App oder ein Client den Abfahrtsendpunkt übermäßig häufig abruft?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Begrenzung der Anfragen pro Zeitraum.",
+          "correct": true,
+          "explanation": "Rate Limiting schützt Verfügbarkeit und Backend-Ressourcen."
+        },
+        {
+          "id": "b",
+          "text": "Ausgabe aller internen Tabellen.",
+          "correct": false,
+          "explanation": "Das erhöht eher Risiko und Datenmenge."
+        },
+        {
+          "id": "c",
+          "text": "Löschen der Haltestellen.",
+          "correct": false,
+          "explanation": "Das schützt keinen Endpunkt."
+        },
+        {
+          "id": "d",
+          "text": "Speichern von HTTP-Statuscodes als Kontrollpersonen.",
+          "correct": false,
+          "explanation": "Das ist fachlich falsch."
+        }
+      ]
+    },
+    {
+      "id": "pv2fiae_medium_t07_sql_index_for_departures",
+      "conceptId": "pv2fiae_medium_t07_sql_index_for_departures",
+      "variantId": "pv2fiae_medium_t07_sql_index_for_departures_v03",
+      "interactionType": "single",
+      "questionKind": "beste_option_im_mini_szenario",
+      "badgeLabel": "Eine Antwort ist richtig.",
+      "isNew": true,
+      "prompt": "Welche Datenbankstruktur passt zur häufigen Suche nach Haltestelle und Zeit?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Ein Index auf Haltestellenbezug und Abfahrtszeit.",
+          "correct": true,
+          "explanation": "Die Abfrage filtert nach Haltestelle und sortiert beziehungsweise begrenzt nach Zeit."
+        },
+        {
+          "id": "b",
+          "text": "Ein Index nur auf Fehlermeldungstext.",
+          "correct": false,
+          "explanation": "Das hilft der Abfahrtsabfrage nicht."
+        },
+        {
+          "id": "c",
+          "text": "Ein Freitextfeld mit allen Abfahrten.",
+          "correct": false,
+          "explanation": "Das wäre schlecht filterbar."
+        },
+        {
+          "id": "d",
+          "text": "Eine Zuordnung zwischen Kontrollperson und HTTP-Status.",
+          "correct": false,
+          "explanation": "Das ist kein Fahrplanindex."
+        }
+      ]
+    },
+    {
+      "id": "pv2fiae_medium_t07_model_violation_status",
+      "conceptId": "pv2fiae_medium_t07_model_violation_status",
+      "variantId": "pv2fiae_medium_t07_model_violation_status_v03",
+      "interactionType": "single",
+      "questionKind": "beste_option_im_mini_szenario",
+      "badgeLabel": "Eine Antwort ist richtig.",
+      "isNew": true,
+      "prompt": "Wie wird abgebildet, ob eine Kontrolle ohne Beanstandung oder mit Verstoß endete?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Als Attribut des konkreten Kontrolleinsatzes oder eines kontrollierten Vorgangs.",
+          "correct": true,
+          "explanation": "Der Status beschreibt das Ergebnis einer konkreten Kontrolle."
+        },
+        {
+          "id": "b",
+          "text": "Als Attribut der Haltestellen-Stammdaten.",
+          "correct": false,
+          "explanation": "Eine Haltestelle hat nicht dauerhaft diesen Kontrollstatus."
+        },
+        {
+          "id": "c",
+          "text": "Als HTTP-Statuscode der API.",
+          "correct": false,
+          "explanation": "API-Statuscodes sind technische Antworten."
+        },
+        {
+          "id": "d",
+          "text": "Als Sortierindex der Fahrzeitmessung.",
+          "correct": false,
+          "explanation": "Das hat keinen Bezug zum Kontrollergebnis."
+        }
+      ]
+    }
+  ]
+}
