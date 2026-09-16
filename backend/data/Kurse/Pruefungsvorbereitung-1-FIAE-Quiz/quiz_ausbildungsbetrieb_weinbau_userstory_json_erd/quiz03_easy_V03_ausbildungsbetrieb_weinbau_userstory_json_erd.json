@@ -1,0 +1,928 @@
+{
+  "scenarioFolder": "Pruefungsvorbereitung-1-FIAE-Scenarien",
+  "quizFolder": "Pruefungsvorbereitung-1-FIAE-Quiz",
+  "scenarioFile": "ticket_ausbildungsbetrieb_weinbau_userstory_json_erd/03_easy_ausbildungsbetrieb_weinbau_userstory_json_erd.json",
+  "quizFile": "quiz_ausbildungsbetrieb_weinbau_userstory_json_erd/quiz03_easy_V03_ausbildungsbetrieb_weinbau_userstory_json_erd.json",
+  "ticketId": "03_easy_ausbildungsbetrieb_weinbau_userstory_json_erd.json",
+  "versionId": "V03",
+  "title": "Ticket 03 Easy - Weinbau, User Stories und Dokumentdaten",
+  "description": "Manuell verfasstes FIAE-Training im Einstiegsniveau zu Stakeholdern, Green IT, Testkonzept, User Stories, Dokumentdaten und ER-Modellierung in einem zusammenhängenden Weinbauprojekt.",
+  "topics": [
+    "Stakeholder, Green IT, Testkonzept und User Stories im Weinbauprojekt fachlich sicher einordnen",
+    "Dokumentdaten, JSON-Struktur und ER-Modellierung für Weinberge und Sektoren nachvollziehbar verbinden"
+  ],
+  "questions": [
+    {
+      "id": "pv1fiae_easy_t03_q01",
+      "conceptId": "pv1fiae_easy_t03_stakeholder_gruppen",
+      "variantId": "pv1fiae_easy_t03_stakeholder_gruppen_v03",
+      "interactionType": "multi",
+      "questionKind": "mehrere_richtige_antworten_waehlen",
+      "badgeLabel": "Mehrere Antworten sind richtig.",
+      "isNew": true,
+      "prompt": "Welche Beteiligten sollte das Projektteam im Weinbau-Fall eindeutig als Stakeholder mitdenken? Mehrere Antworten sind richtig.",
+      "maxSelections": 5,
+      "options": [
+        {
+          "id": "a",
+          "text": "Geschäftsleitung des Softwareanbieters",
+          "correct": true,
+          "explanation": "Sie trägt wirtschaftliche Verantwortung für das Projekt."
+        },
+        {
+          "id": "b",
+          "text": "Entwicklungs-, Betriebs- und Supportteam",
+          "correct": true,
+          "explanation": "Diese Gruppen arbeiten direkt an Umsetzung und Betrieb."
+        },
+        {
+          "id": "c",
+          "text": "Leitung der beteiligten Weinbaubetriebe",
+          "correct": true,
+          "explanation": "Die Fachseite entscheidet über Nutzen und Einführung."
+        },
+        {
+          "id": "d",
+          "text": "Zuständige Fach- oder Aufsichtsbehörden",
+          "correct": true,
+          "explanation": "Regulatorische und dokumentarische Anforderungen können hier relevant sein."
+        },
+        {
+          "id": "e",
+          "text": "Cloud-Anbieter oder Plattformbetreiber",
+          "correct": true,
+          "explanation": "Verfügbarkeit und Betriebsrahmen hängen von diesen Dienstleistern ab."
+        },
+        {
+          "id": "f",
+          "text": "Ein örtlicher Musikverein ohne Projektbezug",
+          "correct": false,
+          "explanation": "Ohne fachliche oder organisatorische Verbindung ist das kein Stakeholder."
+        }
+      ]
+    },
+    {
+      "id": "pv1fiae_easy_t03_q02",
+      "conceptId": "pv1fiae_easy_t03_workshop_ziele",
+      "variantId": "pv1fiae_easy_t03_workshop_ziele_v03",
+      "interactionType": "multi",
+      "questionKind": "mehrere_richtige_antworten_waehlen",
+      "badgeLabel": "Mehrere Antworten sind richtig.",
+      "isNew": true,
+      "prompt": "Welche Ergebnisse sollte ein guter Projektstart-Workshop für die Weinbau-Plattform liefern? Mehrere Antworten sind richtig.",
+      "maxSelections": 4,
+      "options": [
+        {
+          "id": "a",
+          "text": "Projektziele und erwarteten Nutzen für alle Beteiligten transparent machen",
+          "correct": true,
+          "explanation": "Ein gemeinsames Zielbild ist ein typischer Workshopzweck."
+        },
+        {
+          "id": "b",
+          "text": "Risiken und Grenzen des bisherigen Vorgehens sichtbar machen",
+          "correct": true,
+          "explanation": "Auch Risiken und Ausgangslage werden zu Beginn geklärt."
+        },
+        {
+          "id": "c",
+          "text": "Unterstützende, skeptische und unentschlossene Gruppen erkennen",
+          "correct": true,
+          "explanation": "Die Stakeholder-Lage hilft für Kommunikation und Einführung."
+        },
+        {
+          "id": "d",
+          "text": "Den Nutzen einer KI-gestützten Lösung nachvollziehbar erläutern",
+          "correct": true,
+          "explanation": "Akzeptanz entsteht leichter, wenn der Nutzen greifbar wird."
+        },
+        {
+          "id": "e",
+          "text": "Noch im Workshop den Produktivstart für denselben Tag festlegen",
+          "correct": false,
+          "explanation": "Ein Start-Workshop ersetzt keine technische Freigabe."
+        }
+      ]
+    },
+    {
+      "id": "pv1fiae_easy_t03_q03",
+      "conceptId": "pv1fiae_easy_t03_green_it_definition",
+      "variantId": "pv1fiae_easy_t03_green_it_definition_v03",
+      "interactionType": "single",
+      "questionKind": "definition_zu_begriff",
+      "badgeLabel": "Welche Erläuterung passt am besten?",
+      "isNew": true,
+      "prompt": "Welche Aussage erklärt Green IT für dieses Vorhaben am saubersten?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "IT-Systeme über ihren Lebenszyklus möglichst energie- und ressourcenschonend planen, betreiben und nutzen",
+          "correct": true,
+          "explanation": "Das beschreibt Green IT fachlich zutreffend."
+        },
+        {
+          "id": "b",
+          "text": "Nur das Logo der Anwendung grün einfärben und den Rest unverändert lassen",
+          "correct": false,
+          "explanation": "Green IT ist kein reines Gestaltungsmerkmal."
+        },
+        {
+          "id": "c",
+          "text": "Hardware austauschen, sobald sie älter als ein Jahr ist",
+          "correct": false,
+          "explanation": "Das widerspricht eher einer ressourcenschonenden Sicht."
+        },
+        {
+          "id": "d",
+          "text": "Jede Analyse dauerhaft auf maximaler Rechenleistung laufen lassen",
+          "correct": false,
+          "explanation": "Auch das passt nicht zu Green IT."
+        }
+      ]
+    },
+    {
+      "id": "pv1fiae_easy_t03_q04",
+      "conceptId": "pv1fiae_easy_t03_green_it_ziele",
+      "variantId": "pv1fiae_easy_t03_green_it_ziele_v03",
+      "interactionType": "multi",
+      "questionKind": "mehrere_richtige_antworten_waehlen",
+      "badgeLabel": "Mehrere Antworten sind richtig.",
+      "isNew": true,
+      "prompt": "Welche Ziele sprechen im Alltag dieses Projekts am deutlichsten für Green IT? Mehrere Antworten sind richtig.",
+      "maxSelections": 2,
+      "options": [
+        {
+          "id": "a",
+          "text": "Energieverbrauch von Endgeräten, Plattform und Infrastruktur senken",
+          "correct": true,
+          "explanation": "Ein geringerer Energiebedarf ist ein Kernziel."
+        },
+        {
+          "id": "b",
+          "text": "Ressourcen und Hardware möglichst effizient und länger nutzen",
+          "correct": true,
+          "explanation": "Auch Nutzungsdauer und Ressourcenschonung gehören dazu."
+        },
+        {
+          "id": "c",
+          "text": "Jeden Monatsbericht verpflichtend farbig ausdrucken",
+          "correct": false,
+          "explanation": "Das erhöht eher den Ressourcenverbrauch."
+        },
+        {
+          "id": "d",
+          "text": "Für jede kleine Auswertung standardmäßig neue Testserver reservieren",
+          "correct": false,
+          "explanation": "Unnötige Infrastruktur passt nicht zu Green IT."
+        }
+      ]
+    },
+    {
+      "id": "pv1fiae_easy_t03_q05",
+      "conceptId": "pv1fiae_easy_t03_testkonzept_bestandteile",
+      "variantId": "pv1fiae_easy_t03_testkonzept_bestandteile_v03",
+      "interactionType": "multi",
+      "questionKind": "mehrere_richtige_antworten_waehlen",
+      "badgeLabel": "Mehrere Antworten sind richtig.",
+      "isNew": true,
+      "prompt": "Welche Bausteine muss ein Testkonzept für diese Anwendung sinnvollerweise enthalten? Mehrere Antworten sind richtig.",
+      "maxSelections": 4,
+      "options": [
+        {
+          "id": "a",
+          "text": "Teststrategie und Testziele",
+          "correct": true,
+          "explanation": "Ein Testkonzept beschreibt, wofür und wie getestet wird."
+        },
+        {
+          "id": "b",
+          "text": "Regeln, Vorlagen und Nachweise für Testdokumentation",
+          "correct": true,
+          "explanation": "Dokumentation und Nachvollziehbarkeit gehören dazu."
+        },
+        {
+          "id": "c",
+          "text": "Testumgebung und mögliche Testautomatisierung",
+          "correct": true,
+          "explanation": "Ohne passende Umgebung bleibt das Konzept unvollständig."
+        },
+        {
+          "id": "d",
+          "text": "Zusammenspiel der Teststufen mit anderen Projektaktivitäten",
+          "correct": true,
+          "explanation": "Testen muss in Entwicklung und Abnahme eingebettet sein."
+        },
+        {
+          "id": "e",
+          "text": "Die private Playlist der Fachabteilung",
+          "correct": false,
+          "explanation": "Das hat fachlich nichts mit dem Testkonzept zu tun."
+        }
+      ]
+    },
+    {
+      "id": "pv1fiae_easy_t03_q06",
+      "conceptId": "pv1fiae_easy_t03_user_story_zweck",
+      "variantId": "pv1fiae_easy_t03_user_story_zweck_v03",
+      "interactionType": "single",
+      "questionKind": "definition_zu_begriff",
+      "badgeLabel": "Welche Erläuterung passt am besten?",
+      "isNew": true,
+      "prompt": "Welche fachliche Funktion erfüllt eine User Story in der Mess-App?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Sie beschreibt eine gewünschte Funktion aus Sicht eines Nutzers mit erkennbarem Nutzen",
+          "correct": true,
+          "explanation": "Genau dafür werden User Stories formuliert."
+        },
+        {
+          "id": "b",
+          "text": "Sie ersetzt automatisch jedes technische Feinkonzept",
+          "correct": false,
+          "explanation": "Eine User Story ersetzt nicht jede technische Ausarbeitung."
+        },
+        {
+          "id": "c",
+          "text": "Sie dokumentiert ausschließlich fertigen Quellcode",
+          "correct": false,
+          "explanation": "Das ist nicht ihre Aufgabe."
+        },
+        {
+          "id": "d",
+          "text": "Sie dient nur dazu, Designfarben auszuwählen",
+          "correct": false,
+          "explanation": "Auch das trifft den Zweck nicht."
+        }
+      ]
+    },
+    {
+      "id": "pv1fiae_easy_t03_q07",
+      "conceptId": "pv1fiae_easy_t03_user_story_bausteine",
+      "variantId": "pv1fiae_easy_t03_user_story_bausteine_v03",
+      "interactionType": "multi",
+      "questionKind": "mehrere_richtige_antworten_waehlen",
+      "badgeLabel": "Mehrere Antworten sind richtig.",
+      "isNew": true,
+      "prompt": "Welche drei Teile tragen eine klassische User Story? Mehrere Antworten sind richtig.",
+      "maxSelections": 3,
+      "options": [
+        {
+          "id": "a",
+          "text": "Rolle oder Nutzergruppe",
+          "correct": true,
+          "explanation": "Die Story benennt, wer etwas tun will."
+        },
+        {
+          "id": "b",
+          "text": "Gewünschte Funktion oder Handlung",
+          "correct": true,
+          "explanation": "Die Story beschreibt, was möglich sein soll."
+        },
+        {
+          "id": "c",
+          "text": "Erkennbarer Nutzen oder Zweck",
+          "correct": true,
+          "explanation": "Der erwartete Mehrwert gehört dazu."
+        },
+        {
+          "id": "d",
+          "text": "Die vollständige Datenbankstruktur des Gesamtsystems",
+          "correct": false,
+          "explanation": "Das wäre für eine einzelne User Story zu technisch und zu detailliert."
+        }
+      ]
+    },
+    {
+      "id": "pv1fiae_easy_t03_q08",
+      "conceptId": "pv1fiae_easy_t03_invest_independent",
+      "variantId": "pv1fiae_easy_t03_invest_independent_v03",
+      "interactionType": "single",
+      "questionKind": "definition_zu_begriff",
+      "badgeLabel": "Welche Erläuterung passt am besten?",
+      "isNew": true,
+      "prompt": "Was bedeutet das `I` in INVEST im Kern?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Independent, also möglichst unabhängig von anderen Stories",
+          "correct": true,
+          "explanation": "Das `I` steht für möglichst unabhängige Stories."
+        },
+        {
+          "id": "b",
+          "text": "Installed, also bereits vollständig ausgerollt",
+          "correct": false,
+          "explanation": "Das gehört nicht zu INVEST."
+        },
+        {
+          "id": "c",
+          "text": "Indexed, also bereits in einer Datenbank indiziert",
+          "correct": false,
+          "explanation": "Auch das ist kein INVEST-Kriterium."
+        },
+        {
+          "id": "d",
+          "text": "Illustrated, also grafisch ausgearbeitet",
+          "correct": false,
+          "explanation": "Das ist ebenfalls falsch."
+        }
+      ]
+    },
+    {
+      "id": "pv1fiae_easy_t03_q09",
+      "conceptId": "pv1fiae_easy_t03_akzeptanzkriterien_rolle",
+      "variantId": "pv1fiae_easy_t03_akzeptanzkriterien_rolle_v03",
+      "interactionType": "single",
+      "questionKind": "vergleich_treffen",
+      "badgeLabel": "Welche Aussage trifft am besten zu?",
+      "isNew": true,
+      "prompt": "Weshalb sind Akzeptanzkriterien für eine Story im Weinbau-Projekt so nützlich?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Sie machen überprüfbar, wann eine Story fachlich als erfüllt gilt",
+          "correct": true,
+          "explanation": "Akzeptanzkriterien schaffen ein klares Prüfbild."
+        },
+        {
+          "id": "b",
+          "text": "Sie ersetzen jede Form von Rückfrage zwischen Fachseite und Entwicklung",
+          "correct": false,
+          "explanation": "Klärung kann trotzdem nötig bleiben."
+        },
+        {
+          "id": "c",
+          "text": "Sie sind nur nach dem Produktivstart wichtig",
+          "correct": false,
+          "explanation": "Akzeptanzkriterien helfen schon während Umsetzung und Test."
+        },
+        {
+          "id": "d",
+          "text": "Sie beschreiben ausschließlich die Farbgestaltung der Oberfläche",
+          "correct": false,
+          "explanation": "Das ist zu eng und fachlich falsch."
+        }
+      ]
+    },
+    {
+      "id": "pv1fiae_easy_t03_q10",
+      "conceptId": "pv1fiae_easy_t03_user_story_beispiel",
+      "variantId": "pv1fiae_easy_t03_user_story_beispiel_v03",
+      "interactionType": "best",
+      "questionKind": "beste_option_im_mini_szenario",
+      "badgeLabel": "Welche Formulierung passt am besten?",
+      "isNew": true,
+      "prompt": "Welche der folgenden Formulierungen ist als User Story am tragfähigsten?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Als Winzer möchte ich Messwerte zu einem Sektor speichern, damit ich Pflegeentscheidungen später nachvollziehen kann.",
+          "correct": true,
+          "explanation": "Die Formulierung enthält Rolle, Funktion und Nutzen."
+        },
+        {
+          "id": "b",
+          "text": "Die App soll modern sein und irgendwann irgendetwas mit Daten machen.",
+          "correct": false,
+          "explanation": "Diese Aussage ist zu unpräzise."
+        },
+        {
+          "id": "c",
+          "text": "Es wird eine PostgreSQL-Tabelle mit allen Spalten angelegt.",
+          "correct": false,
+          "explanation": "Das ist ein technischer Umsetzungsschritt, keine User Story."
+        },
+        {
+          "id": "d",
+          "text": "Wir notieren erst später, was der Winzer eigentlich braucht.",
+          "correct": false,
+          "explanation": "Das ist keine fachlich brauchbare Story."
+        }
+      ]
+    },
+    {
+      "id": "pv1fiae_easy_t03_q11",
+      "conceptId": "pv1fiae_easy_t03_speichervorgang_reihenfolge",
+      "variantId": "pv1fiae_easy_t03_speichervorgang_reihenfolge_v03",
+      "interactionType": "single",
+      "questionKind": "prioritaet_setzen",
+      "badgeLabel": "Welcher Schritt ist fachlich am frühesten?",
+      "isNew": true,
+      "prompt": "Welcher Schritt steht im Ablauf des Messwert-Speicherns logisch ganz am Anfang?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Messwerte erfassen und an die Anwendung übergeben",
+          "correct": true,
+          "explanation": "Ohne Eingangsdaten kann der Speichervorgang nicht beginnen."
+        },
+        {
+          "id": "b",
+          "text": "Erfolgsmeldung an die Fachseite zurückgeben",
+          "correct": false,
+          "explanation": "Das passiert erst nach erfolgreicher Verarbeitung."
+        },
+        {
+          "id": "c",
+          "text": "Dauerhafte Persistenz bestätigen",
+          "correct": false,
+          "explanation": "Auch das folgt später."
+        },
+        {
+          "id": "d",
+          "text": "Archivdaten für Altfälle auswerten",
+          "correct": false,
+          "explanation": "Das gehört nicht an den Anfang des aktuellen Speichervorgangs."
+        }
+      ]
+    },
+    {
+      "id": "pv1fiae_easy_t03_q12",
+      "conceptId": "pv1fiae_easy_t03_validierung_vor_persistenz",
+      "variantId": "pv1fiae_easy_t03_validierung_vor_persistenz_v03",
+      "interactionType": "best",
+      "questionKind": "passende_massnahme_auswaehlen",
+      "badgeLabel": "Welche Maßnahme passt am besten?",
+      "isNew": true,
+      "prompt": "Welche Prüfung sollte vor der Persistenz der Messdaten auf keinen Fall fehlen?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Eingabedaten auf Vollständigkeit und Plausibilität prüfen",
+          "correct": true,
+          "explanation": "Validierung gehört vor die Persistenz."
+        },
+        {
+          "id": "b",
+          "text": "Die Daten ungeprüft speichern und erst Monate später ansehen",
+          "correct": false,
+          "explanation": "Das erhöht das Fehlerrisiko unnötig."
+        },
+        {
+          "id": "c",
+          "text": "Jede Eingabe ohne Prüfung in mehreren Formaten duplizieren",
+          "correct": false,
+          "explanation": "Das löst das Grundproblem nicht."
+        },
+        {
+          "id": "d",
+          "text": "Alle Messwerte vorab manuell auf Papier protokollieren",
+          "correct": false,
+          "explanation": "Das ist hier keine passende Kernmaßnahme."
+        }
+      ]
+    },
+    {
+      "id": "pv1fiae_easy_t03_q13",
+      "conceptId": "pv1fiae_easy_t03_acid_atomicity",
+      "variantId": "pv1fiae_easy_t03_acid_atomicity_v03",
+      "interactionType": "single",
+      "questionKind": "definition_zu_begriff",
+      "badgeLabel": "Welche Erläuterung passt am besten?",
+      "isNew": false,
+      "prompt": "Wie lässt sich `Atomicity` am knappsten und richtigsten beschreiben?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Eine Transaktion wird ganz oder gar nicht ausgeführt",
+          "correct": true,
+          "explanation": "Das ist die Kernaussage von Atomicity."
+        },
+        {
+          "id": "b",
+          "text": "Mehrere Nutzer arbeiten immer gleichzeitig im selben Datensatz",
+          "correct": false,
+          "explanation": "Das beschreibt keine Atomicity."
+        },
+        {
+          "id": "c",
+          "text": "Daten bleiben nur im Arbeitsspeicher erhalten",
+          "correct": false,
+          "explanation": "Das passt nicht."
+        },
+        {
+          "id": "d",
+          "text": "Jede Tabelle braucht automatisch drei Normalformen",
+          "correct": false,
+          "explanation": "Das ist ein anderes Thema."
+        }
+      ]
+    },
+    {
+      "id": "pv1fiae_easy_t03_q14",
+      "conceptId": "pv1fiae_easy_t03_acid_consistency",
+      "variantId": "pv1fiae_easy_t03_acid_consistency_v03",
+      "interactionType": "best",
+      "questionKind": "beispiel_erkennen",
+      "badgeLabel": "Welches Beispiel passt am besten?",
+      "isNew": false,
+      "prompt": "Welches Beispiel zeigt `Consistency` im Datenbankkontext am treffendsten?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Nach dem Speichern bleiben Regeln und Beziehungen der Daten weiterhin gültig",
+          "correct": true,
+          "explanation": "Consistency bedeutet, dass erlaubte Zustände erhalten bleiben."
+        },
+        {
+          "id": "b",
+          "text": "Eine Transaktion wird bei Stromausfall immer unsichtbar",
+          "correct": false,
+          "explanation": "Das passt eher nicht als Definition von Consistency."
+        },
+        {
+          "id": "c",
+          "text": "Mehrere Nutzer dürfen nie gleichzeitig lesen",
+          "correct": false,
+          "explanation": "Auch das ist kein passendes Beispiel."
+        },
+        {
+          "id": "d",
+          "text": "Alle Daten werden nur in JSON-Arrays gespeichert",
+          "correct": false,
+          "explanation": "Das hat mit Consistency nichts zu tun."
+        }
+      ]
+    },
+    {
+      "id": "pv1fiae_easy_t03_q15",
+      "conceptId": "pv1fiae_easy_t03_acid_isolation",
+      "variantId": "pv1fiae_easy_t03_acid_isolation_v03",
+      "interactionType": "single",
+      "questionKind": "definition_zu_begriff",
+      "badgeLabel": "Welche Erläuterung passt am besten?",
+      "isNew": false,
+      "prompt": "Was ist mit `Isolation` bei parallelen Transaktionen gemeint?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Gleichzeitige Transaktionen beeinflussen sich nicht unkontrolliert gegenseitig",
+          "correct": true,
+          "explanation": "Genau darum geht es bei Isolation."
+        },
+        {
+          "id": "b",
+          "text": "Jede Transaktion wird grundsätzlich in Papierform gespiegelt",
+          "correct": false,
+          "explanation": "Das ist fachlich unbegründet."
+        },
+        {
+          "id": "c",
+          "text": "Ein Datensatz darf nur einmal im System vorkommen",
+          "correct": false,
+          "explanation": "Das ist keine Definition von Isolation."
+        },
+        {
+          "id": "d",
+          "text": "Nur Administratoren dürfen JSON-Dateien lesen",
+          "correct": false,
+          "explanation": "Auch das ist kein ACID-Aspekt."
+        }
+      ]
+    },
+    {
+      "id": "pv1fiae_easy_t03_q16",
+      "conceptId": "pv1fiae_easy_t03_acid_durability",
+      "variantId": "pv1fiae_easy_t03_acid_durability_v03",
+      "interactionType": "best",
+      "questionKind": "ursache_folge_erkennen",
+      "badgeLabel": "Welche Folge ist am wahrscheinlichsten?",
+      "isNew": false,
+      "prompt": "Eine Transaktion wurde bestätigt und kurz darauf fällt der Server aus. Welche Folge gehört zu `Durability`?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Die bestätigten Daten bleiben trotz Ausfall dauerhaft erhalten",
+          "correct": true,
+          "explanation": "Durability sichert bestätigte Änderungen ab."
+        },
+        {
+          "id": "b",
+          "text": "Alle bestätigten Daten verschwinden automatisch wieder",
+          "correct": false,
+          "explanation": "Das würde Durability gerade widersprechen."
+        },
+        {
+          "id": "c",
+          "text": "Jede Tabelle wechselt in den Entwurfsmodus",
+          "correct": false,
+          "explanation": "Das hat mit Durability nichts zu tun."
+        },
+        {
+          "id": "d",
+          "text": "JSON-Dokumente dürfen ab dann nur noch gelesen werden",
+          "correct": false,
+          "explanation": "Auch das ist fachlich falsch."
+        }
+      ]
+    },
+    {
+      "id": "pv1fiae_easy_t03_q17",
+      "conceptId": "pv1fiae_easy_t03_relational_vs_document",
+      "variantId": "pv1fiae_easy_t03_relational_vs_document_v03",
+      "interactionType": "single",
+      "questionKind": "vergleich_treffen",
+      "badgeLabel": "Welche Aussage trifft am besten zu?",
+      "isNew": false,
+      "prompt": "Welche Gegenüberstellung von relationaler und dokumentenorientierter Speicherung ist fachlich richtig?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Relationale Systeme arbeiten primär mit Tabellen, dokumentenorientierte Systeme mit flexiblen Dokumentenstrukturen",
+          "correct": true,
+          "explanation": "Das trifft den Kernunterschied gut."
+        },
+        {
+          "id": "b",
+          "text": "Relationale Datenbanken können keine Beziehungen abbilden",
+          "correct": false,
+          "explanation": "Gerade Beziehungen sind dort sehr typisch."
+        },
+        {
+          "id": "c",
+          "text": "Dokumentendatenbanken speichern grundsätzlich nur Bilder",
+          "correct": false,
+          "explanation": "Das ist fachlich falsch."
+        },
+        {
+          "id": "d",
+          "text": "Beide Modelle sind inhaltlich identisch und unterscheiden sich nur farblich in Tools",
+          "correct": false,
+          "explanation": "Das stimmt nicht."
+        }
+      ]
+    },
+    {
+      "id": "pv1fiae_easy_t03_q18",
+      "conceptId": "pv1fiae_easy_t03_document_db_fit",
+      "variantId": "pv1fiae_easy_t03_document_db_fit_v03",
+      "interactionType": "best",
+      "questionKind": "passende_massnahme_auswaehlen",
+      "badgeLabel": "Welche Begründung passt am besten?",
+      "isNew": false,
+      "prompt": "Weshalb spricht in diesem Fall einiges für eine dokumentenorientierte Speicherung?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Weingüter und ihre zugehörigen Detaildaten lassen sich als zusammenhängende, flexible Dokumente ablegen",
+          "correct": true,
+          "explanation": "Das ist ein typischer Vorteil bei variablen Strukturen."
+        },
+        {
+          "id": "b",
+          "text": "Weil Beziehungen und Strukturen dort grundsätzlich verboten sind",
+          "correct": false,
+          "explanation": "Das wäre fachlich nicht richtig."
+        },
+        {
+          "id": "c",
+          "text": "Weil JSON-Dateien automatisch jedes ER-Modell ersetzen",
+          "correct": false,
+          "explanation": "Ein Datenmodell bleibt trotzdem wichtig."
+        },
+        {
+          "id": "d",
+          "text": "Weil damit jede Validierung überflüssig wird",
+          "correct": false,
+          "explanation": "Auch dokumentenorientierte Daten brauchen Regeln."
+        }
+      ]
+    },
+    {
+      "id": "pv1fiae_easy_t03_q19",
+      "conceptId": "pv1fiae_easy_t03_json_struktur",
+      "variantId": "pv1fiae_easy_t03_json_struktur_v03",
+      "interactionType": "best",
+      "questionKind": "beispiel_erkennen",
+      "badgeLabel": "Welches Beispiel passt am besten?",
+      "isNew": false,
+      "prompt": "Welche JSON-Form passt am besten zu einem Weingut mit mehreren Verkaufsstellen?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Ein Objekt für das Weingut mit einem Array für die zugehörigen Verkaufsstellen",
+          "correct": true,
+          "explanation": "Objekt plus Array ist hier eine passende Grundstruktur."
+        },
+        {
+          "id": "b",
+          "text": "Nur eine lose Zeichenkette mit allen Daten hintereinander",
+          "correct": false,
+          "explanation": "Das wäre keine saubere strukturierte Abbildung."
+        },
+        {
+          "id": "c",
+          "text": "Ein JSON-Dokument ohne Schlüssel, nur mit zufälligen Werten",
+          "correct": false,
+          "explanation": "Schlüssel sind für die Struktur wesentlich."
+        },
+        {
+          "id": "d",
+          "text": "Für jede Verkaufsstelle ein völlig unabhängiges Dokument ohne Bezug zum Weingut",
+          "correct": false,
+          "explanation": "Dann geht der Zusammenhang verloren."
+        }
+      ]
+    },
+    {
+      "id": "pv1fiae_easy_t03_q20",
+      "conceptId": "pv1fiae_easy_t03_embedding_begruendung",
+      "variantId": "pv1fiae_easy_t03_embedding_begruendung_v03",
+      "interactionType": "best",
+      "questionKind": "ziel_mittel_zuordnung",
+      "badgeLabel": "Welche Zuordnung passt am besten?",
+      "isNew": false,
+      "prompt": "Wann ist Embedding für Verkaufsstellen im Weingutsdokument besonders stimmig?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Wenn die Verkaufsstellen fachlich eng zum Weingut gehören und meist gemeinsam gelesen werden",
+          "correct": true,
+          "explanation": "Dann spielt Embedding seine Stärken aus."
+        },
+        {
+          "id": "b",
+          "text": "Wenn zwischen beiden Datenarten nie ein Zusammenhang besteht",
+          "correct": false,
+          "explanation": "Dann wäre Einbetten gerade unpassend."
+        },
+        {
+          "id": "c",
+          "text": "Wenn Daten absichtlich doppelt und widersprüchlich geführt werden sollen",
+          "correct": false,
+          "explanation": "Das ist kein sinnvolles Ziel."
+        },
+        {
+          "id": "d",
+          "text": "Wenn die Oberfläche keinerlei Standortinformationen anzeigen darf",
+          "correct": false,
+          "explanation": "Auch das begründet Embedding nicht."
+        }
+      ]
+    },
+    {
+      "id": "pv1fiae_easy_t03_q21",
+      "conceptId": "pv1fiae_easy_t03_er_modell_auswahl",
+      "variantId": "pv1fiae_easy_t03_er_modell_auswahl_v03",
+      "interactionType": "best",
+      "questionKind": "beispiel_erkennen",
+      "badgeLabel": "Welche Lösung passt am besten?",
+      "isNew": false,
+      "prompt": "Welche ER-Modell-Idee trägt den Weinbau-Fall am besten?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Weinberg und Pflanzenschutzmittel als Entitäten, verbunden über eine Beziehung mit Fachbezug",
+          "correct": true,
+          "explanation": "Das bildet zentrale Objekte und ihren Zusammenhang fachlich sauber ab."
+        },
+        {
+          "id": "b",
+          "text": "Nur eine einzige Entität für alles, unabhängig von Rollen und Beziehungen",
+          "correct": false,
+          "explanation": "Das wäre fachlich zu grob."
+        },
+        {
+          "id": "c",
+          "text": "Ausschließlich eine Liste aus Freitextnotizen ohne Datenstruktur",
+          "correct": false,
+          "explanation": "Das wäre kein ER-Modell."
+        },
+        {
+          "id": "d",
+          "text": "Nur die Bildschirmfarbe der Sektoren modellieren",
+          "correct": false,
+          "explanation": "Das verfehlt die Fachlogik des Modells."
+        }
+      ]
+    },
+    {
+      "id": "pv1fiae_easy_t03_q22",
+      "conceptId": "pv1fiae_easy_t03_erd_sektoren_beziehung",
+      "variantId": "pv1fiae_easy_t03_erd_sektoren_beziehung_v03",
+      "interactionType": "single",
+      "questionKind": "ziel_mittel_zuordnung",
+      "badgeLabel": "Welche Zuordnung passt am besten?",
+      "isNew": false,
+      "prompt": "Welche Beziehung zwischen Weinberg und Sektoren ist fachlich am plausibelsten modelliert?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Ein Weinberg kann mehrere Sektoren umfassen",
+          "correct": true,
+          "explanation": "Das passt zur fachlichen Aufteilung von Flächen."
+        },
+        {
+          "id": "b",
+          "text": "Ein Sektor muss immer gleichzeitig zu unbegrenzt vielen Weinbergen gehören",
+          "correct": false,
+          "explanation": "Das wäre hier fachlich unplausibel."
+        },
+        {
+          "id": "c",
+          "text": "Weinberg und Sektor stehen grundsätzlich in keiner Beziehung",
+          "correct": false,
+          "explanation": "Gerade diese Beziehung ist fachlich zentral."
+        },
+        {
+          "id": "d",
+          "text": "Sektoren werden nur als Farbcodes ohne fachliche Zuordnung gespeichert",
+          "correct": false,
+          "explanation": "Das verfehlt die Modellidee."
+        }
+      ]
+    },
+    {
+      "id": "pv1fiae_easy_t03_q23",
+      "conceptId": "pv1fiae_easy_t03_pflanzenschutz_attribute",
+      "variantId": "pv1fiae_easy_t03_pflanzenschutz_attribute_v03",
+      "interactionType": "multi",
+      "questionKind": "mehrere_richtige_antworten_waehlen",
+      "badgeLabel": "Mehrere Antworten sind richtig.",
+      "isNew": false,
+      "prompt": "Welche Angaben passen als Attribute zu einem Pflanzenschutzmittel? Mehrere Antworten sind richtig.",
+      "maxSelections": 3,
+      "options": [
+        {
+          "id": "a",
+          "text": "Bezeichnung des Mittels",
+          "correct": true,
+          "explanation": "Eine fachliche Benennung ist naheliegend."
+        },
+        {
+          "id": "b",
+          "text": "Zulassungs- oder Identifikationsangabe",
+          "correct": true,
+          "explanation": "Auch eine eindeutige Kennzeichnung passt gut."
+        },
+        {
+          "id": "c",
+          "text": "Hinweis zur Dosierung oder Anwendung",
+          "correct": true,
+          "explanation": "Solche Fachangaben sind für das Mittel plausibel."
+        },
+        {
+          "id": "d",
+          "text": "Der komplette Quellcode der Mess-App",
+          "correct": false,
+          "explanation": "Das ist kein Attribut des Mittels."
+        }
+      ]
+    },
+    {
+      "id": "pv1fiae_easy_t03_q24",
+      "conceptId": "pv1fiae_easy_t03_sektoren_anzeige",
+      "variantId": "pv1fiae_easy_t03_sektoren_anzeige_v03",
+      "interactionType": "best",
+      "questionKind": "passende_massnahme_auswaehlen",
+      "badgeLabel": "Welche Lösung passt am besten?",
+      "isNew": false,
+      "prompt": "Die Fachseite will Sektoren mit Lagebezug sehen. Welche Darstellungsform ist dafür am geeignetsten?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Eine Karten- oder Flächenansicht, in der die Sektoren räumlich erkennbar sind",
+          "correct": true,
+          "explanation": "Bei lagebezogenen Sektoren ist eine räumliche Darstellung am sinnvollsten."
+        },
+        {
+          "id": "b",
+          "text": "Nur eine alphabetische Liste ohne Lagebezug",
+          "correct": false,
+          "explanation": "Damit geht die räumliche Information verloren."
+        },
+        {
+          "id": "c",
+          "text": "Ausschließlich eine Blinkanimation ohne Fachdaten",
+          "correct": false,
+          "explanation": "Das wäre keine sinnvolle Fachanzeige."
+        },
+        {
+          "id": "d",
+          "text": "Ein leeres Dashboard ohne Sektorzuordnung",
+          "correct": false,
+          "explanation": "Das löst die Aufgabe nicht."
+        }
+      ]
+    }
+  ]
+}

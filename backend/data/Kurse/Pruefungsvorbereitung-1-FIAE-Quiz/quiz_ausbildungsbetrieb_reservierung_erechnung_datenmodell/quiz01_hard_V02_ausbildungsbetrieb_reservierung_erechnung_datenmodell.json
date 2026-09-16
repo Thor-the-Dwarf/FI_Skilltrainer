@@ -1,0 +1,445 @@
+{
+  "scenarioFolder": "Pruefungsvorbereitung-1-FIAE-Scenarien",
+  "quizFolder": "Pruefungsvorbereitung-1-FIAE-Quiz",
+  "scenarioFile": "ticket_ausbildungsbetrieb_reservierung_erechnung_datenmodell/01_hard_ausbildungsbetrieb_reservierung_erechnung_datenmodell.json",
+  "quizFile": "quiz_ausbildungsbetrieb_reservierung_erechnung_datenmodell/quiz01_hard_V02_ausbildungsbetrieb_reservierung_erechnung_datenmodell.json",
+  "ticketId": "01_hard_ausbildungsbetrieb_reservierung_erechnung_datenmodell.json",
+  "versionId": "V02",
+  "title": "Ticket 01 Hard - Reservierungsmodul, eRechnung und 3NF",
+  "description": "Manuell verfasstes FIAE-Training im hohen Anspruchsniveau zu Machbarkeitsabwägung, Reservierungskonflikten, Validierung strukturierter eRechnungen und Datenintegrität im selben Reservierungsprojekt.",
+  "topics": [
+    "Machbarkeit, Projektsteuerung und Reservierungslogik unter Realbedingungen fachlich belastbar bewerten",
+    "eRechnung, Prüfkette, Datenintegrität und Architekturfolgen im selben Fachfall zusammenführen"
+  ],
+  "questions": [
+    {
+      "id": "pv1fiae_hard_t01_q01",
+      "conceptId": "pv1fiae_hard_t01_mvp_tradeoff",
+      "variantId": "pv1fiae_hard_t01_mvp_tradeoff_v02",
+      "interactionType": "best",
+      "questionKind": "prioritaet_setzen",
+      "badgeLabel": "Welche Option passt am besten?",
+      "isNew": true,
+      "prompt": "Der Zeitrahmen ist knapp, aber das Reservierungsprojekt soll tragfähig bleiben. Welche Entscheidung ist für einen belastbaren MVP am fachlich plausibelsten?",
+      "maxSelections": 1,
+      "options": [
+        { "id": "a", "text": "Den Funktionskern stabil halten und nachweisbar absichern, statt viele Randwünsche ungeprüft in den ersten Release zu ziehen.", "correct": true, "explanation": "Ein belastbarer MVP priorisiert Kernnutzen und Stabilität." },
+        { "id": "b", "text": "Alle Ideen sofort aufnehmen, damit keine Wunschliste offen bleibt.", "correct": false, "explanation": "Das gefährdet Fokus und Lieferfähigkeit." },
+        { "id": "c", "text": "Machbarkeit erst nach dem Rollout beurteilen.", "correct": false, "explanation": "Dann kommen tragende Entscheidungen zu spät." },
+        { "id": "d", "text": "Validierung und Datenmodell in spätere Phasen verschieben, solange die Oberfläche wirkt.", "correct": false, "explanation": "Damit wird der Projektkern instabil." }
+      ]
+    },
+    {
+      "id": "pv1fiae_hard_t01_q02",
+      "conceptId": "pv1fiae_hard_t01_scope_change_control",
+      "variantId": "pv1fiae_hard_t01_scope_change_control_v02",
+      "interactionType": "best",
+      "questionKind": "passende_massnahme_auswaehlen",
+      "badgeLabel": "Welche Option passt am besten?",
+      "isNew": true,
+      "prompt": "Während der Umsetzung fordert ein Pilotkunde kurzfristig Zusatzlogik für Gruppenreservierungen. Welche Reaktion ist fachlich am sinnvollsten?",
+      "maxSelections": 1,
+      "options": [
+        { "id": "a", "text": "Änderung fachlich bewerten, Aufwand und Auswirkungen transparent machen und dann bewusst einplanen oder verschieben.", "correct": true, "explanation": "So bleibt Änderungsdruck steuerbar." },
+        { "id": "b", "text": "Wunsch sofort ohne Analyse einbauen, damit der Kunde zufrieden ist.", "correct": false, "explanation": "Das gefährdet Planbarkeit und Qualität." },
+        { "id": "c", "text": "Änderungen grundsätzlich ignorieren, bis das Projekt endet.", "correct": false, "explanation": "Auch harte Ablehnung ohne Bewertung ist fachlich schwach." },
+        { "id": "d", "text": "Änderung nur im Frontend simulieren, ohne Backend-Regeln zu betrachten.", "correct": false, "explanation": "Gerade Reservierungslogik braucht Gesamtbetrachtung." }
+      ]
+    },
+    {
+      "id": "pv1fiae_hard_t01_q03",
+      "conceptId": "pv1fiae_hard_t01_risikoregister",
+      "variantId": "pv1fiae_hard_t01_risikoregister_v02",
+      "interactionType": "best",
+      "questionKind": "vergleich_treffen",
+      "badgeLabel": "Welche Option passt am besten?",
+      "isNew": true,
+      "prompt": "Wodurch wird ein Risikoregister in diesem Projekt tatsächlich belastbar?",
+      "maxSelections": 1,
+      "options": [
+        { "id": "a", "text": "Risiken werden mit Ursache, Auswirkung, Eintrittswahrscheinlichkeit, Gegenmaßnahme und Verantwortlichkeit geführt.", "correct": true, "explanation": "Belastbare Risikosteuerung braucht mehr als bloße Schlagworte." },
+        { "id": "b", "text": "Es genügt, Risiken einmal grob aufzuschreiben und danach nicht mehr anzusehen.", "correct": false, "explanation": "Dann fehlt die Steuerungswirkung." },
+        { "id": "c", "text": "Ein Risikoregister braucht nur besonders dramatische Begriffe.", "correct": false, "explanation": "Dramatik ersetzt keine Struktur." },
+        { "id": "d", "text": "Risiken werden bewusst ohne Maßnahmen dokumentiert, damit das Team flexibel bleibt.", "correct": false, "explanation": "Ohne Maßnahmen bleibt das Register unvollständig." }
+      ]
+    },
+    {
+      "id": "pv1fiae_hard_t01_q04",
+      "conceptId": "pv1fiae_hard_t01_reservierungskonflikt",
+      "variantId": "pv1fiae_hard_t01_reservierungskonflikt_v02",
+      "interactionType": "best",
+      "questionKind": "beste_option_im_mini_szenario",
+      "badgeLabel": "Welche Option passt am besten?",
+      "isNew": true,
+      "prompt": "Mehrere Geräte im Servicebereich können Reservierungen für denselben Zeitslot anlegen. Welches Fachprinzip ist hier besonders wichtig?",
+      "maxSelections": 1,
+      "options": [
+        { "id": "a", "text": "Die Verfügbarkeit muss beim verbindlichen Commit fachlich abgesichert werden, nicht nur bei der ersten Anzeige.", "correct": true, "explanation": "So wird das eigentliche Konkurrenzproblem beherrscht." },
+        { "id": "b", "text": "Die Prüfung reicht beim ersten Seitenaufruf.", "correct": false, "explanation": "Bis zum Abschluss kann sich der Zustand ändern." },
+        { "id": "c", "text": "Parallelität spielt keine Rolle, solange wenig Gäste buchen.", "correct": false, "explanation": "Der Konfliktfall bleibt fachlich relevant." },
+        { "id": "d", "text": "Doppelte Vergaben lassen sich später manuell korrigieren und sind daher unkritisch.", "correct": false, "explanation": "Solche Fehler treffen direkt den Betriebsablauf." }
+      ]
+    },
+    {
+      "id": "pv1fiae_hard_t01_q05",
+      "conceptId": "pv1fiae_hard_t01_idempotenz",
+      "variantId": "pv1fiae_hard_t01_idempotenz_v02",
+      "interactionType": "best",
+      "questionKind": "ursache_folge_erkennen",
+      "badgeLabel": "Welche Option passt am besten?",
+      "isNew": true,
+      "prompt": "Ein Gast sendet wegen schlechter Verbindung dieselbe Reservierungsanfrage mehrfach. Welche fachliche Sorge steckt dahinter besonders nachvollziehbar?",
+      "maxSelections": 1,
+      "options": [
+        { "id": "a", "text": "Ohne saubere Anfragestrategie könnte dieselbe Reservierung versehentlich mehrfach angelegt werden.", "correct": true, "explanation": "Wiederholte Requests können Doppelanlagen auslösen." },
+        { "id": "b", "text": "Die Datenbank verliert dadurch automatisch jede Tabellenstruktur.", "correct": false, "explanation": "Das ist nicht die eigentliche Sorge." },
+        { "id": "c", "text": "TLS wird dadurch vollständig unwirksam.", "correct": false, "explanation": "Transportverschlüsselung und Doppelsendungen sind verschiedene Themen." },
+        { "id": "d", "text": "Die Oberfläche kann danach keine Farben mehr anzeigen.", "correct": false, "explanation": "Das ist fachlich irrelevant." }
+      ]
+    },
+    {
+      "id": "pv1fiae_hard_t01_q06",
+      "conceptId": "pv1fiae_hard_t01_akzeptanzkriterium_hart",
+      "variantId": "pv1fiae_hard_t01_akzeptanzkriterium_hart_v02",
+      "interactionType": "best",
+      "questionKind": "beispiel_erkennen",
+      "badgeLabel": "Welche Option passt am besten?",
+      "isNew": true,
+      "prompt": "Welches Akzeptanzkriterium ist für die Konfliktlogik von Reservierungen besonders belastbar formuliert?",
+      "maxSelections": 1,
+      "options": [
+        { "id": "a", "text": "Wird derselbe Tisch zeitgleich mehrfach angefragt, darf höchstens eine Anfrage den Status bestätigt erhalten.", "correct": true, "explanation": "Das Kriterium ist klar, prüfbar und fachlich relevant." },
+        { "id": "b", "text": "Die Reservierung soll später schon irgendwie passen.", "correct": false, "explanation": "Das ist nicht testbar." },
+        { "id": "c", "text": "Der Ablauf soll technisch beeindruckend wirken.", "correct": false, "explanation": "Das beschreibt keinen fachlichen Erfolg." },
+        { "id": "d", "text": "Die Regel darf nur gelten, wenn das Team Zeit hat.", "correct": false, "explanation": "Akzeptanzkriterien dürfen nicht beliebig sein." }
+      ]
+    },
+    {
+      "id": "pv1fiae_hard_t01_q07",
+      "conceptId": "pv1fiae_hard_t01_prototyp_grenze",
+      "variantId": "pv1fiae_hard_t01_prototyp_grenze_v02",
+      "interactionType": "best",
+      "questionKind": "vergleich_treffen",
+      "badgeLabel": "Welche Option passt am besten?",
+      "isNew": true,
+      "prompt": "Worin liegt eine wichtige Grenze von Prototyping im Reservierungsprojekt auf diesem Niveau?",
+      "maxSelections": 1,
+      "options": [
+        { "id": "a", "text": "Ein Prototyp kann Verständnis schaffen, ersetzt aber keine belastbare Fachlogik und keine saubere Integrationsentscheidung.", "correct": true, "explanation": "Prototypen helfen, aber sie lösen nicht alle Architekturfragen." },
+        { "id": "b", "text": "Ein Prototyp macht jedes Datenmodell überflüssig.", "correct": false, "explanation": "Datenstrukturen bleiben weiterhin notwendig." },
+        { "id": "c", "text": "Prototypen dürfen keine Stakeholder-Rückmeldungen auslösen.", "correct": false, "explanation": "Gerade dafür werden sie häufig genutzt." },
+        { "id": "d", "text": "Ein Prototyp ist nur dann sinnvoll, wenn das Projekt schon produktiv ist.", "correct": false, "explanation": "Das wäre zu spät." }
+      ]
+    },
+    {
+      "id": "pv1fiae_hard_t01_q08",
+      "conceptId": "pv1fiae_hard_t01_syntax_vs_fachlich",
+      "variantId": "pv1fiae_hard_t01_syntax_vs_fachlich_v02",
+      "interactionType": "best",
+      "questionKind": "vergleich_treffen",
+      "badgeLabel": "Welche Option passt am besten?",
+      "isNew": true,
+      "prompt": "Welche Abgrenzung zwischen syntaktischer und fachlicher eRechnungsprüfung ist am klarsten?",
+      "maxSelections": 1,
+      "options": [
+        { "id": "a", "text": "Syntaktische Prüfung kontrolliert Struktur und Format, fachliche Prüfung beurteilt inhaltliche Plausibilität und Regelkonformität.", "correct": true, "explanation": "Genau diese Trennung ist fachlich wichtig." },
+        { "id": "b", "text": "Beide Prüfarten bedeuten genau dasselbe.", "correct": false, "explanation": "Sie prüfen unterschiedliche Dinge." },
+        { "id": "c", "text": "Nur die fachliche Prüfung betrachtet überhaupt Daten.", "correct": false, "explanation": "Auch Syntaxprüfungen arbeiten mit Daten, aber anders." },
+        { "id": "d", "text": "Nur die Syntaxprüfung ist im Projekt relevant.", "correct": false, "explanation": "Ohne fachliche Prüfung fehlt die inhaltliche Belastbarkeit." }
+      ]
+    },
+    {
+      "id": "pv1fiae_hard_t01_q09",
+      "conceptId": "pv1fiae_hard_t01_validierungsstrategie",
+      "variantId": "pv1fiae_hard_t01_validierungsstrategie_v02",
+      "interactionType": "best",
+      "questionKind": "prioritaet_setzen",
+      "badgeLabel": "Welche Option passt am besten?",
+      "isNew": true,
+      "prompt": "Welche Validierungsstrategie ist für eingehende eRechnungen am plausibelsten, wenn Fehler sauber behandelt werden sollen?",
+      "maxSelections": 1,
+      "options": [
+        { "id": "a", "text": "Prüfschritte staffeln, Fehler differenziert zurückmelden und den weiteren Status der Nachricht nachvollziehbar protokollieren.", "correct": true, "explanation": "So entsteht eine belastbare Verarbeitungskette." },
+        { "id": "b", "text": "Fehler nur visuell markieren und dann weiterverarbeiten.", "correct": false, "explanation": "Das ist fachlich unsauber." },
+        { "id": "c", "text": "Alle Nachrichten unabhängig vom Ergebnis akzeptieren.", "correct": false, "explanation": "Das würde die Qualität des Folgeprozesses gefährden." },
+        { "id": "d", "text": "Die Prüfergebnisse grundsätzlich nicht speichern.", "correct": false, "explanation": "Dann fehlt der Prüfpfad." }
+      ]
+    },
+    {
+      "id": "pv1fiae_hard_t01_q10",
+      "conceptId": "pv1fiae_hard_t01_ablehnungsworkflow",
+      "variantId": "pv1fiae_hard_t01_ablehnungsworkflow_v02",
+      "interactionType": "best",
+      "questionKind": "beste_option_im_mini_szenario",
+      "badgeLabel": "Welche Option passt am besten?",
+      "isNew": true,
+      "prompt": "Eine eRechnung scheitert an einer fachlichen Prüfung. Welche Reaktion ist im Hard-Niveau am stimmigsten?",
+      "maxSelections": 1,
+      "options": [
+        { "id": "a", "text": "Die Nachricht erhält einen nachvollziehbaren Fehlerstatus, wird nicht weiterverarbeitet und bleibt für Klärung und Audit referenzierbar.", "correct": true, "explanation": "So bleiben Prozesssicherheit und Nachvollziehbarkeit erhalten." },
+        { "id": "b", "text": "Die Nachricht wird trotzdem produktiv verbucht, um keinen Rückstau zu erzeugen.", "correct": false, "explanation": "Das verschiebt Fehler in den Folgeprozess." },
+        { "id": "c", "text": "Die Datei wird kommentarlos gelöscht.", "correct": false, "explanation": "Damit geht der Prüfpfad verloren." },
+        { "id": "d", "text": "Nur das Frontend erhält einen Hinweis, das Backend weiß nichts davon.", "correct": false, "explanation": "Auch die fachliche Verarbeitung braucht konsistente Zustände." }
+      ]
+    },
+    {
+      "id": "pv1fiae_hard_t01_q11",
+      "conceptId": "pv1fiae_hard_t01_pruefpfad_audit",
+      "variantId": "pv1fiae_hard_t01_pruefpfad_audit_v02",
+      "interactionType": "multi",
+      "questionKind": "mehrere_richtige_antworten_waehlen",
+      "badgeLabel": "Mehrere Antworten sind richtig.",
+      "isNew": true,
+      "prompt": "Welche Informationen sind für einen auditierbaren Prüfpfad bei eRechnungen besonders sinnvoll? Mehrere Antworten sind richtig.",
+      "maxSelections": 4,
+      "options": [
+        { "id": "a", "text": "Prüfzeitpunkt und betroffene Nachricht", "correct": true, "explanation": "Auditierbarkeit braucht eindeutige Zuordnung." },
+        { "id": "b", "text": "Welche Prüfart fehlschlug oder erfolgreich war", "correct": true, "explanation": "So bleibt der Entscheidungsweg nachvollziehbar." },
+        { "id": "c", "text": "Welche Folgeaktion ausgelöst wurde", "correct": true, "explanation": "Auch der weitere Prozessschritt gehört zum Prüfpfad." },
+        { "id": "d", "text": "Eine referenzierbare Fehlerbeschreibung", "correct": true, "explanation": "Fehler müssen nachvollziehbar dokumentiert bleiben." },
+        { "id": "e", "text": "Der private Musikgeschmack des Entwicklungsteams", "correct": false, "explanation": "Das ist für Auditfragen irrelevant." }
+      ]
+    },
+    {
+      "id": "pv1fiae_hard_t01_q12",
+      "conceptId": "pv1fiae_hard_t01_natural_vs_surrogate",
+      "variantId": "pv1fiae_hard_t01_natural_vs_surrogate_v02",
+      "interactionType": "best",
+      "questionKind": "vergleich_treffen",
+      "badgeLabel": "Welche Option passt am besten?",
+      "isNew": true,
+      "prompt": "Welche Abwägung zwischen natürlichem und künstlichem Schlüssel ist in einem Bewertungsmodell am stimmigsten?",
+      "maxSelections": 1,
+      "options": [
+        { "id": "a", "text": "Ein künstlicher Schlüssel kann technische Stabilität erhöhen, während natürliche Fachattribute zusätzlich per Unique-Regel abgesichert werden.", "correct": true, "explanation": "Das ist eine verbreitete und plausible Kombination." },
+        { "id": "b", "text": "Natürliche Schlüssel sind immer falsch und dürfen nie vorkommen.", "correct": false, "explanation": "So pauschal ist die Entscheidung fachlich nicht." },
+        { "id": "c", "text": "Künstliche Schlüssel machen Fachregeln grundsätzlich unnötig.", "correct": false, "explanation": "Fachliche Eindeutigkeit bleibt wichtig." },
+        { "id": "d", "text": "Schlüsselwahl hat keinen Einfluss auf Datenqualität oder Wartung.", "correct": false, "explanation": "Die Wahl wirkt sich durchaus aus." }
+      ]
+    },
+    {
+      "id": "pv1fiae_hard_t01_q13",
+      "conceptId": "pv1fiae_hard_t01_many_to_many",
+      "variantId": "pv1fiae_hard_t01_many_to_many_v02",
+      "interactionType": "best",
+      "questionKind": "ziel_mittel_zuordnung",
+      "badgeLabel": "Welche Option passt am besten?",
+      "isNew": true,
+      "prompt": "Wann ist in einem relationalen Bewertungsmodell eine eigene Beziehungstabelle fachlich besonders plausibel?",
+      "maxSelections": 1,
+      "options": [
+        { "id": "a", "text": "Wenn eine fachliche n:m-Beziehung mit eigenen Beziehungsinformationen sauber aufgelöst werden muss.", "correct": true, "explanation": "Dafür werden Beziehungstabellen typischerweise eingesetzt." },
+        { "id": "b", "text": "Wenn man Primärschlüssel vollständig vermeiden will.", "correct": false, "explanation": "Das ist kein plausibler Grund." },
+        { "id": "c", "text": "Wenn alle Daten absichtlich doppelt gehalten werden sollen.", "correct": false, "explanation": "Beziehungstabellen dienen gerade der sauberen Struktur." },
+        { "id": "d", "text": "Wenn Tabellen nur optisch voneinander getrennt werden sollen.", "correct": false, "explanation": "Es geht um fachliche Beziehungen, nicht Optik." }
+      ]
+    },
+    {
+      "id": "pv1fiae_hard_t01_q14",
+      "conceptId": "pv1fiae_hard_t01_loeschfolge",
+      "variantId": "pv1fiae_hard_t01_loeschfolge_v02",
+      "interactionType": "best",
+      "questionKind": "fehler_finden",
+      "badgeLabel": "Welche Option passt am besten?",
+      "isNew": true,
+      "prompt": "Warum ist unbedachtes Löschen in einem verknüpften Bewertungsmodell fachlich so riskant?",
+      "maxSelections": 1,
+      "options": [
+        { "id": "a", "text": "Weil abhängige Datensätze oder Nachvollziehbarkeit beschädigt werden können, wenn Löschregeln nicht zur Fachlogik passen.", "correct": true, "explanation": "Löschregeln müssen Integrität und Prozesssicht berücksichtigen." },
+        { "id": "b", "text": "Weil Tabellen danach automatisch 3NF verlieren.", "correct": false, "explanation": "Das ist nicht die eigentliche Gefahr." },
+        { "id": "c", "text": "Weil dann keine Schlüssel mehr definiert werden dürfen.", "correct": false, "explanation": "Auch das ist fachlich falsch." },
+        { "id": "d", "text": "Weil jede Löschung grundsätzlich verboten ist.", "correct": false, "explanation": "Es geht um passende Regeln, nicht um ein Totalverbot." }
+      ]
+    },
+    {
+      "id": "pv1fiae_hard_t01_q15",
+      "conceptId": "pv1fiae_hard_t01_historizitaet",
+      "variantId": "pv1fiae_hard_t01_historizitaet_v02",
+      "interactionType": "best",
+      "questionKind": "ursache_folge_erkennen",
+      "badgeLabel": "Welche Option passt am besten?",
+      "isNew": true,
+      "prompt": "Warum kann Historizität im Reservierungs- oder Bewertungsumfeld fachlich besonders wichtig werden?",
+      "maxSelections": 1,
+      "options": [
+        { "id": "a", "text": "Weil frühere Zustände oder Bewertungen für Nachvollziehbarkeit, Reklamation oder Analyse relevant bleiben können.", "correct": true, "explanation": "Historische Sicht unterstützt Nachvollziehbarkeit und Auswertung." },
+        { "id": "b", "text": "Weil dadurch jede aktuelle Datenhaltung entfällt.", "correct": false, "explanation": "Historie ergänzt, ersetzt aber keine aktuellen Daten." },
+        { "id": "c", "text": "Weil 3NF dann nicht mehr gilt.", "correct": false, "explanation": "Das ist kein Automatismus." },
+        { "id": "d", "text": "Weil die Oberfläche dadurch weniger getestet werden muss.", "correct": false, "explanation": "Das ist fachlich unbegründet." }
+      ]
+    },
+    {
+      "id": "pv1fiae_hard_t01_q16",
+      "conceptId": "pv1fiae_hard_t01_testfokus",
+      "variantId": "pv1fiae_hard_t01_testfokus_v02",
+      "interactionType": "multi",
+      "questionKind": "passende_massnahme_auswaehlen",
+      "badgeLabel": "Mehrere Antworten sind richtig.",
+      "isNew": true,
+      "prompt": "Welche Testschwerpunkte sind in diesem Hard-Slot besonders plausibel? Mehrere Antworten sind richtig.",
+      "maxSelections": 4,
+      "options": [
+        { "id": "a", "text": "Konkurrenzfälle bei Reservierungen", "correct": true, "explanation": "Parallelzugriffe treffen den Fachkern." },
+        { "id": "b", "text": "Fehlerfälle in der eRechnungsvalidierung", "correct": true, "explanation": "Die Prüfkette muss in Erfolgs- und Fehlerfällen tragen." },
+        { "id": "c", "text": "Schlüssel- und Integritätsregeln im Datenmodell", "correct": true, "explanation": "Auch Datenqualität braucht gezielte Prüfung." },
+        { "id": "d", "text": "Übergänge zwischen Statuswerten und Folgeaktionen", "correct": true, "explanation": "Gerade Status- und Prozesslogik ist kritisch." },
+        { "id": "e", "text": "Ausschließlich dekorative Farbwechsel", "correct": false, "explanation": "Das verfehlt den fachlichen Schwerpunkt." }
+      ]
+    },
+    {
+      "id": "pv1fiae_hard_t01_q17",
+      "conceptId": "pv1fiae_hard_t01_fehlerisolation",
+      "variantId": "pv1fiae_hard_t01_fehlerisolation_v02",
+      "interactionType": "best",
+      "questionKind": "passende_massnahme_auswaehlen",
+      "badgeLabel": "Welche Option passt am besten?",
+      "isNew": true,
+      "prompt": "Welche Maßnahme hilft am meisten dabei, fehlerhafte eRechnungsdaten von produktiven Folgeprozessen fernzuhalten?",
+      "maxSelections": 1,
+      "options": [
+        { "id": "a", "text": "Fehlgeschlagene Eingänge klar kennzeichnen, aus dem regulären Verarbeitungspfad herausnehmen und kontrolliert nachbearbeiten.", "correct": true, "explanation": "So bleiben Folgeprozesse stabil." },
+        { "id": "b", "text": "Fehler ignorieren und erst beim Monatsabschluss prüfen.", "correct": false, "explanation": "Das verschleppt Probleme." },
+        { "id": "c", "text": "Alle Nachrichten unabhängig vom Ergebnis direkt übernehmen.", "correct": false, "explanation": "Das ist fachlich riskant." },
+        { "id": "d", "text": "Fehler nur im Frontend anzeigen, ohne Backend-Status.", "correct": false, "explanation": "Die Prozesskette braucht auch serverseitige Zustände." }
+      ]
+    },
+    {
+      "id": "pv1fiae_hard_t01_q18",
+      "conceptId": "pv1fiae_hard_t01_unique_regel",
+      "variantId": "pv1fiae_hard_t01_unique_regel_v02",
+      "interactionType": "best",
+      "questionKind": "ziel_mittel_zuordnung",
+      "badgeLabel": "Welche Option passt am besten?",
+      "isNew": true,
+      "prompt": "Wozu dient eine zusätzliche Unique-Regel auf fachlichen Attributen im Bewertungsmodell besonders plausibel?",
+      "maxSelections": 1,
+      "options": [
+        { "id": "a", "text": "Sie schützt fachliche Eindeutigkeit auch dann, wenn technisch ein künstlicher Primärschlüssel genutzt wird.", "correct": true, "explanation": "So bleiben Fachregeln und technische Stabilität kombinierbar." },
+        { "id": "b", "text": "Sie ersetzt jeden Fremdschlüssel.", "correct": false, "explanation": "Beziehungen bleiben weiterhin nötig." },
+        { "id": "c", "text": "Sie macht Validierungen grundsätzlich überflüssig.", "correct": false, "explanation": "Validierung bleibt breiter als eine Unique-Regel." },
+        { "id": "d", "text": "Sie dient nur der optischen Sortierung.", "correct": false, "explanation": "Unique-Regeln haben eine fachliche Schutzfunktion." }
+      ]
+    },
+    {
+      "id": "pv1fiae_hard_t01_q19",
+      "conceptId": "pv1fiae_hard_t01_denormalisierung_tradeoff",
+      "variantId": "pv1fiae_hard_t01_denormalisierung_tradeoff_v02",
+      "interactionType": "best",
+      "questionKind": "vergleich_treffen",
+      "badgeLabel": "Welche Option passt am besten?",
+      "isNew": true,
+      "prompt": "Welche Aussage beschreibt einen sinnvollen Umgang mit Denormalisierung am treffendsten?",
+      "maxSelections": 1,
+      "options": [
+        { "id": "a", "text": "Denormalisierung kann nur mit klarer Begründung sinnvoll sein, wenn ihr Nutzen gegenüber Konsistenz- und Pflegekosten bewusst abgewogen wird.", "correct": true, "explanation": "Das ist eine tragfähige Abwägung." },
+        { "id": "b", "text": "Denormalisierung ist immer besser als 3NF.", "correct": false, "explanation": "Das wäre fachlich zu pauschal." },
+        { "id": "c", "text": "Sobald ein Bericht benötigt wird, sollte jedes Modell vollständig denormalisiert werden.", "correct": false, "explanation": "Berichte allein rechtfertigen das nicht automatisch." },
+        { "id": "d", "text": "Denormalisierung betrifft nur das UI, nicht die Datenhaltung.", "correct": false, "explanation": "Sie ist gerade eine Datenhaltungsentscheidung." }
+      ]
+    },
+    {
+      "id": "pv1fiae_hard_t01_q20",
+      "conceptId": "pv1fiae_hard_t01_architekturkopplung",
+      "variantId": "pv1fiae_hard_t01_architekturkopplung_v02",
+      "interactionType": "best",
+      "questionKind": "ursache_folge_erkennen",
+      "badgeLabel": "Welche Option passt am besten?",
+      "isNew": true,
+      "prompt": "Warum ist es in diesem Hard-Slot problematisch, Reservierungslogik, eRechnungsprüfung und Datenmodell isoliert zu entscheiden?",
+      "maxSelections": 1,
+      "options": [
+        { "id": "a", "text": "Weil Entscheidungen in einem Bereich direkte Auswirkungen auf Prozesssicherheit, Prüfpfad und Datenkonsistenz in anderen Bereichen haben.", "correct": true, "explanation": "Der Slot lebt gerade von der gekoppelten Fachsicht." },
+        { "id": "b", "text": "Weil getrennte Entscheidungen grundsätzlich verboten sind.", "correct": false, "explanation": "Es geht um Auswirkungen, nicht um starre Verbote." },
+        { "id": "c", "text": "Weil Datenmodelle keinerlei Bezug zu Prozessen haben.", "correct": false, "explanation": "Das Gegenteil ist der Fall." },
+        { "id": "d", "text": "Weil nur das UI die eigentliche Architektur bestimmt.", "correct": false, "explanation": "Das greift viel zu kurz." }
+      ]
+    },
+    {
+      "id": "pv1fiae_hard_t01_q21",
+      "conceptId": "pv1fiae_hard_t01_release_readiness",
+      "variantId": "pv1fiae_hard_t01_release_readiness_v02",
+      "interactionType": "best",
+      "questionKind": "beste_option_im_mini_szenario",
+      "badgeLabel": "Welche Option passt am besten?",
+      "isNew": true,
+      "prompt": "Kurz vor dem Release sind Konkurrenzfälle nicht getestet und die eRechnungsfehlerbehandlung nur teilweise protokolliert. Welche Entscheidung ist fachlich am tragfähigsten?",
+      "maxSelections": 1,
+      "options": [
+        { "id": "a", "text": "Go-live nur freigeben, wenn die kritischen Fach- und Prüfpfade belastbar nachgewiesen sind oder der Umfang bewusst reduziert wird.", "correct": true, "explanation": "Kritische Kernrisiken dürfen nicht ignoriert werden." },
+        { "id": "b", "text": "Trotzdem live gehen, weil Restprobleme später sicher günstiger sind.", "correct": false, "explanation": "Das verschiebt kritische Risiken in den Betrieb." },
+        { "id": "c", "text": "Alle Prüfprotokolle löschen, damit der Stand ruhiger wirkt.", "correct": false, "explanation": "Das wäre fachlich und organisatorisch falsch." },
+        { "id": "d", "text": "Nur die Oberfläche freigeben, die Backend-Fälle später nachdenken.", "correct": false, "explanation": "Gerade die kritischen Pfade liegen im Kernsystem." }
+      ]
+    },
+    {
+      "id": "pv1fiae_hard_t01_q22",
+      "conceptId": "pv1fiae_hard_t01_fallback_prozess",
+      "variantId": "pv1fiae_hard_t01_fallback_prozess_v02",
+      "interactionType": "best",
+      "questionKind": "passende_massnahme_auswaehlen",
+      "badgeLabel": "Welche Option passt am besten?",
+      "isNew": true,
+      "prompt": "Welche Rolle spielt ein fachlicher Fallback-Prozess für kritische Störungen im Reservierungsablauf?",
+      "maxSelections": 1,
+      "options": [
+        { "id": "a", "text": "Er definiert, wie im Störfall kontrolliert weitergearbeitet oder zurückgefallen wird, ohne Reservierungen oder Datenintegrität zu verlieren.", "correct": true, "explanation": "Fallbacks sind Teil belastbarer Betriebsfähigkeit." },
+        { "id": "b", "text": "Er ersetzt die Notwendigkeit von Tests vollständig.", "correct": false, "explanation": "Fallbacks ergänzen, ersetzen aber keine Qualitätssicherung." },
+        { "id": "c", "text": "Er ist nur für Designentscheidungen relevant.", "correct": false, "explanation": "Es geht um fachliche und betriebliche Stabilität." },
+        { "id": "d", "text": "Er bedeutet, dass jede Fehlersituation automatisch harmlos ist.", "correct": false, "explanation": "Fallbacks begrenzen Risiken, machen sie aber nicht unsichtbar." }
+      ]
+    },
+    {
+      "id": "pv1fiae_hard_t01_q23",
+      "conceptId": "pv1fiae_hard_t01_traceability",
+      "variantId": "pv1fiae_hard_t01_traceability_v02",
+      "interactionType": "multi",
+      "questionKind": "mehrere_richtige_antworten_waehlen",
+      "badgeLabel": "Mehrere Antworten sind richtig.",
+      "isNew": true,
+      "prompt": "Welche Elemente stärken die Nachvollziehbarkeit im Reservierungsprojekt besonders? Mehrere Antworten sind richtig.",
+      "maxSelections": 4,
+      "options": [
+        { "id": "a", "text": "Änderungsentscheidungen dokumentieren", "correct": true, "explanation": "So bleibt der Scope-Verlauf nachvollziehbar." },
+        { "id": "b", "text": "Prüfergebnisse und Fehlerpfade protokollieren", "correct": true, "explanation": "Das stützt technische und fachliche Nachvollziehbarkeit." },
+        { "id": "c", "text": "Schlüssel- und Beziehungsregeln im Modell sauber festhalten", "correct": true, "explanation": "Auch Datenentscheidungen brauchen Nachvollziehbarkeit." },
+        { "id": "d", "text": "Akzeptanzkriterien klar und prüfbar formulieren", "correct": true, "explanation": "So lässt sich Erfolg nachvollziehen." },
+        { "id": "e", "text": "Kritische Entscheidungen nur informell im Kopf behalten", "correct": false, "explanation": "Das verhindert Nachvollziehbarkeit." }
+      ]
+    },
+    {
+      "id": "pv1fiae_hard_t01_q24",
+      "conceptId": "pv1fiae_hard_t01_gesamtabwaegung",
+      "variantId": "pv1fiae_hard_t01_gesamtabwaegung_v02",
+      "interactionType": "best",
+      "questionKind": "beste_option_im_mini_szenario",
+      "badgeLabel": "Welche Option passt am besten?",
+      "isNew": true,
+      "prompt": "Welche Aussage fasst die Hard-Stufe dieses ersten FIAE-Themenslots am treffendsten zusammen?",
+      "maxSelections": 1,
+      "options": [
+        { "id": "a", "text": "Die Lösung wird erst dann belastbar, wenn Projektsteuerung, Konfliktfälle, Prüfkette und Datenintegrität als zusammenhängendes Betriebssystem des Fachfalls verstanden werden.", "correct": true, "explanation": "Genau diese gekoppelte Sicht kennzeichnet den Hard-Slot." },
+        { "id": "b", "text": "Die Themen lassen sich unabhängig voneinander lösen, solange genug Tabellen vorhanden sind.", "correct": false, "explanation": "Gerade die Verknüpfung macht den Anspruch aus." },
+        { "id": "c", "text": "Sobald die Reservierung eingegeben wird, sind alle Folgefragen nebensächlich.", "correct": false, "explanation": "Der Prozess reicht deutlich weiter." },
+        { "id": "d", "text": "Hard bedeutet hier nur längere Texte, nicht schwierigere Entscheidungen.", "correct": false, "explanation": "Hier geht es gerade um höhere Abwägungstiefe." }
+      ]
+    }
+  ],
+  "interactionTypes": [
+    "best",
+    "multi",
+    "single"
+  ],
+  "questionKinds": [
+    "beispiel_erkennen",
+    "definition_zu_begriff",
+    "fehler_finden",
+    "mehrere_richtige_antworten_waehlen",
+    "passende_massnahme_auswaehlen",
+    "prioritaet_setzen",
+    "ursache_folge_erkennen",
+    "vergleich_treffen",
+    "ziel_mittel_zuordnung",
+    "beste_option_im_mini_szenario"
+  ],
+  "dominantBadge": "AP1-Training"
+}

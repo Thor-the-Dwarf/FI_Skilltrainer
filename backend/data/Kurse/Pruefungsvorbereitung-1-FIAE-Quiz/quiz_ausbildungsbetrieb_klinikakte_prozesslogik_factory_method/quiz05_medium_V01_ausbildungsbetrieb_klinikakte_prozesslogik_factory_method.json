@@ -1,0 +1,922 @@
+{
+  "scenarioFolder": "Pruefungsvorbereitung-1-FIAE-Scenarien",
+  "quizFolder": "Pruefungsvorbereitung-1-FIAE-Quiz",
+  "scenarioFile": "ticket_ausbildungsbetrieb_klinikakte_prozesslogik_factory_method/05_medium_ausbildungsbetrieb_klinikakte_prozesslogik_factory_method.json",
+  "quizFile": "quiz_ausbildungsbetrieb_klinikakte_prozesslogik_factory_method/quiz05_medium_V01_ausbildungsbetrieb_klinikakte_prozesslogik_factory_method.json",
+  "ticketId": "05_medium_ausbildungsbetrieb_klinikakte_prozesslogik_factory_method.json",
+  "versionId": "V01",
+  "title": "Ticket 05 Medium - Klinikakte, Prozesslogik und Factory Method",
+  "description": "Manuell verfasstes FIAE-Training auf mittlerem Anspruchsniveau zu Projektumfeld, digitaler Klinikakte, Aktivitätslogik, Passwortsicherheit und Factory Method in einem zusammenhängenden Klinikprojekt.",
+  "topics": [
+    "Projektumfeld, Stakeholder, Abschlusslogik und Klinikaktenmodell im Klinikprojekt fachlich belastbar abwägen",
+    "Aktivitätslogik, Passwortsicherheit, Factory Method und Klassenentwurf im selben Fachfall tragfähig verbinden"
+  ],
+  "questions": [
+    {
+      "id": "pv1fiae_medium_t05_q01",
+      "conceptId": "pv1fiae_medium_t05_umfeld_technik_recht",
+      "variantId": "pv1fiae_medium_t05_umfeld_technik_recht_v01",
+      "interactionType": "multi",
+      "questionKind": "mehrere_richtige_antworten_waehlen",
+      "badgeLabel": "Mehrere Antworten sind richtig.",
+      "isNew": true,
+      "prompt": "Welche Aspekte müssen in diesem Klinikprojekt für eine belastbare Umfeldanalyse technisch oder rechtlich mitgedacht werden? Mehrere Antworten sind richtig.",
+      "maxSelections": 4,
+      "options": [
+        {
+          "id": "a",
+          "text": "Vorhandene Hardware- und Netzwerkinfrastruktur der Standorte",
+          "correct": true,
+          "explanation": "Die technische Ausgangsbasis ist für die Digitalisierung zentral."
+        },
+        {
+          "id": "b",
+          "text": "Bestehende Softwarelandschaften und Datenstrukturen",
+          "correct": true,
+          "explanation": "Ohne Kenntnis vorhandener Systeme ist Integration schwer planbar."
+        },
+        {
+          "id": "c",
+          "text": "Datenschutz- und Sicherheitsvorgaben für Gesundheitsdaten",
+          "correct": true,
+          "explanation": "Gerade im Gesundheitswesen ist das besonders wichtig."
+        },
+        {
+          "id": "d",
+          "text": "Gesetzliche Anforderungen an die Verarbeitung sensibler Daten",
+          "correct": true,
+          "explanation": "Auch rechtliche Rahmenbedingungen gehören dazu."
+        },
+        {
+          "id": "e",
+          "text": "Beliebtheit interner Teamnamen im Messenger",
+          "correct": false,
+          "explanation": "Das ist für die Umfeldanalyse fachlich irrelevant."
+        }
+      ]
+    },
+    {
+      "id": "pv1fiae_medium_t05_q02",
+      "conceptId": "pv1fiae_medium_t05_stakeholder_erwartung_angst",
+      "variantId": "pv1fiae_medium_t05_stakeholder_erwartung_angst_v01",
+      "interactionType": "multi",
+      "questionKind": "mehrere_richtige_antworten_waehlen",
+      "badgeLabel": "Mehrere Antworten sind richtig.",
+      "isNew": true,
+      "prompt": "Welche Kombinationen aus Stakeholder, Erwartung und Befürchtung sind in der Klinikakte fachlich tragfähig zugeordnet? Mehrere Antworten sind richtig.",
+      "maxSelections": 4,
+      "options": [
+        {
+          "id": "a",
+          "text": "Die Geschäftsführung erwartet Projekterfolg und wirtschaftlichen Nutzen, fürchtet aber hohe Komplexität.",
+          "correct": true,
+          "explanation": "Das ist für diese Perspektive plausibel."
+        },
+        {
+          "id": "b",
+          "text": "IT-Fachkräfte erwarten Standardisierung, fürchten aber Jobverlust oder zusätzliche Umstellung.",
+          "correct": true,
+          "explanation": "Auch diese Spannung ist realistisch."
+        },
+        {
+          "id": "c",
+          "text": "Verwaltungsmitarbeitende erwarten Entlastung, fürchten aber komplexe neue Abläufe.",
+          "correct": true,
+          "explanation": "Das ist ebenfalls plausibel."
+        },
+        {
+          "id": "d",
+          "text": "Klinisches Fachpersonal erwartet ergonomische Anwendungen, fürchtet aber Zeitverlust durch Sicherheitsschritte.",
+          "correct": true,
+          "explanation": "Diese Abwägung ist im Alltag typisch."
+        },
+        {
+          "id": "e",
+          "text": "Der Klinikvorstand erwartet bewusst möglichst viele manuelle Zwischenschritte.",
+          "correct": false,
+          "explanation": "Das wäre kein sinnvolles Digitalisierungsziel."
+        }
+      ]
+    },
+    {
+      "id": "pv1fiae_medium_t05_q03",
+      "conceptId": "pv1fiae_medium_t05_abschlussprotokoll",
+      "variantId": "pv1fiae_medium_t05_abschlussprotokoll_v01",
+      "interactionType": "multi",
+      "questionKind": "mehrere_richtige_antworten_waehlen",
+      "badgeLabel": "Mehrere Antworten sind richtig.",
+      "isNew": true,
+      "prompt": "Welche Punkte sollten für ein belastbares Abschlussprotokoll dieses Klinikprojekts verbindlich vorbereitet werden? Mehrere Antworten sind richtig.",
+      "maxSelections": 3,
+      "options": [
+        {
+          "id": "a",
+          "text": "Soll-Ist-Vergleich zu Anforderungen und Ergebnissen",
+          "correct": true,
+          "explanation": "Das ist ein Kernbestandteil eines Abschlussprotokolls."
+        },
+        {
+          "id": "b",
+          "text": "Offene Folgeaktivitäten oder Anschlussmaßnahmen",
+          "correct": true,
+          "explanation": "Auch das gehört sinnvoll dazu."
+        },
+        {
+          "id": "c",
+          "text": "Wichtige Projekterkenntnisse und Abschlussbewertung",
+          "correct": true,
+          "explanation": "Ein Abschlussprotokoll soll das Ergebnis einordnen."
+        },
+        {
+          "id": "d",
+          "text": "Nur die alphabetisch sortierten Uhrzeiten aller Meetings",
+          "correct": false,
+          "explanation": "Das ersetzt keine inhaltliche Abschlussbewertung."
+        }
+      ]
+    },
+    {
+      "id": "pv1fiae_medium_t05_q04",
+      "conceptId": "pv1fiae_medium_t05_klinikakte_entitaeten",
+      "variantId": "pv1fiae_medium_t05_klinikakte_entitaeten_v01",
+      "interactionType": "multi",
+      "questionKind": "mehrere_richtige_antworten_waehlen",
+      "badgeLabel": "Mehrere Antworten sind richtig.",
+      "isNew": true,
+      "prompt": "Welche fachlichen Objekte müssen im Modell der digitalen Klinikakte enthalten sein, damit der Stationsprozess sauber abgebildet wird? Mehrere Antworten sind richtig.",
+      "maxSelections": 4,
+      "options": [
+        {
+          "id": "a",
+          "text": "Patientin oder Patient",
+          "correct": true,
+          "explanation": "Die Klinikakte dreht sich wesentlich um diese Entität."
+        },
+        {
+          "id": "b",
+          "text": "Ärztin oder Arzt",
+          "correct": true,
+          "explanation": "Auch Behandelnde sind fachlich zentral."
+        },
+        {
+          "id": "c",
+          "text": "Diagnose",
+          "correct": true,
+          "explanation": "Diagnosen gehören inhaltlich zur Akte."
+        },
+        {
+          "id": "d",
+          "text": "Medikament oder Medikation",
+          "correct": true,
+          "explanation": "Auch dieser Teil ist fachlich wesentlich."
+        },
+        {
+          "id": "e",
+          "text": "ein Darstellungsdetail ohne Bezug zum Klinikaktenmodell",
+          "correct": false,
+          "explanation": "Das ist kein Objekt des Klinikaktenmodells."
+        }
+      ]
+    },
+    {
+      "id": "pv1fiae_medium_t05_q05",
+      "conceptId": "pv1fiae_medium_t05_klinikakte_beziehungen",
+      "variantId": "pv1fiae_medium_t05_klinikakte_beziehungen_v01",
+      "interactionType": "best",
+      "questionKind": "beispiel_erkennen",
+      "badgeLabel": "Welche Lösung passt am besten?",
+      "isNew": true,
+      "prompt": "Welche Aussage beschreibt die Beziehungen im Modell der digitalen Klinikakte für diesen Fall am treffendsten?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Eine Patientin kann mehrere Diagnosen haben und von mehreren Ärzten behandelt werden.",
+          "correct": true,
+          "explanation": "Das passt zu den beschriebenen Regeln."
+        },
+        {
+          "id": "b",
+          "text": "Eine Diagnose darf nie mit einem Datum verknüpft sein.",
+          "correct": false,
+          "explanation": "Gerade ein Feststellungsdatum ist hier relevant."
+        },
+        {
+          "id": "c",
+          "text": "Medikamente dürfen keine Hersteller oder Wirkstoffe enthalten.",
+          "correct": false,
+          "explanation": "Das widerspricht der Fachbeschreibung."
+        },
+        {
+          "id": "d",
+          "text": "Patienten und Ärzte stehen fachlich in keiner Beziehung zueinander.",
+          "correct": false,
+          "explanation": "Das wäre unplausibel."
+        }
+      ]
+    },
+    {
+      "id": "pv1fiae_medium_t05_q06",
+      "conceptId": "pv1fiae_medium_t05_eingabemaske_patientendaten",
+      "variantId": "pv1fiae_medium_t05_eingabemaske_patientendaten_v01",
+      "interactionType": "best",
+      "questionKind": "passende_massnahme_auswaehlen",
+      "badgeLabel": "Welche Lösung passt am besten?",
+      "isNew": true,
+      "prompt": "Welche Eingabemaske unterstützt Patientenstammdaten in dieser Klinikumgebung fachlich am sinnvollsten?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Eine klar strukturierte Maske mit passenden Feldern für Name, Geburtsdatum, Krankenkasse und Versicherungsnummer",
+          "correct": true,
+          "explanation": "Das ist fachlich und ergonomisch passend."
+        },
+        {
+          "id": "b",
+          "text": "Eine Freitextfläche ohne erkennbare Feldstruktur",
+          "correct": false,
+          "explanation": "Das erschwert korrekte Datenerfassung."
+        },
+        {
+          "id": "c",
+          "text": "Nur ein Feld für beliebige Kommentare ohne Stammdaten",
+          "correct": false,
+          "explanation": "Damit fehlen zentrale Daten."
+        },
+        {
+          "id": "d",
+          "text": "Eine Maske, die auf Pflichtangaben vollständig verzichtet",
+          "correct": false,
+          "explanation": "Auch das wäre fachlich unpassend."
+        }
+      ]
+    },
+    {
+      "id": "pv1fiae_medium_t05_q07",
+      "conceptId": "pv1fiae_medium_t05_passwort_hashing",
+      "variantId": "pv1fiae_medium_t05_passwort_hashing_v01",
+      "interactionType": "single",
+      "questionKind": "definition_zu_begriff",
+      "badgeLabel": "Welche Erläuterung passt am besten?",
+      "isNew": true,
+      "prompt": "Welche Vorgehensweise ist für die Passwortspeicherung in dieser Kliniklösung fachlich tragfähig?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Passwörter gehasht und mit geeignetem Schutzmechanismus speichern statt im Klartext",
+          "correct": true,
+          "explanation": "So wird die Passwortspeicherung deutlich sicherer."
+        },
+        {
+          "id": "b",
+          "text": "Passwörter gut sichtbar in einer Textdatei hinterlegen",
+          "correct": false,
+          "explanation": "Das wäre unsicher."
+        },
+        {
+          "id": "c",
+          "text": "Passwörter nur anhand der E-Mail-Adresse ableiten",
+          "correct": false,
+          "explanation": "Auch das ist fachlich ungeeignet."
+        },
+        {
+          "id": "d",
+          "text": "Passwörter grundsätzlich unverschlüsselt an alle Admins mailen",
+          "correct": false,
+          "explanation": "Das ist klar falsch."
+        }
+      ]
+    },
+    {
+      "id": "pv1fiae_medium_t05_q08",
+      "conceptId": "pv1fiae_medium_t05_salt_begruendung",
+      "variantId": "pv1fiae_medium_t05_salt_begruendung_v01",
+      "interactionType": "best",
+      "questionKind": "ursache_folge_erkennen",
+      "badgeLabel": "Welche Folge ist am wahrscheinlichsten?",
+      "isNew": true,
+      "prompt": "Warum ist ein zusätzlicher Salt bei Passwort-Hashes gerade in einer sensiblen Klinikakte fachlich wichtig?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Salted Hashes erschweren Wiedererkennung gleicher Passwörter und Wörterbuchangriffe.",
+          "correct": true,
+          "explanation": "Das ist ein zentraler Sicherheitsvorteil."
+        },
+        {
+          "id": "b",
+          "text": "Damit kann auf jede Rechteprüfung verzichtet werden.",
+          "correct": false,
+          "explanation": "Salt ersetzt keine Berechtigungslogik."
+        },
+        {
+          "id": "c",
+          "text": "Passwörter werden dadurch im Klartext leichter lesbar.",
+          "correct": false,
+          "explanation": "Das wäre gerade das Gegenteil."
+        },
+        {
+          "id": "d",
+          "text": "Danach entstehen keine Integrationsfehler mehr.",
+          "correct": false,
+          "explanation": "Auch das hat damit nichts zu tun."
+        }
+      ]
+    },
+    {
+      "id": "pv1fiae_medium_t05_q09",
+      "conceptId": "pv1fiae_medium_t05_aktivitaetsdiagramm_start",
+      "variantId": "pv1fiae_medium_t05_aktivitaetsdiagramm_start_v01",
+      "interactionType": "single",
+      "questionKind": "prioritaet_setzen",
+      "badgeLabel": "Welcher Schritt ist fachlich am frühesten?",
+      "isNew": false,
+      "prompt": "Welcher Schritt gehört in der Aktivitätslogik eines Stationsbesuchs fachlich an den Anfang, wenn der Ablauf sauber digitalisiert werden soll?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Den Besuch oder Behandlungsvorgang anstoßen und die Ausgangslage erfassen",
+          "correct": true,
+          "explanation": "Damit beginnt der Ablauf fachlich sinnvoll."
+        },
+        {
+          "id": "b",
+          "text": "Die abschließende Dokumentation sofort finalisieren",
+          "correct": false,
+          "explanation": "Das folgt erst später."
+        },
+        {
+          "id": "c",
+          "text": "Direkt den Vorgang archivieren",
+          "correct": false,
+          "explanation": "Auch das ist kein Startschritt."
+        },
+        {
+          "id": "d",
+          "text": "Nur die Etikettenklasse erweitern",
+          "correct": false,
+          "explanation": "Das gehört zu einem anderen Teil des Tickets."
+        }
+      ]
+    },
+    {
+      "id": "pv1fiae_medium_t05_q10",
+      "conceptId": "pv1fiae_medium_t05_aktivitaetsdiagramm_verzweigung",
+      "variantId": "pv1fiae_medium_t05_aktivitaetsdiagramm_verzweigung_v01",
+      "interactionType": "single",
+      "questionKind": "definition_zu_begriff",
+      "badgeLabel": "Welche Erläuterung passt am besten?",
+      "isNew": false,
+      "prompt": "Wofür steht eine Verzweigung im Aktivitätsdiagramm dieses Stationsprozesses am plausibelsten?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Für eine Entscheidung, bei der je nach Bedingung unterschiedliche Wege weiterlaufen",
+          "correct": true,
+          "explanation": "Das ist die typische Funktion einer Verzweigung."
+        },
+        {
+          "id": "b",
+          "text": "Für ein beliebiges Hintergrundbild ohne Prozessbedeutung",
+          "correct": false,
+          "explanation": "Das verfehlt den geprüften Entwicklungszusammenhang."
+        },
+        {
+          "id": "c",
+          "text": "Für eine Datenbanktabelle ohne Ablaufbezug",
+          "correct": false,
+          "explanation": "Auch das ist unpassend."
+        },
+        {
+          "id": "d",
+          "text": "Für eine Programmiersprache mit Compiler",
+          "correct": false,
+          "explanation": "Das gehört nicht zur Aktivitätslogik."
+        }
+      ]
+    },
+    {
+      "id": "pv1fiae_medium_t05_q11",
+      "conceptId": "pv1fiae_medium_t05_aktivitaetsdiagramm_parallel",
+      "variantId": "pv1fiae_medium_t05_aktivitaetsdiagramm_parallel_v01",
+      "interactionType": "best",
+      "questionKind": "vergleich_treffen",
+      "badgeLabel": "Welche Aussage trifft am besten zu?",
+      "isNew": false,
+      "prompt": "Wann ist eine Parallelisierung in der Aktivitätslogik dieses Klinikfalls fachlich gut begründet?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Wenn unabhängige Teilaktivitäten zeitgleich laufen können, ohne sich gegenseitig zu blockieren",
+          "correct": true,
+          "explanation": "Genau dafür wird Parallelität modelliert."
+        },
+        {
+          "id": "b",
+          "text": "Wenn jeder Schritt zwingend auf das Ende des vorherigen warten muss",
+          "correct": false,
+          "explanation": "Dann liegt gerade keine Parallelität vor."
+        },
+        {
+          "id": "c",
+          "text": "Wenn es im Prozess überhaupt keine Entscheidungen gibt",
+          "correct": false,
+          "explanation": "Das ist kein Kriterium für Parallelität."
+        },
+        {
+          "id": "d",
+          "text": "Wenn nur Design Patterns beschrieben werden sollen",
+          "correct": false,
+          "explanation": "Auch das ist fachlich unpassend."
+        }
+      ]
+    },
+    {
+      "id": "pv1fiae_medium_t05_q12",
+      "conceptId": "pv1fiae_medium_t05_medienbruch_problem",
+      "variantId": "pv1fiae_medium_t05_medienbruch_problem_v01",
+      "interactionType": "best",
+      "questionKind": "ursache_folge_erkennen",
+      "badgeLabel": "Welche Folge ist am wahrscheinlichsten?",
+      "isNew": false,
+      "prompt": "Welches Problem eines papierbasierten Stationsablaufs sollte die Digitalisierung in diesem Fall besonders wirksam verringern?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Medienbrüche und doppelte Erfassung von Informationen",
+          "correct": true,
+          "explanation": "Genau das ist ein klassischer Digitalisierungsvorteil."
+        },
+        {
+          "id": "b",
+          "text": "Die Notwendigkeit jeglicher Dokumentation",
+          "correct": false,
+          "explanation": "Dokumentation bleibt weiterhin nötig."
+        },
+        {
+          "id": "c",
+          "text": "Jede Form von Datenschutzanforderung",
+          "correct": false,
+          "explanation": "Auch digital gelten diese Anforderungen weiter."
+        },
+        {
+          "id": "d",
+          "text": "Die Existenz von Rollen und Berechtigungen",
+          "correct": false,
+          "explanation": "Auch das verschwindet nicht."
+        }
+      ]
+    },
+    {
+      "id": "pv1fiae_medium_t05_q13",
+      "conceptId": "pv1fiae_medium_t05_digitalisierung_nutzen",
+      "variantId": "pv1fiae_medium_t05_digitalisierung_nutzen_v01",
+      "interactionType": "multi",
+      "questionKind": "mehrere_richtige_antworten_waehlen",
+      "badgeLabel": "Mehrere Antworten sind richtig.",
+      "isNew": false,
+      "prompt": "Welche Vorteile bringt die Prozessdigitalisierung im Klinikalltag dieses Projekts fachlich belastbar mit sich? Mehrere Antworten sind richtig.",
+      "maxSelections": 3,
+      "options": [
+        {
+          "id": "a",
+          "text": "Informationen lassen sich schneller und einheitlicher verfügbar machen.",
+          "correct": true,
+          "explanation": "Das ist ein typischer Mehrwert."
+        },
+        {
+          "id": "b",
+          "text": "Doppelte Datenerfassung kann reduziert werden.",
+          "correct": true,
+          "explanation": "Auch das ist ein plausibler Vorteil."
+        },
+        {
+          "id": "c",
+          "text": "Abläufe können nachvollziehbarer dokumentiert werden.",
+          "correct": true,
+          "explanation": "Digitale Prozesse schaffen oft mehr Transparenz."
+        },
+        {
+          "id": "d",
+          "text": "Sicherheits- und Datenschutzfragen verschwinden vollständig.",
+          "correct": false,
+          "explanation": "Diese Themen bleiben bestehen."
+        }
+      ]
+    },
+    {
+      "id": "pv1fiae_medium_t05_q14",
+      "conceptId": "pv1fiae_medium_t05_factory_method_zweck",
+      "variantId": "pv1fiae_medium_t05_factory_method_zweck_v01",
+      "interactionType": "single",
+      "questionKind": "definition_zu_begriff",
+      "badgeLabel": "Welche Erläuterung passt am besten?",
+      "isNew": false,
+      "prompt": "Welchen Zweck erfüllt die Factory Method in der Etikettenlogik dieses Kliniksystems am treffendsten?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Sie kapselt die Erzeugung passender Objekte und entkoppelt diese von ihrer direkten Instanziierung.",
+          "correct": true,
+          "explanation": "Das ist die Kernidee des Musters."
+        },
+        {
+          "id": "b",
+          "text": "Sie ersetzt jede Form von Datenmodellierung.",
+          "correct": false,
+          "explanation": "Das ist nicht ihre Aufgabe."
+        },
+        {
+          "id": "c",
+          "text": "Sie dient nur der Farbwahl im Frontend.",
+          "correct": false,
+          "explanation": "Auch das ist falsch."
+        },
+        {
+          "id": "d",
+          "text": "Sie verhindert grundsätzlich jede Vererbung.",
+          "correct": false,
+          "explanation": "Das trifft nicht zu."
+        }
+      ]
+    },
+    {
+      "id": "pv1fiae_medium_t05_q15",
+      "conceptId": "pv1fiae_medium_t05_factory_method_vorteil",
+      "variantId": "pv1fiae_medium_t05_factory_method_vorteil_v01",
+      "interactionType": "best",
+      "questionKind": "passende_massnahme_auswaehlen",
+      "badgeLabel": "Welche Begründung passt am besten?",
+      "isNew": false,
+      "prompt": "Warum ist die Factory Method bei einer wachsenden Etikettenhierarchie in diesem Projekt besonders hilfreich?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Neue konkrete Typen lassen sich leichter ergänzen, ohne Erzeugungslogik überall zu verstreuen.",
+          "correct": true,
+          "explanation": "Das ist ein klarer Vorteil der Factory Method."
+        },
+        {
+          "id": "b",
+          "text": "Sie macht alle Klassen automatisch abstrakt.",
+          "correct": false,
+          "explanation": "Das folgt daraus nicht."
+        },
+        {
+          "id": "c",
+          "text": "Sie verhindert jede Erweiterung des Systems.",
+          "correct": false,
+          "explanation": "Das Gegenteil ist eher der Fall."
+        },
+        {
+          "id": "d",
+          "text": "Sie ersetzt automatisch sämtliche Tests.",
+          "correct": false,
+          "explanation": "Auch das ist fachlich falsch."
+        }
+      ]
+    },
+    {
+      "id": "pv1fiae_medium_t05_q16",
+      "conceptId": "pv1fiae_medium_t05_abstrakte_klasse",
+      "variantId": "pv1fiae_medium_t05_abstrakte_klasse_v01",
+      "interactionType": "single",
+      "questionKind": "definition_zu_begriff",
+      "badgeLabel": "Welche Erläuterung passt am besten?",
+      "isNew": false,
+      "prompt": "Wodurch zeichnet sich eine abstrakte Klasse im Entwurf dieser Etikettenlogik fachlich am ehesten aus?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Sie beschreibt gemeinsame Struktur oder Verhalten, wird aber nicht direkt als fertiges Objekt instanziiert.",
+          "correct": true,
+          "explanation": "Das trifft die Rolle abstrakter Klassen gut."
+        },
+        {
+          "id": "b",
+          "text": "Sie ist immer identisch mit einem Interface.",
+          "correct": false,
+          "explanation": "Beides ist nicht dasselbe."
+        },
+        {
+          "id": "c",
+          "text": "Sie enthält grundsätzlich niemals Methoden.",
+          "correct": false,
+          "explanation": "Auch das stimmt nicht."
+        },
+        {
+          "id": "d",
+          "text": "Sie darf nur für Datenbanktabellen genutzt werden.",
+          "correct": false,
+          "explanation": "Das ist fachlich unsinnig."
+        }
+      ]
+    },
+    {
+      "id": "pv1fiae_medium_t05_q17",
+      "conceptId": "pv1fiae_medium_t05_interface_abgrenzung",
+      "variantId": "pv1fiae_medium_t05_interface_abgrenzung_v01",
+      "interactionType": "best",
+      "questionKind": "vergleich_treffen",
+      "badgeLabel": "Welche Aussage trifft am besten zu?",
+      "isNew": false,
+      "prompt": "Welche Aussage grenzt abstrakte Klasse und Interface in diesem Klinikprojekt fachlich am saubersten voneinander ab?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Eine abstrakte Klasse kann gemeinsame Basislogik vorgeben, ein Interface definiert vor allem einen Vertrag.",
+          "correct": true,
+          "explanation": "Das beschreibt die typische Abgrenzung treffend."
+        },
+        {
+          "id": "b",
+          "text": "Beide Begriffe meinen exakt dieselbe Sprachkonstruktion.",
+          "correct": false,
+          "explanation": "Das ist falsch."
+        },
+        {
+          "id": "c",
+          "text": "Interfaces werden fälschlich als reine UI-Gestaltung verstanden.",
+          "correct": false,
+          "explanation": "Auch das ist fachlich unsinnig."
+        },
+        {
+          "id": "d",
+          "text": "Abstrakte Klassen sind immer Datenbanken.",
+          "correct": false,
+          "explanation": "Das passt nicht."
+        }
+      ]
+    },
+    {
+      "id": "pv1fiae_medium_t05_q18",
+      "conceptId": "pv1fiae_medium_t05_etikettenhierarchie_erweiterung",
+      "variantId": "pv1fiae_medium_t05_etikettenhierarchie_erweiterung_v01",
+      "interactionType": "best",
+      "questionKind": "beispiel_erkennen",
+      "badgeLabel": "Welche Lösung passt am besten?",
+      "isNew": false,
+      "prompt": "Wie lässt sich die Etikettenhierarchie in diesem Kliniksystem fachlich sauber erweitern?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Eine neue konkrete Unterklasse wird passend in die bestehende Struktur eingeordnet.",
+          "correct": true,
+          "explanation": "So bleibt die Hierarchie nachvollziehbar erweiterbar."
+        },
+        {
+          "id": "b",
+          "text": "Alle bisherigen Klassen werden gelöscht und durch eine Textnotiz ersetzt.",
+          "correct": false,
+          "explanation": "Das wäre keine saubere Erweiterung."
+        },
+        {
+          "id": "c",
+          "text": "Neue Typen werden ausschließlich als Kommentar im Code erwähnt.",
+          "correct": false,
+          "explanation": "Auch das ist fachlich unzureichend."
+        },
+        {
+          "id": "d",
+          "text": "Die Vererbung wird zufällig umgedreht, ohne die Struktur zu prüfen.",
+          "correct": false,
+          "explanation": "Das wäre unsauber."
+        }
+      ]
+    },
+    {
+      "id": "pv1fiae_medium_t05_q19",
+      "conceptId": "pv1fiae_medium_t05_polymorphie_nutzen",
+      "variantId": "pv1fiae_medium_t05_polymorphie_nutzen_v01",
+      "interactionType": "best",
+      "questionKind": "ursache_folge_erkennen",
+      "badgeLabel": "Welche Folge ist am wahrscheinlichsten?",
+      "isNew": false,
+      "prompt": "Welchen Vorteil hat es im Projekt, wenn verschiedene Etikettentypen über eine gemeinsame Oberklasse angesprochen werden können?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Die Anwendung kann mit gemeinsamen Schnittstellen arbeiten und konkrete Typen flexibler austauschen.",
+          "correct": true,
+          "explanation": "Das ist ein typischer Nutzen polymorpher Strukturen."
+        },
+        {
+          "id": "b",
+          "text": "Danach braucht es keinerlei Objektlogik mehr.",
+          "correct": false,
+          "explanation": "Auch das ist falsch."
+        },
+        {
+          "id": "c",
+          "text": "Damit werden alle Daten automatisch korrekt verschlüsselt.",
+          "correct": false,
+          "explanation": "Das hat damit nichts zu tun."
+        },
+        {
+          "id": "d",
+          "text": "Aktivitätsdiagramme werden dadurch überflüssig.",
+          "correct": false,
+          "explanation": "Auch das stimmt nicht."
+        }
+      ]
+    },
+    {
+      "id": "pv1fiae_medium_t05_q20",
+      "conceptId": "pv1fiae_medium_t05_pattern_strategy_beispiel",
+      "variantId": "pv1fiae_medium_t05_pattern_strategy_beispiel_v01",
+      "interactionType": "best",
+      "questionKind": "beispiel_erkennen",
+      "badgeLabel": "Welches Beispiel passt am besten?",
+      "isNew": false,
+      "prompt": "Welches weitere Entwurfsmuster passt in diesem Fachfall am besten, wenn unterschiedliche Verarbeitungsstrategien austauschbar bleiben sollen?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Strategy Pattern",
+          "correct": true,
+          "explanation": "Das Muster passt gut zu austauschbaren Verhaltensweisen."
+        },
+        {
+          "id": "b",
+          "text": "RGB-Farbmodell",
+          "correct": false,
+          "explanation": "Das ist kein Entwurfsmuster."
+        },
+        {
+          "id": "c",
+          "text": "HTTP 404",
+          "correct": false,
+          "explanation": "Auch das ist kein Entwurfsmuster."
+        },
+        {
+          "id": "d",
+          "text": "CSV-Datei",
+          "correct": false,
+          "explanation": "Das ist ebenfalls kein Muster."
+        }
+      ]
+    },
+    {
+      "id": "pv1fiae_medium_t05_q21",
+      "conceptId": "pv1fiae_medium_t05_pattern_einordnung",
+      "variantId": "pv1fiae_medium_t05_pattern_einordnung_v01",
+      "interactionType": "single",
+      "questionKind": "definition_zu_begriff",
+      "badgeLabel": "Welche Erläuterung passt am besten?",
+      "isNew": false,
+      "prompt": "Wie lässt sich ein Entwurfsmuster im Softwarekontext dieses Projekts am treffendsten einordnen?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Als wiederverwendbare Lösungsidee für ein typisches Gestaltungs- oder Strukturproblem",
+          "correct": true,
+          "explanation": "Das trifft den Kern von Design Patterns."
+        },
+        {
+          "id": "b",
+          "text": "Als zufällige Sammlung von Farbcodes",
+          "correct": false,
+          "explanation": "Das ist fachlich falsch."
+        },
+        {
+          "id": "c",
+          "text": "Als Ersatz für jede Art von Test oder Dokumentation",
+          "correct": false,
+          "explanation": "Auch das stimmt nicht."
+        },
+        {
+          "id": "d",
+          "text": "Als rein rechtliche Vorgabe ohne Architekturbezug",
+          "correct": false,
+          "explanation": "Das passt nicht."
+        }
+      ]
+    },
+    {
+      "id": "pv1fiae_medium_t05_q22",
+      "conceptId": "pv1fiae_medium_t05_klinikakte_sensible_daten",
+      "variantId": "pv1fiae_medium_t05_klinikakte_sensible_daten_v01",
+      "interactionType": "multi",
+      "questionKind": "mehrere_richtige_antworten_waehlen",
+      "badgeLabel": "Mehrere Antworten sind richtig.",
+      "isNew": false,
+      "prompt": "Welche Gründe machen die digitale Klinikakte in diesem Projekt besonders schutzbedürftig? Mehrere Antworten sind richtig.",
+      "maxSelections": 3,
+      "options": [
+        {
+          "id": "a",
+          "text": "Sie enthält sensible Gesundheits- und Personendaten.",
+          "correct": true,
+          "explanation": "Das ist der wichtigste Grund."
+        },
+        {
+          "id": "b",
+          "text": "Fehler oder unberechtigte Zugriffe können schwerwiegende Folgen haben.",
+          "correct": true,
+          "explanation": "Auch das erhöht die Schutzbedürftigkeit."
+        },
+        {
+          "id": "c",
+          "text": "Für die Verarbeitung gelten strenge rechtliche Vorgaben.",
+          "correct": true,
+          "explanation": "Gerade im Gesundheitsbereich ist das zentral."
+        },
+        {
+          "id": "d",
+          "text": "Die Akte darf deshalb keine Datenstruktur haben.",
+          "correct": false,
+          "explanation": "Das ist fachlich falsch."
+        }
+      ]
+    },
+    {
+      "id": "pv1fiae_medium_t05_q23",
+      "conceptId": "pv1fiae_medium_t05_prozesslogik_digitalisierung",
+      "variantId": "pv1fiae_medium_t05_prozesslogik_digitalisierung_v01",
+      "interactionType": "best",
+      "questionKind": "ziel_mittel_zuordnung",
+      "badgeLabel": "Welche Zuordnung passt am besten?",
+      "isNew": false,
+      "prompt": "Welche Maßnahme unterstützt eine sauber digitalisierte Prozesslogik im Stationsalltag dieser Klinik am wirksamsten?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Ablaufschritte, Entscheidungen und Zuständigkeiten klar modellieren und systemisch abbilden",
+          "correct": true,
+          "explanation": "Damit wird die Prozesslogik nachvollziehbar digitalisiert."
+        },
+        {
+          "id": "b",
+          "text": "Fachschritte bewusst unklar und zufällig lassen",
+          "correct": false,
+          "explanation": "Das würde Prozesse eher verschlechtern."
+        },
+        {
+          "id": "c",
+          "text": "Alle Stationen mit derselben generischen Textnotiz abspeisen",
+          "correct": false,
+          "explanation": "Das bildet keine Prozesslogik ab."
+        },
+        {
+          "id": "d",
+          "text": "nur die Darstellung anpassen, ohne Kennzahlen, Rollen oder Datenquellen zu prüfen",
+          "correct": false,
+          "explanation": "Das ist kein fachlicher Hebel."
+        }
+      ]
+    },
+    {
+      "id": "pv1fiae_medium_t05_q24",
+      "conceptId": "pv1fiae_medium_t05_gesamtentscheidung_ticket05",
+      "variantId": "pv1fiae_medium_t05_gesamtentscheidung_ticket05_v01",
+      "interactionType": "best",
+      "questionKind": "beste_option_im_mini_szenario",
+      "badgeLabel": "Welche Lösung passt am besten?",
+      "isNew": false,
+      "prompt": "Welche Gesamtentscheidung passt für dieses Klinikprojekt unter fachlichen, organisatorischen und technischen Gesichtspunkten am besten?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Projektumfeld und Stakeholder sauber klären, die Klinikakte fachlich modellieren, sensible Daten schützen und Objektlogik mit geeigneten Mustern strukturieren.",
+          "correct": true,
+          "explanation": "Das bündelt die Kernaussagen des Tickets fachlich passend."
+        },
+        {
+          "id": "b",
+          "text": "Modelle und Sicherheitsfragen ignorieren und nur auf spontane Einfälle setzen.",
+          "correct": false,
+          "explanation": "Das wäre fachlich riskant."
+        },
+        {
+          "id": "c",
+          "text": "Nur die Etikettenhierarchie betrachten und alles andere auslassen.",
+          "correct": false,
+          "explanation": "Das wäre zu eng."
+        },
+        {
+          "id": "d",
+          "text": "Nur Papierprozesse beibehalten und keine Digitalisierungslogik aufbauen.",
+          "correct": false,
+          "explanation": "Auch das widerspricht dem Projektziel."
+        }
+      ]
+    }
+  ]
+}

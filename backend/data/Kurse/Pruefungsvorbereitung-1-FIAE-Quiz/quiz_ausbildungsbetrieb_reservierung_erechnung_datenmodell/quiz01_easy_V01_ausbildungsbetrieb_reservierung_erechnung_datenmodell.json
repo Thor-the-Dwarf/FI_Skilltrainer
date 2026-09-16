@@ -1,0 +1,916 @@
+{
+  "scenarioFolder": "Pruefungsvorbereitung-1-FIAE-Scenarien",
+  "quizFolder": "Pruefungsvorbereitung-1-FIAE-Quiz",
+  "scenarioFile": "ticket_ausbildungsbetrieb_reservierung_erechnung_datenmodell/01_easy_ausbildungsbetrieb_reservierung_erechnung_datenmodell.json",
+  "quizFile": "quiz_ausbildungsbetrieb_reservierung_erechnung_datenmodell/quiz01_easy_V01_ausbildungsbetrieb_reservierung_erechnung_datenmodell.json",
+  "ticketId": "01_easy_ausbildungsbetrieb_reservierung_erechnung_datenmodell.json",
+  "versionId": "V01",
+  "title": "Ticket 01 Easy - Reservierungsmodul, eRechnung und 3NF",
+  "description": "Manuell verfasstes FIAE-Training im Einstiegsniveau zu Machbarkeit, Vorgehensmodell, Use Cases, eRechnung, Validierung und 3NF in einem zusammenhängenden Reservierungsprojekt.",
+  "topics": [
+    "Machbarkeit, Vorgehensmodell und Reservierungslogik im Projektkontext fachlich sicher einordnen",
+    "eRechnung, Validierung, Prototyping und 3NF im selben Fachfall nachvollziehbar verbinden"
+  ],
+  "questions": [
+    {
+      "id": "pv1fiae_easy_t01_q01",
+      "conceptId": "pv1fiae_easy_t01_machbarkeitskriterien",
+      "variantId": "pv1fiae_easy_t01_machbarkeitskriterien_v01",
+      "interactionType": "multi",
+      "questionKind": "mehrere_richtige_antworten_waehlen",
+      "badgeLabel": "Mehrere Antworten sind richtig.",
+      "isNew": true,
+      "prompt": "Welche Punkte gehören zu einer belastbaren Machbarkeitsanalyse für das geplante Reservierungssystem? Mehrere Antworten sind richtig.",
+      "maxSelections": 4,
+      "options": [
+        {
+          "id": "a",
+          "text": "Marktanalyse für Nachfrage, Zielgruppe und Marktpotenzial",
+          "correct": true,
+          "explanation": "Die Marktsicht gehört zu einer belastbaren Machbarkeitsanalyse."
+        },
+        {
+          "id": "b",
+          "text": "Technische Umsetzbarkeit mit Hosting, Schnittstellen und Integrationsaufwand",
+          "correct": true,
+          "explanation": "Die technische Machbarkeit ist ein klassischer Prüfpunkt."
+        },
+        {
+          "id": "c",
+          "text": "Rechtliche Rahmenbedingungen wie Datenschutz oder Branchenvorgaben",
+          "correct": true,
+          "explanation": "Auch rechtliche Vorgaben können das Projekt begrenzen."
+        },
+        {
+          "id": "d",
+          "text": "Wirtschaftliche Tragfähigkeit mit Aufwand, Nutzen und Erlöschancen",
+          "correct": true,
+          "explanation": "Kosten und Nutzen sind Teil der wirtschaftlichen Machbarkeit."
+        },
+        {
+          "id": "e",
+          "text": "Welche Lieblingsgerichte im Kick-off serviert werden",
+          "correct": false,
+          "explanation": "Das ist für die Machbarkeit des Produkts fachlich irrelevant."
+        }
+      ]
+    },
+    {
+      "id": "pv1fiae_easy_t01_q02",
+      "conceptId": "pv1fiae_easy_t01_irrelevante_detailfrage",
+      "variantId": "pv1fiae_easy_t01_irrelevante_detailfrage_v01",
+      "interactionType": "single",
+      "questionKind": "beispiel_erkennen",
+      "badgeLabel": "Welche Aussage passt am besten?",
+      "isNew": true,
+      "prompt": "Welche Frage ist für die Machbarkeitsanalyse des Reservierungsprojekts am ehesten fachlich irrelevant?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Ob Zielgruppe und Nachfrage das Produkt überhaupt tragen",
+          "correct": false,
+          "explanation": "Diese Frage ist fachlich zentral."
+        },
+        {
+          "id": "b",
+          "text": "Welche Datenschutzpflichten bei Reservierungsdaten gelten",
+          "correct": false,
+          "explanation": "Auch das gehört zur Machbarkeit."
+        },
+        {
+          "id": "c",
+          "text": "Welche Symbolfarbe die erste Designskizze später haben soll",
+          "correct": true,
+          "explanation": "Das ist noch keine Machbarkeitsfrage."
+        },
+        {
+          "id": "d",
+          "text": "Welche Integrationen für Bezahl- oder Rechnungsläufe nötig sind",
+          "correct": false,
+          "explanation": "Schnittstellenfragen gehören zur technischen Machbarkeit."
+        }
+      ]
+    },
+    {
+      "id": "pv1fiae_easy_t01_q03",
+      "conceptId": "pv1fiae_easy_t01_klassisch_planung",
+      "variantId": "pv1fiae_easy_t01_klassisch_planung_v01",
+      "interactionType": "single",
+      "questionKind": "vergleich_treffen",
+      "badgeLabel": "Welche Aussage trifft am besten zu?",
+      "isNew": true,
+      "prompt": "Woran erkennt man in diesem Projekt ein eher klassisches Vorgehen am deutlichsten?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Anforderungen werden früh detailliert festgelegt und die Gesamtplanung weitgehend vorab ausgearbeitet",
+          "correct": true,
+          "explanation": "Das ist die typische Stärke und Grenze des klassischen Vorgehens."
+        },
+        {
+          "id": "b",
+          "text": "Anforderungen werden in kurzen Zyklen ständig neu geschrieben und erst spät verdichtet",
+          "correct": false,
+          "explanation": "Das passt eher zu agilem Vorgehen."
+        },
+        {
+          "id": "c",
+          "text": "Auf Planung wird vollständig verzichtet, damit das Team frei bleibt",
+          "correct": false,
+          "explanation": "Das wäre fachlich kein brauchbares Vorgehensmodell."
+        },
+        {
+          "id": "d",
+          "text": "Änderungen gelten automatisch als kostenneutral",
+          "correct": false,
+          "explanation": "Das beschreibt kein klassisches Vorgehen."
+        }
+      ]
+    },
+    {
+      "id": "pv1fiae_easy_t01_q04",
+      "conceptId": "pv1fiae_easy_t01_agil_aenderungen",
+      "variantId": "pv1fiae_easy_t01_agil_aenderungen_v01",
+      "interactionType": "single",
+      "questionKind": "vergleich_treffen",
+      "badgeLabel": "Welche Aussage trifft am besten zu?",
+      "isNew": true,
+      "prompt": "Was ist der wichtigste Vorteil eines agilen Vorgehens, wenn sich Anforderungen der Gastronomiebetriebe noch verändern können?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Änderungen können laufend aufgenommen und in kurzen Arbeitszyklen verarbeitet werden",
+          "correct": true,
+          "explanation": "Genau dafür ist ein agiles Vorgehen besonders geeignet."
+        },
+        {
+          "id": "b",
+          "text": "Alle Anforderungen werden dauerhaft eingefroren, damit keine Rückfragen mehr auftauchen",
+          "correct": false,
+          "explanation": "Das wäre eher ein starres Modell."
+        },
+        {
+          "id": "c",
+          "text": "Dokumentation entfällt vollständig",
+          "correct": false,
+          "explanation": "Agil bedeutet nicht dokumentationsfrei."
+        },
+        {
+          "id": "d",
+          "text": "Stakeholder-Rückmeldungen sind erst nach Produktivstart relevant",
+          "correct": false,
+          "explanation": "Das widerspricht der iterativen Rückkopplung."
+        }
+      ]
+    },
+    {
+      "id": "pv1fiae_easy_t01_q05",
+      "conceptId": "pv1fiae_easy_t01_risiko_anforderungswechsel",
+      "variantId": "pv1fiae_easy_t01_risiko_anforderungswechsel_v01",
+      "interactionType": "best",
+      "questionKind": "ursache_folge_erkennen",
+      "badgeLabel": "Welche Folge ist am wahrscheinlichsten?",
+      "isNew": true,
+      "prompt": "Die Gastronomiebetriebe ändern während des Projekts mehrfach ihre Anforderungen. Welche Folge ist am ehesten zu erwarten?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Zeit- und Budgetplanung geraten durch Nacharbeit und Umbauten unter Druck",
+          "correct": true,
+          "explanation": "Mehrfach überarbeitete Funktionen belasten typischerweise Aufwand und Termine."
+        },
+        {
+          "id": "b",
+          "text": "Die Codequalität verbessert sich automatisch ohne weiteren Aufwand",
+          "correct": false,
+          "explanation": "Änderungen erzeugen eher zusätzlichen Abstimmungsbedarf."
+        },
+        {
+          "id": "c",
+          "text": "Anforderungswechsel betreffen nur das Design, nie die Funktionalität",
+          "correct": false,
+          "explanation": "Gerade die Funktionalität ist häufig betroffen."
+        },
+        {
+          "id": "d",
+          "text": "Projektrisiken sinken immer, sobald neue Wünsche hinzukommen",
+          "correct": false,
+          "explanation": "Das ist fachlich nicht haltbar."
+        }
+      ]
+    },
+    {
+      "id": "pv1fiae_easy_t01_q06",
+      "conceptId": "pv1fiae_easy_t01_massnahme_kommunikation",
+      "variantId": "pv1fiae_easy_t01_massnahme_kommunikation_v01",
+      "interactionType": "best",
+      "questionKind": "passende_massnahme_auswaehlen",
+      "badgeLabel": "Welche Maßnahme passt am besten?",
+      "isNew": true,
+      "prompt": "Welche Maßnahme hilft am besten gegen Kommunikationslücken im Reservierungsprojekt?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Regelmäßige Team- und Stakeholder-Termine mit nachvollziehbarer Dokumentation einführen",
+          "correct": true,
+          "explanation": "So werden Missverständnisse früh sichtbar und Entscheidungen nachvollziehbar."
+        },
+        {
+          "id": "b",
+          "text": "Statusänderungen nur noch in Einzelchats weitergeben",
+          "correct": false,
+          "explanation": "Das verschärft die Intransparenz."
+        },
+        {
+          "id": "c",
+          "text": "Offene Punkte erst im Abnahmetermin sammeln",
+          "correct": false,
+          "explanation": "Das wäre zu spät."
+        },
+        {
+          "id": "d",
+          "text": "Rückfragen vermeiden, um Ruhe im Projekt zu bewahren",
+          "correct": false,
+          "explanation": "Das erhöht das Risiko eher."
+        }
+      ]
+    },
+    {
+      "id": "pv1fiae_easy_t01_q07",
+      "conceptId": "pv1fiae_easy_t01_akteure_reservierungsmodul",
+      "variantId": "pv1fiae_easy_t01_akteure_reservierungsmodul_v01",
+      "interactionType": "multi",
+      "questionKind": "mehrere_richtige_antworten_waehlen",
+      "badgeLabel": "Mehrere Antworten sind richtig.",
+      "isNew": true,
+      "prompt": "Welche Akteure gehören im Reservierungsmodul fachlich in das Use-Case-Modell? Mehrere Antworten sind richtig.",
+      "maxSelections": 3,
+      "options": [
+        {
+          "id": "a",
+          "text": "Kunde",
+          "correct": true,
+          "explanation": "Der allgemeine Kunde ist Basisaakteur für Reservieren und Stornieren."
+        },
+        {
+          "id": "b",
+          "text": "Firmenkunde",
+          "correct": true,
+          "explanation": "Firmenkunden bringen zusätzliche Registrierungslogik mit."
+        },
+        {
+          "id": "c",
+          "text": "Mitarbeiter",
+          "correct": true,
+          "explanation": "Ein Mitarbeiter pflegt Stammdaten und meldet sich dafür an."
+        },
+        {
+          "id": "d",
+          "text": "Koch",
+          "correct": false,
+          "explanation": "Der Koch taucht in den beschriebenen Use Cases nicht als Akteur auf."
+        }
+      ]
+    },
+    {
+      "id": "pv1fiae_easy_t01_q08",
+      "conceptId": "pv1fiae_easy_t01_firmenkunde_spezialisierung",
+      "variantId": "pv1fiae_easy_t01_firmenkunde_spezialisierung_v01",
+      "interactionType": "single",
+      "questionKind": "definition_zu_begriff",
+      "badgeLabel": "Welche Modellierung passt am besten?",
+      "isNew": true,
+      "prompt": "`Firmenkunde` ist ein Spezialfall von `Kunde`. Welche Modellierung passt dazu am besten?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Spezialisierung beziehungsweise Generalisierung",
+          "correct": true,
+          "explanation": "Ein Firmenkunde ist fachlich ein spezieller Kunde."
+        },
+        {
+          "id": "b",
+          "text": "`<<extend>>`",
+          "correct": false,
+          "explanation": "Das beschreibt optionale Use-Case-Erweiterung, nicht Akteursvererbung."
+        },
+        {
+          "id": "c",
+          "text": "`<<include>>`",
+          "correct": false,
+          "explanation": "Auch das passt hier nicht."
+        },
+        {
+          "id": "d",
+          "text": "Gar keine Beziehung zwischen beiden Rollen",
+          "correct": false,
+          "explanation": "Damit ginge der fachliche Zusammenhang verloren."
+        }
+      ]
+    },
+    {
+      "id": "pv1fiae_easy_t01_q09",
+      "conceptId": "pv1fiae_easy_t01_sonderwuensche_extend",
+      "variantId": "pv1fiae_easy_t01_sonderwuensche_extend_v01",
+      "interactionType": "single",
+      "questionKind": "ziel_mittel_zuordnung",
+      "badgeLabel": "Welche Modellierung passt am besten?",
+      "isNew": true,
+      "prompt": "`Sonderwünsche angeben` soll nur bei Bedarf Teil von `Reservierung vornehmen` sein. Welche Beziehung passt am besten?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "`<<extend>>`",
+          "correct": true,
+          "explanation": "Die Sonderwünsche erweitern die Reservierung nur bei Bedarf."
+        },
+        {
+          "id": "b",
+          "text": "`<<include>>`",
+          "correct": false,
+          "explanation": "Ein Include wäre zwingend, nicht optional."
+        },
+        {
+          "id": "c",
+          "text": "Generalisierung",
+          "correct": false,
+          "explanation": "Das passt hier fachlich nicht."
+        },
+        {
+          "id": "d",
+          "text": "Keine Beziehung, weil optionale Schritte nicht modelliert werden",
+          "correct": false,
+          "explanation": "Optionale Erweiterungen lassen sich gerade gut modellieren."
+        }
+      ]
+    },
+    {
+      "id": "pv1fiae_easy_t01_q10",
+      "conceptId": "pv1fiae_easy_t01_erechnung_hauptziel",
+      "variantId": "pv1fiae_easy_t01_erechnung_hauptziel_v01",
+      "interactionType": "single",
+      "questionKind": "definition_zu_begriff",
+      "badgeLabel": "Welche Aussage trifft am besten zu?",
+      "isNew": true,
+      "prompt": "Was ist im Projektkontext das Hauptziel einer eRechnung?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Strukturierte Rechnungsdaten sollen maschinenlesbar und kontrollierbar verarbeitet werden",
+          "correct": true,
+          "explanation": "Der Datenaspekt und die maschinelle Verarbeitung stehen im Mittelpunkt."
+        },
+        {
+          "id": "b",
+          "text": "Die Rechnung soll vor allem dekorativ gestaltet sein",
+          "correct": false,
+          "explanation": "Das wäre nur ein Nebenaspekt."
+        },
+        {
+          "id": "c",
+          "text": "Die Rechnung soll zwingend mehrfach ausgedruckt werden",
+          "correct": false,
+          "explanation": "Das ist gerade nicht das Hauptziel."
+        },
+        {
+          "id": "d",
+          "text": "Rechnungen sollen nur noch mündlich erklärt werden",
+          "correct": false,
+          "explanation": "Das wäre fachlich unsinnig."
+        }
+      ]
+    },
+    {
+      "id": "pv1fiae_easy_t01_q11",
+      "conceptId": "pv1fiae_easy_t01_erechnung_aspekte",
+      "variantId": "pv1fiae_easy_t01_erechnung_aspekte_v01",
+      "interactionType": "multi",
+      "questionKind": "mehrere_richtige_antworten_waehlen",
+      "badgeLabel": "Mehrere Antworten sind richtig.",
+      "isNew": true,
+      "prompt": "Welche zwei Aspekte einer digitalen Rechnung werden im Infotext ausdrücklich unterschieden? Mehrere Antworten sind richtig.",
+      "maxSelections": 2,
+      "options": [
+        {
+          "id": "a",
+          "text": "Ein visueller Aspekt für Menschen",
+          "correct": true,
+          "explanation": "Die Rechnung muss weiterhin lesbar dargestellt werden können."
+        },
+        {
+          "id": "b",
+          "text": "Ein Datenaspekt für die Verarbeitung in Computersystemen",
+          "correct": true,
+          "explanation": "Gerade dieser strukturierte Datenaspekt ist der Kern."
+        },
+        {
+          "id": "c",
+          "text": "Ein Pflichtaspekt für analoge Archivierung",
+          "correct": false,
+          "explanation": "Darum geht es im Text nicht."
+        },
+        {
+          "id": "d",
+          "text": "Ein Farbkonzept für das Branding der Rechnung",
+          "correct": false,
+          "explanation": "Branding ist hier kein Kernaspekt."
+        }
+      ]
+    },
+    {
+      "id": "pv1fiae_easy_t01_q12",
+      "conceptId": "pv1fiae_easy_t01_hybride_verschluesselung_phasen",
+      "variantId": "pv1fiae_easy_t01_hybride_verschluesselung_phasen_v01",
+      "interactionType": "single",
+      "questionKind": "vergleich_treffen",
+      "badgeLabel": "Welche Aussage trifft am besten zu?",
+      "isNew": true,
+      "prompt": "Wie lässt sich die Idee hybrider Transportverschlüsselung in diesem Projekt am ehesten beschreiben?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Ein asymmetrisches Verfahren schützt den Schlüsselaustausch, ein symmetrisches Verfahren die eigentlichen Nutzdaten",
+          "correct": true,
+          "explanation": "So verbinden sich sichere Schlüsselverteilung und effiziente Datenverschlüsselung."
+        },
+        {
+          "id": "b",
+          "text": "Nur ein einziges statisches Passwort wird dauerhaft für alles verwendet",
+          "correct": false,
+          "explanation": "Das wäre keine hybride Lösung."
+        },
+        {
+          "id": "c",
+          "text": "Es wird nur signiert, aber nicht verschlüsselt",
+          "correct": false,
+          "explanation": "Signatur und Verschlüsselung sind unterschiedliche Ziele."
+        },
+        {
+          "id": "d",
+          "text": "Die Nutzdaten bleiben unverschlüsselt, solange die Datei XML ist",
+          "correct": false,
+          "explanation": "Das wäre fachlich falsch."
+        }
+      ]
+    },
+    {
+      "id": "pv1fiae_easy_t01_q13",
+      "conceptId": "pv1fiae_easy_t01_asymmetrische_schluesselidee",
+      "variantId": "pv1fiae_easy_t01_asymmetrische_schluesselidee_v01",
+      "interactionType": "single",
+      "questionKind": "ursache_folge_erkennen",
+      "badgeLabel": "Welche Begründung passt am besten?",
+      "isNew": true,
+      "prompt": "Warum ist die asymmetrische Schlüsselidee für den Start einer gesicherten eRechnungsübertragung besonders hilfreich?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Der Sitzungsschlüssel kann sicher ausgetauscht werden, ohne vorher ein gemeinsames Geheimnis zu teilen",
+          "correct": true,
+          "explanation": "Genau dafür wird der asymmetrische Teil genutzt."
+        },
+        {
+          "id": "b",
+          "text": "Weil asymmetrische Verfahren immer schneller als symmetrische sind",
+          "correct": false,
+          "explanation": "Das ist gerade nicht der typische Grund."
+        },
+        {
+          "id": "c",
+          "text": "Weil danach keine Nutzdaten mehr verschlüsselt werden müssen",
+          "correct": false,
+          "explanation": "Die Nutzdaten werden weiterhin verschlüsselt."
+        },
+        {
+          "id": "d",
+          "text": "Weil XML-Dateien sonst nicht lesbar wären",
+          "correct": false,
+          "explanation": "Damit hat die Schlüsselidee nichts zu tun."
+        }
+      ]
+    },
+    {
+      "id": "pv1fiae_easy_t01_q14",
+      "conceptId": "pv1fiae_easy_t01_protokollkonformitaet_massnahmen",
+      "variantId": "pv1fiae_easy_t01_protokollkonformitaet_massnahmen_v01",
+      "interactionType": "multi",
+      "questionKind": "mehrere_richtige_antworten_waehlen",
+      "badgeLabel": "Mehrere Antworten sind richtig.",
+      "isNew": true,
+      "prompt": "Welche Maßnahmen helfen am ehesten dabei, eRechnungen konform zu einer Protokollspezifikation zu prüfen? Mehrere Antworten sind richtig.",
+      "maxSelections": 3,
+      "options": [
+        {
+          "id": "a",
+          "text": "Schema- und Strukturprüfungen einsetzen",
+          "correct": true,
+          "explanation": "Formale Strukturprüfungen sind ein wichtiger Teil."
+        },
+        {
+          "id": "b",
+          "text": "Fachliche Plausibilitäten und Rechenlogik zusätzlich prüfen",
+          "correct": true,
+          "explanation": "Konformität endet nicht bei der Struktur."
+        },
+        {
+          "id": "c",
+          "text": "Nur auf das optische Layout der Rechnung schauen",
+          "correct": false,
+          "explanation": "Das reicht fachlich nicht aus."
+        },
+        {
+          "id": "d",
+          "text": "Gegen Referenzbeispiele oder Spezifikationsregeln testen",
+          "correct": true,
+          "explanation": "So lässt sich Konformität besser absichern."
+        },
+        {
+          "id": "e",
+          "text": "Fehlerhafte XML-Dateien ungeprüft an den Kunden weiterleiten",
+          "correct": false,
+          "explanation": "Das wäre gerade nicht konformitätssichernd."
+        }
+      ]
+    },
+    {
+      "id": "pv1fiae_easy_t01_q15",
+      "conceptId": "pv1fiae_easy_t01_externe_testwebsite_risiko",
+      "variantId": "pv1fiae_easy_t01_externe_testwebsite_risiko_v01",
+      "interactionType": "best",
+      "questionKind": "fehler_finden",
+      "badgeLabel": "Welche Einschätzung ist am sinnvollsten?",
+      "isNew": true,
+      "prompt": "Welche Einschätzung zu einer externen Test-Website für eRechnungen ist am sinnvollsten?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Sie kann hilfreich sein, aber sensible Inhalte und Vertraulichkeit müssen vor der Nutzung mitgedacht werden",
+          "correct": true,
+          "explanation": "Externe Werkzeuge helfen, bringen aber Datenschutz- und Vertraulichkeitsfragen mit."
+        },
+        {
+          "id": "b",
+          "text": "Externe Prüfseiten sind immer risikofrei, sobald eine Datei XML ist",
+          "correct": false,
+          "explanation": "So pauschal stimmt das nicht."
+        },
+        {
+          "id": "c",
+          "text": "Man sollte jede echte Kundendatei ungeprüft hochladen, um Zeit zu sparen",
+          "correct": false,
+          "explanation": "Das wäre fahrlässig."
+        },
+        {
+          "id": "d",
+          "text": "Externe Tests ersetzen jede interne Prüfung vollständig",
+          "correct": false,
+          "explanation": "Sie können interne Prüfungen nur ergänzen."
+        }
+      ]
+    },
+    {
+      "id": "pv1fiae_easy_t01_q16",
+      "conceptId": "pv1fiae_easy_t01_xsd_grenze",
+      "variantId": "pv1fiae_easy_t01_xsd_grenze_v01",
+      "interactionType": "single",
+      "questionKind": "definition_zu_begriff",
+      "badgeLabel": "Welche Aussage trifft am besten zu?",
+      "isNew": true,
+      "prompt": "Warum reicht eine reine XSD-Schemavalidierung für das gezeigte XML-Beispiel nicht aus?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Sie prüft vor allem Struktur und Datentypen, aber keine fachliche Summenlogik oder Plausibilität",
+          "correct": true,
+          "explanation": "Genau deshalb kann ein Rechenfehler trotz formal gültiger Struktur unentdeckt bleiben."
+        },
+        {
+          "id": "b",
+          "text": "Sie verbietet grundsätzlich mehrere Rechnungspositionen",
+          "correct": false,
+          "explanation": "Das stimmt nicht."
+        },
+        {
+          "id": "c",
+          "text": "Sie kann keine Dezimalzahlen in XML lesen",
+          "correct": false,
+          "explanation": "Auch das ist falsch."
+        },
+        {
+          "id": "d",
+          "text": "Sie ist nur für Bilddateien gedacht",
+          "correct": false,
+          "explanation": "Das hat mit XSD nichts zu tun."
+        }
+      ]
+    },
+    {
+      "id": "pv1fiae_easy_t01_q17",
+      "conceptId": "pv1fiae_easy_t01_prototyping_reihenfolge",
+      "variantId": "pv1fiae_easy_t01_prototyping_reihenfolge_v01",
+      "interactionType": "best",
+      "questionKind": "prioritaet_setzen",
+      "badgeLabel": "Welche Reihenfolge ist fachlich am sinnvollsten?",
+      "isNew": true,
+      "prompt": "Welche Vorgehensweise beschreibt Prototyping in der Konzeptionsphase am sinnvollsten?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Offene Fachfrage erkennen, vereinfachten Prototyp bauen, Rückmeldung einholen, Erkenntnisse dokumentieren und erst dann entscheiden",
+          "correct": true,
+          "explanation": "So dient Prototyping der gezielten Erprobung vor einer belastbaren Entscheidung."
+        },
+        {
+          "id": "b",
+          "text": "Direkt produktiv setzen und erst später prüfen, ob die Idee trägt",
+          "correct": false,
+          "explanation": "Das wäre kein kontrolliertes Prototyping."
+        },
+        {
+          "id": "c",
+          "text": "Nur die Oberfläche bauen und Rückmeldungen vermeiden",
+          "correct": false,
+          "explanation": "Damit fehlen Erprobung und Lerngewinn."
+        },
+        {
+          "id": "d",
+          "text": "Zuerst alle Architekturentscheidungen endgültig treffen und den Prototyp danach als Deko bauen",
+          "correct": false,
+          "explanation": "Das würde den eigentlichen Nutzen des Prototyps verfehlen."
+        }
+      ]
+    },
+    {
+      "id": "pv1fiae_easy_t01_q18",
+      "conceptId": "pv1fiae_easy_t01_redundanz_gastdaten",
+      "variantId": "pv1fiae_easy_t01_redundanz_gastdaten_v01",
+      "interactionType": "single",
+      "questionKind": "ursache_folge_erkennen",
+      "badgeLabel": "Welche Folge ist am ehesten zu erwarten?",
+      "isNew": true,
+      "prompt": "Gastdaten werden im Bewertungs-Export innerhalb desselben Besuchs mehrfach wiederholt. Welche Folge ist am ehesten zu erwarten?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Änderungen an Kontaktinformationen müssen an mehreren Stellen nachgezogen werden und können widersprüchlich werden",
+          "correct": true,
+          "explanation": "Das ist eine klassische Änderungsanfälligkeit redundanter Daten."
+        },
+        {
+          "id": "b",
+          "text": "Redundanz beseitigt Änderungsfehler automatisch",
+          "correct": false,
+          "explanation": "Das Gegenteil ist der Fall."
+        },
+        {
+          "id": "c",
+          "text": "Wiederholte Daten vereinfachen 3NF immer",
+          "correct": false,
+          "explanation": "Das wäre fachlich falsch."
+        },
+        {
+          "id": "d",
+          "text": "Mehrfach gespeicherte Gastdaten machen Schlüssel überflüssig",
+          "correct": false,
+          "explanation": "Auch das stimmt nicht."
+        }
+      ]
+    },
+    {
+      "id": "pv1fiae_easy_t01_q19",
+      "conceptId": "pv1fiae_easy_t01_redundanz_mitarbeiterdaten",
+      "variantId": "pv1fiae_easy_t01_redundanz_mitarbeiterdaten_v01",
+      "interactionType": "single",
+      "questionKind": "beispiel_erkennen",
+      "badgeLabel": "Welches Beispiel passt am besten?",
+      "isNew": true,
+      "prompt": "Welches Beispiel zeigt im Bewertungs-Export besonders klar wiederholte Mitarbeiterdaten?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Jonas Feld mit derselben Telefonnummer taucht in mehreren Bewertungszeilen erneut auf",
+          "correct": true,
+          "explanation": "Das ist ein typisches Redundanzmerkmal."
+        },
+        {
+          "id": "b",
+          "text": "Die Bewertungswerte unterscheiden sich zwischen den Leistungen",
+          "correct": false,
+          "explanation": "Das ist keine Redundanz derselben Information."
+        },
+        {
+          "id": "c",
+          "text": "Id_Gast 73 kommt nur in zwei Zeilen vor",
+          "correct": false,
+          "explanation": "Die bloße Häufigkeit ist hier nicht die eigentliche Aussage."
+        },
+        {
+          "id": "d",
+          "text": "Eine Zeitangabe kommt nur einmal vor",
+          "correct": false,
+          "explanation": "Das zeigt gerade keine Wiederholung."
+        }
+      ]
+    },
+    {
+      "id": "pv1fiae_easy_t01_q20",
+      "conceptId": "pv1fiae_easy_t01_anomaliearten",
+      "variantId": "pv1fiae_easy_t01_anomaliearten_v01",
+      "interactionType": "multi",
+      "questionKind": "mehrere_richtige_antworten_waehlen",
+      "badgeLabel": "Mehrere Antworten sind richtig.",
+      "isNew": true,
+      "prompt": "Welche Aussagen passen fachlich zu Änderungs-, Einfüge- und Löschanomalien im Export? Mehrere Antworten sind richtig.",
+      "maxSelections": 3,
+      "options": [
+        {
+          "id": "a",
+          "text": "Eine Leistungsbezeichnung müsste in mehreren Zeilen gleichzeitig geändert werden",
+          "correct": true,
+          "explanation": "Das ist eine Änderungsanomalie."
+        },
+        {
+          "id": "b",
+          "text": "Ein neuer Gast lässt sich ohne Besuch und Bewertung kaum sauber anlegen",
+          "correct": true,
+          "explanation": "Das beschreibt eine Einfügeanomalie."
+        },
+        {
+          "id": "c",
+          "text": "Mit dem Löschen des letzten Datensatzes einer Leistung geht auch die einzige Leistungsinformation verloren",
+          "correct": true,
+          "explanation": "Das ist eine Löschanomalie."
+        },
+        {
+          "id": "d",
+          "text": "Eine Bewertung von 5 statt 4 ist immer schon eine Anomalie",
+          "correct": false,
+          "explanation": "Unterschiedliche Werte sind nicht automatisch Anomalien."
+        }
+      ]
+    },
+    {
+      "id": "pv1fiae_easy_t01_q21",
+      "conceptId": "pv1fiae_easy_t01_modell_3nf",
+      "variantId": "pv1fiae_easy_t01_modell_3nf_v01",
+      "interactionType": "best",
+      "questionKind": "beste_option_im_mini_szenario",
+      "badgeLabel": "Welche Lösung passt insgesamt am besten?",
+      "isNew": true,
+      "prompt": "Welches Datenmodell passt für die gezeigten Bewertungsdaten fachlich am besten zur 3. Normalform?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Gast, Besuch, Leistung, Mitarbeiter und Bewertung sauber trennen und nur die nötigen Referenzen zwischen ihnen halten",
+          "correct": true,
+          "explanation": "Genau diese Trennung baut Redundanz ab und hält Beziehungen nachvollziehbar."
+        },
+        {
+          "id": "b",
+          "text": "Mitarbeiter- und Leistungsdaten weiterhin direkt in jeder Bewertungszeile speichern",
+          "correct": false,
+          "explanation": "Das würde Redundanz behalten."
+        },
+        {
+          "id": "c",
+          "text": "Alle Daten in einer großen Tabelle belassen, solange die Namen lesbar sind",
+          "correct": false,
+          "explanation": "Lesbarkeit ersetzt keine Normalisierung."
+        },
+        {
+          "id": "d",
+          "text": "Alle Beziehungen streichen und nur noch Freitext zulassen",
+          "correct": false,
+          "explanation": "Das wäre fachlich unbrauchbar."
+        }
+      ]
+    },
+    {
+      "id": "pv1fiae_easy_t01_q22",
+      "conceptId": "pv1fiae_easy_t01_besuch_schluessel",
+      "variantId": "pv1fiae_easy_t01_besuch_schluessel_v01",
+      "interactionType": "multi",
+      "questionKind": "mehrere_richtige_antworten_waehlen",
+      "badgeLabel": "Mehrere Antworten sind richtig.",
+      "isNew": true,
+      "prompt": "Welche Aussagen zur Schlüssel- und Beziehungslogik eines passenden 3NF-Modells sind fachlich richtig? Mehrere Antworten sind richtig.",
+      "maxSelections": 2,
+      "options": [
+        {
+          "id": "a",
+          "text": "Ein Besuch lässt sich mit vorhandenen Daten sinnvoll über Id_Gast und Besuch_Zeit identifizieren",
+          "correct": true,
+          "explanation": "Damit wird kein künstlicher neuer Schlüssel erzwungen."
+        },
+        {
+          "id": "b",
+          "text": "Die Bewertung sollte den erbringenden Mitarbeiter referenzieren, wenn dieselbe Leistung von unterschiedlichen Personen erbracht werden kann",
+          "correct": true,
+          "explanation": "Die Bewertung hängt nicht nur an der Leistung, sondern auch an der ausführenden Person."
+        },
+        {
+          "id": "c",
+          "text": "Mitarbeitertelefon gehört besser in jede Bewertungszeile, damit keine Fremdschlüssel nötig sind",
+          "correct": false,
+          "explanation": "Das würde Redundanz erhöhen."
+        },
+        {
+          "id": "d",
+          "text": "Gastkontakt sollte ausschließlich in der Bewertungstabelle stehen",
+          "correct": false,
+          "explanation": "Gaststammdaten gehören nicht in jede Bewegungszeile."
+        }
+      ]
+    },
+    {
+      "id": "pv1fiae_easy_t01_q23",
+      "conceptId": "pv1fiae_easy_t01_integrationsentscheidung",
+      "variantId": "pv1fiae_easy_t01_integrationsentscheidung_v01",
+      "interactionType": "best",
+      "questionKind": "prioritaet_setzen",
+      "badgeLabel": "Welche Empfehlung ist insgesamt am stärksten?",
+      "isNew": true,
+      "prompt": "Welche Gesamtentscheidung trägt Ticket 01 fachlich am besten von der Machbarkeit bis zum Datenmodell?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Frühe Konzeptentscheidungen sauber dokumentieren, fachlich passende Modelle wählen und Sicherheits- sowie Datenlogik nicht erst am Ende betrachten",
+          "correct": true,
+          "explanation": "Genau diese Verbindung hält das Thema von Anfang bis Ende zusammen."
+        },
+        {
+          "id": "b",
+          "text": "Machbarkeit nur grob schätzen und Datenmodell sowie Sicherheitsfragen später improvisieren",
+          "correct": false,
+          "explanation": "Das würde die fachliche Kette schwächen."
+        },
+        {
+          "id": "c",
+          "text": "Nur die Reservierungsoberfläche betrachten und alle übrigen Teilfragen auslagern",
+          "correct": false,
+          "explanation": "Damit ginge der zusammenhängende Projektcharakter verloren."
+        },
+        {
+          "id": "d",
+          "text": "Use Cases, eRechnung und Datenmodell als voneinander unabhängige Nebenthemen behandeln",
+          "correct": false,
+          "explanation": "Gerade ihre Verbindung macht den Slot fachlich stark."
+        }
+      ]
+    },
+    {
+      "id": "pv1fiae_easy_t01_q24",
+      "conceptId": "pv1fiae_easy_t01_firmenkunde_registrierungsnummer",
+      "interactionType": "single",
+      "questionKind": "beispiel_erkennen",
+      "badgeLabel": "Welche Begründung passt am besten?",
+      "isNew": true,
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Damit Firmenreservierungen eindeutig dem registrierten Unternehmen zugeordnet und später korrekt per Rechnung abgewickelt werden können",
+          "correct": true,
+          "explanation": "Die Registrierungsnummer stützt die eindeutige Zuordnung im Firmenkundenfall."
+        },
+        {
+          "id": "b",
+          "text": "Damit private Reservierungen künftig keine E-Mail-Adresse mehr brauchen",
+          "correct": false,
+          "explanation": "Beide Regeln haben fachlich nichts miteinander zu tun."
+        },
+        {
+          "id": "c",
+          "text": "Damit Sonderwünsche automatisch Pflichtfelder werden",
+          "correct": false,
+          "explanation": "Die Registrierungsnummer ändert nicht die Optionalität von Sonderwünschen."
+        },
+        {
+          "id": "d",
+          "text": "Damit Use-Case-Diagramme keine Akteure mehr brauchen",
+          "correct": false,
+          "explanation": "Das wäre fachlich unsinnig."
+        }
+      ],
+      "variantId": "pv1fiae_easy_t01_firmenkunde_registrierungsnummer_v01",
+      "prompt": "Warum muss bei Reservierungen von Firmenkunden zusätzlich eine Registrierungsnummer vorliegen?"
+    }
+  ]
+}

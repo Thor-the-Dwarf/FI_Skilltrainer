@@ -1,0 +1,424 @@
+{
+  "scenarioFolder": "Pruefungsvorbereitung-1-FIAE-Scenarien",
+  "quizFolder": "Pruefungsvorbereitung-1-FIAE-Quiz",
+  "scenarioFile": "ticket_ausbildungsbetrieb_stadtbahn_netzlogik_uml/02_medium_ausbildungsbetrieb_stadtbahn_netzlogik_uml.json",
+  "quizFile": "quiz_ausbildungsbetrieb_stadtbahn_netzlogik_uml/quiz02_medium_V01_ausbildungsbetrieb_stadtbahn_netzlogik_uml.json",
+  "ticketId": "02_medium_ausbildungsbetrieb_stadtbahn_netzlogik_uml.json",
+  "versionId": "V01",
+  "title": "Ticket 02 Medium - Stadtbahn, Netze und UML-Modelle",
+  "description": "Manuell verfasstes FIAE-Training im mittleren Anspruchsniveau zu Projektsteuerung, Datenschutz, Netzwerkwahl, Netzscan-Deutung, UML und Observer-Logik im vernetzten Stadtbahnprojekt.",
+  "topics": [
+    "Projektsteuerung, Datenschutz und Netzwerkwahl im Stadtbahnkontext fachlich belastbar abwägen",
+    "Netzscan, UML-Strukturen, Zustandslogik und Observer-Pattern für Fahrplanauskunft und Anzeigen nachvollziehbar verbinden"
+  ],
+  "questions": [
+    {
+      "id": "pv1fiae_medium_t02_q01",
+      "conceptId": "pv1fiae_medium_t02_scope_abgrenzung",
+      "variantId": "pv1fiae_medium_t02_scope_abgrenzung_v01",
+      "interactionType": "best",
+      "questionKind": "prioritaet_setzen",
+      "badgeLabel": "Welche Option passt am besten?",
+      "isNew": true,
+      "prompt": "Welche Entscheidung grenzt den ersten Ausbauschritt der Stadtbahn-App fachlich am saubersten ab?",
+      "maxSelections": 1,
+      "options": [
+        { "id": "a", "text": "Fahrplanauskunft, Registrierung und Auslastungsanzeige verbindlich umsetzen, Ticketkauf und Zahlung aber in eine spätere Stufe verschieben.", "correct": true, "explanation": "So bleibt der erste Release belastbar und fachlich klar zugeschnitten." },
+        { "id": "b", "text": "Alle denkbaren Zusatzfunktionen ohne Priorisierung sofort in den ersten Release ziehen.", "correct": false, "explanation": "Das erhöht Risiko und Umfang unnötig." },
+        { "id": "c", "text": "Die Funktionen absichtlich offenlassen, damit später niemand eine Scope-Änderung melden muss.", "correct": false, "explanation": "Ein unklarer Umfang verschärft spätere Konflikte." },
+        { "id": "d", "text": "Den Umfang nur mündlich im Entwicklerteam erwähnen.", "correct": false, "explanation": "Gerade Umfangsgrenzen müssen nachvollziehbar dokumentiert sein." }
+      ]
+    },
+    {
+      "id": "pv1fiae_medium_t02_q02",
+      "conceptId": "pv1fiae_medium_t02_agil_klassisch_abgrenzung",
+      "variantId": "pv1fiae_medium_t02_agil_klassisch_abgrenzung_v01",
+      "interactionType": "best",
+      "questionKind": "vergleich_treffen",
+      "badgeLabel": "Welche Option passt am besten?",
+      "isNew": true,
+      "prompt": "Wann spricht im Stadtbahnprojekt am ehesten ein iteratives Vorgehen gegen ein strikt klassisches Modell?",
+      "maxSelections": 1,
+      "options": [
+        { "id": "a", "text": "Wenn Auslastungslogik, Datenschutzdetails und Bedienkonzept noch gemeinsam mit mehreren Stakeholdern geschärft werden müssen.", "correct": true, "explanation": "Bewegliche Anforderungen und laufendes Feedback sprechen eher für iteratives Arbeiten." },
+        { "id": "b", "text": "Wenn sämtliche Anforderungen vollständig eingefroren und freigegeben wurden.", "correct": false, "explanation": "Dann sinkt der Mehrwert eines iterativen Modells." },
+        { "id": "c", "text": "Wenn Rückfragen mit Stakeholdern bewusst vermieden werden sollen.", "correct": false, "explanation": "Gerade Feedbackschleifen sind ein Kern iterativen Arbeitens." },
+        { "id": "d", "text": "Wenn das Projekt nur aus einem fest verdrahteten Installationsschritt besteht.", "correct": false, "explanation": "Das ist kein starker Grund für iteratives Vorgehen." }
+      ]
+    },
+    {
+      "id": "pv1fiae_medium_t02_q03",
+      "conceptId": "pv1fiae_medium_t02_change_request_priorisierung",
+      "variantId": "pv1fiae_medium_t02_change_request_priorisierung_v01",
+      "interactionType": "best",
+      "questionKind": "passende_massnahme_auswaehlen",
+      "badgeLabel": "Welche Option passt am besten?",
+      "isNew": true,
+      "prompt": "Kurz vor dem Meilenstein fordert die Stadt zusätzlich eine Bezahlfunktion in der App. Welche Reaktion passt am besten zu sauberem Change-Request-Management?",
+      "maxSelections": 1,
+      "options": [
+        { "id": "a", "text": "Änderungswunsch erfassen, Aufwand und Risiken bewerten, Auswirkungen auf Zeit und Umfang transparent machen und erst danach entscheiden.", "correct": true, "explanation": "Genau so wird eine Änderung kontrolliert in die Projektsteuerung überführt." },
+        { "id": "b", "text": "Die Funktion sofort einbauen, damit keine formale Diskussion entsteht.", "correct": false, "explanation": "Das unterläuft eine belastbare Steuerung." },
+        { "id": "c", "text": "Den Wunsch ignorieren, weil Änderungen grundsätzlich nie erlaubt sein dürfen.", "correct": false, "explanation": "Änderungen sind möglich, müssen aber gesteuert werden." },
+        { "id": "d", "text": "Die Änderung nur in den Chat schreiben und sonst nichts anpassen.", "correct": false, "explanation": "Ohne Bewertung und Dokumentation fehlt die Steuerungsbasis." }
+      ]
+    },
+    {
+      "id": "pv1fiae_medium_t02_q04",
+      "conceptId": "pv1fiae_medium_t02_stakeholder_konflikt",
+      "variantId": "pv1fiae_medium_t02_stakeholder_konflikt_v01",
+      "interactionType": "best",
+      "questionKind": "beste_option_im_mini_szenario",
+      "badgeLabel": "Welche Option passt am besten?",
+      "isNew": true,
+      "prompt": "Marketing will einen schnellen Start, der Betrieb fordert Stabilität und der Datenschutzbeauftragte verlangt Datensparsamkeit. Welche Reaktion passt am besten?",
+      "maxSelections": 1,
+      "options": [
+        { "id": "a", "text": "Interessen transparent machen, Zielkonflikte dokumentieren und eine priorisierte, nachvollziehbare Entscheidung mit den zuständigen Stakeholdern treffen.", "correct": true, "explanation": "So werden widersprüchliche Interessen fachlich ausbalanciert." },
+        { "id": "b", "text": "Die lauteste Forderung direkt umsetzen, damit die Diskussion endet.", "correct": false, "explanation": "Das wäre keine belastbare Stakeholder-Steuerung." },
+        { "id": "c", "text": "Alle Interessen gleichzeitig zusagen, auch wenn sie sich widersprechen.", "correct": false, "explanation": "Unvereinbare Zusagen erzeugen spätere Konflikte." },
+        { "id": "d", "text": "Die Entscheidung allein nach Designgesichtspunkten treffen.", "correct": false, "explanation": "Hier geht es um fachliche und rechtliche Zielkonflikte." }
+      ]
+    },
+    {
+      "id": "pv1fiae_medium_t02_q05",
+      "conceptId": "pv1fiae_medium_t02_datenschutz_zweckbindung",
+      "variantId": "pv1fiae_medium_t02_datenschutz_zweckbindung_v01",
+      "interactionType": "best",
+      "questionKind": "ursache_folge_erkennen",
+      "badgeLabel": "Welche Option passt am besten?",
+      "isNew": true,
+      "prompt": "Warum ist im Stadtbahnprojekt eine saubere Zweckbindung für Registrierungsdaten besonders wichtig?",
+      "maxSelections": 1,
+      "options": [
+        { "id": "a", "text": "Weil klar festgelegt sein muss, wofür die Daten erhoben werden und wofür sie gerade nicht ohne neue Grundlage weiterverwendet werden dürfen.", "correct": true, "explanation": "Genau das beschreibt den Gedanken der Zweckbindung." },
+        { "id": "b", "text": "Weil einmal erhobene Daten automatisch für jede spätere Marketingidee verwendet werden dürfen.", "correct": false, "explanation": "Zweckbindung begrenzt gerade solche Weiterverwendungen." },
+        { "id": "c", "text": "Weil Datensparsamkeit nur für Papierformulare gilt.", "correct": false, "explanation": "Die Grundsätze gelten auch digital." },
+        { "id": "d", "text": "Weil Zweckbindung technische Sicherheitsmassnahmen ersetzt.", "correct": false, "explanation": "Rechtliche und technische Schutzmassnahmen sind verschieden." }
+      ]
+    },
+    {
+      "id": "pv1fiae_medium_t02_q06",
+      "conceptId": "pv1fiae_medium_t02_datensparsamkeit_registrierung",
+      "variantId": "pv1fiae_medium_t02_datensparsamkeit_registrierung_v01",
+      "interactionType": "best",
+      "questionKind": "passende_massnahme_auswaehlen",
+      "badgeLabel": "Welche Option passt am besten?",
+      "isNew": true,
+      "prompt": "Welche Datenauswahl passt für die Registrierung in der frühen Stadtbahn-App am ehesten zum Grundsatz der Datensparsamkeit?",
+      "maxSelections": 1,
+      "options": [
+        { "id": "a", "text": "Nur die Daten erheben, die für Kontoanlage, Benachrichtigung und die vorgesehenen Funktionen wirklich erforderlich sind.", "correct": true, "explanation": "Datensparsamkeit richtet sich am tatsächlichen Zweck aus." },
+        { "id": "b", "text": "Von Beginn an jede denkbare spätere Zusatzinformation auf Vorrat einsammeln.", "correct": false, "explanation": "Vorratsdatenerhebung widerspricht dem Grundsatz." },
+        { "id": "c", "text": "Alle Felder optional machen und auf fachliche Plausibilität verzichten.", "correct": false, "explanation": "Datensparsamkeit ersetzt keine fachliche Mindestanforderung." },
+        { "id": "d", "text": "Nur technische Logdaten speichern und ganz auf Nutzerstammdaten verzichten.", "correct": false, "explanation": "Eine Registrierung braucht fachlich sinnvolle Stammdaten." }
+      ]
+    },
+    {
+      "id": "pv1fiae_medium_t02_q07",
+      "conceptId": "pv1fiae_medium_t02_einwilligung_ortungsdaten",
+      "variantId": "pv1fiae_medium_t02_einwilligung_ortungsdaten_v01",
+      "interactionType": "best",
+      "questionKind": "ziel_mittel_zuordnung",
+      "badgeLabel": "Welche Option passt am besten?",
+      "isNew": true,
+      "prompt": "Die App soll auf Wunsch die nächstgelegene Haltestelle vorschlagen. Welche Umsetzung passt datenschutzfachlich am besten?",
+      "maxSelections": 1,
+      "options": [
+        { "id": "a", "text": "Ortungsdaten nur für diesen klar beschriebenen Zweck mit transparenter Information und aktiver Zustimmung nutzen.", "correct": true, "explanation": "Das verbindet Zweckklarheit, Transparenz und Einwilligung." },
+        { "id": "b", "text": "Ortungsdaten permanent sammeln, weil sie vielleicht später nützlich werden könnten.", "correct": false, "explanation": "Das wäre weder zweckgebunden noch datensparsam." },
+        { "id": "c", "text": "Ortungsdaten ohne Hinweis im Hintergrund an Dritte weitergeben.", "correct": false, "explanation": "Das wäre datenschutzrechtlich klar problematisch." },
+        { "id": "d", "text": "Statt Einwilligung grundsätzlich die gesamte Registrierung abschalten.", "correct": false, "explanation": "Die Funktion kann sauber umgesetzt werden, ohne den Gesamtnutzen zu zerstören." }
+      ]
+    },
+    {
+      "id": "pv1fiae_medium_t02_q08",
+      "conceptId": "pv1fiae_medium_t02_lpwan_einsatzsensorik",
+      "variantId": "pv1fiae_medium_t02_lpwan_einsatzsensorik_v01",
+      "interactionType": "best",
+      "questionKind": "ziel_mittel_zuordnung",
+      "badgeLabel": "Welche Option passt am besten?",
+      "isNew": true,
+      "prompt": "Für welche Teilaufgabe der neuen Stadtbahn passt LPWAN am ehesten?",
+      "maxSelections": 1,
+      "options": [
+        { "id": "a", "text": "Für verteilte Sensoren an abgelegenen Haltepunkten, die kleine Datenmengen energiearm über grössere Distanzen melden.", "correct": true, "explanation": "Genau das ist ein typischer LPWAN-Einsatz." },
+        { "id": "b", "text": "Für grafisch anspruchsvolle Büroarbeitsplätze mit geringer Latenz und hoher Datenrate.", "correct": false, "explanation": "Das passt eher zu einem lokalen Unternehmensnetz." },
+        { "id": "c", "text": "Für die relationale Modellierung des Streckennetzes.", "correct": false, "explanation": "Das ist keine Netzanwendung." },
+        { "id": "d", "text": "Für den Aufbau eines lokalen Speichernetzes im Rechenzentrum.", "correct": false, "explanation": "Das wäre ein ganz anderer Zweck." }
+      ]
+    },
+    {
+      "id": "pv1fiae_medium_t02_q09",
+      "conceptId": "pv1fiae_medium_t02_wlan_mobilfunk_abgrenzung",
+      "variantId": "pv1fiae_medium_t02_wlan_mobilfunk_abgrenzung_v01",
+      "interactionType": "multi",
+      "questionKind": "mehrere_richtige_antworten_waehlen",
+      "badgeLabel": "Mehrere Antworten sind richtig.",
+      "isNew": true,
+      "prompt": "Welche Aussagen zur Abgrenzung von WLAN und Mobilfunk im Stadtbahnfall passen fachlich? Mehrere Antworten sind richtig.",
+      "maxSelections": 2,
+      "options": [
+        { "id": "a", "text": "WLAN eignet sich gut für lokale, klar begrenzte Bereiche wie Betriebshof, Werkstatt oder Servicepoint.", "correct": true, "explanation": "Das ist ein typischer Einsatz lokaler Funknetze." },
+        { "id": "b", "text": "Mobilfunk eignet sich eher für die Nutzung durch Fahrgäste oder Mitarbeitende in Bewegung ausserhalb lokaler Funkzellen.", "correct": true, "explanation": "Gerade mobile, räumlich verteilte Nutzung passt eher dazu." },
+        { "id": "c", "text": "WLAN und Mobilfunk sind fachlich dasselbe und werden nur unterschiedlich benannt.", "correct": false, "explanation": "Es handelt sich um verschiedene Netzformen." },
+        { "id": "d", "text": "Mobilfunk ersetzt automatisch jede lokale Netzstruktur im Betriebshof.", "correct": false, "explanation": "Lokale Infrastrukturen bleiben häufig sinnvoll oder notwendig." }
+      ]
+    },
+    {
+      "id": "pv1fiae_medium_t02_q10",
+      "conceptId": "pv1fiae_medium_t02_wan_vpn_anbindung",
+      "variantId": "pv1fiae_medium_t02_wan_vpn_anbindung_v01",
+      "interactionType": "best",
+      "questionKind": "beste_option_im_mini_szenario",
+      "badgeLabel": "Welche Option passt am besten?",
+      "isNew": true,
+      "prompt": "Mehrere Betriebshöfe müssen sicher mit der zentralen Leitstelle verbunden werden. Welche Lösung ist am plausibelsten?",
+      "maxSelections": 1,
+      "options": [
+        { "id": "a", "text": "Die Standorte über ein WAN koppeln und den standortübergreifenden Datenaustausch zusätzlich per VPN absichern.", "correct": true, "explanation": "Das verbindet Reichweite mit einer plausiblen Schutzmassnahme." },
+        { "id": "b", "text": "Ausschliesslich Bluetooth zwischen den Standorten einsetzen.", "correct": false, "explanation": "Das ist für diesen Zweck unrealistisch." },
+        { "id": "c", "text": "Alle Daten manuell per USB-Stick transportieren.", "correct": false, "explanation": "Das wäre weder effizient noch fachlich angemessen." },
+        { "id": "d", "text": "Nur ein lokales WLAN am Hauptstandort aufbauen und die anderen Standorte unverbunden lassen.", "correct": false, "explanation": "Damit wäre die Standortkopplung nicht gelöst." }
+      ]
+    },
+    {
+      "id": "pv1fiae_medium_t02_q11",
+      "conceptId": "pv1fiae_medium_t02_switch_router_rollen",
+      "variantId": "pv1fiae_medium_t02_switch_router_rollen_v01",
+      "interactionType": "best",
+      "questionKind": "vergleich_treffen",
+      "badgeLabel": "Welche Option passt am besten?",
+      "isNew": true,
+      "prompt": "Welche Aussage beschreibt die Rolle von Switch und Router im Stadtbahnnetz am treffendsten?",
+      "maxSelections": 1,
+      "options": [
+        { "id": "a", "text": "Ein Switch vermittelt Geräte im lokalen Netzsegment, ein Router verbindet unterschiedliche Netze miteinander.", "correct": true, "explanation": "Das ist die grundlegende funktionale Abgrenzung." },
+        { "id": "b", "text": "Ein Router ersetzt jede MAC-Adresse, ein Switch ersetzt jede IP-Adresse.", "correct": false, "explanation": "So arbeiten die Geräte nicht." },
+        { "id": "c", "text": "Ein Switch wird nur für UML-Diagramme eingesetzt, ein Router nur für JSON-Dateien.", "correct": false, "explanation": "Das hat mit ihren Netzrollen nichts zu tun." },
+        { "id": "d", "text": "Beide Geräte haben immer dieselbe Aufgabe und sind frei austauschbar.", "correct": false, "explanation": "Ihre Aufgaben unterscheiden sich fachlich klar." }
+      ]
+    },
+    {
+      "id": "pv1fiae_medium_t02_q12",
+      "conceptId": "pv1fiae_medium_t02_switch_mac_entscheidung",
+      "variantId": "pv1fiae_medium_t02_switch_mac_entscheidung_v01",
+      "interactionType": "best",
+      "questionKind": "ursache_folge_erkennen",
+      "badgeLabel": "Welche Option passt am besten?",
+      "isNew": true,
+      "prompt": "Woran orientiert sich ein Switch beim Weiterleiten eines Frames im lokalen Netzsegment in erster Linie?",
+      "maxSelections": 1,
+      "options": [
+        { "id": "a", "text": "An der Ziel-MAC-Adresse des Frames.", "correct": true, "explanation": "Für die lokale Frame-Weiterleitung ist die Ziel-MAC-Adresse zentral." },
+        { "id": "b", "text": "Ausschliesslich am Projektnamen der App.", "correct": false, "explanation": "Das hat mit der Frame-Weiterleitung nichts zu tun." },
+        { "id": "c", "text": "nur an einer optischen Eigenschaft ohne Bezug zu Sicherheit, Nutzbarkeit oder Funktion", "correct": false, "explanation": "Auch das ist netztechnisch irrelevant." },
+        { "id": "d", "text": "Allein an der gewählten UML-Notation.", "correct": false, "explanation": "UML beschreibt Modelle, nicht die Weiterleitungslogik von Frames." }
+      ]
+    },
+    {
+      "id": "pv1fiae_medium_t02_q13",
+      "conceptId": "pv1fiae_medium_t02_mac_broadcast",
+      "variantId": "pv1fiae_medium_t02_mac_broadcast_v01",
+      "interactionType": "single",
+      "questionKind": "beispiel_erkennen",
+      "badgeLabel": "Welche Option passt am besten?",
+      "isNew": true,
+      "prompt": "Welche MAC-Adresse steht typischerweise für einen Broadcast im lokalen Segment?",
+      "maxSelections": 1,
+      "options": [
+        { "id": "a", "text": "FF:FF:FF:FF:FF:FF", "correct": true, "explanation": "Das ist die klassische Broadcast-Adresse auf MAC-Ebene." },
+        { "id": "b", "text": "00:00:00:00:00:00", "correct": false, "explanation": "Das ist nicht die typische Broadcast-Adresse." },
+        { "id": "c", "text": "255.255.255.255", "correct": false, "explanation": "Das ist eine IPv4-Angabe und keine MAC-Adresse." },
+        { "id": "d", "text": "localhost", "correct": false, "explanation": "Das ist kein MAC-Format." }
+      ]
+    },
+    {
+      "id": "pv1fiae_medium_t02_q14",
+      "conceptId": "pv1fiae_medium_t02_scan_hostbereich",
+      "variantId": "pv1fiae_medium_t02_scan_hostbereich_v01",
+      "interactionType": "best",
+      "questionKind": "ziel_mittel_zuordnung",
+      "badgeLabel": "Welche Option passt am besten?",
+      "isNew": true,
+      "prompt": "Ein Scan bezieht sich auf das Netz 192.168.20.0/24. Welche Aussage zum Hostbereich passt am besten?",
+      "maxSelections": 1,
+      "options": [
+        { "id": "a", "text": "Typisch nutzbare Hostadressen liegen hier von 192.168.20.1 bis 192.168.20.254.", "correct": true, "explanation": "Bei /24 sind Netz- und Broadcastadresse ausgenommen." },
+        { "id": "b", "text": "Nur die Adresse 192.168.20.0 ist als Hostadresse vorgesehen.", "correct": false, "explanation": "Das ist gerade die Netzadresse." },
+        { "id": "c", "text": "Es gibt in einem /24-Netz keine Broadcastadresse.", "correct": false, "explanation": "Doch, die Broadcastadresse ist vorhanden." },
+        { "id": "d", "text": "Alle Adressen sind nur für MAC-Tabellen reserviert.", "correct": false, "explanation": "Das beschreibt den Hostbereich nicht." }
+      ]
+    },
+    {
+      "id": "pv1fiae_medium_t02_q15",
+      "conceptId": "pv1fiae_medium_t02_scan_null_deutung",
+      "variantId": "pv1fiae_medium_t02_scan_null_deutung_v01",
+      "interactionType": "best",
+      "questionKind": "fehler_finden",
+      "badgeLabel": "Welche Option passt am besten?",
+      "isNew": true,
+      "prompt": "Ein Netzscan liefert für einen Host beim Feld `latency` den Wert `null`. Welche Deutung ist am vorsichtigsten und fachlich am saubersten?",
+      "maxSelections": 1,
+      "options": [
+        { "id": "a", "text": "Der Wert fehlt oder konnte nicht belastbar ermittelt werden; die Auswertung muss mit diesem Sonderfall umgehen können.", "correct": true, "explanation": "Null-Werte sollten fachlich defensiv interpretiert werden." },
+        { "id": "b", "text": "Null bedeutet automatisch, dass die Latenz exakt null Millisekunden beträgt.", "correct": false, "explanation": "Das wäre eine zu harte und meist falsche Deutung." },
+        { "id": "c", "text": "Der Host ist damit zwingend offline.", "correct": false, "explanation": "Auch das folgt nicht zwingend aus einem Null-Wert." },
+        { "id": "d", "text": "Der Scan ist damit wertlos und muss immer vollständig verworfen werden.", "correct": false, "explanation": "Sonderfälle müssen behandelt, nicht pauschal verworfen werden." }
+      ]
+    },
+    {
+      "id": "pv1fiae_medium_t02_q16",
+      "conceptId": "pv1fiae_medium_t02_scan_json_struktur",
+      "variantId": "pv1fiae_medium_t02_scan_json_struktur_v01",
+      "interactionType": "best",
+      "questionKind": "beispiel_erkennen",
+      "badgeLabel": "Welche Option passt am besten?",
+      "isNew": true,
+      "prompt": "Welche JSON-Struktur ist für eine Liste mehrerer gescannter Hosts am plausibelsten?",
+      "maxSelections": 1,
+      "options": [
+        { "id": "a", "text": "Ein Array von Host-Objekten, in denen pro Eintrag Felder wie IP-Adresse, Status und optionale Messwerte abgelegt sind.", "correct": true, "explanation": "Für mehrere gleichartige Datensätze ist diese Struktur gut geeignet." },
+        { "id": "b", "text": "Ein einzelner Textsatz ohne Schlüssel und Werte.", "correct": false, "explanation": "Das wäre für maschinelle Auswertung unpraktisch." },
+        { "id": "c", "text": "Eine zufällige Folge von Werten ohne erkennbare Zuordnung.", "correct": false, "explanation": "Auch das wäre keine belastbare Struktur." },
+        { "id": "d", "text": "Nur eine MAC-Adresse ohne weitere Einbettung.", "correct": false, "explanation": "Damit ließe sich keine Liste mehrerer Hosts sauber beschreiben." }
+      ]
+    },
+    {
+      "id": "pv1fiae_medium_t02_q17",
+      "conceptId": "pv1fiae_medium_t02_klassenmodell_streckennetz",
+      "variantId": "pv1fiae_medium_t02_klassenmodell_streckennetz_v01",
+      "interactionType": "best",
+      "questionKind": "vergleich_treffen",
+      "badgeLabel": "Welche Option passt am besten?",
+      "isNew": true,
+      "prompt": "Welche Klassenkombination bildet das fachliche Streckennetz am plausibelsten ab?",
+      "maxSelections": 1,
+      "options": [
+        { "id": "a", "text": "Linie, Station und Fahrt beziehungsweise Verbindung als eigenständige fachliche Klassen.", "correct": true, "explanation": "Damit werden zentrale Fachobjekte des Stadtbahnkontexts sichtbar." },
+        { "id": "b", "text": "Nur eine einzige Klasse `Stadtbahnprojekt` für alle Sachverhalte.", "correct": false, "explanation": "Das wäre fachlich zu grob." },
+        { "id": "c", "text": "Ausschliesslich Benutzeroberflächenklassen ohne Fachobjekte.", "correct": false, "explanation": "Das Streckennetz selbst würde damit fehlen." },
+        { "id": "d", "text": "Nur Router, Switch und Server als Klassen.", "correct": false, "explanation": "Das beschreibt Infrastruktur, aber nicht das Fachmodell des Streckennetzes." }
+      ]
+    },
+    {
+      "id": "pv1fiae_medium_t02_q18",
+      "conceptId": "pv1fiae_medium_t02_attribut_oder_asso",
+      "variantId": "pv1fiae_medium_t02_attribut_oder_asso_v01",
+      "interactionType": "best",
+      "questionKind": "fehler_finden",
+      "badgeLabel": "Welche Option passt am besten?",
+      "isNew": true,
+      "prompt": "Wann wäre es fachlich ein Modellierungsfehler, einen Sachverhalt nur als Attribut statt als eigene Klasse oder Beziehung abzubilden?",
+      "maxSelections": 1,
+      "options": [
+        { "id": "a", "text": "Wenn aus dem Wert ein eigenständiges Fachobjekt mit eigenen Eigenschaften und Beziehungen wird, etwa eine Station oder ein Mitarbeiter.", "correct": true, "explanation": "Dann reicht ein simples Attribut meist nicht mehr aus." },
+        { "id": "b", "text": "Wenn nur eine einfache Zeichenkette wie der Anzeigename der Linie gebraucht wird.", "correct": false, "explanation": "Das kann durchaus ein normales Attribut sein." },
+        { "id": "c", "text": "Wenn nur eine einmalige Zählinformation gespeichert werden soll.", "correct": false, "explanation": "Auch das kann ein Attribut sein." },
+        { "id": "d", "text": "Wenn die Information gar nicht im Modell vorkommen soll.", "correct": false, "explanation": "Dann stellt sich die Attributfrage nicht." }
+      ]
+    },
+    {
+      "id": "pv1fiae_medium_t02_q19",
+      "conceptId": "pv1fiae_medium_t02_multiplizitaeten_liniennetz",
+      "variantId": "pv1fiae_medium_t02_multiplizitaeten_liniennetz_v01",
+      "interactionType": "multi",
+      "questionKind": "mehrere_richtige_antworten_waehlen",
+      "badgeLabel": "Mehrere Antworten sind richtig.",
+      "isNew": true,
+      "prompt": "Welche Aussagen zu Multiplizitäten im Stadtbahnmodell passen fachlich? Mehrere Antworten sind richtig.",
+      "maxSelections": 2,
+      "options": [
+        { "id": "a", "text": "Eine Linie bedient typischerweise mehrere Stationen.", "correct": true, "explanation": "Das ist für ein Linienmodell fachlich plausibel." },
+        { "id": "b", "text": "Eine Station kann von mehreren Linien bedient werden.", "correct": true, "explanation": "Umsteigebeziehungen machen das plausibel." },
+        { "id": "c", "text": "Eine Linie darf fachlich nie mehr als genau eine Station besitzen.", "correct": false, "explanation": "Das widerspricht dem Liniengedanken." },
+        { "id": "d", "text": "Multiplizitäten werden als Darstellungsdetail missverstanden.", "correct": false, "explanation": "Sie beschreiben Mengenbeziehungen, nicht Gestaltung." }
+      ]
+    },
+    {
+      "id": "pv1fiae_medium_t02_q20",
+      "conceptId": "pv1fiae_medium_t02_aggregation_komposition",
+      "variantId": "pv1fiae_medium_t02_aggregation_komposition_v01",
+      "interactionType": "best",
+      "questionKind": "vergleich_treffen",
+      "badgeLabel": "Welche Option passt am besten?",
+      "isNew": true,
+      "prompt": "Wann spricht im Anzeigenkontext eher eine Komposition statt nur eine lose Aggregation?",
+      "maxSelections": 1,
+      "options": [
+        { "id": "a", "text": "Wenn ein Teilobjekt fachlich stark an den Lebenszyklus des Ganzen gebunden ist und ohne dieses kaum sinnvoll weiterbesteht.", "correct": true, "explanation": "Genau das ist der Kern einer Komposition." },
+        { "id": "b", "text": "Wenn zwei Objekte völlig unabhängig voneinander existieren.", "correct": false, "explanation": "Dann wäre eher eine schwächere Beziehung plausibel." },
+        { "id": "c", "text": "Wenn nur ein Attribut umbenannt werden soll.", "correct": false, "explanation": "Das hat mit Aggregation oder Komposition nichts zu tun." },
+        { "id": "d", "text": "Wenn lediglich die IP-Adresse eines Geräts wechselt.", "correct": false, "explanation": "Auch das betrifft nicht die Modellart der Beziehung." }
+      ]
+    },
+    {
+      "id": "pv1fiae_medium_t02_q21",
+      "conceptId": "pv1fiae_medium_t02_zustandsautomat_guard",
+      "variantId": "pv1fiae_medium_t02_zustandsautomat_guard_v01",
+      "interactionType": "best",
+      "questionKind": "passende_massnahme_auswaehlen",
+      "badgeLabel": "Welche Option passt am besten?",
+      "isNew": true,
+      "prompt": "Welche Regel macht die Zustandslogik einer Auslastungsanzeige fachlich stabiler?",
+      "maxSelections": 1,
+      "options": [
+        { "id": "a", "text": "Zustandswechsel nur dann auslösen, wenn die definierten Schwellenwerte tatsächlich über- oder unterschritten werden.", "correct": true, "explanation": "Damit bleibt der Zustandswechsel an klare Bedingungen gebunden." },
+        { "id": "b", "text": "Bei jeder beliebigen Messung zufällig den Zustand ändern.", "correct": false, "explanation": "Das wäre fachlich unbrauchbar." },
+        { "id": "c", "text": "Immer direkt vom Zustand `leer` in `voll` springen, unabhängig vom Messwert.", "correct": false, "explanation": "So geht die fachliche Abstufung verloren." },
+        { "id": "d", "text": "Den Zustand dauerhaft festschreiben, damit keine Anzeige mehr wechseln kann.", "correct": false, "explanation": "Dann würde die Anzeige nicht mehr auf echte Änderungen reagieren." }
+      ]
+    },
+    {
+      "id": "pv1fiae_medium_t02_q22",
+      "conceptId": "pv1fiae_medium_t02_observer_mehrfachanzeige",
+      "variantId": "pv1fiae_medium_t02_observer_mehrfachanzeige_v01",
+      "interactionType": "best",
+      "questionKind": "ursache_folge_erkennen",
+      "badgeLabel": "Welche Option passt am besten?",
+      "isNew": true,
+      "prompt": "Warum ist das Observer-Pattern für mehrere Auslastungsanzeigen im Stadtbahnprojekt besonders plausibel?",
+      "maxSelections": 1,
+      "options": [
+        { "id": "a", "text": "Mehrere Anzeigen können auf Änderungen einer zentralen Datenquelle reagieren, ohne dass jede Anzeige fest mit jeder anderen verdrahtet wird.", "correct": true, "explanation": "Das ist die zentrale Stärke des Musters." },
+        { "id": "b", "text": "Weil Observer dafür sorgt, dass keine Zustandsänderung mehr modelliert werden muss.", "correct": false, "explanation": "Zustandslogik und Observer erfüllen unterschiedliche Aufgaben." },
+        { "id": "c", "text": "Weil Observer nur bei relationalen Datenbanken eingesetzt werden darf.", "correct": false, "explanation": "Das ist fachlich falsch." },
+        { "id": "d", "text": "Weil damit jede Anzeige ihre eigenen Messdaten unabhängig vom Gesamtsystem erfindet.", "correct": false, "explanation": "Gerade die gemeinsame Quelle ist hier wichtig." }
+      ]
+    },
+    {
+      "id": "pv1fiae_medium_t02_q23",
+      "conceptId": "pv1fiae_medium_t02_pattern_kategorie_observer",
+      "variantId": "pv1fiae_medium_t02_pattern_kategorie_observer_v01",
+      "interactionType": "single",
+      "questionKind": "definition_zu_begriff",
+      "badgeLabel": "Welche Option passt am besten?",
+      "isNew": true,
+      "prompt": "Zu welcher grundlegenden Kategorie von Entwurfsmustern gehört Observer?",
+      "maxSelections": 1,
+      "options": [
+        { "id": "a", "text": "Zu den Verhaltensmustern.", "correct": true, "explanation": "Observer beschreibt ein Muster für Kommunikation und Reaktion zwischen Objekten." },
+        { "id": "b", "text": "Zu den Datenbanknormalformen.", "correct": false, "explanation": "Das ist eine andere fachliche Kategorie." },
+        { "id": "c", "text": "Zu den Netzwerktopologien.", "correct": false, "explanation": "Observer ist kein Netzwerkkonzept." },
+        { "id": "d", "text": "Zu den Hardware-Schnittstellen.", "correct": false, "explanation": "Auch das trifft nicht zu." }
+      ]
+    },
+    {
+      "id": "pv1fiae_medium_t02_q24",
+      "conceptId": "pv1fiae_medium_t02_gesamtentscheidung",
+      "variantId": "pv1fiae_medium_t02_gesamtentscheidung_v01",
+      "interactionType": "best",
+      "questionKind": "beste_option_im_mini_szenario",
+      "badgeLabel": "Welche Option passt am besten?",
+      "isNew": true,
+      "prompt": "Welche Gesamtentscheidung passt für die mittlere Ausbaustufe des Stadtbahnprojekts am besten?",
+      "maxSelections": 1,
+      "options": [
+        { "id": "a", "text": "Projektänderungen strukturiert steuern, Registrierungsdaten zweckgebunden halten, Netze passend zum Einsatzzweck auswählen und Anzeigen über klare Zustände plus Observer entkoppelt anbinden.", "correct": true, "explanation": "Das verbindet die zentralen Themen des Slots fachlich stimmig." },
+        { "id": "b", "text": "Datenschutz und Netzarchitektur vorerst ignorieren und nur möglichst viele Features sammeln.", "correct": false, "explanation": "Das wäre für die mittlere Ausbaustufe fachlich zu schwach." },
+        { "id": "c", "text": "UML nur für Folien verwenden und die Anzeigenlogik ohne Modellierung direkt improvisieren.", "correct": false, "explanation": "Gerade die Modellierung soll hier belastbarer werden." },
+        { "id": "d", "text": "Die App, das Netz und die Anzeigenlogik vollständig voneinander trennen, auch wenn Daten synchron bleiben müssen.", "correct": false, "explanation": "Die Themen müssen abgestimmt, nicht künstlich entkoppelt werden." }
+      ]
+    }
+  ]
+}

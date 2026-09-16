@@ -1,0 +1,425 @@
+{
+  "scenarioFolder": "Pruefungsvorbereitung-1-FIAE-Scenarien",
+  "quizFolder": "Pruefungsvorbereitung-1-FIAE-Quiz",
+  "scenarioFile": "ticket_ausbildungsbetrieb_stadtbahn_netzlogik_uml/02_hard_ausbildungsbetrieb_stadtbahn_netzlogik_uml.json",
+  "quizFile": "quiz_ausbildungsbetrieb_stadtbahn_netzlogik_uml/quiz02_hard_V02_ausbildungsbetrieb_stadtbahn_netzlogik_uml.json",
+  "ticketId": "02_hard_ausbildungsbetrieb_stadtbahn_netzlogik_uml.json",
+  "versionId": "V02",
+  "title": "Ticket 02 Hard - Stadtbahn, Netze und UML-Modelle",
+  "description": "Manuell verfasstes FIAE-Training im hohen Anspruchsniveau zu Governance, Datenschutz, Netzarchitektur, Scan-Deutung, UML, Zustandslogik und Observer-Entkopplung im Stadtbahnprojekt.",
+  "topics": [
+    "Projektgovernance, Datenschutz und Netzarchitektur im Stadtbahnkontext unter Zielkonflikten bewerten",
+    "Netzscan, UML-Modellierung, Zustandslogik und Observer-Architektur für verteilte Anzeigen belastbar zusammenführen"
+  ],
+  "questions": [
+    {
+      "id": "pv1fiae_hard_t02_q01",
+      "conceptId": "pv1fiae_hard_t02_releaseentscheidung",
+      "variantId": "pv1fiae_hard_t02_releaseentscheidung_v02",
+      "interactionType": "best",
+      "questionKind": "beste_option_im_mini_szenario",
+      "badgeLabel": "Welche Option passt am besten?",
+      "isNew": true,
+      "prompt": "Der Stadtrat drängt auf einen frühen Start, während Datenschutzprüfung und Anzeigenlogik noch offen sind. Welche Release-Entscheidung ist am belastbarsten?",
+      "maxSelections": 1,
+      "options": [
+        { "id": "a", "text": "Einen klar abgegrenzten Release nur für fachlich und rechtlich tragfähige Kernfunktionen freigeben und offene Punkte bewusst in eine nächste Stufe verschieben.", "correct": true, "explanation": "So wird Zeitdruck aufgefangen, ohne rechtliche und technische Risiken zu ignorieren." },
+        { "id": "b", "text": "Trotz offener Kernrisiken den Vollumfang freigeben, damit der Termin formal eingehalten wird.", "correct": false, "explanation": "Das wäre fachlich riskant." },
+        { "id": "c", "text": "Sämtliche Arbeit stoppen, bis jedes Detail des Endausbaus endgültig feststeht.", "correct": false, "explanation": "Das ist unnötig starr und nicht die beste Abwägung." },
+        { "id": "d", "text": "Nur die Anzeigenlogik produktiv setzen und die App erst Jahre später planen.", "correct": false, "explanation": "Das löst die integrierte Projektfrage nicht sauber." }
+      ]
+    },
+    {
+      "id": "pv1fiae_hard_t02_q02",
+      "conceptId": "pv1fiae_hard_t02_change_governance",
+      "variantId": "pv1fiae_hard_t02_change_governance_v02",
+      "interactionType": "best",
+      "questionKind": "passende_massnahme_auswaehlen",
+      "badgeLabel": "Welche Option passt am besten?",
+      "isNew": true,
+      "prompt": "Eine Zusatzfunktion für Echtzeit-Prognosen würde Netz, App und Anzeigen gleichzeitig verändern. Welche Governance-Reaktion passt am besten?",
+      "maxSelections": 1,
+      "options": [
+        { "id": "a", "text": "Änderung zentral erfassen, Auswirkungen auf Architektur, Datenschutz, Meilensteine und Betrieb bewerten und erst danach priorisiert entscheiden.", "correct": true, "explanation": "Bei quer wirkenden Änderungen braucht es genau diese Gesamtbewertung." },
+        { "id": "b", "text": "Die Funktion im Teilteam Anzeigen sofort umsetzen und den Rest später informieren.", "correct": false, "explanation": "Das ignoriert die systemweite Wirkung der Änderung." },
+        { "id": "c", "text": "Änderungen grundsätzlich verbieten, auch wenn sie fachlich sinnvoll wären.", "correct": false, "explanation": "Änderungen müssen gesteuert, nicht pauschal verboten werden." },
+        { "id": "d", "text": "Die Entscheidung nur nach persönlicher Präferenz der Projektleitung treffen.", "correct": false, "explanation": "Eine belastbare Governance braucht nachvollziehbare Kriterien." }
+      ]
+    },
+    {
+      "id": "pv1fiae_hard_t02_q03",
+      "conceptId": "pv1fiae_hard_t02_stakeholder_priorisierung",
+      "variantId": "pv1fiae_hard_t02_stakeholder_priorisierung_v02",
+      "interactionType": "best",
+      "questionKind": "prioritaet_setzen",
+      "badgeLabel": "Welche Option passt am besten?",
+      "isNew": true,
+      "prompt": "Welche Priorisierung ist im Zielkonflikt zwischen frühem Rollout, Betriebsstabilität und Datenschutz am tragfähigsten begründet?",
+      "maxSelections": 1,
+      "options": [
+        { "id": "a", "text": "Nur Lösungen priorisieren, die fachlichen Nutzen bringen, den Betrieb nicht unvertretbar gefährden und datenschutzrechtlich sauber begründbar sind.", "correct": true, "explanation": "So werden Nutzen, Betrieb und Recht gemeinsam abgewogen." },
+        { "id": "b", "text": "Immer der Gruppe mit dem grössten politischen Druck folgen.", "correct": false, "explanation": "Druck allein ist kein belastbares Priorisierungskriterium." },
+        { "id": "c", "text": "Datenschutz vollständig ausklammern, weil er die Einführung verlangsamen könnte.", "correct": false, "explanation": "Das wäre fachlich und rechtlich falsch." },
+        { "id": "d", "text": "Betriebsfragen erst nach der Inbetriebnahme ernst nehmen.", "correct": false, "explanation": "Gerade Ausfallsicherheit muss früh mitgedacht werden." }
+      ]
+    },
+    {
+      "id": "pv1fiae_hard_t02_q04",
+      "conceptId": "pv1fiae_hard_t02_lessons_learned_nutzen",
+      "variantId": "pv1fiae_hard_t02_lessons_learned_nutzen_v02",
+      "interactionType": "best",
+      "questionKind": "ursache_folge_erkennen",
+      "badgeLabel": "Welche Option passt am besten?",
+      "isNew": true,
+      "prompt": "Warum sind Lessons Learned nach einer Pilotphase für das Stadtbahnprojekt im Hard-Slot besonders wertvoll?",
+      "maxSelections": 1,
+      "options": [
+        { "id": "a", "text": "Weil Erfahrungen zu Stakeholder-Abstimmung, Architekturgrenzen und Betriebsfolgen systematisch in spätere Ausbaustufen zurückfliessen können.", "correct": true, "explanation": "Genau dafür werden Lessons Learned im Projektkontext genutzt." },
+        { "id": "b", "text": "Weil dadurch keine Dokumentation mehr nötig ist.", "correct": false, "explanation": "Lessons Learned ergänzen Dokumentation, sie ersetzen sie nicht." },
+        { "id": "c", "text": "Weil Fehler damit automatisch aus dem Quellcode verschwinden.", "correct": false, "explanation": "Erkenntnisse müssen erst in Massnahmen überführt werden." },
+        { "id": "d", "text": "Weil man danach auf jede Meilensteinprüfung verzichten kann.", "correct": false, "explanation": "Das wäre keine sachgerechte Konsequenz." }
+      ]
+    },
+    {
+      "id": "pv1fiae_hard_t02_q05",
+      "conceptId": "pv1fiae_hard_t02_privacy_by_design",
+      "variantId": "pv1fiae_hard_t02_privacy_by_design_v02",
+      "interactionType": "best",
+      "questionKind": "passende_massnahme_auswaehlen",
+      "badgeLabel": "Welche Option passt am besten?",
+      "isNew": true,
+      "prompt": "Welche Lösung folgt im Stadtbahnprojekt am ehesten dem Prinzip Privacy by Design?",
+      "maxSelections": 1,
+      "options": [
+        { "id": "a", "text": "Bereits im Entwurf nur erforderliche Daten vorsehen, optionale Ortungsfunktionen klar trennen und Schutzmassnahmen von Anfang an mitplanen.", "correct": true, "explanation": "Privacy by Design beginnt im Entwurf und nicht erst im Nachhinein." },
+        { "id": "b", "text": "Zunächst alle Daten sammeln und erst nach dem Go-live prüfen, was davon problematisch sein könnte.", "correct": false, "explanation": "Das widerspricht dem Grundgedanken." },
+        { "id": "c", "text": "Datenschutz vollständig an einen späteren Dienstleister delegieren.", "correct": false, "explanation": "Die Verantwortung lässt sich nicht so aus dem Systementwurf auslagern." },
+        { "id": "d", "text": "Nur das Impressum erweitern und sonst nichts am Systemdesign ändern.", "correct": false, "explanation": "Das wäre keine Privacy-by-Design-Strategie." }
+      ]
+    },
+    {
+      "id": "pv1fiae_hard_t02_q06",
+      "conceptId": "pv1fiae_hard_t02_registrierungsdaten_abwaegung",
+      "variantId": "pv1fiae_hard_t02_registrierungsdaten_abwaegung_v02",
+      "interactionType": "multi",
+      "questionKind": "mehrere_richtige_antworten_waehlen",
+      "badgeLabel": "Mehrere Antworten sind richtig.",
+      "isNew": true,
+      "prompt": "Welche Überlegungen sprechen im Hard-Slot gegen das Sammeln unnötiger Registrierungsdaten? Mehrere Antworten sind richtig.",
+      "maxSelections": 3,
+      "options": [
+        { "id": "a", "text": "Mehr Daten erhöhen ohne klaren Zweck die Angriffs- und Missbrauchsfläche.", "correct": true, "explanation": "Das ist ein zentraler Risikoaspekt." },
+        { "id": "b", "text": "Unnötige Daten erschweren die Begründung der Verarbeitung gegenüber Betroffenen und Aufsicht.", "correct": true, "explanation": "Auch die rechtliche Begründbarkeit leidet." },
+        { "id": "c", "text": "Überflüssige Felder verkomplizieren Prozesse, Support und Datenpflege.", "correct": true, "explanation": "Nicht nur Recht, auch Betrieb und Pflege werden schwerer." },
+        { "id": "d", "text": "Je mehr Daten vorliegen, desto weniger wichtig werden Schutzmassnahmen.", "correct": false, "explanation": "Das Gegenteil ist der Fall." },
+        { "id": "e", "text": "Zusätzliche Daten sind immer kostenneutral und folgenlos.", "correct": false, "explanation": "Auch das ist fachlich falsch." }
+      ]
+    },
+    {
+      "id": "pv1fiae_hard_t02_q07",
+      "conceptId": "pv1fiae_hard_t02_netzarchitektur_gesamt",
+      "variantId": "pv1fiae_hard_t02_netzarchitektur_gesamt_v02",
+      "interactionType": "best",
+      "questionKind": "ziel_mittel_zuordnung",
+      "badgeLabel": "Welche Option passt am besten?",
+      "isNew": true,
+      "prompt": "Welche Netzarchitektur passt am besten zur Kombination aus verteilten Haltestellensensoren, mobilen Nutzenden und mehreren Betriebshöfen?",
+      "maxSelections": 1,
+      "options": [
+        { "id": "a", "text": "Sensorik je nach Einsatz sparsam anbinden, mobile Nutzung über passende Funk-/Internetwege ermöglichen und Standortkopplung zwischen Betriebshöfen über WAN plus VPN absichern.", "correct": true, "explanation": "Die Lösung ordnet verschiedene Netzformen ihrem Einsatzzweck zu." },
+        { "id": "b", "text": "Ausschliesslich ein einziges lokales WLAN für alle Teilprobleme verwenden.", "correct": false, "explanation": "Das wird den unterschiedlichen Reichweiten und Anforderungen nicht gerecht." },
+        { "id": "c", "text": "Sämtliche Kommunikation manuell per Datei-Export abwickeln.", "correct": false, "explanation": "Das wäre keine belastbare Architektur." },
+        { "id": "d", "text": "Auf eine Standortvernetzung ganz verzichten und alle Daten nur auf Papier austauschen.", "correct": false, "explanation": "Damit wäre das Systemziel verfehlt." }
+      ]
+    },
+    {
+      "id": "pv1fiae_hard_t02_q08",
+      "conceptId": "pv1fiae_hard_t02_router_switch_segmentierung",
+      "variantId": "pv1fiae_hard_t02_router_switch_segmentierung_v02",
+      "interactionType": "best",
+      "questionKind": "vergleich_treffen",
+      "badgeLabel": "Welche Option passt am besten?",
+      "isNew": true,
+      "prompt": "Warum reicht ein Switch allein nicht aus, wenn Leitstelle, Betriebshof und externe Netze sauber getrennt werden sollen?",
+      "maxSelections": 1,
+      "options": [
+        { "id": "a", "text": "Weil für die Verbindung unterschiedlicher Netze und Weiterleitung zwischen ihnen eine Routing-Funktion gebraucht wird.", "correct": true, "explanation": "Genau dafür wird Routing benötigt." },
+        { "id": "b", "text": "Weil ein Switch nur für UML-Diagramme gedacht ist.", "correct": false, "explanation": "Das ist fachlich falsch." },
+        { "id": "c", "text": "Weil Switches grundsätzlich keine MAC-Adressen verarbeiten.", "correct": false, "explanation": "Gerade damit arbeiten sie lokal." },
+        { "id": "d", "text": "Weil in Stadtbahnprojekten nur Router, aber nie Switches erlaubt sind.", "correct": false, "explanation": "Das ist Unsinn." }
+      ]
+    },
+    {
+      "id": "pv1fiae_hard_t02_q09",
+      "conceptId": "pv1fiae_hard_t02_broadcast_bedeutung",
+      "variantId": "pv1fiae_hard_t02_broadcast_bedeutung_v02",
+      "interactionType": "best",
+      "questionKind": "definition_zu_begriff",
+      "badgeLabel": "Welche Option passt am besten?",
+      "isNew": true,
+      "prompt": "Welche fachliche Bedeutung hat ein Broadcast auf MAC-Ebene im lokalen Netzsegment?",
+      "maxSelections": 1,
+      "options": [
+        { "id": "a", "text": "Der Frame richtet sich an alle Geräte im lokalen Segment.", "correct": true, "explanation": "Das ist die Grundidee eines Broadcasts." },
+        { "id": "b", "text": "Der Frame darf nur durch Router gelesen werden.", "correct": false, "explanation": "Das beschreibt keinen Broadcast." },
+        { "id": "c", "text": "Der Frame wird automatisch in UML-Klassen umgewandelt.", "correct": false, "explanation": "Das verfehlt den geprüften Entwicklungszusammenhang." },
+        { "id": "d", "text": "Der Frame enthält immer nur JSON-Dateien.", "correct": false, "explanation": "Auch das trifft nicht zu." }
+      ]
+    },
+    {
+      "id": "pv1fiae_hard_t02_q10",
+      "conceptId": "pv1fiae_hard_t02_hostbereich_planung",
+      "variantId": "pv1fiae_hard_t02_hostbereich_planung_v02",
+      "interactionType": "best",
+      "questionKind": "fehler_finden",
+      "badgeLabel": "Welche Option passt am besten?",
+      "isNew": true,
+      "prompt": "Welche Aussage zur Adressplanung im Netz 192.168.40.0/24 ist fachlich sauber?",
+      "maxSelections": 1,
+      "options": [
+        { "id": "a", "text": "Typische Hostadressen liegen zwischen .1 und .254; Netz- und Broadcastadresse werden nicht als normale Hosts vergeben.", "correct": true, "explanation": "Das ist die fachlich saubere Einordnung eines /24-Netzes." },
+        { "id": "b", "text": "Die .0-Adresse ist eine normale Clientadresse für alle Sensoren.", "correct": false, "explanation": "Das wäre die Netzadresse." },
+        { "id": "c", "text": "Die .255-Adresse ist zwingend die Router-MAC.", "correct": false, "explanation": "Das ist fachlich falsch." },
+        { "id": "d", "text": "In einem /24-Netz gibt es keine reservierten Adressen.", "correct": false, "explanation": "Doch, Netz- und Broadcastadresse sind reserviert." }
+      ]
+    },
+    {
+      "id": "pv1fiae_hard_t02_q11",
+      "conceptId": "pv1fiae_hard_t02_scan_json_robustheit",
+      "variantId": "pv1fiae_hard_t02_scan_json_robustheit_v02",
+      "interactionType": "best",
+      "questionKind": "passende_massnahme_auswaehlen",
+      "badgeLabel": "Welche Option passt am besten?",
+      "isNew": true,
+      "prompt": "Ein Importmodul verarbeitet JSON-Scans aus mehreren Quellen. Welche Massnahme macht diese Auswertung am robustesten?",
+      "maxSelections": 1,
+      "options": [
+        { "id": "a", "text": "Pflichtfelder validieren, Null- und Fehlwerte defensiv behandeln und fehlerhafte Einträge nachvollziehbar protokollieren.", "correct": true, "explanation": "Das schafft Robustheit ohne blind Daten zu verwerfen." },
+        { "id": "b", "text": "Alle Eingaben ungeprüft übernehmen, solange sie wie JSON aussehen.", "correct": false, "explanation": "Das wäre für einen produktionsnahen Import zu riskant." },
+        { "id": "c", "text": "Bei einem einzelnen fehlerhaften Feld immer die gesamte Datei kommentarlos löschen.", "correct": false, "explanation": "Das ist meist zu grob und intransparent." },
+        { "id": "d", "text": "Nur die Zeilenlänge messen und sonst nichts prüfen.", "correct": false, "explanation": "Das reicht fachlich nicht aus." }
+      ]
+    },
+    {
+      "id": "pv1fiae_hard_t02_q12",
+      "conceptId": "pv1fiae_hard_t02_nullwert_parser",
+      "variantId": "pv1fiae_hard_t02_nullwert_parser_v02",
+      "interactionType": "best",
+      "questionKind": "ursache_folge_erkennen",
+      "badgeLabel": "Welche Option passt am besten?",
+      "isNew": true,
+      "prompt": "Warum ist ein defensiver Umgang mit fehlenden oder `null`-Werten in Scan-Ergebnissen architektonisch besonders wichtig?",
+      "maxSelections": 1,
+      "options": [
+        { "id": "a", "text": "Weil Eingabedaten aus realen Systemen unvollständig sein können und das Gesamtsystem trotzdem nachvollziehbar reagieren muss.", "correct": true, "explanation": "Genau darum geht es bei robuster Datenverarbeitung." },
+        { "id": "b", "text": "Weil `null` automatisch bedeutet, dass der Sensor nie existiert hat.", "correct": false, "explanation": "Das ist keine zulässige Schlussfolgerung." },
+        { "id": "c", "text": "Weil fehlende Werte nur in rein theoretischen Beispielen vorkommen.", "correct": false, "explanation": "In realen Datenströmen kommen solche Fälle häufig vor." },
+        { "id": "d", "text": "Weil damit jede Validierung überflüssig wird.", "correct": false, "explanation": "Defensive Behandlung ersetzt keine Validierung." }
+      ]
+    },
+    {
+      "id": "pv1fiae_hard_t02_q13",
+      "conceptId": "pv1fiae_hard_t02_klassenmodell_abgrenzung",
+      "variantId": "pv1fiae_hard_t02_klassenmodell_abgrenzung_v02",
+      "interactionType": "best",
+      "questionKind": "vergleich_treffen",
+      "badgeLabel": "Welche Option passt am besten?",
+      "isNew": true,
+      "prompt": "Welche Modellierungsentscheidung bildet das fachliche Stadtbahnmodell am saubersten ab?",
+      "maxSelections": 1,
+      "options": [
+        { "id": "a", "text": "Fachklassen wie Linie, Station, Fahrt und Anzeige klar von technischen Hilfsklassen trennen und Beziehungen bewusst modellieren.", "correct": true, "explanation": "Das schafft ein belastbares und lesbares Fachmodell." },
+        { "id": "b", "text": "Alle Informationen in eine Klasse `System` schreiben.", "correct": false, "explanation": "Das wäre fachlich zu undifferenziert." },
+        { "id": "c", "text": "Nur technische Netzwerkgeräte modellieren und das Fachmodell auslassen.", "correct": false, "explanation": "Dann fehlt die zentrale Fachsicht." },
+        { "id": "d", "text": "UML ganz weglassen und Beziehungen nur im Kopf behalten.", "correct": false, "explanation": "Das wäre für Hard-Niveau zu schwach." }
+      ]
+    },
+    {
+      "id": "pv1fiae_hard_t02_q14",
+      "conceptId": "pv1fiae_hard_t02_multiplikation_personal",
+      "variantId": "pv1fiae_hard_t02_multiplikation_personal_v02",
+      "interactionType": "best",
+      "questionKind": "fehler_finden",
+      "badgeLabel": "Welche Option passt am besten?",
+      "isNew": true,
+      "prompt": "Welche UML-Aussage zur Personal- und Linienplanung wäre fachlich am ehesten ein Fehler?",
+      "maxSelections": 1,
+      "options": [
+        { "id": "a", "text": "Jeder Mitarbeiter dürfe fachlich nur genau einer einzigen Fahrt in seiner gesamten Laufbahn zugeordnet sein.", "correct": true, "explanation": "Das wäre für Planung und Betrieb unplausibel eng." },
+        { "id": "b", "text": "Ein Mitarbeiter kann im Modell eigene Attribute und Beziehungen besitzen.", "correct": false, "explanation": "Das ist gerade plausibel." },
+        { "id": "c", "text": "Linien und Fahrten sollten nicht blind als dasselbe Objekt behandelt werden.", "correct": false, "explanation": "Auch das ist fachlich richtig." },
+        { "id": "d", "text": "Multiplizitäten helfen, zulässige Mengenbeziehungen sichtbar zu machen.", "correct": false, "explanation": "Das ist eine korrekte Aussage." }
+      ]
+    },
+    {
+      "id": "pv1fiae_hard_t02_q15",
+      "conceptId": "pv1fiae_hard_t02_komposition_anzeigecontroller",
+      "variantId": "pv1fiae_hard_t02_komposition_anzeigecontroller_v02",
+      "interactionType": "best",
+      "questionKind": "ziel_mittel_zuordnung",
+      "badgeLabel": "Welche Option passt am besten?",
+      "isNew": true,
+      "prompt": "Wann ist zwischen Anzeigeeinheit und ihrem internen Controller eher eine Komposition fachlich plausibel?",
+      "maxSelections": 1,
+      "options": [
+        { "id": "a", "text": "Wenn der Controller fachlich als eng gebundener Bestandteil der Anzeige mit deren Lebenszyklus mitgeführt wird.", "correct": true, "explanation": "Das entspricht dem Gedanken einer starken Ganzes-Teil-Beziehung." },
+        { "id": "b", "text": "Wenn Controller und Anzeige fachlich völlig unabhängig voneinander existieren sollen.", "correct": false, "explanation": "Dann wäre eine schwächere Beziehung plausibler." },
+        { "id": "c", "text": "Wenn nur die Router-Adresse des Controllers geändert wird.", "correct": false, "explanation": "Das begründet keine Komposition." },
+        { "id": "d", "text": "Wenn eine JSON-Datei importiert wird.", "correct": false, "explanation": "Auch das hat mit der Beziehungsart nichts zu tun." }
+      ]
+    },
+    {
+      "id": "pv1fiae_hard_t02_q16",
+      "conceptId": "pv1fiae_hard_t02_zustandsmodell_hysterese",
+      "variantId": "pv1fiae_hard_t02_zustandsmodell_hysterese_v02",
+      "interactionType": "best",
+      "questionKind": "passende_massnahme_auswaehlen",
+      "badgeLabel": "Welche Option passt am besten?",
+      "isNew": true,
+      "prompt": "Die Auslastungsanzeige springt bei Grenzwerten ständig zwischen zwei Zuständen hin und her. Welche Massnahme ist am plausibelsten, um das zu beruhigen?",
+      "maxSelections": 1,
+      "options": [
+        { "id": "a", "text": "Schwellenwerte und Übergänge so definieren, dass kleine Messschwankungen nicht sofort einen erneuten Zustandswechsel auslösen.", "correct": true, "explanation": "Damit wird die Zustandslogik robuster." },
+        { "id": "b", "text": "Jede Messung unabhängig vom Wert als Zustandswechsel interpretieren.", "correct": false, "explanation": "Das würde das Flattern noch verstärken." },
+        { "id": "c", "text": "Die Anzeige dauerhaft im Zustand `voll` fixieren.", "correct": false, "explanation": "Dann ginge die fachliche Aussage verloren." },
+        { "id": "d", "text": "Alle Messdaten ignorieren und nur die Uhrzeit auswerten.", "correct": false, "explanation": "Das löst das Problem nicht fachgerecht." }
+      ]
+    },
+    {
+      "id": "pv1fiae_hard_t02_q17",
+      "conceptId": "pv1fiae_hard_t02_observer_abmelden",
+      "variantId": "pv1fiae_hard_t02_observer_abmelden_v02",
+      "interactionType": "best",
+      "questionKind": "ursache_folge_erkennen",
+      "badgeLabel": "Welche Option passt am besten?",
+      "isNew": true,
+      "prompt": "Warum ist es im Observer-Modell wichtig, entfernte oder ersetzte Anzeigen sauber wieder abzumelden?",
+      "maxSelections": 1,
+      "options": [
+        { "id": "a", "text": "Damit die Quelle nicht weiter erfolglos an nicht mehr gültige Beobachter meldet und die Kopplung sauber bleibt.", "correct": true, "explanation": "Das hält das Modell konsistent und vermeidet unnötige Benachrichtigungen." },
+        { "id": "b", "text": "Damit Zustandsautomaten grundsätzlich nicht mehr gebraucht werden.", "correct": false, "explanation": "Observer und Zustandslogik bleiben unterschiedliche Dinge." },
+        { "id": "c", "text": "Weil Observer nur mit genau einem einzigen Beobachter funktionieren darf.", "correct": false, "explanation": "Gerade mehrere Beobachter sind typisch." },
+        { "id": "d", "text": "Damit MAC-Adressen im WLAN sichtbar werden.", "correct": false, "explanation": "Das hat damit nichts zu tun." }
+      ]
+    },
+    {
+      "id": "pv1fiae_hard_t02_q18",
+      "conceptId": "pv1fiae_hard_t02_observer_vs_polling",
+      "variantId": "pv1fiae_hard_t02_observer_vs_polling_v02",
+      "interactionType": "best",
+      "questionKind": "vergleich_treffen",
+      "badgeLabel": "Welche Option passt am besten?",
+      "isNew": true,
+      "prompt": "Warum kann Observer bei verteilten Anzeigen gegenüber reinem Polling vorteilhaft sein?",
+      "maxSelections": 1,
+      "options": [
+        { "id": "a", "text": "Weil Änderungen gezielt an interessierte Anzeigen gemeldet werden können, statt dass jede Anzeige ständig blind nachfragen muss.", "correct": true, "explanation": "Das beschreibt den Kernvorteil im Anwendungsfall gut." },
+        { "id": "b", "text": "Weil Observer keinerlei Zustandsquelle mehr braucht.", "correct": false, "explanation": "Eine Quelle bleibt weiterhin notwendig." },
+        { "id": "c", "text": "Weil Polling in Netzwerken grundsätzlich verboten ist.", "correct": false, "explanation": "Es geht um Eignung, nicht um ein Verbot." },
+        { "id": "d", "text": "Weil Observer nur auf Papierdiagrammen funktioniert.", "correct": false, "explanation": "Das ist fachlich falsch." }
+      ]
+    },
+    {
+      "id": "pv1fiae_hard_t02_q19",
+      "conceptId": "pv1fiae_hard_t02_state_observer_kombination",
+      "variantId": "pv1fiae_hard_t02_state_observer_kombination_v02",
+      "interactionType": "best",
+      "questionKind": "ziel_mittel_zuordnung",
+      "badgeLabel": "Welche Option passt am besten?",
+      "isNew": true,
+      "prompt": "Wie ergänzen sich Zustandslogik und Observer im Stadtbahnfall am sinnvollsten zueinander?",
+      "maxSelections": 1,
+      "options": [
+        { "id": "a", "text": "Die Zustandslogik entscheidet, wann sich die fachliche Anzeige ändert; Observer sorgt dafür, dass diese Änderung an alle relevanten Anzeigen verteilt wird.", "correct": true, "explanation": "Beide Bausteine haben unterschiedliche, aber gut kombinierbare Aufgaben." },
+        { "id": "b", "text": "Observer ersetzt den Zustandsautomaten vollständig.", "correct": false, "explanation": "Die fachlichen Zustände müssen weiterhin definiert werden." },
+        { "id": "c", "text": "Der Zustandsautomat dient nur zum Speichern von MAC-Adressen.", "correct": false, "explanation": "Das ist fachlich falsch." },
+        { "id": "d", "text": "Beide Muster dürfen nie zusammen eingesetzt werden.", "correct": false, "explanation": "Gerade hier ist die Kombination sinnvoll." }
+      ]
+    },
+    {
+      "id": "pv1fiae_hard_t02_q20",
+      "conceptId": "pv1fiae_hard_t02_pattern_kategorie",
+      "variantId": "pv1fiae_hard_t02_pattern_kategorie_v02",
+      "interactionType": "single",
+      "questionKind": "definition_zu_begriff",
+      "badgeLabel": "Welche Option passt am besten?",
+      "isNew": true,
+      "prompt": "Welche Aussage zu Observer als Entwurfsmuster ist fachlich richtig?",
+      "maxSelections": 1,
+      "options": [
+        { "id": "a", "text": "Observer ist ein Verhaltensmuster, weil es die Interaktion zwischen Quelle und Beobachtern strukturiert.", "correct": true, "explanation": "Das ordnet das Muster korrekt ein." },
+        { "id": "b", "text": "Observer ist eine Netzwerktopologie für Betriebshöfe.", "correct": false, "explanation": "Das verfehlt den geprüften Entwicklungszusammenhang." },
+        { "id": "c", "text": "Observer ist eine Datenbankschnittstelle für Scan-JSON.", "correct": false, "explanation": "Auch das trifft nicht zu." },
+        { "id": "d", "text": "Observer ist nur ein anderer Name für Wasserfallmodell.", "correct": false, "explanation": "Das wäre klar falsch." }
+      ]
+    },
+    {
+      "id": "pv1fiae_hard_t02_q21",
+      "conceptId": "pv1fiae_hard_t02_aggregierte_anzeigen",
+      "variantId": "pv1fiae_hard_t02_aggregierte_anzeigen_v02",
+      "interactionType": "best",
+      "questionKind": "ursache_folge_erkennen",
+      "badgeLabel": "Welche Option passt am besten?",
+      "isNew": true,
+      "prompt": "Warum ist es datenschutzfachlich sinnvoll, öffentliche Auslastungsanzeigen nur aggregierte Zustände statt personenbezogener Einzelangaben zu zeigen?",
+      "maxSelections": 1,
+      "options": [
+        { "id": "a", "text": "Weil für die Anzeige des Füllstands keine individuelle Personenbeobachtung nötig ist und dadurch unnötige Datenoffenlegung vermieden wird.", "correct": true, "explanation": "Das verbindet Zweckbezug und Datensparsamkeit." },
+        { "id": "b", "text": "Weil personenbezogene Daten auf Anzeigen grundsätzlich immer genauer wären.", "correct": false, "explanation": "Genau das wäre datenschutzfachlich problematisch." },
+        { "id": "c", "text": "Weil Aggregation nur für Rechnungsdaten erlaubt ist.", "correct": false, "explanation": "Das ist fachlich falsch." },
+        { "id": "d", "text": "Weil Zustandsanzeigen ohne jede Datenbasis funktionieren.", "correct": false, "explanation": "Auch Aggregation braucht eine fachliche Datenquelle." }
+      ]
+    },
+    {
+      "id": "pv1fiae_hard_t02_q22",
+      "conceptId": "pv1fiae_hard_t02_architekturentscheidung",
+      "variantId": "pv1fiae_hard_t02_architekturentscheidung_v02",
+      "interactionType": "best",
+      "questionKind": "beste_option_im_mini_szenario",
+      "badgeLabel": "Welche Option passt am besten?",
+      "isNew": true,
+      "prompt": "Welche Architekturentscheidung ist für das Hard-Niveau des Stadtbahnprojekts am belastbarsten begründet?",
+      "maxSelections": 1,
+      "options": [
+        { "id": "a", "text": "Fachmodell, Netzarchitektur und Anzeigenlogik getrennt modellieren, aber über klar definierte Datenflüsse und Zustandsänderungen kontrolliert verbinden.", "correct": true, "explanation": "Das schafft Struktur, ohne die Systemzusammenhänge zu verlieren." },
+        { "id": "b", "text": "Alle Fach- und Technikthemen in einer einzigen Sammelklasse bündeln.", "correct": false, "explanation": "Das wäre weder lesbar noch wartbar." },
+        { "id": "c", "text": "Nur die Oberfläche modellieren und den Rest spontan implementieren.", "correct": false, "explanation": "Für Hard-Niveau reicht das nicht." },
+        { "id": "d", "text": "Die Anzeigenlogik unabhängig von allen Eingangsdaten zufällig wechseln lassen.", "correct": false, "explanation": "Das wäre fachlich unbrauchbar." }
+      ]
+    },
+    {
+      "id": "pv1fiae_hard_t02_q23",
+      "conceptId": "pv1fiae_hard_t02_ausfall_entkopplung",
+      "variantId": "pv1fiae_hard_t02_ausfall_entkopplung_v02",
+      "interactionType": "best",
+      "questionKind": "passende_massnahme_auswaehlen",
+      "badgeLabel": "Welche Option passt am besten?",
+      "isNew": true,
+      "prompt": "Eine einzelne Anzeige fällt aus. Welche Systemreaktion passt am besten zu einer entkoppelten Observer-Architektur im Betrieb?",
+      "maxSelections": 1,
+      "options": [
+        { "id": "a", "text": "Die betroffene Anzeige isoliert behandeln, ohne dass andere Anzeigen oder die fachliche Quelle unnötig mit ausfallen.", "correct": true, "explanation": "Entkopplung hilft genau dabei, lokale Ausfälle zu begrenzen." },
+        { "id": "b", "text": "Alle anderen Anzeigen vorsorglich ebenfalls abschalten.", "correct": false, "explanation": "Das wäre ein unnötiger Kaskadeneffekt." },
+        { "id": "c", "text": "Die zentrale Datenquelle löschen, damit keine Meldungen mehr verschickt werden.", "correct": false, "explanation": "Das wäre fachlich überzogen." },
+        { "id": "d", "text": "Den Ausfall ignorieren und keinerlei Protokollierung vorsehen.", "correct": false, "explanation": "Auch das wäre keine saubere Reaktion." }
+      ]
+    },
+    {
+      "id": "pv1fiae_hard_t02_q24",
+      "conceptId": "pv1fiae_hard_t02_gesamtentscheidung",
+      "variantId": "pv1fiae_hard_t02_gesamtentscheidung_v02",
+      "interactionType": "best",
+      "questionKind": "beste_option_im_mini_szenario",
+      "badgeLabel": "Welche Option passt am besten?",
+      "isNew": true,
+      "prompt": "Welche Gesamtentscheidung trifft den Hard-Slot des Stadtbahnprojekts insgesamt am besten?",
+      "maxSelections": 1,
+      "options": [
+        { "id": "a", "text": "Änderungen über belastbare Governance steuern, Registrierungsdaten datensparsam und zweckgebunden halten, die Netzarchitektur nach Einsatzgebiet trennen und Anzeigen über Zustandslogik plus Observer robust entkoppeln.", "correct": true, "explanation": "Das bringt die Hard-Themen in eine tragfähige Gesamtentscheidung." },
+        { "id": "b", "text": "Datenschutz, Netzgrenzen und Modellierung zugunsten eines möglichst schnellen Vollstarts ausblenden.", "correct": false, "explanation": "Das wäre gerade auf Hard-Niveau die falsche Richtung." },
+        { "id": "c", "text": "Nur die MAC-Adressen der Geräte dokumentieren und daraus das gesamte Projekt ableiten.", "correct": false, "explanation": "Das verengt das Problem unzulässig." },
+        { "id": "d", "text": "Entscheidungen ohne Kriterien treffen, solange die Oberfläche ansprechend wirkt", "correct": false, "explanation": "Das wäre fachlich unhaltbar." }
+      ]
+    }
+  ]
+}

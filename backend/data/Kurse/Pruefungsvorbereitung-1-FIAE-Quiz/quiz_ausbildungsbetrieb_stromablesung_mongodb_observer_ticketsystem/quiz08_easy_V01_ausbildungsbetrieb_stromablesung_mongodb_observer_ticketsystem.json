@@ -1,0 +1,967 @@
+{
+  "scenarioFolder": "Pruefungsvorbereitung-1-FIAE-Scenarien",
+  "quizFolder": "Pruefungsvorbereitung-1-FIAE-Quiz",
+  "scenarioFile": "ticket_ausbildungsbetrieb_stromablesung_mongodb_observer_ticketsystem/08_easy_ausbildungsbetrieb_stromablesung_mongodb_observer_ticketsystem.json",
+  "quizFile": "quiz_ausbildungsbetrieb_stromablesung_mongodb_observer_ticketsystem/quiz08_easy_V01_ausbildungsbetrieb_stromablesung_mongodb_observer_ticketsystem.json",
+  "ticketId": "08_easy_ausbildungsbetrieb_stromablesung_mongodb_observer_ticketsystem.json",
+  "versionId": "V01",
+  "title": "Ticket 08 Easy - Stromablesung, MongoDB und Ticketsystem",
+  "description": "Manuell verfasstes FIAE-Training im Einstiegsniveau zu Vorgehensmodellen, Stakeholdern, App-Anforderungen, MongoDB, Observer, Ticketsystem, OAuth und TLS in einem zusammenhängenden Energiedigitalisierungsfall.",
+  "topics": [
+    "Vorgehensmodelle, Stakeholder, App-Anforderungen und MongoDB im Stromablesungsprojekt fachlich sicher einordnen",
+    "Observer-Logik, Sequenzabläufe, Ticketsystem, OAuth und TLS im selben Fachfall nachvollziehbar verbinden"
+  ],
+  "questions": [
+    {
+      "id": "pv1fiae_easy_t08_q01",
+      "conceptId": "pv1fiae_easy_t08_klassisch",
+      "variantId": "pv1fiae_easy_t08_klassisch_v01",
+      "interactionType": "single",
+      "questionKind": "definition_zu_begriff",
+      "badgeLabel": "Welche Erläuterung passt am besten?",
+      "isNew": true,
+      "prompt": "Welche Aussage beschreibt ein klassisches Vorgehensmodell am treffendsten?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Es arbeitet eher phasenorientiert und plant grosse Teile des Projekts früh vor.",
+          "correct": true,
+          "explanation": "Das beschreibt ein klassisches, stärker planungsgetriebenes Vorgehen gut."
+        },
+        {
+          "id": "b",
+          "text": "Es verzichtet grundsätzlich auf jede Dokumentation.",
+          "correct": false,
+          "explanation": "Klassische Modelle arbeiten gerade häufig mit klarer Dokumentation."
+        },
+        {
+          "id": "c",
+          "text": "Es ist ausschliesslich für Datenbanken erlaubt.",
+          "correct": false,
+          "explanation": "Vorgehensmodelle sind nicht so fachlich eingeschränkt."
+        },
+        {
+          "id": "d",
+          "text": "Es löst alle Änderungswünsche automatisch ohne Planungsaufwand.",
+          "correct": false,
+          "explanation": "Gerade Änderungen sind in klassischen Modellen oft aufwendiger."
+        }
+      ]
+    },
+    {
+      "id": "pv1fiae_easy_t08_q02",
+      "conceptId": "pv1fiae_easy_t08_agil",
+      "variantId": "pv1fiae_easy_t08_agil_v01",
+      "interactionType": "single",
+      "questionKind": "definition_zu_begriff",
+      "badgeLabel": "Welche Erläuterung passt am besten?",
+      "isNew": true,
+      "prompt": "Welche Aussage beschreibt ein agiles Vorgehensmodell am treffendsten?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Es arbeitet in kurzen Iterationen mit häufigem Feedback und laufender Anpassung.",
+          "correct": true,
+          "explanation": "Das ist ein Kernmerkmal agiler Vorgehensweisen."
+        },
+        {
+          "id": "b",
+          "text": "Es setzt zwingend voraus, dass es keine Anforderungen gibt.",
+          "correct": false,
+          "explanation": "Agil bedeutet nicht anforderungslos, sondern anpassungsfähig."
+        },
+        {
+          "id": "c",
+          "text": "Es nutzt ausschliesslich hierarchische Freigaben ohne Teamabstimmung.",
+          "correct": false,
+          "explanation": "Agile Verfahren setzen eher auf enge Teamabstimmung."
+        },
+        {
+          "id": "d",
+          "text": "Es ist nur für Hardwareprojekte zulässig.",
+          "correct": false,
+          "explanation": "Auch das ist fachlich falsch."
+        }
+      ]
+    },
+    {
+      "id": "pv1fiae_easy_t08_q03",
+      "conceptId": "pv1fiae_easy_t08_vorstand_sorgen",
+      "variantId": "pv1fiae_easy_t08_vorstand_sorgen_v01",
+      "interactionType": "multi",
+      "questionKind": "mehrere_richtige_antworten_waehlen",
+      "badgeLabel": "Mehrere Antworten sind richtig.",
+      "isNew": true,
+      "prompt": "Welche Sorgen des Vorstands und passenden Gegenmaßnahmen sind in diesem Einführungsprojekt besonders plausibel? Mehrere Antworten sind richtig.",
+      "maxSelections": 3,
+      "options": [
+        {
+          "id": "a",
+          "text": "Der Vorstand fürchtet hohe Einführungs- und Projektkosten; ein belastbarer Kosten-Nutzen-Plan ist sinnvoll.",
+          "correct": true,
+          "explanation": "Budget- und Wirtschaftlichkeitsfragen gehören zur Vorstandsperspektive."
+        },
+        {
+          "id": "b",
+          "text": "Der Vorstand fürchtet Störungen im laufenden Betrieb; Pilotbetrieb und Tests sind sinnvolle Gegenmaßnahmen.",
+          "correct": true,
+          "explanation": "Ein gestufter Rollout senkt operative Risiken."
+        },
+        {
+          "id": "c",
+          "text": "Der Vorstand fürchtet Terminverzug; realistische Ressourcen- und Pufferplanung ist sinnvoll.",
+          "correct": true,
+          "explanation": "Zeit- und Ressourcensteuerung adressiert genau dieses Risiko."
+        },
+        {
+          "id": "d",
+          "text": "Der Vorstand fürchtet zu wenig Papierformulare; deshalb sollte Digitalisierung grundsätzlich vermieden werden.",
+          "correct": false,
+          "explanation": "Das ist weder eine sinnvolle Hauptsorge noch eine passende Maßnahme."
+        },
+        {
+          "id": "e",
+          "text": "Der Vorstand fürchtet zu viele Apps; daher sollten Anforderungen gar nicht erhoben werden.",
+          "correct": false,
+          "explanation": "Gerade dann sind klare Anforderungen wichtig."
+        }
+      ]
+    },
+    {
+      "id": "pv1fiae_easy_t08_q04",
+      "conceptId": "pv1fiae_easy_t08_aussendienst_sorgen",
+      "variantId": "pv1fiae_easy_t08_aussendienst_sorgen_v01",
+      "interactionType": "multi",
+      "questionKind": "mehrere_richtige_antworten_waehlen",
+      "badgeLabel": "Mehrere Antworten sind richtig.",
+      "isNew": true,
+      "prompt": "Welche Sorgen des Außendiensts und Gegenmaßnahmen sind in diesem Projekt besonders plausibel? Mehrere Antworten sind richtig.",
+      "maxSelections": 3,
+      "options": [
+        {
+          "id": "a",
+          "text": "Mitarbeitende befürchten stärkere Kontrolle; transparente Kommunikation und Datenschutzregeln helfen.",
+          "correct": true,
+          "explanation": "Akzeptanz steigt, wenn der Umgang mit Daten klar geregelt ist."
+        },
+        {
+          "id": "b",
+          "text": "Mitarbeitende befürchten technische Überforderung; Schulung und Support sind passende Gegenmaßnahmen.",
+          "correct": true,
+          "explanation": "Neue mobile Werkzeuge müssen begleitet eingeführt werden."
+        },
+        {
+          "id": "c",
+          "text": "Mitarbeitende befürchten Rollenverlust; frühe Einbindung und klare Aufgabenbilder helfen.",
+          "correct": true,
+          "explanation": "Einführungserfolg hängt stark von Akzeptanz und Rollenklärung ab."
+        },
+        {
+          "id": "d",
+          "text": "Mitarbeitende befürchten Kundenkontakt; deshalb sollte die App keine Informationen mehr anzeigen.",
+          "correct": false,
+          "explanation": "Gerade Informationen unterstützen den Einsatz im Kundengespräch."
+        },
+        {
+          "id": "e",
+          "text": "Mitarbeitende befürchten mobile Geräte; daher sollten keinerlei Tests erfolgen.",
+          "correct": false,
+          "explanation": "Das löst die Sorge nicht fachlich sinnvoll."
+        }
+      ]
+    },
+    {
+      "id": "pv1fiae_easy_t08_q05",
+      "conceptId": "pv1fiae_easy_t08_fremdvergabe_vorteile",
+      "variantId": "pv1fiae_easy_t08_fremdvergabe_vorteile_v01",
+      "interactionType": "multi",
+      "questionKind": "mehrere_richtige_antworten_waehlen",
+      "badgeLabel": "Mehrere Antworten sind richtig.",
+      "isNew": true,
+      "prompt": "Welche Aussagen beschreiben plausible Vorteile einer Fremdvergabe der App-Entwicklung? Mehrere Antworten sind richtig.",
+      "maxSelections": 3,
+      "options": [
+        {
+          "id": "a",
+          "text": "Externe Anbieter können spezialisiertes Know-how und Projekterfahrung einbringen.",
+          "correct": true,
+          "explanation": "Das ist ein typischer Vorteil externer Umsetzung."
+        },
+        {
+          "id": "b",
+          "text": "Das interne Team kann stärker für Betrieb und Fachabstimmung entlastet werden.",
+          "correct": true,
+          "explanation": "Fremdvergabe kann interne Kapazitäten freihalten."
+        },
+        {
+          "id": "c",
+          "text": "Lieferbare Komponenten oder Standards des Dienstleisters können den Start beschleunigen.",
+          "correct": true,
+          "explanation": "Bestehende Erfahrung oder Vorlagen können Projektlaufzeiten verkürzen."
+        },
+        {
+          "id": "d",
+          "text": "Mit Fremdvergabe entfallen Anforderungen und Fachabstimmungen automatisch.",
+          "correct": false,
+          "explanation": "Gerade externe Umsetzung braucht saubere Anforderungen."
+        },
+        {
+          "id": "e",
+          "text": "Fremdvergabe garantiert immer die billigste und risikofreie Lösung.",
+          "correct": false,
+          "explanation": "Kosten und Risiken hängen vom Projekt und Vertrag ab."
+        }
+      ]
+    },
+    {
+      "id": "pv1fiae_easy_t08_q06",
+      "conceptId": "pv1fiae_easy_t08_fremdvergabe_nachteile",
+      "variantId": "pv1fiae_easy_t08_fremdvergabe_nachteile_v01",
+      "interactionType": "multi",
+      "questionKind": "mehrere_richtige_antworten_waehlen",
+      "badgeLabel": "Mehrere Antworten sind richtig.",
+      "isNew": true,
+      "prompt": "Welche Aussagen beschreiben plausible Nachteile oder Risiken einer Fremdvergabe der App-Entwicklung? Mehrere Antworten sind richtig.",
+      "maxSelections": 3,
+      "options": [
+        {
+          "id": "a",
+          "text": "Zusätzlicher Abstimmungsaufwand mit dem Dienstleister",
+          "correct": true,
+          "explanation": "Schnittstellen zwischen Fachbereich und Lieferant erzeugen Aufwand."
+        },
+        {
+          "id": "b",
+          "text": "Abhängigkeit vom externen Anbieter",
+          "correct": true,
+          "explanation": "Know-how und Wartung können an den Lieferanten gebunden sein."
+        },
+        {
+          "id": "c",
+          "text": "Prozesswissen des Energieversorgers muss an Externe übertragen werden",
+          "correct": true,
+          "explanation": "Domänenwissen bleibt oft intern und muss erklärt werden."
+        },
+        {
+          "id": "d",
+          "text": "Externe Entwicklung verhindert grundsätzlich jede Qualitätssicherung.",
+          "correct": false,
+          "explanation": "QS bleibt möglich und wichtig."
+        },
+        {
+          "id": "e",
+          "text": "Fremdvergabe macht jede Dokumentation überflüssig.",
+          "correct": false,
+          "explanation": "Dokumentation ist gerade dann zentral."
+        }
+      ]
+    },
+    {
+      "id": "pv1fiae_easy_t08_q07",
+      "conceptId": "pv1fiae_easy_t08_funktionale_app_anforderungen",
+      "variantId": "pv1fiae_easy_t08_funktionale_app_anforderungen_v01",
+      "interactionType": "multi",
+      "questionKind": "beispiel_erkennen",
+      "badgeLabel": "Mehrere Antworten sind richtig.",
+      "isNew": true,
+      "prompt": "Welche Aussagen sind als funktionale Anforderungen der mobilen App besonders plausibel? Mehrere Antworten sind richtig.",
+      "maxSelections": 3,
+      "options": [
+        {
+          "id": "a",
+          "text": "Zählerstände erfassen und übertragen",
+          "correct": true,
+          "explanation": "Das beschreibt eine konkrete Leistung der App."
+        },
+        {
+          "id": "b",
+          "text": "Störungsmeldungen anzeigen und bearbeiten",
+          "correct": true,
+          "explanation": "Auch das ist eine fachliche Funktion."
+        },
+        {
+          "id": "c",
+          "text": "Kundendaten und Einsatzinformationen anzeigen",
+          "correct": true,
+          "explanation": "Informationsbereitstellung ist eine funktionale Anforderung."
+        },
+        {
+          "id": "d",
+          "text": "Hohe Verfügbarkeit im Betrieb",
+          "correct": false,
+          "explanation": "Das ist eine nichtfunktionale Qualitätsanforderung."
+        },
+        {
+          "id": "e",
+          "text": "Wartbarkeit der Anwendung",
+          "correct": false,
+          "explanation": "Auch das ist nichtfunktional."
+        }
+      ]
+    },
+    {
+      "id": "pv1fiae_easy_t08_q08",
+      "conceptId": "pv1fiae_easy_t08_nichtfunktionale_app_anforderungen",
+      "variantId": "pv1fiae_easy_t08_nichtfunktionale_app_anforderungen_v01",
+      "interactionType": "multi",
+      "questionKind": "beispiel_erkennen",
+      "badgeLabel": "Mehrere Antworten sind richtig.",
+      "isNew": true,
+      "prompt": "Welche Aussagen sind als nichtfunktionale Anforderungen der mobilen App besonders plausibel? Mehrere Antworten sind richtig.",
+      "maxSelections": 3,
+      "options": [
+        {
+          "id": "a",
+          "text": "Hohe Verfügbarkeit und zuverlässiger Betrieb",
+          "correct": true,
+          "explanation": "Das beschreibt Qualität und nicht eine einzelne Funktion."
+        },
+        {
+          "id": "b",
+          "text": "Sichere Authentifizierung und geschützte Datenübertragung",
+          "correct": true,
+          "explanation": "Das sind sicherheitsbezogene Qualitätsanforderungen."
+        },
+        {
+          "id": "c",
+          "text": "Gut bedienbare Oberfläche im Außendienst",
+          "correct": true,
+          "explanation": "Benutzbarkeit ist eine nichtfunktionale Anforderung."
+        },
+        {
+          "id": "d",
+          "text": "Anzeigen von Störungsfällen",
+          "correct": false,
+          "explanation": "Das ist eine konkrete Funktion."
+        },
+        {
+          "id": "e",
+          "text": "Erfassen von Zählerständen",
+          "correct": false,
+          "explanation": "Auch das ist funktional."
+        }
+      ]
+    },
+    {
+      "id": "pv1fiae_easy_t08_q09",
+      "conceptId": "pv1fiae_easy_t08_mongodb_flexibel",
+      "variantId": "pv1fiae_easy_t08_mongodb_flexibel_v01",
+      "interactionType": "best",
+      "questionKind": "vergleich_treffen",
+      "badgeLabel": "Welche Option passt am besten?",
+      "isNew": true,
+      "prompt": "Welcher Vorteil von MongoDB wird mit flexiblen Datenmodellen am besten beschrieben?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Änderungen und Erweiterungen von Dokumentstrukturen lassen sich leichter abbilden.",
+          "correct": true,
+          "explanation": "Flexible Schemata sind ein typischer MongoDB-Vorteil."
+        },
+        {
+          "id": "b",
+          "text": "MongoDB benötigt keinerlei Datendesign mehr.",
+          "correct": false,
+          "explanation": "Auch NoSQL-Systeme brauchen fachliches Modellieren."
+        },
+        {
+          "id": "c",
+          "text": "MongoDB ersetzt automatisch jede Sicherheitsmaßnahme.",
+          "correct": false,
+          "explanation": "Das ist fachlich falsch."
+        },
+        {
+          "id": "d",
+          "text": "MongoDB kann nur starre Tabellenschemata verarbeiten.",
+          "correct": false,
+          "explanation": "Das wäre eher das Gegenteil des genannten Vorteils."
+        }
+      ]
+    },
+    {
+      "id": "pv1fiae_easy_t08_q10",
+      "conceptId": "pv1fiae_easy_t08_mongodb_joins",
+      "variantId": "pv1fiae_easy_t08_mongodb_joins_v01",
+      "interactionType": "best",
+      "questionKind": "ursache_folge_erkennen",
+      "badgeLabel": "Welche Option passt am besten?",
+      "isNew": true,
+      "prompt": "Warum können in MongoDB bei geeigneter Modellierung weniger aufwendige Joins nötig sein?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Weil häufig gemeinsam genutzte Daten sinnvoll in einem Dokument zusammengehalten werden können",
+          "correct": true,
+          "explanation": "Genau daraus ergibt sich oft der Vorteil bei Abfragen."
+        },
+        {
+          "id": "b",
+          "text": "Weil MongoDB alle Daten automatisch in HTML speichert",
+          "correct": false,
+          "explanation": "Das hat mit der Datenhaltung nichts zu tun."
+        },
+        {
+          "id": "c",
+          "text": "Weil keine Datenbeziehungen mehr existieren dürfen",
+          "correct": false,
+          "explanation": "Auch in Dokumentdatenbanken gibt es fachliche Beziehungen."
+        },
+        {
+          "id": "d",
+          "text": "Weil Abfragen dort grundsätzlich ohne Datenmodell auskommen",
+          "correct": false,
+          "explanation": "Ein sinnvolles Modell bleibt notwendig."
+        }
+      ]
+    },
+    {
+      "id": "pv1fiae_easy_t08_q11",
+      "conceptId": "pv1fiae_easy_t08_mongodb_dev",
+      "variantId": "pv1fiae_easy_t08_mongodb_dev_v01",
+      "interactionType": "best",
+      "questionKind": "vergleich_treffen",
+      "badgeLabel": "Welche Option passt am besten?",
+      "isNew": true,
+      "prompt": "Warum wird MongoDB im Informationstext als entwicklerfreundlich beschrieben?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Weil Dokumentstrukturen gängigen Datenstrukturen im Anwendungscode ähneln",
+          "correct": true,
+          "explanation": "Das erleichtert häufig die Verarbeitung im Code."
+        },
+        {
+          "id": "b",
+          "text": "Weil dort keine Anforderungen mehr dokumentiert werden müssen",
+          "correct": false,
+          "explanation": "Anforderungen bleiben unabhängig vom DBMS wichtig."
+        },
+        {
+          "id": "c",
+          "text": "Weil MongoDB nur für Smart Meter erlaubt ist",
+          "correct": false,
+          "explanation": "Das ist fachlich nicht richtig."
+        },
+        {
+          "id": "d",
+          "text": "Weil es automatisch Observer-Pattern generiert",
+          "correct": false,
+          "explanation": "Das ist kein Datenbankvorteil."
+        }
+      ]
+    },
+    {
+      "id": "pv1fiae_easy_t08_q12",
+      "conceptId": "pv1fiae_easy_t08_smart_meter",
+      "variantId": "pv1fiae_easy_t08_smart_meter_v01",
+      "interactionType": "single",
+      "questionKind": "definition_zu_begriff",
+      "badgeLabel": "Welche Erläuterung passt am besten?",
+      "isNew": true,
+      "prompt": "Was beschreibt ein Smart Meter in diesem Fachkontext am treffendsten?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Ein digitaler Zähler, der Verbrauchsdaten erfasst und weitergeben kann",
+          "correct": true,
+          "explanation": "Das beschreibt den fachlichen Kern passend."
+        },
+        {
+          "id": "b",
+          "text": "Ein Papierformular für handschriftliche Zählerstände",
+          "correct": false,
+          "explanation": "Das wäre das Gegenteil digitaler Messtechnik."
+        },
+        {
+          "id": "c",
+          "text": "Ein Pattern zur Erzeugung von Objekten",
+          "correct": false,
+          "explanation": "Das verwechselt Messgerät und Entwurfsmuster."
+        },
+        {
+          "id": "d",
+          "text": "Ein Zertifikat für HTTPS-Verbindungen",
+          "correct": false,
+          "explanation": "Auch das ist fachlich falsch."
+        }
+      ]
+    },
+    {
+      "id": "pv1fiae_easy_t08_q13",
+      "conceptId": "pv1fiae_easy_t08_observer_idee",
+      "variantId": "pv1fiae_easy_t08_observer_idee_v01",
+      "interactionType": "single",
+      "questionKind": "definition_zu_begriff",
+      "badgeLabel": "Welche Erläuterung passt am besten?",
+      "isNew": true,
+      "prompt": "Was beschreibt das Observer-Pattern im Kern am treffendsten?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Ein Objekt informiert registrierte Beobachter, wenn sich sein Zustand ändert.",
+          "correct": true,
+          "explanation": "Das ist die Grundidee des Patterns."
+        },
+        {
+          "id": "b",
+          "text": "Jede Klasse wird in einer einzigen Datei gespeichert.",
+          "correct": false,
+          "explanation": "Das hat mit Observer nichts zu tun."
+        },
+        {
+          "id": "c",
+          "text": "Es ersetzt jede Form von Benutzeroberfläche.",
+          "correct": false,
+          "explanation": "Observer ist ein Entwurfsmuster, keine Oberfläche."
+        },
+        {
+          "id": "d",
+          "text": "Es dient ausschließlich der Verschlüsselung von Netzwerkdaten.",
+          "correct": false,
+          "explanation": "Das verwechselt Pattern und Sicherheitsprotokoll."
+        }
+      ]
+    },
+    {
+      "id": "pv1fiae_easy_t08_q14",
+      "conceptId": "pv1fiae_easy_t08_observer_beispiel",
+      "variantId": "pv1fiae_easy_t08_observer_beispiel_v01",
+      "interactionType": "best",
+      "questionKind": "beispiel_erkennen",
+      "badgeLabel": "Welche Option passt am besten?",
+      "isNew": true,
+      "prompt": "Welches Beispiel passt am besten zum Observer-Pattern im Smart-Meter-Fall?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Wenn ein neuer Messwert eintrifft, werden Anzeige, Warnlogik und Protokollierung darüber informiert.",
+          "correct": true,
+          "explanation": "Das ist ein klassischer Benachrichtigungsfall für Observer."
+        },
+        {
+          "id": "b",
+          "text": "Alle Klassen werden alphabetisch sortiert abgelegt.",
+          "correct": false,
+          "explanation": "Das zeigt kein Beobachterverhalten."
+        },
+        {
+          "id": "c",
+          "text": "Ein TLS-Zertifikat wird im Browser angezeigt.",
+          "correct": false,
+          "explanation": "Das gehört nicht zum Pattern."
+        },
+        {
+          "id": "d",
+          "text": "Eine Excel-Tabelle erhält einen absoluten Zellbezug.",
+          "correct": false,
+          "explanation": "Auch das ist fachlich ein anderer Bereich."
+        }
+      ]
+    },
+    {
+      "id": "pv1fiae_easy_t08_q15",
+      "conceptId": "pv1fiae_easy_t08_sequenzdiagramm",
+      "variantId": "pv1fiae_easy_t08_sequenzdiagramm_v01",
+      "interactionType": "single",
+      "questionKind": "definition_zu_begriff",
+      "badgeLabel": "Welche Erläuterung passt am besten?",
+      "isNew": true,
+      "prompt": "Wozu dient ein Sequenzdiagramm im App- und Servicekontext am ehesten?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Es zeigt die zeitliche Reihenfolge von Nachrichten und Aufrufen zwischen beteiligten Objekten oder Systemen.",
+          "correct": true,
+          "explanation": "Genau dafür werden Sequenzdiagramme eingesetzt."
+        },
+        {
+          "id": "b",
+          "text": "Es ersetzt jede Datenbankstruktur vollständig.",
+          "correct": false,
+          "explanation": "Sequenzdiagramme und Datenmodelle erfüllen unterschiedliche Aufgaben."
+        },
+        {
+          "id": "c",
+          "text": "Es beschreibt nur Darstellung, aber keine fachliche Struktur oder Schnittstelle.",
+          "correct": false,
+          "explanation": "Das wäre eher UI-Design."
+        },
+        {
+          "id": "d",
+          "text": "Es ist lediglich eine alternative Schreibweise für ein Organigramm.",
+          "correct": false,
+          "explanation": "Das ist fachlich falsch."
+        }
+      ]
+    },
+    {
+      "id": "pv1fiae_easy_t08_q16",
+      "conceptId": "pv1fiae_easy_t08_oauth_zweck",
+      "variantId": "pv1fiae_easy_t08_oauth_zweck_v01",
+      "interactionType": "single",
+      "questionKind": "definition_zu_begriff",
+      "badgeLabel": "Welche Erläuterung passt am besten?",
+      "isNew": true,
+      "prompt": "Wofür wird OAuth in diesem Web- und App-Kontext typischerweise eingesetzt?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Um Zugriffsberechtigungen kontrolliert zu delegieren, ohne das Passwort direkt an Drittsysteme weiterzugeben",
+          "correct": true,
+          "explanation": "Das ist die zentrale Idee von OAuth."
+        },
+        {
+          "id": "b",
+          "text": "Um relationale Tabellen automatisch in 3NF zu überführen",
+          "correct": false,
+          "explanation": "OAuth ist kein Normalisierungsverfahren."
+        },
+        {
+          "id": "c",
+          "text": "Um Observer-Objekte zu erzeugen",
+          "correct": false,
+          "explanation": "Das ist ein anderer fachlicher Bereich."
+        },
+        {
+          "id": "d",
+          "text": "Um Bildschirme im Außendienst offline zu malen",
+          "correct": false,
+          "explanation": "Das hat mit OAuth nichts zu tun."
+        }
+      ]
+    },
+    {
+      "id": "pv1fiae_easy_t08_q17",
+      "conceptId": "pv1fiae_easy_t08_oauth_vorteil",
+      "variantId": "pv1fiae_easy_t08_oauth_vorteil_v01",
+      "interactionType": "best",
+      "questionKind": "vergleich_treffen",
+      "badgeLabel": "Welche Option passt am besten?",
+      "isNew": true,
+      "prompt": "Welcher Vorteil von OAuth ist in einem Ticketsystem mit externer Anmeldung besonders naheliegend?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Ein externer Dienst kann mit Token arbeiten, ohne das Benutzerpasswort selbst speichern zu müssen.",
+          "correct": true,
+          "explanation": "Genau darin liegt ein wesentlicher Sicherheits- und Integrationsvorteil."
+        },
+        {
+          "id": "b",
+          "text": "OAuth ersetzt automatisch jede Transportverschlüsselung.",
+          "correct": false,
+          "explanation": "Für sichere Übertragung braucht es weiterhin TLS."
+        },
+        {
+          "id": "c",
+          "text": "OAuth macht Benutzerrollen grundsätzlich überflüssig.",
+          "correct": false,
+          "explanation": "Rollen und Berechtigungen bleiben weiterhin relevant."
+        },
+        {
+          "id": "d",
+          "text": "OAuth sorgt dafür, dass keine Logs mehr nötig sind.",
+          "correct": false,
+          "explanation": "Protokollierung bleibt weiterhin wichtig."
+        }
+      ]
+    },
+    {
+      "id": "pv1fiae_easy_t08_q18",
+      "conceptId": "pv1fiae_easy_t08_tls_zweck",
+      "variantId": "pv1fiae_easy_t08_tls_zweck_v01",
+      "interactionType": "single",
+      "questionKind": "definition_zu_begriff",
+      "badgeLabel": "Welche Erläuterung passt am besten?",
+      "isNew": true,
+      "prompt": "Welchen Hauptzweck erfüllt TLS bei der Absicherung des Webservers?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Es schützt die Übertragung durch Verschlüsselung und unterstützt die Vertrauensprüfung des Servers.",
+          "correct": true,
+          "explanation": "TLS sichert Transport und Vertrauensbezug."
+        },
+        {
+          "id": "b",
+          "text": "Es ersetzt vollständig jede Authentifizierung in der Anwendung.",
+          "correct": false,
+          "explanation": "TLS und Anmeldeverfahren erfüllen unterschiedliche Aufgaben."
+        },
+        {
+          "id": "c",
+          "text": "Es normalisiert Datenbanken automatisch auf 3NF.",
+          "correct": false,
+          "explanation": "Das ist fachlich unzutreffend."
+        },
+        {
+          "id": "d",
+          "text": "Es erzeugt Observer-Objekte für Smart Meter.",
+          "correct": false,
+          "explanation": "Auch das ist ein anderer Bereich."
+        }
+      ]
+    },
+    {
+      "id": "pv1fiae_easy_t08_q19",
+      "conceptId": "pv1fiae_easy_t08_tls_zertifikat",
+      "variantId": "pv1fiae_easy_t08_tls_zertifikat_v01",
+      "interactionType": "best",
+      "questionKind": "ziel_mittel_zuordnung",
+      "badgeLabel": "Welche Zuordnung passt am besten?",
+      "isNew": true,
+      "prompt": "Welche Aufgabe hat ein Zertifikat im TLS-Kontext am ehesten?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Es hilft dabei, die Identität des Servers zu prüfen und Vertrauen in die Verbindung herzustellen.",
+          "correct": true,
+          "explanation": "Das Zertifikat bindet die Verbindung an eine vertrauenswürdig bestätigte Identität."
+        },
+        {
+          "id": "b",
+          "text": "Es speichert automatisch alle Zählerstände des Tages.",
+          "correct": false,
+          "explanation": "Das ist keine Zertifikatsaufgabe."
+        },
+        {
+          "id": "c",
+          "text": "Es ersetzt jedes Rollen- und Rechtemodell.",
+          "correct": false,
+          "explanation": "Berechtigungen bleiben ein eigener Fachbereich."
+        },
+        {
+          "id": "d",
+          "text": "Es erzeugt selbstständig Support-Tickets.",
+          "correct": false,
+          "explanation": "Das hat mit Zertifikaten nichts zu tun."
+        }
+      ]
+    },
+    {
+      "id": "pv1fiae_easy_t08_q20",
+      "conceptId": "pv1fiae_easy_t08_ticketsystem_nutzen",
+      "variantId": "pv1fiae_easy_t08_ticketsystem_nutzen_v01",
+      "interactionType": "multi",
+      "questionKind": "mehrere_richtige_antworten_waehlen",
+      "badgeLabel": "Mehrere Antworten sind richtig.",
+      "isNew": true,
+      "prompt": "Welche Vorteile bringt ein Ticketsystem im Störungs- und Serviceprozess besonders plausibel mit? Mehrere Antworten sind richtig.",
+      "maxSelections": 4,
+      "options": [
+        {
+          "id": "a",
+          "text": "Anfragen und Störungen werden strukturiert dokumentiert.",
+          "correct": true,
+          "explanation": "Das ist ein Kernnutzen eines Ticketsystems."
+        },
+        {
+          "id": "b",
+          "text": "Bearbeitungsstände und Verantwortlichkeiten werden nachvollziehbar.",
+          "correct": true,
+          "explanation": "Transparenz gehört zu den wichtigsten Vorteilen."
+        },
+        {
+          "id": "c",
+          "text": "Priorisierung und Eskalation lassen sich besser steuern.",
+          "correct": true,
+          "explanation": "Auch Prioritäten und Eskalationen werden so handhabbar."
+        },
+        {
+          "id": "d",
+          "text": "Wiederkehrende Probleme können leichter ausgewertet werden.",
+          "correct": true,
+          "explanation": "Dokumentierte Tickets schaffen eine gute Basis für Auswertungen."
+        },
+        {
+          "id": "e",
+          "text": "Fachliche Anforderungen sind danach überflüssig.",
+          "correct": false,
+          "explanation": "Ein Ticketsystem ersetzt keine Anforderungsarbeit."
+        }
+      ]
+    },
+    {
+      "id": "pv1fiae_easy_t08_q21",
+      "conceptId": "pv1fiae_easy_t08_webserver_hardening",
+      "variantId": "pv1fiae_easy_t08_webserver_hardening_v01",
+      "interactionType": "multi",
+      "questionKind": "passende_massnahme_auswaehlen",
+      "badgeLabel": "Mehrere Antworten sind richtig.",
+      "isNew": true,
+      "prompt": "Welche Maßnahmen sind für die Absicherung des Webservers besonders naheliegend? Mehrere Antworten sind richtig.",
+      "maxSelections": 4,
+      "options": [
+        {
+          "id": "a",
+          "text": "TLS sauber konfigurieren und unverschlüsselte Verbindungen vermeiden",
+          "correct": true,
+          "explanation": "Sichere Transportkonfiguration ist zentral."
+        },
+        {
+          "id": "b",
+          "text": "Aktuelle Sicherheitsupdates und Patchmanagement einspielen",
+          "correct": true,
+          "explanation": "Aktualität reduziert bekannte Schwachstellen."
+        },
+        {
+          "id": "c",
+          "text": "Nur benötigte Dienste aktiv halten",
+          "correct": true,
+          "explanation": "Eine kleinere Angriffsfläche ist sinnvoll."
+        },
+        {
+          "id": "d",
+          "text": "Zugriffe protokollieren und Auffälligkeiten überwachen",
+          "correct": true,
+          "explanation": "Monitoring und Logs unterstützen Erkennung und Nachvollziehbarkeit."
+        },
+        {
+          "id": "e",
+          "text": "Sicherheitsfunktionen für mehr Komfort abschalten",
+          "correct": false,
+          "explanation": "Das wäre fachlich kontraproduktiv."
+        }
+      ]
+    },
+    {
+      "id": "pv1fiae_easy_t08_q22",
+      "conceptId": "pv1fiae_easy_t08_integrationsrisiko",
+      "variantId": "pv1fiae_easy_t08_integrationsrisiko_v01",
+      "interactionType": "best",
+      "questionKind": "ursache_folge_erkennen",
+      "badgeLabel": "Welche Option passt am besten?",
+      "isNew": true,
+      "prompt": "Welches Risiko ist bei der Integration von mobiler App, Backend und Ticketsystem besonders naheliegend?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Unklare Schnittstellen und Datenformate führen zu Abstimmungs- und Nacharbeitsaufwand.",
+          "correct": true,
+          "explanation": "Integrationsprojekte scheitern oft an unklaren Schnittstellen."
+        },
+        {
+          "id": "b",
+          "text": "Die Stromablesung funktioniert deshalb automatisch auf Papier besser.",
+          "correct": false,
+          "explanation": "Das ist keine fachliche Integrationsfolge."
+        },
+        {
+          "id": "c",
+          "text": "Observer-Pattern und TLS heben sich gegenseitig auf.",
+          "correct": false,
+          "explanation": "Das sind unterschiedliche technische Themen."
+        },
+        {
+          "id": "d",
+          "text": "MongoDB verhindert grundsätzlich jede Schnittstellenfrage.",
+          "correct": false,
+          "explanation": "Datenbanken ersetzen keine saubere API-Definition."
+        }
+      ]
+    },
+    {
+      "id": "pv1fiae_easy_t08_q23",
+      "conceptId": "pv1fiae_easy_t08_nosql_einsatz",
+      "variantId": "pv1fiae_easy_t08_nosql_einsatz_v01",
+      "interactionType": "best",
+      "questionKind": "beispiel_erkennen",
+      "badgeLabel": "Welche Option passt am besten?",
+      "isNew": true,
+      "prompt": "Wann ist ein dokumentenorientierter NoSQL-Ansatz wie MongoDB in diesem Projekt besonders plausibel?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Wenn sich Dokumentstrukturen schrittweise erweitern und appnahe Daten flexibel abgelegt werden sollen",
+          "correct": true,
+          "explanation": "Das passt gut zum genannten Vorteil flexibler Modelle."
+        },
+        {
+          "id": "b",
+          "text": "Nur wenn keinerlei Datenbeziehungen mehr existieren dürfen",
+          "correct": false,
+          "explanation": "Auch NoSQL-Systeme haben fachliche Bezüge."
+        },
+        {
+          "id": "c",
+          "text": "Ausschließlich dann, wenn OAuth aktiviert ist",
+          "correct": false,
+          "explanation": "OAuth ist unabhängig vom Datenbanktyp."
+        },
+        {
+          "id": "d",
+          "text": "Nur wenn sämtliche Daten als Excel-Tabelle gespeichert werden",
+          "correct": false,
+          "explanation": "Das ist fachlich kein MongoDB-Szenario."
+        }
+      ]
+    },
+    {
+      "id": "pv1fiae_easy_t08_q24",
+      "conceptId": "pv1fiae_easy_t08_service_dokumentation",
+      "variantId": "pv1fiae_easy_t08_service_dokumentation_v01",
+      "interactionType": "best",
+      "questionKind": "passende_massnahme_auswaehlen",
+      "badgeLabel": "Welche Option passt am besten?",
+      "isNew": true,
+      "prompt": "Welche Maßnahme unterstützt im Serviceprozess die Nachvollziehbarkeit von Störungen und Maßnahmen am direktesten?",
+      "maxSelections": 1,
+      "options": [
+        {
+          "id": "a",
+          "text": "Störungen, Schritte und Ergebnisse sauber im Ticketsystem dokumentieren",
+          "correct": true,
+          "explanation": "Dokumentierte Ticketverläufe schaffen Nachvollziehbarkeit."
+        },
+        {
+          "id": "b",
+          "text": "Entscheidungen nur mündlich weitergeben und nirgends festhalten",
+          "correct": false,
+          "explanation": "Das erschwert Service und Auswertung."
+        },
+        {
+          "id": "c",
+          "text": "Fehlermeldungen löschen, sobald sie bearbeitet wurden",
+          "correct": false,
+          "explanation": "Dann fehlt die fachliche Historie."
+        },
+        {
+          "id": "d",
+          "text": "Nur den Namen des Mitarbeiters speichern, aber keine fachlichen Details",
+          "correct": false,
+          "explanation": "Für Nachvollziehbarkeit braucht es auch den fachlichen Inhalt."
+        }
+      ]
+    }
+  ],
+  "interactionTypes": [
+    "best",
+    "multi",
+    "single"
+  ],
+  "questionKinds": [
+    "beispiel_erkennen",
+    "definition_zu_begriff",
+    "mehrere_richtige_antworten_waehlen",
+    "passende_massnahme_auswaehlen",
+    "ursache_folge_erkennen",
+    "vergleich_treffen",
+    "ziel_mittel_zuordnung"
+  ],
+  "dominantBadge": "AP1-Training"
+}

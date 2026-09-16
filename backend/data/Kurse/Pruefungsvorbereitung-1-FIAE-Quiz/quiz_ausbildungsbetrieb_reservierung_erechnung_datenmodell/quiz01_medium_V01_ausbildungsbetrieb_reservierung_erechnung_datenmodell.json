@@ -1,0 +1,445 @@
+{
+  "scenarioFolder": "Pruefungsvorbereitung-1-FIAE-Scenarien",
+  "quizFolder": "Pruefungsvorbereitung-1-FIAE-Quiz",
+  "scenarioFile": "ticket_ausbildungsbetrieb_reservierung_erechnung_datenmodell/01_medium_ausbildungsbetrieb_reservierung_erechnung_datenmodell.json",
+  "quizFile": "quiz_ausbildungsbetrieb_reservierung_erechnung_datenmodell/quiz01_medium_V01_ausbildungsbetrieb_reservierung_erechnung_datenmodell.json",
+  "ticketId": "01_medium_ausbildungsbetrieb_reservierung_erechnung_datenmodell.json",
+  "versionId": "V01",
+  "title": "Ticket 01 Medium - Reservierungsmodul, eRechnung und 3NF",
+  "description": "Manuell verfasstes FIAE-Training im mittleren Anspruchsniveau zu Machbarkeit, Projektsteuerung, Reservierungslogik, eRechnungsvalidierung und relationalem Datenmodell im selben Reservierungsfall.",
+  "topics": [
+    "Machbarkeit, Projektsteuerung und Reservierungslogik im Reservierungsprojekt fachlich sicher vertiefen",
+    "eRechnung, Validierung, Prüfpfad und relationale Datenmodellierung im selben Fachfall nachvollziehbar verbinden"
+  ],
+  "questions": [
+    {
+      "id": "pv1fiae_medium_t01_q01",
+      "conceptId": "pv1fiae_medium_t01_machbarkeit_abwaegung",
+      "variantId": "pv1fiae_medium_t01_machbarkeit_abwaegung_v01",
+      "interactionType": "best",
+      "questionKind": "vergleich_treffen",
+      "badgeLabel": "Welche Option passt am besten?",
+      "isNew": true,
+      "prompt": "Welche Aussage beschreibt eine belastbare Machbarkeitsabwägung für das Reservierungsmodul am treffendsten?",
+      "maxSelections": 1,
+      "options": [
+        { "id": "a", "text": "Markt, Technik, Recht und Wirtschaftlichkeit werden gemeinsam bewertet, bevor der Umfang festgezogen wird.", "correct": true, "explanation": "Eine belastbare Machbarkeitsabwägung betrachtet mehrere Dimensionen zusammen." },
+        { "id": "b", "text": "Es reicht, wenn nur die spätere Farbwelt der Oberfläche feststeht.", "correct": false, "explanation": "Gestaltung allein ersetzt keine Machbarkeitsprüfung." },
+        { "id": "c", "text": "Machbarkeit ist erst nach Produktivstart relevant.", "correct": false, "explanation": "Gerade frühe Entscheidungen brauchen eine Machbarkeitsbasis." },
+        { "id": "d", "text": "Sobald der Kunde Interesse zeigt, sind rechtliche und technische Fragen zweitrangig.", "correct": false, "explanation": "Interesse allein macht ein Vorhaben nicht tragfähig." }
+      ]
+    },
+    {
+      "id": "pv1fiae_medium_t01_q02",
+      "conceptId": "pv1fiae_medium_t01_stakeholder_interessen",
+      "variantId": "pv1fiae_medium_t01_stakeholder_interessen_v01",
+      "interactionType": "multi",
+      "questionKind": "mehrere_richtige_antworten_waehlen",
+      "badgeLabel": "Mehrere Antworten sind richtig.",
+      "isNew": true,
+      "prompt": "Welche Stakeholder-Interessen sind im Reservierungsprojekt besonders plausibel? Mehrere Antworten sind richtig.",
+      "maxSelections": 4,
+      "options": [
+        { "id": "a", "text": "Gastronomiebetriebe erwarten einen verlässlichen Reservierungsablauf im Tagesgeschäft.", "correct": true, "explanation": "Betriebsstabilität ist für den Fachbereich zentral." },
+        { "id": "b", "text": "Das Produktmanagement achtet auf Marktnutzen und wirtschaftliche Tragfähigkeit.", "correct": true, "explanation": "Produkt- und Geschäftsperspektive gehören dazu." },
+        { "id": "c", "text": "Der Betrieb achtet auf Integration, Supportbarkeit und Fehlerfolgen im Livebetrieb.", "correct": true, "explanation": "Betriebsfragen werden im Projekt oft früh relevant." },
+        { "id": "d", "text": "Gäste erwarten eine verständliche und vertrauenswürdige Reservierung.", "correct": true, "explanation": "Auch Endnutzende haben klare Qualitätsinteressen." },
+        { "id": "e", "text": "Alle Stakeholder verfolgen automatisch exakt dieselben Ziele.", "correct": false, "explanation": "Gerade unterschiedliche Interessen müssen ausgeglichen werden." }
+      ]
+    },
+    {
+      "id": "pv1fiae_medium_t01_q03",
+      "conceptId": "pv1fiae_medium_t01_scope_abgrenzung",
+      "variantId": "pv1fiae_medium_t01_scope_abgrenzung_v01",
+      "interactionType": "best",
+      "questionKind": "prioritaet_setzen",
+      "badgeLabel": "Welche Option passt am besten?",
+      "isNew": true,
+      "prompt": "Welche Entscheidung hilft am stärksten, den ersten Projektumfang fachlich sauber zu begrenzen?",
+      "maxSelections": 1,
+      "options": [
+        { "id": "a", "text": "Nur Funktionen für Reservieren, Bestätigen und Stornieren verbindlich in die erste Ausbaustufe aufnehmen.", "correct": true, "explanation": "Ein klar abgegrenzter Kernumfang reduziert Komplexität im Einstieg." },
+        { "id": "b", "text": "Jede spätere Wunschfunktion sofort ohne Priorisierung in den ersten Release ziehen.", "correct": false, "explanation": "Das erhöht Termin- und Risikodruck unnötig." },
+        { "id": "c", "text": "Den Projektumfang absichtlich offenlassen, damit niemand nachfragen muss.", "correct": false, "explanation": "Unklarer Scope verschärft spätere Konflikte." },
+        { "id": "d", "text": "Den Scope nur mündlich festhalten.", "correct": false, "explanation": "Gerade Umfangsgrenzen müssen nachvollziehbar dokumentiert werden." }
+      ]
+    },
+    {
+      "id": "pv1fiae_medium_t01_q04",
+      "conceptId": "pv1fiae_medium_t01_klassisch_einsatz",
+      "variantId": "pv1fiae_medium_t01_klassisch_einsatz_v01",
+      "interactionType": "best",
+      "questionKind": "vergleich_treffen",
+      "badgeLabel": "Welche Option passt am besten?",
+      "isNew": true,
+      "prompt": "Wann ist ein eher klassisches Vorgehen in diesem Reservierungsfall besonders plausibel?",
+      "maxSelections": 1,
+      "options": [
+        { "id": "a", "text": "Wenn Anforderungen, Freigaben und Integrationspunkte früh relativ stabil und formalisiert sind.", "correct": true, "explanation": "Stabile Anforderungen sprechen eher für planungsgetriebene Modelle." },
+        { "id": "b", "text": "Wenn der Fachbereich laufend neue Prioritäten und Ideen in kurzen Abständen einbringt.", "correct": false, "explanation": "Das passt eher zu iterativerem Arbeiten." },
+        { "id": "c", "text": "Wenn das Team bewusst auf Gesamtplanung verzichten will.", "correct": false, "explanation": "Das wäre kein klassischer Einsatzfall." },
+        { "id": "d", "text": "Wenn Änderungen möglichst jederzeit spontan eingestreut werden sollen.", "correct": false, "explanation": "Auch das spricht eher gegen klassisch." }
+      ]
+    },
+    {
+      "id": "pv1fiae_medium_t01_q05",
+      "conceptId": "pv1fiae_medium_t01_agil_einsatz",
+      "variantId": "pv1fiae_medium_t01_agil_einsatz_v01",
+      "interactionType": "best",
+      "questionKind": "vergleich_treffen",
+      "badgeLabel": "Welche Option passt am besten?",
+      "isNew": true,
+      "prompt": "Wann ist ein agiles Vorgehen in diesem Reservierungsfall besonders plausibel?",
+      "maxSelections": 1,
+      "options": [
+        { "id": "a", "text": "Wenn Reservierungslogik, Bedienkonzept und Prozessdetails noch mit dem Fachbereich geschärft werden müssen.", "correct": true, "explanation": "Unklare oder bewegliche Anforderungen passen gut zu iterativem Arbeiten." },
+        { "id": "b", "text": "Wenn keinerlei Rückkopplung mit Stakeholdern gewünscht ist.", "correct": false, "explanation": "Agil lebt gerade von Feedbackschleifen." },
+        { "id": "c", "text": "Wenn alle Anforderungen vollständig eingefroren wurden.", "correct": false, "explanation": "Dann sinkt der Mehrwert eines agilen Vorgehens." },
+        { "id": "d", "text": "Wenn der Fachbereich erst nach dem Go-live eingebunden wird.", "correct": false, "explanation": "Das widerspricht dem iterativen Gedanken." }
+      ]
+    },
+    {
+      "id": "pv1fiae_medium_t01_q06",
+      "conceptId": "pv1fiae_medium_t01_risiko_priorisierung",
+      "variantId": "pv1fiae_medium_t01_risiko_priorisierung_v01",
+      "interactionType": "best",
+      "questionKind": "prioritaet_setzen",
+      "badgeLabel": "Welche Option passt am besten?",
+      "isNew": true,
+      "prompt": "Welches Risiko sollte im frühen Projektverlauf besonders hoch priorisiert werden, wenn Reservierungsregeln noch nicht klar abgestimmt sind?",
+      "maxSelections": 1,
+      "options": [
+        { "id": "a", "text": "Fehlentwicklungen durch unklare fachliche Regeln und daraus folgende Nacharbeit", "correct": true, "explanation": "Unklare Fachregeln treffen direkt Kernlogik, Zeit und Qualität." },
+        { "id": "b", "text": "Die spätere Wahl eines Icon-Sets", "correct": false, "explanation": "Das ist kein frühes Hauptrisiko des Produkts." },
+        { "id": "c", "text": "Dass der Drucker im Büro selten genutzt wird", "correct": false, "explanation": "Das betrifft den Projektkern nicht." },
+        { "id": "d", "text": "Dass Reviews die Transparenz erhöhen", "correct": false, "explanation": "Das ist eher ein Nutzen als ein Risiko." }
+      ]
+    },
+    {
+      "id": "pv1fiae_medium_t01_q07",
+      "conceptId": "pv1fiae_medium_t01_risiko_kommunikation",
+      "variantId": "pv1fiae_medium_t01_risiko_kommunikation_v01",
+      "interactionType": "multi",
+      "questionKind": "passende_massnahme_auswaehlen",
+      "badgeLabel": "Mehrere Antworten sind richtig.",
+      "isNew": true,
+      "prompt": "Welche Maßnahmen helfen besonders gegen fachliche Kommunikationslücken im Reservierungsprojekt? Mehrere Antworten sind richtig.",
+      "maxSelections": 3,
+      "options": [
+        { "id": "a", "text": "Regelmäßige Abstimmungen mit klaren Entscheidungen und offenen Punkten festhalten", "correct": true, "explanation": "So bleiben Entscheidungen nachvollziehbar." },
+        { "id": "b", "text": "Akteure, Begriffe und Prozessschritte in einer gemeinsamen Fachsprache dokumentieren", "correct": true, "explanation": "Gemeinsame Begriffe reduzieren Missverständnisse." },
+        { "id": "c", "text": "Änderungen zeitnah in Anforderungen und Backlog nachziehen", "correct": true, "explanation": "Kommunikation muss sich im Arbeitsstand wiederfinden." },
+        { "id": "d", "text": "Unklare Punkte möglichst lange offenlassen", "correct": false, "explanation": "Das verschärft Nacharbeit." },
+        { "id": "e", "text": "Rückfragen vermeiden, damit die Planung nicht gestört wird", "correct": false, "explanation": "Genau das erhöht das Fehlentwicklungsrisiko." }
+      ]
+    },
+    {
+      "id": "pv1fiae_medium_t01_q08",
+      "conceptId": "pv1fiae_medium_t01_usecase_include",
+      "variantId": "pv1fiae_medium_t01_usecase_include_v01",
+      "interactionType": "best",
+      "questionKind": "ziel_mittel_zuordnung",
+      "badgeLabel": "Welche Option passt am besten?",
+      "isNew": true,
+      "prompt": "Wann ist in einem Use-Case-Modell für das Reservierungsmodul eine Include-Beziehung besonders plausibel?",
+      "maxSelections": 1,
+      "options": [
+        { "id": "a", "text": "Wenn ein gemeinsamer Pflichtschritt wie Verfügbarkeit prüfen in mehreren Anwendungsfällen wiederverwendet wird.", "correct": true, "explanation": "Include eignet sich für verpflichtende, wiederkehrende Teilabläufe." },
+        { "id": "b", "text": "Wenn ein Ausnahmefall nur selten und optional eintritt.", "correct": false, "explanation": "Das passt eher zu Extend oder einer Sonderbehandlung." },
+        { "id": "c", "text": "Wenn überhaupt keine gemeinsame Teilfunktion vorhanden ist.", "correct": false, "explanation": "Dann gibt es keinen plausiblen Include-Fall." },
+        { "id": "d", "text": "wenn nur eine optische Eigenschaft ohne fachliche Aktion beschrieben wird", "correct": false, "explanation": "Das gehört nicht ins Use-Case-Verhalten." }
+      ]
+    },
+    {
+      "id": "pv1fiae_medium_t01_q09",
+      "conceptId": "pv1fiae_medium_t01_akteur_generalisierung",
+      "variantId": "pv1fiae_medium_t01_akteur_generalisierung_v01",
+      "interactionType": "best",
+      "questionKind": "vergleich_treffen",
+      "badgeLabel": "Welche Option passt am besten?",
+      "isNew": true,
+      "prompt": "Wann ist eine Generalisierung von Akteuren im Reservierungsmodul am plausibelsten?",
+      "maxSelections": 1,
+      "options": [
+        { "id": "a", "text": "Wenn Spezialakteure wie Stammkunde und Neukunde gemeinsame Grundfunktionen des allgemeinen Kunden erben.", "correct": true, "explanation": "Genau dafür wird Akteurgeneralisierung eingesetzt." },
+        { "id": "b", "text": "Wenn jede Person im Modell völlig unterschiedliche Ziele hat.", "correct": false, "explanation": "Dann fehlt die gemeinsame Basis." },
+        { "id": "c", "text": "Wenn nur Datenbanktabellen beschrieben werden sollen.", "correct": false, "explanation": "Akteurgeneralisierung gehört in die fachliche Nutzungssicht." },
+        { "id": "d", "text": "Wenn keine gemeinsamen Rechte oder Interaktionen existieren.", "correct": false, "explanation": "Dann ergibt die Generalisierung wenig Sinn." }
+      ]
+    },
+    {
+      "id": "pv1fiae_medium_t01_q10",
+      "conceptId": "pv1fiae_medium_t01_reservierungszustand",
+      "variantId": "pv1fiae_medium_t01_reservierungszustand_v01",
+      "interactionType": "best",
+      "questionKind": "ursache_folge_erkennen",
+      "badgeLabel": "Welche Option passt am besten?",
+      "isNew": true,
+      "prompt": "Warum ist eine klare Zustandslogik für Reservierungen im Medium-Niveau besonders wichtig?",
+      "maxSelections": 1,
+      "options": [
+        { "id": "a", "text": "Damit eindeutig geregelt ist, wann eine Reservierung angelegt, bestätigt, storniert oder abgelaufen ist.", "correct": true, "explanation": "Saubere Zustände verhindern fachliche Widersprüche im Ablauf." },
+        { "id": "b", "text": "Damit jede Reservierung automatisch zu einer Rechnung wird.", "correct": false, "explanation": "Rechnungserstellung ist ein anderer Prozessschritt." },
+        { "id": "c", "text": "Damit auf Datenhaltung vollständig verzichtet werden kann.", "correct": false, "explanation": "Zustandslogik ersetzt keine Persistenz." },
+        { "id": "d", "text": "Damit keine Anforderungen mehr beschrieben werden müssen.", "correct": false, "explanation": "Auch Zustandsmodelle brauchen fachliche Grundlagen." }
+      ]
+    },
+    {
+      "id": "pv1fiae_medium_t01_q11",
+      "conceptId": "pv1fiae_medium_t01_parallelanfrage",
+      "variantId": "pv1fiae_medium_t01_parallelanfrage_v01",
+      "interactionType": "best",
+      "questionKind": "beste_option_im_mini_szenario",
+      "badgeLabel": "Welche Option passt am besten?",
+      "isNew": true,
+      "prompt": "Zwei Gäste reservieren beinahe gleichzeitig denselben letzten Tisch. Welche fachliche Maßnahme ist am plausibelsten?",
+      "maxSelections": 1,
+      "options": [
+        { "id": "a", "text": "Verfügbarkeit beim verbindlichen Abschluss erneut prüfen und erst dann den Tisch endgültig vergeben.", "correct": true, "explanation": "So wird ein typischer Konkurrenzfall kontrolliert abgefangen." },
+        { "id": "b", "text": "Beiden Gästen denselben Tisch verbindlich zusagen.", "correct": false, "explanation": "Das erzeugt genau den Konflikt, den die Logik verhindern soll." },
+        { "id": "c", "text": "Die Prüfung nur beim Seitenaufruf durchführen.", "correct": false, "explanation": "Zwischen Anzeige und Abschluss kann sich der Bestand ändern." },
+        { "id": "d", "text": "Parallelzugriffe ignorieren, solange das Frontend schnell genug wirkt.", "correct": false, "explanation": "Geschwindigkeit ersetzt keine fachliche Absicherung." }
+      ]
+    },
+    {
+      "id": "pv1fiae_medium_t01_q12",
+      "conceptId": "pv1fiae_medium_t01_reservierungsfrist",
+      "variantId": "pv1fiae_medium_t01_reservierungsfrist_v01",
+      "interactionType": "best",
+      "questionKind": "passende_massnahme_auswaehlen",
+      "badgeLabel": "Welche Option passt am besten?",
+      "isNew": true,
+      "prompt": "Welche Regel hilft am ehesten, blockierte Tische durch nicht bestätigte Reservierungen zu vermeiden?",
+      "maxSelections": 1,
+      "options": [
+        { "id": "a", "text": "Unbestätigte Reservierungen nach definierter Frist freigeben und nachvollziehbar protokollieren.", "correct": true, "explanation": "Eine Frist verhindert dauerhafte Blockaden ohne Bestätigung." },
+        { "id": "b", "text": "Jede angefragte Reservierung unbegrenzt offenlassen.", "correct": false, "explanation": "Das verschlechtert die Verfügbarkeit." },
+        { "id": "c", "text": "Bestätigung grundsätzlich verbieten.", "correct": false, "explanation": "Das löst das Reservierungsproblem nicht fachlich sinnvoll." },
+        { "id": "d", "text": "Freigaben nur manuell einmal pro Monat prüfen.", "correct": false, "explanation": "Für Tagesgeschäft wäre das untauglich." }
+      ]
+    },
+    {
+      "id": "pv1fiae_medium_t01_q13",
+      "conceptId": "pv1fiae_medium_t01_akzeptanzkriterium",
+      "variantId": "pv1fiae_medium_t01_akzeptanzkriterium_v01",
+      "interactionType": "best",
+      "questionKind": "beispiel_erkennen",
+      "badgeLabel": "Welche Option passt am besten?",
+      "isNew": true,
+      "prompt": "Welches Beispiel ist für die Tischreservierung ein gutes Akzeptanzkriterium?",
+      "maxSelections": 1,
+      "options": [
+        { "id": "a", "text": "Wenn kein Tisch mehr verfügbar ist, wird keine verbindliche Reservierung angelegt und der Gast erhält eine eindeutige Rückmeldung.", "correct": true, "explanation": "Das ist prüfbar, konkret und fachlich klar." },
+        { "id": "b", "text": "Die Funktion soll einfach gut sein.", "correct": false, "explanation": "Das ist zu ungenau für ein Akzeptanzkriterium." },
+        { "id": "c", "text": "Das Team soll später schon wissen, was gemeint war.", "correct": false, "explanation": "Auch das ist nicht prüfbar formuliert." },
+        { "id": "d", "text": "Der Code soll modern aussehen.", "correct": false, "explanation": "Das beschreibt kein fachliches Akzeptanzkriterium." }
+      ]
+    },
+    {
+      "id": "pv1fiae_medium_t01_q14",
+      "conceptId": "pv1fiae_medium_t01_prototyping_zweck",
+      "variantId": "pv1fiae_medium_t01_prototyping_zweck_v01",
+      "interactionType": "best",
+      "questionKind": "vergleich_treffen",
+      "badgeLabel": "Welche Option passt am besten?",
+      "isNew": true,
+      "prompt": "Welchen Nutzen hat ein Prototyp im Reservierungsprojekt auf diesem Niveau am ehesten?",
+      "maxSelections": 1,
+      "options": [
+        { "id": "a", "text": "Fachliche Abläufe und Bedienlogik lassen sich früh mit Stakeholdern prüfen, bevor viel Implementierungsaufwand entsteht.", "correct": true, "explanation": "Das ist ein zentraler Zweck von Prototyping." },
+        { "id": "b", "text": "Ein Prototyp ersetzt automatisch alle Tests.", "correct": false, "explanation": "Prototyping und Testen erfüllen unterschiedliche Aufgaben." },
+        { "id": "c", "text": "Ein Prototyp macht Anforderungsdokumente überflüssig.", "correct": false, "explanation": "Er kann sie ergänzen, aber nicht vollständig ersetzen." },
+        { "id": "d", "text": "Ein Prototyp ist nur für Designfarben zuständig.", "correct": false, "explanation": "Er kann deutlich mehr als reine Farbfragen unterstützen." }
+      ]
+    },
+    {
+      "id": "pv1fiae_medium_t01_q15",
+      "conceptId": "pv1fiae_medium_t01_erechnung_syntax",
+      "variantId": "pv1fiae_medium_t01_erechnung_syntax_v01",
+      "interactionType": "best",
+      "questionKind": "ziel_mittel_zuordnung",
+      "badgeLabel": "Welche Option passt am besten?",
+      "isNew": true,
+      "prompt": "Wozu dient eine syntaktische Prüfung bei eingehenden eRechnungsdaten am ehesten?",
+      "maxSelections": 1,
+      "options": [
+        { "id": "a", "text": "Sie prüft, ob Struktur und Format der Nachricht technisch dem erwarteten Schema entsprechen.", "correct": true, "explanation": "Syntaktische Prüfungen betrachten Form und Struktur." },
+        { "id": "b", "text": "Sie entscheidet, ob der Rechnungsbetrag wirtschaftlich sinnvoll ist.", "correct": false, "explanation": "Das wäre eher eine fachliche Prüfung." },
+        { "id": "c", "text": "Sie ersetzt jede spätere Geschäftsregel.", "correct": false, "explanation": "Syntax und Fachlogik sind nicht dasselbe." },
+        { "id": "d", "text": "Sie erzeugt automatisch Buchungssätze.", "correct": false, "explanation": "Das ist kein unmittelbarer Zweck der Syntaxprüfung." }
+      ]
+    },
+    {
+      "id": "pv1fiae_medium_t01_q16",
+      "conceptId": "pv1fiae_medium_t01_erechnung_fachlich",
+      "variantId": "pv1fiae_medium_t01_erechnung_fachlich_v01",
+      "interactionType": "best",
+      "questionKind": "ziel_mittel_zuordnung",
+      "badgeLabel": "Welche Option passt am besten?",
+      "isNew": true,
+      "prompt": "Wodurch zeichnet sich eine fachliche Prüfung von eRechnungsdaten im Unterschied zur reinen Syntaxprüfung besonders aus?",
+      "maxSelections": 1,
+      "options": [
+        { "id": "a", "text": "Sie prüft Inhalte wie Pflichtangaben, Betragslogik oder fachliche Konsistenz der Daten.", "correct": true, "explanation": "Fachliche Prüfungen betrachten die inhaltliche Stimmigkeit." },
+        { "id": "b", "text": "Sie achtet ausschließlich auf Zeilenumbrüche und Klammern.", "correct": false, "explanation": "Das wäre wieder Syntax." },
+        { "id": "c", "text": "Sie ersetzt jede Form von Logging.", "correct": false, "explanation": "Prüfung und Protokollierung sind verschiedene Dinge." },
+        { "id": "d", "text": "Sie dient nur dazu, Buttons in der Oberfläche zu färben.", "correct": false, "explanation": "Das ist fachlich unzutreffend." }
+      ]
+    },
+    {
+      "id": "pv1fiae_medium_t01_q17",
+      "conceptId": "pv1fiae_medium_t01_validierungskette",
+      "variantId": "pv1fiae_medium_t01_validierungskette_v01",
+      "interactionType": "best",
+      "questionKind": "prioritaet_setzen",
+      "badgeLabel": "Welche Option passt am besten?",
+      "isNew": true,
+      "prompt": "Welche Reihenfolge ist für die Verarbeitung eingehender eRechnungsdaten am plausibelsten?",
+      "maxSelections": 1,
+      "options": [
+        { "id": "a", "text": "Struktur prüfen, fachlich validieren, Ergebnis protokollieren und erst danach weiterverarbeiten.", "correct": true, "explanation": "So bleibt die Prüfstrecke nachvollziehbar und logisch aufgebaut." },
+        { "id": "b", "text": "Direkt buchen und erst später prüfen, ob die Struktur stimmt.", "correct": false, "explanation": "Fehlerhafte Daten würden so zu früh weiterlaufen." },
+        { "id": "c", "text": "Prüfungen vermeiden, solange die Datei empfangen wurde.", "correct": false, "explanation": "Empfang allein ist kein Qualitätsnachweis." },
+        { "id": "d", "text": "Nur den Dateinamen ansehen und danach sofort archivieren.", "correct": false, "explanation": "Das wäre keine belastbare Verarbeitung." }
+      ]
+    },
+    {
+      "id": "pv1fiae_medium_t01_q18",
+      "conceptId": "pv1fiae_medium_t01_pruefprotokoll",
+      "variantId": "pv1fiae_medium_t01_pruefprotokoll_v01",
+      "interactionType": "multi",
+      "questionKind": "mehrere_richtige_antworten_waehlen",
+      "badgeLabel": "Mehrere Antworten sind richtig.",
+      "isNew": true,
+      "prompt": "Welche Inhalte sind für ein nachvollziehbares Prüfprotokoll zu eRechnungsdaten besonders sinnvoll? Mehrere Antworten sind richtig.",
+      "maxSelections": 4,
+      "options": [
+        { "id": "a", "text": "Zeitpunkt und Ergebnis der Prüfung", "correct": true, "explanation": "Grunddaten der Prüfung müssen nachvollziehbar bleiben." },
+        { "id": "b", "text": "Erkannte Fehler oder Hinweise", "correct": true, "explanation": "Ohne Fehlerbild ist das Ergebnis schwer nutzbar." },
+        { "id": "c", "text": "Bezug auf die geprüfte Nachricht oder Rechnungs-ID", "correct": true, "explanation": "Die Zuordnung zum konkreten Eingang ist wichtig." },
+        { "id": "d", "text": "Welcher Prüfschritt betroffen war", "correct": true, "explanation": "Das erleichtert Nachbearbeitung und Analyse." },
+        { "id": "e", "text": "eine persönliche Vorliebe ohne Bezug zur fachlichen Prüfung", "correct": false, "explanation": "Das gehört nicht in ein Fachprotokoll." }
+      ]
+    },
+    {
+      "id": "pv1fiae_medium_t01_q19",
+      "conceptId": "pv1fiae_medium_t01_tabellenaufteilung",
+      "variantId": "pv1fiae_medium_t01_tabellenaufteilung_v01",
+      "interactionType": "best",
+      "questionKind": "vergleich_treffen",
+      "badgeLabel": "Welche Option passt am besten?",
+      "isNew": true,
+      "prompt": "Welche Tabellenaufteilung ist für ein relationales Bewertungsmodell besonders plausibel?",
+      "maxSelections": 1,
+      "options": [
+        { "id": "a", "text": "Betrieb, Bewertung und Bewertungsmerkmal sauber trennen und über Schlüssel verknüpfen.", "correct": true, "explanation": "So werden Redundanzen reduziert und Beziehungen klar." },
+        { "id": "b", "text": "Alle Informationen in einer einzigen Tabelle mit langen Sammelspalten speichern.", "correct": false, "explanation": "Das erhöht Redundanz und Änderungsprobleme." },
+        { "id": "c", "text": "Tabellen nur nach Lieblingsbegriffen des Teams benennen.", "correct": false, "explanation": "Benennungen ersetzen keine Struktur." },
+        { "id": "d", "text": "Auf Schlüssel vollständig verzichten, solange wenig Daten vorliegen.", "correct": false, "explanation": "Schlüssel sind strukturell auch bei kleinen Datenmengen wichtig." }
+      ]
+    },
+    {
+      "id": "pv1fiae_medium_t01_q20",
+      "conceptId": "pv1fiae_medium_t01_zusammengesetzter_schluessel",
+      "variantId": "pv1fiae_medium_t01_zusammengesetzter_schluessel_v01",
+      "interactionType": "best",
+      "questionKind": "ziel_mittel_zuordnung",
+      "badgeLabel": "Welche Option passt am besten?",
+      "isNew": true,
+      "prompt": "Wann ist ein zusammengesetzter Schlüssel in einem Bewertungsmodell besonders plausibel?",
+      "maxSelections": 1,
+      "options": [
+        { "id": "a", "text": "Wenn die Eindeutigkeit nur aus der Kombination mehrerer Fachattribute sinnvoll beschrieben wird.", "correct": true, "explanation": "Dann kann ein zusammengesetzter Schlüssel fachlich passend sein." },
+        { "id": "b", "text": "Wenn überhaupt keine Eindeutigkeit nötig ist.", "correct": false, "explanation": "Dann gäbe es keinen Schlüsselfall." },
+        { "id": "c", "text": "Wenn man Fremdschlüssel vollständig vermeiden will.", "correct": false, "explanation": "Zusammengesetzte Schlüssel ersetzen Beziehungen nicht grundsätzlich." },
+        { "id": "d", "text": "wenn nur eine Darstellungsfrage ohne Daten- oder Prozessbezug geklärt wird", "correct": false, "explanation": "Das hat nichts mit Schlüssellogik zu tun." }
+      ]
+    },
+    {
+      "id": "pv1fiae_medium_t01_q21",
+      "conceptId": "pv1fiae_medium_t01_transitive_abhaengigkeit",
+      "variantId": "pv1fiae_medium_t01_transitive_abhaengigkeit_v01",
+      "interactionType": "best",
+      "questionKind": "fehler_finden",
+      "badgeLabel": "Welche Option passt am besten?",
+      "isNew": true,
+      "prompt": "Welcher Modellierungsfehler weist am ehesten auf eine problematische transitive Abhängigkeit hin?",
+      "maxSelections": 1,
+      "options": [
+        { "id": "a", "text": "Ein Attribut hängt nicht direkt vom Schlüssel der Tabelle, sondern von einem anderen Nicht-Schlüsselattribut ab.", "correct": true, "explanation": "Genau darin zeigt sich eine transitive Abhängigkeit." },
+        { "id": "b", "text": "Eine Tabelle besitzt überhaupt einen Primärschlüssel.", "correct": false, "explanation": "Das ist keine Fehlstruktur." },
+        { "id": "c", "text": "Zwei Tabellen sind über Fremdschlüssel verbunden.", "correct": false, "explanation": "Auch das ist zunächst kein Fehler." },
+        { "id": "d", "text": "Eine Bewertung enthält ein Datum.", "correct": false, "explanation": "Das ist fachlich unproblematisch." }
+      ]
+    },
+    {
+      "id": "pv1fiae_medium_t01_q22",
+      "conceptId": "pv1fiae_medium_t01_referenzielle_integritaet",
+      "variantId": "pv1fiae_medium_t01_referenzielle_integritaet_v01",
+      "interactionType": "best",
+      "questionKind": "passende_massnahme_auswaehlen",
+      "badgeLabel": "Welche Option passt am besten?",
+      "isNew": true,
+      "prompt": "Welche Maßnahme stützt die referenzielle Integrität im Bewertungsmodell am direktesten?",
+      "maxSelections": 1,
+      "options": [
+        { "id": "a", "text": "Fremdschlüsselregeln definieren, damit Bewertungen nur auf vorhandene Betriebe oder Merkmale verweisen.", "correct": true, "explanation": "So bleiben Beziehungen konsistent." },
+        { "id": "b", "text": "Verknüpfungen nur in Kommentarfeldern beschreiben.", "correct": false, "explanation": "Das wäre nicht belastbar." },
+        { "id": "c", "text": "Alle Schlüsselfelder frei editierbar ohne Prüfung lassen.", "correct": false, "explanation": "Das erhöht Inkonsistenzen." },
+        { "id": "d", "text": "Fremdschlüssel grundsätzlich vermeiden, um Tabellen klein zu halten.", "correct": false, "explanation": "Dann fehlt die fachliche Absicherung der Beziehungen." }
+      ]
+    },
+    {
+      "id": "pv1fiae_medium_t01_q23",
+      "conceptId": "pv1fiae_medium_t01_auswertbarkeit",
+      "variantId": "pv1fiae_medium_t01_auswertbarkeit_v01",
+      "interactionType": "best",
+      "questionKind": "ursache_folge_erkennen",
+      "badgeLabel": "Welche Option passt am besten?",
+      "isNew": true,
+      "prompt": "Warum verbessert ein sauber normalisiertes Bewertungsmodell die spätere Auswertbarkeit?",
+      "maxSelections": 1,
+      "options": [
+        { "id": "a", "text": "Weil Merkmale, Bewertungen und Bezugstabellen klar getrennt und konsistent verknüpft sind.", "correct": true, "explanation": "So entstehen weniger widersprüchliche oder schwer aggregierbare Daten." },
+        { "id": "b", "text": "Weil danach keine Beziehungen mehr nötig sind.", "correct": false, "explanation": "Beziehungen bleiben weiterhin wichtig." },
+        { "id": "c", "text": "Weil Daten dann grundsätzlich nicht mehr validiert werden müssen.", "correct": false, "explanation": "Validierung bleibt weiterhin notwendig." },
+        { "id": "d", "text": "Weil jede Auswertung automatisch kostenlos wird.", "correct": false, "explanation": "Das ist kein fachlicher Effekt der Normalisierung." }
+      ]
+    },
+    {
+      "id": "pv1fiae_medium_t01_q24",
+      "conceptId": "pv1fiae_medium_t01_end_to_end_denken",
+      "variantId": "pv1fiae_medium_t01_end_to_end_denken_v01",
+      "interactionType": "best",
+      "questionKind": "beste_option_im_mini_szenario",
+      "badgeLabel": "Welche Option passt am besten?",
+      "isNew": true,
+      "prompt": "Welche Aussage verbindet Projektsteuerung, Reservierungslogik, eRechnungsprüfung und Datenmodellierung in diesem Medium-Slot am treffendsten?",
+      "maxSelections": 1,
+      "options": [
+        { "id": "a", "text": "Der Projekterfolg hängt davon ab, dass fachliche Regeln, Prüfschritte und Datenstrukturen früh zusammen gedacht und sauber abgestimmt werden.", "correct": true, "explanation": "Genau diese Verbindung macht den Fachfall auf diesem Niveau aus." },
+        { "id": "b", "text": "Die Themen können unabhängig voneinander gelöst werden, ohne dass Entscheidungen sich beeinflussen.", "correct": false, "explanation": "Gerade ihre Verknüpfung ist hier wichtig." },
+        { "id": "c", "text": "Sobald die Oberfläche gut aussieht, werden Projekt- und Datenfragen nebensächlich.", "correct": false, "explanation": "Gestaltung ersetzt keine fachliche Tragfähigkeit." },
+        { "id": "d", "text": "Die eRechnung hat keinen Bezug zur übrigen Projektarchitektur.", "correct": false, "explanation": "Auch Validierung und Datenfluss sind Teil des Gesamtbilds." }
+      ]
+    }
+  ],
+  "interactionTypes": [
+    "best",
+    "multi",
+    "single"
+  ],
+  "questionKinds": [
+    "beispiel_erkennen",
+    "definition_zu_begriff",
+    "fehler_finden",
+    "mehrere_richtige_antworten_waehlen",
+    "passende_massnahme_auswaehlen",
+    "prioritaet_setzen",
+    "ursache_folge_erkennen",
+    "vergleich_treffen",
+    "ziel_mittel_zuordnung",
+    "beste_option_im_mini_szenario"
+  ],
+  "dominantBadge": "AP1-Training"
+}
